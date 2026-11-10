@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "title": "Newsletter Subscription",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 8,
+                  "maxLength": 80,
+                  "attrs": {
+                    "placeholder": "Full Name",
+                    "title": "Please enter your full name"
+                  }
+                },
+                "email": {
+                  "type": "string",
+                  "maxLength": 120,
+                  "attrs": {
+                    "type": "email",
+                    "placeholder": "Email"
+                  }
+                },
+                "lists": {
+                  "type": "string",
+                  "enum": [
+                    "Daily New",
+                    "Promotion"
+                  ]
+                }
+              },
+              "required": [
+                "name",
+                "email",
+                "lists"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^email$": true,
+                "^lists$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

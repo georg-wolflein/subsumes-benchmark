@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "grant_type": {
+                  "enum": [
+                    "refresh_token"
+                  ],
+                  "type": "string"
+                },
+                "redirect_uri": {
+                  "type": "string"
+                },
+                "refresh_token": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "scope": {
+                  "enum": [
+                    "openid",
+                    "profile",
+                    "email",
+                    "address",
+                    "phone"
+                  ],
+                  "type": "array"
+                }
+              },
+              "required": [
+                "grant_type",
+                "refresh_token"
+              ],
+              "title": "refresh",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^grant_type$": true,
+                "^redirect_uri$": true,
+                "^refresh_token$": true,
+                "^scope$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

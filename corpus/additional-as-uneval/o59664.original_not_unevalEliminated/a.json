@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "projectName": {
+      "description": "The name of a haxelib project",
+      "minLength": 3,
+      "pattern": "^[A-Za-z0-9_.-]{3,}$",
+      "type": "string"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "A haxelib project",
+              "properties": {
+                "url": {
+                  "_format": "uri",
+                  "type": "string"
+                },
+                "releasenote": {
+                  "type": "string"
+                },
+                "license": {
+                  "description": "The open source license under which the project is licensed",
+                  "enum": [
+                    "GPL",
+                    "LGPL",
+                    "BSD",
+                    "Public",
+                    "MIT"
+                  ]
+                },
+                "version": {
+                  "$ref": "#/$defs/semver"
+                },
+                "contributors": {
+                  "items": {
+                    "$ref": "#/$defs/userName"
+                  },
+                  "minItems": 1,
+                  "type": "array",
+                  "_uniqueItems": true
+                },
+                "dependencies": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "name": {
+                  "$ref": "#/$defs/projectName"
+                },
+                "classPath": {
+                  "description": "The folder in the package which contains the source files for this haxelib",
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "tags": {
+                  "items": {
+                    "$ref": "#/$defs/haxelibTag"
+                  },
+                  "type": "array",
+                  "_uniqueItems": true
+                }
+              },
+              "required": [
+                "name",
+                "license",
+                "releasenote",
+                "contributors",
+                "version"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^version$": true,
+                "^contributors$": true,
+                "^classPath$": true,
+                "^url$": true,
+                "^name$": true,
+                "^dependencies$": true,
+                "^description$": true,
+                "^releasenote$": true,
+                "^license$": true,
+                "^tags$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "dependancyVersion": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/semver"
+        },
+        {
+          "maxLength": 0,
+          "type": "string"
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/dependancyVersion"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "haxelibTag": {
+      "description": "A keyword or term associated with a haxelib project",
+      "minLength": 2,
+      "pattern": "^[A-Za-z0-9_.-]{2,}$",
+      "type": "string"
+    },
+    "semver": {
+      "pattern": "^([0-9]+)\\.([0-9]+)\\.([0-9]+)(-(alpha|beta|rc)(\\.([0-9]+))?)?$",
+      "type": "string"
+    },
+    "userName": {
+      "description": "The name of a user",
+      "minLength": 3,
+      "pattern": "^[A-Za-z0-9_.-]{3,}$",
+      "type": "string"
+    }
+  }
+}

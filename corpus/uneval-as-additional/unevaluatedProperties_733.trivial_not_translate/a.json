@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/modern_2"
+                }
+              ],
+              "properties": {
+                "foo": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                ".*": true,
+                "^foo$": true
+              },
+              "additionalProperties": {
+                "maxLength": 2,
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "additionalProperties": true
+    }
+  }
+}

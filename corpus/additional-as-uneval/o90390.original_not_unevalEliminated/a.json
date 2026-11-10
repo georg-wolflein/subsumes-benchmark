@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "$$target": "gkeZoneConfig.json",
+              "title": "GKE Zone Configuration",
+              "description": "GKE Zone Configuration",
+              "properties": {
+                "primaryZone": {
+                  "description": "The main zone for the k2 cluster.",
+                  "type": "string"
+                },
+                "additionalZones": {
+                  "description": "Additional Zones that the cluster should also exist in.",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "primaryZone",
+                "additionalZones"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^primaryZone$": true,
+                "^additionalZones$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "a"
+                  }
+                },
+                {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": "b"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "c"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "items": {
+                "anyOf": [
+                  {
+                    "anyOf": [
+                      {
+                        "const": "a"
+                      },
+                      {
+                        "anyOf": [
+                          {
+                            "const": "b"
+                          },
+                          {
+                            "const": "c"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  false
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "a"
+                  }
+                },
+                {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": "b"
+                      }
+                    },
+                    {
+                      "not": {
+                        "contains": {
+                          "const": "c"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "items": {
+                "anyOf": [
+                  {
+                    "anyOf": [
+                      {
+                        "const": "a"
+                      },
+                      {
+                        "const": "b"
+                      }
+                    ]
+                  },
+                  false
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "a"
+                  }
+                },
+                {
+                  "not": {
+                    "contains": {
+                      "const": "b"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "items": {
+                "anyOf": [
+                  {
+                    "const": "a"
+                  },
+                  false
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "not": {
+                "contains": {
+                  "const": "a"
+                }
+              }
+            },
+            {
+              "items": {
+                "anyOf": [
+                  false,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

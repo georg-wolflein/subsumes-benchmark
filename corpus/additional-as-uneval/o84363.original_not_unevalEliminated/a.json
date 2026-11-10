@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "container image build configuration",
+              "type": "object",
+              "properties": {
+                "platforms": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^platforms$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "only": {
+                  "$ref": "#/$defs/platforms"
+                },
+                "not": {
+                  "$ref": "#/$defs/platforms"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^only$": true,
+                "^not$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "platforms": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/platform"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/platform"
+          }
+        }
+      ]
+    },
+    "platform": {
+      "type": "string"
+    }
+  }
+}

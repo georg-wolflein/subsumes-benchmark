@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "org.eclipse.persistence.testing.jaxb.json.xmlvalue.Person",
+  "type": "object",
+  "properties": {
+    "person": {
+      "$ref": "#/$defs/modern_3"
+    }
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "string"
+            },
+            {
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Address": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "PhoneNumber": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "valuewrapper": {
+                  "type": "string"
+                },
+                "areaCode": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^valuewrapper$": true,
+                "^areaCode$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "phoneNumber": {
+                  "$ref": "#/$defs/PhoneNumber"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "firstName": {
+                  "type": "string"
+                },
+                "address": {
+                  "$ref": "#/$defs/Address"
+                },
+                "middleNames": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^middleNames$": true,
+                "^lastName$": true,
+                "^phoneNumber$": true,
+                "^firstName$": true,
+                "^address$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

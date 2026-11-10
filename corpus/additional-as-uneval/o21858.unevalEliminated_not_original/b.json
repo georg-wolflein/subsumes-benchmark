@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_2",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "PathPart"
+              ],
+              "type": "object",
+              "properties": {
+                "PathPart": {
+                  "type": "string",
+                  "pattern": "^(\\{[\\w\\-]+\\})|([\\w\\-]+)$"
+                },
+                "ChildResources": {
+                  "$ref": "#/$defs/childresources"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^PathPart$": true,
+                "^ChildResources$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "ParentId",
+                "RestApiId",
+                "ChildResources"
+              ],
+              "properties": {
+                "ParentId": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9]+$"
+                },
+                "RestApiId": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9]{10}$"
+                },
+                "ChildResources": {
+                  "$ref": "#/$defs/childresources"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^ParentId$": true,
+                "^RestApiId$": true,
+                "^ChildResources$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "childresource": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "childresources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/childresource"
+      }
+    }
+  }
+}

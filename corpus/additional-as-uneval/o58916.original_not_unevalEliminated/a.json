@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "person": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              },
+              "required": [
+                "person"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^person$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email"
+                },
+                "phone_number": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "email"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^email$": true,
+                "^phone_number$": true,
+                "^title$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

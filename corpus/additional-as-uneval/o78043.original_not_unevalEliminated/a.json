@@ -1,0 +1,469 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Schema for package.json.",
+  "properties": {
+    "licenses": {
+      "description": "package licenses",
+      "items": {
+        "$ref": "#/$defs/license-object"
+      },
+      "minItems": 1,
+      "type": "array",
+      "_uniqueItems": true
+    },
+    "author": {
+      "$ref": "#/$defs/person",
+      "description": "package author"
+    },
+    "name": {
+      "description": "package name",
+      "pattern": "^@?[a-z](?:[-\\/]?[_a-z0-9]+)*$",
+      "type": "string"
+    },
+    "repository": {
+      "$ref": "#/$defs/repo-object",
+      "description": "package repository"
+    },
+    "maintainers": {
+      "description": "package maintainers",
+      "items": {
+        "$ref": "#/$defs/person"
+      },
+      "minItems": 1,
+      "type": "array",
+      "_uniqueItems": true
+    },
+    "browser": {
+      "description": "main package entry point for a browser environment",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/path"
+        },
+        {
+          "$ref": "#/$defs/path-map"
+        }
+      ]
+    },
+    "description": {
+      "description": "package description",
+      "minLength": 1,
+      "type": "string"
+    },
+    "license": {
+      "description": "package license",
+      "minLength": 1,
+      "type": "string"
+    },
+    "version": {
+      "$ref": "#/$defs/semver",
+      "description": "package version"
+    },
+    "engines": {
+      "$ref": "#/$defs/string-map",
+      "description": "supported engines"
+    },
+    "keywords": {
+      "description": "package keywords",
+      "items": {
+        "$ref": "#/$defs/keyword"
+      },
+      "type": "array",
+      "_uniqueItems": true
+    },
+    "bin": {
+      "$ref": "#/$defs/path-map",
+      "description": "package executables"
+    },
+    "types": {
+      "$ref": "#/$defs/path",
+      "description": "package TypeScript definitions4"
+    },
+    "dependencies": {
+      "$ref": "#/$defs/dependency-map",
+      "description": "package dependencies"
+    },
+    "unpkg": {
+      "$ref": "#/$defs/path",
+      "description": "main package entry point for the unpkg CDN"
+    },
+    "os": {
+      "description": "supported operating systems",
+      "items": {
+        "$ref": "#/$defs/operating-system"
+      },
+      "type": "array",
+      "_uniqueItems": true
+    },
+    "main": {
+      "$ref": "#/$defs/path",
+      "description": "main package entry point"
+    },
+    "directories": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "devDependencies": {
+      "$ref": "#/$defs/dependency-map",
+      "description": "package development dependencies"
+    },
+    "bugs": {
+      "$ref": "#/$defs/modern_6"
+    },
+    "homepage": {
+      "$ref": "#/$defs/uri-http",
+      "description": "package homepage"
+    },
+    "repositories": {
+      "description": "package repositories",
+      "items": {
+        "$ref": "#/$defs/repo-object"
+      },
+      "minItems": 1,
+      "type": "array",
+      "_uniqueItems": true
+    },
+    "__stdlib__": {
+      "description": "project meta data",
+      "properties": {
+        "envs": {
+          "description": "supported environments",
+          "properties": {
+            "browser": {
+              "type": "boolean"
+            },
+            "node": {
+              "type": "boolean"
+            }
+          },
+          "type": "object"
+        },
+        "stability": {
+          "description": "package stability",
+          "type": "string"
+        }
+      },
+      "required": [],
+      "type": "object"
+    },
+    "scripts": {
+      "$ref": "#/$defs/string-map",
+      "description": "package scripts"
+    },
+    "gypfile": {
+      "description": "boolean instructing npm that a package is a binary addon that needs compiling and that npm should invoke node-gyp",
+      "type": "boolean"
+    },
+    "contributors": {
+      "description": "package contributors",
+      "items": {
+        "$ref": "#/$defs/person"
+      },
+      "minItems": 1,
+      "type": "array",
+      "_uniqueItems": true
+    }
+  },
+  "required": [
+    "name",
+    "version",
+    "description",
+    "author",
+    "contributors",
+    "main",
+    "scripts",
+    "homepage",
+    "repository",
+    "bugs",
+    "dependencies",
+    "devDependencies",
+    "engines",
+    "license",
+    "keywords"
+  ],
+  "type": "object",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "package directories",
+              "properties": {
+                "test": {
+                  "$ref": "#/$defs/path"
+                },
+                "data": {
+                  "$ref": "#/$defs/path"
+                },
+                "man": {
+                  "$ref": "#/$defs/path"
+                },
+                "doc": {
+                  "$ref": "#/$defs/path"
+                },
+                "lib": {
+                  "$ref": "#/$defs/path"
+                },
+                "src": {
+                  "$ref": "#/$defs/path"
+                },
+                "include": {
+                  "$ref": "#/$defs/path"
+                },
+                "bin": {
+                  "$ref": "#/$defs/path"
+                },
+                "scripts": {
+                  "$ref": "#/$defs/path"
+                },
+                "example": {
+                  "$ref": "#/$defs/path"
+                },
+                "benchmark": {
+                  "$ref": "#/$defs/path"
+                }
+              },
+              "required": [],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^scripts$": true,
+                "^doc$": true,
+                "^man$": true,
+                "^test$": true,
+                "^example$": true,
+                "^lib$": true,
+                "^benchmark$": true,
+                "^bin$": true,
+                "^include$": true,
+                "^data$": true,
+                "^src$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "bug reporting",
+              "properties": {
+                "url": {
+                  "$ref": "#/$defs/uri-http"
+                }
+              },
+              "required": [
+                "url"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^url$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "repo-object": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "license-object": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "type": {
+                  "pattern": "[a-zA-Z]",
+                  "type": "string"
+                },
+                "url": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/uri-http"
+                    },
+                    {
+                      "$ref": "#/$defs/uri-git"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "type",
+                "url"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^url$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "type": {
+                  "pattern": "[a-zA-Z0-9 _\\-\\.]+",
+                  "type": "string"
+                },
+                "url": {
+                  "$ref": "#/$defs/uri-http"
+                }
+              },
+              "required": [
+                "type",
+                "url"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^url$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "keyword": {
+      "pattern": "^[a-z0-9](?:[_\\.\\- ]?[a-z0-9]+)*$",
+      "type": "string"
+    },
+    "person-object": {
+      "properties": {
+        "email": {
+          "$ref": "#/$defs/email"
+        },
+        "name": {
+          "pattern": "[a-zA-Z ]",
+          "type": "string"
+        },
+        "url": {
+          "$ref": "#/$defs/uri-http"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object"
+    },
+    "semver": {
+      "description": "semantic version",
+      "pattern": "^\\d+\\.\\d+\\.\\d+",
+      "type": "string"
+    },
+    "person": {
+      "description": "author, contributor, or maintainer",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/person-object"
+        }
+      ]
+    },
+    "dependency-map": {
+      "$ref": "#/$defs/string-map"
+    },
+    "path": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "email": {
+      "description": "email address",
+      "pattern": "@",
+      "type": "string"
+    },
+    "string-map": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "uri-git": {
+      "pattern": "^git://",
+      "type": "string"
+    },
+    "path-map": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "operating-system": {
+      "enum": [
+        "aix",
+        "darwin",
+        "freebsd",
+        "linux",
+        "macos",
+        "openbsd",
+        "sunos",
+        "win32",
+        "windows"
+      ],
+      "type": "string"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                ".+": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                ".+": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "uri-http": {
+      "pattern": "^https?://",
+      "type": "string"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                ".+": {
+                  "$ref": "#/$defs/path"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                ".+": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

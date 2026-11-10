@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "An index of available Open Badge lists",
+              "properties": {
+                "badgeindex": {
+                  "description": "Container for a set of badge lists.",
+                  "items": {
+                    "$ref": "#/$defs/modern_2"
+                  },
+                  "minItems": 1,
+                  "type": "array",
+                  "_uniqueItems": true
+                }
+              },
+              "required": [
+                "badgeindex"
+              ],
+              "title": "Badge List",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^badgeindex$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Container for the data needed to describe a badge list.",
+              "properties": {
+                "loc": {
+                  "_format": "uri",
+                  "description": "The location URI of a badge list.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "loc"
+              ],
+              "title": "Badge List",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^loc$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

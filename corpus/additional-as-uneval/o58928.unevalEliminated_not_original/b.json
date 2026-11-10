@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "The JSON schema that matches an album product.",
+              "properties": {
+                "format": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "imageUrls": {
+                  "items": {
+                    "_format": "uri",
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "url": {
+                  "_format": "uri",
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "nameYourPrice": {
+                  "type": "boolean"
+                },
+                "currency": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 3,
+                      "minLength": 3,
+                      "type": "string"
+                    }
+                  ]
+                },
+                "priceInCents": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "minimum": 0.0,
+                      "type": "integer"
+                    }
+                  ]
+                },
+                "offerMore": {
+                  "type": "boolean"
+                },
+                "soldOut": {
+                  "type": "boolean"
+                },
+                "artist": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "artist",
+                "format",
+                "url",
+                "imageUrls",
+                "priceInCents",
+                "currency",
+                "description",
+                "soldOut",
+                "nameYourPrice",
+                "offerMore"
+              ],
+              "title": "album-product",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^soldOut$": true,
+                "^description$": true,
+                "^currency$": true,
+                "^url$": true,
+                "^name$": true,
+                "^imageUrls$": true,
+                "^nameYourPrice$": true,
+                "^offerMore$": true,
+                "^artist$": true,
+                "^format$": true,
+                "^priceInCents$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

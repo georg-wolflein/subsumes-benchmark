@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "format": {
+                  "type": "string",
+                  "enum": [
+                    "grid-1.0.0"
+                  ]
+                },
+                "layers": {
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "$ref": "#/$defs/modern_2"
+                      }
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "format",
+                "layers"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^format$": true,
+                "^layers$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "spriteId": {
+                  "type": "integer"
+                },
+                "targetX": {
+                  "type": "integer"
+                },
+                "targetY": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "spriteId"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^spriteId$": true,
+                "^targetX$": true,
+                "^targetY$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

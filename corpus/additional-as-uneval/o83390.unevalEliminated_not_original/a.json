@@ -1,0 +1,1956 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "pebl.xsd.PEBL",
+  "type": "object",
+  "properties": {
+    "pebl": {
+      "type": "object",
+      "properties": {
+        "benchmark": {
+          "$ref": "#/$defs/Benchmark"
+        },
+        "result": {
+          "$ref": "#/$defs/Result"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "Benchmark": {
+      "type": "object",
+      "properties": {
+        "capabilities": {
+          "type": "object",
+          "properties": {
+            "capability": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Capability"
+              }
+            }
+          }
+        },
+        "tests": {
+          "type": "object",
+          "properties": {
+            "test": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Test"
+              }
+            }
+          }
+        },
+        "metricTypes": {
+          "type": "object",
+          "properties": {
+            "metricType": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/MetricType"
+              }
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "Capability": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "languages": {
+          "type": "object",
+          "properties": {
+            "language": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Language"
+              }
+            }
+          }
+        },
+        "metrics": {
+          "type": "object",
+          "properties": {
+            "metric": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Metric"
+              }
+            }
+          }
+        },
+        "characteristics": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "FUNCTIONAL_COMPLETENESS",
+              "LEARNABILITY",
+              "ADAPTABILITY",
+              "AVAILABILITY",
+              "INTEGRITY",
+              "REPLACEABILITY",
+              "USER_INTERFACE_AESTHETICS",
+              "INTEROPERABILITY",
+              "ANALYSABILITY",
+              "FUNCTIONAL_SUITABILITY",
+              "PERFORMANCE_EFFICIENCY",
+              "COMPATABILITY",
+              "ACCESSIBILITY",
+              "FAULT_TOLERANCE",
+              "FUNCTIONAL_APPROPRIATENESS",
+              "RECOVERABILITY",
+              "ACCOUNTABILITY",
+              "MAINTAINABILITY",
+              "AUTHENTICITY",
+              "TIME_BEHAVIOUR",
+              "MODULARITY",
+              "MATURITY",
+              "NON_REPUDIATION",
+              "INSTALLABILITY",
+              "CONFIDENTIALITY",
+              "TESTABILITY",
+              "REUSABILITY",
+              "MODIFIABILITY",
+              "FUNCTIONAL_CORRECTNESS",
+              "USABILITY",
+              "RELIABILITY",
+              "SECURITY",
+              "CO_EXISTENCE",
+              "OPERABILITY",
+              "CAPACITY",
+              "APPROPRIATENESS_RECOGNISABILITY",
+              "PORTABILITY",
+              "RESOURCE_UTILISATION",
+              "USER_ERROR_PROTECTION"
+            ]
+          }
+        },
+        "extensions": {
+          "$ref": "#/$defs/AdaptedMap"
+        },
+        "id": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Language": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "groups": {
+          "type": "object",
+          "properties": {
+            "group": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Group"
+              }
+            }
+          }
+        },
+        "id": {
+          "type": "string"
+        },
+        "metrics": {
+          "type": "object",
+          "properties": {
+            "metric": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Metric"
+              }
+            }
+          }
+        },
+        "extensions": {
+          "$ref": "#/$defs/AdaptedMap"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Group": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "featureSets": {
+          "type": "object",
+          "properties": {
+            "featureSet": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/FeatureSet"
+              }
+            }
+          }
+        },
+        "id": {
+          "type": "string"
+        },
+        "metrics": {
+          "type": "object",
+          "properties": {
+            "metric": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Metric"
+              }
+            }
+          }
+        },
+        "extensions": {
+          "$ref": "#/$defs/AdaptedMap"
+        }
+      },
+      "additionalProperties": false
+    },
+    "FeatureSet": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "features": {
+          "type": "object",
+          "properties": {
+            "feature": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Feature"
+              }
+            }
+          }
+        },
+        "id": {
+          "type": "string"
+        },
+        "metrics": {
+          "type": "object",
+          "properties": {
+            "metric": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Metric"
+              }
+            }
+          }
+        },
+        "extensions": {
+          "$ref": "#/$defs/AdaptedMap"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Feature": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "metrics": {
+          "type": "object",
+          "properties": {
+            "metric": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Metric"
+              }
+            }
+          }
+        },
+        "extensions": {
+          "$ref": "#/$defs/AdaptedMap"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Metric": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "metricType": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "AdaptedMap": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    },
+    "Test": {
+      "type": "object",
+      "properties": {
+        "feature": {
+          "type": "string"
+        },
+        "process": {
+          "type": "object"
+        },
+        "description": {
+          "type": "string"
+        },
+        "testCases": {
+          "type": "object",
+          "properties": {
+            "testCase": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TestCase"
+              }
+            }
+          }
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "testPartners": {
+          "type": "object",
+          "properties": {
+            "ruleBasedWSDLTestPartner": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/RuleBasedWSDLTestPartner"
+                  },
+                  {
+                    "$ref": "#/$defs/WSDLTestPartner"
+                  },
+                  {
+                    "$ref": "#/$defs/TestPartner"
+                  }
+                ]
+              }
+            },
+            "wsdlTestPartner": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/WSDLTestPartner"
+                  },
+                  {
+                    "$ref": "#/$defs/RuleBasedWSDLTestPartner"
+                  },
+                  {
+                    "$ref": "#/$defs/ScriptBasedWSDLTestPartner"
+                  },
+                  {
+                    "$ref": "#/$defs/TestPartner"
+                  }
+                ]
+              }
+            },
+            "scriptBasedWSDLTestPartner": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/ScriptBasedWSDLTestPartner"
+                  },
+                  {
+                    "$ref": "#/$defs/WSDLTestPartner"
+                  },
+                  {
+                    "$ref": "#/$defs/TestPartner"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "extensions": {
+          "$ref": "#/$defs/AdaptedMap"
+        },
+        "metrics": {
+          "type": "object",
+          "properties": {
+            "metric": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Metric"
+              }
+            }
+          }
+        },
+        "id": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "TestCase": {
+      "type": "object",
+      "properties": {
+        "extensions": {
+          "$ref": "#/$defs/AdaptedMap"
+        },
+        "name": {
+          "type": "string"
+        },
+        "number": {
+          "type": "integer"
+        },
+        "testSteps": {
+          "type": "object",
+          "properties": {
+            "startProcess": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/StartProcess"
+                  },
+                  {
+                    "$ref": "#/$defs/TestStep"
+                  }
+                ]
+              }
+            },
+            "delayTesting": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/DelayTesting"
+                  },
+                  {
+                    "$ref": "#/$defs/TestStep"
+                  }
+                ]
+              }
+            },
+            "executeScript": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/ExecuteScript"
+                  },
+                  {
+                    "$ref": "#/$defs/TestStep"
+                  }
+                ]
+              }
+            },
+            "sendSoapMessage": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/SendSoapMessage"
+                  },
+                  {
+                    "$ref": "#/$defs/TestStep"
+                  }
+                ]
+              }
+            },
+            "checkDeployment": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/CheckDeployment"
+                  },
+                  {
+                    "$ref": "#/$defs/TestStep"
+                  }
+                ]
+              }
+            },
+            "gatherTraces": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/GatherTraces"
+                  },
+                  {
+                    "$ref": "#/$defs/TestStep"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "StartProcess": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "extensions": {
+          "$ref": "#/$defs/AdaptedMap"
+        },
+        "description": {
+          "type": "string"
+        },
+        "testAssertions": {
+          "type": "object",
+          "properties": {
+            "assertScript": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertScript"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertXpath": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertXpath"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertDeployed": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertDeployed"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertSoapFault": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertSoapFault"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertExit": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertExit"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertTrace": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertTrace"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertNotDeployed": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertNotDeployed"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "variables": {
+          "type": "object",
+          "properties": {
+            "variable": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Variable"
+              }
+            }
+          }
+        },
+        "processName": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "AssertScript": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "extensions": {
+          "$ref": "#/$defs/AdaptedMap"
+        },
+        "groovyScript": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "TestAssertion": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "extensions": {
+          "$ref": "#/$defs/AdaptedMap"
+        }
+      },
+      "additionalProperties": false
+    },
+    "AssertXpath": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "extensions": {
+          "$ref": "#/$defs/AdaptedMap"
+        },
+        "xpathExpression": {
+          "type": "string"
+        },
+        "expectedOutput": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "AssertDeployed": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "extensions": {
+          "$ref": "#/$defs/AdaptedMap"
+        }
+      },
+      "additionalProperties": false
+    },
+    "AssertSoapFault": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "extensions": {
+          "$ref": "#/$defs/AdaptedMap"
+        },
+        "faultString": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "AssertExit": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "extensions": {
+          "$ref": "#/$defs/AdaptedMap"
+        }
+      },
+      "additionalProperties": false
+    },
+    "AssertTrace": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "extensions": {
+          "$ref": "#/$defs/AdaptedMap"
+        },
+        "trace": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "AssertNotDeployed": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "extensions": {
+          "$ref": "#/$defs/AdaptedMap"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Variable": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "TestStep": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "extensions": {
+          "$ref": "#/$defs/AdaptedMap"
+        },
+        "description": {
+          "type": "string"
+        },
+        "testAssertions": {
+          "type": "object",
+          "properties": {
+            "assertScript": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertScript"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertXpath": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertXpath"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertDeployed": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertDeployed"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertSoapFault": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertSoapFault"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertExit": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertExit"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertTrace": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertTrace"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertNotDeployed": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertNotDeployed"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "DelayTesting": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "extensions": {
+          "$ref": "#/$defs/AdaptedMap"
+        },
+        "description": {
+          "type": "string"
+        },
+        "testAssertions": {
+          "type": "object",
+          "properties": {
+            "assertScript": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertScript"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertXpath": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertXpath"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertDeployed": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertDeployed"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertSoapFault": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertSoapFault"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertExit": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertExit"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertTrace": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertTrace"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertNotDeployed": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertNotDeployed"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "milliseconds": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ExecuteScript": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "extensions": {
+          "$ref": "#/$defs/AdaptedMap"
+        },
+        "description": {
+          "type": "string"
+        },
+        "testAssertions": {
+          "type": "object",
+          "properties": {
+            "assertScript": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertScript"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertXpath": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertXpath"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertDeployed": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertDeployed"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertSoapFault": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertSoapFault"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertExit": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertExit"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertTrace": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertTrace"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertNotDeployed": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertNotDeployed"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "parameters": {
+          "$ref": "#/$defs/AdaptedMap"
+        }
+      },
+      "additionalProperties": false
+    },
+    "SendSoapMessage": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "extensions": {
+          "$ref": "#/$defs/AdaptedMap"
+        },
+        "description": {
+          "type": "string"
+        },
+        "testAssertions": {
+          "type": "object",
+          "properties": {
+            "assertScript": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertScript"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertXpath": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertXpath"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertDeployed": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertDeployed"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertSoapFault": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertSoapFault"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertExit": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertExit"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertTrace": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertTrace"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertNotDeployed": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertNotDeployed"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "operation": {
+          "$ref": "#/$defs/WsdlOperation"
+        },
+        "service": {
+          "$ref": "#/$defs/WsdlService"
+        },
+        "soapMessage": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "WsdlOperation": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "isOneWay": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "WsdlService": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "CheckDeployment": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "extensions": {
+          "$ref": "#/$defs/AdaptedMap"
+        },
+        "description": {
+          "type": "string"
+        },
+        "testAssertions": {
+          "type": "object",
+          "properties": {
+            "assertScript": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertScript"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertXpath": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertXpath"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertDeployed": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertDeployed"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertSoapFault": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertSoapFault"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertExit": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertExit"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertTrace": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertTrace"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertNotDeployed": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertNotDeployed"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "GatherTraces": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "extensions": {
+          "$ref": "#/$defs/AdaptedMap"
+        },
+        "description": {
+          "type": "string"
+        },
+        "testAssertions": {
+          "type": "object",
+          "properties": {
+            "assertScript": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertScript"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertXpath": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertXpath"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertDeployed": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertDeployed"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertSoapFault": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertSoapFault"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertExit": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertExit"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertTrace": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertTrace"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            },
+            "assertNotDeployed": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AssertNotDeployed"
+                  },
+                  {
+                    "$ref": "#/$defs/TestAssertion"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "RuleBasedWSDLTestPartner": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "extensions": {
+          "$ref": "#/$defs/AdaptedMap"
+        },
+        "url": {
+          "type": "string"
+        },
+        "wsdl": {
+          "type": "object"
+        },
+        "WSDLUrl": {
+          "type": "string"
+        },
+        "publishedURL": {
+          "type": "string"
+        },
+        "rules": {
+          "type": "object",
+          "properties": {
+            "rule": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/OperationInputOutputRule"
+              }
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "OperationInputOutputRule": {
+      "type": "object",
+      "properties": {
+        "operation": {
+          "type": "string"
+        },
+        "scriptPredicate": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ScriptPredicate"
+            },
+            {
+              "$ref": "#/$defs/AnyInput"
+            }
+          ]
+        },
+        "anyInput": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AnyInput"
+            },
+            {
+              "$ref": "#/$defs/XpathPredicate"
+            },
+            {
+              "$ref": "#/$defs/ScriptPredicate"
+            }
+          ]
+        },
+        "xpathPredicate": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/XpathPredicate"
+            },
+            {
+              "$ref": "#/$defs/AnyInput"
+            }
+          ]
+        },
+        "soapFaultOutput": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SoapFaultOutput"
+            },
+            {
+              "$ref": "#/$defs/SoapMessageOutput"
+            },
+            {
+              "$ref": "#/$defs/HttpOutput"
+            },
+            {
+              "$ref": "#/$defs/NoOutput"
+            }
+          ]
+        },
+        "soapMessageOutput": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SoapMessageOutput"
+            },
+            {
+              "$ref": "#/$defs/SoapFaultOutput"
+            },
+            {
+              "$ref": "#/$defs/HttpOutput"
+            },
+            {
+              "$ref": "#/$defs/NoOutput"
+            }
+          ]
+        },
+        "scriptBasedOutput": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ScriptBasedOutput"
+            },
+            {
+              "$ref": "#/$defs/NoOutput"
+            }
+          ]
+        },
+        "noOutput": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/NoOutput"
+            },
+            {
+              "$ref": "#/$defs/HttpOutput"
+            },
+            {
+              "$ref": "#/$defs/SoapMessageOutput"
+            },
+            {
+              "$ref": "#/$defs/SoapFaultOutput"
+            },
+            {
+              "$ref": "#/$defs/ScriptBasedOutput"
+            }
+          ]
+        },
+        "httpOutput": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/HttpOutput"
+            },
+            {
+              "$ref": "#/$defs/SoapMessageOutput"
+            },
+            {
+              "$ref": "#/$defs/SoapFaultOutput"
+            },
+            {
+              "$ref": "#/$defs/NoOutput"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "ScriptPredicate": {
+      "type": "string",
+      "additionalProperties": false
+    },
+    "AnyInput": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "XpathPredicate": {
+      "type": "string",
+      "additionalProperties": false
+    },
+    "SoapFaultOutput": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "statusCode": {
+          "type": "integer"
+        },
+        "mimetype": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "SoapMessageOutput": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "statusCode": {
+          "type": "integer"
+        },
+        "mimetype": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "HttpOutput": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "statusCode": {
+          "type": "integer"
+        },
+        "mimetype": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "NoOutput": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ScriptBasedOutput": {
+      "type": "string",
+      "additionalProperties": false
+    },
+    "WSDLTestPartner": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "extensions": {
+          "$ref": "#/$defs/AdaptedMap"
+        },
+        "url": {
+          "type": "string"
+        },
+        "wsdl": {
+          "type": "object"
+        },
+        "WSDLUrl": {
+          "type": "string"
+        },
+        "publishedURL": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "TestPartner": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "extensions": {
+          "$ref": "#/$defs/AdaptedMap"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ScriptBasedWSDLTestPartner": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "extensions": {
+          "$ref": "#/$defs/AdaptedMap"
+        },
+        "url": {
+          "type": "string"
+        },
+        "wsdl": {
+          "type": "object"
+        },
+        "WSDLUrl": {
+          "type": "string"
+        },
+        "publishedURL": {
+          "type": "string"
+        },
+        "groovyScript": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "MetricType": {
+      "type": "object",
+      "properties": {
+        "dataType": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Result": {
+      "type": "object",
+      "properties": {
+        "engines": {
+          "type": "object",
+          "properties": {
+            "engine": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Engine"
+              }
+            }
+          }
+        },
+        "testResults": {
+          "type": "object",
+          "properties": {
+            "testResult": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TestResult"
+              }
+            }
+          }
+        },
+        "aggregatedResults": {
+          "type": "object",
+          "properties": {
+            "aggregatedResult": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/AggregatedResult"
+              }
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "Engine": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "configuration": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "language": {
+          "type": "string"
+        },
+        "extensions": {
+          "$ref": "#/$defs/AdaptedMap"
+        },
+        "id": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "TestResult": {
+      "type": "object",
+      "properties": {
+        "test": {
+          "type": "string"
+        },
+        "engine": {
+          "type": "string"
+        },
+        "tool": {
+          "type": "string"
+        },
+        "logs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "deploymentPackage": {
+          "type": "object"
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "measurements": {
+          "type": "object",
+          "properties": {
+            "measurement": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Measurement"
+              }
+            }
+          }
+        },
+        "extensions": {
+          "$ref": "#/$defs/AdaptedMap"
+        },
+        "testCaseResults": {
+          "type": "object",
+          "properties": {
+            "testCaseResult": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TestCaseResult"
+              }
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "Measurement": {
+      "type": "object",
+      "properties": {
+        "metric": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "TestCaseResult": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "number": {
+          "type": "integer"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "AggregatedResult": {
+      "type": "object",
+      "properties": {
+        "measurements": {
+          "type": "object",
+          "properties": {
+            "measurement": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Measurement"
+              }
+            }
+          }
+        },
+        "engine": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

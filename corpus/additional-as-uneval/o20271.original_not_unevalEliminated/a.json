@@ -1,0 +1,623 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_4",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_6"
+                  }
+                }
+              },
+              "required": [
+                "data"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^data$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "entPhysicalIndex": {
+                  "type": "string"
+                },
+                "precision": {
+                  "type": "integer"
+                },
+                "oid": {
+                  "type": "string"
+                },
+                "descr": {
+                  "type": "string"
+                },
+                "snmp_flags": {
+                  "type": [
+                    "string",
+                    "array"
+                  ]
+                },
+                "num_oid": {
+                  "type": "string"
+                },
+                "skip_values": {
+                  "anyOf": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "$ref": "#/$defs/modern_7"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "type": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                },
+                "index": {
+                  "type": [
+                    "integer",
+                    "string"
+                  ]
+                }
+              },
+              "required": [
+                "num_oid",
+                "oid"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^snmp_flags$": true,
+                "^oid$": true,
+                "^num_oid$": true,
+                "^type$": true,
+                "^precision$": true,
+                "^entPhysicalIndex$": true,
+                "^value$": true,
+                "^descr$": true,
+                "^index$": true,
+                "^skip_values$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "oid": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "oid"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^oid$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "comparison": {
+      "type": "string",
+      "enum": [
+        "=",
+        "!=",
+        "==",
+        "!==",
+        "<=",
+        ">=",
+        "<",
+        ">",
+        "starts",
+        "ends",
+        "contains",
+        "regex"
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "$ref": "#/$defs/data"
+                },
+                "options": {
+                  "$ref": "#/$defs/options"
+                }
+              },
+              "required": [
+                "data"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^data$": true,
+                "^options$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "oid": {
+            "type": "string"
+          },
+          "descr": {
+            "type": "string"
+          },
+          "entPhysicalIndex_measured": {
+            "type": "string"
+          },
+          "snmp_flags": {
+            "type": [
+              "string",
+              "array"
+            ]
+          },
+          "num_oid": {
+            "type": "string",
+            "pattern": "^(\\.\\d+)+\\.?\\{\\{ \\$index \\}\\}(\\.\\d+)*$"
+          },
+          "skip_values": {
+            "type": [
+              "number",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/$defs/modern_2"
+            }
+          },
+          "value": {
+            "type": "string"
+          },
+          "index": {
+            "type": [
+              "integer",
+              "string"
+            ]
+          },
+          "divisor": {
+            "type": "integer"
+          },
+          "entPhysicalIndex": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "descr",
+          "num_oid",
+          "oid"
+        ]
+      }
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "oid": {
+                  "type": "string"
+                },
+                "op": {
+                  "$ref": "#/$defs/comparison"
+                },
+                "value": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "oid",
+                "op",
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^oid$": true,
+                "^op$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "oid": {
+                  "type": "string"
+                },
+                "op": {
+                  "$ref": "#/$defs/comparison"
+                },
+                "value": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "oid",
+                "op",
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^oid$": true,
+                "^op$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "integer"
+                },
+                "descr": {
+                  "type": "string"
+                },
+                "graph": {
+                  "type": "integer"
+                },
+                "generic": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "descr",
+                "generic",
+                "graph",
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^value$": true,
+                "^descr$": true,
+                "^graph$": true,
+                "^generic$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_10"
+                  }
+                }
+              },
+              "required": [
+                "data"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^data$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "divisor": {
+                  "type": "integer"
+                },
+                "skip_values": {
+                  "anyOf": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "integer"
+                      }
+                    }
+                  ]
+                },
+                "skip_values_lt": {
+                  "type": "integer"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^divisor$": true,
+                "^skip_values$": true,
+                "^skip_values_lt$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "mib": {
+                  "type": "string"
+                },
+                "modules": {
+                  "type": "object",
+                  "properties": {
+                    "processors": {
+                      "$ref": "#/$defs/modern_5"
+                    },
+                    "sensors": {
+                      "type": "object",
+                      "properties": {
+                        "delay": {
+                          "$ref": "#/$defs/sensor"
+                        },
+                        "pressure": {
+                          "$ref": "#/$defs/sensor"
+                        },
+                        "state": {
+                          "type": "object",
+                          "properties": {
+                            "data": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "oid": {
+                                    "type": "string"
+                                  },
+                                  "descr": {
+                                    "type": "string"
+                                  },
+                                  "snmp_flags": {
+                                    "type": [
+                                      "string",
+                                      "array"
+                                    ]
+                                  },
+                                  "num_oid": {
+                                    "type": "string",
+                                    "pattern": "^(\\.\\d+)+\\.?\\{\\{ \\$index \\}\\}(\\.\\d+)*$"
+                                  },
+                                  "skip_values": {
+                                    "anyOf": [
+                                      {
+                                        "type": "integer"
+                                      },
+                                      {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "object",
+                                          "properties": {
+                                            "oid": {
+                                              "type": "string"
+                                            },
+                                            "op": {
+                                              "$ref": "#/$defs/comparison"
+                                            },
+                                            "value": {
+                                              "type": "integer"
+                                            }
+                                          },
+                                          "required": [
+                                            "oid",
+                                            "op",
+                                            "value"
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "state_name": {
+                                    "type": "string"
+                                  },
+                                  "value": {
+                                    "type": "string"
+                                  },
+                                  "states": {
+                                    "type": "array",
+                                    "items": {
+                                      "$ref": "#/$defs/modern_8"
+                                    }
+                                  },
+                                  "index": {
+                                    "type": [
+                                      "integer",
+                                      "string"
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "descr",
+                                  "num_oid",
+                                  "oid",
+                                  "states"
+                                ]
+                              }
+                            },
+                            "options": {
+                              "$ref": "#/$defs/options"
+                            }
+                          },
+                          "required": [
+                            "data"
+                          ]
+                        },
+                        "load": {
+                          "$ref": "#/$defs/sensor"
+                        },
+                        "fanspeed": {
+                          "$ref": "#/$defs/sensor"
+                        },
+                        "waterflow": {
+                          "$ref": "#/$defs/sensor"
+                        },
+                        "chromatic_dispersion": {
+                          "$ref": "#/$defs/sensor"
+                        },
+                        "airflow": {
+                          "$ref": "#/$defs/sensor"
+                        },
+                        "pre-cache": {
+                          "$ref": "#/$defs/modern_9"
+                        },
+                        "charge": {
+                          "$ref": "#/$defs/sensor"
+                        },
+                        "snr": {
+                          "$ref": "#/$defs/sensor"
+                        },
+                        "frequency": {
+                          "$ref": "#/$defs/sensor"
+                        },
+                        "power": {
+                          "$ref": "#/$defs/sensor"
+                        },
+                        "current": {
+                          "$ref": "#/$defs/sensor"
+                        },
+                        "runtime": {
+                          "$ref": "#/$defs/sensor"
+                        },
+                        "voltage": {
+                          "$ref": "#/$defs/sensor"
+                        },
+                        "cooling": {
+                          "$ref": "#/$defs/sensor"
+                        },
+                        "dbm": {
+                          "$ref": "#/$defs/sensor"
+                        },
+                        "quality_factor": {
+                          "$ref": "#/$defs/sensor"
+                        },
+                        "temperature": {
+                          "$ref": "#/$defs/sensor"
+                        },
+                        "humidity": {
+                          "$ref": "#/$defs/sensor"
+                        },
+                        "eer": {
+                          "$ref": "#/$defs/sensor"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "modules"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^mib$": true,
+                "^modules$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "options": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "sensor": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

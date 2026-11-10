@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "items": {
+    "$ref": "#/$defs/modern_1"
+  },
+  "type": "array",
+  "_uniqueItems": true,
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "value": {
+                  "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "value"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

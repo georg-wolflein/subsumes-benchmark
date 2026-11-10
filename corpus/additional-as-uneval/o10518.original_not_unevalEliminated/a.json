@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "shiporder": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              },
+              "required": [
+                "shiporder"
+              ],
+              "title": "test/shiporderSchema.xsd",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^shiporder$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "invoiceid": {
+                  "type": "string"
+                },
+                "orderperson": {
+                  "type": "string"
+                },
+                "shipto": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "orderid": {
+                  "type": "string"
+                },
+                "item": {
+                  "items": {
+                    "$ref": "#/$defs/modern_4"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                }
+              },
+              "required": [
+                "orderperson",
+                "shipto",
+                "item",
+                "orderid"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^shipto$": true,
+                "^item$": true,
+                "^invoiceid$": true,
+                "^orderid$": true,
+                "^orderperson$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "address": {
+                  "type": "string"
+                },
+                "city": {
+                  "type": "string"
+                },
+                "country": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "address",
+                "city",
+                "country"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^address$": true,
+                "^city$": true,
+                "^country$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "note": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "price": {
+                  "type": "number"
+                },
+                "quantity": {
+                  "minimum": 1.0,
+                  "type": "integer"
+                },
+                "title": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "title",
+                "quantity",
+                "price"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^note$": true,
+                "^price$": true,
+                "^quantity$": true,
+                "^title$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

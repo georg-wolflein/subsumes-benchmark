@@ -1,0 +1,182 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_5",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "sums": {
+                  "$ref": "#/$defs/Sums"
+                },
+                "version": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^sums$": true,
+                "^version$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Dets": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "comm": {
+                  "type": "string",
+                  "enum": [
+                    "OK",
+                    "FAIL"
+                  ]
+                },
+                "dets": {
+                  "$ref": "#/$defs/Dets"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "num": {
+                  "type": "integer"
+                },
+                "now": {
+                  "type": "integer"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^num$": true,
+                "^dets$": true,
+                "^comm$": true,
+                "^id$": true,
+                "^now$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Sums": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "det": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/DetType"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^det$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "detection": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/DetectionType"
+                  }
+                },
+                "period": {
+                  "type": "integer"
+                },
+                "numsys": {
+                  "type": "integer"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^detection$": true,
+                "^period$": true,
+                "^numsys$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "DetectionType": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "DetType": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "occ": {
+                  "type": "integer"
+                },
+                "pos": {
+                  "type": "integer"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "vol": {
+                  "type": "integer"
+                },
+                "grn": {
+                  "type": "integer"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^vol$": true,
+                "^id$": true,
+                "^grn$": true,
+                "^pos$": true,
+                "^occ$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

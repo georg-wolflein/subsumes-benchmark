@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "path": {
+      "title": "Path to the erroneous property",
+      "description": "XPath, e.g. /foo/bar",
+      "type": "string"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Error",
+              "type": "object",
+              "properties": {
+                "code": {
+                  "$ref": "#/$defs/code"
+                },
+                "message": {
+                  "$ref": "#/$defs/message"
+                },
+                "path": {
+                  "$ref": "#/$defs/path"
+                },
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/part"
+                  }
+                }
+              },
+              "required": [
+                "code",
+                "message"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^code$": true,
+                "^message$": true,
+                "^path$": true,
+                "^errors$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "code": {
+      "title": "Machine readable code",
+      "description": "This will be in upper-case and underscore separated, aka ANGRY_SNAKE_CASE",
+      "type": "string"
+    },
+    "message": {
+      "title": "Human readable message",
+      "description": "Free text",
+      "type": "string"
+    },
+    "part": {
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/code"
+        },
+        "message": {
+          "$ref": "#/$defs/message"
+        },
+        "path": {
+          "$ref": "#/$defs/path"
+        }
+      }
+    }
+  }
+}

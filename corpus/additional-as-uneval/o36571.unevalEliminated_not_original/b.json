@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Additional options for templates",
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "ext": {
+                  "type": "string"
+                },
+                "$schema": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "vars": {
+                  "type": "array",
+                  "items": {
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "value": true
+                    }
+                  }
+                },
+                "addname": {
+                  "type": "string"
+                },
+                "creatematch": {
+                  "description": "If the result of the file appears mcgen line with a predetermined pattern that are created with the file. Otherwise, no.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "ext"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^ext$": true,
+                "^$schema$": true,
+                "^vars$": true,
+                "^description$": true,
+                "^id$": true,
+                "^addname$": true,
+                "^creatematch$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

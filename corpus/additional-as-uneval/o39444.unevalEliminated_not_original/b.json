@@ -1,0 +1,765 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "account",
+  "type": "object",
+  "required": [],
+  "properties": {
+    "payments": {
+      "$ref": "#/$defs/PaymentSummary"
+    },
+    "name": {
+      "type": "string"
+    },
+    "taxExemptions": {
+      "$ref": "#/$defs/TaxExemptions"
+    },
+    "relatedAccounts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/AccountSummary"
+      }
+    },
+    "products": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ProductSummary"
+      }
+    },
+    "id": {
+      "type": "string"
+    },
+    "serviceAddress": {
+      "$ref": "#/$defs/PropertyAddress"
+    },
+    "status": {
+      "type": "string",
+      "description": "Active, Suspended, Inactive, Closed",
+      "enum": [
+        "Active",
+        "Suspended",
+        "Inactive",
+        "Closed"
+      ]
+    },
+    "primaryUser": {
+      "$ref": "#/$defs/UserSummary"
+    },
+    "devices": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/DeviceSummary"
+      }
+    },
+    "creditLimit": {
+      "type": "integer"
+    },
+    "users": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/UserSummary"
+      }
+    },
+    "link": {
+      "$ref": "#/$defs/Link"
+    },
+    "customer": {
+      "$ref": "#/$defs/CustomerSummary"
+    },
+    "preferences": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/PreferenceSummary"
+      }
+    },
+    "financialStatus": {
+      "type": "string",
+      "description": "Current, Due ,InArrears, Delinquent",
+      "enum": [
+        "Current",
+        "Due",
+        "InArrears",
+        "Delinquent"
+      ]
+    },
+    "accountNumber": {
+      "type": "string"
+    },
+    "sites": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/SiteSummary"
+      }
+    },
+    "financials": {
+      "$ref": "#/$defs/FinancialSummary"
+    },
+    "type": {
+      "type": "string",
+      "description": "Individual, Joint, Other",
+      "enum": [
+        "Individual",
+        "Joint",
+        "Other"
+      ]
+    },
+    "billing": {
+      "$ref": "#/$defs/BillingSummary"
+    },
+    "pin": {
+      "type": "integer"
+    }
+  },
+  "$defs": {
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "method": {
+                  "type": "string"
+                },
+                "rel": {
+                  "type": "string"
+                },
+                "href": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "href",
+                "rel"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^rel$": true,
+                "^method$": true,
+                "^type$": true,
+                "^title$": true,
+                "^href$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "link": {
+                  "$ref": "#/$defs/Link"
+                },
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "link",
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^link$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "SiteSummary": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string",
+                  "description": "Active, Off, Pending",
+                  "enum": [
+                    "Active",
+                    "Off",
+                    "Pending"
+                  ]
+                },
+                "link": {
+                  "type": "object",
+                  "$ref": "#/$defs/Link"
+                },
+                "multiTenant": {
+                  "type": "boolean"
+                },
+                "clliCode": {
+                  "type": "string"
+                },
+                "siteHours": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "link",
+                "name",
+                "multiTenant",
+                "clliCode",
+                "siteHours",
+                "status"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^siteHours$": true,
+                "^multiTenant$": true,
+                "^clliCode$": true,
+                "^status$": true,
+                "^name$": true,
+                "^id$": true,
+                "^link$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "DeviceSummary": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "link": {
+                  "$ref": "#/$defs/Link"
+                },
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "link",
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^link$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "macAddress": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "link": {
+                  "$ref": "#/$defs/Link"
+                },
+                "type": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "link",
+                "name",
+                "type",
+                "macAddress"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^type$": true,
+                "^id$": true,
+                "^link$": true,
+                "^macAddress$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "UserSummary": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "Property": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "BillingSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "link": {
+          "$ref": "#/$defs/Link"
+        }
+      }
+    },
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "elevation": {
+                  "type": "string"
+                },
+                "link": {
+                  "$ref": "#/$defs/Link"
+                },
+                "propertyAddresses": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/PropertyAddress"
+                  }
+                },
+                "landCover": {
+                  "type": "string"
+                },
+                "naturalRisks": {
+                  "type": "string"
+                },
+                "lotNr": {
+                  "type": "string"
+                },
+                "geometry": {
+                  "$ref": "#/$defs/Geometry"
+                },
+                "landUse": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^elevation$": true,
+                "^landCover$": true,
+                "^name$": true,
+                "^id$": true,
+                "^lotNr$": true,
+                "^geometry$": true,
+                "^naturalRisks$": true,
+                "^link$": true,
+                "^propertyAddresses$": true,
+                "^landUse$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Geometry": {
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "PreferenceCategory": {
+      "$ref": "#/$defs/modern_7"
+    },
+    "ProductSummary": {
+      "$ref": "#/$defs/modern_8"
+    },
+    "PartySummary": {
+      "$ref": "#/$defs/modern_9"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "preferenceName": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "link": {
+                  "$ref": "#/$defs/Link"
+                },
+                "isSet": {
+                  "type": "boolean"
+                },
+                "valueType": {
+                  "type": "string"
+                },
+                "preferenceCategory": {
+                  "$ref": "#/$defs/PreferenceCategory"
+                },
+                "unitOfMeasure": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "link",
+                "preferenceName",
+                "value",
+                "unitOfMeasure",
+                "valueType",
+                "isSet",
+                "preferenceCategory"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^unitOfMeasure$": true,
+                "^isSet$": true,
+                "^id$": true,
+                "^valueType$": true,
+                "^link$": true,
+                "^preferenceCategory$": true,
+                "^preferenceName$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "AccountSummary": {
+      "$ref": "#/$defs/modern_10"
+    },
+    "CustomerSummary": {
+      "type": "object",
+      "properties": {
+        "customerRank": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "customerId": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "link": {
+          "$ref": "#/$defs/Link"
+        }
+      }
+    },
+    "PreferenceSummary": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "preferenceCategoryId": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "preferenceCategoryName": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "preferenceCategoryName",
+                "description",
+                "preferenceCategoryId"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^preferenceCategoryId$": true,
+                "^description$": true,
+                "^preferenceCategoryName$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "productStatus": {
+                  "type": "string"
+                },
+                "link": {
+                  "$ref": "#/$defs/Link"
+                },
+                "productSerialNumber": {
+                  "type": "string"
+                },
+                "isBundle": {
+                  "type": "boolean"
+                },
+                "id": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "link",
+                "name",
+                "isBundle",
+                "description",
+                "productStatus",
+                "productSerialNumber"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^isBundle$": true,
+                "^description$": true,
+                "^productSerialNumber$": true,
+                "^name$": true,
+                "^id$": true,
+                "^productStatus$": true,
+                "^link$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "TaxExemptions": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "link": {
+          "$ref": "#/$defs/Link"
+        }
+      }
+    },
+    "FinancialSummary": {
+      "type": "object",
+      "properties": {
+        "currentBalance": {
+          "type": "string"
+        },
+        "priorBilledAmount": {
+          "type": "string"
+        },
+        "currentPeriodPaymentsAdjustment": {
+          "type": "string"
+        },
+        "currentPeriodChargesCredits": {
+          "type": "string"
+        }
+      }
+    },
+    "PropertyAddress": {
+      "$ref": "#/$defs/modern_11"
+    },
+    "PaymentSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "link": {
+          "$ref": "#/$defs/Link"
+        }
+      }
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "formattedAddressLine2": {
+                  "type": "string"
+                },
+                "state_province": {
+                  "type": "string"
+                },
+                "country": {
+                  "type": "string"
+                },
+                "formattedAddressLine1": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "postcodeExtension": {
+                  "type": "string"
+                },
+                "property": {
+                  "$ref": "#/$defs/Property"
+                },
+                "locality": {
+                  "type": "string"
+                },
+                "link": {
+                  "$ref": "#/$defs/Link"
+                },
+                "postalcode": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "link"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^formattedAddressLine2$": true,
+                "^postalcode$": true,
+                "^property$": true,
+                "^country$": true,
+                "^state_province$": true,
+                "^link$": true,
+                "^formattedAddressLine1$": true,
+                "^postcodeExtension$": true,
+                "^locality$": true,
+                "^id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Link": {
+      "$ref": "#/$defs/modern_6"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "username": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "profile": {
+                  "$ref": "#/$defs/PartySummary"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "link": {
+                  "$ref": "#/$defs/Link"
+                }
+              },
+              "required": [
+                "id",
+                "link"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^username$": true,
+                "^profile$": true,
+                "^status$": true,
+                "^name$": true,
+                "^id$": true,
+                "^link$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

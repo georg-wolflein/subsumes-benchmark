@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "arrayKey2": {
+      "items": {
+        "properties": {
+          "stringKey": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "numberKey": {
+      "type": "number"
+    },
+    "objectKey2": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "stringKey": {
+      "type": "string"
+    },
+    "stringKeyDefault": {
+      "default": "defaultValue",
+      "type": "string"
+    },
+    "requiredKey": {
+      "type": "number"
+    },
+    "oneOfKey1": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    },
+    "oneOfKey2": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      ]
+    },
+    "objectKey1": {
+      "properties": {
+        "objectKey": {
+          "properties": {
+            "stringKey": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "stringKey": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "booleanKey": {
+      "type": "boolean"
+    },
+    "arrayKey1": {
+      "items": {
+        "properties": {
+          "stringKey": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "requiredKey"
+  ],
+  "type": "object",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "stringKey": {
+                  "default": "default objectKey2.stringKey",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^stringKey$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

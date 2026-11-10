@@ -1,0 +1,156 @@
+{
+  "$id": "https://raw.githubusercontent.com/Microsoft/vscode-python/master/schemas/condarc.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": ".condarc",
+  "description": "The conda configuration file; https://conda.io/docs/user-guide/configuration/use-condarc.html",
+  "properties": {
+    "anaconda_upload": {
+      "type": "boolean"
+    },
+    "channels": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/channel"
+      }
+    },
+    "allow_other_channels": {
+      "type": "boolean"
+    },
+    "always_yes": {
+      "type": "boolean"
+    },
+    "use_pip": {
+      "type": "boolean"
+    },
+    "auto_update_conda": {
+      "type": "boolean"
+    },
+    "create_default_packages": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/package"
+      }
+    },
+    "allow_softlinks": {
+      "type": "boolean"
+    },
+    "show_channel_urls": {
+      "type": "boolean"
+    },
+    "ssl_verify": {
+      "type": "boolean"
+    },
+    "conda-build": {
+      "type": "object",
+      "properties": {
+        "set_build_id": {
+          "type": "boolean"
+        },
+        "pypi_repository": {
+          "type": "string"
+        },
+        "filename_hashing": {
+          "type": "boolean"
+        },
+        "root-dir": {
+          "$ref": "#/$defs/path"
+        },
+        "quiet": {
+          "type": "boolean"
+        },
+        "pypirc": {
+          "$ref": "#/$defs/path"
+        },
+        "no_verify": {
+          "type": "boolean"
+        },
+        "skip_existing": {
+          "type": "boolean"
+        },
+        "activate": {
+          "type": "boolean"
+        },
+        "include_recipe": {
+          "type": "boolean"
+        }
+      }
+    },
+    "proxy_servers": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "channel_alias": {
+      "type": "string",
+      "format": "uri"
+    },
+    "track_features": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/feature"
+      }
+    },
+    "default_channels": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/channel"
+      }
+    },
+    "changeps1": {
+      "type": "boolean"
+    },
+    "add_pip_as_python_dependency": {
+      "type": "boolean"
+    },
+    "update_dependencies": {
+      "type": "boolean"
+    },
+    "add_anaconda_token": {
+      "type": "boolean"
+    },
+    "envs_dirs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/path"
+      }
+    },
+    "offline": {
+      "type": "boolean"
+    },
+    "disallow": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/package"
+      }
+    }
+  },
+  "$defs": {
+    "package": {
+      "type": "string"
+    },
+    "channel": {
+      "type": "string"
+    },
+    "feature": {
+      "type": "string"
+    },
+    "path": {
+      "type": "string"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": "string",
+                "format": "hostname"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Changes to state made by client",
+  "properties": {
+    "context": {
+      "additionalProperties": {
+        "$ref": "#/$defs/Item"
+      },
+      "type": "object"
+    },
+    "plugins": {
+      "additionalProperties": {
+        "$ref": "#/$defs/Item"
+      },
+      "type": "object"
+    }
+  },
+  "title": "Changes",
+  "type": "object",
+  "$defs": {
+    "Change": {
+      "additionalProperties": false,
+      "properties": {
+        "new": {
+          "description": "New value"
+        },
+        "old": {
+          "description": "Old value"
+        }
+      },
+      "required": [
+        "new",
+        "old"
+      ],
+      "type": "object"
+    },
+    "Item": {
+      "additionalProperties": {
+        "$ref": "#/$defs/Change"
+      },
+      "type": "object"
+    }
+  }
+}

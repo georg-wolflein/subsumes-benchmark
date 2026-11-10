@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "miniRT",
+  "description": "config for webserv",
+  "$ref": "#/$defs/root",
+  "$defs": {
+    "root": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "servers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/server"
+          }
+        }
+      }
+    },
+    "server": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "host": {
+          "type": "string",
+          "pattern": "^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$"
+        },
+        "port": {
+          "type": "integer",
+          "min": 1,
+          "max": 65535
+        },
+        "root": {
+          "$ref": "#/$defs/route"
+        }
+      },
+      "required": [
+        "port"
+      ]
+    },
+    "route": {
+      "type": "object",
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "$ref": "#/$defs/file-route"
+        },
+        {
+          "$ref": "#/$defs/cgi-route"
+        }
+      ]
+    },
+    "file-route": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "file"
+          ]
+        },
+        "path": {
+          "type": "string",
+          "description": "http route path segment"
+        },
+        "root": {
+          "type": "string",
+          "description": "path to file system root"
+        },
+        "methods": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "GET": {
+              "type": "boolean"
+            },
+            "HEAD": {
+              "type": "boolean"
+            },
+            "OPTIONS": {
+              "type": "boolean"
+            },
+            "POST": {
+              "type": "boolean"
+            },
+            "PUT": {
+              "type": "boolean"
+            },
+            "PATCH": {
+              "type": "boolean"
+            },
+            "DELETE": {
+              "type": "boolean"
+            },
+            "TRACE": {
+              "type": "boolean"
+            }
+          }
+        },
+        "directoryListing": {
+          "type": "boolean"
+        },
+        "routes": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/route"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "path"
+      ]
+    },
+    "cgi-route": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "cgi"
+          ]
+        },
+        "path": {
+          "type": "string"
+        },
+        "rule": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "routes": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/route"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "path",
+        "rule"
+      ]
+    }
+  }
+}

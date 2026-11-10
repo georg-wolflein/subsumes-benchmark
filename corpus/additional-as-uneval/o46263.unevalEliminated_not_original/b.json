@@ -1,0 +1,703 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_14",
+  "$defs": {
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "integer"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^label$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "InvestmentTransaction": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "parentId": {
+                  "type": "integer"
+                },
+                "rowId": {
+                  "type": "integer"
+                },
+                "transaction": {
+                  "$ref": "#/$defs/Transaction"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^parentId$": true,
+                "^rowId$": true,
+                "^transaction$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "integer",
+                  "description": "A unique ID for Security"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "symbol": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^_id$": true,
+                "^name$": true,
+                "^symbol$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "integer",
+                  "description": "A unique ID for InvestmentTransaction"
+                },
+                "price": {
+                  "type": "number"
+                },
+                "quantity": {
+                  "type": "number"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^_id$": true,
+                "^price$": true,
+                "^quantity$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "InvestmentInfo": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "number": {
+                  "type": "string"
+                },
+                "state": {
+                  "type": "string",
+                  "enum": [
+                    "UNRECONCILED",
+                    "RECONCILED",
+                    "CLEARED",
+                    "VOID"
+                  ]
+                },
+                "_id": {
+                  "type": "integer",
+                  "description": "A unique ID for Transaction"
+                },
+                "investmentInfo": {
+                  "$ref": "#/$defs/InvestmentInfo"
+                },
+                "void": {
+                  "type": "boolean"
+                },
+                "fiTransactionId": {
+                  "type": "string"
+                },
+                "amount": {
+                  "type": "number"
+                },
+                "clearedState": {
+                  "type": "integer"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "memo": {
+                  "type": "string"
+                },
+                "payee": {
+                  "$ref": "#/$defs/PayeeLink"
+                },
+                "reconciled": {
+                  "type": "boolean"
+                },
+                "xferInfo": {
+                  "$ref": "#/$defs/XferInfo"
+                },
+                "statusFlag": {
+                  "type": "integer"
+                },
+                "cleared": {
+                  "type": "boolean"
+                },
+                "recurring": {
+                  "type": "boolean"
+                },
+                "transfer": {
+                  "type": "boolean"
+                },
+                "splits": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/TransactionSplit"
+                  }
+                },
+                "classification1": {
+                  "$ref": "#/$defs/Classification1Link"
+                },
+                "unaccepted": {
+                  "type": "boolean"
+                },
+                "transactionInfo": {
+                  "$ref": "#/$defs/TransactionInfo"
+                },
+                "investment": {
+                  "type": "boolean"
+                },
+                "category": {
+                  "$ref": "#/$defs/CategoryLink"
+                },
+                "frequency": {
+                  "$ref": "#/$defs/Frequency"
+                },
+                "account": {
+                  "$ref": "#/$defs/AccountLink"
+                }
+              },
+              "required": [
+                "cleared",
+                "investment",
+                "reconciled",
+                "recurring",
+                "transfer",
+                "unaccepted",
+                "void"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^transfer$": true,
+                "^statusFlag$": true,
+                "^account$": true,
+                "^xferInfo$": true,
+                "^date$": true,
+                "^memo$": true,
+                "^classification1$": true,
+                "^payee$": true,
+                "^investmentInfo$": true,
+                "^amount$": true,
+                "^transactionInfo$": true,
+                "^void$": true,
+                "^cleared$": true,
+                "^splits$": true,
+                "^unaccepted$": true,
+                "^state$": true,
+                "^recurring$": true,
+                "^category$": true,
+                "^reconciled$": true,
+                "^number$": true,
+                "^_id$": true,
+                "^investment$": true,
+                "^fiTransactionId$": true,
+                "^frequency$": true,
+                "^clearedState$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_13": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "integer",
+                  "description": "A unique ID for Payee"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^_id$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "InvestmentActivity": {
+      "$ref": "#/$defs/modern_6"
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "xferAccountId": {
+                  "type": "integer"
+                },
+                "xferTransactionId": {
+                  "type": "integer"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^xferAccountId$": true,
+                "^xferTransactionId$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_14": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Transaction",
+              "type": "object",
+              "properties": {
+                "number": {
+                  "type": "string"
+                },
+                "state": {
+                  "type": "string",
+                  "enum": [
+                    "UNRECONCILED",
+                    "RECONCILED",
+                    "CLEARED",
+                    "VOID"
+                  ]
+                },
+                "_id": {
+                  "type": "integer",
+                  "description": "A unique ID for Transaction"
+                },
+                "investmentInfo": {
+                  "$ref": "#/$defs/InvestmentInfo"
+                },
+                "void": {
+                  "type": "boolean"
+                },
+                "fiTransactionId": {
+                  "type": "string"
+                },
+                "amount": {
+                  "type": "number"
+                },
+                "clearedState": {
+                  "type": "integer"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "memo": {
+                  "type": "string"
+                },
+                "payee": {
+                  "$ref": "#/$defs/PayeeLink"
+                },
+                "reconciled": {
+                  "type": "boolean"
+                },
+                "xferInfo": {
+                  "$ref": "#/$defs/XferInfo"
+                },
+                "statusFlag": {
+                  "type": "integer"
+                },
+                "cleared": {
+                  "type": "boolean"
+                },
+                "recurring": {
+                  "type": "boolean"
+                },
+                "transfer": {
+                  "type": "boolean"
+                },
+                "splits": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/TransactionSplit"
+                  }
+                },
+                "classification1": {
+                  "$ref": "#/$defs/Classification1Link"
+                },
+                "unaccepted": {
+                  "type": "boolean"
+                },
+                "transactionInfo": {
+                  "$ref": "#/$defs/TransactionInfo"
+                },
+                "investment": {
+                  "type": "boolean"
+                },
+                "category": {
+                  "$ref": "#/$defs/CategoryLink"
+                },
+                "frequency": {
+                  "$ref": "#/$defs/Frequency"
+                },
+                "account": {
+                  "$ref": "#/$defs/AccountLink"
+                }
+              },
+              "required": [
+                "cleared",
+                "investment",
+                "reconciled",
+                "recurring",
+                "transfer",
+                "unaccepted",
+                "void"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^transfer$": true,
+                "^statusFlag$": true,
+                "^account$": true,
+                "^xferInfo$": true,
+                "^date$": true,
+                "^memo$": true,
+                "^classification1$": true,
+                "^payee$": true,
+                "^investmentInfo$": true,
+                "^amount$": true,
+                "^transactionInfo$": true,
+                "^void$": true,
+                "^cleared$": true,
+                "^splits$": true,
+                "^unaccepted$": true,
+                "^state$": true,
+                "^recurring$": true,
+                "^category$": true,
+                "^reconciled$": true,
+                "^number$": true,
+                "^_id$": true,
+                "^investment$": true,
+                "^fiTransactionId$": true,
+                "^frequency$": true,
+                "^clearedState$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Security": {
+      "$ref": "#/$defs/modern_7"
+    },
+    "TransactionSplit": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "_id": {
+                  "type": "integer",
+                  "description": "A unique ID for Category"
+                },
+                "fullName": {
+                  "type": "string"
+                },
+                "parentName": {
+                  "type": "string"
+                },
+                "parentId": {
+                  "type": "integer"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^fullName$": true,
+                "^name$": true,
+                "^_id$": true,
+                "^parentId$": true,
+                "^parentName$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Transaction": {
+      "$ref": "#/$defs/modern_9"
+    },
+    "Classification1Link": {
+      "$ref": "#/$defs/modern_10"
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "integer",
+                  "description": "A unique ID for Classification1"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^_id$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "XferInfo": {
+      "$ref": "#/$defs/modern_11"
+    },
+    "modern_12": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "splitChild": {
+                  "type": "boolean"
+                },
+                "void": {
+                  "type": "boolean"
+                },
+                "transfer": {
+                  "type": "boolean"
+                },
+                "transferTo": {
+                  "type": "boolean"
+                },
+                "splitParent": {
+                  "type": "boolean"
+                },
+                "flag": {
+                  "type": "integer"
+                },
+                "investment": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "investment",
+                "splitChild",
+                "splitParent",
+                "transfer",
+                "transferTo",
+                "void"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^void$": true,
+                "^transfer$": true,
+                "^investment$": true,
+                "^splitChild$": true,
+                "^splitParent$": true,
+                "^transferTo$": true,
+                "^flag$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "TransactionInfo": {
+      "$ref": "#/$defs/modern_12"
+    },
+    "PayeeLink": {
+      "$ref": "#/$defs/modern_13"
+    },
+    "AccountLink": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "recurring": {
+                  "type": "boolean"
+                },
+                "type": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "recurring"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^label$": true,
+                "^recurring$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "activity": {
+                  "$ref": "#/$defs/InvestmentActivity"
+                },
+                "security": {
+                  "$ref": "#/$defs/Security"
+                },
+                "transaction": {
+                  "$ref": "#/$defs/InvestmentTransaction"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^activity$": true,
+                "^security$": true,
+                "^transaction$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "CategoryLink": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "Frequency": {
+      "$ref": "#/$defs/modern_8"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "integer",
+                  "description": "A unique ID for Account"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^_id$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

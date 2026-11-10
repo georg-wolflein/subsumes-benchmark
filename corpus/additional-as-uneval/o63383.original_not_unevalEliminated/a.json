@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "format": "minimal",
+  "properties": {
+    "first_timer_pull_requests": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "first_timers": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "owner": {
+      "type": "object",
+      "format": "minimal_user"
+    },
+    "number_of_first_timers": {
+      "format": "positiveInteger"
+    },
+    "number_of_first_timer_pull_requests": {
+      "format": "positiveInteger"
+    }
+  },
+  "required": [
+    "first_timer_pull_requests",
+    "number_of_first_timer_pull_requests",
+    "number_of_first_timers",
+    "first_timers",
+    "owner"
+  ],
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "^[^/#]+/[^/#]+#[0123456789]+$": {
+                  "type": "object",
+                  "format": "minimal_pullrequest",
+                  "properties": {
+                    "first_timer": {
+                      "type": "string",
+                      "pattern": "^[^/#]+$"
+                    }
+                  },
+                  "required": [
+                    "first_timer"
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^[^/#]+/[^/#]+#[0123456789]+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "^[^/#]+$": {
+                  "type": "object",
+                  "format": "minimal_user",
+                  "properties": {
+                    "pull_request": {
+                      "type": "string",
+                      "pattern": "^[^/#]+/[^/#]+#[0123456789]+$"
+                    }
+                  },
+                  "required": [
+                    "pull_request"
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^[^/#]+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

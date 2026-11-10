@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "test json schema",
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "integer",
+                  "minimum": 1.0,
+                  "maximum": 100.0
+                },
+                "optionalValue": {
+                  "type": "string",
+                  "default": "my-default-value"
+                }
+              },
+              "required": [
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^value$": true,
+                "^optionalValue$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

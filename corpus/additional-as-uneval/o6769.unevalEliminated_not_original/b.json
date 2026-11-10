@@ -1,0 +1,232 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "maxLength": 256
+                },
+                "url": {
+                  "type": "string",
+                  "maxLength": 256
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "url"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^url$": true,
+                "^description$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Submission table",
+              "description": "Metadata for a HEPData table apart from independent_variables and dependent_variables",
+              "type": "object",
+              "properties": {
+                "data_file": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string",
+                  "maxLength": 64
+                },
+                "location": {
+                  "type": "string",
+                  "maxLength": 256
+                },
+                "description": {
+                  "type": "string"
+                },
+                "data_license": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "data_schema": {
+                  "type": "string",
+                  "description": "Remote location of the JSON schema for the data_file"
+                },
+                "table_doi": {
+                  "type": "string",
+                  "description": "Present if a user downloads YAML from an existing HEPData record"
+                },
+                "keywords": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_3"
+                  }
+                },
+                "additional_resources": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_4"
+                  }
+                }
+              },
+              "required": [
+                "name",
+                "description",
+                "keywords",
+                "data_file"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^name$": true,
+                "^data_schema$": true,
+                "^keywords$": true,
+                "^additional_resources$": true,
+                "^location$": true,
+                "^data_license$": true,
+                "^table_doi$": true,
+                "^data_file$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "maxLength": 256
+                },
+                "url": {
+                  "type": "string",
+                  "maxLength": 256
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "url"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^url$": true,
+                "^description$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "maxLength": 128,
+                  "enum": [
+                    "cmenergies",
+                    "observables",
+                    "reactions",
+                    "phrases"
+                  ]
+                },
+                "values": {
+                  "type": "array",
+                  "items": {
+                    "type": [
+                      "string",
+                      "number"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "name",
+                "values"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^values$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string",
+                  "maxLength": 256
+                },
+                "description": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string",
+                  "maxLength": 64
+                },
+                "license": {
+                  "$ref": "#/$defs/modern_5"
+                }
+              },
+              "required": [
+                "location"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^location$": true,
+                "^description$": true,
+                "^type$": true,
+                "^license$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "version": "1.0.1",
+  "title": "SpellMetaArray",
+  "type": "object",
+  "properties": {
+    "spell": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/spellMeta"
+      }
+    }
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "source": {
+                  "type": "string"
+                },
+                "data": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "shapedData": {
+                  "type": "object"
+                }
+              },
+              "required": [
+                "name",
+                "source",
+                "data"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^source$": true,
+                "^data$": true,
+                "^shapedData$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "spellMeta": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Based on the Roll20 data, available e.g. here: https://app.roll20.net/compendium/dnd5e/Spells:Fireball.json",
+              "type": "object",
+              "properties": {
+                "Higher Spell Slot Die": {
+                  "type": "string"
+                },
+                "Higher Spell Slot Bonus": {
+                  "type": "string"
+                },
+                "Save": {
+                  "type": "string"
+                },
+                "Secondary Higher Spell Slot Dice": {
+                  "type": "string"
+                },
+                "Healing": {
+                  "type": "string"
+                },
+                "Save Success": {
+                  "type": "string"
+                },
+                "Damage Progression": {
+                  "type": "string"
+                },
+                "Higher Level Healing": {
+                  "type": "string"
+                },
+                "Secondary Damage Progression": {
+                  "type": "string"
+                },
+                "Damage": {
+                  "type": "string"
+                },
+                "Secondary Damage": {
+                  "type": "string"
+                },
+                "Target": {
+                  "type": "string"
+                },
+                "Secondary Damage Type": {
+                  "type": "string"
+                },
+                "Spell Attack": {
+                  "type": "string"
+                },
+                "Secondary Higher Spell Slot Die": {
+                  "type": "string"
+                },
+                "Secondary Add Casting Modifier": {
+                  "type": "string"
+                },
+                "Higher Spell Slot Dice": {
+                  "type": "string"
+                },
+                "Add Casting Modifier": {
+                  "type": "string"
+                },
+                "Damage Type": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Add Casting Modifier$": true,
+                "^Save Success$": true,
+                "^Damage Progression$": true,
+                "^Higher Spell Slot Die$": true,
+                "^Spell Attack$": true,
+                "^Higher Spell Slot Dice$": true,
+                "^Target$": true,
+                "^Secondary Higher Spell Slot Die$": true,
+                "^Healing$": true,
+                "^Save$": true,
+                "^Secondary Add Casting Modifier$": true,
+                "^Damage Type$": true,
+                "^Higher Level Healing$": true,
+                "^Secondary Damage$": true,
+                "^Secondary Damage Type$": true,
+                "^Secondary Higher Spell Slot Dice$": true,
+                "^Higher Spell Slot Bonus$": true,
+                "^Secondary Damage Progression$": true,
+                "^Damage$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

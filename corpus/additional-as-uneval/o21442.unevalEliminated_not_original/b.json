@@ -1,0 +1,1015 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_17",
+  "$defs": {
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "explanation": {
+                  "type": "string"
+                },
+                "withdrawn_at": {
+                  "format": "date-time"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^explanation$": true,
+                "^withdrawn_at$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "destination": {
+                  "$ref": "#/$defs/absolute_fullpath"
+                },
+                "path": {
+                  "$ref": "#/$defs/absolute_path"
+                },
+                "segments_mode": {
+                  "description": "For prefix redirects, preserve or ignore the rest of the fullpath. For exact, preserve or ignore the querystring.",
+                  "enum": [
+                    "preserve",
+                    "ignore"
+                  ]
+                },
+                "type": {
+                  "enum": [
+                    "prefix",
+                    "exact"
+                  ]
+                }
+              },
+              "required": [
+                "path",
+                "type",
+                "destination"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^destination$": true,
+                "^path$": true,
+                "^segments_mode$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "change_history": {
+      "items": {
+        "$ref": "#/$defs/modern_1"
+      },
+      "type": "array"
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "url": {
+                  "_format": "uri",
+                  "type": "string"
+                },
+                "content_type": {
+                  "type": "string"
+                },
+                "created_at": {
+                  "format": "date-time"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "updated_at": {
+                  "format": "date-time"
+                },
+                "content_id": {
+                  "$ref": "#/$defs/guid"
+                }
+              },
+              "required": [
+                "url",
+                "content_type"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^updated_at$": true,
+                "^url$": true,
+                "^title$": true,
+                "^content_type$": true,
+                "^content_id$": true,
+                "^created_at$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "frontend_links": {
+      "items": {
+        "$ref": "#/$defs/modern_2"
+      },
+      "type": "array"
+    },
+    "multiple_content_types": {
+      "items": {
+        "$ref": "#/$defs/modern_4"
+      },
+      "type": "array"
+    },
+    "nation_applicability": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "analytics_identifier": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "A short identifier we send to Google Analytics for multi-valued fields. This means we avoid the truncated values we would get if we sent the path or slug of eg organisations."
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "current": {
+                  "description": "Is the government that published this document still the current government.",
+                  "type": "boolean"
+                },
+                "slug": {
+                  "description": "Government slug, used for analytics, eg '1970-to-1974-conservative-government'.",
+                  "type": "string"
+                },
+                "title": {
+                  "description": "Name of the government that first published this document, eg '1970 to 1974 Conservative government'.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "title",
+                "slug",
+                "current"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^current$": true,
+                "^slug$": true,
+                "^title$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "withdrawn_notice": {
+      "$ref": "#/$defs/modern_6"
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "body": {
+                  "type": "string"
+                },
+                "image": {
+                  "$ref": "#/$defs/image"
+                },
+                "tags": {
+                  "$ref": "#/$defs/modern_12"
+                },
+                "change_history": {
+                  "$ref": "#/$defs/change_history"
+                },
+                "change_note": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "first_public_at": {
+                  "_format": "date-time",
+                  "type": "string"
+                },
+                "archive_notice": {
+                  "$ref": "#/$defs/modern_13"
+                },
+                "withdrawn_notice": {
+                  "$ref": "#/$defs/withdrawn_notice"
+                },
+                "format_display_type": {
+                  "enum": [
+                    "case_study"
+                  ],
+                  "type": "string"
+                },
+                "emphasised_organisations": {
+                  "$ref": "#/$defs/emphasised_organisations"
+                }
+              },
+              "required": [
+                "body",
+                "first_public_at"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^archive_notice$": true,
+                "^image$": true,
+                "^emphasised_organisations$": true,
+                "^format_display_type$": true,
+                "^change_history$": true,
+                "^change_note$": true,
+                "^body$": true,
+                "^withdrawn_notice$": true,
+                "^first_public_at$": true,
+                "^tags$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "content": {
+                  "type": "string"
+                },
+                "content_type": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "content_type",
+                "content"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^content$": true,
+                "^content_type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "absolute_fullpath": {
+      "description": "A path with optional query string and/or fragment.",
+      "pattern": "^/(([a-zA-Z0-9._~!$&'()*+,;=:@-]|%[0-9a-fA-F]{2})+(/([a-zA-Z0-9._~!$&'()*+,;=:@-]|%[0-9a-fA-F]{2})*)*)?(\\?([a-zA-Z0-9._~!$&'()*+,;=:@-]|%[0-9a-fA-F]{2})*)?(#([a-zA-Z0-9._~!$&'()*+,;=:@-]|%[0-9a-fA-F]{2})*)?$",
+      "type": "string"
+    },
+    "guid_list": {
+      "items": {
+        "$ref": "#/$defs/guid"
+      },
+      "type": "array",
+      "_uniqueItems": true
+    },
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "An object specifying the applicability of a particular nation.",
+              "properties": {
+                "alternative_url": {
+                  "description": "An optional alternative URL to link to for more information on this content item pertaining to this nation.",
+                  "type": "string"
+                },
+                "applicable": {
+                  "description": "Whether the content applies to this nation or not.",
+                  "type": "boolean"
+                },
+                "label": {
+                  "description": "The pretty-printed, translated label for this nation.",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^alternative_url$": true,
+                "^applicable$": true,
+                "^label$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_16": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "One of many possible values a user can select from",
+              "properties": {
+                "label": {
+                  "description": "A human readable label",
+                  "type": "string"
+                },
+                "value": {
+                  "description": "A value to use for form controls",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "label",
+                "value"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^label$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_15": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "type": {
+                  "enum": [
+                    "prefix",
+                    "exact"
+                  ]
+                }
+              },
+              "required": [
+                "path",
+                "type"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^path$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "guid": {
+      "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$",
+      "type": "string"
+    },
+    "asset_link": {
+      "$ref": "#/$defs/modern_7"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "note": {
+                  "description": "A summary of the change",
+                  "type": "string"
+                },
+                "public_timestamp": {
+                  "_format": "date-time",
+                  "type": "string"
+                },
+                "reason_for_change": {
+                  "description": "Why the change is being made. This is multiline text, and will be rendered inside <p> tags. Govspeak is not yet supported here.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "public_timestamp",
+                "note"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^note$": true,
+                "^public_timestamp$": true,
+                "^reason_for_change$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "image": {
+      "$ref": "#/$defs/modern_8"
+    },
+    "modern_17": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "format": {
+                  "type": "string"
+                },
+                "base_path": {
+                  "$ref": "#/$defs/absolute_path"
+                },
+                "public_updated_at": {
+                  "_format": "date-time",
+                  "type": "string"
+                },
+                "need_ids": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "locale": {
+                  "$ref": "#/$defs/locale"
+                },
+                "analytics_identifier": {
+                  "$ref": "#/$defs/analytics_identifier"
+                },
+                "rendering_app": {
+                  "$ref": "#/$defs/application_name"
+                },
+                "details": {
+                  "$ref": "#/$defs/details"
+                },
+                "withdrawn_notice": {
+                  "$ref": "#/$defs/withdrawn_notice"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "updated_at": {
+                  "_format": "date-time",
+                  "type": "string"
+                },
+                "content_id": {
+                  "$ref": "#/$defs/guid"
+                },
+                "document_type": {
+                  "type": "string"
+                },
+                "publishing_app": {
+                  "$ref": "#/$defs/application_name"
+                },
+                "first_published_at": {
+                  "_format": "date-time",
+                  "type": "string"
+                },
+                "description": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "phase": {
+                  "description": "The service design phase of this content item - https://www.gov.uk/service-manual/phases",
+                  "enum": [
+                    "alpha",
+                    "beta",
+                    "live"
+                  ],
+                  "type": "string"
+                },
+                "last_edited_at": {
+                  "_format": "date-time",
+                  "description": "Last time when the content received a major or minor update.",
+                  "type": "string"
+                },
+                "schema_name": {
+                  "enum": [
+                    "case_study"
+                  ],
+                  "type": "string"
+                },
+                "links": {
+                  "$ref": "#/$defs/modern_18"
+                }
+              },
+              "required": [
+                "base_path",
+                "links",
+                "title",
+                "details",
+                "locale",
+                "content_id",
+                "document_type",
+                "schema_name"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^updated_at$": true,
+                "^base_path$": true,
+                "^description$": true,
+                "^publishing_app$": true,
+                "^locale$": true,
+                "^need_ids$": true,
+                "^links$": true,
+                "^content_id$": true,
+                "^document_type$": true,
+                "^phase$": true,
+                "^first_published_at$": true,
+                "^public_updated_at$": true,
+                "^title$": true,
+                "^schema_name$": true,
+                "^format$": true,
+                "^rendering_app$": true,
+                "^details$": true,
+                "^withdrawn_notice$": true,
+                "^last_edited_at$": true,
+                "^analytics_identifier$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "base_path": {
+                  "$ref": "#/$defs/absolute_path"
+                },
+                "description": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "public_updated_at": {
+                  "type": "string"
+                },
+                "locale": {
+                  "$ref": "#/$defs/locale"
+                },
+                "api_path": {
+                  "$ref": "#/$defs/absolute_path"
+                },
+                "details": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "content_id": {
+                  "$ref": "#/$defs/guid"
+                },
+                "document_type": {
+                  "type": "string"
+                },
+                "schema_name": {
+                  "type": "string"
+                },
+                "links": {
+                  "patternProperties": {
+                    "^[a-z_]+$": {
+                      "$ref": "#/$defs/frontend_links"
+                    }
+                  },
+                  "type": "object"
+                },
+                "analytics_identifier": {
+                  "$ref": "#/$defs/analytics_identifier"
+                },
+                "api_url": {
+                  "_format": "uri",
+                  "description": "DEPRECATED: api_path should be used instead of api_url. This is due to values of api_url being tied to an environment which can cause problems when data is synced between environments. In time this field will be removed by the Publishing Platform team.",
+                  "type": "string"
+                },
+                "web_url": {
+                  "_format": "uri",
+                  "description": "DEPRECATED: base_path should be used instead of web_url. This is due to values of web_url being tied to an environment which can cause problems when data is synced between environments. In time this field will be removed by the Publishing Platform team.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "content_id",
+                "title",
+                "base_path",
+                "locale"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^api_url$": true,
+                "^web_url$": true,
+                "^base_path$": true,
+                "^locale$": true,
+                "^details$": true,
+                "^analytics_identifier$": true,
+                "^links$": true,
+                "^content_id$": true,
+                "^document_type$": true,
+                "^public_updated_at$": true,
+                "^title$": true,
+                "^schema_name$": true,
+                "^api_path$": true,
+                "^description$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "locale": {
+      "enum": [
+        "ar",
+        "az",
+        "be",
+        "bg",
+        "bn",
+        "cs",
+        "cy",
+        "de",
+        "dr",
+        "el",
+        "en",
+        "es",
+        "es-419",
+        "et",
+        "fa",
+        "fr",
+        "he",
+        "hi",
+        "hu",
+        "hy",
+        "id",
+        "it",
+        "ja",
+        "ka",
+        "ko",
+        "lt",
+        "lv",
+        "ms",
+        "pl",
+        "ps",
+        "pt",
+        "ro",
+        "ru",
+        "si",
+        "sk",
+        "so",
+        "sq",
+        "sr",
+        "sw",
+        "ta",
+        "th",
+        "tk",
+        "tr",
+        "uk",
+        "ur",
+        "uz",
+        "vi",
+        "zh",
+        "zh-hk",
+        "zh-tw"
+      ],
+      "type": "string"
+    },
+    "modern_12": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "browse_pages": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "policies": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "topics": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^browse_pages$": true,
+                "^policies$": true,
+                "^topics$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "political": {
+      "description": "If the content is considered political in nature, reflecting views of the government it was published under.",
+      "type": "boolean"
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "alt_text": {
+                  "type": "string"
+                },
+                "caption": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "url": {
+                  "_format": "uri",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "url"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^alt_text$": true,
+                "^caption$": true,
+                "^url$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "government": {
+      "$ref": "#/$defs/modern_9"
+    },
+    "modern_18": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "available_translations": {
+                  "$ref": "#/$defs/frontend_links"
+                },
+                "worldwide_organisations": {
+                  "$ref": "#/$defs/frontend_links"
+                },
+                "mainstream_browse_pages": {
+                  "$ref": "#/$defs/frontend_links"
+                },
+                "world_locations": {
+                  "$ref": "#/$defs/frontend_links"
+                },
+                "related_policies": {
+                  "$ref": "#/$defs/frontend_links"
+                },
+                "ordered_related_items": {
+                  "$ref": "#/$defs/frontend_links"
+                },
+                "child_taxons": {
+                  "$ref": "#/$defs/frontend_links"
+                },
+                "policy_areas": {
+                  "$ref": "#/$defs/frontend_links"
+                },
+                "taxons": {
+                  "$ref": "#/$defs/frontend_links"
+                },
+                "organisations": {
+                  "$ref": "#/$defs/frontend_links"
+                },
+                "document_collections": {
+                  "$ref": "#/$defs/frontend_links"
+                },
+                "policies": {
+                  "$ref": "#/$defs/frontend_links"
+                },
+                "parent": {
+                  "$ref": "#/$defs/frontend_links"
+                },
+                "children": {
+                  "$ref": "#/$defs/frontend_links"
+                },
+                "topics": {
+                  "$ref": "#/$defs/frontend_links"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^children$": true,
+                "^child_taxons$": true,
+                "^taxons$": true,
+                "^ordered_related_items$": true,
+                "^organisations$": true,
+                "^policies$": true,
+                "^mainstream_browse_pages$": true,
+                "^policy_areas$": true,
+                "^parent$": true,
+                "^available_translations$": true,
+                "^world_locations$": true,
+                "^related_policies$": true,
+                "^topics$": true,
+                "^worldwide_organisations$": true,
+                "^document_collections$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_13": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "archived_at": {
+                  "format": "date-time"
+                },
+                "explanation": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^archived_at$": true,
+                "^explanation$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "details": {
+      "$ref": "#/$defs/modern_11"
+    },
+    "application_name": {
+      "description": "Applications on GOV.UK only use lowercase letters and dashes",
+      "pattern": "[a-z-]",
+      "type": "string"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "redirect_route": {
+      "$ref": "#/$defs/modern_10"
+    },
+    "national_applicability": {
+      "$ref": "#/$defs/modern_14"
+    },
+    "route": {
+      "$ref": "#/$defs/modern_15"
+    },
+    "modern_14": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "An object specifying the applicable nations for this content item. If it applies to all nations, it should be omitted.",
+              "properties": {
+                "england": {
+                  "$ref": "#/$defs/nation_applicability"
+                },
+                "northern_ireland": {
+                  "$ref": "#/$defs/nation_applicability"
+                },
+                "scotland": {
+                  "$ref": "#/$defs/nation_applicability"
+                },
+                "wales": {
+                  "$ref": "#/$defs/nation_applicability"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^england$": true,
+                "^northern_ireland$": true,
+                "^scotland$": true,
+                "^wales$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "absolute_path": {
+      "description": "A path only. Query string and/or fragment are not allowed.",
+      "pattern": "^/(([a-zA-Z0-9._~!$&'()*+,;=:@-]|%[0-9a-fA-F]{2})+(/([a-zA-Z0-9._~!$&'()*+,;=:@-]|%[0-9a-fA-F]{2})*)*)?$",
+      "type": "string"
+    },
+    "label_value_pair": {
+      "$ref": "#/$defs/modern_16"
+    },
+    "emphasised_organisations": {
+      "description": "The content ids of the organisations that should be displayed first in the list of organisations related to the item, these content ids must be present in the item organisation links hash.",
+      "items": {
+        "$ref": "#/$defs/guid"
+      },
+      "type": "array"
+    }
+  }
+}

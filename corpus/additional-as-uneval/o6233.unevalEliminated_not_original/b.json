@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "accept": {
+                  "type": "boolean"
+                },
+                "email": {
+                  "_format": "email",
+                  "maxLength": 1024,
+                  "type": "string"
+                },
+                "token": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "email",
+                "token",
+                "accept"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^accept$": true,
+                "^email$": true,
+                "^token$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

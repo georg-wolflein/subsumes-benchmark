@@ -1,0 +1,317 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_6",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "required": [
+                    "profiles"
+                  ]
+                },
+                {
+                  "required": [
+                    "policies"
+                  ]
+                },
+                {
+                  "required": [
+                    "sslProfiles"
+                  ]
+                }
+              ],
+              "properties": {
+                "policies": {
+                  "items": {
+                    "$ref": "#/$defs/policyType"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                },
+                "profiles": {
+                  "items": {
+                    "$ref": "#/$defs/profileType"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                },
+                "sslProfiles": {
+                  "items": {
+                    "$ref": "#/$defs/sslProfileType"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^policies$": true,
+                "^profiles$": true,
+                "^sslProfiles$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "plans": {
+                  "items": {
+                    "$ref": "#/$defs/modern_7"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                }
+              },
+              "required": [
+                "plans"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^plans$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "required": [
+                    "balance"
+                  ]
+                },
+                {
+                  "required": [
+                    "healthMonitors"
+                  ]
+                }
+              ],
+              "properties": {
+                "balance": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "healthMonitors": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^balance$": true,
+                "^healthMonitors$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "poolType": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "required": [
+                    "pool"
+                  ]
+                },
+                {
+                  "required": [
+                    "virtualServer"
+                  ]
+                }
+              ],
+              "properties": {
+                "description": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "name": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "pool": {
+                  "$ref": "#/$defs/poolType"
+                },
+                "virtualServer": {
+                  "$ref": "#/$defs/virtualServerType"
+                }
+              },
+              "required": [
+                "name",
+                "description"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^name$": true,
+                "^pool$": true,
+                "^virtualServer$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/healthMonitorType"
+              },
+              "minItems": 1,
+              "type": "array"
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "healthMonitorType": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/modern_3"
+        },
+        {
+          "$ref": "#/$defs/modern_4"
+        }
+      ],
+      "type": "object"
+    },
+    "profileType": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "policyType": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "virtualServerType": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "sslProfileType": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "interval": {
+                  "maximum": 86400.0,
+                  "minimum": 1.0,
+                  "type": "integer"
+                },
+                "recv": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "type": {
+                  "enum": [
+                    "http",
+                    "tcp"
+                  ],
+                  "type": "string"
+                },
+                "timeout": {
+                  "maximum": 86400.0,
+                  "minimum": 1.0,
+                  "type": "integer"
+                },
+                "send": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "type"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^timeout$": true,
+                "^send$": true,
+                "^name$": true,
+                "^type$": true,
+                "^interval$": true,
+                "^recv$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

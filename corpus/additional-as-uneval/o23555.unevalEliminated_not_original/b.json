@@ -1,0 +1,445 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CMOA Provenance Standard Record",
+  "description": "A description of the history of transfers of ownership and custody of artwork, using the CMOA Provenance Standard.",
+  "type": "array",
+  "_uniqueItems": true,
+  "minItems": 1,
+  "items": {
+    "$ref": "#/$defs/period"
+  },
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Transfer Dates",
+              "description": "The dates when the transfer event took place, and optionally the dates when the acquiring party relinquished the object.",
+              "properties": {
+                "begin": {
+                  "title": "Begin Date",
+                  "description": "The date the acquisition event took place\u2014used when the BOTB and EOTB are the same date.",
+                  "$ref": "#/$defs/edtf"
+                },
+                "in": {
+                  "title": "On this Date",
+                  "description": "Used for single-day events, when the BOTB and EOTE are the same date.",
+                  "$ref": "#/$defs/edtf"
+                },
+                "bote": {
+                  "title": "Begin of the End",
+                  "description": "The earliest possible moment when the relinquishing event could have taken place.",
+                  "$ref": "#/$defs/edtf"
+                },
+                "eotb": {
+                  "title": "End of the Begin",
+                  "description": "The latest possible moment when the acquisition event could have taken place.",
+                  "$ref": "#/$defs/edtf"
+                },
+                "eote": {
+                  "title": "End of the End",
+                  "description": "The latest possible moment when the relinquishing event could have taken place.",
+                  "$ref": "#/$defs/edtf"
+                },
+                "botb": {
+                  "title": "Begin of the Begin",
+                  "description": "The earliest possible moment the acquisition event could have taken place.",
+                  "$ref": "#/$defs/edtf"
+                },
+                "end": {
+                  "title": "End Date",
+                  "description": "The date the relinquishing event took place\u2014used when the EOTB and EOTE are the same date.",
+                  "$ref": "#/$defs/edtf"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^eotb$": true,
+                "^in$": true,
+                "^end$": true,
+                "^eote$": true,
+                "^bote$": true,
+                "^begin$": true,
+                "^botb$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Location of Transfer",
+              "description": "The explicit place where the transfer event took place.",
+              "properties": {
+                "place": {
+                  "$ref": "#/$defs/place"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^place$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "name": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "token": {
+                  "title": "ID Token",
+                  "description": "(For internal use only)",
+                  "type": "string",
+                  "pattern": "^\\$\\w+$"
+                },
+                "string": {
+                  "title": "Name Value",
+                  "description": "The textual representation of this name",
+                  "type": "string"
+                },
+                "uri": {
+                  "title": "Linked Data URI",
+                  "description": "an explicit link to a URI in an authority file for this name",
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/uri"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "certainty": {
+                  "title": "Certainty",
+                  "description": "Is this named certain?",
+                  "type": "boolean",
+                  "default": true
+                }
+              },
+              "required": [
+                "string",
+                "certainty",
+                "uri"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^token$": true,
+                "^string$": true,
+                "^uri$": true,
+                "^certainty$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "uri": {
+      "oneOf": [
+        {
+          "type": "string",
+          "pattern": "^\\S+:\\S+$"
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "value": {
+                  "title": "Purchase Value",
+                  "description": "The numeric value of the transaction",
+                  "type": "string"
+                },
+                "currency_symbol": {
+                  "title": "Currency Unit",
+                  "description": "The symbol used to indicate the currency the transaction was denominated in",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^value$": true,
+                "^currency_symbol$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "birth": {
+                  "title": "Birth or Founding Year",
+                  "description": "The first year the party was in existance",
+                  "$ref": "#/$defs/edtf"
+                },
+                "relationship": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "place": {
+                  "$ref": "#/$defs/place"
+                },
+                "clause": {
+                  "enum": [
+                    "the artist"
+                  ]
+                },
+                "name": {
+                  "$ref": "#/$defs/name"
+                },
+                "death": {
+                  "title": "Death or Dissolusion Year",
+                  "description": "The last year the party was in existance",
+                  "$ref": "#/$defs/edtf"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^death$": true,
+                "^clause$": true,
+                "^birth$": true,
+                "^name$": true,
+                "^place$": true,
+                "^relationship$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "edtf": {
+      "type": "string",
+      "pattern": "^\\d{2}[\\d\\?ux]{2}[\\?|~]?(?:-[01\\?ux][\\d\\?ux][\\?|~]?(?:-[0123\\?ux][\\d\\?ux][\\?|~]?)?)?$",
+      "default": "uuuu-uu-uu"
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "string": {
+                  "title": "Currency Text",
+                  "description": "The abount of the purchase price as text",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^string$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "person": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Familial Relationship",
+              "description": "A party related to the named party.  (Note that the relationship type describes the relationship from the point of view of the this party.  So 'son' means that this party was the father of the named party. ",
+              "properties": {
+                "name": {
+                  "$ref": "#/$defs/name"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "brother",
+                    "sister",
+                    "sibling",
+                    "mother",
+                    "father",
+                    "parent",
+                    "son",
+                    "daughter",
+                    "child",
+                    "grandchild",
+                    "grandparent",
+                    "nephew",
+                    "niece",
+                    "uncle",
+                    "aunt",
+                    "husband",
+                    "wife",
+                    "spouse",
+                    "relative"
+                  ]
+                }
+              },
+              "required": [
+                "name",
+                "type"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "place": {
+      "$ref": "#/$defs/name"
+    },
+    "period": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "sellers_agent": {
+                  "title": "Seller's Agent",
+                  "description": "A party who assisted the party who was relinquishing the object.",
+                  "$ref": "#/$defs/person"
+                },
+                "event": {
+                  "title": "Named Event",
+                  "description": "An explicit reference to the event in which this work changed hands",
+                  "example": "acq:sale",
+                  "$ref": "#/$defs/name"
+                },
+                "text": {
+                  "title": "Provenance Text",
+                  "description": "The original, unparsed textual representation of this period",
+                  "type": "string"
+                },
+                "footnote": {
+                  "title": "Footnote",
+                  "description": "An free text field with additional information about the transaction",
+                  "type": "string"
+                },
+                "period_certainty": {
+                  "title": "Period Certainty",
+                  "description": "Are you certain that this period is correct in its entirety?",
+                  "type": "boolean",
+                  "default": "true"
+                },
+                "direct_transfer": {
+                  "title": "Direct Tranfer?",
+                  "description": "Did the transaction directly pass to the acquiring party from the previous period?",
+                  "type": "boolean",
+                  "default": "false"
+                },
+                "timespan": {
+                  "$ref": "#/$defs/modern_5"
+                },
+                "owner": {
+                  "title": "Owner",
+                  "description": "The acquiring party.",
+                  "$ref": "#/$defs/person"
+                },
+                "stock_number": {
+                  "title": "Stock or Lot Number",
+                  "description": "A identification number given to the object as part of the transaction",
+                  "type": "string"
+                },
+                "acquisition_method": {
+                  "title": "Acquisition Method",
+                  "description": "A URI referencing a method from a controlled vocabulary describing the way in which the work changed hands.",
+                  "example": "acq:sale",
+                  "$ref": "#/$defs/uri"
+                },
+                "transfer_location": {
+                  "$ref": "#/$defs/modern_6"
+                },
+                "purchasing_agent": {
+                  "title": "Purchasing Agent",
+                  "description": "A party who assisted the party who was acquiring the object.",
+                  "$ref": "#/$defs/person"
+                },
+                "purchase": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/modern_7"
+                    },
+                    {
+                      "$ref": "#/$defs/modern_8"
+                    }
+                  ]
+                },
+                "citations": {
+                  "type": "array",
+                  "items": {
+                    "title": "Citation",
+                    "description": "A bibliographical reference to a primary source that documents the transaction",
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "period_certainty",
+                "acquisition_method",
+                "timespan",
+                "direct_transfer",
+                "text"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^event$": true,
+                "^citations$": true,
+                "^acquisition_method$": true,
+                "^stock_number$": true,
+                "^owner$": true,
+                "^purchasing_agent$": true,
+                "^sellers_agent$": true,
+                "^transfer_location$": true,
+                "^footnote$": true,
+                "^purchase$": true,
+                "^text$": true,
+                "^direct_transfer$": true,
+                "^period_certainty$": true,
+                "^timespan$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

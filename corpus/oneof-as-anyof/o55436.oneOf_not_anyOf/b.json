@@ -1,0 +1,365 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Rule",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "priority": {
+      "type": "number",
+      "default": 0
+    },
+    "destination": {
+      "type": "string"
+    },
+    "match": {
+      "$ref": "#/$defs/match"
+    },
+    "route": {
+      "$ref": "#/$defs/route"
+    },
+    "actions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/delayAction"
+          },
+          {
+            "$ref": "#/$defs/abortAction"
+          },
+          {
+            "$ref": "#/$defs/traceAction"
+          }
+        ]
+      }
+    }
+  },
+  "additionalFields": false,
+  "required": [
+    "destination"
+  ],
+  "oneOf": [
+    {
+      "title": "Route rule",
+      "required": [
+        "route"
+      ]
+    },
+    {
+      "title": "Action rule",
+      "required": [
+        "actions"
+      ]
+    }
+  ],
+  "$defs": {
+    "tags": {
+      "title": "Tags",
+      "description": "An array of one or more unique service tags.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "_uniqueItems": true,
+      "minItems": 1
+    },
+    "source": {
+      "title": "Source",
+      "description": "Microservice where request originated from",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "tags": {
+          "$ref": "#/$defs/tags"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "headers": {
+      "title": "Headers",
+      "description": "Header key/value pairs",
+      "type": "object",
+      "additionalProperties": {
+        "title": "Header",
+        "type": "string"
+      },
+      "minProperties": 1
+    },
+    "uri": {
+      "title": "URI",
+      "description": "Backend URI definition",
+      "path": {
+        "type": "string"
+      },
+      "prefix": {
+        "type": "string"
+      },
+      "prefix_rewrite": {
+        "type": "string"
+      }
+    },
+    "match": {
+      "title": "Match",
+      "description": "Conditions that must be true to apply the action or routing",
+      "type": "object",
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "headers": {
+          "$ref": "#/$defs/headers"
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "basicBackend": {
+      "title": "Basic Backend",
+      "description": "Basic backend to route to",
+      "type": "object",
+      "properties": {
+        "name": {
+          "title": "Service name",
+          "description": "The service name",
+          "type": "string"
+        },
+        "tags": {
+          "$ref": "#/$defs/tags"
+        }
+      },
+      "required": [
+        "tags"
+      ],
+      "additionalProperties": false
+    },
+    "backend": {
+      "title": "Backend",
+      "description": "Backend to route to",
+      "type": "object",
+      "properties": {
+        "name": {
+          "title": "Service name",
+          "description": "The service name",
+          "type": "string"
+        },
+        "tags": {
+          "$ref": "#/$defs/tags"
+        },
+        "weight": {
+          "title": "Traffic weight",
+          "description": "Percentage of traffic to route to this backend.",
+          "type": "number",
+          "maximum": 1,
+          "default": 1,
+          "exclusiveMinimum": 0
+        },
+        "resilience": {
+          "type": "object",
+          "properties": {
+            "max_connections": {
+              "description": "Maximum number of connections to a backend.  Defaults to 1024.",
+              "type": "integer",
+              "minimum": 0
+            },
+            "max_pending_requests": {
+              "description": "Maximum number of pending requests to a backend.  Defaults to 1024.",
+              "type": "integer",
+              "minimum": 0
+            },
+            "max_requests": {
+              "description": "Maximum number of requests to a backend.  Defaults to 1024",
+              "type": "integer",
+              "minimum": 0
+            },
+            "sleep_window": {
+              "description": "Minimum time the circuit will be closed.  Defaults to 30s",
+              "type": "number",
+              "minimum": 0
+            },
+            "consecutive_errors": {
+              "description": "Number of 5XX errors before circuit is opened.  Defaults to 5",
+              "type": "integer",
+              "minimum": 0
+            },
+            "detection_interval": {
+              "description": "Interval for checking state of hystrix circuit.  Defaults to 10s.",
+              "type": "number",
+              "minimum": 0
+            },
+            "max_requests_per_connection": {
+              "description": "Maximum number of requests per connection to an backend.",
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false
+        },
+        "lb_type": {
+          "enum": [
+            "round_robin",
+            "least_request",
+            "random"
+          ]
+        }
+      },
+      "required": [
+        "tags"
+      ],
+      "additionalProperties": false
+    },
+    "route": {
+      "type": "object",
+      "properties": {
+        "backends": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/backend"
+          }
+        },
+        "http_req_timeout": {
+          "description": "Timeout for a HTTP request. Includes retries as well. Unit is in floating point seconds. Default 15.0s",
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "http_req_retries": {
+          "description": "Number of retries for a given request. The interval between retries will be determined automatically (25ms+). Actual number of retries attempted depends on the http_req_timeout",
+          "type": "integer",
+          "minimum": 0
+        },
+        "uri": {
+          "$ref": "#/$defs/uri"
+        }
+      },
+      "required": [
+        "backends"
+      ],
+      "additionalProperties": false
+    },
+    "probability": {
+      "title": "Probability",
+      "description": "Probability of executing action",
+      "type": "number",
+      "maximum": 1,
+      "default": 1,
+      "exclusiveMinimum": 0
+    },
+    "action": {
+      "title": "Action",
+      "description": "Action to apply to matching requests",
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "action"
+      ]
+    },
+    "delayAction": {
+      "title": "Delay",
+      "description": "Conditionally delay the request",
+      "properties": {
+        "action": {
+          "enum": [
+            "delay"
+          ]
+        },
+        "probability": {
+          "$ref": "#/$defs/probability"
+        },
+        "tags": {
+          "$ref": "#/$defs/tags"
+        },
+        "duration": {
+          "type": "number",
+          "description": "Duration of delay in seconds",
+          "exclusiveMinimum": 0
+        }
+      },
+      "required": [
+        "duration"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "$ref": "#/$defs/action"
+        }
+      ]
+    },
+    "abortAction": {
+      "title": "Abort",
+      "description": "Conditionally abort the request",
+      "properties": {
+        "action": {
+          "enum": [
+            "abort"
+          ]
+        },
+        "probability": {
+          "$ref": "#/$defs/probability"
+        },
+        "tags": {
+          "$ref": "#/$defs/tags"
+        },
+        "return_code": {
+          "type": "number",
+          "description": "Return code",
+          "minimum": -5,
+          "maximum": 599
+        }
+      },
+      "required": [
+        "return_code"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "$ref": "#/$defs/action"
+        }
+      ]
+    },
+    "traceAction": {
+      "title": "Trace",
+      "description": "Trace request",
+      "properties": {
+        "action": {
+          "enum": [
+            "trace"
+          ]
+        },
+        "tags": {
+          "$ref": "#/$defs/tags"
+        },
+        "log_key": {
+          "type": "string",
+          "default": "trace"
+        },
+        "log_value": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "$ref": "#/$defs/action"
+        }
+      ]
+    }
+  }
+}

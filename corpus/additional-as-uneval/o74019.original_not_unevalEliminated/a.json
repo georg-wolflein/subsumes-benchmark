@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "title": "datasourcesCreate",
+              "required": [
+                "config"
+              ],
+              "properties": {
+                "config": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "schoolId": {
+                  "type": "string",
+                  "pattern": "[a-f0-9]{24}"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "protected": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "fields in the config that should recieve special protection. A field named password will always be protected"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^config$": true,
+                "^schoolId$": true,
+                "^name$": true,
+                "^protected$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "target"
+              ],
+              "properties": {
+                "target": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^target$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

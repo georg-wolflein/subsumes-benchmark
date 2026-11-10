@@ -1,0 +1,438 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "HDFS Name Node configuration properties",
+              "properties": {
+                "disk": {
+                  "type": "integer",
+                  "description": "The amount of disk, in MB, allocated to the Name Node process.",
+                  "default": 10240
+                },
+                "disk_type": {
+                  "type": "string",
+                  "description": "Disk type to be used for storing Name Node data. See documentation. [ROOT, MOUNT]",
+                  "default": "ROOT"
+                },
+                "mem": {
+                  "type": "integer",
+                  "description": "The amount of memory, in MB, allocated to the Name Node process.",
+                  "default": 4096
+                },
+                "cpus": {
+                  "type": "number",
+                  "description": "The number of cpu shares allocated to the Name Node process.",
+                  "default": 0.5
+                },
+                "heap": {
+                  "type": "integer",
+                  "description": "The JVM heap used by the Name Node in Mb.",
+                  "default": 2048
+                }
+              },
+              "required": [
+                "cpus",
+                "mem",
+                "disk",
+                "heap"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^cpus$": true,
+                "^heap$": true,
+                "^mem$": true,
+                "^disk_type$": true,
+                "^disk$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "The HDFS service executor configuration object.",
+              "properties": {
+                "cpus": {
+                  "type": "number",
+                  "description": "The cpu shares used by the HDFS service executor.",
+                  "default": 0.5
+                },
+                "mem": {
+                  "type": "integer",
+                  "description": "The memory used by the HDFS service executor in Mb.",
+                  "default": 1024
+                },
+                "heap": {
+                  "type": "integer",
+                  "description": "The JVM heap used by the HDFS service executor in Mb.",
+                  "default": 768
+                },
+                "disk": {
+                  "type": "integer",
+                  "description": "The amount of disk used by the HDFS service executor in Mb.",
+                  "default": 1024
+                }
+              },
+              "required": [
+                "cpus",
+                "mem",
+                "heap",
+                "disk"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^cpus$": true,
+                "^mem$": true,
+                "^heap$": true,
+                "^disk$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "journal_node": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "service": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "data_node": {
+                  "$ref": "#/$defs/modern_4"
+                },
+                "name_node": {
+                  "$ref": "#/$defs/modern_5"
+                },
+                "executor": {
+                  "$ref": "#/$defs/modern_6"
+                },
+                "hdfs": {
+                  "type": "object",
+                  "description": "HDFS File System configuration options",
+                  "properties": {
+                    "data_node_http_port": {
+                      "type": "integer",
+                      "description": "The HTTP port used by Data Nodes.",
+                      "default": 9004
+                    },
+                    "image_compression_codec": {
+                      "type": "string",
+                      "description": "The image compression codec for the File System image.",
+                      "default": "org.apache.hadoop.io.compress.SnappyCodec"
+                    },
+                    "journal_node_rpc_port": {
+                      "type": "integer",
+                      "description": "The RPC port used by Journal Nodes.",
+                      "default": 8485
+                    },
+                    "data_node_rpc_port": {
+                      "type": "integer",
+                      "description": "The RPC port used by Data Nodes.",
+                      "default": 9003
+                    },
+                    "name_node_rpc_port": {
+                      "type": "integer",
+                      "description": "The RPC port for HDFS Name Nodes.",
+                      "default": 9001
+                    },
+                    "name_node_http_port": {
+                      "type": "integer",
+                      "description": "The HTTP port for HDFS Name Nodes. ",
+                      "default": 9002
+                    },
+                    "permissions_enabled": {
+                      "type": "boolean",
+                      "description": "If true, permissions checking is enabled",
+                      "default": false
+                    },
+                    "journal_node_http_port": {
+                      "type": "integer",
+                      "description": "The HTTP port used by Journal Nodes.",
+                      "default": 8480
+                    },
+                    "name_node_heartbeat_recheck_interval": {
+                      "type": "integer",
+                      "description": "This time decides the interval to check for expired datanodes.",
+                      "default": 60000
+                    },
+                    "compress_image": {
+                      "type": "boolean",
+                      "description": "If true, the File System image will be compressed.",
+                      "default": true
+                    },
+                    "data_node_ipc_port": {
+                      "type": "integer",
+                      "description": "The IPS port used by Data Nodes.",
+                      "default": 9005
+                    }
+                  },
+                  "required": [
+                    "name_node_rpc_port",
+                    "name_node_http_port",
+                    "journal_node_rpc_port",
+                    "journal_node_http_port",
+                    "data_node_rpc_port",
+                    "data_node_http_port",
+                    "data_node_ipc_port",
+                    "permissions_enabled",
+                    "name_node_heartbeat_recheck_interval",
+                    "compress_image",
+                    "image_compression_codec"
+                  ]
+                }
+              },
+              "required": [
+                "service",
+                "name_node",
+                "journal_node",
+                "data_node",
+                "executor",
+                "hdfs"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^journal_node$": true,
+                "^executor$": true,
+                "^hdfs$": true,
+                "^service$": true,
+                "^name_node$": true,
+                "^data_node$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "HDFS Journal Node configuration properties",
+              "properties": {
+                "count": {
+                  "type": "integer",
+                  "description": "The number of Nodes in the Quorum Journal. This should be either 3 or 5.",
+                  "default": 3
+                },
+                "disk": {
+                  "type": "integer",
+                  "description": "The amount of disk, in MB, allocated to the Journal Node process.",
+                  "default": 10240
+                },
+                "disk_type": {
+                  "type": "string",
+                  "description": "Disk type to be used for storing Journal Node data. See documentation. [ROOT, MOUNT]",
+                  "default": "ROOT"
+                },
+                "mem": {
+                  "type": "integer",
+                  "description": "The amount of memory, in MB, allocated to the Journal Node process.",
+                  "default": 4096
+                },
+                "cpus": {
+                  "type": "number",
+                  "description": "The number of cpu shares allocated to the Journal Node process.",
+                  "default": 0.5
+                },
+                "heap": {
+                  "type": "integer",
+                  "description": "The JVM heap used by the Journal Node in Mb.",
+                  "default": 2048
+                }
+              },
+              "required": [
+                "cpus",
+                "mem",
+                "disk",
+                "heap",
+                "count"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^cpus$": true,
+                "^heap$": true,
+                "^count$": true,
+                "^mem$": true,
+                "^disk_type$": true,
+                "^disk$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "DC/OS service configuration properties",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The name of the HDFS service instance.",
+                  "default": "hdfs"
+                },
+                "role": {
+                  "type": "string",
+                  "description": "The role of the HDFS service instance.",
+                  "default": "hdfs-role"
+                },
+                "placement_strategy": {
+                  "type": "string",
+                  "description": "The placement strategy for HDFS nodes. This should always be NODE.",
+                  "default": "NODE"
+                },
+                "secret_name": {
+                  "type": "string",
+                  "description": "Name of the Secret Store credentials to use for DC/OS service authentication. This should be left empty unless service authentication is needed.",
+                  "default": ""
+                },
+                "api_port": {
+                  "type": "integer",
+                  "description": "The port that the HDFS service API will accept on.",
+                  "default": 9000
+                },
+                "mem": {
+                  "type": "integer",
+                  "description": "The memory used by the HDFS service scheduler in Mb.",
+                  "default": 2048
+                },
+                "principal": {
+                  "type": "string",
+                  "description": "The principal for the HDFS service instance.",
+                  "default": "hdfs-principal"
+                },
+                "cpus": {
+                  "type": "number",
+                  "description": "The cpu shares used by the HDFS service scheduler.",
+                  "default": 0.5
+                },
+                "heap": {
+                  "type": "integer",
+                  "description": "The JVM heap used by the HDFS service scheduler in Mb.",
+                  "default": 1024
+                }
+              },
+              "required": [
+                "name",
+                "role",
+                "principal",
+                "cpus",
+                "mem",
+                "heap",
+                "api_port",
+                "placement_strategy"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^cpus$": true,
+                "^api_port$": true,
+                "^principal$": true,
+                "^secret_name$": true,
+                "^placement_strategy$": true,
+                "^heap$": true,
+                "^role$": true,
+                "^name$": true,
+                "^mem$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "HDFS Data Node configuration properties",
+              "properties": {
+                "count": {
+                  "type": "integer",
+                  "description": "The number of Data Nodes in the cluster",
+                  "default": 3
+                },
+                "disk": {
+                  "type": "integer",
+                  "description": "The amount of disk, in MB, allocated to the Data Node process.",
+                  "default": 10240
+                },
+                "disk_type": {
+                  "type": "string",
+                  "description": "Disk type to be used for storing Data Node data. See documentation. [ROOT, MOUNT]",
+                  "default": "ROOT"
+                },
+                "mem": {
+                  "type": "integer",
+                  "description": "The amount of memory, in MB, allocated to the Data Node process.",
+                  "default": 4096
+                },
+                "cpus": {
+                  "type": "number",
+                  "description": "The number of cpu shares allocated to the Data Node process.",
+                  "default": 0.5
+                },
+                "heap": {
+                  "type": "integer",
+                  "description": "The JVM heap used by the Data Node in Mb.",
+                  "default": 2048
+                }
+              },
+              "required": [
+                "cpus",
+                "mem",
+                "disk",
+                "heap",
+                "count"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^cpus$": true,
+                "^heap$": true,
+                "^count$": true,
+                "^mem$": true,
+                "^disk_type$": true,
+                "^disk$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

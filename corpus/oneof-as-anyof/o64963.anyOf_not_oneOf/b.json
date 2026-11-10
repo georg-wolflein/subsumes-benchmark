@@ -1,0 +1,242 @@
+{
+  "$id": "https://github.com/ohadschn/ET4W/src/events-schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "class": {
+      "$ref": "#/$defs/identifier"
+    },
+    "sourceName": {
+      "type": "string"
+    },
+    "tasks": {
+      "$ref": "#/$defs/identifier-array"
+    },
+    "keywords": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/identifier-array"
+        },
+        {
+          "maxItems": 44
+        }
+      ]
+    },
+    "customTypes": {
+      "$ref": "#/$defs/customType-array"
+    },
+    "commonParameters": {
+      "$ref": "#/$defs/commonParameter-array"
+    },
+    "events": {
+      "$ref": "#/$defs/event-array"
+    }
+  },
+  "required": [
+    "class",
+    "sourceName",
+    "events"
+  ],
+  "$defs": {
+    "etwNativeType": {
+      "enum": [
+        "Boolean",
+        "Char",
+        "SByte",
+        "Byte",
+        "Int16",
+        "UInt16",
+        "Int32",
+        "UInt32",
+        "Int64",
+        "UInt64",
+        "Single",
+        "Double",
+        "DateTime",
+        "String",
+        "GUID",
+        "IntPtr",
+        "ByteArray"
+      ]
+    },
+    "etwEventLevel": {
+      "enum": [
+        "Verbose",
+        "Informational",
+        "Warning",
+        "Error",
+        "Critical",
+        "LogAlways"
+      ]
+    },
+    "etwOpcode": {
+      "enum": [
+        "Info",
+        "Start",
+        "Stop",
+        "DataCollectionStart",
+        "DataCollectionStop",
+        "Extension",
+        "Reply",
+        "Resume",
+        "Suspend",
+        "Send",
+        "Receive"
+      ]
+    },
+    "etwChannel": {
+      "enum": [
+        "Admin",
+        "Analytic",
+        "Debug",
+        "None",
+        "Operational"
+      ]
+    },
+    "identifier": {
+      "type": "string",
+      "pattern": "^[a-zA-Z_][a-zA-Z0-9_]*$"
+    },
+    "fullyQualifiedIdentifier": {
+      "type": "string",
+      "pattern": "^[a-zA-Z_](\\.?[a-zA-Z0-9_]+)*$"
+    },
+    "identifier-array": {
+      "type": "array",
+      "_uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/identifier"
+      }
+    },
+    "customType": {
+      "type": "object",
+      "properties": {
+        "fullyQualifiedName": {
+          "$ref": "#/$defs/fullyQualifiedIdentifier"
+        },
+        "targetType": {
+          "$ref": "#/$defs/etwNativeType"
+        }
+      },
+      "required": [
+        "fullyQualifiedName",
+        "targetType"
+      ]
+    },
+    "customType-array": {
+      "type": "array",
+      "_uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/customType"
+      }
+    },
+    "parameter": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/identifier"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "anyOf": [
+        {
+          "properties": {
+            "type": {
+              "$ref": "#/$defs/etwNativeType"
+            }
+          },
+          "required": [
+            "type"
+          ]
+        },
+        {
+          "properties": {
+            "customType": {
+              "$ref": "#/$defs/fullyQualifiedIdentifier"
+            }
+          },
+          "required": [
+            "customType"
+          ]
+        }
+      ]
+    },
+    "parameter-array": {
+      "type": "array",
+      "_uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/parameter"
+      }
+    },
+    "commonParameter": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/parameter"
+        },
+        {
+          "properties": {
+            "generated": {
+              "type": "boolean"
+            }
+          }
+        }
+      ]
+    },
+    "commonParameter-array": {
+      "type": "array",
+      "_uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/commonParameter"
+      }
+    },
+    "event": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "$ref": "#/$defs/identifier"
+        },
+        "version": {
+          "type": "integer"
+        },
+        "channel": {
+          "$ref": "#/$defs/etwChannel"
+        },
+        "level": {
+          "$ref": "#/$defs/etwEventLevel"
+        },
+        "message": {
+          "type": "string"
+        },
+        "keywords": {
+          "$ref": "#/$defs/identifier-array"
+        },
+        "task": {
+          "$ref": "#/$defs/identifier"
+        },
+        "opcode": {
+          "$ref": "#/$defs/etwOpcode"
+        },
+        "parameters": {
+          "$ref": "#/$defs/parameter-array"
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ]
+    },
+    "event-array": {
+      "type": "array",
+      "_uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/event"
+      },
+      "minItems": 1
+    }
+  }
+}

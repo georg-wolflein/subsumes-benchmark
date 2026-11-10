@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "from_ref": {
+                  "type": "string",
+                  "pattern": "^[\\w\\/\\.:-]+$",
+                  "pbj": {
+                    "type": "identifier",
+                    "rule": "single"
+                  }
+                },
+                "to_ref": {
+                  "type": "string",
+                  "pattern": "^[\\w\\/\\.:-]+$",
+                  "pbj": {
+                    "type": "identifier",
+                    "rule": "single"
+                  }
+                },
+                "multiplicity": {
+                  "type": "string",
+                  "default": "multi",
+                  "enum": [
+                    "unknown",
+                    "multi",
+                    "simple",
+                    "many2one",
+                    "one2many",
+                    "one2one"
+                  ],
+                  "pbj": {
+                    "type": "string-enum",
+                    "rule": "single",
+                    "overridable": true
+                  }
+                },
+                "created_at": {
+                  "type": "string",
+                  "pattern": "^[1-9]{1}[0-9]{12,15}$",
+                  "pbj": {
+                    "type": "microtime",
+                    "rule": "single"
+                  }
+                }
+              },
+              "required": [
+                "from_ref",
+                "to_ref"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^from_ref$": true,
+                "^to_ref$": true,
+                "^multiplicity$": true,
+                "^created_at$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

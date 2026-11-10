@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "Metadata": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "BiosFiles": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "FriendlyName": {
+                  "type": "string"
+                },
+                "PlatformID": {
+                  "type": "string"
+                },
+                "FileTypes": {
+                  "minItems": 1,
+                  "patternProperties": {
+                    "^BIOS$": {
+                      "pattern": "^application\\/vnd\\.stone-romfile\\..+-sys",
+                      "type": "string"
+                    },
+                    "^RSRC$": {
+                      "pattern": "^application\\/vnd\\.stone-romfile\\..+-resource",
+                      "type": "string"
+                    },
+                    "^\\.": {
+                      "pattern": "^application\\/vnd\\.stone-romfile\\..+",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "RSRC"
+                  ],
+                  "type": "object",
+                  "_uniqueItems": true
+                },
+                "MaximumInputs": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "PlatformID",
+                "Metadata",
+                "MaximumInputs",
+                "FriendlyName",
+                "FileTypes"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^MaximumInputs$": true,
+                "^BiosFiles$": true,
+                "^FileTypes$": true,
+                "^PlatformID$": true,
+                "^FriendlyName$": true,
+                "^Metadata$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                "^platform_": {
+                  "type": "string"
+                }
+              },
+              "properties": {},
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^platform_": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                "(^.+\\..+)|(^[a-zA-Z0-9_-]+)": {
+                  "items": {
+                    "pattern": "^[a-f0-9]{32}$",
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "(^.+\\..+)|(^[a-zA-Z0-9_-]+)": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

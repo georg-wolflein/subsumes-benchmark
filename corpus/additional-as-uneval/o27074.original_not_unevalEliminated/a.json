@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_3",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "arguments": {
+                  "oneOf": [
+                    {
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "command": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "options": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^arguments$": true,
+                "^command$": true,
+                "^description$": true,
+                "^options$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "command": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "default": {
+                  "allOf": [
+                    {
+                      "$ref": "#/definitions4/command"
+                    },
+                    {
+                      "required": [
+                        "command"
+                      ],
+                      "type": "object"
+                    }
+                  ]
+                },
+                "iterations": {
+                  "items": {
+                    "$ref": "#/$defs/command"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "iterations"
+              ],
+              "title": "Clack Schema",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^default$": true,
+                "^iterations$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

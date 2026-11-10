@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "anyOf": [
+    {
+      "properties": {
+        "bar": {
+          "$ref": "#/anyOf/0/properties/foo"
+        },
+        "foo": {
+          "type": "integer"
+        }
+      }
+    },
+    {
+      "not": {
+        "properties": {
+          "bar": {
+            "$ref": "#/anyOf/1/not/properties/foo"
+          },
+          "foo": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  ]
+}

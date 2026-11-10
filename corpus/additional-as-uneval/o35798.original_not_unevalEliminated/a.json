@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Team Format",
+              "description": "This is a schema defining the strict format for writing a list of team members.",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "identity": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "firstName",
+                  "lastName",
+                  "identity",
+                  "role"
+                ]
+              },
+              "minItems": 1
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

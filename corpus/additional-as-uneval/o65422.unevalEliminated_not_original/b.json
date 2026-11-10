@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "sample_date": {
+                  "_format": "date",
+                  "description": "Date on which this fact was known to be true",
+                  "type": "string"
+                },
+                "source_url": {
+                  "description": "Place where this fact can be verified",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "source_url",
+                "sample_date"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^sample_date$": true,
+                "^source_url$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

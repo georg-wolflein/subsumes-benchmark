@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_2",
+  "$defs": {
+    "translations": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "fr": {
+                  "type": "string"
+                },
+                "de": {
+                  "type": "string"
+                },
+                "tr": {
+                  "type": "string"
+                },
+                "en": {
+                  "type": "string"
+                },
+                "es": {
+                  "type": "string"
+                },
+                "jp": {
+                  "type": "string"
+                },
+                "pl": {
+                  "type": "string"
+                },
+                "it": {
+                  "type": "string"
+                },
+                "dk": {
+                  "type": "string"
+                },
+                "gr": {
+                  "type": "string"
+                },
+                "cz": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "en",
+                "de"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^jp$": true,
+                "^dk$": true,
+                "^tr$": true,
+                "^es$": true,
+                "^fr$": true,
+                "^gr$": true,
+                "^it$": true,
+                "^de$": true,
+                "^pl$": true,
+                "^en$": true,
+                "^cz$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "stat": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "atk",
+        "def",
+        "sp_atk",
+        "sp_def",
+        "speed",
+        null
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "title": "Nature",
+              "properties": {
+                "disliked_flavor": {
+                  "$ref": "#/$defs/flavor"
+                },
+                "increased_stat": {
+                  "$ref": "#/$defs/stat"
+                },
+                "names": {
+                  "$ref": "#/$defs/translations"
+                },
+                "favorite_flavor": {
+                  "$ref": "#/$defs/flavor"
+                },
+                "decreased_stat": {
+                  "$ref": "#/$defs/stat"
+                }
+              },
+              "required": [
+                "names",
+                "increased_stat",
+                "decreased_stat",
+                "favorite_flavor",
+                "disliked_flavor"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^decreased_stat$": true,
+                "^disliked_flavor$": true,
+                "^names$": true,
+                "^favorite_flavor$": true,
+                "^increased_stat$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "flavor": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "Dry",
+        "Spicy",
+        "Sweet",
+        "Bitter",
+        "Sour",
+        null
+      ]
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "pulse": {
+                  "type": "boolean"
+                },
+                "resourceLimits": {
+                  "type": "boolean"
+                },
+                "vmLogs": {
+                  "type": "boolean"
+                },
+                "webShell": {
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^pulse$": true,
+                "^resourceLimits$": true,
+                "^vmLogs$": true,
+                "^webShell$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

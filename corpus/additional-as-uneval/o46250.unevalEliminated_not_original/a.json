@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Bill",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "_id": {
+      "type": "integer",
+      "description": "A unique ID for Bill"
+    },
+    "billHeadId": {
+      "type": "integer"
+    },
+    "date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "daysAutoEnter": {
+      "type": "integer"
+    },
+    "frequency": {
+      "$ref": "#/$defs/Frequency"
+    },
+    "transactionId": {
+      "type": "integer"
+    }
+  },
+  "$defs": {
+    "Frequency": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "recurring": {
+          "type": "boolean"
+        },
+        "type": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "recurring"
+      ]
+    }
+  }
+}

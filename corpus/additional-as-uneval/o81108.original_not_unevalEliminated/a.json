@@ -1,0 +1,316 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/component",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "pattern": "^string$"
+                },
+                "content": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type",
+                "content"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^content$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "oneOf": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/component"
+                  }
+                },
+                "nonempty": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "oneOf"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^oneOf$": true,
+                "^nonempty$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "anyOf": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/component"
+                  }
+                },
+                "nonempty": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "anyOf"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^anyOf$": true,
+                "^nonempty$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "anyOf": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "allOf": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/component"
+                  }
+                },
+                "nonempty": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "allOf"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^allOf$": true,
+                "^nonempty$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "primitive",
+                    "valuespace",
+                    "propertyref",
+                    "keyword"
+                  ]
+                },
+                "name": {
+                  "type": "string"
+                },
+                "optional": {
+                  "type": "boolean"
+                },
+                "range": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "type",
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^name$": true,
+                "^optional$": true,
+                "^range$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "typedterminal": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "sequence": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "function": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "stringterminal": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "pattern": "^array$"
+                },
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/$defs/component"
+                      }
+                    },
+                    {
+                      "$ref": "#/$defs/component"
+                    }
+                  ]
+                },
+                "minItems": {
+                  "type": "number"
+                },
+                "maxItems": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "type",
+                "items"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^items$": true,
+                "^minItems$": true,
+                "^maxItems$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "oneOf": {
+      "$ref": "#/$defs/modern_6"
+    },
+    "component": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/typedterminal"
+        },
+        {
+          "$ref": "#/$defs/stringterminal"
+        },
+        {
+          "$ref": "#/$defs/oneOf"
+        },
+        {
+          "$ref": "#/$defs/anyOf"
+        },
+        {
+          "$ref": "#/$defs/allOf"
+        },
+        {
+          "$ref": "#/$defs/sequence"
+        },
+        {
+          "$ref": "#/$defs/function"
+        }
+      ]
+    },
+    "allOf": {
+      "$ref": "#/$defs/modern_7"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "pattern": "^function$"
+                },
+                "arguments": {
+                  "oneOf": [
+                    {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/$defs/component"
+                      }
+                    },
+                    {
+                      "$ref": "#/$defs/component"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "type",
+                "arguments"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^arguments$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

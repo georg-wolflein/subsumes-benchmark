@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "city": {
+                  "type": "string"
+                },
+                "zip": {
+                  "type": "string"
+                },
+                "state": {
+                  "type": "string"
+                },
+                "country": {
+                  "type": "string"
+                },
+                "line1": {
+                  "type": "string"
+                },
+                "contactName": {
+                  "type": "string"
+                },
+                "businessName": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "line1",
+                "city",
+                "state",
+                "zip",
+                "country"
+              ],
+              "dependentRequired": {
+                "businessName": [
+                  "contactName"
+                ]
+              }
+            },
+            {
+              "patternProperties": {
+                "^zip$": true,
+                "^city$": true,
+                "^line1$": true,
+                "^state$": true,
+                "^contactName$": true,
+                "^country$": true,
+                "^businessName$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

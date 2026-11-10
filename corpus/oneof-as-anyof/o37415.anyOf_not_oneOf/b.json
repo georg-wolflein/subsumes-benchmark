@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "hierarchies": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/hierarchy"
+      }
+    }
+  },
+  "required": [
+    "$schema",
+    "hierarchies"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "hierarchy": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "asPostfix": {
+          "type": "boolean"
+        },
+        "baseProperties": {
+          "$ref": "#/$defs/property"
+        },
+        "subTypes": {
+          "$ref": "#/$defs/subType"
+        }
+      },
+      "required": [
+        "name",
+        "path",
+        "asPostfix"
+      ],
+      "additionalProperties": false
+    },
+    "subType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "superType": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "properties": {
+          "$ref": "#/$defs/property"
+        }
+      },
+      "required": [
+        "name",
+        "superType",
+        "properties"
+      ],
+      "additionalProperties": false
+    },
+    "property": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

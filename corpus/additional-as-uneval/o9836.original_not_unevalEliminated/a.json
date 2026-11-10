@@ -1,0 +1,373 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "pattern": "^[0-9a-zA-Z_-]{1,255}$"
+                },
+                "mode": {
+                  "type": "string",
+                  "enum": [
+                    "all",
+                    "whitelist",
+                    "blacklist"
+                  ]
+                },
+                "deviceIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[A-Fa-f\\d]{24}$"
+                  },
+                  "maxItems": 1000
+                },
+                "deviceTags": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_7"
+                  },
+                  "maxItems": 100
+                }
+              },
+              "required": [
+                "name",
+                "mode"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^mode$": true,
+                "^deviceIds$": true,
+                "^deviceTags$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "deviceName": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 255
+                },
+                "gatewayId": {
+                  "type": "string",
+                  "pattern": "^[A-Fa-f\\d]{24}$"
+                },
+                "deviceClass": {
+                  "type": "string",
+                  "enum": [
+                    "standalone",
+                    "gateway",
+                    "peripheral",
+                    "floating",
+                    "edgeCompute",
+                    "system"
+                  ]
+                },
+                "attributes": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_2"
+                  },
+                  "maxItems": 256
+                },
+                "systemInterval": {
+                  "type": "integer",
+                  "minimum": 5.0,
+                  "maximum": 3600.0
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 255
+                },
+                "keepDuplicates": {
+                  "type": "boolean"
+                },
+                "description": {
+                  "type": "string",
+                  "maxLength": 32767
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_9"
+                  },
+                  "maxItems": 100
+                },
+                "parentId": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^[A-Fa-f\\d]{24}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "deviceDescription": {
+                  "type": "string",
+                  "maxLength": 32767
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^deviceClass$": true,
+                "^keepDuplicates$": true,
+                "^parentId$": true,
+                "^deviceDescription$": true,
+                "^deviceName$": true,
+                "^tags$": true,
+                "^gatewayId$": true,
+                "^attributes$": true,
+                "^name$": true,
+                "^systemInterval$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "pattern": "^[0-9a-zA-Z_-]{1,255}$"
+                },
+                "value": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 255
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^key$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "pattern": "^[0-9a-zA-Z_-]{1,255}$"
+                },
+                "system": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "description": {
+                  "type": "string",
+                  "maxLength": 32767
+                },
+                "contentType": {
+                  "type": "string",
+                  "maxLength": 64
+                },
+                "dataType": {
+                  "type": "string",
+                  "enum": [
+                    "string",
+                    "number",
+                    "gps",
+                    "boolean",
+                    "blob"
+                  ]
+                },
+                "attributeTags": {
+                  "$ref": "#/$defs/modern_8"
+                }
+              },
+              "required": [
+                "name",
+                "dataType"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^contentType$": true,
+                "^description$": true,
+                "^dataType$": true,
+                "^attributeTags$": true,
+                "^name$": true,
+                "^system$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "^[0-9a-zA-Z_-]{1,255}$": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 255
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^[0-9a-zA-Z_-]{1,255}$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "pattern": "^[0-9a-zA-Z_-]{1,255}$"
+                },
+                "value": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 255
+                }
+              },
+              "required": [
+                "key",
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^key$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "aggregation": {
+                  "type": "string",
+                  "enum": [
+                    "FIRST",
+                    "LAST",
+                    "COUNT",
+                    "MAX",
+                    "MIN",
+                    "MEDIAN",
+                    "MEAN",
+                    "SUM",
+                    "STD_DEV"
+                  ]
+                },
+                "aggregationOptions": {
+                  "$ref": "#/$defs/modern_4"
+                },
+                "childAttributes": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_6"
+                  },
+                  "maxItems": 256
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^aggregation$": true,
+                "^aggregationOptions$": true,
+                "^childAttributes$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/modern_5"
+              },
+              "maxItems": 0
+            },
+            {
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

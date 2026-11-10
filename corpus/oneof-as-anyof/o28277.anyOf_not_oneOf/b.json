@@ -1,0 +1,244 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GeoJSON object",
+  "description": "Schema for a GeoJSON object",
+  "type": "object",
+  "required": [
+    "type"
+  ],
+  "anyOf": [
+    {
+      "$ref": "#/$defs/geometry"
+    },
+    {
+      "$ref": "#/$defs/geometryCollection"
+    },
+    {
+      "$ref": "#/$defs/feature"
+    },
+    {
+      "$ref": "#/$defs/featureCollection"
+    }
+  ],
+  "$defs": {
+    "geometry": {
+      "title": "geometry",
+      "description": "One geometry as defined by GeoJSON",
+      "type": "object",
+      "required": [
+        "type",
+        "coordinates"
+      ],
+      "$defs": {
+        "position": {
+          "description": "A single position",
+          "type": "array",
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "items": false
+        },
+        "positionArray": {
+          "description": "An array of positions",
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "$ref": "#/$defs/geometry/$defs/position"
+          }
+        },
+        "lineString": {
+          "description": "An array of two or more positions",
+          "allOf": [
+            {
+              "$ref": "#/$defs/geometry/$defs/positionArray"
+            },
+            {
+              "minItems": 2
+            }
+          ]
+        },
+        "linearRing": {
+          "description": "An array of four positions where the first equals the last",
+          "allOf": [
+            {
+              "$ref": "#/$defs/geometry/$defs/positionArray"
+            },
+            {
+              "minItems": 4
+            }
+          ]
+        },
+        "polygon": {
+          "description": "An array of linear rings",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/geometry/$defs/linearRing"
+          }
+        }
+      },
+      "anyOf": [
+        {
+          "title": "Point",
+          "properties": {
+            "type": {
+              "enum": [
+                "Point"
+              ]
+            },
+            "coordinates": {
+              "$ref": "#/$defs/geometry/$defs/position"
+            }
+          }
+        },
+        {
+          "title": "MultiPoint",
+          "properties": {
+            "type": {
+              "enum": [
+                "MultiPoint"
+              ]
+            },
+            "coordinates": {
+              "$ref": "#/$defs/geometry/$defs/positionArray"
+            }
+          }
+        },
+        {
+          "title": "LineString",
+          "properties": {
+            "type": {
+              "enum": [
+                "LineString"
+              ]
+            },
+            "coordinates": {
+              "$ref": "#/$defs/geometry/$defs/lineString"
+            }
+          }
+        },
+        {
+          "title": "MultiLineString",
+          "properties": {
+            "type": {
+              "enum": [
+                "MultiLineString"
+              ]
+            },
+            "coordinates": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/geometry/$defs/lineString"
+              }
+            }
+          }
+        },
+        {
+          "title": "Polygon",
+          "properties": {
+            "type": {
+              "enum": [
+                "Polygon"
+              ]
+            },
+            "coordinates": {
+              "$ref": "#/$defs/geometry/$defs/polygon"
+            }
+          }
+        },
+        {
+          "title": "MultiPolygon",
+          "properties": {
+            "type": {
+              "enum": [
+                "MultiPolygon"
+              ]
+            },
+            "coordinates": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/geometry/$defs/polygon"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "geometryCollection": {
+      "title": "GeometryCollection",
+      "description": "A collection of geometry objects",
+      "required": [
+        "geometries"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "GeometryCollection"
+          ]
+        },
+        "geometries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/geometry"
+          }
+        }
+      }
+    },
+    "feature": {
+      "title": "Feature",
+      "description": "A Geo JSON feature object",
+      "required": [
+        "geometry",
+        "properties"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "Feature"
+          ]
+        },
+        "geometry": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/geometry"
+            }
+          ]
+        },
+        "properties": {
+          "type": [
+            "object",
+            "null"
+          ]
+        }
+      }
+    },
+    "featureCollection": {
+      "title": "FeatureCollection",
+      "description": "A Geo JSON feature collection",
+      "required": [
+        "features"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "FeatureCollection"
+          ]
+        },
+        "features": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/feature"
+          }
+        }
+      }
+    }
+  }
+}

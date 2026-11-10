@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Server",
+  "description": "Server address and port number",
+  "type": "object",
+  "properties": {
+    "server": {
+      "$ref": "#/$defs/modern_1"
+    }
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "address": {
+                  "type": "string"
+                },
+                "port": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "address",
+                "port"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^address$": true,
+                "^port$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

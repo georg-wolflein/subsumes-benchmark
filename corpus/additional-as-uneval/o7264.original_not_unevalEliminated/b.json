@@ -1,0 +1,238 @@
+{
+  "$id": "http://holi0317.net/schemas",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "formatVersion": {
+      "type": "integer",
+      "enum": [
+        1
+      ]
+    },
+    "updateUrl": {
+      "type": "string"
+    },
+    "uid": {
+      "type": "string"
+    },
+    "repo": {
+      "type": "string"
+    },
+    "versions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "urls",
+          "version"
+        ],
+        "properties": {
+          "urls": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "downloadType": {
+                      "type": "string",
+                      "enum": [
+                        "direct",
+                        "parallel",
+                        "sequential"
+                      ],
+                      "default": "parallel"
+                    },
+                    "priority": {
+                      "type": "number",
+                      "default": 0
+                    }
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "downloadType": {
+                    "type": "string",
+                    "enum": [
+                      "direct",
+                      "parallel",
+                      "sequential",
+                      "encoded"
+                    ],
+                    "default": "parallel"
+                  },
+                  "priority": {
+                    "type": "number"
+                  }
+                }
+              }
+            ]
+          },
+          "version": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "references": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "depends": {
+                  "type": "string"
+                },
+                "recommends": {
+                  "type": "string"
+                },
+                "suggests": {
+                  "type": "string"
+                },
+                "conflicts": {
+                  "type": "string"
+                },
+                "provides": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "type": {
+            "type": "string",
+            "default": "release"
+          },
+          "installType": {
+            "type": "string",
+            "enum": [
+              "forgeMod",
+              "forgeCoreMod",
+              "liteloaderMod",
+              "extract",
+              "group"
+            ],
+            "default": "forgeMod"
+          },
+          "sha1": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "name": {
+      "type": "string"
+    },
+    "modId": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "license": {
+      "type": "string"
+    },
+    "urls": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "website": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "wiki": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "forum": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "donation": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "issues": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "source": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "icon": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "logo": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "authors": {
+      "type": "object",
+      "patternProperties": {
+        ".+": {
+          "type": "string"
+        }
+      }
+    },
+    "references": {
+      "type": "object",
+      "properties": {}
+    }
+  },
+  "required": [
+    "formatVersion",
+    "updateUrl",
+    "uid",
+    "repo",
+    "versions",
+    "name"
+  ]
+}

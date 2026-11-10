@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "POI location",
+              "type": "object",
+              "properties": {
+                "wgs84": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^wgs84$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "World Geodetic System",
+              "description": "",
+              "type": "object",
+              "properties": {
+                "latitude": {
+                  "description": "degrees north",
+                  "type": "number"
+                },
+                "longitude": {
+                  "description": "degrees east",
+                  "type": "number"
+                },
+                "height": {
+                  "description": "meters up from sea level, optional",
+                  "type": "number"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^latitude$": true,
+                "^longitude$": true,
+                "^height$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

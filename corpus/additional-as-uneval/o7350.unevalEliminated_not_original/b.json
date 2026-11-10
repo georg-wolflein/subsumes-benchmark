@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "default": [],
+  "items": {
+    "$ref": "#/$defs/modern_1"
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "volume": {
+                  "type": "number",
+                  "default": "30"
+                },
+                "createdTimestamp": {
+                  "type": "number",
+                  "default": 0
+                },
+                "file": {
+                  "type": [
+                    "object",
+                    "null"
+                  ],
+                  "default": null
+                }
+              },
+              "required": [
+                "name",
+                "volume",
+                "createdTimestamp",
+                "file"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^volume$": true,
+                "^createdTimestamp$": true,
+                "^file$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

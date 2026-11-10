@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "patternProperties": {
+    ".*": {
+      "$ref": "#/$defs/modern_2"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/modern_3"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "stringArray": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "responseViolations": {
+                  "$ref": "#/$defs/stringArray"
+                },
+                "request": {
+                  "type": "string"
+                },
+                "requestViolations": {
+                  "$ref": "#/$defs/stringArray"
+                },
+                "responseHeaders": {
+                  "patternProperties": {
+                    ".*": {
+                      "$ref": "#/$defs/stringArray"
+                    }
+                  },
+                  "type": "object"
+                },
+                "requestHeaders": {
+                  "patternProperties": {
+                    ".*": {
+                      "$ref": "#/$defs/stringArray"
+                    }
+                  },
+                  "type": "object"
+                },
+                "response": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "id",
+                "request",
+                "requestHeaders",
+                "requestViolations",
+                "response",
+                "responseHeaders",
+                "responseViolations"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^response$": true,
+                "^requestHeaders$": true,
+                "^responseHeaders$": true,
+                "^request$": true,
+                "^id$": true,
+                "^requestViolations$": true,
+                "^responseViolations$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

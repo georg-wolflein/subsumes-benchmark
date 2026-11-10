@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Whitelist",
+              "description": "Whitelist",
+              "type": "object",
+              "properties": {
+                "ignoreSevertiesAtOrBelow": {
+                  "type": "string",
+                  "enum": [
+                    "negligible",
+                    "Negligible",
+                    "low",
+                    "Low",
+                    "medium",
+                    "Medium",
+                    "high",
+                    "High"
+                  ]
+                },
+                "vulnerabilities": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_2"
+                  },
+                  "_uniqueItems": true
+                }
+              },
+              "required": [
+                "ignoreSevertiesAtOrBelow"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^ignoreSevertiesAtOrBelow$": true,
+                "^vulnerabilities$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "cveId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 512
+                },
+                "rationale": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 512
+                }
+              },
+              "required": [
+                "cveId",
+                "rationale"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^cveId$": true,
+                "^rationale$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

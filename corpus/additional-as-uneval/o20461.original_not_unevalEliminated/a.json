@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Get clients request",
+              "type": "object",
+              "properties": {
+                "q": {
+                  "type": "string",
+                  "description": "Optional query"
+                },
+                "page": {
+                  "type": "integer",
+                  "description": "The page of the items"
+                },
+                "items_per_page": {
+                  "type": "integer",
+                  "max": 150
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^q$": true,
+                "^page$": true,
+                "^items_per_page$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

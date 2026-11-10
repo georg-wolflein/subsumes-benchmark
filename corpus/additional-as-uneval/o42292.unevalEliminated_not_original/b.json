@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "org.eclipse.persistence.testing.jaxb.json.attribute.Address",
+  "type": "object",
+  "properties": {
+    "address": {
+      "$ref": "#/$defs/modern_1"
+    }
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "@id": {
+                  "type": "integer"
+                },
+                "@city": {
+                  "type": "string"
+                },
+                "street": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^@id$": true,
+                "^@city$": true,
+                "^street$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

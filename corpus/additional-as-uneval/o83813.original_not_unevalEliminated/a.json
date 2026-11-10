@@ -1,0 +1,261 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "title": "VCMI mod file format",
+              "description": "Format used to define main mod file (mod.json) in VCMI",
+              "required": [
+                "name",
+                "description",
+                "version",
+                "author",
+                "contact",
+                "modType"
+              ],
+              "properties": {
+                "author": {
+                  "type": "string",
+                  "description": "Author of the mod. Can be nickname, real name or name of team"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Short name of your mod. No more than 2-3 words"
+                },
+                "changelog": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "More lengthy description of mod. No hard limit"
+                },
+                "conflicts": {
+                  "type": "array",
+                  "description": "List of mods that can't be enabled in the same time as this one",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "version": {
+                  "type": "string",
+                  "description": "Current mod version, up to 3 numbers, dot-separated. Format: A.B.C"
+                },
+                "templates": {
+                  "type": "array",
+                  "description": "List of configuration files for RMG templates",
+                  "items": {
+                    "type": "string",
+                    "format": "textFile"
+                  }
+                },
+                "skills": {
+                  "type": "array",
+                  "description": "List of configuration files for skills",
+                  "items": {
+                    "type": "string",
+                    "format": "textFile"
+                  }
+                },
+                "heroClasses": {
+                  "type": "array",
+                  "description": "List of configuration files for hero classes",
+                  "items": {
+                    "type": "string",
+                    "format": "textFile"
+                  }
+                },
+                "objects": {
+                  "type": "array",
+                  "description": "List of configuration files for objects",
+                  "items": {
+                    "type": "string",
+                    "format": "textFile"
+                  }
+                },
+                "keepDisabled": {
+                  "type": "boolean",
+                  "description": "If set to true, mod will not be enabled automatically on install"
+                },
+                "artifacts": {
+                  "type": "array",
+                  "description": "List of configuration files for artifacts",
+                  "items": {
+                    "type": "string",
+                    "format": "textFile"
+                  }
+                },
+                "licenseName": {
+                  "type": "string",
+                  "description": "Name of the license, recommended is Creative Commons Attribution-ShareAlike"
+                },
+                "heroes": {
+                  "type": "array",
+                  "description": "List of configuration files for heroes",
+                  "items": {
+                    "type": "string",
+                    "format": "textFile"
+                  }
+                },
+                "filesystem": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "creatures": {
+                  "type": "array",
+                  "description": "List of configuration files for creatures",
+                  "items": {
+                    "type": "string",
+                    "format": "textFile"
+                  }
+                },
+                "modType": {
+                  "type": "string",
+                  "description": "Type of mod, e.g. Town, Artifacts, Graphical."
+                },
+                "factions": {
+                  "type": "array",
+                  "description": "List of configuration files for towns/factions",
+                  "items": {
+                    "type": "string",
+                    "format": "textFile"
+                  }
+                },
+                "spells": {
+                  "type": "array",
+                  "description": "List of configuration files for spells",
+                  "items": {
+                    "type": "string",
+                    "format": "textFile"
+                  }
+                },
+                "contact": {
+                  "type": "string",
+                  "description": "Home page of mod or link to forum thread"
+                },
+                "depends": {
+                  "type": "array",
+                  "description": "List of mods that are required to run this one",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "licenseURL": {
+                  "type": "string",
+                  "description": "Url to license text, e.g. http://creativecommons.org/licenses/by-sa/4.0/deed"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^keepDisabled$": true,
+                "^version$": true,
+                "^description$": true,
+                "^skills$": true,
+                "^contact$": true,
+                "^author$": true,
+                "^name$": true,
+                "^filesystem$": true,
+                "^heroClasses$": true,
+                "^licenseName$": true,
+                "^spells$": true,
+                "^templates$": true,
+                "^modType$": true,
+                "^factions$": true,
+                "^changelog$": true,
+                "^licenseURL$": true,
+                "^objects$": true,
+                "^depends$": true,
+                "^heroes$": true,
+                "^conflicts$": true,
+                "^creatures$": true,
+                "^artifacts$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "List of changes/new features in each version"
+            },
+            {
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Optional, description on how files are organized in your mod. In most cases you do not need to use this field"
+            },
+            {
+              "additionalProperties": {
+                "type": "array",
+                "description": "list of data sources attached to this mount point",
+                "items": {
+                  "$ref": "#/$defs/modern_4"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "description": "Path to data source"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "dir",
+                    "lod",
+                    "snd",
+                    "vid",
+                    "map",
+                    "zip"
+                  ],
+                  "description": "Type of data source"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^path$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

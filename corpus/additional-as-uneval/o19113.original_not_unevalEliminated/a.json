@@ -1,0 +1,384 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Mapping (port -> require arity)."
+            },
+            {
+              "additionalProperties": {
+                "description": "The arity of the required port.",
+                "type": "integer"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Mapping (port name -> provide arity)."
+            },
+            {
+              "additionalProperties": {
+                "oneOf": [
+                  {
+                    "description": "The arity of the provided port (finite).",
+                    "type": "integer"
+                  },
+                  {
+                    "description": "The arity of the provided port (infinite).",
+                    "enum": [
+                      "inf",
+                      "infinity",
+                      "infinite",
+                      "Inf",
+                      "Infinity",
+                      "Infinite",
+                      "INF",
+                      "INFINITY",
+                      "INFINITE"
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "depend": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "consume": {
+                  "$ref": "#/$defs/modern_11"
+                },
+                "conflict": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^depend$": true,
+                "^consume$": true,
+                "^conflict$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "AeolusFormatSchema",
+              "description": "Input JSON schema for Aeolus Universe.",
+              "type": "object",
+              "properties": {
+                "version": {
+                  "type": "integer",
+                  "description": "Version number."
+                },
+                "component_types": {
+                  "description": "List of component types.",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_2"
+                  },
+                  "minItems": 1,
+                  "_uniqueItems": true
+                },
+                "implementation": {
+                  "$ref": "#/$defs/modern_7"
+                },
+                "repositories": {
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "minItems": 1,
+                  "description": "Repositories description.",
+                  "items": {
+                    "$ref": "#/$defs/modern_9"
+                  }
+                }
+              },
+              "required": [
+                "component_types"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^version$": true,
+                "^component_types$": true,
+                "^implementation$": true,
+                "^repositories$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "_uniqueItems": true,
+              "minItems": 1,
+              "description": "Implementation mapping between components and packages belonging to a repository."
+            },
+            {
+              "additionalProperties": {
+                "type": "array",
+                "description": "List of repository & package list pairs (dijunciton of possible implementations).",
+                "items": {
+                  "$ref": "#/$defs/modern_8"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Name of the component type."
+                },
+                "consume": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "states": {
+                  "type": "array",
+                  "minItems": 1,
+                  "_uniqueItems": true,
+                  "description": "List of the states of the component type.",
+                  "items": {
+                    "$ref": "#/$defs/modern_4"
+                  }
+                }
+              },
+              "required": [
+                "name",
+                "states"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^consume$": true,
+                "^states$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "repository": {
+                  "type": "string"
+                },
+                "package": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "repository",
+                "package"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^repository$": true,
+                "^package$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "packages": {
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "minItems": 1,
+                  "items": {
+                    "$ref": "#/$defs/modern_10"
+                  }
+                }
+              },
+              "required": [
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^packages$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Mapping (resource name -> consume arity) of resources consumed by the component type."
+            },
+            {
+              "additionalProperties": {
+                "description": "The consume arity.",
+                "type": "integer"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Mapping (resource name -> consume arity) of resources consumed by the component type."
+            },
+            {
+              "additionalProperties": {
+                "description": "The consume arity.",
+                "type": "integer"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "State name."
+                },
+                "require": {
+                  "$ref": "#/$defs/modern_5"
+                },
+                "initial": {
+                  "type": "boolean",
+                  "description": "Initial state (default = false if not present)."
+                },
+                "conflict": {
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "items": {
+                    "description": "Conflict ports.",
+                    "type": "string"
+                  }
+                },
+                "provide": {
+                  "$ref": "#/$defs/modern_6"
+                },
+                "final": {
+                  "type": "boolean",
+                  "description": "Final state (default = false if not present)."
+                },
+                "successors": {
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "description": "Successor states."
+                  }
+                }
+              },
+              "required": [
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^initial$": true,
+                "^require$": true,
+                "^conflict$": true,
+                "^name$": true,
+                "^provide$": true,
+                "^final$": true,
+                "^successors$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

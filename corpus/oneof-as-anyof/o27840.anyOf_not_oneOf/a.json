@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/FilterOfferingEnabled"
+    },
+    {
+      "$ref": "#/$defs/FilterOfferingDisabled"
+    }
+  ],
+  "$defs": {
+    "ComputeOfferings": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "DiskOfferings": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "FilterOfferingDisabled": {
+      "additionalProperties": false,
+      "properties": {
+        "filterOfferings": {
+          "const": false
+        },
+        "zones": {
+          "additionalProperties": {
+            "$ref": "#/$defs/OfferingsForZone"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "filterOfferings"
+      ],
+      "type": "object"
+    },
+    "FilterOfferingEnabled": {
+      "additionalProperties": false,
+      "properties": {
+        "filterOfferings": {
+          "const": true
+        },
+        "zones": {
+          "additionalProperties": {
+            "$ref": "#/$defs/OfferingsForZone"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "filterOfferings",
+        "zones"
+      ],
+      "type": "object"
+    },
+    "OfferingsForZone": {
+      "additionalProperties": false,
+      "properties": {
+        "computeOfferings": {
+          "$ref": "#/$defs/ComputeOfferings"
+        },
+        "diskOfferings": {
+          "$ref": "#/$defs/DiskOfferings"
+        }
+      },
+      "type": "object"
+    }
+  }
+}

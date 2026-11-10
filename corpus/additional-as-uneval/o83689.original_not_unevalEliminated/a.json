@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "National address",
+  "description": "National portion of an address",
+  "type": "object",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/modern_1"
+    },
+    {
+      "$ref": "#/$defs/modern_2"
+    },
+    {
+      "$ref": "#/$defs/modern_3"
+    }
+  ],
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "country": {
+                  "type": "string",
+                  "enum": [
+                    "CAN"
+                  ]
+                },
+                "province": {
+                  "type": "string",
+                  "enum": [
+                    "AB",
+                    "BC",
+                    "MB"
+                  ]
+                },
+                "postalCode": {
+                  "type": "string",
+                  "pattern": "^[A-Z][0-9][A-Z][0-9][A-Z][0-9]$"
+                }
+              },
+              "required": [
+                "country",
+                "province",
+                "postalCode"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^country$": true,
+                "^province$": true,
+                "^postalCode$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "country": {
+                  "type": "string",
+                  "enum": [
+                    "USA"
+                  ]
+                },
+                "state": {
+                  "type": "string",
+                  "enum": [
+                    "AL",
+                    "AK",
+                    "AR"
+                  ]
+                },
+                "zipCode": {
+                  "type": "string",
+                  "pattern": "^[0-9]{5}(-[0-9]{4})?$"
+                }
+              },
+              "required": [
+                "country",
+                "state",
+                "zipCode"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^country$": true,
+                "^state$": true,
+                "^zipCode$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "country": {
+                  "type": "string",
+                  "enum": [
+                    "MEX"
+                  ]
+                },
+                "state": {
+                  "type": "string",
+                  "enum": [
+                    "AGS",
+                    "BC",
+                    "BCS"
+                  ]
+                },
+                "postalCode": {
+                  "type": "string",
+                  "pattern": "^[0-9]{5}$"
+                }
+              },
+              "required": [
+                "country",
+                "state",
+                "postalCode"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^country$": true,
+                "^state$": true,
+                "^postalCode$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

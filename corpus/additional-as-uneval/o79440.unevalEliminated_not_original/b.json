@@ -1,0 +1,391 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_11",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "uris": {
+                  "$ref": "#/$defs/modern_6"
+                },
+                "container": {
+                  "$ref": "#/$defs/modern_7"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^uris$": true,
+                "^container$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "url": {
+      "type": "string",
+      "allOf": [
+        {
+          "format": "uri"
+        },
+        {
+          "pattern": "^https?://"
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "packageDefinition": {
+                  "$ref": "#/$defs/packageDetails"
+                },
+                "resourceDefinition": {
+                  "$ref": "#/$defs/resource"
+                }
+              },
+              "required": [
+                "packageDefinition"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^packageDefinition$": true,
+                "^resourceDefinition$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "docker": {
+                  "$ref": "#/$defs/modern_8"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^docker$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "url": {
+                  "$ref": "#/$defs/url"
+                }
+              },
+              "required": [
+                "name",
+                "url"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^url$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "license": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "resource": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "icon-small": {
+                  "type": "string",
+                  "description": "PNG icon URL, preferably 48 by 48 pixels."
+                },
+                "icon-medium": {
+                  "type": "string",
+                  "description": "PNG icon URL, preferably 128 by 128 pixels."
+                },
+                "icon-large": {
+                  "type": "string",
+                  "description": "PNG icon URL, preferably 256 by 256 pixels."
+                },
+                "screenshots": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "PNG screen URL, preferably 1024 by 1024 pixels."
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^icon-small$": true,
+                "^icon-medium$": true,
+                "^icon-large$": true,
+                "^screenshots$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "packageDetails": {
+      "$ref": "#/$defs/modern_10"
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "packages": {
+                  "type": "array",
+                  "description": "The list of installed packages",
+                  "items": {
+                    "$ref": "#/$defs/installation"
+                  }
+                }
+              },
+              "required": [
+                "packages"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^packages$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "assets": {
+                  "$ref": "#/$defs/modern_5"
+                },
+                "images": {
+                  "$ref": "#/$defs/modern_9"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^assets$": true,
+                "^images$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "packageInformation": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "licenses": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/license"
+                  }
+                },
+                "website": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "postInstallNotes": {
+                  "type": "string"
+                },
+                "scm": {
+                  "type": "string"
+                },
+                "selected": {
+                  "type": "boolean"
+                },
+                "framework": {
+                  "type": "boolean"
+                },
+                "version": {
+                  "type": "string"
+                },
+                "preInstallNotes": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "packagingVersion": {
+                  "type": "string"
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[^\\s]+$"
+                  }
+                },
+                "postUninstallNotes": {
+                  "type": "string"
+                },
+                "maintainer": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "packagingVersion",
+                "name",
+                "version",
+                "maintainer",
+                "description",
+                "tags"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^postInstallNotes$": true,
+                "^selected$": true,
+                "^version$": true,
+                "^description$": true,
+                "^framework$": true,
+                "^postUninstallNotes$": true,
+                "^name$": true,
+                "^website$": true,
+                "^licenses$": true,
+                "^scm$": true,
+                "^maintainer$": true,
+                "^tags$": true,
+                "^preInstallNotes$": true,
+                "^packagingVersion$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "installation": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "dcosReleaseVersion": {
+      "type": "string",
+      "pattern": "^(?:0|[1-9][0-9]*)(?:\\.(?:0|[1-9][0-9]*))*$",
+      "description": "A string representation of a DC/OS Release Version"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "appId": {
+                  "type": "string"
+                },
+                "packageInformation": {
+                  "$ref": "#/$defs/packageInformation"
+                }
+              },
+              "required": [
+                "appId",
+                "packageInformation"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^appId$": true,
+                "^packageInformation$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

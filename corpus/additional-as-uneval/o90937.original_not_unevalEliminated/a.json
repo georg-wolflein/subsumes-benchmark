@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "knownProp": {
+                  "type": "object",
+                  "$ref": "#/$defs/option",
+                  "title": "title",
+                  "description": "text"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^knownProp$": true
+              },
+              "additionalProperties": {
+                "type": "object",
+                "$ref": "#/$defs/option"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "option": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "some text"
+        }
+      }
+    }
+  }
+}

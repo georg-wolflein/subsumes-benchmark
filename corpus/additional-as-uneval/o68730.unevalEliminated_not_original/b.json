@@ -1,0 +1,130 @@
+{
+  "$id": "http://github.com/push2cloud/push2cloud/schemas/release-manifest.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "release manifest",
+  "description": "In the release manifest, a release manager can specify the exact composition of applications and their versions that are known to work together.",
+  "type": "object",
+  "example": {
+    "name": "push2cloud-example",
+    "description": "release manifest for push2cloud example",
+    "version": "1.0.0",
+    "source": {
+      "type": "git",
+      "url": "https://github.com/push2cloud/push2cloud.git",
+      "referenceValue": "master"
+    },
+    "apps": {
+      "push2cloud-example-host": {
+        "path": "example/apps/host"
+      },
+      "push2cloud-example-api": {
+        "path": "example/apps/api"
+      }
+    }
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Identifier for the release. Can stay the same for multiple releases."
+    },
+    "source": {
+      "type": "object",
+      "description": "Default source definition for all apps in this release. Can be overwritten by each app.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Type of the source.",
+          "default": "git"
+        },
+        "url": {
+          "type": "string",
+          "description": "URL for the source. For git use https://"
+        },
+        "referenceValue": {
+          "type": "string",
+          "description": "The specific reference to retrieve from the source. For git, this can be a commit-id, tag (tags/${tag}) or branch"
+        },
+        "postClone": {
+          "type": "string",
+          "description": "Script to execute after the source has been cloned."
+        }
+      }
+    },
+    "globalServices": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of the release."
+    },
+    "version": {
+      "type": "string",
+      "description": "The version of your release. Use [semver](http://semver.org/). This value is exposed as SYSTEM_VERSION in all your applications."
+    },
+    "apps": {
+      "$ref": "#/$defs/modern_1"
+    }
+  },
+  "required": [
+    "name",
+    "version",
+    "apps"
+  ],
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "The applications of this release",
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "description": "Path where the application is located within the source",
+                    "type": "string",
+                    "default": ""
+                  },
+                  "manifest": {
+                    "description": "Name of the application manifest",
+                    "type": "string",
+                    "default": "package.json"
+                  },
+                  "source": {
+                    "type": "object",
+                    "description": "Source definition for this app.",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "description": "Type of the source.",
+                        "default": "git"
+                      },
+                      "url": {
+                        "type": "string",
+                        "description": "URL for the source. For git use https://"
+                      },
+                      "referenceValue": {
+                        "type": "string",
+                        "description": "The specific reference to retrieve from the source. For git, this can be a commit-id, tag (tags/${tag}) or branch"
+                      },
+                      "postClone": {
+                        "type": "string",
+                        "description": "Script to execute after the source has been cloned."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

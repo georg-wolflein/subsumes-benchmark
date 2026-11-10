@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Codex Coverage Schema",
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "range": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_2"
+                  }
+                },
+                "statement": {
+                  "type": "string"
+                },
+                "embargo": {
+                  "$ref": "#/$defs/modern_3"
+                }
+              },
+              "required": [
+                "id"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^range$": true,
+                "^statement$": true,
+                "^embargo$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "begin": {
+                  "type": "string"
+                },
+                "end": {
+                  "type": "string"
+                }
+              },
+              "_uniqueItems": true
+            },
+            {
+              "items": {
+                "anyOf": [
+                  false,
+                  true
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "begin": {
+                    "type": "string"
+                  },
+                  "end": {
+                    "type": "string"
+                  }
+                }
+              },
+              "_uniqueItems": true
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  true
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

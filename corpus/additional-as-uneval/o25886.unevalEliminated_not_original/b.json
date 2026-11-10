@@ -1,0 +1,922 @@
+{
+  "$id": "https://raw.githubusercontent.com/beerjson/beerjson/master/json/measureable_units.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_23",
+  "$defs": {
+    "SpecificHeatUnitType": {
+      "type": "string",
+      "enum": [
+        "Cal/(g C)",
+        "J/(kg K)",
+        "BTU/(lb F)"
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "minimum": {
+                  "$ref": "#/$defs/PercentType"
+                },
+                "maximum": {
+                  "$ref": "#/$defs/PercentType"
+                }
+              },
+              "required": [
+                "minimum",
+                "maximum"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^minimum$": true,
+                "^maximum$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "ConcentrationUnitType": {
+      "type": "string",
+      "enum": [
+        "ppm",
+        "ppb",
+        "mg/l"
+      ]
+    },
+    "GravityType": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "PercentUnitType": {
+      "type": "string",
+      "enum": [
+        "%"
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "unit": {
+                  "$ref": "#/$defs/VolumeUnitType"
+                },
+                "value": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "unit",
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^unit$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Gravity refers to the both the measurements of percent of sugar content, ie plato and brix, as well as relative density ie specific gravity.",
+              "properties": {
+                "unit": {
+                  "$ref": "#/$defs/GravityUnitType"
+                },
+                "value": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "unit",
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^unit$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "ColorType": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_21": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "minimum": {
+                  "$ref": "#/$defs/GravityType"
+                },
+                "maximum": {
+                  "$ref": "#/$defs/GravityType"
+                }
+              },
+              "required": [
+                "minimum",
+                "maximum"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^minimum$": true,
+                "^maximum$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "minimum": {
+                  "$ref": "#/$defs/BitternessType"
+                },
+                "maximum": {
+                  "$ref": "#/$defs/BitternessType"
+                }
+              },
+              "required": [
+                "minimum",
+                "maximum"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^minimum$": true,
+                "^maximum$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "unit": {
+                  "$ref": "#/$defs/PressureUnitType"
+                },
+                "value": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "unit",
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^unit$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "VersionType": {
+      "type": "number"
+    },
+    "TemperatureRangeType": {
+      "$ref": "#/$defs/modern_7"
+    },
+    "VolumeType": {
+      "$ref": "#/$defs/modern_8"
+    },
+    "CarbonationType": {
+      "$ref": "#/$defs/modern_9"
+    },
+    "PercentRangeType": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Examples for concentration include ppm, ppb, and mg/l. ",
+              "properties": {
+                "unit": {
+                  "$ref": "#/$defs/ConcentrationUnitType"
+                },
+                "value": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "unit",
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^unit$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_16": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Specific volume is the inverse of density, with units of volume over mass, ie qt/lb or L/kg. Commonly used for mash thickness.",
+              "properties": {
+                "unit": {
+                  "$ref": "#/$defs/SpecificVolumeUnitType"
+                },
+                "value": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "unit",
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^unit$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "AcidityUnitType": {
+      "type": "string",
+      "enum": [
+        "pH"
+      ]
+    },
+    "modern_15": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "UnitType is used where unitless amounts are required, such as 1 apple, or 1 yeast packet.",
+              "properties": {
+                "unit": {
+                  "$ref": "#/$defs/UnitUnitType"
+                },
+                "value": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "unit",
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^unit$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "ConcentrationType": {
+      "$ref": "#/$defs/modern_10"
+    },
+    "SpecificHeatType": {
+      "$ref": "#/$defs/modern_11"
+    },
+    "BitternessType": {
+      "$ref": "#/$defs/modern_12"
+    },
+    "QualitativeRangeType": {
+      "type": "string",
+      "enum": [
+        "very low",
+        "low",
+        "medium low",
+        "medium",
+        "medium high",
+        "high",
+        "very high"
+      ]
+    },
+    "VolumeUnitType": {
+      "type": "string",
+      "enum": [
+        "ml",
+        "l",
+        "tsp",
+        "tbsp",
+        "floz",
+        "cup",
+        "pt",
+        "qt",
+        "gal",
+        "bbl",
+        "ifloz",
+        "ipt",
+        "iqt",
+        "igal",
+        "ibbl"
+      ]
+    },
+    "GravityUnitType": {
+      "type": "string",
+      "enum": [
+        "sg",
+        "plato",
+        "brix"
+      ]
+    },
+    "CarbonationUnitType": {
+      "type": "string",
+      "enum": [
+        "vols"
+      ]
+    },
+    "ColorRangeType": {
+      "$ref": "#/$defs/modern_13"
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "minimum": {
+                  "$ref": "#/$defs/TemperatureType"
+                },
+                "maximum": {
+                  "$ref": "#/$defs/TemperatureType"
+                }
+              },
+              "required": [
+                "minimum",
+                "maximum"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^minimum$": true,
+                "^maximum$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "TemperatureType": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_20": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "unit": {
+                  "$ref": "#/$defs/AcidityUnitType"
+                },
+                "value": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "unit",
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^unit$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_23": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "MassType": {
+      "$ref": "#/$defs/modern_14"
+    },
+    "modern_17": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "unit": {
+                  "$ref": "#/$defs/TimeUnitType"
+                },
+                "value": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "unit",
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^unit$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "BitternessUnitType": {
+      "type": "string",
+      "enum": [
+        "IBUs"
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "unit": {
+                  "$ref": "#/$defs/TemperatureUnitType"
+                },
+                "value": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "unit",
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^unit$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_12": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "unit": {
+                  "$ref": "#/$defs/BitternessUnitType"
+                },
+                "value": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "unit",
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^unit$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "UnitType": {
+      "$ref": "#/$defs/modern_15"
+    },
+    "SpecificVolumeType": {
+      "$ref": "#/$defs/modern_16"
+    },
+    "TimeType": {
+      "$ref": "#/$defs/modern_17"
+    },
+    "DensityUnitType": {
+      "type": "string",
+      "enum": [
+        "sg",
+        "plato",
+        "brix"
+      ]
+    },
+    "DateType": {
+      "type": "string",
+      "pattern": "\\d{4}-\\d{2}-\\d{2}|\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}"
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "unit": {
+                  "$ref": "#/$defs/CarbonationUnitType"
+                },
+                "value": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "unit",
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^unit$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_18": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Diastatic power is a measurement of malted grains enzymatic content. A value of 35 Lintner is needed to self convert, while a value of 100 or more is desirable for base malts.",
+              "properties": {
+                "unit": {
+                  "$ref": "#/$defs/DiastaticPowerUnitType"
+                },
+                "value": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "unit",
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^unit$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "TemperatureUnitType": {
+      "type": "string",
+      "enum": [
+        "C",
+        "F"
+      ]
+    },
+    "DiastaticPowerType": {
+      "$ref": "#/$defs/modern_18"
+    },
+    "PressureUnitType": {
+      "type": "string",
+      "enum": [
+        "kPa",
+        "psi",
+        "bar"
+      ]
+    },
+    "modern_13": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "minimum": {
+                  "$ref": "#/$defs/ColorType"
+                },
+                "maximum": {
+                  "$ref": "#/$defs/ColorType"
+                }
+              },
+              "required": [
+                "minimum",
+                "maximum"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^minimum$": true,
+                "^maximum$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "CarbonationRangeType": {
+      "$ref": "#/$defs/modern_19"
+    },
+    "modern_22": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "unit": {
+                  "$ref": "#/$defs/PercentUnitType"
+                },
+                "value": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "unit",
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^unit$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "MassUnitType": {
+      "type": "string",
+      "enum": [
+        "mg",
+        "g",
+        "kg",
+        "lb",
+        "oz"
+      ]
+    },
+    "BitternessRangeType": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Specific heat is the measurement of the amount of heat required to raise a given mass one degree..",
+              "properties": {
+                "unit": {
+                  "$ref": "#/$defs/SpecificHeatUnitType"
+                },
+                "value": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "unit",
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^unit$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "ColorUnitType": {
+      "type": "string",
+      "enum": [
+        "EBC",
+        "Lovi",
+        "SRM"
+      ]
+    },
+    "SpecificVolumeUnitType": {
+      "type": "string",
+      "enum": [
+        "qt/lb",
+        "gal/lb",
+        "gal/oz",
+        "l/g",
+        "l/kg",
+        "floz/oz",
+        "m^3/kg",
+        "ft^3/lb"
+      ]
+    },
+    "modern_14": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "unit": {
+                  "$ref": "#/$defs/MassUnitType"
+                },
+                "value": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "unit",
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^unit$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "AcidityType": {
+      "$ref": "#/$defs/modern_20"
+    },
+    "GravityRangeType": {
+      "$ref": "#/$defs/modern_21"
+    },
+    "UnitUnitType": {
+      "type": "string",
+      "enum": [
+        "1",
+        "unit",
+        "each",
+        "dimensionless",
+        "pkg"
+      ]
+    },
+    "TimeUnitType": {
+      "type": "string",
+      "enum": [
+        "sec",
+        "min",
+        "hr",
+        "day",
+        "week"
+      ]
+    },
+    "DiastaticPowerUnitType": {
+      "type": "string",
+      "enum": [
+        "Lintner",
+        "WK"
+      ]
+    },
+    "PercentType": {
+      "$ref": "#/$defs/modern_22"
+    },
+    "PressureType": {
+      "$ref": "#/$defs/modern_6"
+    },
+    "modern_19": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "minimum": {
+                  "$ref": "#/$defs/CarbonationType"
+                },
+                "maximum": {
+                  "$ref": "#/$defs/CarbonationType"
+                }
+              },
+              "required": [
+                "minimum",
+                "maximum"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^minimum$": true,
+                "^maximum$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "ColorType supports both grain color properties, such as Lovibond, and wort color properties such as SRM and EBC.",
+              "properties": {
+                "unit": {
+                  "$ref": "#/$defs/ColorUnitType"
+                },
+                "value": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "unit",
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^unit$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

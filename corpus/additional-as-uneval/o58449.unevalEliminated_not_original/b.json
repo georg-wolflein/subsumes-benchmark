@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "TSlint Target",
+              "description": "TSlint target options for Build Facade.",
+              "type": "object",
+              "properties": {
+                "format": {
+                  "type": "string",
+                  "description": "Output format (prose, json, stylish, verbose, pmd, msbuild, checkstyle, vso, fileslist).",
+                  "default": "stylish",
+                  "anyOf": [
+                    {
+                      "enum": [
+                        "checkstyle",
+                        "codeFrame",
+                        "filesList",
+                        "json",
+                        "junit",
+                        "msbuild",
+                        "pmd",
+                        "prose",
+                        "stylish",
+                        "tap",
+                        "verbose",
+                        "vso"
+                      ]
+                    },
+                    {
+                      "minLength": 1
+                    }
+                  ]
+                },
+                "force": {
+                  "type": "boolean",
+                  "description": "Succeeds even if there was linting errors.",
+                  "default": false
+                },
+                "silent": {
+                  "type": "boolean",
+                  "description": "Show output text.",
+                  "default": false
+                },
+                "fix": {
+                  "type": "boolean",
+                  "description": "Fixes linting errors (may overwrite linted files).",
+                  "default": false
+                },
+                "files": {
+                  "type": "array",
+                  "description": "Files to include in linting.",
+                  "default": [],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "tslintConfig": {
+                  "type": "string",
+                  "description": "The name of the TSLint configuration file."
+                },
+                "typeCheck": {
+                  "type": "boolean",
+                  "description": "Controls the type check for linting.",
+                  "default": false
+                },
+                "exclude": {
+                  "type": "array",
+                  "description": "Files to exclude from linting.",
+                  "default": [],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "tsConfig": {
+                  "description": "The name of the TypeScript configuration file.",
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  ]
+                }
+              },
+              "required": []
+            },
+            {
+              "patternProperties": {
+                "^tsConfig$": true,
+                "^fix$": true,
+                "^files$": true,
+                "^format$": true,
+                "^silent$": true,
+                "^typeCheck$": true,
+                "^force$": true,
+                "^tslintConfig$": true,
+                "^exclude$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

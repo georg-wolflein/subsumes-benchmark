@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_2",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "from": {
+                  "_format": "date-time",
+                  "title": "From filter",
+                  "type": "string"
+                },
+                "to": {
+                  "_format": "date-time",
+                  "title": "To filter",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^from$": true,
+                "^to$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "dependentRequired": {
+                "page": [
+                  "limit"
+                ]
+              },
+              "description": "Returns filtered logs",
+              "examples": [
+                {
+                  "email": "test@test.com",
+                  "filter": {
+                    "delivered_at": {
+                      "to": "2020-04-07T13:33:44+02:00"
+                    },
+                    "dropped_at": {},
+                    "hard_bounced_at": {
+                      "from": "2020-04-07T13:33:44+02:00",
+                      "to": "2020-06-07T13:33:44+02:00"
+                    },
+                    "spam_complained_at": {
+                      "from": "2020-04-07T13:33:44+02:00"
+                    }
+                  },
+                  "limit": 3,
+                  "mail_template_ids": [
+                    1,
+                    2,
+                    3
+                  ],
+                  "page": 1
+                }
+              ],
+              "properties": {
+                "mail_template_ids": {
+                  "items": {
+                    "type": "integer"
+                  },
+                  "title": "Mail template ids",
+                  "type": "array"
+                },
+                "email": {
+                  "_format": "email",
+                  "type": "string"
+                },
+                "page": {
+                  "type": "integer"
+                },
+                "filter": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "limit": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "email"
+              ],
+              "title": "Logs",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^page$": true,
+                "^limit$": true,
+                "^mail_template_ids$": true,
+                "^email$": true,
+                "^filter$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "date-filter": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Apply filter on logs results",
+              "properties": {
+                "spam_complained_at": {
+                  "$ref": "#/$defs/date-filter",
+                  "title": "Spam complained at filter"
+                },
+                "clicked_at": {
+                  "$ref": "#/$defs/date-filter",
+                  "title": "Clicked at filter"
+                },
+                "sent_at": {
+                  "$ref": "#/$defs/date-filter",
+                  "title": "Sent at filter"
+                },
+                "hard_bounced_at": {
+                  "$ref": "#/$defs/date-filter",
+                  "title": "Hard bounced at filter"
+                },
+                "opened_at": {
+                  "$ref": "#/$defs/date-filter",
+                  "title": "Opened at filter"
+                },
+                "dropped_at": {
+                  "$ref": "#/$defs/date-filter",
+                  "title": "Dropped at filter"
+                },
+                "delivered_at": {
+                  "$ref": "#/$defs/date-filter",
+                  "title": "Delivered at filter"
+                }
+              },
+              "title": "Advanced logs filter",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^spam_complained_at$": true,
+                "^opened_at$": true,
+                "^delivered_at$": true,
+                "^sent_at$": true,
+                "^clicked_at$": true,
+                "^hard_bounced_at$": true,
+                "^dropped_at$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

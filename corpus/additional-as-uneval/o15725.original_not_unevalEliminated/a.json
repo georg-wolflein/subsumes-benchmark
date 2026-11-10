@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "min_zoom": {
+                  "type": "integer",
+                  "minimum": 0.0
+                },
+                "continent_dims": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "floors": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "max_zoom": {
+                  "type": "integer",
+                  "minimum": 0.0
+                }
+              },
+              "required": [
+                "name",
+                "continent_dims",
+                "min_zoom",
+                "max_zoom",
+                "floors",
+                "id"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^continent_dims$": true,
+                "^max_zoom$": true,
+                "^name$": true,
+                "^id$": true,
+                "^min_zoom$": true,
+                "^floors$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "minItems": 2,
+              "_uniqueItems": false,
+              "items": true,
+              "maxItems": 2
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "minItems": 1,
+              "_uniqueItems": false,
+              "items": {
+                "type": "integer"
+              }
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  true
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

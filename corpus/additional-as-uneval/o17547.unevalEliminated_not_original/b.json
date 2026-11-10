@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Server RootDiscussionForm",
+              "description": "Server RootDiscussionForm from Tiamat",
+              "type": "object",
+              "required": [
+                "forumBoard",
+                "forumBoardGroup"
+              ],
+              "properties": {
+                "forumBoardGroup": {
+                  "type": "object",
+                  "enum": [
+                    {
+                      "$data": "1/forumBoard/groups"
+                    }
+                  ]
+                },
+                "forumBoard": {
+                  "type": "object",
+                  "required": [
+                    "_id"
+                  ],
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "pattern": "^[0-9a-fA-F]{24}$"
+                    },
+                    "groups": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^forumBoardGroup$": true,
+                "^forumBoard$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "groups": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "groups": {
+                        "type": "array",
+                        "items": true
+                      },
+                      "version": {
+                        "type": "string"
+                      },
+                      "id": {
+                        "type": "string"
+                      },
+                      "dependencies": {
+                        "type": "array",
+                        "items": true
+                      },
+                      "apps": {
+                        "type": "array",
+                        "items": true
+                      }
+                    }
+                  }
+                },
+                "version": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "dependencies": {
+                  "type": "array",
+                  "items": true
+                },
+                "apps": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^apps$": true,
+                "^version$": true,
+                "^dependencies$": true,
+                "^groups$": true,
+                "^id$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,382 @@
+{
+  "$id": "https://nevergreen.io/schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "trayId": {
+                  "type": "string"
+                },
+                "isNew": {
+                  "type": "boolean"
+                },
+                "projectId": {
+                  "type": "string"
+                },
+                "removed": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "projectId",
+                "description",
+                "trayId"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^isNew$": true,
+                "^removed$": true,
+                "^description$": true,
+                "^trayId$": true,
+                "^projectId$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "clickToShowMenu": {
+                  "type": "boolean"
+                },
+                "brokenBuildSoundFx": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "showPrognosis": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "showTrayName": {
+                  "type": "boolean"
+                },
+                "refreshTime": {
+                  "type": "number"
+                },
+                "maxProjectsToShow": {
+                  "type": "string",
+                  "enum": [
+                    "small",
+                    "medium",
+                    "large",
+                    "all"
+                  ]
+                },
+                "playBrokenBuildSoundFx": {
+                  "type": "boolean"
+                },
+                "sort": {
+                  "type": "string"
+                },
+                "showSystemNotifications": {
+                  "type": "boolean"
+                },
+                "showBuildLabel": {
+                  "type": "boolean"
+                },
+                "showBuildTime": {
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^sort$": true,
+                "^showBuildLabel$": true,
+                "^showBuildTime$": true,
+                "^showPrognosis$": true,
+                "^playBrokenBuildSoundFx$": true,
+                "^showSystemNotifications$": true,
+                "^showTrayName$": true,
+                "^maxProjectsToShow$": true,
+                "^brokenBuildSoundFx$": true,
+                "^refreshTime$": true,
+                "^clickToShowMenu$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Nevergreen",
+              "description": "Nevergreen settings",
+              "type": "object",
+              "properties": {
+                "success": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "trays": {
+                  "type": "object",
+                  "patternProperties": {
+                    ".*": {
+                      "$ref": "#/$defs/modern_3"
+                    }
+                  }
+                },
+                "selected": {
+                  "$ref": "#/$defs/modern_4"
+                },
+                "projects": {
+                  "type": "object",
+                  "patternProperties": {
+                    ".*": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/$defs/modern_5"
+                      }
+                    }
+                  }
+                },
+                "settings": {
+                  "$ref": "#/$defs/modern_6"
+                },
+                "appliedMigrations": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_7"
+                  }
+                },
+                "backup": {
+                  "type": "object",
+                  "patternProperties": {
+                    ".*": {
+                      "$ref": "#/$defs/modern_8"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^selected$": true,
+                "^projects$": true,
+                "^backup$": true,
+                "^success$": true,
+                "^appliedMigrations$": true,
+                "^trays$": true,
+                "^settings$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "timestamp": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "timestamp"
+              ]
+            },
+            {
+              "items": {
+                "anyOf": [
+                  false,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "description": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "url": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "url"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^description$": true,
+                "^url$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "encryptedPassword": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "name": {
+                  "type": "string"
+                },
+                "timestamp": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "url": {
+                  "type": "string"
+                },
+                "username": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "trayId": {
+                  "type": "string"
+                },
+                "authType": {
+                  "type": "string"
+                },
+                "serverType": {
+                  "type": "string"
+                },
+                "encryptedAccessToken": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "includeNew": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "trayId",
+                "url"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^username$": true,
+                "^timestamp$": true,
+                "^trayId$": true,
+                "^url$": true,
+                "^name$": true,
+                "^serverType$": true,
+                "^encryptedPassword$": true,
+                "^includeNew$": true,
+                "^encryptedAccessToken$": true,
+                "^authType$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                ".*": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            {
+              "patternProperties": {
+                ".*": true,
+                "additionalProperties": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

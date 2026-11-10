@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "keyName": {
+                  "title": "Storage Key Name",
+                  "type": "string",
+                  "minLength": 1
+                },
+                "valuePath": {
+                  "title": "Value Path",
+                  "description": "JSON path for where to place value",
+                  "type": "string",
+                  "minLength": 1
+                },
+                "defaultValue": {
+                  "title": "Default Value",
+                  "description": "Value to place in 'Value Path' if key does not exist",
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "keyName",
+                "valuePath"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^keyName$": true,
+                "^valuePath$": true,
+                "^defaultValue$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

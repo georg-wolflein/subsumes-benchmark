@@ -1,0 +1,518 @@
+{
+  "$id": "https://github.com/elastic/elasticsearch/tree/master/rest-api-spec",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/Api",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "An array of the URL path variants for the API",
+              "properties": {
+                "paths": {
+                  "items": {
+                    "$ref": "#/$defs/Path"
+                  },
+                  "minLength": 1,
+                  "type": "array"
+                }
+              },
+              "required": [
+                "paths"
+              ],
+              "title": "API urls",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^paths$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Indicates if part of the API is deprecated, in what version and why",
+              "properties": {
+                "description": {
+                  "title": "A description for the deprecation, which may include alternatives to use",
+                  "type": "string"
+                },
+                "version": {
+                  "pattern": "^\\d+\\.\\d+\\.\\d+$",
+                  "title": "The version from which deprecation applies",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "description",
+                "version"
+              ],
+              "title": "Deprecation",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^version$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "anyOf": [
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "type": {
+                              "const": "enum"
+                            }
+                          }
+                        },
+                        {
+                          "required": [
+                            "options"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "not": {
+                        "properties": {
+                          "type": {
+                            "const": "enum"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": "The properties of an API parameter or part",
+              "properties": {
+                "description": {
+                  "title": "A description for the parameter",
+                  "type": "string"
+                },
+                "deprecated": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/Deprecated"
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                },
+                "options": {
+                  "items": {
+                    "pattern": "^[a-zA-Z_]+$",
+                    "type": "string"
+                  },
+                  "title": "Valid options when type is an enum",
+                  "type": "array"
+                },
+                "default": {
+                  "title": "Default value",
+                  "type": [
+                    "string",
+                    "number",
+                    "boolean"
+                  ]
+                },
+                "type": {
+                  "pattern": "^list|date|time|string|enum|int|double|long|boolean|number$",
+                  "title": "The type of the parameter.",
+                  "type": "string"
+                },
+                "required": {
+                  "title": "Whether the parameter is required",
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "description",
+                "type"
+              ],
+              "title": "API parameter or part",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^deprecated$": true,
+                "^required$": true,
+                "^description$": true,
+                "^options$": true,
+                "^type$": true,
+                "^default$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Components": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "The components that make up the API",
+              "properties": {
+                "body": {
+                  "$ref": "#/$defs/Body"
+                },
+                "url": {
+                  "$ref": "#/$defs/Url"
+                },
+                "documentation": {
+                  "$ref": "#/$defs/Documentation"
+                },
+                "params": {
+                  "$ref": "#/$defs/Params"
+                },
+                "deprecated": {
+                  "$ref": "#/$defs/Deprecated"
+                },
+                "stability": {
+                  "enum": [
+                    "stable",
+                    "beta",
+                    "experimental",
+                    "private"
+                  ],
+                  "type": "string"
+                }
+              },
+              "required": [
+                "documentation",
+                "stability",
+                "url"
+              ],
+              "title": "API components",
+              "type": "object",
+              "anyOf": [
+                {
+                  "allOf": [
+                    {
+                      "properties": {
+                        "stability": {
+                          "const": "stable"
+                        }
+                      }
+                    },
+                    {
+                      "properties": {
+                        "documentation": {
+                          "$ref": "#/$defs/Documentation",
+                          "properties": {
+                            "url": {
+                              "type": [
+                                "string"
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "allOf": [
+                    {
+                      "not": {
+                        "properties": {
+                          "stability": {
+                            "const": "stable"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "properties": {
+                        "documentation": {
+                          "$ref": "#/$defs/Documentation",
+                          "properties": {
+                            "url": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^deprecated$": true,
+                "^documentation$": true,
+                "^body$": true,
+                "^url$": true,
+                "^params$": true,
+                "^stability$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Path": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "Parts": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "API documentation including a link to the public reference and a short description",
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "url": {
+                  "_format": "uri"
+                }
+              },
+              "required": [
+                "url",
+                "description"
+              ],
+              "title": "Documentation",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^url$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "An object with a single property name of the API and value of the API components",
+              "maxProperties": 1,
+              "minProperties": 1,
+              "patternProperties": {
+                "^[a-z]+?(_[a-z]+)*(\\.[a-z]+?(_[a-z]+)*)?$": {
+                  "$ref": "#/$defs/Components"
+                }
+              },
+              "propertyNames": {
+                "pattern": "^[a-z]+?(_[a-z]+)*(\\.[a-z]+?(_[a-z]+)*)?$"
+              },
+              "title": "API name",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^[a-z]+?(_[a-z]+)*(\\.[a-z]+?(_[a-z]+)*)?$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "The request body for the API. Does not detail the structure, only whether the API accepts a body and its format",
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "required": {
+                  "type": "boolean"
+                },
+                "serialize": {
+                  "enum": [
+                    "bulk"
+                  ],
+                  "type": "string"
+                }
+              },
+              "required": [
+                "description"
+              ],
+              "title": "API request Body",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^required$": true,
+                "^serialize$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Url": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "Documentation": {
+      "$ref": "#/$defs/modern_7"
+    },
+    "Api": {
+      "$ref": "#/$defs/modern_8"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "A collection of the query string parameters for the API",
+              "patternProperties": {
+                "^_?[a-z]+?(_[a-z]+)*$": {
+                  "$ref": "#/$defs/ParamPart"
+                }
+              },
+              "propertyNames": {
+                "pattern": "^_?[a-z]+?(_[a-z]+)*$"
+              },
+              "title": "API query string parameters",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^_?[a-z]+?(_[a-z]+)*$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "Params": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "A path variant for the API including the HTTP methods it supports and parts",
+              "properties": {
+                "deprecated": {
+                  "$ref": "#/$defs/Deprecated"
+                },
+                "methods": {
+                  "items": {
+                    "enum": [
+                      "DELETE",
+                      "GET",
+                      "HEAD",
+                      "POST",
+                      "PUT"
+                    ],
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "parts": {
+                  "$ref": "#/$defs/Parts"
+                },
+                "path": {
+                  "pattern": "^\\/([a-z0-9\\/_{}])*$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "methods",
+                "path"
+              ],
+              "title": "API path",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^deprecated$": true,
+                "^methods$": true,
+                "^parts$": true,
+                "^path$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Body": {
+      "$ref": "#/$defs/modern_9"
+    },
+    "ParamPart": {
+      "$ref": "#/$defs/modern_10"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Variable parts that make up an API url path",
+              "patternProperties": {
+                "^_?[a-z]+?(_[a-z]+)*$": {
+                  "$ref": "#/$defs/ParamPart"
+                }
+              },
+              "propertyNames": {
+                "pattern": "^_?[a-z]+?(_[a-z]+)*$"
+              },
+              "title": "API url parts",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^_?[a-z]+?(_[a-z]+)*$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "Deprecated": {
+      "$ref": "#/$defs/modern_6"
+    }
+  }
+}

@@ -1,0 +1,409 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "authenticationMechanism": {
+      "type": "string"
+    },
+    "baseUrl": {
+      "pattern": "^(http(s)?\\:\\/\\/(([a-zA-Z0-9]+((\\.|\\-)[a-zA-Z0-9]+)+)|(localhost))(\\:\\d+)?(\\/[\\w\\-]+)*(\\/?|\\/\\w+\\.[a-zA-Z]{2,4}(\\?[\\w]+\\=[\\w\\-]+)?)?(\\&[\\w]+\\=[\\w\\-]+)*)$",
+      "type": "string"
+    },
+    "dataFormats": {
+      "items": {
+        "pattern": "^([\\w.+-]+/[\\w.+-]+)$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "_uniqueItems": true
+    },
+    "database": {
+      "properties": {
+        "admin": {
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "password"
+          ],
+          "type": "object"
+        },
+        "dbms": {
+          "type": "string"
+        },
+        "host": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer"
+        },
+        "prefix": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "dateFormat": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "encoding": {
+      "type": "string"
+    },
+    "resources": {
+      "items": {
+        "$ref": "#/$defs/resource"
+      },
+      "minItems": 1,
+      "type": "array",
+      "_uniqueItems": true
+    },
+    "roles": {
+      "items": {
+        "$ref": "#/$defs/role"
+      },
+      "minItems": 0,
+      "type": "array",
+      "_uniqueItems": true
+    },
+    "timeZone": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "types": {
+      "items": {
+        "$ref": "#/$defs/field"
+      },
+      "minItems": 0,
+      "type": "array",
+      "_uniqueItems": true
+    },
+    "version": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "baseUrl",
+    "dataFormats",
+    "database",
+    "resources"
+  ],
+  "type": "object",
+  "$defs": {
+    "acl": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/aclSimple"
+        },
+        {
+          "properties": {
+            "create": {
+              "$ref": "#/$defs/aclSimple"
+            },
+            "delete": {
+              "$ref": "#/$defs/aclSimple"
+            },
+            "read": {
+              "$ref": "#/$defs/aclSimple"
+            },
+            "update": {
+              "$ref": "#/$defs/aclSimple"
+            }
+          },
+          "type": "object"
+        }
+      ]
+    },
+    "aclSimple": {
+      "items": {
+        "$ref": "#/$defs/basicName"
+      },
+      "minItems": 0,
+      "type": "array",
+      "_uniqueItems": true
+    },
+    "basicName": {
+      "pattern": "^[a-zA-Z_$][a-zA-Z_$0-9]*$",
+      "type": "string"
+    },
+    "check": {
+      "type": "string"
+    },
+    "field": {
+      "properties": {
+        "autoIncrement": {
+          "type": "boolean"
+        },
+        "default": {},
+        "description": {
+          "type": "string"
+        },
+        "encrypted": {
+          "type": "boolean"
+        },
+        "enum": {
+          "minItems": 1,
+          "type": "array",
+          "_uniqueItems": true
+        },
+        "filterable": {
+          "type": "boolean"
+        },
+        "max": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "min": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "name": {
+          "$ref": "#/$defs/basicName"
+        },
+        "onUpdate": {
+          "type": "string"
+        },
+        "pattern": {
+          "type": "string"
+        },
+        "patternOptions": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array",
+          "_uniqueItems": true
+        },
+        "precision": {
+          "items": {
+            "type": "integer"
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "type": "array",
+          "_uniqueItems": false
+        },
+        "readOnly": {
+          "type": "boolean"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "sortable": {
+          "type": "boolean"
+        },
+        "type": {
+          "enum": [
+            "int",
+            "float",
+            "decimal",
+            "string",
+            "bool",
+            "date",
+            "time",
+            "datetime",
+            "file"
+          ],
+          "type": "string"
+        },
+        "unique": {
+          "type": "boolean"
+        },
+        "writeOnly": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name",
+        "type"
+      ],
+      "type": "object"
+    },
+    "index": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0,
+      "type": "array",
+      "_uniqueItems": true
+    },
+    "relation": {
+      "properties": {
+        "check": {
+          "$ref": "#/$defs/check"
+        },
+        "description": {
+          "type": "string"
+        },
+        "embed": {
+          "type": "boolean"
+        },
+        "fields": {
+          "items": {
+            "$ref": "#/$defs/field"
+          },
+          "minItems": 0,
+          "type": "array",
+          "_uniqueItems": true
+        },
+        "index": {
+          "$ref": "#/$defs/index"
+        },
+        "max": {
+          "type": "integer"
+        },
+        "min": {
+          "type": "integer"
+        },
+        "onDelete": {
+          "type": "string"
+        },
+        "onUpdate": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "hasOne",
+            "hasMany"
+          ],
+          "type": "string"
+        },
+        "with": {
+          "$ref": "#/$defs/basicName"
+        }
+      },
+      "required": [
+        "with",
+        "type"
+      ],
+      "type": "object"
+    },
+    "resource": {
+      "properties": {
+        "abstract": {
+          "type": "boolean"
+        },
+        "acceptExtraFields": {
+          "type": "boolean"
+        },
+        "acl": {
+          "$ref": "#/$defs/acl"
+        },
+        "base": {
+          "$ref": "#/$defs/basicName"
+        },
+        "check": {
+          "$ref": "#/$defs/check"
+        },
+        "description": {
+          "type": "string"
+        },
+        "fields": {
+          "items": {
+            "$ref": "#/$defs/field"
+          },
+          "minItems": 1,
+          "type": "array",
+          "_uniqueItems": true
+        },
+        "idInjection": {
+          "type": "boolean"
+        },
+        "index": {
+          "$ref": "#/$defs/index"
+        },
+        "inheritanceStrategy": {
+          "type": "string"
+        },
+        "isUser": {
+          "type": "boolean"
+        },
+        "name": {
+          "$ref": "#/$defs/basicName"
+        },
+        "paginable": {
+          "type": "boolean"
+        },
+        "plural": {
+          "$ref": "#/$defs/basicName"
+        },
+        "relations": {
+          "items": {
+            "$ref": "#/$defs/relation"
+          },
+          "minItems": 0,
+          "type": "array",
+          "_uniqueItems": true
+        }
+      },
+      "required": [
+        "name",
+        "fields"
+      ],
+      "type": "object"
+    },
+    "role": {
+      "properties": {
+        "isA": {
+          "type": "string"
+        },
+        "isAdmin": {
+          "type": "boolean"
+        },
+        "isGuest": {
+          "type": "boolean"
+        },
+        "name": {
+          "$ref": "#/$defs/basicName"
+        },
+        "rateLimit": {
+          "properties": {
+            "numOfRequests": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "refreshTime": {
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "numOfRequests",
+            "refreshTime"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object"
+    }
+  }
+}

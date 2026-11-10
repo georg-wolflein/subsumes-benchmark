@@ -1,0 +1,1287 @@
+{
+  "$id": "https://dpds.opendatamesh.org/resources/schemas/1.0.0-DRAFT.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "SPEC-BASE-URL#dpdsObject",
+  "title": "dataProductDescriptor",
+  "description": "The description of Data Product Descriptor v1.0.x documents without schema validation, as defined by <a href=\"SPEC-BASE-URL\" target=\"_parent\">Data Product Descriptor Specification v1.0</a>",
+  "type": "object",
+  "properties": {
+    "internalComponents": {
+      "$ref": "#/$defs/internalComponents"
+    },
+    "tags": {
+      "description": "",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dataProductDescriptor": {
+      "description": "",
+      "type": "string",
+      "format": "version"
+    },
+    "externalDocs": {
+      "$ref": "#/$defs/externalResource"
+    },
+    "interfaceComponents": {
+      "$ref": "#/$defs/interfaceComponents"
+    },
+    "info": {
+      "$ref": "#/$defs/info"
+    },
+    "components": {
+      "$ref": "#/$defs/components"
+    }
+  },
+  "required": [
+    "dataProductDescriptor",
+    "info",
+    "interfaceComponents"
+  ],
+  "$defs": {
+    "applicationComponentOrReference": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/reference"
+        },
+        {
+          "$ref": "#/$defs/applicationComponent"
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "$comment": "SPEC-BASE-URL#discoveryPortComponent",
+              "title": "The <a href=\"SPEC-BASE-URL#discoveryPortComponent\" target=\"_parent\">Discovey Port Component</a> describes a <a href=\"SPEC-BASE-URL#definitions3DataProductPorts\" target=\"_parent\">discovery port</a> of a data product.t",
+              "description": "",
+              "type": "object",
+              "allOf": [
+                {
+                  "$ref": "#/$defs/entity"
+                },
+                {
+                  "$ref": "#/$defs/port"
+                }
+              ],
+              "patternProperties": {
+                "^x-": true
+              }
+            },
+            {
+              "patternProperties": {
+                "^expectations$": true,
+                "^version$": true,
+                "^description$": true,
+                "^componentGroup$": true,
+                "^entityType$": true,
+                "^name$": true,
+                "^displayName$": true,
+                "^promises$": true,
+                "^fullyQualifiedName$": true,
+                "^tags$": true,
+                "^contracts$": true,
+                "^x-": true,
+                "^externalDocs$": true,
+                "^id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "inputPortOrReference": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/reference"
+        },
+        {
+          "$ref": "#/$defs/inputPort"
+        }
+      ]
+    },
+    "discoveryPort": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "$comment": "SPEC-BASE-URL#applicationComponent",
+              "title": "Application Component",
+              "description": "The <a href=\"SPEC-BASE-URL#applicationComponent\" target=\"_parent\">Application Component</a> describes an internal application component used by the data product to provide services through its ports.",
+              "type": "object",
+              "allOf": [
+                {
+                  "$ref": "#/$defs/entity"
+                },
+                {
+                  "title": "applicationComponent",
+                  "properties": {
+                    "providesTo": {
+                      "description": "",
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "buildInfo": {
+                      "$comment": "SPEC-BASE-URL#buildInfoObject",
+                      "title": "Build Info",
+                      "description": "The <a href=\"SPEC-BASE-URL#buildInfoObject\" target=\"_parent\">Build Info Object</a> contains all the informations required to build an <a href=\"SPEC-BASE-URL#applicationComponent\" target=\"_parent\">Application Component</a>",
+                      "type": "object",
+                      "properties": {
+                        "service": {
+                          "$ref": "#/$defs/reference"
+                        },
+                        "template": {
+                          "$ref": "#/$defs/objectOrStringOrReference"
+                        },
+                        "configurations": {
+                          "$ref": "#/$defs/objectOrStringOrReference"
+                        }
+                      }
+                    },
+                    "applicationType": {
+                      "description": "",
+                      "type": "string"
+                    },
+                    "consumesFrom": {
+                      "description": "",
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "dependsOn": {
+                      "description": "",
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "platform": {
+                      "description": "",
+                      "type": "string"
+                    },
+                    "deployInfo": {
+                      "$comment": "SPEC-BASE-URL#deployInfoObject",
+                      "title": "Build Info",
+                      "description": "The <a href=\"SPEC-BASE-URL#deployInfoObject\" target=\"_parent\">Deploy Info Object</a> contains all the informations required to deploy an <a href=\"SPEC-BASE-URL#applicationComponent\" target=\"_parent\">Application Component</a>",
+                      "type": "object",
+                      "properties": {
+                        "service": {
+                          "$ref": "#/$defs/reference"
+                        },
+                        "template": {
+                          "$ref": "#/$defs/objectOrStringOrReference"
+                        },
+                        "configurations": {
+                          "$ref": "#/$defs/objectOrStringOrReference"
+                        }
+                      }
+                    }
+                  }
+                }
+              ],
+              "patternProperties": {
+                "^x-": true
+              }
+            },
+            {
+              "patternProperties": {
+                "^buildInfo$": true,
+                "^version$": true,
+                "^description$": true,
+                "^x-": true,
+                "^componentGroup$": true,
+                "^deployInfo$": true,
+                "^name$": true,
+                "^consumesFrom$": true,
+                "^providesTo$": true,
+                "^dependsOn$": true,
+                "^fullyQualifiedName$": true,
+                "^tags$": true,
+                "^entityType$": true,
+                "^platform$": true,
+                "^externalDocs$": true,
+                "^id$": true,
+                "^applicationType$": true,
+                "^displayName$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "discoveryPortOrReference": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/reference"
+        },
+        {
+          "$ref": "#/$defs/discoveryPort"
+        }
+      ]
+    },
+    "modern_12": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "$comment": "SPEC-BASE-URL#infoObject",
+              "title": "Info Object",
+              "description": "The <a href=\"SPEC-BASE-URL#infoObject\" target=\"_parent\">Info Object</a> provides metadata about the data product. The metadata can be used by the platform or by cosumers if needed.",
+              "type": "object",
+              "properties": {
+                "displayName": {
+                  "description": "",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "",
+                  "type": "string",
+                  "format": "name"
+                },
+                "description": {
+                  "description": "",
+                  "type": "string"
+                },
+                "domain": {
+                  "description": "",
+                  "type": "string",
+                  "format": "name"
+                },
+                "fullyQualifiedName": {
+                  "description": "",
+                  "type": "string",
+                  "format": "fqn"
+                },
+                "version": {
+                  "description": "",
+                  "type": "string",
+                  "format": "version"
+                },
+                "id": {
+                  "description": "",
+                  "type": "string",
+                  "readOnly": true,
+                  "format": "uuid"
+                },
+                "entityType": {
+                  "description": "",
+                  "type": "string",
+                  "readOnly": true,
+                  "format": "alphanumeric"
+                },
+                "contactPoints": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/contactPoint"
+                  }
+                },
+                "owner": {
+                  "$ref": "#/$defs/owner"
+                }
+              },
+              "required": [
+                "fullyQualifiedName",
+                "name",
+                "version",
+                "domain",
+                "owner"
+              ],
+              "patternProperties": {
+                "^x-": true
+              }
+            },
+            {
+              "patternProperties": {
+                "^version$": true,
+                "^description$": true,
+                "^x-": true,
+                "^owner$": true,
+                "^contactPoints$": true,
+                "^entityType$": true,
+                "^name$": true,
+                "^domain$": true,
+                "^id$": true,
+                "^displayName$": true,
+                "^fullyQualifiedName$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "standardDefinition": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "$comment": "SPEC-BASE-URL#promisesObject",
+              "title": "The <a href=\"SPEC-BASE-URL#promisesObject\" target=\"_parent\">Promises Object</a> describes the data product's <a href=\"SPEC-BASE-URL#definitions3DataProductPortsPromises\" target=\"_parent\">promises</a> declared over a given port.",
+              "description": "",
+              "type": "object",
+              "properties": {
+                "api": {
+                  "$ref": "#/$defs/standardDefinition"
+                },
+                "platform": {
+                  "description": "",
+                  "type": "string"
+                },
+                "slo": {
+                  "$ref": "#/$defs/specificationExtensionPoint"
+                },
+                "servicesType": {
+                  "description": "",
+                  "type": "string"
+                },
+                "deprecationPolicy": {
+                  "$ref": "#/$defs/specificationExtensionPoint"
+                }
+              },
+              "patternProperties": {
+                "^x-": true
+              }
+            },
+            {
+              "patternProperties": {
+                "^x-": true,
+                "^servicesType$": true,
+                "^platform$": true,
+                "^deprecationPolicy$": true,
+                "^api$": true,
+                "^slo$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "infrastructuralComponentOrReference": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/reference"
+        },
+        {
+          "$ref": "#/$defs/infrastructuralComponent"
+        }
+      ]
+    },
+    "contracts": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "reference": {
+      "$ref": "#/$defs/modern_6"
+    },
+    "applicationComponent": {
+      "$ref": "#/$defs/modern_7"
+    },
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "$comment": "SPEC-BASE-URL#contractsObject",
+              "title": "Expectations Object",
+              "description": "The <a href=\"SPEC-BASE-URL#contractsObject\" target=\"_parent\">Contracts Object</a> describes the data product's <a href=\"SPEC-BASE-URL#definitions3DataProductPortsContracts\" target=\"_parent\">contracts</a> declared over a given port.",
+              "type": "object",
+              "properties": {
+                "termsAndConditions": {
+                  "$ref": "#/$defs/specificationExtensionPoint"
+                },
+                "billingPolicy": {
+                  "$ref": "#/$defs/specificationExtensionPoint"
+                },
+                "sla": {
+                  "$ref": "#/$defs/specificationExtensionPoint"
+                }
+              },
+              "patternProperties": {
+                "^x-": true
+              }
+            },
+            {
+              "patternProperties": {
+                "^termsAndConditions$": true,
+                "^billingPolicy$": true,
+                "^sla$": true,
+                "^x-": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "outputPortOrReference": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/reference"
+        },
+        {
+          "$ref": "#/$defs/outputPort"
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "$comment": "SPEC-BASE-URL#referenceObject",
+              "title": "Reference Object",
+              "description": "The <a href=\"SPEC-BASE-URL#referenceObject\" target=\"_parent\">Reference Object</a> allows referencing other components in the <a href=\"SPEC-BASE-URL#definitions3DpdsDocument\" target=\"_parent\">Data Product Descriptor Document</a>, internally and externally.",
+              "type": "object",
+              "properties": {
+                "$ref": {
+                  "description": "",
+                  "type": "string",
+                  "format": "uri-reference"
+                },
+                "mediaType": {
+                  "description": "",
+                  "type": "string"
+                },
+                "description": {
+                  "description": "",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "$ref"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^$ref$": true,
+                "^mediaType$": true,
+                "^description$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "externalResource": {
+      "$ref": "#/$defs/modern_8"
+    },
+    "promisesOrReference": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/reference"
+        },
+        {
+          "$ref": "#/$defs/promises"
+        }
+      ]
+    },
+    "outputPort": {
+      "$ref": "#/$defs/modern_9"
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "$comment": "SPEC-BASE-URL#observabilityPortComponent",
+              "title": "The <a href=\"SPEC-BASE-URL#observabilityPortComponent\" target=\"_parent\">Observability Port Component</a> describes an <a href=\"SPEC-BASE-URL#definitions3DataProductPorts\" target=\"_parent\">observability port</a> of a data product.",
+              "description": "",
+              "type": "object",
+              "allOf": [
+                {
+                  "$ref": "#/$defs/entity"
+                },
+                {
+                  "$ref": "#/$defs/port"
+                }
+              ],
+              "patternProperties": {
+                "^x-": true
+              }
+            },
+            {
+              "patternProperties": {
+                "^expectations$": true,
+                "^version$": true,
+                "^description$": true,
+                "^componentGroup$": true,
+                "^entityType$": true,
+                "^name$": true,
+                "^displayName$": true,
+                "^promises$": true,
+                "^fullyQualifiedName$": true,
+                "^tags$": true,
+                "^contracts$": true,
+                "^x-": true,
+                "^externalDocs$": true,
+                "^id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "contractsOrReference": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/reference"
+        },
+        {
+          "$ref": "#/$defs/contracts"
+        }
+      ]
+    },
+    "modern_16": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "$comment": "SPEC-BASE-URL#contactPointObject",
+              "title": "Contact Point Object",
+              "description": "The <a href=\"SPEC-BASE-URL#contactPointObject\" target=\"_parent\">Contact Point Object</a> describes a data product's contact point.",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "",
+                  "type": "string",
+                  "format": "name"
+                },
+                "description": {
+                  "description": "",
+                  "type": "string"
+                },
+                "channel": {
+                  "description": "",
+                  "type": "string"
+                },
+                "address": {
+                  "description": "",
+                  "type": "string"
+                }
+              },
+              "patternProperties": {
+                "^x-": true
+              }
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^x-": true,
+                "^address$": true,
+                "^name$": true,
+                "^channel$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_15": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "$comment": "SPEC-BASE-URL#inputPortComponent",
+              "title": "Input Port Object",
+              "description": "The <a href=\"SPEC-BASE-URL#inputPortComponent\" target=\"_parent\">Input Port Component</a> describes an <a href=\"SPEC-BASE-URL#definitions3DataProductPorts\" target=\"_parent\">input port</a> of a data product.",
+              "type": "object",
+              "allOf": [
+                {
+                  "$ref": "#/$defs/entity"
+                },
+                {
+                  "$ref": "#/$defs/port"
+                }
+              ],
+              "patternProperties": {
+                "^x-": true
+              }
+            },
+            {
+              "patternProperties": {
+                "^expectations$": true,
+                "^version$": true,
+                "^description$": true,
+                "^componentGroup$": true,
+                "^entityType$": true,
+                "^name$": true,
+                "^displayName$": true,
+                "^promises$": true,
+                "^fullyQualifiedName$": true,
+                "^tags$": true,
+                "^contracts$": true,
+                "^x-": true,
+                "^externalDocs$": true,
+                "^id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "internalComponents": {
+      "$comment": "SPEC-BASE-URL#internalComponentsObject",
+      "title": "Internal Components Object",
+      "description": "The <a href=\"SPEC-BASE-URL#internalComponentsObject\" target=\"_parent\">Internal Components Object</a> it's a collection of all internal entities that compose a data product.",
+      "type": "object",
+      "properties": {
+        "applicationComponents": {
+          "description": "",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/applicationComponentOrReference"
+          }
+        },
+        "infrastructuralComponents": {
+          "description": "",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/infrastructuralComponentOrReference"
+          }
+        }
+      }
+    },
+    "observabilityPort": {
+      "$ref": "#/$defs/modern_10"
+    },
+    "specificationExtensionPoint": {
+      "$ref": "#/$defs/modern_11"
+    },
+    "modern_17": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "$comment": "SPEC-BASE-URL#ownerObject",
+              "title": "Owner Object",
+              "description": "The <a href=\"SPEC-BASE-URL#ownerObject\" target=\"_parent\">Owner Object</a> describes the data product's owner.",
+              "type": "object",
+              "properties": {
+                "id": {
+                  "description": "",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id"
+              ],
+              "patternProperties": {
+                "^x-": true
+              }
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^name$": true,
+                "^x-": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "$comment": "SPEC-BASE-URL#standardDefinitionObject",
+              "title": "Standard Definition Object",
+              "description": "The <a href=\"SPEC-BASE-URL#standardDefinitionObject\" target=\"_parent\">Standard Definition Object</a> formally describes an object (ex. API object, provision template object, ecc ...) of interest following a given standard specification.",
+              "type": "object",
+              "properties": {
+                "description": {
+                  "description": "",
+                  "type": "string"
+                },
+                "definition": {
+                  "$ref": "#/$defs/objectOrStringOrReference"
+                },
+                "externalDocs": {
+                  "$ref": "#/$defs/externalResource"
+                },
+                "specification": {
+                  "description": "",
+                  "type": "string"
+                },
+                "version": {
+                  "description": "",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "specification",
+                "definition"
+              ],
+              "patternProperties": {
+                "^x-": true
+              }
+            },
+            {
+              "patternProperties": {
+                "^version$": true,
+                "^description$": true,
+                "^x-": true,
+                "^specification$": true,
+                "^externalDocs$": true,
+                "^definition$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "info": {
+      "$ref": "#/$defs/modern_12"
+    },
+    "observabilityPortOrReference": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/reference"
+        },
+        {
+          "$ref": "#/$defs/observabilityPort"
+        }
+      ]
+    },
+    "controlPort": {
+      "$ref": "#/$defs/modern_13"
+    },
+    "components": {
+      "$ref": "#/$defs/modern_14"
+    },
+    "objectOrStringOrReference": {
+      "oneOf": [
+        {
+          "title": "object",
+          "description": "An inline JSON Object",
+          "type": "object"
+        },
+        {
+          "title": "string",
+          "description": "An inline String",
+          "type": "string"
+        },
+        {
+          "$ref": "#/$defs/reference"
+        }
+      ]
+    },
+    "inputPort": {
+      "$ref": "#/$defs/modern_15"
+    },
+    "contactPoint": {
+      "$ref": "#/$defs/modern_16"
+    },
+    "infrastructuralComponent": {
+      "$comment": "SPEC-BASE-URL#infrastructuralComponent",
+      "title": "Infrastructural Component",
+      "description": "The <a href=\"SPEC-BASE-URL#infrastructuralComponent\" target=\"_parent\">Infrastructural Component</a> describes an internal infrastructural component used by the data product to run its applications and store its data.",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/entity"
+        },
+        {
+          "title": "infrastructuralComponent",
+          "properties": {
+            "platform": {
+              "description": "",
+              "type": "string"
+            },
+            "infrastructureType": {
+              "description": "",
+              "type": "string"
+            },
+            "provisionInfo": {
+              "$comment": "SPEC-BASE-URL#provisionInfoObject",
+              "title": "Build Info",
+              "description": "The <a href=\"SPEC-BASE-URL#provisionInfoObject\" target=\"_parent\">Provision Info Object</a> contains all the informations required to provision an <a href=\"SPEC-BASE-URL#infrastructuralComponent\" target=\"_parent\">Infrastructural Component</a>",
+              "type": "object",
+              "properties": {
+                "service": {
+                  "$ref": "#/$defs/reference"
+                },
+                "template": {
+                  "$ref": "#/$defs/objectOrStringOrReference"
+                },
+                "configurations": {
+                  "$ref": "#/$defs/objectOrStringOrReference"
+                }
+              }
+            },
+            "dependsOn": {
+              "description": "",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "port": {
+      "properties": {
+        "promises": {
+          "$ref": "#/$defs/promisesOrReference"
+        },
+        "expectations": {
+          "$ref": "#/$defs/expectationsOrReference"
+        },
+        "contracts": {
+          "$ref": "#/$defs/contractsOrReference"
+        }
+      }
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "$comment": "SPEC-BASE-URL#externalResourceObject",
+              "title": "External Resource Object",
+              "description": "The <a href=\"SPEC-BASE-URL#externalResourceObject\" target=\"_parent\">External Resource Object</a> allows referencing an external resource like a documentation page or a standard definition.",
+              "type": "object",
+              "properties": {
+                "description": {
+                  "description": "",
+                  "type": "string"
+                },
+                "mediaType": {
+                  "description": "",
+                  "type": "string"
+                },
+                "$href": {
+                  "description": "",
+                  "type": "string",
+                  "format": "uri"
+                }
+              },
+              "required": [
+                "$href"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^mediaType$": true,
+                "^$href$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "$comment": "SPEC-BASE-URL#outputPortComponent",
+              "title": "Output Port Component",
+              "description": "The <a href=\"SPEC-BASE-URL#outputPortComponent\" target=\"_parent\">Output Port Component</a> describes an <a href=\"SPEC-BASE-URL#definitions3DataProductPorts\" target=\"_parent\">output port</a> of a data product.",
+              "type": "object",
+              "allOf": [
+                {
+                  "$ref": "#/$defs/entity"
+                },
+                {
+                  "$ref": "#/$defs/port"
+                }
+              ],
+              "patternProperties": {
+                "^x-": true
+              }
+            },
+            {
+              "patternProperties": {
+                "^expectations$": true,
+                "^version$": true,
+                "^description$": true,
+                "^componentGroup$": true,
+                "^entityType$": true,
+                "^name$": true,
+                "^displayName$": true,
+                "^promises$": true,
+                "^fullyQualifiedName$": true,
+                "^tags$": true,
+                "^contracts$": true,
+                "^x-": true,
+                "^externalDocs$": true,
+                "^id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "promises": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_18": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "$comment": "SPEC-BASE-URL#expectationsObject",
+              "title": "Expectations Object",
+              "description": "The <a href=\"SPEC-BASE-URL#expectationsObject\" target=\"_parent\">Expectations Object</a> describes the data product's <a href=\"SPEC-BASE-URL#definitions3DataProductPortsExpectations\" target=\"_parent\">expectations</a> declared over a given port.",
+              "type": "object",
+              "properties": {
+                "audience": {
+                  "$ref": "#/$defs/specificationExtensionPoint"
+                },
+                "usage": {
+                  "$ref": "#/$defs/specificationExtensionPoint"
+                }
+              },
+              "patternProperties": {
+                "^x-": true
+              }
+            },
+            {
+              "patternProperties": {
+                "^audience$": true,
+                "^usage$": true,
+                "^x-": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_13": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "$comment": "SPEC-BASE-URL#controlPortComponent",
+              "title": "The <a href=\"SPEC-BASE-URL#controlPortComponent\" target=\"_parent\">Control Port Component</a> describes a <a href=\"SPEC-BASE-URL#definitions3DataProductPorts\" target=\"_parent\">control port</a> of a data product.",
+              "description": "",
+              "type": "object",
+              "allOf": [
+                {
+                  "$ref": "#/$defs/entity"
+                },
+                {
+                  "$ref": "#/$defs/port"
+                }
+              ],
+              "patternProperties": {
+                "^x-": true
+              }
+            },
+            {
+              "patternProperties": {
+                "^expectations$": true,
+                "^version$": true,
+                "^description$": true,
+                "^componentGroup$": true,
+                "^entityType$": true,
+                "^name$": true,
+                "^displayName$": true,
+                "^promises$": true,
+                "^fullyQualifiedName$": true,
+                "^tags$": true,
+                "^contracts$": true,
+                "^x-": true,
+                "^externalDocs$": true,
+                "^id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "entity": {
+      "properties": {
+        "displayName": {
+          "description": "",
+          "type": "string"
+        },
+        "name": {
+          "description": "",
+          "type": "string",
+          "format": "name"
+        },
+        "fullyQualifiedName": {
+          "description": "",
+          "type": "string",
+          "format": "fqn"
+        },
+        "componentGroup": {
+          "description": "",
+          "type": "string",
+          "format": "name"
+        },
+        "version": {
+          "description": "",
+          "type": "string",
+          "format": "version"
+        },
+        "id": {
+          "description": "",
+          "type": "string",
+          "format": "uuid",
+          "readOnly": true
+        },
+        "entityType": {
+          "description": "",
+          "type": "string",
+          "format": "alphanumeric"
+        },
+        "externalDocs": {
+          "$ref": "#/$defs/externalResource"
+        },
+        "description": {
+          "description": "",
+          "type": "string"
+        },
+        "tags": {
+          "description": "",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "fullyQualifiedName",
+        "name",
+        "version"
+      ]
+    },
+    "owner": {
+      "$ref": "#/$defs/modern_17"
+    },
+    "expectations": {
+      "$ref": "#/$defs/modern_18"
+    },
+    "controlPortOrReference": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/reference"
+        },
+        {
+          "$ref": "#/$defs/controlPort"
+        }
+      ]
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "$comment": "SPEC-BASE-URL#specificationExtensionPoint",
+              "title": "Specification Extension Point",
+              "description": "A <a href=\"SPEC-BASE-URL#specificationExtensionPoint\" target=\"_parent\">Specification Extension Point</a> marks specific part of the <a href=\"SPEC-BASE-URL\" target=\"_parent\">Data Product Descriptor Specification</a> that  are left open to extensions or futher evolution of the standard.",
+              "type": "object",
+              "properties": {
+                "description": {
+                  "description": "",
+                  "type": "string"
+                },
+                "externalDocs": {
+                  "$ref": "#/$defs/externalResource"
+                }
+              },
+              "patternProperties": {
+                "^x-": true
+              }
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^externalDocs$": true,
+                "^x-": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_14": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "$comment": "SPEC-BASE-URL#componentsObject",
+              "title": "Components Object",
+              "description": "The <a href=\"SPEC-BASE-URL#componentsObject\" target=\"_parent\">Components Object</a> holds a set of reusable objects for different aspects of the DPDS.",
+              "type": "object",
+              "properties": {
+                "discoveryPorts": {
+                  "description": "",
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/$defs/discoveryPortOrReference"
+                  }
+                },
+                "controlPorts": {
+                  "description": "",
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/$defs/controlPortOrReference"
+                  }
+                },
+                "infrastructuralComponents": {
+                  "description": "",
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/$defs/infrastructuralComponentOrReference"
+                  }
+                },
+                "observabilityPorts": {
+                  "description": "",
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/$defs/observabilityPortOrReference"
+                  }
+                },
+                "outputPorts": {
+                  "description": "",
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/$defs/outputPortOrReference"
+                  }
+                },
+                "inputPorts": {
+                  "description": "",
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/$defs/inputPortOrReference"
+                  }
+                },
+                "applicationComponents": {
+                  "description": "",
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/$defs/applicationComponentOrReference"
+                  }
+                }
+              },
+              "patternProperties": {
+                "^x-": true
+              }
+            },
+            {
+              "patternProperties": {
+                "^controlPorts$": true,
+                "^discoveryPorts$": true,
+                "^observabilityPorts$": true,
+                "^outputPorts$": true,
+                "^x-": true,
+                "^inputPorts$": true,
+                "^infrastructuralComponents$": true,
+                "^applicationComponents$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "expectationsOrReference": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/reference"
+        },
+        {
+          "$ref": "#/$defs/expectations"
+        }
+      ]
+    },
+    "interfaceComponents": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "$comment": "SPEC-BASE-URL#interfaceComponentsObject",
+              "title": "Interface Components Object",
+              "description": "The <a href=\"SPEC-BASE-URL#interfaceComponentsObject\" target=\"_parent\">Interface Components Object</a> it's a collection of all interface entities exposed by a data product.",
+              "type": "object",
+              "properties": {
+                "discoveryPorts": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/discoveryPortOrReference"
+                  }
+                },
+                "controlPorts": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/controlPortOrReference"
+                  }
+                },
+                "observabilityPorts": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/observabilityPortOrReference"
+                  }
+                },
+                "outputPorts": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/outputPortOrReference"
+                  }
+                },
+                "inputPorts": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/inputPortOrReference"
+                  }
+                }
+              },
+              "required": [
+                "outputPorts"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^inputPorts$": true,
+                "^controlPorts$": true,
+                "^discoveryPorts$": true,
+                "^observabilityPorts$": true,
+                "^outputPorts$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

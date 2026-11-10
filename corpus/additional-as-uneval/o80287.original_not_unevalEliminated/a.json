@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "dckrsub",
+  "description": "dckrmgr subfolders description",
+  "type": "array",
+  "items": {
+    "$ref": "#/$defs/modern_1"
+  },
+  "_uniqueItems": true,
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "folder": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^folder$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Vault Collection Expression",
+              "type": "object",
+              "properties": {
+                "vaults": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "_uniqueItems": true,
+                  "minItems": 1
+                }
+              },
+              "required": [
+                "vaults"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^vaults$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_4",
+  "$defs": {
+    "name": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "nameTableRow": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "min": {
+                  "type": "integer"
+                },
+                "max": {
+                  "type": "integer"
+                },
+                "result": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "min",
+                "max",
+                "result"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^min$": true,
+                "^max$": true,
+                "^result$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "option": {
+                  "type": "string"
+                },
+                "diceType": {
+                  "type": "integer"
+                },
+                "table": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/nameTableRow"
+                  }
+                }
+              },
+              "required": [
+                "option",
+                "table"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^option$": true,
+                "^diceType$": true,
+                "^table$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "source": {
+                  "type": "string"
+                },
+                "page": {
+                  "type": "integer"
+                },
+                "tables": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/nameTable"
+                  }
+                }
+              },
+              "required": [
+                "name",
+                "source",
+                "tables"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^source$": true,
+                "^page$": true,
+                "^tables$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "nameTable": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "version": "1.2.0",
+              "title": "NameArray",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/name"
+                  }
+                }
+              },
+              "required": [
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

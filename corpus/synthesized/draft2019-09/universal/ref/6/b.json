@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "anyOf": [
+    {
+      "$defs": {
+        "reffed": {
+          "type": "array"
+        }
+      },
+      "properties": {
+        "foo": {
+          "$ref": "#/anyOf/0/$defs/reffed",
+          "maxItems": 2
+        }
+      }
+    },
+    {
+      "$defs": {
+        "reffed": {
+          "type": "array"
+        }
+      },
+      "not": {
+        "properties": {
+          "foo": {
+            "$ref": "#/anyOf/1/$defs/reffed",
+            "maxItems": 2
+          }
+        }
+      }
+    }
+  ]
+}

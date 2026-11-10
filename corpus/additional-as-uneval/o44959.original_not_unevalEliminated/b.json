@@ -1,0 +1,257 @@
+{
+  "$id": "http://grycap.upv.es/radl/schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "RADL JSON scheme",
+  "type": "array",
+  "items": {
+    "$ref": "#/$defs/aspect"
+  },
+  "minItems": 1,
+  "$defs": {
+    "aspect": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/configure"
+        },
+        {
+          "$ref": "#/$defs/contextualize"
+        },
+        {
+          "$ref": "#/$defs/deploy"
+        },
+        {
+          "$ref": "#/$defs/cfeatures"
+        }
+      ]
+    },
+    "idString": {
+      "type": "string",
+      "pattern": "^[a-zA-Z._\\-][a-zA-Z0-9._\\-]*$"
+    },
+    "configure": {
+      "type": "object",
+      "properties": {
+        "class": {
+          "type": "string",
+          "pattern": "^configure$"
+        },
+        "id": {
+          "$ref": "#/$defs/idString"
+        },
+        "recipe": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object"
+            },
+            {
+              "type": "array"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "class",
+        "id",
+        "recipe"
+      ]
+    },
+    "contextualize": {
+      "type": "object",
+      "properties": {
+        "class": {
+          "type": "string",
+          "pattern": "^contextualize$"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/contextualizeItem"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "class"
+      ]
+    },
+    "contextualizeItem": {
+      "type": "object",
+      "properties": {
+        "system": {
+          "$ref": "#/$defs/idString"
+        },
+        "configure": {
+          "$ref": "#/$defs/idString"
+        },
+        "step": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "system",
+        "configure"
+      ]
+    },
+    "deploy": {
+      "type": "object",
+      "properties": {
+        "class": {
+          "type": "string",
+          "pattern": "^deploy$"
+        },
+        "system": {
+          "$ref": "#/$defs/idString"
+        },
+        "vm_number": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "cloud_id": {
+          "$ref": "#/$defs/idString"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "system",
+        "vm_number"
+      ]
+    },
+    "class": {
+      "type": "object",
+      "properties": {
+        "class": {
+          "$ref": "#/$defs/idString"
+        },
+        "id": {
+          "$ref": "#/$defs/idString"
+        }
+      },
+      "required": [
+        "class",
+        "id"
+      ]
+    },
+    "reference": {
+      "type": "object",
+      "properties": {
+        "class": {
+          "$ref": "#/$defs/idString"
+        },
+        "id": {
+          "$ref": "#/$defs/idString"
+        },
+        "reference": {
+          "type": "boolean",
+          "enum": [
+            true
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "class",
+        "id",
+        "reference"
+      ]
+    },
+    "cfeatures": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/reference"
+        },
+        {
+          "$ref": "#/$defs/cfeaturesNoReference"
+        }
+      ]
+    },
+    "cfeaturesNoReference": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/class"
+        },
+        {
+          "$ref": "#/$defs/features"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "softs": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/softFeatures"
+              }
+            },
+            "reference": {
+              "type": "boolean",
+              "enum": [
+                false
+              ]
+            }
+          }
+        }
+      ],
+      "not": {
+        "$ref": "#/$defs/configure"
+      }
+    },
+    "features": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-Z._\\-][a-zA-Z0-9._\\-]*$": {
+          "oneOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/features"
+            },
+            {
+              "$ref": "#/$defs/reference"
+            },
+            {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "$ref": "#/$defs/features"
+                  },
+                  {
+                    "$ref": "#/$defs/reference"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "softFeatures": {
+      "type": "object",
+      "properties": {
+        "weight": {
+          "type": "number",
+          "default": 0
+        },
+        "items": {
+          "$ref": "#/$defs/features"
+        }
+      }
+    }
+  }
+}

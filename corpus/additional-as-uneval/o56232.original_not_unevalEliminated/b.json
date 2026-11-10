@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "JSON representation of /etc/fstab",
+  "patternProperties": {
+    "^/([^/]+(/[^/]+)*)?$": {
+      "$ref": "#/$defs/mntent"
+    }
+  },
+  "properties": {
+    "swap": {
+      "$ref": "#/$defs/mntent"
+    }
+  },
+  "required": [
+    "/",
+    "swap"
+  ],
+  "title": "/etc/fstab",
+  "type": "object",
+  "$defs": {
+    "mntent": {
+      "description": "An fstab entry",
+      "properties": {
+        "device": {
+          "type": "string"
+        },
+        "dump": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "fsck": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "fstype": {
+          "type": "string"
+        },
+        "options": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "required": [
+        "device",
+        "fstype"
+      ],
+      "title": "mntent",
+      "type": "object"
+    }
+  }
+}

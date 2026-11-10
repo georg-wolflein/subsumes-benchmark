@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "name": {
+      "allOf": [
+        {
+          "pattern": "^.+$"
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "properties": {
+        "name": true,
+        "added": {
+          "type": "integer",
+          "title": "pri1",
+          "allOf": [
+            {
+              "title": "pri2",
+              "type": [
+                "string",
+                "integer"
+              ],
+              "minimum": 15,
+              "maximum": 10
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "properties": {
+            "name": true,
+            "added": {
+              "type": "integer",
+              "minimum": 5
+            }
+          },
+          "allOf": [
+            {
+              "properties": {
+                "added": {
+                  "title": "pri3",
+                  "type": "integer",
+                  "minimum": 10
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "properties": {
+        "name": true,
+        "added": {
+          "minimum": 7
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "A MWF sequence indicator component's schema definition.",
+  "properties": {
+    "content": {
+      "properties": {
+        "items": {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/indicator"
+              },
+              {
+                "$ref": "#/$defs/activeIndicator"
+              }
+            ]
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "items"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "content"
+  ],
+  "title": "Sequence indicator",
+  "type": "object",
+  "$defs": {
+    "activeIndicator": {
+      "properties": {
+        "config": {
+          "properties": {
+            "checked": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "checked"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "config"
+      ],
+      "type": "object",
+      "anyOf": [
+        {
+          "$ref": "#/$defs/indicator"
+        }
+      ]
+    },
+    "indicator": {
+      "properties": {
+        "content": {
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "label": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "label",
+            "title",
+            "id"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "content"
+      ],
+      "type": "object"
+    }
+  }
+}

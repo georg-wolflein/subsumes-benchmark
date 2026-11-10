@@ -1,0 +1,74 @@
+{
+  "allOf": [
+    {
+      "$id": "https://test.json-schema.org/dynamic-ref-with-multiple-paths/main",
+      "$defs": {
+        "inner": {
+          "$id": "inner",
+          "$dynamicAnchor": "foo",
+          "title": "inner",
+          "additionalProperties": {
+            "$dynamicRef": "#foo"
+          }
+        }
+      },
+      "if": {
+        "propertyNames": {
+          "pattern": "^[a-m]"
+        }
+      },
+      "then": {
+        "title": "any type of node",
+        "$id": "anyLeafNode",
+        "$dynamicAnchor": "foo",
+        "$ref": "main#/$defs/inner"
+      },
+      "else": {
+        "title": "integer node",
+        "$id": "integerNode",
+        "$dynamicAnchor": "foo",
+        "type": [
+          "object",
+          "integer"
+        ],
+        "$ref": "main#/$defs/inner"
+      }
+    },
+    {
+      "$id": "https://test1.json-schema.org/dynamic-ref-with-multiple-paths/main",
+      "$defs": {
+        "inner": {
+          "$id": "inner1",
+          "$dynamicAnchor": "foo1",
+          "title": "inner",
+          "additionalProperties": {
+            "$dynamicRef": "#foo1"
+          }
+        }
+      },
+      "not": {
+        "if": {
+          "propertyNames": {
+            "pattern": "^[a-m]"
+          }
+        },
+        "then": {
+          "title": "any type of node",
+          "$id": "anyLeafNode1",
+          "$dynamicAnchor": "foo1",
+          "$ref": "main#/$defs/inner"
+        },
+        "else": {
+          "title": "integer node",
+          "$id": "integerNode1",
+          "$dynamicAnchor": "foo1",
+          "type": [
+            "object",
+            "integer"
+          ],
+          "$ref": "main#/$defs/inner"
+        }
+      }
+    }
+  ]
+}

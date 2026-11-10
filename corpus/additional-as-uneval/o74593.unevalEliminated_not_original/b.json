@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Devices",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "tags": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string",
+        "format": "mongoId"
+      }
+    },
+    "os": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "publicIps": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^([1-9]{1,3}\\.){3}[1-9]{1,3}$"
+      }
+    },
+    "privateIps": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^([1-9]{1,3}\\.){3}[1-9]{1,3}$"
+      }
+    },
+    "location": {
+      "$ref": "#/$defs/modern_2"
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^code$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "countryCode": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "text": {
+                  "type": "string"
+                },
+                "countryName": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^countryCode$": true,
+                "^text$": true,
+                "^countryName$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

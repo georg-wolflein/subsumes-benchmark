@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Expense",
+              "type": "object",
+              "properties": {
+                "amount": {
+                  "title": "Amount",
+                  "description": "Expenses associated with the running of the business",
+                  "type": "number",
+                  "multipleOf": 0.01,
+                  "minimum": 0.0
+                }
+              },
+              "required": [
+                "amount"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^amount$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

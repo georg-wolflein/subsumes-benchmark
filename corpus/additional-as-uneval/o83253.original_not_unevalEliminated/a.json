@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/modern_2"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "garnish": {
+                  "type": "string",
+                  "title": "The Garnish Schema ",
+                  "default": ""
+                },
+                "style": {
+                  "type": "string",
+                  "title": "The Style Schema ",
+                  "default": "",
+                  "enum": [
+                    "All Day Cocktail",
+                    "Before Dinner Cocktail",
+                    "Longdrink",
+                    "After Dinner Cocktail",
+                    "Sparkling Cocktail",
+                    "Hot Drink"
+                  ]
+                },
+                "tag": {
+                  "type": "string",
+                  "title": "The Tag Schema ",
+                  "default": "",
+                  "enum": [
+                    "core"
+                  ]
+                },
+                "prep": {
+                  "type": "string",
+                  "title": "The Prep Schema ",
+                  "default": "shake",
+                  "enum": [
+                    "shake",
+                    "stir",
+                    "build",
+                    "throw"
+                  ]
+                },
+                "optional": {
+                  "type": "object"
+                },
+                "info": {
+                  "type": "string",
+                  "title": "The Info Schema",
+                  "default": ""
+                },
+                "profile": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "title": "The profile Schema ",
+                    "default": "",
+                    "enum": [
+                      "strong",
+                      "tangy",
+                      "citrusy",
+                      "sweet",
+                      "fruity",
+                      "herbal"
+                    ]
+                  }
+                },
+                "ingredients": {
+                  "type": "object"
+                },
+                "unit": {
+                  "type": "string",
+                  "title": "The Unit Schema ",
+                  "default": "oz",
+                  "enum": [
+                    "oz",
+                    "mL",
+                    "cL"
+                  ]
+                },
+                "glass": {
+                  "type": "string",
+                  "title": "The Glass Schema ",
+                  "default": "cocktail",
+                  "enum": [
+                    "martini",
+                    "cocktail",
+                    "rocks",
+                    "collins",
+                    "highball",
+                    "flute",
+                    "copper mug",
+                    "pint",
+                    "coupe"
+                  ]
+                },
+                "variants": {
+                  "type": "array"
+                },
+                "origin": {
+                  "type": "string",
+                  "description": "Origin of the recipe"
+                },
+                "ice": {
+                  "type": "string",
+                  "title": "The Ice Schema ",
+                  "default": "cubed",
+                  "enum": [
+                    "cubed",
+                    "crushed",
+                    "neat"
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^garnish$": true,
+                "^ice$": true,
+                "^optional$": true,
+                "^profile$": true,
+                "^ingredients$": true,
+                "^glass$": true,
+                "^unit$": true,
+                "^variants$": true,
+                "^tag$": true,
+                "^style$": true,
+                "^origin$": true,
+                "^info$": true,
+                "^prep$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

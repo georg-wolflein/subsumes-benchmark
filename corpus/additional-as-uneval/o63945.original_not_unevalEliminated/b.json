@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "default": [],
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "volume": {
+        "type": "number"
+      },
+      "channels": {
+        "type": "number"
+      },
+      "bundleName": {
+        "type": "string"
+      },
+      "defaultVolume": {
+        "type": [
+          "number",
+          "null"
+        ]
+      },
+      "file": {
+        "$ref": "#/$defs/cueFile"
+      },
+      "defaultFile": {
+        "$ref": "#/$defs/cueFile"
+      },
+      "assignable": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "name",
+      "volume",
+      "file",
+      "assignable"
+    ]
+  },
+  "$defs": {
+    "cueFile": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "sum": {
+          "type": "string"
+        },
+        "base": {
+          "type": "string"
+        },
+        "ext": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "default": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

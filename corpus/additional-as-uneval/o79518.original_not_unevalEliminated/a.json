@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "items": {
+    "$ref": "#/$defs/apiTest"
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "api": {
+                  "type": "string",
+                  "description": "URL called to perform the api test"
+                },
+                "message": {
+                  "type": "string",
+                  "description": "Describes the outcome of the api test. Includes any exceptions if required"
+                },
+                "success": {
+                  "type": "boolean",
+                  "description": "true if the api test succeeds or false if the api test fails"
+                }
+              },
+              "required": [
+                "api",
+                "message",
+                "success"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^api$": true,
+                "^message$": true,
+                "^success$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "apiTest": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

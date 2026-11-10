@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "sums": {
+      "$ref": "#/$defs/Sums"
+    },
+    "version": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "Sums": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "detection": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DetectionType"
+          }
+        },
+        "period": {
+          "type": "integer"
+        },
+        "numsys": {
+          "type": "integer"
+        }
+      }
+    },
+    "DetectionType": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "dets": {
+          "$ref": "#/$defs/Dets"
+        },
+        "id": {
+          "type": "string"
+        },
+        "now": {
+          "type": "integer"
+        },
+        "comm": {
+          "type": "string",
+          "enum": [
+            "OK",
+            "FAIL"
+          ]
+        },
+        "num": {
+          "type": "integer"
+        }
+      }
+    },
+    "Dets": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "det": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DetType"
+          }
+        }
+      }
+    },
+    "DetType": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "pos": {
+          "type": "integer"
+        },
+        "vol": {
+          "type": "integer"
+        },
+        "occ": {
+          "type": "integer"
+        },
+        "grn": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

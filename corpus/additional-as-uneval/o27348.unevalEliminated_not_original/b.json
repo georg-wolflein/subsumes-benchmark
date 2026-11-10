@@ -1,0 +1,339 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "plugins": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "image": {
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object"
+    },
+    "bootstrapper": {
+      "properties": {
+        "mirror": {
+          "_format": "uri",
+          "type": "string"
+        },
+        "tarball": {
+          "type": "boolean"
+        },
+        "workspace": {
+          "$ref": "#/$defs/path"
+        }
+      },
+      "required": [
+        "workspace"
+      ],
+      "type": "object"
+    },
+    "volume": {
+      "properties": {
+        "backing": {
+          "type": "string"
+        },
+        "partitions": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/no_partitions"
+            },
+            {
+              "$ref": "#/$defs/partition_table"
+            }
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "partitions"
+      ],
+      "type": "object"
+    },
+    "packages": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "provider": {
+      "type": "string"
+    },
+    "system": {
+      "properties": {
+        "sections": {
+          "minItems": 1,
+          "type": "array"
+        },
+        "timezone": {
+          "type": "string"
+        },
+        "architecture": {
+          "enum": [
+            "i386",
+            "amd64"
+          ]
+        },
+        "bootloader": {
+          "enum": [
+            "pvgrub",
+            "grub",
+            "extlinux"
+          ]
+        },
+        "locale": {
+          "type": "string"
+        },
+        "release": {
+          "enum": [
+            "wheezy",
+            "testing",
+            "unstable"
+          ]
+        },
+        "charmap": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "release",
+        "architecture",
+        "bootloader",
+        "timezone",
+        "locale",
+        "charmap"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "provider",
+    "bootstrapper",
+    "system",
+    "packages",
+    "volume"
+  ],
+  "title": "Generic manifest",
+  "type": "object",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "minItems": 1,
+              "patternProperties": {
+                "^\\w+$": {
+                  "items": {
+                    "pattern": "^(deb|deb-src)\\s+(\\[\\s*(.+\\S)?\\s*\\]\\s+)?\\S+\\s+\\S+(\\s+(.+\\S))?\\s*$",
+                    "type": "string"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^\\w+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "path": {
+      "pattern": "^[^\\0]+$",
+      "type": "string"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "boot": {
+                  "$ref": "#/$defs/partition"
+                },
+                "root": {
+                  "$ref": "#/$defs/partition"
+                },
+                "swap": {
+                  "properties": {
+                    "size": {
+                      "$ref": "#/$defs/bytes"
+                    }
+                  },
+                  "required": [
+                    "size"
+                  ],
+                  "type": "object"
+                },
+                "type": {
+                  "enum": [
+                    "msdos",
+                    "gpt"
+                  ]
+                }
+              },
+              "required": [
+                "root"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^boot$": true,
+                "^root$": true,
+                "^swap$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "partition_table": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "partition": {
+      "properties": {
+        "filesystem": {
+          "enum": [
+            "ext2",
+            "ext3",
+            "ext4",
+            "xfs"
+          ]
+        },
+        "size": {
+          "$ref": "#/$defs/bytes"
+        }
+      },
+      "required": [
+        "size",
+        "filesystem"
+      ],
+      "type": "object"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "root": {
+                  "$ref": "#/$defs/partition"
+                },
+                "type": {
+                  "enum": [
+                    "none"
+                  ]
+                }
+              },
+              "required": [
+                "root"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^root$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "bytes": {
+      "pattern": "^\\d+([KMGT]i?B|B)$",
+      "type": "string"
+    },
+    "no_partitions": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                "^\\w+$": {
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^\\w+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "absolute_path": {
+      "pattern": "^/[^\\0]+$",
+      "type": "string"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "install": {
+                  "items": {
+                    "anyOf": [
+                      {
+                        "pattern": "^[^/]+(/[^/]+)?$"
+                      },
+                      {
+                        "$ref": "#/$defs/absolute_path"
+                      }
+                    ]
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                },
+                "mirror": {
+                  "_format": "uri",
+                  "type": "string"
+                },
+                "sources": {
+                  "$ref": "#/$defs/modern_5"
+                },
+                "trusted-keys": {
+                  "items": {
+                    "$ref": "#/$defs/absolute_path"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^install$": true,
+                "^mirror$": true,
+                "^sources$": true,
+                "^trusted-keys$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

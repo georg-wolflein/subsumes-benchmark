@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "title": "VCMI map header format",
+              "description": "Part of map in json format, defines core settings of the map",
+              "required": [
+                "defeatIconIndex",
+                "defeatString",
+                "victoryIconIndex",
+                "victoryString"
+              ],
+              "properties": {
+                "defeatIconIndex": {
+                  "type": "number"
+                },
+                "victoryIconIndex": {
+                  "type": "number"
+                },
+                "triggeredEvents": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "victoryString": {
+                  "type": "string"
+                },
+                "defeatString": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^defeatIconIndex$": true,
+                "^victoryString$": true,
+                "^triggeredEvents$": true,
+                "^defeatString$": true,
+                "^victoryIconIndex$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/modern_3"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "condition",
+                "message",
+                "effect"
+              ],
+              "properties": {
+                "condition": {
+                  "type": "array"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "effect": {
+                  "$ref": "#/$defs/modern_4"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^condition$": true,
+                "^description$": true,
+                "^message$": true,
+                "^effect$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "type",
+                "messageToSend"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "messageToSend": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^messageToSend$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

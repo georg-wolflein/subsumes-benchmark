@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "exchange": {
+                  "format": "hostname",
+                  "type": "string"
+                },
+                "preference": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "preference",
+                "exchange"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^exchange$": true,
+                "^preference$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

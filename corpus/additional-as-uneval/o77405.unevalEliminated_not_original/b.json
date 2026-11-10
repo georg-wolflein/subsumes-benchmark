@@ -1,0 +1,264 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Babbage Model",
+  "type": "object",
+  "format": "valid_hierarchies",
+  "properties": {
+    "hierarchies": {
+      "$ref": "#/$defs/hierarchies"
+    },
+    "measures": {
+      "$ref": "#/$defs/measures"
+    },
+    "fact_table": {
+      "$ref": "#/$defs/table"
+    },
+    "dimensions": {
+      "$ref": "#/$defs/dimensions"
+    },
+    "joins": {
+      "type": "array"
+    }
+  },
+  "required": [
+    "measures",
+    "dimensions",
+    "fact_table"
+  ],
+  "$defs": {
+    "measure": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "$ref": "#/$defs/label"
+        },
+        "description": {
+          "$ref": "#/$defs/description"
+        },
+        "aggregates": {
+          "$ref": "#/$defs/aggregates"
+        },
+        "column": {
+          "$ref": "#/$defs/column"
+        }
+      },
+      "required": [
+        "label",
+        "column"
+      ]
+    },
+    "hierarchies": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 0,
+      "maxLength": 1000,
+      "default": ""
+    },
+    "measures": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "minProperties": 1,
+              "patternProperties": {
+                "^[a-zA-Z][a-zA-Z0-9_]*[a-zA-Z0-9]$": {
+                  "$ref": "#/$defs/measure"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^[a-zA-Z][a-zA-Z0-9_]*[a-zA-Z0-9]$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "hierarchy": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "$ref": "#/$defs/label"
+        },
+        "levels": {
+          "$ref": "#/$defs/levels"
+        }
+      },
+      "required": [
+        "levels"
+      ]
+    },
+    "attributes": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "column": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 250
+    },
+    "attribute": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "$ref": "#/$defs/label"
+        },
+        "description": {
+          "$ref": "#/$defs/description"
+        },
+        "column": {
+          "$ref": "#/$defs/column"
+        }
+      },
+      "required": [
+        "label",
+        "column"
+      ]
+    },
+    "dimension": {
+      "type": "object",
+      "format": "attribute_exists",
+      "properties": {
+        "label": {
+          "$ref": "#/$defs/label"
+        },
+        "attributes": {
+          "$ref": "#/$defs/attributes"
+        },
+        "key_attribute": {
+          "type": "string",
+          "pattern": "^[a-zA-Z][a-zA-Z0-9_]*[a-zA-Z0-9]$"
+        },
+        "description": {
+          "$ref": "#/$defs/description"
+        },
+        "label_attribute": {
+          "type": "string",
+          "pattern": "^[a-zA-Z][a-zA-Z0-9_]*[a-zA-Z0-9]$"
+        }
+      },
+      "required": [
+        "label",
+        "attributes",
+        "key_attribute"
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "^[a-zA-Z][a-zA-Z0-9_]*[a-zA-Z0-9]$": {
+                  "$ref": "#/$defs/hierarchy"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^[a-zA-Z][a-zA-Z0-9_]*[a-zA-Z0-9]$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "levels": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/level"
+      },
+      "minItems": 1,
+      "_uniqueItems": true
+    },
+    "label": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 500
+    },
+    "aggregates": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "sum",
+          "max",
+          "min",
+          "avg",
+          "count"
+        ]
+      },
+      "default": [
+        "sum"
+      ],
+      "minItems": 1,
+      "_uniqueItems": true
+    },
+    "dimensions": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "minProperties": 1,
+              "patternProperties": {
+                "^[a-zA-Z][a-zA-Z0-9_]*[a-zA-Z0-9]$": {
+                  "$ref": "#/$defs/attribute"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^[a-zA-Z][a-zA-Z0-9_]*[a-zA-Z0-9]$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "table": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 250,
+      "pattern": "^[a-zA-Z][a-zA-Z0-9_\\-]*[a-zA-Z0-9]$"
+    },
+    "level": {
+      "type": "string"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "^[a-zA-Z][a-zA-Z0-9_]*[a-zA-Z0-9]$": {
+                  "$ref": "#/$defs/dimension"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^[a-zA-Z][a-zA-Z0-9_]*[a-zA-Z0-9]$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

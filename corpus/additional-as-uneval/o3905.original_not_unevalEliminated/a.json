@@ -1,0 +1,543 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_10",
+  "$defs": {
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "pattern": {
+                  "type": "string"
+                },
+                "fallback": {
+                  "type": "string",
+                  "default": "NOT FOUND"
+                },
+                "response-key": {
+                  "type": "string",
+                  "default": "<default>"
+                },
+                "match-number": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "id": {
+                  "type": "string"
+                },
+                "from": {
+                  "type": "string"
+                },
+                "template": {
+                  "type": "string",
+                  "default": "(1)"
+                }
+              },
+              "required": [
+                "from",
+                "pattern"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^template$": true,
+                "^match-number$": true,
+                "^id$": true,
+                "^pattern$": true,
+                "^from$": true,
+                "^fallback$": true,
+                "^response-key$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Annotation Model",
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "overrides": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/$defs/HttpEndpointOverride"
+                      },
+                      {
+                        "$ref": "#/$defs/HttpParameterOverride"
+                      }
+                    ]
+                  }
+                },
+                "inputs": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/$defs/DirectListInput"
+                      },
+                      {
+                        "$ref": "#/$defs/CsvInput"
+                      },
+                      {
+                        "$ref": "#/$defs/ExtractedInput"
+                      },
+                      {
+                        "$ref": "#/$defs/CounterInput"
+                      }
+                    ]
+                  }
+                },
+                "endpoint-annotations": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/EndpointAnnotation"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^overrides$": true,
+                "^inputs$": true,
+                "^endpoint-annotations$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "HttpEndpointOverride": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "@type": {
+                  "type": "string",
+                  "enum": [
+                    "direct"
+                  ],
+                  "default": "direct"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "associated": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/$defs/DirectListInput"
+                      },
+                      {
+                        "$ref": "#/$defs/CsvInput"
+                      }
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "@type",
+                "data"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^@type$": true,
+                "^id$": true,
+                "^data$": true,
+                "^associated$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "CounterInput": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "HttpParameter.encoded": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^HttpParameter.encoded$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "HttpEndpoint.encoding": {
+                  "type": "string"
+                },
+                "HttpEndpoint.domain": {
+                  "type": "string"
+                },
+                "HttpEndpoint.port": {
+                  "type": "string"
+                },
+                "HttpEndpoint.protocol": {
+                  "type": "string"
+                },
+                "HttpEndpoint.header": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^HttpEndpoint.encoding$": true,
+                "^HttpEndpoint.protocol$": true,
+                "^HttpEndpoint.domain$": true,
+                "^HttpEndpoint.header$": true,
+                "^HttpEndpoint.port$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "CsvInput": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "endpoint": {
+                  "type": "string"
+                },
+                "overrides": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/$defs/HttpEndpointOverride"
+                      },
+                      {
+                        "$ref": "#/$defs/HttpParameterOverride"
+                      }
+                    ]
+                  }
+                },
+                "parameter-annotations": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/ParameterAnnotation"
+                  }
+                }
+              },
+              "required": [
+                "endpoint"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^endpoint$": true,
+                "^overrides$": true,
+                "^parameter-annotations$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "format": {
+                  "type": "string"
+                },
+                "scope": {
+                  "type": "string",
+                  "enum": [
+                    "GLOBAL",
+                    "USER",
+                    "USER_ITERATION"
+                  ]
+                },
+                "maximum": {
+                  "type": "integer"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "@type": {
+                  "type": "string",
+                  "enum": [
+                    "counter"
+                  ],
+                  "default": "counter"
+                },
+                "start": {
+                  "type": "integer"
+                },
+                "increment": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "@type",
+                "scope",
+                "start",
+                "increment",
+                "maximum"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^increment$": true,
+                "^maximum$": true,
+                "^format$": true,
+                "^@type$": true,
+                "^start$": true,
+                "^scope$": true,
+                "^id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "RegExExtraction": {
+      "$ref": "#/$defs/modern_6"
+    },
+    "HttpParameterOverride": {
+      "$ref": "#/$defs/modern_7"
+    },
+    "ExtractedInput": {
+      "$ref": "#/$defs/modern_8"
+    },
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "separator": {
+                  "type": "string",
+                  "default": ";"
+                },
+                "associated": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/$defs/DirectListInput"
+                      },
+                      {
+                        "$ref": "#/$defs/CsvInput"
+                      }
+                    ]
+                  }
+                },
+                "id": {
+                  "type": "string"
+                },
+                "column": {
+                  "type": "integer"
+                },
+                "file": {
+                  "type": "string"
+                },
+                "@type": {
+                  "type": "string",
+                  "enum": [
+                    "csv"
+                  ],
+                  "default": "csv"
+                }
+              },
+              "required": [
+                "@type",
+                "file",
+                "column"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^associated$": true,
+                "^file$": true,
+                "^@type$": true,
+                "^id$": true,
+                "^separator$": true,
+                "^column$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "DirectListInput": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "ParameterAnnotation": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "@type": {
+                  "type": "string",
+                  "enum": [
+                    "extracted"
+                  ],
+                  "default": "extracted"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "initial": {
+                  "type": "string"
+                },
+                "extractions": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/RegExExtraction"
+                  }
+                }
+              },
+              "required": [
+                "@type",
+                "extractions"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^@type$": true,
+                "^id$": true,
+                "^initial$": true,
+                "^extractions$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "EndpointAnnotation": {
+      "$ref": "#/$defs/modern_9"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "parameter": {
+                  "type": "string"
+                },
+                "input": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/DirectListInput"
+                    },
+                    {
+                      "$ref": "#/$defs/CsvInput"
+                    },
+                    {
+                      "$ref": "#/$defs/ExtractedInput"
+                    },
+                    {
+                      "$ref": "#/$defs/CounterInput"
+                    }
+                  ]
+                },
+                "overrides": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/$defs/HttpParameterOverride"
+                      }
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "parameter",
+                "input"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^parameter$": true,
+                "^input$": true,
+                "^overrides$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

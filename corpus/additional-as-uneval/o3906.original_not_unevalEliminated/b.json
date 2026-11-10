@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "endpoints": {
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/HttpEndpoint"
+          }
+        ]
+      },
+      "type": "array"
+    },
+    "id": {
+      "type": "string"
+    },
+    "timestamp": {
+      "pattern": "\\d{4}-\\d{2}-\\d{2}T\\d{2}-\\d{2}-\\d{2}-\\d{3}\\w*",
+      "type": "string"
+    }
+  },
+  "required": [
+    "timestamp"
+  ],
+  "title": "Application Model",
+  "type": "object",
+  "$defs": {
+    "HttpEndpoint": {
+      "additionalProperties": false,
+      "properties": {
+        "@type": {
+          "default": "http",
+          "enum": [
+            "http"
+          ],
+          "type": "string"
+        },
+        "domain": {
+          "type": "string"
+        },
+        "encoding": {
+          "default": "<no-encoding>",
+          "type": "string"
+        },
+        "headers": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "id": {
+          "type": "string"
+        },
+        "method": {
+          "type": "string"
+        },
+        "parameters": {
+          "items": {
+            "$ref": "#/$defs/HttpParameter"
+          },
+          "type": "array"
+        },
+        "path": {
+          "type": "string"
+        },
+        "port": {
+          "type": "string"
+        },
+        "protocol": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "@type",
+        "domain",
+        "port",
+        "path",
+        "method",
+        "protocol"
+      ],
+      "type": "object"
+    },
+    "HttpParameter": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "parameter-type": {
+          "enum": [
+            "REQ_PARAM",
+            "BODY",
+            "URL_PART",
+            "HEADER",
+            "FORM"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "parameter-type"
+      ],
+      "type": "object"
+    }
+  }
+}

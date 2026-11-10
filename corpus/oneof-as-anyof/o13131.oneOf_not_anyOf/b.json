@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Event JSON Schema to translate ORM Entity to ObjectType instance",
+  "type": "object",
+  "properties": {
+    "calendar_id": {
+      "$ref": "#/$defs/field"
+    },
+    "source": {
+      "$ref": "#/$defs/field"
+    },
+    "source_id": {
+      "$ref": "#/$defs/field"
+    },
+    "event_type": {
+      "$ref": "#/$defs/field"
+    },
+    "title": {
+      "$ref": "#/$defs/field"
+    },
+    "content": {
+      "$ref": "#/$defs/field"
+    },
+    "start_date": {
+      "$ref": "#/$defs/field"
+    },
+    "end_date": {
+      "$ref": "#/$defs/field"
+    },
+    "is_recurring": {
+      "$ref": "#/$defs/field"
+    },
+    "recurrence": {
+      "$ref": "#/$defs/field"
+    },
+    "is_allday": {
+      "$ref": "#/$defs/field"
+    }
+  },
+  "required": [
+    "source",
+    "source_id",
+    "start_date"
+  ],
+  "$defs": {
+    "field": {
+      "type": "object",
+      "oneOf": [
+        {
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "callback"
+              ]
+            },
+            "value": {
+              "type": "string"
+            },
+            "options": {
+              "type": "object"
+            }
+          }
+        },
+        {
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "field",
+                "value"
+              ]
+            },
+            "value": {
+              "type": [
+                "string",
+                "null",
+                "boolean",
+                "number"
+              ]
+            },
+            "options": {
+              "type": "object"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

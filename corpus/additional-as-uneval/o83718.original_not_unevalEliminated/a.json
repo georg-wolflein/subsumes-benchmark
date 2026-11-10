@@ -1,0 +1,316 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "North America address",
+  "description": "Postal addresses for Canada, USA and Mexico",
+  "type": "object",
+  "properties": {
+    "address": {
+      "$ref": "#/$defs/modern_1"
+    }
+  },
+  "$defs": {
+    "USA_zipCode": {
+      "type": "string",
+      "pattern": "^[0-9]{5}(-[0-9]{4})?$"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "number": {
+                  "type": "string"
+                },
+                "city": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "street": {
+                  "type": "string"
+                },
+                "national": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/modern_2"
+                    },
+                    {
+                      "$ref": "#/$defs/modern_3"
+                    },
+                    {
+                      "$ref": "#/$defs/modern_4"
+                    }
+                  ]
+                },
+                "street2": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "number",
+                "street",
+                "city",
+                "national"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^street$": true,
+                "^city$": true,
+                "^national$": true,
+                "^street2$": true,
+                "^name$": true,
+                "^number$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "country": {
+                  "type": "string",
+                  "enum": [
+                    "CAN"
+                  ]
+                },
+                "province": {
+                  "$ref": "#/$defs/CAN_province"
+                },
+                "postalCode": {
+                  "$ref": "#/$defs/CAN_postalCode"
+                }
+              },
+              "required": [
+                "country",
+                "province",
+                "postalCode"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^country$": true,
+                "^province$": true,
+                "^postalCode$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "CAN_postalCode": {
+      "type": "string",
+      "pattern": "^[A-Z][0-9][A-Z]( )?[0-9][A-Z][0-9]$"
+    },
+    "MEX_postalCode": {
+      "type": "string",
+      "pattern": "^[0-9]{5}$"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "country": {
+                  "type": "string",
+                  "enum": [
+                    "MEX"
+                  ]
+                },
+                "state": {
+                  "$ref": "#/$defs/MEX_state"
+                },
+                "postalCode": {
+                  "$ref": "#/$defs/MEX_postalCode"
+                }
+              },
+              "required": [
+                "country",
+                "state",
+                "postalCode"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^country$": true,
+                "^state$": true,
+                "^postalCode$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "country": {
+                  "type": "string",
+                  "enum": [
+                    "USA"
+                  ]
+                },
+                "state": {
+                  "$ref": "#/$defs/USA_state"
+                },
+                "zipCode": {
+                  "$ref": "#/$defs/USA_zipCode"
+                }
+              },
+              "required": [
+                "country",
+                "state",
+                "zipCode"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^country$": true,
+                "^state$": true,
+                "^zipCode$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "USA_state": {
+      "type": "string",
+      "enum": [
+        "AL",
+        "AK",
+        "AR",
+        "AS",
+        "AZ",
+        "CA",
+        "CO",
+        "CT",
+        "DC",
+        "DE",
+        "FL",
+        "FM",
+        "GA",
+        "GU",
+        "HI",
+        "IA",
+        "ID",
+        "IL",
+        "IN",
+        "KS",
+        "KY",
+        "LA",
+        "MA",
+        "MD",
+        "ME",
+        "MH",
+        "MI",
+        "MN",
+        "MO",
+        "MP",
+        "MS",
+        "MT",
+        "NC",
+        "ND",
+        "NE",
+        "NH",
+        "NJ",
+        "NM",
+        "NV",
+        "OH",
+        "OK",
+        "OR",
+        "PA",
+        "PR",
+        "PW",
+        "RI",
+        "SC",
+        "SD",
+        "TN",
+        "TX",
+        "UT",
+        "VA",
+        "VI",
+        "VT",
+        "WA",
+        "WI",
+        "WV",
+        "WY",
+        "AA",
+        "AE",
+        "AP"
+      ]
+    },
+    "CAN_province": {
+      "type": "string",
+      "enum": [
+        "AB",
+        "BC",
+        "MB",
+        "NB",
+        "NL",
+        "NS",
+        "NT",
+        "NU",
+        "ON",
+        "PE",
+        "QC",
+        "SK",
+        "YT"
+      ]
+    },
+    "MEX_state": {
+      "type": "string",
+      "enum": [
+        "AGS",
+        "BC",
+        "BCS",
+        "CAM",
+        "COAH",
+        "COL",
+        "CHIH",
+        "CHIS",
+        "DF",
+        "DGO",
+        "GTO",
+        "GRO",
+        "HGO",
+        "JAL",
+        "MEX",
+        "MICH",
+        "MOR",
+        "NAY",
+        "NL",
+        "OAX",
+        "PUE",
+        "QRO",
+        "Q ROO",
+        "SLP",
+        "SIN",
+        "SON",
+        "TAB",
+        "TAMPS",
+        "TLAX",
+        "VER",
+        "YUC",
+        "ZAC"
+      ]
+    }
+  }
+}

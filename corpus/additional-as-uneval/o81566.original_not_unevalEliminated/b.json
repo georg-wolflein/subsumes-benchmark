@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "line1": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "zip": {
+      "$ref": "#/$defs/US_zipCode"
+    },
+    "country": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "line1",
+    "city",
+    "state",
+    "zip",
+    "country"
+  ],
+  "$defs": {
+    "US_zipCode": {
+      "type": "string",
+      "pattern": "^[0-9]{5}(-[0-9]{4})?$"
+    }
+  }
+}

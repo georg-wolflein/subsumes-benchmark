@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "pubsub push subscription request",
+              "description": "pubsub push subscription request",
+              "type": "object",
+              "properties": {
+                "message": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "subscription": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "message",
+                "subscription"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^message$": true,
+                "^subscription$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "attributes": {
+                  "patternProperties": {
+                    "^[A-Za-z0-9_\\-]+$": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                },
+                "message_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "messageId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "publishTime": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "publish_time": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "attributes",
+                "data",
+                "message_id",
+                "messageId",
+                "publish_time",
+                "publishTime"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^publishTime$": true,
+                "^attributes$": true,
+                "^messageId$": true,
+                "^publish_time$": true,
+                "^message_id$": true,
+                "^data$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

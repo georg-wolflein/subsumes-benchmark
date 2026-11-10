@@ -1,0 +1,302 @@
+{
+  "$id": "https://tabris.com/fonts-schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tabris.js Font Resources JSON Schema",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/fontResources"
+    }
+  ],
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Locale Selector",
+              "type": "object",
+              "patternProperties": {
+                "^[a-zA-Z][a-zA-Z][a-zA-Z]?(-[\\-a-zA-Z0-9]+)?$": {
+                  "$ref": "#/$defs/fontResource"
+                }
+              },
+              "minProperties": 1,
+              "not": {
+                "required": [
+                  "ios"
+                ]
+              }
+            },
+            {
+              "patternProperties": {
+                "^[a-zA-Z][a-zA-Z][a-zA-Z]?(-[\\-a-zA-Z0-9]+)?$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "family": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "$ref": "#/$defs/fontFamily"
+                  }
+                },
+                "size": {
+                  "type": "number",
+                  "minimum": 1.0
+                },
+                "style": {
+                  "enum": [
+                    "italic",
+                    "normal"
+                  ]
+                },
+                "weight": {
+                  "enum": [
+                    "black",
+                    "bold",
+                    "medium",
+                    "thin",
+                    "light",
+                    "normal"
+                  ]
+                }
+              },
+              "required": [
+                "size"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^family$": true,
+                "^size$": true,
+                "^style$": true,
+                "^weight$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Platform Selector",
+              "type": "object",
+              "properties": {
+                "ios": {
+                  "$ref": "#/$defs/fontResource"
+                },
+                "android": {
+                  "$ref": "#/$defs/fontResource"
+                }
+              },
+              "required": [
+                "ios",
+                "android"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^ios$": true,
+                "^android$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "$schema": {
+                  "type": "string"
+                },
+                "$scaleFactor": {
+                  "enum": [
+                    "nearest",
+                    "lower",
+                    "higher"
+                  ]
+                },
+                "$fallbackLanguage": {
+                  "type": "string",
+                  "pattern": "^[a-zA-Z][a-zA-Z][a-zA-Z]?(-[\\-a-zA-Z0-9]+)?$"
+                }
+              },
+              "patternProperties": {
+                "^[a-z][a-zA-Z][a-zA-Z0-9]+$": {
+                  "$ref": "#/$defs/fontResource"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^$schema$": true,
+                "^$scaleFactor$": true,
+                "^$fallbackLanguage$": true,
+                "^[a-z][a-zA-Z][a-zA-Z0-9]+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Resource Reference",
+              "type": "object",
+              "required": [
+                "ref"
+              ],
+              "properties": {
+                "ref": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^ref$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "fontResource": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/fontDefinition"
+        },
+        {
+          "$ref": "#/$defs/fontSelector"
+        }
+      ]
+    },
+    "fontSelector": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/modern_1"
+        },
+        {
+          "$ref": "#/$defs/modern_2"
+        },
+        {
+          "$ref": "#/$defs/modern_3"
+        },
+        {
+          "$ref": "#/$defs/modern_4"
+        },
+        {
+          "$ref": "#/$defs/modern_5"
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Inherit Marker",
+              "type": "object",
+              "properties": {
+                "inherit": {
+                  "enum": [
+                    true
+                  ]
+                }
+              },
+              "required": [
+                "inherit"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^inherit$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "fontDefinition": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/modern_6"
+        },
+        {
+          "type": "string",
+          "pattern": "^((italic|normal) )?((black|bold|medium|thin|light|normal) )?[1-9][0-9]*px( ([A-Za-z\\-]+|'[A-Za-z \\-]+')(, ?([A-Za-z\\-]+|'[A-Za-z \\-]+'))*)?$"
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Scale Selector",
+              "type": "object",
+              "patternProperties": {
+                "^([0-9]\\.?[0-9]*)x$": {
+                  "$ref": "#/$defs/fontResource"
+                }
+              },
+              "minProperties": 1
+            },
+            {
+              "patternProperties": {
+                "^([0-9]\\.?[0-9]*)x$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "fontResources": {
+      "$ref": "#/$defs/modern_7"
+    },
+    "fontFamily": {
+      "anyOf": [
+        {
+          "enum": [
+            "serif",
+            "san-serif",
+            "monospace",
+            "condensed"
+          ]
+        },
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z \\-]+$"
+        }
+      ]
+    }
+  }
+}

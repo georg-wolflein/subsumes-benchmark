@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "map1": {
+      "$ref": "#/$defs/MyMap1"
+    },
+    "map2": {
+      "$ref": "#/$defs/MyMap2"
+    },
+    "map3": {
+      "$ref": "#/$defs/MyMap2"
+    }
+  },
+  "required": [
+    "map1",
+    "map2",
+    "map3"
+  ],
+  "type": "object",
+  "$defs": {
+    "MyType": {
+      "type": "object"
+    },
+    "MyMap2": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/MyType"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "The additionalProperties annotation should be ignored",
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": [
+                  "string",
+                  "number"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "MyMap1": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

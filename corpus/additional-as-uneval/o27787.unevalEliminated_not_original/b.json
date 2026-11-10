@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VRT to CWE Mapping",
+  "description": "Mapping from the Vulnerability Rating Taxonomy to CWE",
+  "type": "object",
+  "required": [
+    "metadata",
+    "content"
+  ],
+  "properties": {
+    "metadata": {
+      "$ref": "#/$defs/MappingMetadata"
+    },
+    "content": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/MappingParent"
+          },
+          {
+            "$ref": "#/$defs/Mapping"
+          }
+        ]
+      }
+    }
+  },
+  "$defs": {
+    "CWE": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string",
+        "pattern": "^CWE-[0-9]*$"
+      },
+      "minItems": 1,
+      "_uniqueItems": true
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "$ref": "#/$defs/VRTid"
+                },
+                "cwe": {
+                  "$ref": "#/$defs/CWE"
+                }
+              },
+              "required": [
+                "id",
+                "cwe"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^cwe$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "$ref": "#/$defs/VRTid"
+                },
+                "children": {
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/$defs/MappingParent"
+                      },
+                      {
+                        "$ref": "#/$defs/Mapping"
+                      }
+                    ]
+                  }
+                },
+                "cwe": {
+                  "$ref": "#/$defs/CWE"
+                }
+              },
+              "required": [
+                "id",
+                "children"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^children$": true,
+                "^cwe$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Mapping": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "MappingMetadata": {
+      "type": "object",
+      "properties": {
+        "default": {
+          "type": "null"
+        }
+      },
+      "required": [
+        "default"
+      ]
+    },
+    "VRTid": {
+      "type": "string",
+      "pattern": "^[a-z_]*$"
+    },
+    "MappingParent": {
+      "$ref": "#/$defs/modern_2"
+    }
+  }
+}

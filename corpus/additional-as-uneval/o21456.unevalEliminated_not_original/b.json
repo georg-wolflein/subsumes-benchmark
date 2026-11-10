@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "subject": {
+                  "maxLength": 130,
+                  "type": "string"
+                },
+                "description": {
+                  "maxLength": 160,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "to": {
+                  "maxLength": 254,
+                  "minLength": 5,
+                  "pattern": "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$",
+                  "type": "string"
+                },
+                "message": {
+                  "maxLength": 1900,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "jobId": {
+                  "type": "integer"
+                },
+                "from": {
+                  "maxLength": 254,
+                  "minLength": 5,
+                  "pattern": "^[^@^\\s]+@[^@^\\.^\\s]+(\\.[^@^\\.^\\s]*)*.gov.uk",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "to",
+                "from",
+                "subject",
+                "message"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^to$": true,
+                "^jobId$": true,
+                "^subject$": true,
+                "^from$": true,
+                "^message$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

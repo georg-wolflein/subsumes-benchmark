@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "A time of day in 24 hour format, with human readable fields.",
+              "name": "Time",
+              "properties": {
+                "hour": {
+                  "description": "The hour, an integer between 0-23.",
+                  "type": "number"
+                },
+                "minute": {
+                  "description": "The minutes within an hour, an integer between 0-59.",
+                  "type": "number"
+                }
+              },
+              "required": [
+                "hour"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^hour$": true,
+                "^minute$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

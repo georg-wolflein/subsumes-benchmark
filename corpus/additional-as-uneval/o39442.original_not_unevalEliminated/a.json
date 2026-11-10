@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_2",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "field": {
+                  "type": "string",
+                  "enum": [
+                    "USER_NAME",
+                    "DISPLAY_NAME"
+                  ]
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^field$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "PostUserUpdate",
+              "type": "object",
+              "properties": {
+                "updates": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/Details"
+                  },
+                  "description": "List of updates to apply to the user."
+                }
+              },
+              "javaName": "PostUserUpdate"
+            },
+            {
+              "patternProperties": {
+                "^updates$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Details": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

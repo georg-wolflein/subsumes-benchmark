@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "credits": {
+                  "description": "Course credit hours",
+                  "type": "number"
+                },
+                "department": {
+                  "description": "Department that offers this course",
+                  "maxLength": 25,
+                  "type": "string"
+                },
+                "schedule": {
+                  "description": "Days of the week and hours that this course will be offered",
+                  "type": "string"
+                },
+                "syllabus": {
+                  "description": "Summary of topics to be covered in this course",
+                  "type": "string"
+                },
+                "startDate": {
+                  "_format": "date",
+                  "description": "Date this course commences",
+                  "type": "string"
+                },
+                "title": {
+                  "description": "Title of this course",
+                  "type": "string"
+                },
+                "prerequisites": {
+                  "description": "Courses that must have been completed before this course",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "title",
+                "startDate",
+                "syllabus"
+              ],
+              "title": "Course Schema",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^prerequisites$": true,
+                "^department$": true,
+                "^credits$": true,
+                "^title$": true,
+                "^startDate$": true,
+                "^schedule$": true,
+                "^syllabus$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

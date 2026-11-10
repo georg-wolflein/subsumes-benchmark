@@ -1,0 +1,44 @@
+{
+  "anyOf": [
+    {
+      "$id": "http://example.com/schema-refs-absolute-uris-defs1.json",
+      "properties": {
+        "foo": {
+          "$id": "http://example.com/schema-refs-absolute-uris-defs2.json",
+          "$defs": {
+            "inner": {
+              "properties": {
+                "bar": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "$ref": "#/anyOf/0/$defs/inner"
+        }
+      },
+      "$ref": "schema-refs-absolute-uris-defs2.json"
+    },
+    {
+      "$id": "http://example.com/schema-refs-absolute-uris-defs11.json",
+      "$ref": "schema-refs-absolute-uris-defs2.json1",
+      "not": {
+        "properties": {
+          "foo": {
+            "$id": "http://example.com/schema-refs-absolute-uris-defs21.json",
+            "$defs": {
+              "inner": {
+                "properties": {
+                  "bar": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "$ref": "#/anyOf/1/$defs/inner"
+          }
+        }
+      }
+    }
+  ]
+}

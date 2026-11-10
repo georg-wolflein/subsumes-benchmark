@@ -1,0 +1,85 @@
+{
+  "$id": "https://mcda.drugis.org/survivalDistribution.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "MCDA survival distribution for the performance table entry of absolute data",
+              "type": "object",
+              "required": [
+                "type",
+                "parameters"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "dsurv"
+                  ]
+                },
+                "parameters": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^parameters$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "alpha",
+                "beta",
+                "summaryMeasure"
+              ],
+              "properties": {
+                "alpha": {
+                  "type": "number"
+                },
+                "beta": {
+                  "type": "number"
+                },
+                "summaryMeasure": {
+                  "type": "string",
+                  "enum": [
+                    "mean",
+                    "median",
+                    "survivalAtTime"
+                  ]
+                },
+                "time": {
+                  "type": "number"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^alpha$": true,
+                "^beta$": true,
+                "^summaryMeasure$": true,
+                "^time$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

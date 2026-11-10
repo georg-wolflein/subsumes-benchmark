@@ -1,0 +1,533 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "account",
+  "type": "object",
+  "required": [],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "link": {
+      "$ref": "#/$defs/Link"
+    },
+    "accountNumber": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "description": "Individual, Joint, Other",
+      "enum": [
+        "Individual",
+        "Joint",
+        "Other"
+      ]
+    },
+    "pin": {
+      "type": "integer"
+    },
+    "status": {
+      "type": "string",
+      "description": "Active, Suspended, Inactive, Closed",
+      "enum": [
+        "Active",
+        "Suspended",
+        "Inactive",
+        "Closed"
+      ]
+    },
+    "financialStatus": {
+      "type": "string",
+      "description": "Current, Due ,InArrears, Delinquent",
+      "enum": [
+        "Current",
+        "Due",
+        "InArrears",
+        "Delinquent"
+      ]
+    },
+    "creditLimit": {
+      "type": "integer"
+    },
+    "customer": {
+      "$ref": "#/$defs/CustomerSummary"
+    },
+    "serviceAddress": {
+      "$ref": "#/$defs/PropertyAddress"
+    },
+    "primaryUser": {
+      "$ref": "#/$defs/UserSummary"
+    },
+    "users": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/UserSummary"
+      }
+    },
+    "financials": {
+      "$ref": "#/$defs/FinancialSummary"
+    },
+    "billing": {
+      "$ref": "#/$defs/BillingSummary"
+    },
+    "payments": {
+      "$ref": "#/$defs/PaymentSummary"
+    },
+    "products": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ProductSummary"
+      }
+    },
+    "devices": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/DeviceSummary"
+      }
+    },
+    "taxExemptions": {
+      "$ref": "#/$defs/TaxExemptions"
+    },
+    "sites": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/SiteSummary"
+      }
+    },
+    "preferences": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/PreferenceSummary"
+      }
+    },
+    "relatedAccounts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/AccountSummary"
+      }
+    }
+  },
+  "$defs": {
+    "Link": {
+      "type": "object",
+      "properties": {
+        "href": {
+          "type": "string"
+        },
+        "rel": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "method": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "href",
+        "rel"
+      ]
+    },
+    "CustomerSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "link": {
+          "$ref": "#/$defs/Link"
+        },
+        "customerId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "customerRank": {
+          "type": "string"
+        }
+      }
+    },
+    "PropertyAddress": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "link": {
+          "$ref": "#/$defs/Link"
+        },
+        "formattedAddressLine1": {
+          "type": "string"
+        },
+        "formattedAddressLine2": {
+          "type": "string"
+        },
+        "locality": {
+          "type": "string"
+        },
+        "state_province": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "postalcode": {
+          "type": "string"
+        },
+        "postcodeExtension": {
+          "type": "string"
+        },
+        "property": {
+          "$ref": "#/$defs/Property"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "link"
+      ]
+    },
+    "UserSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "link": {
+          "$ref": "#/$defs/Link"
+        },
+        "username": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "profile": {
+          "$ref": "#/$defs/PartySummary"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "link"
+      ]
+    },
+    "FinancialSummary": {
+      "type": "object",
+      "properties": {
+        "currentBalance": {
+          "type": "string"
+        },
+        "priorBilledAmount": {
+          "type": "string"
+        },
+        "currentPeriodPaymentsAdjustment": {
+          "type": "string"
+        },
+        "currentPeriodChargesCredits": {
+          "type": "string"
+        }
+      }
+    },
+    "BillingSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "link": {
+          "$ref": "#/$defs/Link"
+        }
+      }
+    },
+    "PaymentSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "link": {
+          "$ref": "#/$defs/Link"
+        }
+      }
+    },
+    "ProductSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "link": {
+          "$ref": "#/$defs/Link"
+        },
+        "name": {
+          "type": "string"
+        },
+        "isBundle": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string"
+        },
+        "productStatus": {
+          "type": "string"
+        },
+        "productSerialNumber": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "link",
+        "name",
+        "isBundle",
+        "description",
+        "productStatus",
+        "productSerialNumber"
+      ]
+    },
+    "DeviceSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "link": {
+          "$ref": "#/$defs/Link"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "macAddress": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "link",
+        "name",
+        "type",
+        "macAddress"
+      ]
+    },
+    "TaxExemptions": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "link": {
+          "$ref": "#/$defs/Link"
+        }
+      }
+    },
+    "SiteSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "link": {
+          "type": "object",
+          "$ref": "#/$defs/Link"
+        },
+        "name": {
+          "type": "string"
+        },
+        "multiTenant": {
+          "type": "boolean"
+        },
+        "clliCode": {
+          "type": "string"
+        },
+        "siteHours": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "description": "Active, Off, Pending",
+          "enum": [
+            "Active",
+            "Off",
+            "Pending"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "link",
+        "name",
+        "multiTenant",
+        "clliCode",
+        "siteHours",
+        "status"
+      ]
+    },
+    "PreferenceSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "link": {
+          "$ref": "#/$defs/Link"
+        },
+        "preferenceName": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        },
+        "unitOfMeasure": {
+          "type": "string"
+        },
+        "valueType": {
+          "type": "string"
+        },
+        "isSet": {
+          "type": "boolean"
+        },
+        "preferenceCategory": {
+          "$ref": "#/$defs/PreferenceCategory"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "link",
+        "preferenceName",
+        "value",
+        "unitOfMeasure",
+        "valueType",
+        "isSet",
+        "preferenceCategory"
+      ]
+    },
+    "PreferenceCategory": {
+      "type": "object",
+      "properties": {
+        "preferenceCategoryId": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "preferenceCategoryName": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "preferenceCategoryName",
+        "description",
+        "preferenceCategoryId"
+      ]
+    },
+    "AccountSummary": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "link": {
+          "$ref": "#/$defs/Link"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "link",
+        "name"
+      ]
+    },
+    "Property": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "link": {
+          "$ref": "#/$defs/Link"
+        },
+        "lotNr": {
+          "type": "string"
+        },
+        "landUse": {
+          "type": "string"
+        },
+        "landCover": {
+          "type": "string"
+        },
+        "elevation": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "naturalRisks": {
+          "type": "string"
+        },
+        "geometry": {
+          "$ref": "#/$defs/Geometry"
+        },
+        "propertyAddresses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/PropertyAddress"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ]
+    },
+    "PartySummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "link": {
+          "$ref": "#/$defs/Link"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "link",
+        "name"
+      ]
+    },
+    "Geometry": {
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

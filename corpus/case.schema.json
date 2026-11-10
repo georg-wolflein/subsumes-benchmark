@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/georg-wolflein/subsumes-benchmark/blob/main/corpus/case.schema.json",
+  "title": "A JSON Schema inclusion benchmark case",
+  "description": "What is known about the two schemas next to this file: does a.json accept every instance valid under b.json? The labels hold for draft 2020-12 with format asserted and patterns read in the dialect of the Rust regex crate.",
+  "type": "object",
+  "required": [
+    "a_subsumes_b",
+    "b_subsumes_a",
+    "upstream"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "a_subsumes_b": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "Whether a.json accepts every instance valid under b.json; null when the corpus claims nothing."
+    },
+    "b_subsumes_a": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "The same question in the other direction."
+    },
+    "upstream": {
+      "type": "string",
+      "description": "The file this case comes from, as a path inside the source repository that collection.json names; the test suite's cases add the case id after a '#'."
+    },
+    "note": {
+      "type": "string",
+      "description": "Why the labels depart from upstream's; absent when they do not."
+    }
+  }
+}

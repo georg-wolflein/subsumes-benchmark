@@ -1,0 +1,184 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_4",
+  "$defs": {
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "confidence": {
+      "type": "string",
+      "enum": [
+        "Low",
+        "Medium",
+        "High"
+      ]
+    },
+    "simple_string": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "simple_integer": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Site",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "$ref": "#/$defs/simple_string"
+                },
+                "gid": {
+                  "type": "integer"
+                },
+                "row": {
+                  "type": "integer"
+                },
+                "id": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$"
+                },
+                "admin_level_1_geonames_name": {
+                  "$ref": "#/$defs/complex_string"
+                },
+                "geonames_name": {
+                  "$ref": "#/$defs/complex_string"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "site"
+                  ]
+                },
+                "admin_level_1_geonames_id": {
+                  "$ref": "#/$defs/simple_integer"
+                },
+                "division_id": {
+                  "type": "string",
+                  "pattern": "^ocd-division/country:[a-z]{2}$"
+                },
+                "geonames_id": {
+                  "$ref": "#/$defs/simple_integer"
+                }
+              },
+              "required": [
+                "type",
+                "division_id",
+                "gid",
+                "row",
+                "id",
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^geonames_name$": true,
+                "^geonames_id$": true,
+                "^name$": true,
+                "^type$": true,
+                "^division_id$": true,
+                "^row$": true,
+                "^admin_level_1_geonames_id$": true,
+                "^id$": true,
+                "^gid$": true,
+                "^admin_level_1_geonames_name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "string"
+                },
+                "sources": {
+                  "$ref": "#/$defs/sources"
+                },
+                "confidence": {
+                  "$ref": "#/$defs/confidence"
+                }
+              },
+              "required": [
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^value$": true,
+                "^sources$": true,
+                "^confidence$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "complex_string": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

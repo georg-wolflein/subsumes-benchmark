@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "diagram_id": {
+                  "type": "string"
+                },
+                "highlights": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "protein_map": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "xml": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "diagram_id"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^diagram_id$": true,
+                "^highlights$": true,
+                "^protein_map$": true,
+                "^xml$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/modern_4"
+              }
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "db_id": {
+                  "type": "string"
+                },
+                "uniprot_ids": {
+                  "$ref": "#/$defs/modern_5"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^db_id$": true,
+                "^uniprot_ids$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

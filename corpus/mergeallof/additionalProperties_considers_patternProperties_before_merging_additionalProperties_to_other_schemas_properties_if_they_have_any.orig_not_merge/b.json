@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "common": true,
+    "root": true
+  },
+  "patternProperties": {
+    ".+\\d{2,}$": {
+      "minLength": 7
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "properties": {
+        "common": {
+          "type": "string"
+        },
+        "allof1": true
+      },
+      "additionalProperties": {
+        "type": [
+          "string",
+          "null",
+          "integer"
+        ],
+        "maxLength": 10
+      }
+    },
+    {
+      "properties": {
+        "common": {
+          "minLength": 1
+        },
+        "allof2": true,
+        "allowed123": {
+          "type": "string"
+        }
+      },
+      "patternProperties": {
+        ".+\\d{2,}$": {
+          "minLength": 9
+        }
+      },
+      "additionalProperties": {
+        "type": [
+          "string",
+          "integer",
+          "null"
+        ],
+        "maxLength": 8
+      }
+    },
+    {
+      "properties": {
+        "common": {
+          "minLength": 6
+        },
+        "allof3": true,
+        "allowed456": {
+          "type": "integer"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,229 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "elementArray": {
+      "$ref": "#/$defs/ElementArray"
+    },
+    "inlineElementArray": {
+      "$ref": "#/$defs/InlineElementArray"
+    },
+    "inlineElementArray2": {
+      "$ref": "#/$defs/InlineElementArray2"
+    },
+    "arrayFromExternList": {
+      "$ref": "#/$defs/ArrayFromExternList"
+    },
+    "arrayFromExternList2": {
+      "$ref": "#/$defs/ArrayFromExternList2"
+    },
+    "arrayFromExternList3": {
+      "$ref": "#/$defs/ArrayFromExternList3"
+    },
+    "arrayFromExternList4": {
+      "$ref": "#/$defs/ArrayFromExternList4"
+    }
+  },
+  "$defs": {
+    "ElementArray": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "lineItem": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/LineItem"
+          }
+        }
+      }
+    },
+    "LineItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "perUnitOunces": {
+          "type": "number"
+        },
+        "price": {
+          "type": "number"
+        },
+        "quantity": {
+          "$ref": "#/$defs/Quantity"
+        }
+      }
+    },
+    "Quantity": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "age": {
+          "type": "integer"
+        },
+        "moo": {
+          "type": "integer"
+        },
+        "poo": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "moo",
+        "poo"
+      ]
+    },
+    "InlineElementArray": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "lineItem": {
+          "$ref": "#/$defs/LineItem_1"
+        }
+      }
+    },
+    "LineItem_1": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "item": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/LineItem_1"
+          }
+        }
+      }
+    },
+    "InlineElementArray2": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "lineItem": {
+          "$ref": "#/$defs/LineItem_2"
+        }
+      }
+    },
+    "LineItem_2": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "item": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/LineItem_2"
+          }
+        }
+      }
+    },
+    "ArrayFromExternList": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "lineItem": {
+          "$ref": "#/$defs/LineItemList"
+        }
+      }
+    },
+    "LineItemList": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/LineItem"
+          }
+        }
+      }
+    },
+    "ArrayFromExternList2": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "lineItem": {
+          "$ref": "#/$defs/LineItemList2"
+        }
+      }
+    },
+    "LineItemList2": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/LineItem"
+          }
+        }
+      }
+    },
+    "ArrayFromExternList3": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "lineItem": {
+          "$ref": "#/$defs/LineItemListInline"
+        }
+      }
+    },
+    "LineItemListInline": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Value"
+          }
+        }
+      }
+    },
+    "Value": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "type": "string"
+        }
+      }
+    },
+    "ArrayFromExternList4": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "lineItem": {
+          "$ref": "#/$defs/LineItemList2Inline"
+        }
+      }
+    },
+    "LineItemList2Inline": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Value_1"
+          }
+        }
+      }
+    },
+    "Value_1": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

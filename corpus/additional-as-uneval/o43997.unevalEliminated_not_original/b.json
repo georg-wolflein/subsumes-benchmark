@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "location": {
+                  "_format": "uri",
+                  "type": "string"
+                },
+                "retries": {
+                  "type": "number"
+                },
+                "retrieveDate": {
+                  "_format": "date-time",
+                  "type": "string"
+                },
+                "retryInterval": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "location",
+                "retrieveDate"
+              ],
+              "title": "UpdateFirmwareRequest",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^location$": true,
+                "^retries$": true,
+                "^retrieveDate$": true,
+                "^retryInterval$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

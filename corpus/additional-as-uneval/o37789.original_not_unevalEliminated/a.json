@@ -1,0 +1,1142 @@
+{
+  "$id": "https://tabris.com/api-schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tabris.js API Definition JSON Schema",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/api"
+    }
+  ],
+  "$defs": {
+    "parameter": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "map": {
+                  "$ref": "#/$defs/modern_11"
+                },
+                "indexType": {
+                  "enum": [
+                    "string",
+                    "number",
+                    "SelectorString"
+                  ]
+                }
+              },
+              "required": [
+                "map",
+                "indexType"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^map$": true,
+                "^indexType$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "typeReference": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/$defs/modern_5"
+        },
+        {
+          "$ref": "#/$defs/modern_6"
+        },
+        {
+          "$ref": "#/$defs/modern_7"
+        },
+        {
+          "$ref": "#/$defs/modern_8"
+        },
+        {
+          "$ref": "#/$defs/modern_10"
+        },
+        {
+          "$ref": "#/$defs/modern_12"
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "tuple": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/typeReference"
+                  }
+                }
+              },
+              "required": [
+                "tuple"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^tuple$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_20": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "access": {
+                  "enum": [
+                    "public",
+                    "protected",
+                    "private"
+                  ]
+                },
+                "parameters": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/parameter"
+                  }
+                }
+              },
+              "required": [
+                "access"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^access$": true,
+                "^parameters$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "genericsDef": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/modern_15"
+      },
+      "minItems": 1
+    },
+    "modern_12": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "callback": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_13"
+                  }
+                },
+                "returns": {
+                  "$ref": "#/$defs/modern_14"
+                }
+              },
+              "required": [
+                "callback"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^callback$": true,
+                "^returns$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "map": {
+                  "$ref": "#/$defs/modern_9"
+                }
+              },
+              "required": [
+                "map"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^map$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_24": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "snippet": {
+                  "type": "string"
+                },
+                "repo": {
+                  "enum": [
+                    "tabris",
+                    "tabris-decorators"
+                  ]
+                }
+              },
+              "required": [
+                "snippet"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^title$": true,
+                "^snippet$": true,
+                "^repo$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "provisional": {
+                  "type": "boolean"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "ts_returns": {
+                  "description": "Overrides \"returns\" for TypeScript declarations",
+                  "$ref": "#/$defs/typeReference"
+                },
+                "generics": {
+                  "$ref": "#/$defs/genericsDef"
+                },
+                "ts_only": {
+                  "type": "boolean"
+                },
+                "returns": {
+                  "$ref": "#/$defs/typeReference"
+                },
+                "docs_only": {
+                  "type": "boolean"
+                },
+                "parameters": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/parameter"
+                  }
+                },
+                "protected": {
+                  "type": "boolean"
+                },
+                "private": {
+                  "type": "boolean"
+                },
+                "platforms": {
+                  "$ref": "#/$defs/platforms"
+                },
+                "links": {
+                  "$ref": "#/$defs/links"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^protected$": true,
+                "^links$": true,
+                "^ts_returns$": true,
+                "^returns$": true,
+                "^ts_only$": true,
+                "^provisional$": true,
+                "^parameters$": true,
+                "^platforms$": true,
+                "^generics$": true,
+                "^private$": true,
+                "^docs_only$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "api": {
+      "$ref": "#/$defs/modern_18"
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "^[a-z]\\w+$": {
+                  "$ref": "#/$defs/typeReference"
+                }
+              },
+              "minProperties": 1,
+              "maxProperties": 1
+            },
+            {
+              "patternProperties": {
+                "^[a-z]\\w+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_14": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "$ref": "#/$defs/typeReference"
+                },
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_21": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Change events will be generated automatically if type extends NativeObject",
+              "type": "object",
+              "patternProperties": {
+                "(^[_\\$]?[a-z]\\w+$)|(^\\[.*\\]$)": {
+                  "$ref": "#/$defs/property"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "(^[_\\$]?[a-z]\\w+$)|(^\\[.*\\]$)": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "interface": {
+                  "type": "string"
+                },
+                "generics": {
+                  "$ref": "#/$defs/generics"
+                }
+              },
+              "required": [
+                "interface",
+                "generics"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^interface$": true,
+                "^generics$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "statics": {
+      "type": "object",
+      "properties": {
+        "properties": {
+          "$ref": "#/$defs/modern_1"
+        },
+        "methods": {
+          "$ref": "#/$defs/modern_2"
+        }
+      }
+    },
+    "method": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "union": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/typeReference"
+                  }
+                }
+              },
+              "required": [
+                "union"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^union$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_16": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "title",
+                "path"
+              ],
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "path": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^title$": true,
+                "^path$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_15": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "default": {
+                  "$ref": "#/definitions4/typeReference"
+                },
+                "extends": {
+                  "$ref": "#/$defs/typeReference"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^default$": true,
+                "^extends$": true,
+                "^description$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "snippet": {
+      "$ref": "#/$defs/modern_24"
+    },
+    "event": {
+      "$ref": "#/$defs/modern_23"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "(^_?[a-z]\\w+$)|(^\\[.*\\]$)": {
+                  "$ref": "#/$defs/property"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "(^_?[a-z]\\w+$)|(^\\[.*\\]$)": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_23": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "eventObject": {
+                  "type": "string",
+                  "description": "The name of the generated event object interface for TypeScript declaration. Defaults to \"{TypeName}{EventName}Event\". Useful for merging multiple identical event interfaces."
+                },
+                "parameters": {
+                  "type": "object",
+                  "patternProperties": {
+                    "^_?[a-z]\\w+$": {
+                      "$ref": "#/$defs/property"
+                    }
+                  }
+                },
+                "platforms": {
+                  "$ref": "#/$defs/platforms"
+                },
+                "links": {
+                  "$ref": "#/$defs/links"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^eventObject$": true,
+                "^links$": true,
+                "^parameters$": true,
+                "^platforms$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "generics": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/typeReference"
+      },
+      "minItems": 1
+    },
+    "modern_17": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "ts_type": {
+                  "description": "Overrides \"type\" for TypeScript declarations",
+                  "$ref": "#/$defs/typeReference"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "changeEventDescription": {
+                  "type": "string"
+                },
+                "jsxContentProperty": {
+                  "description": "JSX child elements of the matching type are mapped to this property",
+                  "type": "boolean"
+                },
+                "optional": {
+                  "description": "Is the property optional?",
+                  "type": "boolean",
+                  "default": false
+                },
+                "readonly": {
+                  "description": "Indicates that this property can not be set. However, if the property is not a \"const\", it may change by itself. Defaults to false",
+                  "type": "boolean"
+                },
+                "ts_only": {
+                  "description": "Exclude this property from documentation",
+                  "type": "boolean"
+                },
+                "const": {
+                  "description": "Indicates that this property can not change during the lifetime of this object. However, if there is a public constructor and the property is not \"readonly\", it can be set via constructor. No change events will be generated for this property. Defaults to false",
+                  "type": "boolean"
+                },
+                "default": {
+                  "description": "Default value of this property"
+                },
+                "values": {
+                  "description": "Limits the possible values of this property",
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "boolean"
+                      }
+                    ]
+                  }
+                },
+                "type": {
+                  "$ref": "#/$defs/typeReference"
+                },
+                "noChangeEvent": {
+                  "type": "boolean",
+                  "description": "This property does not produce change events. Implied by 'const'."
+                },
+                "protected": {
+                  "description": "Mark property as protected",
+                  "type": "boolean"
+                },
+                "private": {
+                  "description": "Mark property as private",
+                  "type": "boolean"
+                },
+                "platforms": {
+                  "$ref": "#/$defs/platforms"
+                },
+                "links": {
+                  "$ref": "#/$defs/links"
+                }
+              },
+              "required": [
+                "type"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^changeEventDescription$": true,
+                "^noChangeEvent$": true,
+                "^const$": true,
+                "^description$": true,
+                "^optional$": true,
+                "^protected$": true,
+                "^links$": true,
+                "^private$": true,
+                "^ts_only$": true,
+                "^readonly$": true,
+                "^ts_type$": true,
+                "^platforms$": true,
+                "^type$": true,
+                "^values$": true,
+                "^jsxContentProperty$": true,
+                "^default$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "(^_?[a-z]\\w+$)|(^\\[.*\\]$)": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/method"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/$defs/method"
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "(^_?[a-z]\\w+$)|(^\\[.*\\]$)": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "platforms": {
+      "$ref": "#/$defs/modern_25"
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/link"
+          },
+          {
+            "$ref": "#/$defs/snippet"
+          }
+        ]
+      }
+    },
+    "link": {
+      "$ref": "#/$defs/modern_16"
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "^[a-zA-Z]*$": {
+                  "$ref": "#/$defs/property"
+                }
+              },
+              "minProperties": 1
+            },
+            {
+              "patternProperties": {
+                "^[a-zA-Z]*$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_18": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "statics": {
+                  "$ref": "#/$defs/statics"
+                },
+                "module": {
+                  "enum": [
+                    "tabris",
+                    "tabris-decorators"
+                  ]
+                },
+                "methods": {
+                  "$ref": "#/$defs/modern_19"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "constructor": {
+                  "$ref": "#/$defs/modern_20"
+                },
+                "generics": {
+                  "$ref": "#/$defs/genericsDef"
+                },
+                "object": {
+                  "description": "Name of the instance (for singletons)",
+                  "type": "string"
+                },
+                "links": {
+                  "$ref": "#/$defs/links"
+                },
+                "properties": {
+                  "$ref": "#/$defs/modern_21"
+                },
+                "markdown_only": {
+                  "type": "boolean"
+                },
+                "category": {
+                  "enum": [
+                    "core",
+                    "service",
+                    "widget",
+                    "popup",
+                    "net",
+                    "data"
+                  ]
+                },
+                "extends": {
+                  "$ref": "#/$defs/typeReference"
+                },
+                "events": {
+                  "$ref": "#/$defs/modern_22"
+                },
+                "namespace": {
+                  "enum": [
+                    "global",
+                    "tabris",
+                    false
+                  ]
+                },
+                "jsxChildren": {
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "interface": {
+                  "description": "Makes this type an interface. Will be rendered inline where referenced in documentation.",
+                  "type": "boolean",
+                  "default": false
+                },
+                "title": {
+                  "description": "The title of the document. Will default to object or type name.",
+                  "type": "string"
+                },
+                "type": {
+                  "description": "Name of the class/interface",
+                  "type": "string"
+                }
+              },
+              "dependentRequired": {
+                "extends": [
+                  "type"
+                ],
+                "object": [
+                  "type"
+                ],
+                "generics": [
+                  "type"
+                ],
+                "constructor": [
+                  "type"
+                ],
+                "events": [
+                  "type"
+                ]
+              },
+              "allOf": [
+                {
+                  "$comment": "Where is the API located?",
+                  "anyOf": [
+                    {
+                      "required": [
+                        "type"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "object"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "namespace"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "$comment": "What is the document named?",
+                  "anyOf": [
+                    {
+                      "required": [
+                        "title"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "object"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "type"
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "not": {
+                "$comment": "Interfaces do not support constructor or statics",
+                "properties": {
+                  "interface": {
+                    "enum": [
+                      true
+                    ]
+                  }
+                },
+                "required": [
+                  "interface"
+                ],
+                "anyOf": [
+                  {
+                    "required": [
+                      "constructor"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "statics"
+                    ]
+                  }
+                ]
+              },
+              "required": [
+                "category"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^extends$": true,
+                "^description$": true,
+                "^constructor$": true,
+                "^category$": true,
+                "^links$": true,
+                "^type$": true,
+                "^methods$": true,
+                "^generics$": true,
+                "^namespace$": true,
+                "^statics$": true,
+                "^markdown_only$": true,
+                "^title$": true,
+                "^object$": true,
+                "^properties$": true,
+                "^interface$": true,
+                "^events$": true,
+                "^module$": true,
+                "^jsxChildren$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_13": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "$ref": "#/$defs/typeReference"
+                },
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type",
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "property": {
+      "$ref": "#/$defs/modern_17"
+    },
+    "modern_22": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "^[a-z]\\w+$": {
+                  "$ref": "#/$defs/event"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^[a-z]\\w+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_25": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "ios": {
+                  "type": "boolean",
+                  "description": "Defaults to true"
+                },
+                "android": {
+                  "type": "boolean",
+                  "description": "Defaults to true"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^ios$": true,
+                "^android$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_19": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "(^[_\\$]?[a-z]\\w+$)|(^\\[.*\\]$|^\\$$)": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/method"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/$defs/method"
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "(^[_\\$]?[a-z]\\w+$)|(^\\[.*\\]$|^\\$$)": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "ts_type": {
+                  "description": "Overrides \"type\" for TypeScript declarations",
+                  "$ref": "#/$defs/typeReference"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "optional": {
+                  "description": "Defaults to false",
+                  "type": "boolean"
+                },
+                "type": {
+                  "$ref": "#/$defs/typeReference"
+                }
+              },
+              "required": [
+                "name",
+                "type"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^optional$": true,
+                "^name$": true,
+                "^type$": true,
+                "^ts_type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

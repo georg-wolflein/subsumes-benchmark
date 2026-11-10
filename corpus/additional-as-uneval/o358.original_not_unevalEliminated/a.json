@@ -1,0 +1,2663 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_43",
+  "$defs": {
+    "salesforceLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.SalesforceLinkedService",
+      "description": "Linked Service for Salesforce connector.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "Salesforce"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_3"
+        }
+      }
+    },
+    "customDataSourceLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.CustomDataSourceLinkedService",
+      "description": "Custom linked service.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "CustomDataSource"
+          ]
+        },
+        "typeProperties": {
+          "description": "Properties specific to this linked service type.",
+          "type": "object"
+        }
+      }
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Properties specific to this linked service type.",
+              "type": "object",
+              "required": [
+                "username",
+                "password",
+                "securityToken"
+              ],
+              "properties": {
+                "username": {
+                  "description": "The username for Basic authentication of the Salesforce source.",
+                  "type": "string"
+                },
+                "password": {
+                  "description": "The password for Basic authentication of the Salesforce source.",
+                  "type": "string"
+                },
+                "securityToken": {
+                  "description": "The security token is required to access Salesforce.",
+                  "type": "string"
+                },
+                "environmentUrl": {
+                  "description": "The Salesforce login URL. To connect to the Salesforce sandbox environment, use 'test.salesforce.com'.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^username$": true,
+                "^password$": true,
+                "^securityToken$": true,
+                "^environmentUrl$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_22": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Allows user to override default values for YARN configuration.",
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_21": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Allows user to override default values for core configuration.",
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "onPremisesSqlServerLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.OnPremisesSqlServerLinkedService",
+      "description": "An on-premises SQL server database.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "OnPremisesSqlServer"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_13"
+        }
+      }
+    },
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Properties specific to this linked service type.",
+              "type": "object",
+              "required": [
+                "dataLakeStoreUri"
+              ],
+              "properties": {
+                "servicePrincipalKey": {
+                  "description": "The Key of the application used to authenticate against the Azure Data Lake Store account.",
+                  "type": "string"
+                },
+                "subscriptionId": {
+                  "description": "Data Lake Store account subscription ID (if different from Data Factory account).",
+                  "type": "string"
+                },
+                "authorization": {
+                  "description": "OAuth authorization that may be used by ADF to access resources on your behalf. Each authorization is unique and may only be used once.",
+                  "type": "string"
+                },
+                "dataLakeStoreUri": {
+                  "description": "Data Lake Store service URI.",
+                  "type": "string"
+                },
+                "sessionId": {
+                  "description": "OAuth session ID from the oauth authorization session. Each session id is unique and may only be used once.",
+                  "type": "string"
+                },
+                "resourceGroupName": {
+                  "description": "Data Lake Store account resource group name (if different from Data Factory account).",
+                  "type": "string"
+                },
+                "servicePrincipalId": {
+                  "description": "The ID of the application used to authenticate against the Azure Data Lake Store account.",
+                  "type": "string"
+                },
+                "tenant": {
+                  "description": "The name or ID of the tenant to which the service principal belongs.",
+                  "type": "string"
+                },
+                "accountName": {
+                  "description": "Data Lake Store account name.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^authorization$": true,
+                "^tenant$": true,
+                "^subscriptionId$": true,
+                "^sessionId$": true,
+                "^servicePrincipalId$": true,
+                "^accountName$": true,
+                "^resourceGroupName$": true,
+                "^servicePrincipalKey$": true,
+                "^dataLakeStoreUri$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_32": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "host",
+                "authenticationType"
+              ],
+              "properties": {
+                "authenticationType": {
+                  "description": "The authentication type to be used to connect to the FTP server.",
+                  "type": "string",
+                  "enum": [
+                    "Basic",
+                    "Anonymous"
+                  ]
+                },
+                "username": {
+                  "description": "Username to logon the FTP server.",
+                  "type": "string"
+                },
+                "host": {
+                  "description": "Host name of the FTP server.",
+                  "type": "string"
+                },
+                "gatewayName": {
+                  "description": "The on-premises gateway name.",
+                  "type": "string"
+                },
+                "enableServerCertificateValidation": {
+                  "description": "If true, validate the FTP server SSL certificate when connect over SSL/TLS channel. Default value is true.",
+                  "type": "boolean"
+                },
+                "port": {
+                  "description": "The TCP port number that the FTP server uses to listen for client connections. Default value is 21.",
+                  "type": "integer",
+                  "minimum": 0.0
+                },
+                "enableSsl": {
+                  "description": "If true, connect to the FTP server over SSL/TLS channel. Default value is true.",
+                  "type": "boolean"
+                },
+                "encryptedCredential": {
+                  "description": "The encrypted credential for Basic authentication.",
+                  "type": "string"
+                },
+                "password": {
+                  "description": "Password to logon the FTP server.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^port$": true,
+                "^username$": true,
+                "^enableSsl$": true,
+                "^authenticationType$": true,
+                "^gatewayName$": true,
+                "^host$": true,
+                "^password$": true,
+                "^encryptedCredential$": true,
+                "^enableServerCertificateValidation$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "hdInsightOnDemandLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.HDInsightOnDemandLinkedService",
+      "description": "The properties for the HDInsight linkedService.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "HDInsightOnDemand"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_14"
+        }
+      }
+    },
+    "azureStorageLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.AzureStorageLinkedService",
+      "description": "The storage account linkedService.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "AzureStorage"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_24"
+        }
+      }
+    },
+    "azureMLLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.AzureMLLinkedService",
+      "description": "Azure ML Web Service linked service.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "AzureML"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_1"
+        }
+      }
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "server",
+                "database",
+                "authenticationType",
+                "gatewayName"
+              ],
+              "properties": {
+                "database": {
+                  "description": "Database name for connection.",
+                  "type": "string"
+                },
+                "authenticationType": {
+                  "description": "AuthenticationType to be used for connection.",
+                  "type": "string"
+                },
+                "server": {
+                  "description": "Server name for connection.",
+                  "type": "string"
+                },
+                "username": {
+                  "description": "Username for authentication.",
+                  "type": "string"
+                },
+                "gatewayName": {
+                  "description": "The on-premises gateway name.",
+                  "type": "string"
+                },
+                "schema": {
+                  "description": "Schema name for connection.",
+                  "type": "string"
+                },
+                "encryptedCredential": {
+                  "description": "The encryptedCredential for authentication.",
+                  "type": "string"
+                },
+                "password": {
+                  "description": "Password for authentication.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^schema$": true,
+                "^username$": true,
+                "^authenticationType$": true,
+                "^password$": true,
+                "^server$": true,
+                "^encryptedCredential$": true,
+                "^gatewayName$": true,
+                "^database$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Properties specific to this linked service type.",
+              "type": "object",
+              "required": [
+                "host",
+                "gatewayName"
+              ],
+              "properties": {
+                "host": {
+                  "description": "Host name of the server.",
+                  "type": "string"
+                },
+                "gatewayName": {
+                  "description": "The on-premises gateway name.",
+                  "type": "string"
+                },
+                "userId": {
+                  "description": "UserID to logon the server.",
+                  "type": "string"
+                },
+                "encryptedCredential": {
+                  "description": "Encrypted credential which contains host, userId and password.",
+                  "type": "string"
+                },
+                "password": {
+                  "description": "Password to logon the server.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^gatewayName$": true,
+                "^host$": true,
+                "^password$": true,
+                "^userId$": true,
+                "^encryptedCredential$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_43": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Microsoft.Azure.Management.DataFactories.Models.LinkedService",
+              "description": "The data factory linkedService.",
+              "type": "object",
+              "required": [
+                "name",
+                "properties"
+              ],
+              "properties": {
+                "name": {
+                  "description": "Data factory linkedService name.",
+                  "type": "string",
+                  "maxLength": 260,
+                  "pattern": "^[A-Za-z0-9_][^<>*#.%&:\\\\+?/]*$"
+                },
+                "properties": {
+                  "description": "Data factory linkedService properties.",
+                  "$ref": "#/$defs/linkedServicePropertiesTypes"
+                },
+                "$schema": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^properties$": true,
+                "^$schema$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "modern_37": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "server",
+                "database",
+                "authenticationType",
+                "gatewayName"
+              ],
+              "properties": {
+                "database": {
+                  "description": "Database name for connection.",
+                  "type": "string"
+                },
+                "authenticationType": {
+                  "description": "AuthenticationType to be used for connection.",
+                  "type": "string"
+                },
+                "server": {
+                  "description": "Server name for connection.",
+                  "type": "string"
+                },
+                "username": {
+                  "description": "Username for authentication.",
+                  "type": "string"
+                },
+                "gatewayName": {
+                  "description": "The on-premises gateway name.",
+                  "type": "string"
+                },
+                "schema": {
+                  "description": "Schema name for connection.",
+                  "type": "string"
+                },
+                "encryptedCredential": {
+                  "description": "The encryptedCredential for authentication.",
+                  "type": "string"
+                },
+                "password": {
+                  "description": "Password for authentication.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^schema$": true,
+                "^username$": true,
+                "^authenticationType$": true,
+                "^password$": true,
+                "^server$": true,
+                "^encryptedCredential$": true,
+                "^gatewayName$": true,
+                "^database$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "awsAccessKeyLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.AwsAccessKeyLinkedService",
+      "description": "An access key-based Amazon Web Services (AWS) linked service.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "AwsAccessKey"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_2"
+        }
+      }
+    },
+    "modern_16": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Allows user to override default values for oozie configuration.",
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "azureDataLakeAnalyticsLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.AzureDataLakeAnalyticsLinkedService",
+      "description": "Azure Data Lake Analytics linked service.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "AzureDataLakeAnalytics"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_25"
+        }
+      }
+    },
+    "modern_15": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Allows user to override default values for HBase configuration.",
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "azureStorageSasLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.AzureStorageSasLinkedService",
+      "description": "Azure Storage SAS URI linked service. This linked service type can be used to provide restricted access to an Azure Storage resource using SAS URI.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "AzureStorageSas"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_26"
+        }
+      }
+    },
+    "modern_27": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Properties specific to this linked service type.",
+              "type": "object",
+              "required": [
+                "server",
+                "username",
+                "password",
+                "database"
+              ],
+              "properties": {
+                "database": {
+                  "description": "The database name of the Amazon Redshift server.",
+                  "type": "string"
+                },
+                "server": {
+                  "description": "The name of the Amazon Redshift server.",
+                  "type": "string"
+                },
+                "username": {
+                  "description": "The username of the Amazon Redshift server.",
+                  "type": "string"
+                },
+                "port": {
+                  "description": "The TCP port number that the Amazon Redshift server uses to listen for client connections.",
+                  "type": "integer",
+                  "default": 5439
+                },
+                "password": {
+                  "description": "The password of the Amazon Redshift server.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^port$": true,
+                "^username$": true,
+                "^database$": true,
+                "^password$": true,
+                "^server$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Properties specific to this linked service type.",
+              "type": "object",
+              "required": [
+                "mlEndpoint",
+                "apiKey"
+              ],
+              "properties": {
+                "tenant": {
+                  "description": "The name or ID of the tenant to which the service principal belongs.",
+                  "type": "string"
+                },
+                "servicePrincipalKey": {
+                  "description": "The key of the service principal used to authenticate against the ARM-based updateResourceEndpoint of an Azure ML web service.",
+                  "type": "string"
+                },
+                "apiKey": {
+                  "description": "The API key for accessing the Azure ML model endpoint.",
+                  "type": "string"
+                },
+                "mlEndpoint": {
+                  "description": "The Batch Execution REST URL for an Azure ML Web Service endpoint.",
+                  "type": "string"
+                },
+                "servicePrincipalId": {
+                  "description": "The ID of the service principal used to authenticate against the ARM-based updateResourceEndpoint of an Azure ML web service.",
+                  "type": "string"
+                },
+                "updateResourceEndpoint": {
+                  "description": "The Update Resource REST URL for an Azure ML Web Service endpoint.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^updateResourceEndpoint$": true,
+                "^tenant$": true,
+                "^servicePrincipalId$": true,
+                "^servicePrincipalKey$": true,
+                "^apiKey$": true,
+                "^mlEndpoint$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_42": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Properties specific to this linked service type.",
+              "type": "object",
+              "required": [
+                "connectionString"
+              ],
+              "properties": {
+                "connectionString": {
+                  "description": "The connection string.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^connectionString$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "onPremisesTeradataLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.OnPremisesTeradataLinkedService",
+      "description": "Linked Service for Teradata data source.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "OnPremisesTeradata"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_4"
+        }
+      }
+    },
+    "modern_34": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Properties specific to this linked service type.",
+              "type": "object",
+              "required": [
+                "accountName",
+                "accessKey",
+                "batchUri",
+                "poolName",
+                "linkedServiceName"
+              ],
+              "properties": {
+                "batchUri": {
+                  "description": "The Azure Batch Uri.",
+                  "type": "string"
+                },
+                "accountName": {
+                  "description": "The Azure Batch account name.",
+                  "type": "string"
+                },
+                "linkedServiceName": {
+                  "description": "The azure storage linked service name.",
+                  "type": "string"
+                },
+                "poolName": {
+                  "description": "The Azure Batch pool name.",
+                  "type": "string"
+                },
+                "accessKey": {
+                  "description": "The Azure Batch account access key.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^poolName$": true,
+                "^batchUri$": true,
+                "^accountName$": true,
+                "^accessKey$": true,
+                "^linkedServiceName$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "azureDataLakeStoreLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.AzureDataLakeStoreLinkedService",
+      "description": "Azure Data Lake Store linked service.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "AzureDataLakeStore"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_5"
+        }
+      }
+    },
+    "modern_31": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "server",
+                "authenticationType",
+                "gatewayName",
+                "databaseName"
+              ],
+              "properties": {
+                "authenticationType": {
+                  "description": "The authentication type to be used to connect to the MongoDB database. Must be Basic or Anonymous.",
+                  "type": "string",
+                  "enum": [
+                    "Basic",
+                    "Anonymous"
+                  ]
+                },
+                "server": {
+                  "description": "The IP address or server name of the MongoDB server.",
+                  "type": "string"
+                },
+                "username": {
+                  "description": "User name for Basic authentication.",
+                  "type": "string"
+                },
+                "gatewayName": {
+                  "description": "The on-premises gateway name.",
+                  "type": "string"
+                },
+                "port": {
+                  "description": "The TCP port number that the MongoDB server uses to listen for client connections. The default value is 27017.",
+                  "type": "integer",
+                  "minimum": 0.0
+                },
+                "databaseName": {
+                  "description": "The name of the MongoDB database that you want to access.",
+                  "type": "string"
+                },
+                "password": {
+                  "description": "Password for Basic authentication.",
+                  "type": "string"
+                },
+                "authSource": {
+                  "description": "The name of the MongoDB database that you want to use to check your credentials for authentication.",
+                  "type": "string"
+                },
+                "encryptedCredential": {
+                  "description": "The encrypted credential for Basic authentication.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^port$": true,
+                "^authSource$": true,
+                "^username$": true,
+                "^authenticationType$": true,
+                "^databaseName$": true,
+                "^gatewayName$": true,
+                "^password$": true,
+                "^server$": true,
+                "^encryptedCredential$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "onPremisesSybaseLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.OnPremisesSybaseLinkedService",
+      "description": "Linked Service for Sybase data source.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "OnPremisesSybase"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_6"
+        }
+      }
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Properties specific to this linked service type.",
+              "type": "object",
+              "required": [
+                "clusterUri",
+                "userName",
+                "password"
+              ],
+              "properties": {
+                "hcatalogLinkedServiceName": {
+                  "description": "The name of Azure SQL linked service that point to the HCatalog database.",
+                  "type": "string"
+                },
+                "linkedServiceName": {
+                  "description": "Storage service name.",
+                  "type": "string"
+                },
+                "schemaGeneration": {
+                  "description": "Define what options to use for generating/altering table for an input and output tables for an HDInsight activity.",
+                  "$ref": "#/$defs/hDInsightSchemaGenerationProperties"
+                },
+                "clusterUri": {
+                  "description": "HDInsight cluster URI.",
+                  "type": "string"
+                },
+                "userName": {
+                  "description": "HDInsight cluster user name.",
+                  "type": "string"
+                },
+                "password": {
+                  "description": "HDInsight cluster password.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^schemaGeneration$": true,
+                "^password$": true,
+                "^hcatalogLinkedServiceName$": true,
+                "^linkedServiceName$": true,
+                "^clusterUri$": true,
+                "^userName$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_38": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "host",
+                "authenticationType",
+                "gatewayName"
+              ],
+              "properties": {
+                "authenticationType": {
+                  "description": "The authentication type to be used to connect to the Cassandra database. Must be Basic or Anonymous.",
+                  "type": "string"
+                },
+                "username": {
+                  "description": "User name for Basic authentication.",
+                  "type": "string"
+                },
+                "host": {
+                  "description": "One or more IP addresses or host names of the Cassandra server. Specify a comma-separated list of IP addresses and/or host names if attempting to connect to multiple servers. Each server is a replica.",
+                  "type": "string"
+                },
+                "gatewayName": {
+                  "description": "The on-premises gateway name.",
+                  "type": "string"
+                },
+                "port": {
+                  "description": "The TCP port number that the Cassandra server uses to listen for client connections. The default value is 9042.",
+                  "type": "integer",
+                  "minimum": 0.0
+                },
+                "encryptedCredential": {
+                  "description": "The encrypted credential for Basic authentication.",
+                  "type": "string"
+                },
+                "password": {
+                  "description": "Password for Basic authentication.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^port$": true,
+                "^username$": true,
+                "^authenticationType$": true,
+                "^gatewayName$": true,
+                "^host$": true,
+                "^password$": true,
+                "^encryptedCredential$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "amazonRedshiftLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.AmazonRedshiftLinkedService",
+      "description": "Linked Service for Amazon Redshift connector.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "AmazonRedshift"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_27"
+        }
+      }
+    },
+    "webLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.WebLinkedService",
+      "description": "Web linked service.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "Web"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_28"
+        }
+      }
+    },
+    "modern_20": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Allows user to override default values for Storm configuration.",
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "azureSqlDatabaseLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.AzureSqlDatabaseLinkedService",
+      "description": "Windows Azure SQL database.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "AzureSqlDatabase"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_29"
+        }
+      }
+    },
+    "modern_23": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Allows user to override default values for mapreduce configuration.",
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_17": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Allows user to override default values for Hdfs configuration.",
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "hdInsightLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.HDInsightLinkedService",
+      "description": "The properties for the HDInsight linkedService.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "HDInsight"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_7"
+        }
+      }
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Properties specific to this linked service type.",
+              "type": "object",
+              "required": [
+                "accessKeyId",
+                "secretAccessKey"
+              ],
+              "properties": {
+                "accessKeyId": {
+                  "description": "The IAM access key ID.",
+                  "type": "string"
+                },
+                "secretAccessKey": {
+                  "description": "The IAM secret access key.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^accessKeyId$": true,
+                "^secretAccessKey$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "hDInsightSchemaGenerationProperties": {
+      "$ref": "#/$defs/modern_8"
+    },
+    "modern_28": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Properties specific to this linked service type.",
+              "type": "object",
+              "required": [
+                "url",
+                "authenticationType"
+              ],
+              "properties": {
+                "authenticationType": {
+                  "description": "Type of authentication used to connect to the web table source. Possible values are: Anonymous and Basic.",
+                  "type": "string",
+                  "enum": [
+                    "Basic",
+                    "Anonymous"
+                  ]
+                },
+                "url": {
+                  "description": "The URL of the web service endpoint, e.g. http://www.microsoft.com.",
+                  "type": "string"
+                },
+                "username": {
+                  "description": "User name for Basic authentication.",
+                  "type": "string"
+                },
+                "apiKey": {
+                  "description": "Deprecated. WebApi-based authentication is no longer supported.",
+                  "type": "string"
+                },
+                "password": {
+                  "description": "Password for Basic authentication.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^username$": true,
+                "^authenticationType$": true,
+                "^url$": true,
+                "^password$": true,
+                "^apiKey$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_12": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Properties specific to this linked service type.",
+              "type": "object",
+              "required": [
+                "url",
+                "authenticationType"
+              ],
+              "properties": {
+                "authenticationType": {
+                  "description": "The authentication type to be used to connect to the HTTP server.",
+                  "type": "string",
+                  "enum": [
+                    "Basic",
+                    "Anonymous",
+                    "Digest",
+                    "Windows",
+                    "ClientCertificate"
+                  ]
+                },
+                "username": {
+                  "description": "User name for Basic, Digest, or Windows authentication.",
+                  "type": "string"
+                },
+                "gatewayName": {
+                  "description": "The on-premises gateway name.",
+                  "type": "string"
+                },
+                "enableServerCertificateValidation": {
+                  "description": "If true, validate the HTTPS server SSL certificate. Default value is true.",
+                  "type": "boolean"
+                },
+                "certThumbprint": {
+                  "description": "Thumbprint of certificate for ClientCertificate authentication. Only valid for on-premises copy. For on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should be specified.",
+                  "type": "string"
+                },
+                "encryptedCredential": {
+                  "description": "The encrypted credential for Basic, Digest, Windows or ClientCertificate authentication.",
+                  "type": "string"
+                },
+                "password": {
+                  "description": "Password for Basic, Digest, Windows, or ClientCertificate with EmbeddedCertData authentication.",
+                  "type": "string",
+                  "secureString": true
+                },
+                "embeddedCertData": {
+                  "description": "Base64 encoded certificate data for ClientCertificate authentication. For on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should be specified.",
+                  "type": "string"
+                },
+                "url": {
+                  "description": "The base URL of the HTTP endpoint, e.g. http://www.microsoft.com.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^embeddedCertData$": true,
+                "^username$": true,
+                "^authenticationType$": true,
+                "^encryptedCredential$": true,
+                "^enableServerCertificateValidation$": true,
+                "^gatewayName$": true,
+                "^url$": true,
+                "^certThumbprint$": true,
+                "^password$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "hdfsLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.HdfsLinkedService",
+      "description": "Hadoop Distributed File System (HDFS) Linked Service.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "Hdfs"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_9"
+        }
+      }
+    },
+    "onPremisesOdbcLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.OnPremisesOdbcLinkedService",
+      "description": "On-premises Open Database Connectivity (ODBC) Linked Service.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "OnPremisesOdbc"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_30"
+        }
+      }
+    },
+    "oDataAuthenticationType": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.ODataAuthenticationType",
+      "description": "Available authentication types for ODataLinkedService.",
+      "type": "string",
+      "enum": [
+        "Basic",
+        "Anonymous",
+        "Windows",
+        "OAuth"
+      ]
+    },
+    "modern_41": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Properties specific to this linked service type.",
+              "type": "object",
+              "required": [
+                "connectionString",
+                "gatewayName"
+              ],
+              "properties": {
+                "connectionString": {
+                  "description": "The connection string.",
+                  "type": "string"
+                },
+                "userName": {
+                  "description": "The on-premises Windows authentication user name.",
+                  "type": "string"
+                },
+                "password": {
+                  "description": "The on-premises Windows authentication password.",
+                  "type": "string"
+                },
+                "driverType": {
+                  "description": "The driver type for an on-premises Oracle server.",
+                  "type": "string",
+                  "enum": [
+                    "Microsoft",
+                    "ODP"
+                  ]
+                },
+                "gatewayName": {
+                  "description": "The on-premises HDIS gateway name.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^gatewayName$": true,
+                "^password$": true,
+                "^connectionString$": true,
+                "^userName$": true,
+                "^driverType$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "onPremisesMongoDbLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.OnPremisesMongoDbLinkedService",
+      "description": "An on-premises MongoDB database.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "OnPremisesMongoDb"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_31"
+        }
+      }
+    },
+    "modern_35": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "host",
+                "authenticationType"
+              ],
+              "properties": {
+                "authenticationType": {
+                  "description": "The authentication type to be used to connect to the SFTP server.",
+                  "type": "string",
+                  "enum": [
+                    "Basic",
+                    "SshPublicKey"
+                  ]
+                },
+                "username": {
+                  "description": "The username used to log on to the SFTP server.",
+                  "type": "string"
+                },
+                "port": {
+                  "description": "The TCP port number that the SFTP server uses to listen for client connections.",
+                  "type": "integer",
+                  "minimum": 0.0,
+                  "default": 22
+                },
+                "passPhrase": {
+                  "description": "The password to decrypt the SSH private key if the SSH private key is encrypted.",
+                  "type": "string"
+                },
+                "privateKeyContent": {
+                  "description": "Base64 encoded SSH private key content for SshPublicKey authentication. For on-premises copy with SshPublicKey authentication, either PrivateKeyPath or PrivateKeyContent should be specified. SSH private key should be OpenSSH format.",
+                  "type": "string"
+                },
+                "encryptedCredential": {
+                  "description": "The encrypted credential for Basic or SshPublicKey authentication.",
+                  "type": "string"
+                },
+                "password": {
+                  "description": "Password to logon the SFTP server for Basic authentication.",
+                  "type": "string"
+                },
+                "privateKeyPath": {
+                  "description": "The SSH private key file path for SshPublicKey authentication. Only valid for on-premises copy. For on-premises copy with SshPublicKey authentication, either PrivateKeyPath or PrivateKeyContent should be specified. SSH private key should be OpenSSH format.",
+                  "type": "string"
+                },
+                "host": {
+                  "description": "The SFTP server host name.",
+                  "type": "string"
+                },
+                "gatewayName": {
+                  "description": "The on-premises gateway name.",
+                  "type": "string"
+                },
+                "skipHostKeyValidation": {
+                  "description": "If true, skip the SSH host key validation. Default value is false.",
+                  "type": "boolean"
+                },
+                "hostKeyFingerprint": {
+                  "description": "The host key finger-print of the SFTP server. When SkipHostKeyValidation is false, HostKeyFingerprint should be specified.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^passPhrase$": true,
+                "^privateKeyContent$": true,
+                "^username$": true,
+                "^privateKeyPath$": true,
+                "^authenticationType$": true,
+                "^gatewayName$": true,
+                "^host$": true,
+                "^password$": true,
+                "^encryptedCredential$": true,
+                "^skipHostKeyValidation$": true,
+                "^port$": true,
+                "^hostKeyFingerprint$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "ftpServerLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.FtpServerLinkedService",
+      "description": "A FTP server Linked Service.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "FtpServer"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_32"
+        }
+      }
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Microsoft.Azure.Management.DataFactories.Models.HDInsightSchemaGenerationProperties",
+              "description": "Schema generation options for activities that execute against HDInsight clusters.",
+              "type": "object",
+              "properties": {
+                "type": {
+                  "description": "The type of schema",
+                  "type": "string"
+                },
+                "inputPartition": {
+                  "description": "Input partition option.",
+                  "type": "string"
+                },
+                "alterSchema": {
+                  "description": "Flag to indicate if alter schema should be performed.",
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^inputPartition$": true,
+                "^alterSchema$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "linkedServicePropertiesTypes": {
+      "type": "object",
+      "required": [
+        "type",
+        "typeProperties"
+      ],
+      "allOf": [
+        {
+          "$ref": "#/$defs/linkedServiceProperties"
+        },
+        {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/azureSqlDatabaseLinkedService"
+            },
+            {
+              "$ref": "#/$defs/azureSqlDataWarehouseLinkedService"
+            },
+            {
+              "$ref": "#/$defs/azureStorageLinkedService"
+            },
+            {
+              "$ref": "#/$defs/azureStorageSasLinkedService"
+            },
+            {
+              "$ref": "#/$defs/azureSearchLinkedService"
+            },
+            {
+              "$ref": "#/$defs/azureBatchLinkedService"
+            },
+            {
+              "$ref": "#/$defs/documentDbLinkedService"
+            },
+            {
+              "$ref": "#/$defs/hdInsightLinkedService"
+            },
+            {
+              "$ref": "#/$defs/onPremisesFileServerLinkedService"
+            },
+            {
+              "$ref": "#/$defs/onPremisesSqlServerLinkedService"
+            },
+            {
+              "$ref": "#/$defs/onPremisesOracleLinkedService"
+            },
+            {
+              "$ref": "#/$defs/onPremisesMySqlLinkedService"
+            },
+            {
+              "$ref": "#/$defs/onPremisesPostgreSqlLinkedService"
+            },
+            {
+              "$ref": "#/$defs/onPremisesSybaseLinkedService"
+            },
+            {
+              "$ref": "#/$defs/onPremisesTeradataLinkedService"
+            },
+            {
+              "$ref": "#/$defs/onPremisesDb2LinkedService"
+            },
+            {
+              "$ref": "#/$defs/azureMLLinkedService"
+            },
+            {
+              "$ref": "#/$defs/hdInsightOnDemandLinkedService"
+            },
+            {
+              "$ref": "#/$defs/azureDataLakeStoreLinkedService"
+            },
+            {
+              "$ref": "#/$defs/azureDataLakeAnalyticsLinkedService"
+            },
+            {
+              "$ref": "#/$defs/onPremisesOdbcLinkedService"
+            },
+            {
+              "$ref": "#/$defs/hdfsLinkedService"
+            },
+            {
+              "$ref": "#/$defs/oDataLinkedService"
+            },
+            {
+              "$ref": "#/$defs/webLinkedService"
+            },
+            {
+              "$ref": "#/$defs/httpLinkedService"
+            },
+            {
+              "$ref": "#/$defs/onPremisesCassandraLinkedService"
+            },
+            {
+              "$ref": "#/$defs/onPremisesMongoDbLinkedService"
+            },
+            {
+              "$ref": "#/$defs/salesforceLinkedService"
+            },
+            {
+              "$ref": "#/$defs/awsAccessKeyLinkedService"
+            },
+            {
+              "$ref": "#/$defs/amazonRedshiftLinkedService"
+            },
+            {
+              "$ref": "#/$defs/ftpServerLinkedService"
+            },
+            {
+              "$ref": "#/$defs/sftpLinkedService"
+            },
+            {
+              "$ref": "#/$defs/customDataSourceLinkedService"
+            }
+          ]
+        }
+      ]
+    },
+    "modern_39": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Properties specific to this linked service type.",
+              "type": "object",
+              "required": [
+                "url",
+                "key"
+              ],
+              "properties": {
+                "url": {
+                  "description": "URL for Azure Search service.",
+                  "type": "string"
+                },
+                "key": {
+                  "description": "Admin Key for Azure Search service",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^url$": true,
+                "^key$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_30": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Properties specific to this linked service type.",
+              "type": "object",
+              "required": [
+                "connectionString",
+                "authenticationType",
+                "gatewayName"
+              ],
+              "properties": {
+                "connectionString": {
+                  "description": "The non-access credential portion of the connection string as well as an optional encrypted credential.",
+                  "type": "string"
+                },
+                "authenticationType": {
+                  "description": "Type of authentication used to connect to the ODBC data store. Possible values are: Anonymous and Basic.",
+                  "type": "string"
+                },
+                "gatewayName": {
+                  "description": "The on-premises gateway name.",
+                  "type": "string"
+                },
+                "credential": {
+                  "description": "The access credential portion of the connection string specified in driver-specific property-value format.",
+                  "type": "string"
+                },
+                "userName": {
+                  "description": "User name for Basic authentication.",
+                  "type": "string"
+                },
+                "password": {
+                  "description": "Password for Basic authentication.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^authenticationType$": true,
+                "^userName$": true,
+                "^password$": true,
+                "^connectionString$": true,
+                "^gatewayName$": true,
+                "^credential$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "oDataLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.ODataLinkedService",
+      "description": "Open Data Protocol (OData) linked service.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "OData"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_33"
+        }
+      }
+    },
+    "azureBatchLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.AzureBatchLinkedService",
+      "description": "Azure Batch linked service.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "AzureBatch"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_34"
+        }
+      }
+    },
+    "sftpLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.SftpLinkedService",
+      "description": "A linked service for an SSH File Transfer Protocol (SFTP) server. ",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "Sftp"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_35"
+        }
+      }
+    },
+    "modern_24": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Properties specific to this linked service type.",
+              "type": "object",
+              "required": [
+                "connectionString"
+              ],
+              "properties": {
+                "connectionString": {
+                  "description": "The connection string.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^connectionString$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "onPremisesDb2LinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.OnPremisesDb2LinkedService",
+      "description": "Linked Service for DB2 data source.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "OnPremisesDb2"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_36"
+        }
+      }
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Properties specific to this linked service type.",
+              "type": "object",
+              "required": [
+                "url",
+                "authenticationType",
+                "gatewayName"
+              ],
+              "properties": {
+                "authenticationType": {
+                  "description": "Type of authentication used to connect to the HDFS. Possible values are: Anonymous, and Windows.",
+                  "type": "string"
+                },
+                "url": {
+                  "description": "The URL of the HDFS service endpoint, e.g. http://myhostname:50070/webhdfs/v1.",
+                  "type": "string"
+                },
+                "gatewayName": {
+                  "description": "The on-premises gateway name.",
+                  "type": "string"
+                },
+                "password": {
+                  "description": "Password for Windows authentication.",
+                  "type": "string"
+                },
+                "encryptedCredential": {
+                  "description": "The encrypted credential for Windows authentication.",
+                  "type": "string"
+                },
+                "userName": {
+                  "description": "User name for Windows authentication.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^authenticationType$": true,
+                "^userName$": true,
+                "^password$": true,
+                "^encryptedCredential$": true,
+                "^gatewayName$": true,
+                "^url$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_29": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Properties specific to this linked service type.",
+              "type": "object",
+              "required": [
+                "connectionString"
+              ],
+              "properties": {
+                "connectionString": {
+                  "description": "The connection string.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^connectionString$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_18": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Allows user to override default values for HIVE configuration.",
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_13": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Properties specific to this linked service type.",
+              "type": "object",
+              "required": [
+                "connectionString",
+                "gatewayName"
+              ],
+              "properties": {
+                "connectionString": {
+                  "description": "The connection string.",
+                  "type": "string"
+                },
+                "gatewayName": {
+                  "description": "The on-premises gateway name.",
+                  "type": "string"
+                },
+                "userName": {
+                  "description": "The on-premises Windows authentication user name.",
+                  "type": "string"
+                },
+                "password": {
+                  "description": "The on-premises Windows authentication password.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^connectionString$": true,
+                "^gatewayName$": true,
+                "^userName$": true,
+                "^password$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "onPremisesFileServerLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.OnPremisesFileServerLinkedService",
+      "description": "An on-premises file system Linked Service.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "OnPremisesFileServer"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_10"
+        }
+      }
+    },
+    "onPremisesPostgreSqlLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.OnPremisesPostgreSqlLinkedService",
+      "description": "Linked Service for PostgreSql data source.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "OnPremisesPostgreSql"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_11"
+        }
+      }
+    },
+    "modern_33": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Properties specific to this linked service type.",
+              "type": "object",
+              "required": [
+                "url",
+                "authenticationType"
+              ],
+              "properties": {
+                "authenticationType": {
+                  "description": "Type of authentication used to connect to the OData service.",
+                  "$ref": "#/$defs/oDataAuthenticationType"
+                },
+                "url": {
+                  "description": "The URL of the OData service endpoint.",
+                  "type": "string"
+                },
+                "username": {
+                  "description": "User name of the OData service.",
+                  "type": "string"
+                },
+                "gatewayName": {
+                  "description": "The on-premises gateway name for Windows authentication.",
+                  "type": "string"
+                },
+                "authorizedCredential": {
+                  "description": "The OAuth authorized credential that may be used by ADF to access resources on your behalf. Each authorization is unique and may only be used once.",
+                  "type": "string"
+                },
+                "encryptedCredential": {
+                  "description": "The encrypted credential for Windows authentication.",
+                  "type": "string"
+                },
+                "password": {
+                  "description": "Password of the OData service.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^authenticationType$": true,
+                "^password$": true,
+                "^encryptedCredential$": true,
+                "^authorizedCredential$": true,
+                "^username$": true,
+                "^gatewayName$": true,
+                "^url$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_26": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Properties specific to this linked service type.",
+              "type": "object",
+              "required": [
+                "sasUri"
+              ],
+              "properties": {
+                "sasUri": {
+                  "description": "SAS URI of the Azure Storage resource.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^sasUri$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "onPremisesMySqlLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.OnPremisesMySqlLinkedService",
+      "description": "Linked Service for MySQL data source.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "OnPremisesMySql"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_37"
+        }
+      }
+    },
+    "modern_36": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "server",
+                "database",
+                "authenticationType",
+                "gatewayName"
+              ],
+              "properties": {
+                "database": {
+                  "description": "Database name for connection.",
+                  "type": "string"
+                },
+                "authenticationType": {
+                  "description": "AuthenticationType to be used for connection.",
+                  "type": "string"
+                },
+                "server": {
+                  "description": "Server name for connection.",
+                  "type": "string"
+                },
+                "username": {
+                  "description": "Username for authentication.",
+                  "type": "string"
+                },
+                "gatewayName": {
+                  "description": "The on-premises gateway name.",
+                  "type": "string"
+                },
+                "schema": {
+                  "description": "Schema name for connection.",
+                  "type": "string"
+                },
+                "encryptedCredential": {
+                  "description": "The encryptedCredential for authentication.",
+                  "type": "string"
+                },
+                "password": {
+                  "description": "Password for authentication.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^schema$": true,
+                "^username$": true,
+                "^authenticationType$": true,
+                "^password$": true,
+                "^server$": true,
+                "^encryptedCredential$": true,
+                "^gatewayName$": true,
+                "^database$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "onPremisesCassandraLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.OnPremisesCassandraLinkedService",
+      "description": "An on-premises Cassandra database.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "OnPremisesCassandra"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_38"
+        }
+      }
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "server",
+                "database",
+                "authenticationType",
+                "gatewayName"
+              ],
+              "properties": {
+                "database": {
+                  "description": "Database name for connection.",
+                  "type": "string"
+                },
+                "authenticationType": {
+                  "description": "AuthenticationType to be used for connection.",
+                  "type": "string"
+                },
+                "server": {
+                  "description": "Server name for connection.",
+                  "type": "string"
+                },
+                "username": {
+                  "description": "Username for authentication.",
+                  "type": "string"
+                },
+                "gatewayName": {
+                  "description": "The on-premises gateway name.",
+                  "type": "string"
+                },
+                "schema": {
+                  "description": "Schema name for connection.",
+                  "type": "string"
+                },
+                "encryptedCredential": {
+                  "description": "The encryptedCredential for authentication.",
+                  "type": "string"
+                },
+                "password": {
+                  "description": "Password for authentication.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^schema$": true,
+                "^username$": true,
+                "^authenticationType$": true,
+                "^password$": true,
+                "^server$": true,
+                "^encryptedCredential$": true,
+                "^gatewayName$": true,
+                "^database$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "linkedServiceProperties": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.LinkedServiceProperties",
+      "description": "Data factory linkedService properties.",
+      "type": "object",
+      "properties": {
+        "description": {
+          "description": "Data factory linkedService description.",
+          "type": "string"
+        },
+        "hubName": {
+          "description": "The name of the Hub that this linked service belongs to.",
+          "type": "string"
+        }
+      }
+    },
+    "azureSearchLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.AzureSearchLinkedService",
+      "description": "Windows Azure Search Service.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "AzureSearch"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_39"
+        }
+      }
+    },
+    "documentDbLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.DocumentDbLinkedService",
+      "description": "Windows Azure Document Database.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "DocumentDb"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_40"
+        }
+      }
+    },
+    "modern_14": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Properties specific to this linked service type.",
+              "type": "object",
+              "required": [
+                "clusterSize",
+                "timeToLive",
+                "linkedServiceName"
+              ],
+              "properties": {
+                "sshPublicKey": {
+                  "description": "Gets or sets the public key to be used for SSH.",
+                  "type": "string"
+                },
+                "hBaseConfiguration": {
+                  "$ref": "#/$defs/modern_15"
+                },
+                "linkedServiceName": {
+                  "description": "Storage service name.",
+                  "type": "string"
+                },
+                "oozieConfiguration": {
+                  "$ref": "#/$defs/modern_16"
+                },
+                "version": {
+                  "description": "HDInsight version.",
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "clusterSize": {
+                  "description": "HDInsight cluster size.",
+                  "type": "integer"
+                },
+                "timeToLive": {
+                  "description": "Time to live.",
+                  "type": "string",
+                  "pattern": "((\\d+)\\.)?(\\d\\d):(60|([0-5][0-9])):(60|([0-5][0-9]))"
+                },
+                "hdfsConfiguration": {
+                  "$ref": "#/$defs/modern_17"
+                },
+                "osType": {
+                  "description": "Gets or sets the type of operating system installed on cluster nodes.",
+                  "type": "string"
+                },
+                "clusterType": {
+                  "description": "Gets or sets the flavor for the HDInsight cluster.",
+                  "type": "string"
+                },
+                "hiveConfiguration": {
+                  "$ref": "#/$defs/modern_18"
+                },
+                "sparkConfiguration": {
+                  "$ref": "#/$defs/modern_19"
+                },
+                "stormConfiguration": {
+                  "$ref": "#/$defs/modern_20"
+                },
+                "coreConfiguration": {
+                  "$ref": "#/$defs/modern_21"
+                },
+                "hcatalogLinkedServiceName": {
+                  "description": "The name of Azure SQL linked service that point to the HCatalog database.",
+                  "type": "string"
+                },
+                "sshPassword": {
+                  "description": "Gets or sets SSH password.",
+                  "type": "string"
+                },
+                "yarnConfiguration": {
+                  "$ref": "#/$defs/modern_22"
+                },
+                "headNodeSize": {
+                  "description": "Gets or sets the size of the Head Node.",
+                  "type": "string"
+                },
+                "mapReduceConfiguration": {
+                  "$ref": "#/$defs/modern_23"
+                },
+                "sshUserName": {
+                  "description": "Gets or sets SSH user name.",
+                  "type": "string"
+                },
+                "schemaGeneration": {
+                  "description": "Define what options to use for generating/altering table for an input and output tables for an HDInsight activity.",
+                  "$ref": "#/$defs/hDInsightSchemaGenerationProperties"
+                },
+                "dataNodeSize": {
+                  "description": "Gets or sets the size of the Data Node.",
+                  "type": "string"
+                },
+                "hiveCustomLibrariesContainer": {
+                  "description": "The name of the blob container that contains custom jar files for HIVE consumption.",
+                  "type": "string"
+                },
+                "zookeeperNodeSize": {
+                  "description": "Gets or sets the size of the Zookeeper Node.",
+                  "type": "string"
+                },
+                "additionalLinkedServiceNames": {
+                  "description": "Specify additional Azure storage accounts that need to be accessible from the cluster.",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^schemaGeneration$": true,
+                "^oozieConfiguration$": true,
+                "^clusterSize$": true,
+                "^sshUserName$": true,
+                "^additionalLinkedServiceNames$": true,
+                "^mapReduceConfiguration$": true,
+                "^sshPassword$": true,
+                "^hiveConfiguration$": true,
+                "^linkedServiceName$": true,
+                "^dataNodeSize$": true,
+                "^sparkConfiguration$": true,
+                "^timeToLive$": true,
+                "^stormConfiguration$": true,
+                "^coreConfiguration$": true,
+                "^version$": true,
+                "^clusterType$": true,
+                "^hdfsConfiguration$": true,
+                "^headNodeSize$": true,
+                "^yarnConfiguration$": true,
+                "^hiveCustomLibrariesContainer$": true,
+                "^hBaseConfiguration$": true,
+                "^zookeeperNodeSize$": true,
+                "^sshPublicKey$": true,
+                "^hcatalogLinkedServiceName$": true,
+                "^osType$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "onPremisesOracleLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.OnPremisesOracleLinkedService",
+      "description": "An on-premises Oracle database.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "OnPremisesOracle"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_41"
+        }
+      }
+    },
+    "azureSqlDataWarehouseLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.AzureSqlDataWarehouseLinkedService",
+      "description": "Azure SQL data warehouse linked service.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "AzureSqlDW"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_42"
+        }
+      }
+    },
+    "modern_25": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Properties specific to this linked service type.",
+              "type": "object",
+              "required": [
+                "authorization",
+                "sessionId",
+                "accountName"
+              ],
+              "properties": {
+                "dataLakeAnalyticsUri": {
+                  "description": "Data Lake Analytics service URI.",
+                  "type": "string"
+                },
+                "accountName": {
+                  "description": "Data Lake Analytics account name.",
+                  "type": "string"
+                },
+                "subscriptionId": {
+                  "description": "Data Lake Analytics account subscription ID (if different from Data Factory account).",
+                  "type": "string"
+                },
+                "authorization": {
+                  "description": "OAuth authorization that may be used by ADF to access resources on your behalf. Each authorization is unique and may only be used once.",
+                  "type": "string"
+                },
+                "sessionId": {
+                  "description": "OAuth session ID from the oauth authorization session. Each session id is unique and may only be used once.",
+                  "type": "string"
+                },
+                "resourceGroupName": {
+                  "description": "Data Lake Analytics account resource group name (if different from Data Factory account).",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^authorization$": true,
+                "^subscriptionId$": true,
+                "^sessionId$": true,
+                "^accountName$": true,
+                "^resourceGroupName$": true,
+                "^dataLakeAnalyticsUri$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_40": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Properties specific to this linked service type.",
+              "type": "object",
+              "required": [
+                "connectionString"
+              ],
+              "properties": {
+                "connectionString": {
+                  "description": "The connection string.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^connectionString$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_19": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "The Spark service configuration of this HDInsight cluster.",
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "server",
+                "authenticationType",
+                "gatewayName"
+              ],
+              "properties": {
+                "authenticationType": {
+                  "description": "AuthenticationType to be used for connection.",
+                  "type": "string"
+                },
+                "server": {
+                  "description": "Server name for connection.",
+                  "type": "string"
+                },
+                "username": {
+                  "description": "Username for authentication.",
+                  "type": "string"
+                },
+                "gatewayName": {
+                  "description": "The on-premises gateway name.",
+                  "type": "string"
+                },
+                "encryptedCredential": {
+                  "description": "The encryptedCredential for authentication.",
+                  "type": "string"
+                },
+                "password": {
+                  "description": "Password for authentication.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^username$": true,
+                "^authenticationType$": true,
+                "^gatewayName$": true,
+                "^password$": true,
+                "^server$": true,
+                "^encryptedCredential$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "httpLinkedService": {
+      "title": "Microsoft.Azure.Management.DataFactories.Models.HttpLinkedService",
+      "description": "Linked service for an HTTP source.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "Http"
+          ]
+        },
+        "typeProperties": {
+          "$ref": "#/$defs/modern_12"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,445 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Directory",
+              "type": "object",
+              "properties": {
+                "f_mode": {
+                  "type": "string",
+                  "pattern": "^[0-7]{3,4}$"
+                },
+                "optional": {
+                  "type": "string",
+                  "pattern": "^[a-z]([a-z0-9_-]*[a-z])?$"
+                },
+                "optional_default": {
+                  "type": "boolean"
+                },
+                "contents": {
+                  "user": {
+                    "type": "string"
+                  },
+                  "group": {
+                    "type": "string"
+                  },
+                  "d_mode": {
+                    "type": "string",
+                    "pattern": "^[0-7]{3,4}$"
+                  },
+                  "f_mode": {
+                    "type": "string",
+                    "pattern": "^[0-7]{3,4}$"
+                  }
+                },
+                "allow_specials": {
+                  "type": "boolean"
+                },
+                "d_mode": {
+                  "type": "string",
+                  "pattern": "^[0-7]{3,4}$"
+                },
+                "group": {
+                  "type": "string"
+                },
+                "user": {
+                  "type": "string"
+                }
+              },
+              "dependentRequired": {
+                "optional_default": [
+                  "optional"
+                ]
+              }
+            },
+            {
+              "patternProperties": {
+                "^group$": true,
+                "^optional_default$": true,
+                "^user$": true,
+                "^contents$": true,
+                "^d_mode$": true,
+                "^f_mode$": true,
+                "^allow_specials$": true,
+                "^optional$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "^[a-z]([a-z0-9_-]*[a-z])?$": {
+                  "$ref": "#/$defs/modern_7"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^[a-z]([a-z0-9_-]*[a-z])?$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Site Folder",
+              "type": "object",
+              "properties": {
+                "world_writable_dirs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^(/[^/ ]+)+$"
+                  }
+                },
+                "temp_dirs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^(/[^/ ]+)+$"
+                  }
+                },
+                "options": {
+                  "$ref": "#/$defs/modern_11"
+                },
+                "server_owned_files": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^(/[^/ ]+)+$"
+                  }
+                },
+                "type": {
+                  "type": "string"
+                },
+                "read_only_files": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^(/[^/ ]+)+$"
+                  }
+                },
+                "ignore_permissions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^(/[^/ ]+)+/?$"
+                  }
+                },
+                "user": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "user",
+                "type"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^server_owned_files$": true,
+                "^world_writable_dirs$": true,
+                "^options$": true,
+                "^temp_dirs$": true,
+                "^type$": true,
+                "^ignore_permissions$": true,
+                "^user$": true,
+                "^read_only_files$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Sites",
+              "description": "Schema for data describing web server configurations.",
+              "type": "object",
+              "properties": {
+                "web_server": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "directory_structure": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "site_types": {
+                  "$ref": "#/$defs/modern_6"
+                },
+                "sites": {
+                  "$ref": "#/$defs/modern_9"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^web_server$": true,
+                "^directory_structure$": true,
+                "^site_types$": true,
+                "^sites$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Site Type",
+              "type": "object",
+              "properties": {
+                "world_writable_dirs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^(/[^/ ]+)+$"
+                  }
+                },
+                "temp_dirs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^(/[^/ ]+)+$"
+                  }
+                },
+                "options": {
+                  "$ref": "#/$defs/modern_8"
+                },
+                "server_owned_files": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^(/[^/ ]+)+$"
+                  }
+                },
+                "ignore_permissions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^(/[^/ ]+)+/?$"
+                  }
+                },
+                "read_only_files": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^(/[^/ ]+)+$"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^server_owned_files$": true,
+                "^world_writable_dirs$": true,
+                "^read_only_files$": true,
+                "^options$": true,
+                "^temp_dirs$": true,
+                "^ignore_permissions$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "pattern": "^[a-z]([a-z0-9_-]*[a-z])?$"
+                },
+                "user": {
+                  "type": "string"
+                },
+                "group": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type",
+                "user",
+                "group"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^user$": true,
+                "^group$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "^[a-z]([a-z0-9_-]*[a-z])?$": {
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^[a-z]([a-z0-9_-]*[a-z])?$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "^(/[^/ ]+)+$": {
+                  "$ref": "#/$defs/modern_10"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^(/[^/ ]+)+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "d_mode": {
+                  "type": "string",
+                  "pattern": "^[0-7]{3,4}$"
+                },
+                "f_mode": {
+                  "type": "string",
+                  "pattern": "^[0-7]{3,4}$"
+                },
+                "directories": {
+                  "$ref": "#/$defs/modern_4"
+                },
+                "group": {
+                  "type": "string"
+                },
+                "user": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "user",
+                "group",
+                "d_mode",
+                "f_mode",
+                "directories"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^group$": true,
+                "^user$": true,
+                "^directories$": true,
+                "^d_mode$": true,
+                "^f_mode$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "^[a-z]([a-z0-9_-]*[a-z])?$": {
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^[a-z]([a-z0-9_-]*[a-z])?$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "^[^/ ]+$": {
+                  "$ref": "#/$defs/modern_5"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^[^/ ]+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "items": {
+    "oneOf": [
+      {
+        "$ref": "#/$defs/allowLogin"
+      },
+      {
+        "$ref": "#/$defs/injectRoles"
+      }
+    ]
+  },
+  "$defs": {
+    "wildCardCondition": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "attribute": {
+                  "type": "string",
+                  "description": "the SAML attribute to run the wildcard against"
+                },
+                "wildCard": {
+                  "type": "string",
+                  "description": "the wildcard, with * supported"
+                }
+              },
+              "required": [
+                "attribute",
+                "wildCard"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^attribute$": true,
+                "^wildCard$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "not": {
+                  "$ref": "#/$defs/condition"
+                }
+              },
+              "required": [
+                "not"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^not$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "alwaysCondition": {
+      "type": "boolean"
+    },
+    "notCondition": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "condition": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/wildCardCondition"
+        },
+        {
+          "$ref": "#/$defs/notCondition"
+        },
+        {
+          "$ref": "#/$defs/alwaysCondition"
+        }
+      ]
+    },
+    "injectRoles": {
+      "type": "object",
+      "properties": {
+        "injectRoles": {
+          "type": "object",
+          "properties": {
+            "condition": {
+              "$ref": "#/$defs/condition"
+            },
+            "roles": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "condition",
+            "roles"
+          ]
+        }
+      },
+      "required": [
+        "injectRoles"
+      ]
+    },
+    "allowLogin": {
+      "type": "object",
+      "properties": {
+        "allowLogin": {
+          "type": "object",
+          "properties": {
+            "condition": {
+              "$ref": "#/$defs/condition"
+            }
+          },
+          "required": [
+            "condition"
+          ]
+        }
+      },
+      "required": [
+        "allowLogin"
+      ]
+    }
+  }
+}

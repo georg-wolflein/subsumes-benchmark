@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "anyOf": [
+    {
+      "$ref": "#/$defs/year"
+    },
+    {
+      "$ref": "#/$defs/date"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "date": {
+          "$ref": "#/$defs/year"
+        },
+        "error": {
+          "type": "string",
+          "pattern": "\\d+y"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "date",
+        "error"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "date": {
+          "$ref": "#/$defs/date"
+        },
+        "error": {
+          "type": "string",
+          "pattern": "\\d+(d|M|y)"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "date",
+        "error"
+      ]
+    },
+    {
+      "type": "array",
+      "prefixItems": [
+        {
+          "$ref": "#/$defs/year"
+        },
+        {
+          "$ref": "#/$defs/year"
+        }
+      ]
+    },
+    {
+      "type": "array",
+      "prefixItems": [
+        {
+          "$ref": "#/$defs/date"
+        },
+        {
+          "$ref": "#/$defs/date"
+        }
+      ]
+    },
+    {
+      "type": "string",
+      "pattern": "-?\\d+\u00b1\\d"
+    }
+  ],
+  "$defs": {
+    "date": {
+      "type": "string",
+      "pattern": "^-?([0-9]{1,4}|[0-9]{2})-([0]?[1-9]|[1][0-2])-([0]?[1-9]|[1|2][0-9]|[3][0|1])$"
+    },
+    "year": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^-?\\d{1,4}$"
+        },
+        {
+          "type": "integer",
+          "minimum": -10000,
+          "maximum": 10000
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "allOf": [
+    {
+      "$defs": {
+        "item": {
+          "type": "array",
+          "items": false,
+          "prefixItems": [
+            {
+              "$ref": "#/allOf/0/$defs/sub-item"
+            },
+            {
+              "$ref": "#/allOf/0/$defs/sub-item"
+            }
+          ]
+        },
+        "sub-item": {
+          "type": "object",
+          "required": [
+            "foo"
+          ]
+        }
+      },
+      "type": "array",
+      "items": false,
+      "prefixItems": [
+        {
+          "$ref": "#/allOf/0/$defs/item"
+        },
+        {
+          "$ref": "#/allOf/0/$defs/item"
+        },
+        {
+          "$ref": "#/allOf/0/$defs/item"
+        }
+      ]
+    },
+    {
+      "$defs": {
+        "item": {
+          "type": "array",
+          "items": false,
+          "prefixItems": [
+            {
+              "$ref": "#/allOf/1/$defs/sub-item"
+            },
+            {
+              "$ref": "#/allOf/1/$defs/sub-item"
+            }
+          ]
+        },
+        "sub-item": {
+          "type": "object",
+          "required": [
+            "foo"
+          ]
+        }
+      },
+      "type": "array",
+      "items": false,
+      "not": {
+        "prefixItems": [
+          {
+            "$ref": "#/allOf/1/$defs/item"
+          },
+          {
+            "$ref": "#/allOf/1/$defs/item"
+          },
+          {
+            "$ref": "#/allOf/1/$defs/item"
+          }
+        ]
+      }
+    }
+  ]
+}

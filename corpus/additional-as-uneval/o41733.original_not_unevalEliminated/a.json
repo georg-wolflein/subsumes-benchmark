@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "TenantModuleDescriptor",
+              "description": "Module transitions",
+              "type": "object",
+              "properties": {
+                "id": {
+                  "description": "Module ID (or just product part)",
+                  "type": "string"
+                },
+                "from": {
+                  "description": "Original Module ID when transitioning from one module to another",
+                  "type": "string"
+                },
+                "action": {
+                  "description": "Module action",
+                  "type": "string",
+                  "enum": [
+                    "enable",
+                    "disable",
+                    "uptodate",
+                    "suggest",
+                    "conflict"
+                  ]
+                },
+                "message": {
+                  "description": "Diagnostic Message",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^from$": true,
+                "^action$": true,
+                "^message$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

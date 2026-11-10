@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "type",
+                "properties"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "FeatureCollection"
+                  ]
+                },
+                "properties": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^properties$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "sensor": {
+                  "type": "string",
+                  "description": "the name of an existing sensor resource"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^sensor$": true,
+                "^name$": true,
+                "^description$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

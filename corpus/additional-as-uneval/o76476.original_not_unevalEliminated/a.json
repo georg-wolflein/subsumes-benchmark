@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "create tasks request",
+              "description": "create tasks request",
+              "type": "object",
+              "properties": {
+                "docker_image": {
+                  "type": "string",
+                  "pattern": "(.+/)?.+:.+"
+                },
+                "cmd": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "creds": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              },
+              "required": [
+                "docker_image",
+                "cmd"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^docker_image$": true,
+                "^cmd$": true,
+                "^creds$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "username": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "password": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "email",
+                "username",
+                "password"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^email$": true,
+                "^username$": true,
+                "^password$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

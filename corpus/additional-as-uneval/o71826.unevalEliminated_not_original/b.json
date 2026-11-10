@@ -1,0 +1,155 @@
+{
+  "$id": "https://github.com/ryanelian/instapack/settings.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "umdLibraryMode": {
+      "type": "boolean"
+    },
+    "jsOut": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(.*)$"
+    },
+    "alias": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "port1": {
+      "type": "integer"
+    },
+    "copy": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "library": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(.*)$"
+          },
+          "files": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/ArrayOfStringValues"
+              }
+            ]
+          },
+          "destination": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(.*)$"
+          }
+        }
+      }
+    },
+    "output": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(.*)$"
+    },
+    "input": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(.*)$"
+    },
+    "namespace": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(.*)$"
+    },
+    "externals": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "cssOut": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(.*)$"
+    }
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "^(.*)$"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "^(.*)$"
+                  },
+                  {
+                    "$ref": "#/$defs/ArrayOfStringValues"
+                  },
+                  {
+                    "$ref": "#/$defs/modern_3"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "^(.*)$"
+                  },
+                  {
+                    "$ref": "#/$defs/ArrayOfStringValues"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "ArrayOfStringValues": {
+      "type": "array",
+      "items": {
+        "description": "A non-empty string",
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^(.*)$"
+      }
+    }
+  }
+}

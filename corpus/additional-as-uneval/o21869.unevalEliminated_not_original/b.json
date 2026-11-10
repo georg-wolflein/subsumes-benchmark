@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Badge List",
+              "description": "A list of available Open Badges",
+              "type": "object",
+              "required": [
+                "badgelist"
+              ],
+              "properties": {
+                "badgelist": {
+                  "description": "Container for a set of badge elements.",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_2"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^badgelist$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Badge",
+              "description": "Container for the data needed to describe a badge assertion to extract.",
+              "type": "object",
+              "required": [
+                "loc"
+              ],
+              "properties": {
+                "loc": {
+                  "description": "The location URI of a badge assertion.",
+                  "type": "string",
+                  "format": "uri"
+                },
+                "priority": {
+                  "description": "The priority of a particular badge relative to other badges on the same site.",
+                  "type": "number",
+                  "minimum": 0.0,
+                  "maximum": 1.0
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^loc$": true,
+                "^priority$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "nbgrader cell metadata schema",
+              "type": "object",
+              "properties": {
+                "task": {
+                  "description": "whether this cell contains a task",
+                  "type": "boolean",
+                  "default": false
+                },
+                "schema_version": {
+                  "description": "the version of the cell metadata schema",
+                  "type": "integer",
+                  "minimum": 3.0,
+                  "maximum": 3.0
+                },
+                "grade_id": {
+                  "description": "the nbgrader id of the cell, only present if one or more of grade/locked/solution is true",
+                  "type": "string",
+                  "pattern": "^[a-zA-Z0-9_\\-]*$"
+                },
+                "locked": {
+                  "description": "whether the cell should be editable",
+                  "type": "boolean",
+                  "default": false
+                },
+                "solution": {
+                  "description": "whether this cell contains a solution",
+                  "type": "boolean",
+                  "default": false
+                },
+                "grade": {
+                  "description": "whether this cell should be graded",
+                  "type": "boolean",
+                  "default": false
+                },
+                "cell_type": {
+                  "description": "the type the cell was when nbgrader generate_assignment was run; used for checking if the cell type has changed and should only be present in the student version of an assignment",
+                  "type": "string",
+                  "enum": [
+                    "raw",
+                    "code",
+                    "markdown"
+                  ]
+                },
+                "points": {
+                  "description": "the number of points this cell is worth; only present if grade is true",
+                  "type": "number",
+                  "minimum": 0.0
+                },
+                "checksum": {
+                  "description": "a checksum of the cell contents; generally only present in the student version of an assignment",
+                  "type": "string",
+                  "minLength": 32,
+                  "maxLength": 32
+                }
+              },
+              "required": [
+                "schema_version",
+                "grade",
+                "locked",
+                "solution"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^cell_type$": true,
+                "^task$": true,
+                "^grade$": true,
+                "^grade_id$": true,
+                "^checksum$": true,
+                "^points$": true,
+                "^schema_version$": true,
+                "^locked$": true,
+                "^solution$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

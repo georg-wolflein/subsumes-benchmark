@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "content-type": "application/x-www-form-urlencoded",
+              "endpoint": "/token",
+              "method": "POST",
+              "properties": {
+                "grant_type": {
+                  "description": "Must be set to refresh_token.",
+                  "enum": [
+                    "refresh_token"
+                  ],
+                  "type": "string"
+                },
+                "refresh_token": {
+                  "description": "The refresh token issued to the client.",
+                  "type": "string"
+                },
+                "scope": {
+                  "description": "Optional requested scope values for the new access token. Must not include any scope values not originally granted by the resource owner, and if omitted is treated as equal to the originally granted scope.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "grant_type"
+              ],
+              "title": "Token refresh token grant request",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^grant_type$": true,
+                "^refresh_token$": true,
+                "^scope$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

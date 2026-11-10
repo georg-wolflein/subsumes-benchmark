@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "name",
+    "description",
+    "url",
+    "apis",
+    "maintainer"
+  ],
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string"
+    },
+    "image": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "maintainer": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/maintainerDefinition"
+      }
+    },
+    "apis": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/apisDefinition"
+      }
+    }
+  },
+  "$defs": {
+    "contactDefinition": {
+      "required": [
+        "type",
+        "url"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "twitter"
+          ]
+        },
+        "url": {
+          "type": "string",
+          "pattern": "^(http)|(https)://(.*)$"
+        }
+      }
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "name"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^name$": true
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "maintainerDefinition": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "apisDefinition": {
+      "oneOf": [
+        {
+          "required": [
+            "$ref"
+          ],
+          "properties": {
+            "$ref": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "required": [
+            "name"
+          ],
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "image": {
+              "type": "string"
+            },
+            "meta": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/metaDefinition"
+              }
+            },
+            "description": {
+              "type": "string"
+            },
+            "urls": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/urlsDefinition"
+              }
+            },
+            "tags": {
+              "type": "string"
+            },
+            "contact": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/contactDefinition"
+              }
+            },
+            "humanURL": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "metaDefinition": {
+      "required": [
+        "key",
+        "value"
+      ],
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "urlsDefinition": {
+      "required": [
+        "type",
+        "url"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "pattern": "^(portal)|(console)|(signup)|(libraries)|(swagger)|(X-[a-z0-9\\-]*)$"
+        },
+        "url": {
+          "type": "string",
+          "pattern": "^(http)|(https)://(.*)$"
+        }
+      }
+    }
+  }
+}

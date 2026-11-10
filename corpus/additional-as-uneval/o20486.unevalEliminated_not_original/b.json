@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "content-type": "application/x-www-form-urlencoded",
+              "endpoint": "/token",
+              "method": "POST",
+              "properties": {
+                "username": {
+                  "description": "The resource owner username.",
+                  "type": "string"
+                },
+                "scope": {
+                  "description": "Optional requested scope values for the access token.",
+                  "type": "string"
+                },
+                "code": {
+                  "description": "The code received with the authentication response.",
+                  "type": "string"
+                },
+                "grant_type": {
+                  "description": "Must be set to password.",
+                  "enum": [
+                    "password"
+                  ],
+                  "type": "string"
+                },
+                "password": {
+                  "description": "The resource owner password.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "grant_type"
+              ],
+              "title": "Token password grant request",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^code$": true,
+                "^username$": true,
+                "^grant_type$": true,
+                "^scope$": true,
+                "^password$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

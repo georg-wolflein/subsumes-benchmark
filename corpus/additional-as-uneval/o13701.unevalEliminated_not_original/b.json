@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Browse Streams",
+              "type": "object",
+              "properties": {
+                "p": {
+                  "type": "string",
+                  "title": "Pattern",
+                  "description": "The pattern to search for."
+                },
+                "t": {
+                  "type": "string",
+                  "enum": [
+                    "s",
+                    "e",
+                    null
+                  ],
+                  "title": "Pattern Type",
+                  "description": "The pattern type. Valid values are s (startsWith), e (endsWith), or null (match any stream)."
+                },
+                "m": {
+                  "type": "integer",
+                  "minimum": 1.0,
+                  "maximum": 100.0,
+                  "title": "Max Count",
+                  "description": "The maximum number of results to return."
+                },
+                "c": {
+                  "type": "string",
+                  "description": "A continuation token. Used for paging."
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^p$": true,
+                "^t$": true,
+                "^m$": true,
+                "^c$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,181 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "object"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "include": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "_uniqueItems": true
+    },
+    "molecules": {
+      "$ref": "#/$defs/modern_1"
+    }
+  },
+  "required": [
+    "notes",
+    "molecules"
+  ],
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "comment": {
+                    "type": "string"
+                  },
+                  "dihedrals": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        },
+                        "atoms": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "minItems": 4,
+                          "maxItems": 4,
+                          "_uniqueItems": true
+                        }
+                      }
+                    },
+                    "_uniqueItems": true
+                  },
+                  "impropers": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        },
+                        "atoms": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "minItems": 4,
+                          "maxItems": 4,
+                          "_uniqueItems": true
+                        }
+                      }
+                    },
+                    "_uniqueItems": true
+                  },
+                  "atoms": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/modern_2"
+                    },
+                    "_uniqueItems": true
+                  },
+                  "polymer_type": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "_uniqueItems": true
+                  },
+                  "angles": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        },
+                        "atoms": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "minItems": 3,
+                          "maxItems": 3,
+                          "_uniqueItems": true
+                        }
+                      }
+                    },
+                    "_uniqueItems": true
+                  },
+                  "lengths": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        },
+                        "atoms": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "minItems": 2,
+                          "maxItems": 2,
+                          "_uniqueItems": true
+                        }
+                      }
+                    },
+                    "_uniqueItems": true
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "charge": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "name",
+                "type"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^type$": true,
+                "^charge$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

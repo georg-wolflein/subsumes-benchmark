@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "LAX Schema for metadata returned by DataSources.",
+              "properties": {
+                "format": {
+                  "$ref": "#/$defs/arrayOfString"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "size": {
+                  "minimum": 0.0,
+                  "type": "integer"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "encoding": {
+                  "type": "string"
+                },
+                "license": {
+                  "$ref": "#/$defs/uri"
+                },
+                "language": {
+                  "$ref": "#/$defs/arrayOfString"
+                },
+                "allow": {
+                  "$ref": "#/$defs/uri"
+                },
+                "vendor": {
+                  "$ref": "#/$defs/uri"
+                },
+                "$schema": {
+                  "$ref": "#/$defs/uri"
+                },
+                "annotations": {
+                  "items": {
+                    "$ref": "#/$defs/modern_2"
+                  },
+                  "type": "array"
+                },
+                "version": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "vendor",
+                "version",
+                "allow",
+                "license"
+              ],
+              "title": "DataSource Metadata",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^allow$": true,
+                "^description$": true,
+                "^format$": true,
+                "^name$": true,
+                "^annotations$": true,
+                "^language$": true,
+                "^size$": true,
+                "^license$": true,
+                "^$schema$": true,
+                "^version$": true,
+                "^vendor$": true,
+                "^encoding$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "uri": {
+      "_format": "uri",
+      "type": "string"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "arrayOfString": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    }
+  }
+}

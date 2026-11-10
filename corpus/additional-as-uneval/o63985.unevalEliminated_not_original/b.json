@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "string": {
+      "type": "string",
+      "default": ""
+    },
+    "object": {
+      "$ref": "#/$defs/modern_1"
+    }
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "numA": {
+                  "type": "number",
+                  "default": 0
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^numA$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

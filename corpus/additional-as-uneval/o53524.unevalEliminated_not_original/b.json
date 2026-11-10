@@ -1,0 +1,313 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_4",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                "^[a-zA-Z0-9\\.\\-\\+]+$": {
+                  "$ref": "#/$defs/modern_6"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^[a-zA-Z0-9\\.\\-\\+]+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "installer": {
+                  "$ref": "#/$defs/modern_7"
+                },
+                "version": {
+                  "maxLength": 64,
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "version",
+                "installer"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^installer$": true,
+                "^version$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "container": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "filename": {
+                  "type": "string"
+                },
+                "shortcuts": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_3"
+                  }
+                },
+                "shims": {
+                  "type": "array"
+                },
+                "destination": {
+                  "type": "string"
+                },
+                "arguments": {
+                  "minItems": 1,
+                  "type": "array"
+                },
+                "extension": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^arguments$": true,
+                "^container$": true,
+                "^extension$": true,
+                "^shims$": true,
+                "^filename$": true,
+                "^destination$": true,
+                "^shortcuts$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "x86_64": {
+                  "type": "string"
+                },
+                "interactive": {
+                  "type": "boolean"
+                },
+                "kind": {
+                  "enum": [
+                    "advancedinstaller",
+                    "appx",
+                    "as-is",
+                    "copy",
+                    "custom",
+                    "easy_install_26",
+                    "easy_install_27",
+                    "innosetup",
+                    "jetbrains-nsis",
+                    "msi",
+                    "nsis",
+                    "squirrel",
+                    "zip"
+                  ],
+                  "type": "string"
+                },
+                "options": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/options"
+                    },
+                    {
+                      "$ref": "#/$defs/modern_8"
+                    }
+                  ]
+                },
+                "x86": {
+                  "type": "string"
+                }
+              },
+              "anyOf": [
+                {
+                  "required": [
+                    "kind",
+                    "x86"
+                  ]
+                },
+                {
+                  "required": [
+                    "kind",
+                    "x86_64"
+                  ]
+                }
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^x86$": true,
+                "^options$": true,
+                "^x86_64$": true,
+                "^interactive$": true,
+                "^kind$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "installer": {
+                  "type": "string"
+                },
+                "kind": {
+                  "enum": [
+                    "zip"
+                  ],
+                  "type": "string"
+                }
+              },
+              "required": [
+                "kind",
+                "installer"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^installer$": true,
+                "^kind$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "options": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "x86": {
+                  "$ref": "#/$defs/options"
+                },
+                "x86_64": {
+                  "$ref": "#/$defs/options"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^x86$": true,
+                "^x86_64$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "name",
+                "target"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "target": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^target$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "$schema": {
+                  "type": "string"
+                },
+                "packages": {
+                  "$ref": "#/$defs/modern_5"
+                },
+                "version": {
+                  "maximum": 4.0,
+                  "minimum": 4.0,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "$schema",
+                "packages",
+                "version"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^$schema$": true,
+                "^packages$": true,
+                "^version$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

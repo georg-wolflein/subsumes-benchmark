@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "My site v1.0.0",
+              "type": "object",
+              "properties": {
+                "id": {
+                  "description": "Invenio record identifier (integer).",
+                  "type": "number"
+                },
+                "publication_date": {
+                  "description": "When the record is published",
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "keywords": {
+                  "description": "Free text keywords.",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "title": {
+                  "description": "Record title.",
+                  "type": "string"
+                },
+                "contributors": {
+                  "description": "Contributors in order of importance.",
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_2"
+                  }
+                }
+              },
+              "required": [
+                "id",
+                "contributors",
+                "title"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^publication_date$": true,
+                "^keywords$": true,
+                "^contributors$": true,
+                "^id$": true,
+                "^title$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "Full name of person or organisation. Personal name format: family, given.",
+                  "type": "string"
+                },
+                "affiliations": {
+                  "description": "Affiliation(s) for the purpose of this specific record.",
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "ids": {
+                  "description": "List of IDs related with the person.",
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "items": {
+                    "$ref": "#/$defs/modern_3"
+                  }
+                },
+                "email": {
+                  "type": "string",
+                  "description": "Contact email for the purpose of this specific record.",
+                  "format": "email"
+                },
+                "role": {
+                  "description": "",
+                  "type": "string",
+                  "enum": [
+                    "ContactPerson",
+                    "Researcher",
+                    "Other"
+                  ]
+                }
+              },
+              "required": [
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^affiliations$": true,
+                "^ids$": true,
+                "^role$": true,
+                "^name$": true,
+                "^email$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "source": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^source$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

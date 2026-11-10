@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "is_available": {
+                  "type": "boolean"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "was_available": {
+                  "description": "Previous value of is_available",
+                  "type": "boolean"
+                },
+                "color": {
+                  "type": "string"
+                },
+                "max_delay": {
+                  "type": "integer",
+                  "minimum": -1.0
+                },
+                "periodic_booking": {
+                  "type": "boolean"
+                },
+                "type_id": {
+                  "type": "integer"
+                },
+                "validation": {
+                  "type": "boolean"
+                },
+                "min_delay": {
+                  "type": "integer",
+                  "minimum": -1.0
+                },
+                "icon": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type_id",
+                "is_available",
+                "was_available"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^is_available$": true,
+                "^min_delay$": true,
+                "^color$": true,
+                "^max_delay$": true,
+                "^icon$": true,
+                "^validation$": true,
+                "^was_available$": true,
+                "^type_id$": true,
+                "^name$": true,
+                "^periodic_booking$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

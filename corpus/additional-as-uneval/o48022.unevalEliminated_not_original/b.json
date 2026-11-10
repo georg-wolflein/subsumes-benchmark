@@ -1,0 +1,347 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_6",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "A directory",
+              "type": "object",
+              "properties": {
+                "modification-time": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "creation-time": {
+                  "type": "string"
+                },
+                "access-time": {
+                  "type": "string"
+                },
+                "entries": {
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/$defs/directory"
+                      },
+                      {
+                        "$ref": "#/$defs/file"
+                      }
+                    ]
+                  }
+                },
+                "owner": {
+                  "type": "string"
+                },
+                "type": {
+                  "enum": [
+                    "directory"
+                  ]
+                },
+                "group": {
+                  "type": "string"
+                },
+                "permissions": {
+                  "type": "string"
+                },
+                "inode": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "type",
+                "name",
+                "owner",
+                "group",
+                "access-time",
+                "modification-time",
+                "creation-time",
+                "inode",
+                "permissions",
+                "entries"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^group$": true,
+                "^access-time$": true,
+                "^owner$": true,
+                "^inode$": true,
+                "^name$": true,
+                "^type$": true,
+                "^creation-time$": true,
+                "^entries$": true,
+                "^modification-time$": true,
+                "^permissions$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "JWhere Catalog",
+              "description": "JWhere disk catalog",
+              "type": "object",
+              "properties": {
+                "schema": {
+                  "enum": [
+                    "http://schemas.io7m.com/jwhere"
+                  ]
+                },
+                "schema-version": {
+                  "type": "string"
+                },
+                "catalog": {
+                  "$ref": "#/$defs/catalog"
+                }
+              },
+              "required": [
+                "schema",
+                "schema-version",
+                "catalog"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^schema$": true,
+                "^schema-version$": true,
+                "^catalog$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "catalog": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "disk": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "The root type of catalog data.",
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": [
+                    "catalog"
+                  ]
+                },
+                "catalog-disks": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/disk"
+                  }
+                }
+              },
+              "required": [
+                "type",
+                "catalog-disks"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^catalog-disks$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "A single catalogued disk",
+              "type": "object",
+              "properties": {
+                "disk-name": {
+                  "type": "string"
+                },
+                "disk-size": {
+                  "type": "integer"
+                },
+                "disk-id": {
+                  "type": "integer"
+                },
+                "disk-filesystem-root": {
+                  "$ref": "#/$defs/directory"
+                },
+                "type": {
+                  "enum": [
+                    "disk"
+                  ]
+                },
+                "disk-filesystem-type": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type",
+                "disk-name",
+                "disk-size",
+                "disk-id",
+                "disk-filesystem-type",
+                "disk-filesystem-root"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^disk-id$": true,
+                "^disk-size$": true,
+                "^disk-filesystem-type$": true,
+                "^disk-filesystem-root$": true,
+                "^disk-name$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "hash": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "A hash value",
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": [
+                    "hash"
+                  ]
+                },
+                "algorithm": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type",
+                "algorithm",
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^algorithm$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "file": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "directory": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "A file",
+              "type": "object",
+              "properties": {
+                "modification-time": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "access-time": {
+                  "type": "string"
+                },
+                "hash": {
+                  "$ref": "#/$defs/hash"
+                },
+                "owner": {
+                  "type": "string"
+                },
+                "type": {
+                  "enum": [
+                    "file"
+                  ]
+                },
+                "group": {
+                  "type": "string"
+                },
+                "size": {
+                  "type": "integer"
+                },
+                "creation-time": {
+                  "type": "string"
+                },
+                "permissions": {
+                  "type": "string"
+                },
+                "inode": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "type",
+                "name",
+                "size",
+                "owner",
+                "group",
+                "access-time",
+                "modification-time",
+                "creation-time",
+                "inode",
+                "permissions"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^group$": true,
+                "^access-time$": true,
+                "^owner$": true,
+                "^inode$": true,
+                "^name$": true,
+                "^type$": true,
+                "^hash$": true,
+                "^creation-time$": true,
+                "^size$": true,
+                "^modification-time$": true,
+                "^permissions$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "items": {
+    "$ref": "#/$defs/modern_1"
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "winner_zone": {
+                  "type": "boolean"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "avg_score": {
+                  "type": "number"
+                },
+                "avg_place": {
+                  "type": "number"
+                },
+                "display_name": {
+                  "type": "string"
+                },
+                "games_played": {
+                  "type": "integer"
+                },
+                "rating": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "id",
+                "display_name",
+                "rating",
+                "avg_place",
+                "games_played"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^avg_score$": true,
+                "^id$": true,
+                "^games_played$": true,
+                "^winner_zone$": true,
+                "^avg_place$": true,
+                "^rating$": true,
+                "^display_name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

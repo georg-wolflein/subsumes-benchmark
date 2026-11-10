@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "prefixItems": [
+    {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "theme_name": {
+          "type": "string"
+        },
+        "theme_author": {
+          "type": "string"
+        },
+        "theme_version": {
+          "type": "string"
+        },
+        "theme_documentation_url": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "theme_name",
+        "theme_author",
+        "theme_version",
+        "theme_documentation_url"
+      ],
+      "oneOf": [
+        {
+          "properties": {
+            "theme_support_email": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "theme_support_email"
+          ]
+        },
+        {
+          "properties": {
+            "theme_support_url": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "theme_support_url"
+          ]
+        }
+      ],
+      "additionalProperties": false
+    }
+  ],
+  "items": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "settings": {
+        "type": "array"
+      }
+    },
+    "required": [
+      "name",
+      "settings"
+    ]
+  },
+  "$defs": {
+    "option": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "value",
+        "label"
+      ]
+    },
+    "url": {
+      "type": "string",
+      "pattern": "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)"
+    }
+  }
+}

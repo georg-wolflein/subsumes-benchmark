@@ -1,0 +1,636 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "rel": {
+                  "type": "string",
+                  "enum": [
+                    "ris",
+                    "data",
+                    "metadata"
+                  ]
+                },
+                "href": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "title": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "href"
+              ],
+              "default": {
+                "rel": "ris",
+                "href": "",
+                "title": "Link to the RiS Project page"
+              }
+            },
+            {
+              "patternProperties": {
+                "^rel$": true,
+                "^href$": true,
+                "^title$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Organisations connected to the dataset",
+              "type": "array",
+              "maxItems": 1,
+              "items": {
+                "$ref": "#/$defs/modern_7"
+              }
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "first_name": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "last_name": {
+                  "type": "string"
+                },
+                "roles": {
+                  "type": "array",
+                  "items": {
+                    "enum": [
+                      "pointOfContact"
+                    ]
+                  },
+                  "default": [
+                    "pointOfContact"
+                  ]
+                },
+                "email": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^first_name$": true,
+                "^last_name$": true,
+                "^roles$": true,
+                "^email$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "",
+              "description": "Metadata related to the Ny-\u00c5lesund research stations",
+              "type": "object",
+              "required": [
+                "title"
+              ],
+              "properties": {
+                "placenames": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "collection": {
+                  "type": "string",
+                  "default": "ny-\u00e5lesund"
+                },
+                "_id": {
+                  "description": "Internal id",
+                  "type": "string"
+                },
+                "research_station": {
+                  "description": "Research station the dataset is related to",
+                  "type": "string",
+                  "enum": [
+                    "NPI - Norwegian Polar Institute",
+                    "AWIPEV - French-German Arctic Research Base",
+                    "CAA - Chinese Arctic and Antarctic Administration",
+                    "CNR - National Research Council of Italy",
+                    "KOPRI - Korean Polar Research Base",
+                    "NCAOR - National Centre for Antarctic & Ocean Research (India)",
+                    "NMA - Norwegian Mapping Authority - NMA",
+                    "NERC - National Environmental Research Council (UK)",
+                    "NIPR - National Institute for Polar Research (Japan)",
+                    "UIG - Arctic Centre of the University of Groningen (Netherlands)"
+                  ]
+                },
+                "links": {
+                  "$ref": "#/$defs/modern_4"
+                },
+                "id": {
+                  "description": "Identifier (UUID | URI)",
+                  "type": "string"
+                },
+                "updated": {
+                  "description": "Metadata was updated",
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "date-time"
+                },
+                "organisations": {
+                  "$ref": "#/$defs/modern_6"
+                },
+                "monitoring_program": {
+                  "description": "Can this parameter be part of the monitoring program?",
+                  "type": "boolean"
+                },
+                "parameters": {
+                  "$ref": "#/$defs/modern_8"
+                },
+                "summary": {
+                  "description": "Free text description of the dataset. Instrument, System, Method, frequency and time resolution should be mentioned here.",
+                  "type": "string"
+                },
+                "created": {
+                  "description": "Metadata was published",
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "date-time"
+                },
+                "created_by": {
+                  "type": "string"
+                },
+                "people": {
+                  "$ref": "#/$defs/modern_9"
+                },
+                "topics": {
+                  "$ref": "#/$defs/modern_11"
+                },
+                "updated_by": {
+                  "type": "string"
+                },
+                "location": {
+                  "$ref": "#/$defs/modern_12"
+                },
+                "database_suggestion": {
+                  "description": "If the data is not in a database now, which database should it be in?",
+                  "type": "string"
+                },
+                "released": {
+                  "description": "Data released datetime (may be in the future)",
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "date-time"
+                },
+                "_rev": {
+                  "description": "Internal revision",
+                  "type": "string"
+                },
+                "activity": {
+                  "$ref": "#/$defs/modern_15"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^research_station$": true,
+                "^_rev$": true,
+                "^collection$": true,
+                "^topics$": true,
+                "^released$": true,
+                "^organisations$": true,
+                "^id$": true,
+                "^people$": true,
+                "^created$": true,
+                "^created_by$": true,
+                "^placenames$": true,
+                "^updated$": true,
+                "^links$": true,
+                "^updated_by$": true,
+                "^monitoring_program$": true,
+                "^_id$": true,
+                "^summary$": true,
+                "^activity$": true,
+                "^database_suggestion$": true,
+                "^location$": true,
+                "^parameters$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "roles": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "owner"
+                    ]
+                  },
+                  "default": [
+                    "owner"
+                  ]
+                }
+              },
+              "required": [
+                "name",
+                "roles"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^roles$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/modern_3"
+              }
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_12": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "description": "Geographical area or location of the dataset. Coordinates as WGS-84 decimal degrees",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "northeast": {
+                    "$ref": "#/$defs/modern_13"
+                  },
+                  "southwest": {
+                    "$ref": "#/$defs/modern_14"
+                  }
+                }
+              }
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Primary contact for information about the dataset.",
+              "type": "array",
+              "required": [
+                "first_name",
+                "last_name",
+                "email"
+              ],
+              "items": {
+                "$ref": "#/$defs/modern_10"
+              }
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_13": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "latitude": {
+                  "type": "number",
+                  "minimum": 78.55,
+                  "maximum": 79.3333
+                },
+                "longitude": {
+                  "type": "number",
+                  "minimum": 10.4,
+                  "maximum": 14.0
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^latitude$": true,
+                "^longitude$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "placename": {
+                  "type": "string"
+                },
+                "latitude": {
+                  "type": "number",
+                  "minimum": 78.55,
+                  "maximum": 79.3333
+                },
+                "longitude": {
+                  "type": "number",
+                  "minimum": 10.4,
+                  "maximum": 14.0
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^placename$": true,
+                "^latitude$": true,
+                "^longitude$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Topic of the dataset",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "atmosphere",
+                  "biology",
+                  "chemistry",
+                  "climate",
+                  "conservation",
+                  "ecology",
+                  "ecotoxicology",
+                  "environment",
+                  "geology",
+                  "glaciology",
+                  "management",
+                  "marine",
+                  "maps",
+                  "oceanography",
+                  "other",
+                  "remote-sensing",
+                  "seaice",
+                  "social sciences",
+                  "terrestrial",
+                  "technology and engineering",
+                  "topography",
+                  "vegetation"
+                ]
+              },
+              "default": [
+                "other"
+              ],
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_14": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "latitude": {
+                  "type": "number",
+                  "minimum": 78.55,
+                  "maximum": 79.3333
+                },
+                "longitude": {
+                  "type": "number",
+                  "minimum": 10.4,
+                  "maximum": 14.0
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^latitude$": true,
+                "^longitude$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Required link to RiS project page. Links to data and original metadata are recommended if available.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/modern_5"
+              },
+              "minItems": 1
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_16": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "start": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "date-time"
+                },
+                "stop": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "date-time"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^start$": true,
+                "^stop$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_15": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Start and stop of data collection. For year registration use January 1ste as the date.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/modern_16"
+              }
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

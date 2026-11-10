@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "schema for a person name",
+              "type": "object",
+              "required": [
+                "title",
+                "first_given_name",
+                "family_name"
+              ],
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "first_given_name": {
+                  "type": "string",
+                  "description": "E.g. John",
+                  "maxLength": 64
+                },
+                "other_given_names": {
+                  "type": "string",
+                  "description": "E.g. Paul",
+                  "maxLength": 64
+                },
+                "family_name": {
+                  "type": "string",
+                  "description": "E.g. Smith",
+                  "maxLength": 64
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^title$": true,
+                "^first_given_name$": true,
+                "^other_given_names$": true,
+                "^family_name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

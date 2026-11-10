@@ -1,0 +1,451 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_6",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "ep": {
+                  "type": "string"
+                },
+                "gp": {
+                  "type": "string"
+                },
+                "pp": {
+                  "type": "string"
+                },
+                "cp": {
+                  "type": "string"
+                },
+                "sp": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^gp$": true,
+                "^cp$": true,
+                "^ep$": true,
+                "^pp$": true,
+                "^sp$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "mincr": {
+                  "$ref": "#/$defs/cr"
+                },
+                "maxcr": {
+                  "$ref": "#/$defs/cr"
+                },
+                "table": {
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "items": {
+                    "$ref": "#/$defs/modern_11"
+                  }
+                }
+              },
+              "required": [
+                "name",
+                "mincr",
+                "maxcr",
+                "table"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^mincr$": true,
+                "^maxcr$": true,
+                "^table$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "table": {
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "name",
+                "type",
+                "table"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^type$": true,
+                "^table$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "table": {
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "min": {
+                        "$ref": "#/$defs/d100"
+                      },
+                      "max": {
+                        "$ref": "#/$defs/d100"
+                      },
+                      "item": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "name",
+                "type",
+                "table"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^type$": true,
+                "^table$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "integer",
+              "minimum": 0.0,
+              "maximum": 30.0,
+              "required": [
+                "type",
+                "minimum",
+                "maximum"
+              ]
+            },
+            {
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "cr": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "magicitems": {
+                  "$ref": "#/$defs/lootTypeAmount"
+                },
+                "min": {
+                  "$ref": "#/$defs/d100"
+                },
+                "gems": {
+                  "$ref": "#/$defs/lootTypeAmount"
+                },
+                "max": {
+                  "$ref": "#/$defs/d100"
+                },
+                "artobjects": {
+                  "$ref": "#/$defs/lootTypeAmount"
+                }
+              },
+              "required": [
+                "min",
+                "max"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^artobjects$": true,
+                "^min$": true,
+                "^gems$": true,
+                "^magicitems$": true,
+                "^max$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "lootTypeAmount": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "min": {
+                  "$ref": "#/$defs/d100"
+                },
+                "max": {
+                  "$ref": "#/$defs/d100"
+                },
+                "coins": {
+                  "$ref": "#/$defs/coin"
+                }
+              },
+              "required": [
+                "min",
+                "max",
+                "coins"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^min$": true,
+                "^max$": true,
+                "^coins$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "amount": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type",
+                "amount"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^amount$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "gems_or_art": {
+      "type": "array",
+      "_uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/modern_1"
+      }
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "magicitems": {
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "items": {
+                    "$ref": "#/$defs/modern_7"
+                  }
+                },
+                "hoard": {
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "items": {
+                    "$ref": "#/$defs/modern_8"
+                  }
+                },
+                "gemstones": {
+                  "$ref": "#/$defs/gems_or_art"
+                },
+                "individual": {
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "items": {
+                    "$ref": "#/$defs/modern_10"
+                  }
+                },
+                "artobjects": {
+                  "$ref": "#/$defs/gems_or_art"
+                }
+              },
+              "required": [
+                "individual",
+                "hoard",
+                "gemstones",
+                "artobjects",
+                "magicitems"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^gemstones$": true,
+                "^artobjects$": true,
+                "^magicitems$": true,
+                "^hoard$": true,
+                "^individual$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "d100": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "coins": {
+                  "$ref": "#/$defs/coin"
+                },
+                "maxcr": {
+                  "$ref": "#/$defs/cr"
+                },
+                "table": {
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "items": {
+                    "$ref": "#/$defs/modern_9"
+                  }
+                },
+                "mincr": {
+                  "$ref": "#/$defs/cr"
+                },
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "mincr",
+                "maxcr",
+                "coins",
+                "table"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^coins$": true,
+                "^name$": true,
+                "^table$": true,
+                "^mincr$": true,
+                "^maxcr$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "integer",
+              "minimum": 1.0,
+              "maximum": 100.0,
+              "required": [
+                "type",
+                "minimum",
+                "maximum"
+              ]
+            },
+            {
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "coin": {
+      "$ref": "#/$defs/modern_5"
+    }
+  }
+}

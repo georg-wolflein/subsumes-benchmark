@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "app": {
+      "type": "string",
+      "description": "the shortCode of an app"
+    },
+    "appList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/app"
+      }
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "installs": {
+                  "description": "apps to be installed",
+                  "$ref": "#/$defs/appList"
+                },
+                "unInstalls": {
+                  "description": "apps to be uninstalled",
+                  "$ref": "#/$defs/appList"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^installs$": true,
+                "^unInstalls$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

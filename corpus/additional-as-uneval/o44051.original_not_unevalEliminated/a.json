@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "lax ingest+publish request schema",
+              "type": "object",
+              "properties": {
+                "version": {
+                  "type": "integer",
+                  "minimum": 1.0,
+                  "maximum": 9.0
+                },
+                "id": {
+                  "description": "article identifier",
+                  "type": "string"
+                },
+                "token": {
+                  "description": "data to be returned to the sender once action complete",
+                  "type": "string"
+                },
+                "action": {
+                  "enum": [
+                    "ingest",
+                    "publish",
+                    "ingest+publish"
+                  ]
+                },
+                "force": {
+                  "description": "force ingest/publish action. intended for silent corrections. use with caution.",
+                  "type": "boolean"
+                },
+                "location": {
+                  "description": "the location of the article to ingest/publish",
+                  "type": "string",
+                  "format": "uri",
+                  "pattern": "^(https|file)://"
+                }
+              },
+              "required": [
+                "action",
+                "location",
+                "id",
+                "version",
+                "token"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^version$": true,
+                "^action$": true,
+                "^token$": true,
+                "^id$": true,
+                "^location$": true,
+                "^force$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Create a new user",
+              "properties": {
+                "admin": {
+                  "type": "boolean"
+                },
+                "callsign": {
+                  "type": "string"
+                },
+                "email": {
+                  "_format": "email",
+                  "type": "string"
+                },
+                "passwordRepeat": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "callsign",
+                "email",
+                "admin",
+                "password",
+                "passwordRepeat"
+              ],
+              "title": "Service 001 : POST /users/create",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^callsign$": true,
+                "^password$": true,
+                "^admin$": true,
+                "^passwordRepeat$": true,
+                "^email$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

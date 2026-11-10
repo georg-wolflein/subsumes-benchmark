@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Fibaro Home Center Event JSON Schema",
+              "name": "event",
+              "type": "object",
+              "properties": {
+                "timestamp": {
+                  "description": "Event timestamp epoch",
+                  "type": "integer"
+                },
+                "deviceType": {
+                  "description": "Device Type",
+                  "type": "string",
+                  "maxLength": 20
+                },
+                "oldValue": {
+                  "description": "Old value",
+                  "type": "number"
+                },
+                "newValue": {
+                  "description": "New value",
+                  "type": "number"
+                },
+                "deviceID": {
+                  "description": "Device ID",
+                  "type": "integer"
+                },
+                "id": {
+                  "description": "Event ID",
+                  "type": "integer"
+                },
+                "propertyName": {
+                  "description": "Updated property name",
+                  "type": "string",
+                  "maxLength": 20
+                },
+                "type": {
+                  "description": "Event Type",
+                  "enum": [
+                    "DEVICE_EVENT"
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^propertyName$": true,
+                "^deviceID$": true,
+                "^timestamp$": true,
+                "^deviceType$": true,
+                "^type$": true,
+                "^id$": true,
+                "^newValue$": true,
+                "^oldValue$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

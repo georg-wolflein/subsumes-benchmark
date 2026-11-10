@@ -1,0 +1,631 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_4",
+  "$defs": {
+    "non_scattering_medium": {
+      "type": "object",
+      "required": [
+        "name",
+        "type",
+        "absorption_color",
+        "absorption_at_distance"
+      ],
+      "properties": {
+        "name": {
+          "description": "",
+          "type": "string"
+        },
+        "type": {
+          "description": "",
+          "type": "string",
+          "enum": [
+            "non_scattering"
+          ]
+        },
+        "absorption_color": {
+          "description": "",
+          "$ref": "#/$defs/float3"
+        },
+        "absorption_at_distance": {
+          "description": "",
+          "type": "number"
+        }
+      }
+    },
+    "uv_texture": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "description": "",
+          "type": "string",
+          "enum": [
+            "uv"
+          ]
+        }
+      }
+    },
+    "isotropic_scattering_medium": {
+      "type": "object",
+      "required": [
+        "name",
+        "type",
+        "absorption_color",
+        "absorption_at_distance",
+        "scattering_distance"
+      ],
+      "properties": {
+        "absorption_color": {
+          "description": "",
+          "$ref": "#/$defs/float3"
+        },
+        "name": {
+          "description": "",
+          "type": "string"
+        },
+        "absorption_at_distance": {
+          "description": "",
+          "type": "number"
+        },
+        "scattering_distance": {
+          "description": "",
+          "type": "number"
+        },
+        "type": {
+          "description": "",
+          "type": "string",
+          "enum": [
+            "isotropic_scattering"
+          ]
+        }
+      }
+    },
+    "float3": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 16,
+              "maxItems": 16
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "mirror_bsdf": {
+      "type": "object",
+      "required": [
+        "name",
+        "type",
+        "albedo"
+      ],
+      "properties": {
+        "name": {
+          "description": "",
+          "type": "string"
+        },
+        "type": {
+          "description": "",
+          "type": "string",
+          "enum": [
+            "mirror"
+          ]
+        },
+        "albedo": {
+          "description": "",
+          "oneOf": [
+            {
+              "$ref": "#/$defs/constant_texture"
+            },
+            {
+              "$ref": "#/$defs/image_texture"
+            },
+            {
+              "$ref": "#/$defs/uv_texture"
+            }
+          ]
+        }
+      }
+    },
+    "lambert_bsdf": {
+      "type": "object",
+      "required": [
+        "name",
+        "type",
+        "albedo"
+      ],
+      "properties": {
+        "name": {
+          "description": "",
+          "type": "string"
+        },
+        "type": {
+          "description": "",
+          "type": "string",
+          "enum": [
+            "lambert"
+          ]
+        },
+        "albedo": {
+          "description": "",
+          "oneOf": [
+            {
+              "$ref": "#/$defs/constant_texture"
+            },
+            {
+              "$ref": "#/$defs/image_texture"
+            },
+            {
+              "$ref": "#/$defs/uv_texture"
+            }
+          ]
+        }
+      }
+    },
+    "float4x4": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "constant_texture": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "description": "",
+          "type": "string",
+          "enum": [
+            "constant"
+          ]
+        },
+        "value": {
+          "description": "",
+          "$ref": "#/$defs/float3"
+        }
+      }
+    },
+    "ideal_specular_dielectric_bsdf": {
+      "type": "object",
+      "required": [
+        "name",
+        "type",
+        "albedo",
+        "ior"
+      ],
+      "properties": {
+        "name": {
+          "description": "",
+          "type": "string"
+        },
+        "type": {
+          "description": "",
+          "type": "string",
+          "enum": [
+            "ideal_specular_dielectric"
+          ]
+        },
+        "albedo": {
+          "description": "",
+          "oneOf": [
+            {
+              "$ref": "#/$defs/constant_texture"
+            },
+            {
+              "$ref": "#/$defs/image_texture"
+            },
+            {
+              "$ref": "#/$defs/uv_texture"
+            }
+          ]
+        },
+        "ior": {
+          "description": "",
+          "type": "number"
+        }
+      }
+    },
+    "geosphere": {
+      "type": "object",
+      "required": [
+        "name",
+        "type",
+        "radius",
+        "n",
+        "material"
+      ],
+      "properties": {
+        "name": {
+          "description": "",
+          "type": "string"
+        },
+        "n": {
+          "description": "Number of  subdivisions",
+          "type": "number"
+        },
+        "emission": {
+          "description": "",
+          "type": "object",
+          "required": [
+            "color",
+            "radiant_power"
+          ],
+          "properties": {
+            "color": {
+              "description": "",
+              "$ref": "#/$defs/float3"
+            },
+            "radiant_power": {
+              "description": "",
+              "type": "number"
+            }
+          }
+        },
+        "radius": {
+          "description": "",
+          "type": "number"
+        },
+        "material": {
+          "description": "",
+          "type": "string"
+        },
+        "type": {
+          "description": "",
+          "type": "string",
+          "enum": [
+            "geosphere"
+          ]
+        },
+        "transform": {
+          "description": "",
+          "$ref": "#/$defs/float4x4"
+        }
+      }
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Lantern Scene Definition Schema",
+              "type": "object",
+              "required": [
+                "camera"
+              ],
+              "properties": {
+                "materials": {
+                  "description": "",
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "bsdf"
+                    ],
+                    "properties": {
+                      "name": {
+                        "description": "",
+                        "type": "string"
+                      },
+                      "bsdf": {
+                        "description": "",
+                        "type": "string"
+                      },
+                      "medium": {
+                        "description": "",
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "bsdfs": {
+                  "description": "",
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/$defs/ideal_specular_dielectric_bsdf"
+                      },
+                      {
+                        "$ref": "#/$defs/lambert_bsdf"
+                      },
+                      {
+                        "$ref": "#/$defs/mirror_bsdf"
+                      }
+                    ]
+                  }
+                },
+                "media": {
+                  "description": "",
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/$defs/non_scattering_medium"
+                      },
+                      {
+                        "$ref": "#/$defs/isotropic_scattering_medium"
+                      }
+                    ]
+                  }
+                },
+                "primitives": {
+                  "description": "",
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/$defs/lantern_model_file"
+                      },
+                      {
+                        "$ref": "#/$defs/grid"
+                      },
+                      {
+                        "$ref": "#/$defs/geosphere"
+                      }
+                    ]
+                  }
+                },
+                "camera": {
+                  "description": "",
+                  "type": "object",
+                  "required": [
+                    "client_width",
+                    "client_height"
+                  ],
+                  "properties": {
+                    "fov": {
+                      "description": "",
+                      "type": "number"
+                    },
+                    "radius": {
+                      "description": "",
+                      "type": "number"
+                    },
+                    "client_width": {
+                      "description": "",
+                      "type": "number"
+                    },
+                    "theta": {
+                      "description": "",
+                      "type": "number"
+                    },
+                    "client_height": {
+                      "description": "",
+                      "type": "number"
+                    },
+                    "phi": {
+                      "description": "",
+                      "type": "number"
+                    },
+                    "target": {
+                      "description": "",
+                      "$ref": "#/$defs/float3"
+                    }
+                  }
+                },
+                "background_color": {
+                  "description": "",
+                  "$ref": "#/$defs/float3"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^bsdfs$": true,
+                "^media$": true,
+                "^materials$": true,
+                "^background_color$": true,
+                "^primitives$": true,
+                "^camera$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 3,
+              "maxItems": 3
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "lantern_model_file": {
+      "type": "object",
+      "required": [
+        "name",
+        "type",
+        "file_path",
+        "material"
+      ],
+      "properties": {
+        "name": {
+          "description": "",
+          "type": "string"
+        },
+        "emission": {
+          "description": "",
+          "type": "object",
+          "required": [
+            "color",
+            "radiant_power"
+          ],
+          "properties": {
+            "color": {
+              "description": "",
+              "$ref": "#/$defs/float3"
+            },
+            "radiant_power": {
+              "description": "",
+              "type": "number"
+            }
+          }
+        },
+        "file_path": {
+          "description": "",
+          "type": "string"
+        },
+        "material": {
+          "description": "",
+          "type": "string"
+        },
+        "type": {
+          "description": "",
+          "type": "string",
+          "enum": [
+            "lmf"
+          ]
+        },
+        "transform": {
+          "description": "",
+          "$ref": "#/$defs/float4x4"
+        }
+      }
+    },
+    "grid": {
+      "type": "object",
+      "required": [
+        "name",
+        "type",
+        "width",
+        "depth",
+        "material"
+      ],
+      "properties": {
+        "name": {
+          "description": "",
+          "type": "string"
+        },
+        "n": {
+          "description": "Number of divisons in X",
+          "type": "number"
+        },
+        "emission": {
+          "description": "",
+          "type": "object",
+          "required": [
+            "color",
+            "radiant_power"
+          ],
+          "properties": {
+            "color": {
+              "description": "",
+              "$ref": "#/$defs/float3"
+            },
+            "radiant_power": {
+              "description": "",
+              "type": "number"
+            }
+          }
+        },
+        "m": {
+          "description": "Number of divison in Z",
+          "type": "number"
+        },
+        "type": {
+          "description": "",
+          "type": "string",
+          "enum": [
+            "grid"
+          ]
+        },
+        "material": {
+          "description": "",
+          "type": "string"
+        },
+        "depth": {
+          "description": "",
+          "type": "number"
+        },
+        "transform": {
+          "description": "",
+          "$ref": "#/$defs/float4x4"
+        },
+        "width": {
+          "description": "",
+          "type": "number"
+        }
+      }
+    },
+    "float2": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "image_texture": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "description": "",
+          "type": "string",
+          "enum": [
+            "image"
+          ]
+        },
+        "file_path": {
+          "description": "",
+          "type": "string"
+        }
+      }
+    }
+  }
+}

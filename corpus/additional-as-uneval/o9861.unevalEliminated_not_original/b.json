@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "state": {
+                  "type": "string",
+                  "enum": [
+                    "new",
+                    "acknowledged",
+                    "resolved"
+                  ]
+                },
+                "comment": {
+                  "type": "string",
+                  "maxLength": 32767
+                },
+                "data": true,
+                "eventTags": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^state$": true,
+                "^comment$": true,
+                "^data$": true,
+                "^eventTags$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "^[0-9a-zA-Z_-]{1,255}$": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 255
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^[0-9a-zA-Z_-]{1,255}$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

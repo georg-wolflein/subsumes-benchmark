@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "id_token": {
+                  "description": "Optional identity token, issued for the code and password grants. Not provided for client credentials grants.",
+                  "type": "string"
+                },
+                "access_token": {
+                  "description": "The access token issued by the server.",
+                  "type": "string"
+                },
+                "expires_in": {
+                  "description": "The lifetime of the access token, in seconds.",
+                  "type": "number"
+                },
+                "token_type": {
+                  "description": "Set to bearer.",
+                  "enum": [
+                    "bearer"
+                  ],
+                  "type": "string"
+                },
+                "scope": {
+                  "description": "The scope of the access token.",
+                  "type": "string"
+                },
+                "refresh_token": {
+                  "description": "Optional refresh token, which can be used to obtain new access tokens. Issued only for long-lived authorisations that permit it.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "access_token",
+                "refresh_token",
+                "expires_in",
+                "token_type"
+              ],
+              "title": "introspect",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^refresh_token$": true,
+                "^scope$": true,
+                "^id_token$": true,
+                "^access_token$": true,
+                "^token_type$": true,
+                "^expires_in$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

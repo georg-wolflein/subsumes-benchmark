@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "client_address": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/office_address"
+        },
+        {
+          "$ref": "#/$defs/home_address"
+        }
+      ]
+    },
+    "parts": {
+      "$ref": "#/$defs/modern_3"
+    }
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "type": {
+                  "enum": [
+                    "home"
+                  ]
+                },
+                "street_address": {
+                  "type": "string"
+                },
+                "city": {
+                  "type": "string"
+                },
+                "state": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type",
+                "street_address",
+                "city",
+                "state"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^street_address$": true,
+                "^city$": true,
+                "^state$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "home_address": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "type": {
+                  "enum": [
+                    "business"
+                  ]
+                },
+                "building": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type",
+                "building"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^building$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "office_address": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "partTwo": {
+      "properties": {
+        "two": {
+          "type": "integer"
+        }
+      }
+    },
+    "partOne": {
+      "properties": {
+        "one": {
+          "type": "string"
+        }
+      }
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/partOne"
+                },
+                {
+                  "not": {
+                    "$ref": "#/$defs/partTwo"
+                  }
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^one$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "not": {
+                    "$ref": "#/$defs/partOne"
+                  }
+                },
+                {
+                  "$ref": "#/$defs/partTwo"
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^two$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "address": {
+      "type": "object",
+      "properties": {
+        "street_address": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "street_address",
+        "city",
+        "state"
+      ]
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "component": {
+                  "pattern": "^[a-z_]$",
+                  "type": "string"
+                },
+                "group": {
+                  "pattern": "^[a-z_]$",
+                  "type": "string"
+                },
+                "name": {
+                  "pattern": "^[a-zA-Z0-9_\\-\\./]+$",
+                  "type": "string"
+                }
+              },
+              "title": "GetSchema",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^component$": true,
+                "^group$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "version": "1.2.0",
+  "title": "NameArray",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/name"
+      }
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "nameTableRow": {
+      "properties": {
+        "min": {
+          "type": "integer"
+        },
+        "max": {
+          "type": "integer"
+        },
+        "result": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "min",
+        "max",
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "nameTable": {
+      "properties": {
+        "option": {
+          "type": "string"
+        },
+        "diceType": {
+          "type": "integer"
+        },
+        "table": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/nameTableRow"
+          }
+        }
+      },
+      "required": [
+        "option",
+        "table"
+      ],
+      "additionalProperties": false
+    },
+    "name": {
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "page": {
+          "type": "integer"
+        },
+        "tables": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/nameTable"
+          }
+        }
+      },
+      "required": [
+        "name",
+        "source",
+        "tables"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

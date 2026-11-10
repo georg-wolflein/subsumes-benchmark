@@ -1,0 +1,498 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "build": {
+      "properties": {
+        "bundles": {
+          "description": "Define bundles created during the build",
+          "items": {
+            "properties": {
+              "dependencies": {
+                "description": "A set of dependencies to be included in your bundle\n Get more info at http://aurelia.io/hub.html#/doc/article/aurelia/framework/latest/the-aurelia-cli/10",
+                "items": {
+                  "anyOf": [
+                    {
+                      "default": "your-dependencies-npm-name",
+                      "description": "If the main field of the library's package.json points to the single file that you need to bundle, then you can opt for a simplified configuration by just adding the package name to your dependencies directly",
+                      "title": "Bundle Dependency",
+                      "type": "string"
+                    },
+                    {
+                      "description": "Complex package",
+                      "properties": {
+                        "deps": {
+                          "description": "This is an array of dependencies which must be loaded and available before the legacy library can be evaluated",
+                          "title": "Legacy library dependencies",
+                          "type": [
+                            "array"
+                          ]
+                        },
+                        "env": {
+                          "description": "This can be used on any dependency in the bundle to indicate what environment builds the dependency should be included in. By default, dependencies are included in all builds.",
+                          "title": "Environment conditional bundling",
+                          "type": [
+                            "string"
+                          ]
+                        },
+                        "export": {
+                          "description": "This is the name of the global variable that should be used as the exported value of the module",
+                          "title": "Global export",
+                          "type": [
+                            "string"
+                          ]
+                        },
+                        "main": {
+                          "description": "This is the main module (entry point) of the package, relative to the path. You should not include the file extension. .js will be appended automatically. Specify false if no main entry point is available for your dependency",
+                          "title": "Main entry point",
+                          "type": [
+                            "string",
+                            "boolean"
+                          ]
+                        },
+                        "name": {
+                          "description": "The name of the dependency",
+                          "title": "Dependency name",
+                          "type": "string"
+                        },
+                        "path": {
+                          "description": "This is a path to the single module file itself. This path is relative to your application's src folder. Also, you should not include the file extension. .js will be appended automatically",
+                          "title": "Relative path to the dependency",
+                          "type": "string"
+                        },
+                        "resources": {
+                          "description": "Provide a list of additional files to be included with the bundle",
+                          "title": "Additional library resources",
+                          "type": [
+                            "array"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "path"
+                      ],
+                      "title": "Bundle Dependency",
+                      "type": "object"
+                    }
+                  ]
+                },
+                "title": "Bundle dependencies",
+                "type": "array"
+              },
+              "name": {
+                "description": "The name of the resulting bundle (with .js extension)",
+                "title": "Bundle name",
+                "type": "string"
+              },
+              "prepend": {
+                "description": "A set of files to prepend to the bundle",
+                "items": {
+                  "description": "A glob pattern (or array of glob patterns) defining the resources to prepend in your bundle",
+                  "title": "Source path",
+                  "type": [
+                    "string",
+                    "array"
+                  ]
+                },
+                "title": "Files to prepend",
+                "type": "array"
+              },
+              "source": {
+                "description": "A collection of glob patterns to include in the bundle",
+                "items": {
+                  "description": "A glob pattern (or array of glob patterns) defining the resources to include in the bundle",
+                  "title": "Source path",
+                  "type": [
+                    "string",
+                    "array"
+                  ]
+                },
+                "title": "Source paths",
+                "type": "array"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "type": "object"
+          },
+          "title": "Application bundles",
+          "type": "array"
+        },
+        "copyFiles": {
+          "description": "A dictionary (file:destination) specifying files to copy after build",
+          "title": "Copy files",
+          "type": "object"
+        },
+        "loader": {
+          "description": "Configuring the loader (e.g RequireJS) for the CLI",
+          "properties": {
+            "config": {
+              "description": "Additional configuration specifically for the selected loader type",
+              "title": "Loader configs",
+              "type": "object"
+            },
+            "configTarget": {
+              "description": "The target bundle where additional loader configs will be appended to the bottom of the file",
+              "title": "Configuration target",
+              "type": "string"
+            },
+            "includeBundleMetadataInConfig": {
+              "description": "Whether to include a \"bundles\" property in the loader configuration. http://requirejs.org/docs/api.html#config-bundles",
+              "title": "includeBundleMetadataInConfig",
+              "type": "string"
+            },
+            "plugins": {
+              "description": "Configure additional loader plugins (e.g. text-plugin, json-plugin ...)",
+              "items": {
+                "properties": {
+                  "extensions": {
+                    "description": "Extensions to be processed by the plugin",
+                    "items": {
+                      "type": "string"
+                    },
+                    "title": "Plugin extensions",
+                    "type": "array"
+                  },
+                  "name": {
+                    "description": "The name of the plugin",
+                    "title": "Plugin name",
+                    "type": "string"
+                  },
+                  "stub": {
+                    "description": "If set to true the plugin won't be included in the bundle, resulting in a smaller bundle size. But you can't use the plugin at runtime for files that aren't in the bundle.",
+                    "title": "Stub",
+                    "type": "boolean"
+                  }
+                },
+                "type": "object"
+              },
+              "title": "Loader plugins",
+              "type": "array"
+            },
+            "type": {
+              "description": "The type of the loader to use",
+              "title": "Loader type",
+              "type": "string"
+            }
+          },
+          "title": "Loader configuration",
+          "type": "object"
+        },
+        "options": {
+          "description": "Setup minification, sourcemaps and revision support",
+          "properties": {
+            "minify": {
+              "description": "Minify builds for given environments",
+              "title": "Minification",
+              "type": "string"
+            },
+            "rev": {
+              "description": "To create builds with revision numbers, you must set rev to true. This will cause a unique revision number to be added to the bundled files",
+              "title": "Build revisions",
+              "type": "boolean"
+            },
+            "sourcemaps": {
+              "description": "Create sourcemaps for given environments",
+              "title": "Create sourcemaps",
+              "type": "string"
+            }
+          },
+          "title": "Build options",
+          "type": "object"
+        },
+        "targets": {
+          "items": {
+            "properties": {
+              "baseDir": {
+                "description": "The baseDir for serving the build target",
+                "title": "BaseDir",
+                "type": "string"
+              },
+              "displayName": {
+                "description": "The name to display for the target application",
+                "title": "Displayname",
+                "type": "string"
+              },
+              "id": {
+                "description": "The id for the target application",
+                "title": "Target id",
+                "type": "string"
+              },
+              "index": {
+                "description": "The default start file for the application",
+                "title": "App start file",
+                "type": "string"
+              },
+              "output": {
+                "description": "The folder where the built application will be copied to",
+                "title": "Output folder",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "bundler": {
+      "properties": {
+        "displayName": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "cssProcessor": {
+      "description": "Define the used CSS Pre/processor",
+      "properties": {
+        "displayName": {
+          "description": "The name to display for the selected css processor",
+          "title": "Display name",
+          "type": "string"
+        },
+        "fileExtension": {
+          "description": "The file extension to use for the preprocessor",
+          "title": "File extension",
+          "type": "string"
+        },
+        "id": {
+          "description": "The id of the selected css preprocssor",
+          "title": "CSS preprocessor id",
+          "type": "string"
+        },
+        "source": {
+          "description": "A glob pattern (or array of glob patterns) pointing to the sources to be targeted by the css preprocessor",
+          "title": "CSS preprocessor sources",
+          "type": [
+            "string",
+            "array"
+          ]
+        }
+      },
+      "title": "CSS Processor",
+      "type": "object"
+    },
+    "editor": {
+      "description": "The used editor along preconfigured defaults",
+      "properties": {
+        "displayName": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        }
+      },
+      "title": "Editor",
+      "type": "object"
+    },
+    "markupProcessor": {
+      "description": "Configure the markup processor",
+      "properties": {
+        "displayName": {
+          "description": "The name to display of the markup processor",
+          "title": "Displayname",
+          "type": "string"
+        },
+        "fileExtension": {
+          "description": "The file extensions to target by the markup processor",
+          "title": "Markup file extensions",
+          "type": "string"
+        },
+        "id": {
+          "description": "The id of the markup processor",
+          "title": "Markup processor id",
+          "type": "string"
+        },
+        "source": {
+          "description": "A glob pattern (or array of glob patterns) to the markup sources. In case of Webpack this can be an empty string.",
+          "title": "Markup source",
+          "type": [
+            "string",
+            "array"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "displayName",
+        "fileExtension",
+        "source"
+      ],
+      "title": "Markup processor",
+      "type": "object"
+    },
+    "name": {
+      "description": "The name of your app",
+      "title": "App name",
+      "type": "string"
+    },
+    "paths": {
+      "description": "Path mappings (key/value) for the loader. These will be included into the loader configuration (RequireJS/SystemJS).",
+      "title": "Path mappings",
+      "type": "object"
+    },
+    "platform": {
+      "description": "Settings for the development platform",
+      "properties": {
+        "baseDir": {
+          "description": "Browsersync (au run) will serve from this directory",
+          "title": "BaseDir",
+          "type": "string"
+        },
+        "displayName": {
+          "description": "The name of the platform specific build",
+          "title": "Display name",
+          "type": "string"
+        },
+        "hmr": {
+          "default": false,
+          "description": "ONLY FOR WEBPACK. Define whether hot module reloading should be used with the dev server",
+          "title": "(ONLY WP) Hot Module Reloading",
+          "type": "boolean"
+        },
+        "id": {
+          "description": "The id of the platform specific build",
+          "title": "Platform id",
+          "type": "string"
+        },
+        "index": {
+          "description": "Path relative from project root to the index.html file. CLI updates script tags in this file on build",
+          "title": "Index file (index.html)",
+          "type": "string"
+        },
+        "open": {
+          "default": false,
+          "description": "ONLY FOR WEBPACK. Should the default browser be opened automatically",
+          "title": "(ONLY WP) Auto open default browser",
+          "type": "boolean"
+        },
+        "output": {
+          "description": "A folder relative from project root where the bundles will be created",
+          "title": "Output",
+          "type": "string"
+        },
+        "port": {
+          "default": 8080,
+          "description": "ONLY FOR WEBPACK. Define the default port to be used for the dev server",
+          "title": "(ONLY WP) Dev Server Port",
+          "type": "integer"
+        }
+      },
+      "title": "Platform",
+      "type": "object"
+    },
+    "testFramework": {
+      "description": "The used test framework",
+      "properties": {
+        "displayName": {
+          "description": "The name to display for the used test framework",
+          "title": "Test framework name",
+          "type": "string"
+        },
+        "id": {
+          "description": "The id of the used test framework",
+          "title": "Test framework id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "displayName",
+        "id"
+      ],
+      "title": "Test framework",
+      "type": "object"
+    },
+    "transpiler": {
+      "description": "The transpiler chosen for the app",
+      "properties": {
+        "displayName": {
+          "description": "The name to display for the selected transpiler",
+          "title": "Displayname",
+          "type": "string"
+        },
+        "dtsSource": {
+          "description": "Glob pattern to type definitions4",
+          "items": {
+            "type": "string"
+          },
+          "title": "d.ts source",
+          "type": "array"
+        },
+        "fileExtension": {
+          "description": "File extensions to be processed by the transpiler",
+          "title": "File extension",
+          "type": "string"
+        },
+        "id": {
+          "description": "The id of the transpiler",
+          "title": "Transpiler id",
+          "type": "string"
+        },
+        "options": {
+          "description": "Addtional options to pass to the transpiler",
+          "title": "Transpiler options",
+          "type": "object"
+        },
+        "source": {
+          "description": "A glob pattern (or array of glob patterns) for the sources processed by the transpiler. In case of Webpack this can be an empty string",
+          "title": "Transpiler sources",
+          "type": [
+            "string",
+            "array"
+          ]
+        }
+      },
+      "required": [
+        "displayName",
+        "id",
+        "fileExtension",
+        "source"
+      ],
+      "title": "Transpiler",
+      "type": "object"
+    },
+    "type": {
+      "description": "The CLI application type scaffolded",
+      "title": "Scaffold type",
+      "type": "string"
+    },
+    "unitTestRunner": {
+      "description": "The testrunner used for your application. In case of Webpack this should be an array of testrunner configurations",
+      "properties": {
+        "displayName": {
+          "description": "The name of the configured testrunner",
+          "title": "Display name",
+          "type": "string"
+        },
+        "id": {
+          "description": "The id of the configured testrunner",
+          "title": "Testrunner Id",
+          "type": "string"
+        },
+        "source": {
+          "default": "test/unit/**/*.js",
+          "description": "Pointing to the spec files of your application. Can be empty for Webpack",
+          "title": "Test source files",
+          "type": "string"
+        }
+      },
+      "required": [
+        "displayName",
+        "id",
+        "source"
+      ],
+      "title": "Test runner",
+      "type": [
+        "object",
+        "array"
+      ]
+    }
+  },
+  "type": "object"
+}

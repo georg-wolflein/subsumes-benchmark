@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "timestamp": {
+                  "default": "",
+                  "type": "string"
+                },
+                "meta": {
+                  "default": {},
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "updatedTime": {
+                      "type": "number"
+                    },
+                    "authors": {
+                      "type": "string"
+                    },
+                    "updated": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "authors",
+                    "description",
+                    "updated",
+                    "updatedTime",
+                    "url"
+                  ]
+                },
+                "versions": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              },
+              "required": [
+                "meta",
+                "timestamp",
+                "versions"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^timestamp$": true,
+                "^meta$": true,
+                "^versions$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "default": {},
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "snapshot": {
+                    "$ref": "#/$defs/LiteloaderVersionMeta"
+                  },
+                  "release": {
+                    "$ref": "#/$defs/LiteloaderVersionMeta"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "LiteloaderVersionMeta": {
+      "type": "object",
+      "properties": {
+        "tweakClass": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "md5": {
+          "type": "string"
+        },
+        "libraries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ]
+          }
+        },
+        "file": {
+          "type": "string"
+        },
+        "mcversion": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "RELEASE",
+            "SNAPSHOT"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "file",
+        "libraries",
+        "mcversion",
+        "md5",
+        "timestamp",
+        "tweakClass",
+        "type",
+        "url",
+        "version"
+      ]
+    }
+  }
+}

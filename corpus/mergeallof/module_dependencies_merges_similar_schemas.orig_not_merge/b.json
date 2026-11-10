@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "dependentSchemas": {
+    "foo": {
+      "type": [
+        "string",
+        "null",
+        "integer"
+      ],
+      "allOf": [
+        {
+          "minimum": 5
+        }
+      ]
+    }
+  },
+  "dependentRequired": {
+    "bar": [
+      "prop1",
+      "prop2"
+    ]
+  },
+  "allOf": [
+    {
+      "dependentSchemas": {
+        "foo": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "allOf": [
+            {
+              "minimum": 7
+            }
+          ]
+        }
+      },
+      "dependentRequired": {
+        "bar": [
+          "prop4"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "items": {
+    "$ref": "#/$defs/modern_1"
+  },
+  "title": "masterdata.json",
+  "type": "array",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "parents": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "items": {
+                  "items": {
+                    "$ref": "#/$defs/modern_3"
+                  },
+                  "type": "array"
+                },
+                "age": {
+                  "type": "number"
+                },
+                "id": {
+                  "type": "number"
+                },
+                "voice_actors": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "gender": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "age",
+                "gender",
+                "id",
+                "items",
+                "name",
+                "parents",
+                "voice_actors"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^parents$": true,
+                "^name$": true,
+                "^age$": true,
+                "^id$": true,
+                "^voice_actors$": true,
+                "^items$": true,
+                "^gender$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "father": {
+                  "type": "string"
+                },
+                "mother": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "father",
+                "mother"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^father$": true,
+                "^mother$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "count": {
+                  "type": "number"
+                },
+                "desc": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "sale": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "count",
+                "desc",
+                "name",
+                "sale"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^count$": true,
+                "^desc$": true,
+                "^name$": true,
+                "^sale$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Codex Location Schema",
+              "type": "object",
+              "properties": {
+                "institution": {
+                  "type": "string"
+                },
+                "uri": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "library": {
+                  "type": "string"
+                },
+                "parking": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "platform": {
+                  "type": "string"
+                },
+                "campus": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^institution$": true,
+                "^campus$": true,
+                "^parking$": true,
+                "^uri$": true,
+                "^library$": true,
+                "^platform$": true,
+                "^id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "object"
+              },
+              "_uniqueItems": true
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  true
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

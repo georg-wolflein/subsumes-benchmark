@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "name": {
+      "oldname": {
+        "type": "string"
+      },
+      "moniker": {
+        "type": "string"
+      }
+    },
+    "stats": {
+      "size": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "mode": {
+        "type": "integer"
+      },
+      "write": {
+        "type": "boolean"
+      },
+      "_uid": {
+        "type": "integer"
+      },
+      "_gid": {
+        "type": "integer"
+      }
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Schema for describing files within the filesystem.",
+              "type": "object",
+              "required": [
+                "name"
+              ],
+              "properties": {
+                "depth": {
+                  "type": "integer",
+                  "minimum": 0.0
+                },
+                "stats": {
+                  "$ref": "#/$defs/stats"
+                },
+                "name": {
+                  "$ref": "#/$defs/name"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^depth$": true,
+                "^stats$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

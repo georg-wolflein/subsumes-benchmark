@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 255
+    },
+    "lastUpdated": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 32767
+    },
+    "applicationId": {
+      "type": "string",
+      "pattern": "^[A-Fa-f\\d]{24}$"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Fa-f\\d]{24}$"
+    },
+    "dataTableId": {
+      "type": "string",
+      "pattern": "^[A-Fa-f\\d]{24}$"
+    },
+    "columns": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/modern_1"
+      },
+      "maxItems": 50
+    },
+    "creationDate": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Data Table Column",
+              "description": "Schema for a single Data Table Column",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "pattern": "^[0-9a-zA-Z_-]{1,255}$"
+                },
+                "dataType": {
+                  "type": "string",
+                  "enum": [
+                    "string",
+                    "number",
+                    "boolean"
+                  ]
+                },
+                "constraint": {
+                  "type": "string",
+                  "enum": [
+                    "unique",
+                    "required",
+                    "optional"
+                  ]
+                },
+                "defaultValue": {
+                  "type": [
+                    "string",
+                    "number",
+                    "boolean"
+                  ]
+                }
+              },
+              "required": [
+                "name",
+                "dataType",
+                "constraint"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^dataType$": true,
+                "^constraint$": true,
+                "^defaultValue$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

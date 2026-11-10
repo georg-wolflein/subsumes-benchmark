@@ -1,0 +1,491 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "allOf": [
+    {
+      "$ref": "#/$defs/service"
+    },
+    {
+      "$ref": "#/$defs/constraints"
+    }
+  ],
+  "type": "object",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "file": {
+                  "type": "string"
+                },
+                "service": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "service"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^file$": true,
+                "^service$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "list_or_dict": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/modern_1"
+        },
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "_uniqueItems": true
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                ".+": {
+                  "format": "bool-value-in-mapping",
+                  "type": [
+                    "string",
+                    "number",
+                    "boolean",
+                    "null"
+                  ]
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                ".+": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "_id": "#/definitions4/service",
+              "dependentRequired": {
+                "memswap_limit": [
+                  "mem_limit"
+                ]
+              },
+              "properties": {
+                "logging": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "dns_search": {
+                  "$ref": "#/$defs/string_or_list"
+                },
+                "image": {
+                  "type": "string"
+                },
+                "read_only": {
+                  "type": "boolean"
+                },
+                "command": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  ]
+                },
+                "volume_driver": {
+                  "type": "string"
+                },
+                "labels": {
+                  "$ref": "#/$defs/list_or_dict"
+                },
+                "working_dir": {
+                  "type": "string"
+                },
+                "external_links": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "_uniqueItems": true
+                },
+                "user": {
+                  "type": "string"
+                },
+                "dns": {
+                  "$ref": "#/$defs/string_or_list"
+                },
+                "ulimits": {
+                  "patternProperties": {
+                    "^[a-z]+$": {
+                      "oneOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "$ref": "#/$defs/modern_4"
+                        }
+                      ]
+                    }
+                  },
+                  "type": "object"
+                },
+                "dockerfile": {
+                  "type": "string"
+                },
+                "cpu_quota": {
+                  "type": [
+                    "number",
+                    "string"
+                  ]
+                },
+                "hostname": {
+                  "type": "string"
+                },
+                "cgroup_parent": {
+                  "type": "string"
+                },
+                "env_file": {
+                  "$ref": "#/$defs/string_or_list"
+                },
+                "domainname": {
+                  "type": "string"
+                },
+                "build": {
+                  "type": "string"
+                },
+                "ports": {
+                  "items": {
+                    "format": "ports",
+                    "type": [
+                      "string",
+                      "number"
+                    ]
+                  },
+                  "type": "array",
+                  "_uniqueItems": true
+                },
+                "extra_hosts": {
+                  "$ref": "#/$defs/list_or_dict"
+                },
+                "cap_drop": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "_uniqueItems": true
+                },
+                "ipc": {
+                  "type": "string"
+                },
+                "cpu_shares": {
+                  "type": [
+                    "number",
+                    "string"
+                  ]
+                },
+                "volumes": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "_uniqueItems": true
+                },
+                "net": {
+                  "type": "string"
+                },
+                "mac_address": {
+                  "type": "string"
+                },
+                "entrypoint": {
+                  "$ref": "#/$defs/string_or_list"
+                },
+                "cpuset": {
+                  "type": "string"
+                },
+                "links": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "_uniqueItems": true
+                },
+                "pid": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "stdin_open": {
+                  "type": "boolean"
+                },
+                "container_name": {
+                  "type": "string"
+                },
+                "memswap_limit": {
+                  "type": [
+                    "number",
+                    "string"
+                  ]
+                },
+                "environment": {
+                  "$ref": "#/$defs/list_or_dict"
+                },
+                "expose": {
+                  "items": {
+                    "format": "expose",
+                    "type": [
+                      "string",
+                      "number"
+                    ]
+                  },
+                  "type": "array",
+                  "_uniqueItems": true
+                },
+                "security_opt": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "_uniqueItems": true
+                },
+                "extends": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "$ref": "#/$defs/modern_5"
+                    }
+                  ]
+                },
+                "tty": {
+                  "type": "boolean"
+                },
+                "privileged": {
+                  "type": "boolean"
+                },
+                "restart": {
+                  "type": "string"
+                },
+                "devices": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "_uniqueItems": true
+                },
+                "volumes_from": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "_uniqueItems": true
+                },
+                "cap_add": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "_uniqueItems": true
+                },
+                "mem_limit": {
+                  "type": [
+                    "number",
+                    "string"
+                  ]
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^volumes$": true,
+                "^tty$": true,
+                "^links$": true,
+                "^env_file$": true,
+                "^domainname$": true,
+                "^dockerfile$": true,
+                "^command$": true,
+                "^build$": true,
+                "^net$": true,
+                "^extends$": true,
+                "^pid$": true,
+                "^external_links$": true,
+                "^volumes_from$": true,
+                "^extra_hosts$": true,
+                "^ports$": true,
+                "^user$": true,
+                "^ipc$": true,
+                "^container_name$": true,
+                "^image$": true,
+                "^privileged$": true,
+                "^logging$": true,
+                "^memswap_limit$": true,
+                "^mem_limit$": true,
+                "^security_opt$": true,
+                "^mac_address$": true,
+                "^working_dir$": true,
+                "^labels$": true,
+                "^volume_driver$": true,
+                "^cpuset$": true,
+                "^cpu_quota$": true,
+                "^hostname$": true,
+                "^environment$": true,
+                "^cap_drop$": true,
+                "^dns_search$": true,
+                "^stdin_open$": true,
+                "^ulimits$": true,
+                "^entrypoint$": true,
+                "^cpu_shares$": true,
+                "^dns$": true,
+                "^devices$": true,
+                "^cap_add$": true,
+                "^cgroup_parent$": true,
+                "^restart$": true,
+                "^expose$": true,
+                "^read_only$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "string_or_list": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/$defs/list_of_strings"
+        }
+      ]
+    },
+    "service": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "constraints": {
+      "_id": "#/definitions4/constraints",
+      "anyOf": [
+        {
+          "not": {
+            "required": [
+              "image"
+            ]
+          },
+          "required": [
+            "build"
+          ]
+        },
+        {
+          "not": {
+            "anyOf": [
+              {
+                "required": [
+                  "build"
+                ]
+              },
+              {
+                "required": [
+                  "dockerfile"
+                ]
+              }
+            ]
+          },
+          "required": [
+            "image"
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "driver": {
+                  "type": "string"
+                },
+                "options": {
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^driver$": true,
+                "^options$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "list_of_strings": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "_uniqueItems": true
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "hard": {
+                  "type": "integer"
+                },
+                "soft": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "soft",
+                "hard"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^hard$": true,
+                "^soft$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

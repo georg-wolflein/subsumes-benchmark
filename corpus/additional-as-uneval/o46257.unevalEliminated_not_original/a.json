@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Investment Info",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "activity": {
+      "$ref": "#/$defs/InvestmentActivity"
+    },
+    "security": {
+      "$ref": "#/$defs/Security"
+    },
+    "transaction": {
+      "$ref": "#/$defs/InvestmentTransaction"
+    }
+  },
+  "$defs": {
+    "InvestmentActivity": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "type": {
+          "type": "integer"
+        }
+      }
+    },
+    "Security": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "_id": {
+          "type": "integer",
+          "description": "A unique ID for Security"
+        },
+        "name": {
+          "type": "string"
+        },
+        "symbol": {
+          "type": "string"
+        }
+      }
+    },
+    "InvestmentTransaction": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "_id": {
+          "type": "integer",
+          "description": "A unique ID for InvestmentTransaction"
+        },
+        "price": {
+          "type": "number"
+        },
+        "quantity": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/modern_2"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "AuthorityId": {
+                  "type": "string"
+                },
+                "QueryString": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "Path": {
+                  "type": "string"
+                },
+                "AcknowledgementTypeId": {
+                  "type": "integer"
+                },
+                "RetryPolicyId": {
+                  "type": "string"
+                },
+                "AuthenticationLifetimeExtensionSupported": {
+                  "type": "boolean"
+                },
+                "TopicName": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "AuthorityId",
+                "Path",
+                "QueryString",
+                "RetryPolicyId",
+                "TopicName",
+                "AcknowledgementTypeId",
+                "AuthenticationLifetimeExtensionSupported"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^TopicName$": true,
+                "^AcknowledgementTypeId$": true,
+                "^RetryPolicyId$": true,
+                "^AuthenticationLifetimeExtensionSupported$": true,
+                "^AuthorityId$": true,
+                "^QueryString$": true,
+                "^Path$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

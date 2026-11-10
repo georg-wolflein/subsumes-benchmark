@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Edit field",
+              "type": "object",
+              "required": [
+                "field"
+              ],
+              "properties": {
+                "placeholder": {
+                  "type": "string"
+                },
+                "options": {
+                  "type": "array",
+                  "description": "List of values to be displayed in a dropdown menu.",
+                  "minItems": 1,
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "type": {
+                  "type": "string",
+                  "description": "Definition of how the selected data should be displayed.",
+                  "enum": [
+                    "dropdown",
+                    "edtf_year",
+                    "geometry",
+                    "iiif_manifest",
+                    "number",
+                    "vooruit_image",
+                    "table",
+                    "textarea"
+                  ]
+                },
+                "multi": {
+                  "type": "boolean",
+                  "description": "Indicates if multiple values are allowed for this field.",
+                  "default": "false"
+                },
+                "field": {
+                  "type": "string",
+                  "description": "Definition of the edit field. Only entity properties are allowed.",
+                  "pattern": "^[$][a-z_]+$"
+                },
+                "help_message": {
+                  "type": "string"
+                }
+              },
+              "allOf": [
+                {
+                  "anyOf": [
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "type": {
+                              "const": "dropdown"
+                            }
+                          },
+                          "required": [
+                            "type"
+                          ]
+                        },
+                        {
+                          "required": [
+                            "options"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "not": {
+                        "properties": {
+                          "type": {
+                            "const": "dropdown"
+                          }
+                        },
+                        "required": [
+                          "type"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^multi$": true,
+                "^options$": true,
+                "^type$": true,
+                "^help_message$": true,
+                "^placeholder$": true,
+                "^field$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

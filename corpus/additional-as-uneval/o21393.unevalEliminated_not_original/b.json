@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "bulk_publishing": {
+                  "type": "boolean"
+                },
+                "links": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "previous_version": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^bulk_publishing$": true,
+                "^links$": true,
+                "^previous_version$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {}
+            },
+            {
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

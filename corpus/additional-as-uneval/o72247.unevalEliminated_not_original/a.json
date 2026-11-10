@@ -1,0 +1,255 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "individual": {
+      "type": "array",
+      "_uniqueItems": true,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "mincr": {
+            "$ref": "#/$defs/cr"
+          },
+          "maxcr": {
+            "$ref": "#/$defs/cr"
+          },
+          "table": {
+            "type": "array",
+            "_uniqueItems": true,
+            "items": {
+              "type": "object",
+              "properties": {
+                "min": {
+                  "$ref": "#/$defs/d100"
+                },
+                "max": {
+                  "$ref": "#/$defs/d100"
+                },
+                "coins": {
+                  "$ref": "#/$defs/coin"
+                }
+              },
+              "required": [
+                "min",
+                "max",
+                "coins"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "name",
+          "mincr",
+          "maxcr",
+          "table"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "hoard": {
+      "type": "array",
+      "_uniqueItems": true,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "mincr": {
+            "$ref": "#/$defs/cr"
+          },
+          "maxcr": {
+            "$ref": "#/$defs/cr"
+          },
+          "coins": {
+            "$ref": "#/$defs/coin"
+          },
+          "table": {
+            "type": "array",
+            "_uniqueItems": true,
+            "items": {
+              "type": "object",
+              "properties": {
+                "min": {
+                  "$ref": "#/$defs/d100"
+                },
+                "max": {
+                  "$ref": "#/$defs/d100"
+                },
+                "gems": {
+                  "$ref": "#/$defs/lootTypeAmount"
+                },
+                "artobjects": {
+                  "$ref": "#/$defs/lootTypeAmount"
+                },
+                "magicitems": {
+                  "$ref": "#/$defs/lootTypeAmount"
+                }
+              },
+              "required": [
+                "min",
+                "max"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "name",
+          "mincr",
+          "maxcr",
+          "coins",
+          "table"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "gemstones": {
+      "$ref": "#/$defs/gems_or_art"
+    },
+    "artobjects": {
+      "$ref": "#/$defs/gems_or_art"
+    },
+    "magicitems": {
+      "type": "array",
+      "_uniqueItems": true,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "table": {
+            "type": "array",
+            "_uniqueItems": true,
+            "items": {
+              "type": "object",
+              "properties": {
+                "min": {
+                  "$ref": "#/$defs/d100"
+                },
+                "max": {
+                  "$ref": "#/$defs/d100"
+                },
+                "item": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "name",
+          "type",
+          "table"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "individual",
+    "hoard",
+    "gemstones",
+    "artobjects",
+    "magicitems"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "cr": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 30,
+      "required": [
+        "type",
+        "minimum",
+        "maximum"
+      ],
+      "additionalProperties": false
+    },
+    "d100": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100,
+      "required": [
+        "type",
+        "minimum",
+        "maximum"
+      ],
+      "additionalProperties": false
+    },
+    "coin": {
+      "type": "object",
+      "properties": {
+        "cp": {
+          "type": "string"
+        },
+        "sp": {
+          "type": "string"
+        },
+        "ep": {
+          "type": "string"
+        },
+        "gp": {
+          "type": "string"
+        },
+        "pp": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "lootTypeAmount": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "amount"
+      ],
+      "additionalProperties": false
+    },
+    "gems_or_art": {
+      "type": "array",
+      "_uniqueItems": true,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "table": {
+            "type": "array",
+            "_uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "type",
+          "table"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "id",
+                "email"
+              ],
+              "properties": {
+                "admin": {
+                  "type": "boolean",
+                  "default": false
+                },
+                "name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "email": {
+                  "type": "string"
+                },
+                "recovery_token": {
+                  "type": [
+                    "null",
+                    "string"
+                  ],
+                  "default": null
+                },
+                "id": {
+                  "type": "string"
+                },
+                "updated": {
+                  "type": "number"
+                },
+                "preferences": {
+                  "type": "object",
+                  "default": {}
+                },
+                "created": {
+                  "type": "number"
+                },
+                "password": {
+                  "type": "string",
+                  "minLength": 4
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^updated$": true,
+                "^name$": true,
+                "^password$": true,
+                "^preferences$": true,
+                "^recovery_token$": true,
+                "^created$": true,
+                "^email$": true,
+                "^admin$": true,
+                "^id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

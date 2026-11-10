@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "rootSourceString": {
+                  "type": "string"
+                },
+                "rootSourceArray": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/modern_2"
+                    }
+                  }
+                }
+              },
+              "required": [
+                "rootSourceArray"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^rootSourceString$": true,
+                "^rootSourceArray$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "someSourceString": {
+                  "type": "string"
+                },
+                "anotherSourceString": {
+                  "type": "string"
+                },
+                "someSourceArray": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "someSourceString",
+                "anotherSourceString",
+                "someSourceArray"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^someSourceString$": true,
+                "^anotherSourceString$": true,
+                "^someSourceArray$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

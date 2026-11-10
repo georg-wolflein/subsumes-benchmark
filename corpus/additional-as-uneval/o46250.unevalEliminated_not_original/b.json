@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_2",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "recurring": {
+                  "type": "boolean"
+                },
+                "type": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "recurring"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^label$": true,
+                "^recurring$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Bill",
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "integer",
+                  "description": "A unique ID for Bill"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "daysAutoEnter": {
+                  "type": "integer"
+                },
+                "transactionId": {
+                  "type": "integer"
+                },
+                "frequency": {
+                  "$ref": "#/$defs/Frequency"
+                },
+                "billHeadId": {
+                  "type": "integer"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^daysAutoEnter$": true,
+                "^transactionId$": true,
+                "^date$": true,
+                "^_id$": true,
+                "^frequency$": true,
+                "^billHeadId$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Frequency": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

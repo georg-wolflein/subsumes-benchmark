@@ -1,0 +1,79 @@
+{
+  "$id": "http://danielzhu.tk/birthland/data",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Stages",
+  "type": "object",
+  "additionalProperties": {
+    "title": "Stage",
+    "additionalProperties": false,
+    "properties": {
+      "start": {
+        "$ref": "#/$defs/break"
+      },
+      "text": {
+        "$ref": "#/$defs/text"
+      },
+      "end": {
+        "$ref": "#/$defs/break"
+      },
+      "stage": {
+        "type": "string"
+      },
+      "choices": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "text",
+            "prompt"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "description": {
+              "$ref": "#/$defs/text"
+            },
+            "text": {
+              "type": "string"
+            },
+            "prompt": {
+              "$ref": "#/$defs/text"
+            },
+            "action": {
+              "type": "string"
+            },
+            "stage": {
+              "type": "string"
+            },
+            "condition": {
+              "type": "string"
+            }
+          }
+        },
+        "minItems": 1
+      }
+    }
+  },
+  "$defs": {
+    "text": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        }
+      ]
+    },
+    "break": {
+      "enum": [
+        "none",
+        "paragraph",
+        "page"
+      ]
+    }
+  }
+}

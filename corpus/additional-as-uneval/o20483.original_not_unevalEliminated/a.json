@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "content-type": "application/x-www-form-urlencoded",
+              "properties": {
+                "token": {
+                  "description": "The token to inspect.",
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "token_type_hint": {
+                  "description": "Optional hint about the type of the submitted token; if omitted the server will use heuristics to determine the token type.",
+                  "enum": [
+                    "refresh_token",
+                    "access_token"
+                  ],
+                  "type": "string"
+                }
+              },
+              "required": [
+                "token",
+                "token_type_hint"
+              ],
+              "resources": "POST /introspect/token",
+              "title": "introspect",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^token$": true,
+                "^token_type_hint$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

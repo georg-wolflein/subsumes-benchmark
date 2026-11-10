@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Investment Transaction",
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "integer",
+                  "description": "A unique ID for InvestmentTransaction"
+                },
+                "price": {
+                  "type": "number"
+                },
+                "quantity": {
+                  "type": "number"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^_id$": true,
+                "^price$": true,
+                "^quantity$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

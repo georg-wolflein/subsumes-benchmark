@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "followsFrom": {
+                  "type": "string"
+                },
+                "data": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "origin": {
+                  "type": "string"
+                },
+                "timeProcess": {
+                  "_format": "date-time",
+                  "type": "string"
+                },
+                "eventId": {
+                  "_format": "",
+                  "type": "string"
+                },
+                "timeIngest": {
+                  "_format": "date-time",
+                  "type": "string"
+                },
+                "timeOrigin": {
+                  "_format": "date-time",
+                  "type": "string"
+                },
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "schema",
+                "origin",
+                "timeOrigin",
+                "data",
+                "eventId",
+                "timeIngest",
+                "timeProcess"
+              ],
+              "self": {
+                "format": "jsonschema",
+                "name": "retail-stream-egress",
+                "vendor": "com.nordstrom",
+                "version": "1-0-0"
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^eventId$": true,
+                "^schema$": true,
+                "^origin$": true,
+                "^timeIngest$": true,
+                "^timeOrigin$": true,
+                "^followsFrom$": true,
+                "^timeProcess$": true,
+                "^data$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "schema": {
+                  "_format": "url",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "schema"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^schema$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

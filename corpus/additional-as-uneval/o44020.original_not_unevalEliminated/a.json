@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "StartTransactionResponse",
+              "type": "object",
+              "properties": {
+                "idTagInfo": {
+                  "type": "object",
+                  "properties": {
+                    "expiryDate": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "parentIdTag": {
+                      "type": "string",
+                      "maxLength": 20
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "Accepted",
+                        "Blocked",
+                        "Expired",
+                        "Invalid",
+                        "ConcurrentTx"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "status"
+                  ]
+                },
+                "transactionId": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "idTagInfo",
+                "transactionId"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^idTagInfo$": true,
+                "^transactionId$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

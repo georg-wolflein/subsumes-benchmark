@@ -1,0 +1,46 @@
+{
+  "$id": "http://jerzual.github.io/azimut/config.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "title": "ConfigurationSchema",
+              "required": [
+                "backendurl"
+              ],
+              "description": "Environment configuration",
+              "properties": {
+                "backendUrl": {
+                  "type": "string",
+                  "default": "",
+                  "examples": [
+                    "http://azimut_server"
+                  ],
+                  "description": "Base url",
+                  "pattern": "^https?://(.*)$"
+                },
+                "databaseHost": {
+                  "type": "string",
+                  "description": "host of couchdb",
+                  "default": ""
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^backendUrl$": true,
+                "^databaseHost$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

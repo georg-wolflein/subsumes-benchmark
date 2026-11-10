@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "patternProperties": {
+    ".*": {
+      "$ref": "#/$defs/modern_2"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "unusedQueryParameters": {
+                  "$ref": "#/$defs/stringArray"
+                },
+                "unusedResponseHeaders": {
+                  "$ref": "#/$defs/stringArray"
+                },
+                "unusedResources": {
+                  "$ref": "#/$defs/stringArray"
+                },
+                "unusedResponseCodes": {
+                  "$ref": "#/$defs/stringArray"
+                },
+                "unusedFormParameters": {
+                  "$ref": "#/$defs/stringArray"
+                },
+                "unusedRequestHeaders": {
+                  "$ref": "#/$defs/stringArray"
+                },
+                "unusedActions": {
+                  "$ref": "#/$defs/stringArray"
+                }
+              },
+              "required": [
+                "unusedActions",
+                "unusedResources",
+                "unusedRequestHeaders",
+                "unusedQueryParameters",
+                "unusedFormParameters",
+                "unusedResponseHeaders",
+                "unusedResponseCodes"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^unusedResponseCodes$": true,
+                "^unusedActions$": true,
+                "^unusedResponseHeaders$": true,
+                "^unusedQueryParameters$": true,
+                "^unusedRequestHeaders$": true,
+                "^unusedFormParameters$": true,
+                "^unusedResources$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "stringArray": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

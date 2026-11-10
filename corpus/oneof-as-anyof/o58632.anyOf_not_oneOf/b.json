@@ -1,0 +1,49 @@
+{
+  "$id": "http://example.com/schemas/Around.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "thing": {
+      "allOf": [
+        {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ThingOne"
+            },
+            {
+              "$ref": "#/$defs/ThingTwo"
+            }
+          ]
+        },
+        {
+          "properties": {
+            "discriminator": {
+              "enum": [
+                "ThingOne",
+                "ThingTwo"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "ThingOne": {
+      "type": "object",
+      "properties": {
+        "redFish": {
+          "type": "string"
+        }
+      }
+    },
+    "ThingTwo": {
+      "type": "object",
+      "properties": {
+        "blueFish": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

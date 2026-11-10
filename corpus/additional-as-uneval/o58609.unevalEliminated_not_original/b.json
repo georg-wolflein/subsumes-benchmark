@@ -1,0 +1,268 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "A schema describing metadata for wed modes.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/modern_5"
+    },
+    {
+      "$ref": "#/$defs/modern_6"
+    }
+  ],
+  "title": "Metadata",
+  "type": "object",
+  "$defs": {
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "elements": {
+                  "$ref": "#/$defs/elements"
+                },
+                "generator": {
+                  "$ref": "#/$defs/generator"
+                },
+                "inline": {
+                  "$ref": "#/$defs/inline"
+                },
+                "version": {
+                  "enum": [
+                    "2"
+                  ]
+                },
+                "date": {
+                  "$ref": "#/$defs/date"
+                },
+                "namespaces": {
+                  "$ref": "#/$defs/namespaces"
+                },
+                "dochtml": {
+                  "$ref": "#/$defs/dochtml"
+                }
+              },
+              "required": [
+                "version",
+                "namespaces"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^version$": true,
+                "^generator$": true,
+                "^namespaces$": true,
+                "^dochtml$": true,
+                "^inline$": true,
+                "^date$": true,
+                "^elements$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "generator": {
+      "description": "The name of the software that generated the JSON.",
+      "type": "string"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "desc": {
+                  "description": "A short documentation string.",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "The local name of the element.",
+                  "type": "string"
+                },
+                "ns": {
+                  "description": "The namespace URI of the element.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "desc"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^desc$": true,
+                "^name$": true,
+                "^ns$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "inline": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "An object determining which elements are inline.",
+              "properties": {
+                "method": {
+                  "description": "The method by which elements are addressed",
+                  "enum": [
+                    "name"
+                  ],
+                  "type": "string"
+                },
+                "rules": {
+                  "$ref": "#/$defs/modern_3"
+                }
+              },
+              "required": [
+                "method",
+                "rules"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^method$": true,
+                "^rules$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "version": {
+      "description": "Records the version number of the format of the metadata file.",
+      "type": "string"
+    },
+    "date": {
+      "description": "The date at which the file was generated.",
+      "format": "date-time",
+      "type": "string"
+    },
+    "namespaces": {
+      "description": "Prefix -> uri mapping of absolute namespaces.",
+      "type": "object"
+    },
+    "dochtml": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": "boolean"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Configuration of the online HTML documentation for the XML schema.",
+              "properties": {
+                "method": {
+                  "description": "The method by which the URL is generated.",
+                  "enum": [
+                    "simple-pattern"
+                  ],
+                  "type": "string"
+                },
+                "pattern": {
+                  "description": "The pattern to use.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "method",
+                "pattern"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^method$": true,
+                "^pattern$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "elements": {
+                  "$ref": "#/$defs/elements"
+                },
+                "generator": {
+                  "$ref": "#/$defs/generator"
+                },
+                "version": {
+                  "enum": [
+                    "1"
+                  ]
+                },
+                "date": {
+                  "$ref": "#/$defs/date"
+                },
+                "namespaces": {
+                  "$ref": "#/$defs/namespaces"
+                },
+                "dochtml": {
+                  "description": "A URL to where the schema's documentation is stored.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "version"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^version$": true,
+                "^generator$": true,
+                "^namespaces$": true,
+                "^dochtml$": true,
+                "^date$": true,
+                "^elements$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "elements": {
+      "description": "An array of all elements in the schema.",
+      "items": {
+        "$ref": "#/$defs/modern_1"
+      },
+      "type": "array"
+    }
+  }
+}

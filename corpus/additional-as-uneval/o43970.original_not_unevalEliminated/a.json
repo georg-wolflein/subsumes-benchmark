@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "AuthorizeRequest",
+              "type": "object",
+              "properties": {
+                "idTag": {
+                  "type": "string",
+                  "maxLength": 20
+                }
+              },
+              "required": [
+                "idTag"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^idTag$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

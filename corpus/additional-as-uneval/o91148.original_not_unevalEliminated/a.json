@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "ignoreOrder": {
+                  "description": "Ignore dependency order (useful for CSS Modules)",
+                  "type": "boolean"
+                },
+                "publicPath": {
+                  "description": "",
+                  "type": "string"
+                },
+                "filename": {
+                  "description": "The filename and path that ExtractTextPlugin will extract to",
+                  "modes": {
+                    "type": "function"
+                  }
+                },
+                "disable": {
+                  "description": "",
+                  "type": "boolean"
+                },
+                "allChunks": {
+                  "description": "",
+                  "type": "boolean"
+                },
+                "loader": {
+                  "description": "The loader that ExtractTextPlugin will attempt to load through.",
+                  "modes": {
+                    "type": "array"
+                  }
+                },
+                "fallback": {
+                  "description": "A loader that webpack can fall back to if the original one fails.",
+                  "modes": {
+                    "type": "array"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^ignoreOrder$": true,
+                "^allChunks$": true,
+                "^disable$": true,
+                "^fallback$": true,
+                "^filename$": true,
+                "^loader$": true,
+                "^publicPath$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,487 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_8",
+  "$defs": {
+    "experts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/expert"
+      }
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "url"
+                  ]
+                },
+                "url": {
+                  "type": "string"
+                },
+                "anchor": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type",
+                "weblink"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^url$": true,
+                "^anchor$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "urlreference": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "dmpbook"
+                  ]
+                },
+                "chapter": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type",
+                "chapter"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^chapter$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "questionpointer": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "chapterid": {
+                  "$ref": "#/$defs/chapterid"
+                },
+                "questionid": {
+                  "$ref": "#/$defs/questionid"
+                },
+                "namespace": {
+                  "$ref": "#/$defs/namespace"
+                }
+              },
+              "required": [
+                "chapterid",
+                "questionid",
+                "namespace"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^chapterid$": true,
+                "^questionid$": true,
+                "^namespace$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "expert": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "class": {
+          "type": "string",
+          "enum": [
+            "individual",
+            "organisation"
+          ],
+          "default": "organisation"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "optionanswer": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/reference"
+      }
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "title": "chapter",
+              "description": "JSON file describing a single chapter in the knowledge model for DMP questionnaires",
+              "properties": {
+                "formatversion": {
+                  "type": "integer",
+                  "minimum": 1.0,
+                  "maximum": 1.0
+                },
+                "text": {
+                  "type": "string"
+                },
+                "questions": {
+                  "type": "array",
+                  "items": {
+                    "allOf": [
+                      {
+                        "$ref": "#/$defs/question"
+                      },
+                      {
+                        "anyOf": [
+                          {
+                            "$ref": "#/$defs/optionquestion"
+                          },
+                          {
+                            "$ref": "#/$defs/fieldquestion"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "chapterid": {
+                  "$ref": "#/$defs/chapterid"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "namespace": {
+                  "$ref": "#/$defs/namespace"
+                }
+              },
+              "required": [
+                "chapterid",
+                "namespace",
+                "formatversion",
+                "questions"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^formatversion$": true,
+                "^namespace$": true,
+                "^text$": true,
+                "^title$": true,
+                "^chapterid$": true,
+                "^questions$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "questionid": {
+      "type": "integer",
+      "minimum": 1.0
+    },
+    "chapterid": {
+      "type": "integer",
+      "minimum": 1.0,
+      "maximum": 7.0
+    },
+    "optionanswers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/optionanswer"
+      }
+    },
+    "fieldquestion": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "list",
+            "string",
+            "text"
+          ]
+        },
+        "answers": {
+          "maxItems": 0
+        }
+      }
+    },
+    "crossreference": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "reference": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/dmpbookreference"
+        },
+        {
+          "$ref": "#/$defs/urlreference"
+        },
+        {
+          "$ref": "#/$defs/crossreference"
+        }
+      ]
+    },
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "xref"
+                  ]
+                },
+                "chapterid": {
+                  "$ref": "#/$defs/chapterid"
+                },
+                "questionid": {
+                  "$ref": "#/$defs/questionid"
+                },
+                "namespace": {
+                  "$ref": "#/$defs/namespace"
+                }
+              },
+              "required": [
+                "chapterid",
+                "questionid"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^chapterid$": true,
+                "^questionid$": true,
+                "^namespace$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "question": {
+      "$ref": "#/$defs/modern_6"
+    },
+    "dmpbookreference": {
+      "$ref": "#/$defs/modern_7"
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "experts": {
+                  "$ref": "#/$defs/experts"
+                },
+                "text": {
+                  "type": "string"
+                },
+                "answers": {
+                  "$ref": "#/$defs/optionanswers"
+                },
+                "references": {
+                  "$ref": "#/$defs/references"
+                },
+                "addAnswers": {
+                  "$ref": "#/$defs/optionanswers"
+                },
+                "questionid": {
+                  "$ref": "#/$defs/questionid"
+                },
+                "precondition": {
+                  "$ref": "#/$defs/precondition"
+                },
+                "addExperts": {
+                  "$ref": "#/$defs/experts"
+                },
+                "insertBefore": {
+                  "$ref": "#/$defs/questionpointer"
+                },
+                "addReferences": {
+                  "$ref": "#/$defs/references"
+                },
+                "namespace": {
+                  "$ref": "#/$defs/namespace"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "option",
+                    "list",
+                    "string",
+                    "text"
+                  ]
+                }
+              },
+              "required": [
+                "questionid"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^experts$": true,
+                "^references$": true,
+                "^addExperts$": true,
+                "^addReferences$": true,
+                "^type$": true,
+                "^answers$": true,
+                "^precondition$": true,
+                "^title$": true,
+                "^questionid$": true,
+                "^namespace$": true,
+                "^insertBefore$": true,
+                "^addAnswers$": true,
+                "^text$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "$ref": "#/$defs/answerid"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "advice": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "label"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^label$": true,
+                "^advice$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "precondition": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "optionquestion": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "option"
+          ]
+        },
+        "answers": {
+          "minItems": 1
+        }
+      }
+    },
+    "answerid": {
+      "type": "integer",
+      "minimum": 0.0
+    },
+    "namespace": {
+      "type": "string"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "namespace": {
+                  "$ref": "#/$defs/namespace"
+                },
+                "questionid": {
+                  "$ref": "#/$defs/questionid"
+                },
+                "answerid": {
+                  "$ref": "#/$defs/answerid"
+                }
+              },
+              "required": [
+                "questionid"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^namespace$": true,
+                "^questionid$": true,
+                "^answerid$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

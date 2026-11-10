@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/modern_1"
+    },
+    {
+      "$ref": "#/$defs/modern_2"
+    }
+  ],
+  "title": "PutRequest",
+  "type": "object",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "expiry": {
+                  "default": 360,
+                  "maximum": 86400.0,
+                  "minimum": 1.0,
+                  "type": "integer"
+                },
+                "key": {
+                  "maxLength": 12,
+                  "pattern": "^[a-zA-Z0-9_\\.]+$",
+                  "type": "string"
+                },
+                "value": true
+              },
+              "required": [
+                "key",
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^expiry$": true,
+                "^key$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "expiry": {
+                  "default": 360,
+                  "maximum": 86400.0,
+                  "minimum": 1.0,
+                  "type": "integer"
+                },
+                "keyValues": {
+                  "items": {
+                    "$ref": "#/$defs/modern_3"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "keys"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^expiry$": true,
+                "^keyValues$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "key": {
+                  "maxLength": 12,
+                  "pattern": "^[a-zA-Z0-9_\\.]+$",
+                  "type": "string"
+                },
+                "value": true
+              },
+              "required": [
+                "key",
+                "value"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^key$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

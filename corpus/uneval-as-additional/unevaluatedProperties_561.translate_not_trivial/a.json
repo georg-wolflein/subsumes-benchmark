@@ -1,0 +1,402 @@
+{
+  "$id": "https://json-layout.github.io/layout-keyword",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "layout keyword",
+  "errorMessage": {
+    "anyOf": "layout keyword must be a string with a valid component name, or a more complete object definition, or an array of children, or a switch structure"
+  },
+  "anyOf": [
+    {
+      "$ref": "#/$defs/comp-name"
+    },
+    {
+      "$ref": "#/$defs/partial-children"
+    },
+    {
+      "$ref": "#/$defs/partial-comp-object"
+    },
+    {
+      "$ref": "#/$defs/partial-switch"
+    }
+  ],
+  "$defs": {
+    "partial-switch": {
+      "type": "object",
+      "required": [
+        "switch"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "switch": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/partial-comp-object"
+          }
+        }
+      }
+    },
+    "partial-comp-object": {
+      "title": "partial comp object",
+      "type": "object",
+      "properties": {
+        "comp": {
+          "$ref": "#/$defs/comp-name"
+        },
+        "help": {
+          "type": "string"
+        },
+        "children": {
+          "$ref": "#/$defs/partial-children"
+        },
+        "label": {
+          "type": "string"
+        },
+        "title": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "subtitle": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "step": {
+          "type": "number"
+        },
+        "if": {
+          "$ref": "#/$defs/partial-expression"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/partial-select-item"
+          }
+        },
+        "getItems": {
+          "$ref": "#/$defs/partial-get-items"
+        },
+        "listEditMode": {
+          "type": "string",
+          "enum": [
+            "inline",
+            "inline-single",
+            "menu",
+            "dialog"
+          ]
+        },
+        "listActions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "add",
+              "edit",
+              "delete",
+              "sort",
+              "duplicate"
+            ]
+          }
+        },
+        "cols": {
+          "$ref": "#/$defs/partial-cols"
+        },
+        "props": {
+          "type": "object"
+        },
+        "slots": {
+          "type": "object",
+          "patternProperties": {
+            ".*": {
+              "$ref": "#/$defs/partial-slot"
+            }
+          }
+        },
+        "options": {
+          "type": "object"
+        },
+        "messages": {
+          "type": "object"
+        },
+        "defaultData": {
+          "$ref": "#/$defs/partial-expression"
+        },
+        "constData": {
+          "$ref": "#/$defs/partial-expression"
+        },
+        "transformData": {
+          "$ref": "#/$defs/partial-expression"
+        },
+        "autofocus": {
+          "type": "boolean"
+        }
+      }
+    },
+    "comp-name": {
+      "title": "component name",
+      "type": "string",
+      "errorMessage": {
+        "enum": "component name is unknown"
+      },
+      "enum": [
+        "none",
+        "text-field",
+        "number-field",
+        "textarea",
+        "markdown",
+        "checkbox",
+        "switch",
+        "slider",
+        "date-picker",
+        "date-time-picker",
+        "time-picker",
+        "color-picker",
+        "combobox",
+        "number-combobox",
+        "section",
+        "list",
+        "select",
+        "autocomplete",
+        "tabs",
+        "vertical-tabs",
+        "expansion-panels",
+        "stepper",
+        "one-of-select",
+        "file-input"
+      ]
+    },
+    "partial-child": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "type": [
+            "string",
+            "integer"
+          ]
+        },
+        "cols": {
+          "$ref": "#/$defs/partial-cols"
+        }
+      },
+      "allOf": [
+        {
+          "$ref": "#/$defs/partial-comp-object"
+        },
+        {}
+      ]
+    },
+    "partial-children": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "$ref": "#/$defs/partial-child"
+          }
+        ]
+      }
+    },
+    "partial-expression": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/$defs/partial-expression-obj"
+        }
+      ]
+    },
+    "partial-expression-obj": {
+      "type": "object",
+      "required": [
+        "expr"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "js-fn",
+            "js-eval",
+            "js-tpl"
+          ]
+        },
+        "expr": {
+          "type": "string"
+        }
+      }
+    },
+    "partial-select-item": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "value": {}
+          }
+        }
+      ]
+    },
+    "partial-get-items": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/$defs/partial-get-items-obj"
+        }
+      ]
+    },
+    "partial-get-items-obj": {
+      "type": "object",
+      "allOf": [
+        {
+          "properties": {
+            "itemTitle": {
+              "$ref": "#/$defs/partial-expression"
+            },
+            "itemKey": {
+              "$ref": "#/$defs/partial-expression"
+            },
+            "itemValue": {
+              "$ref": "#/$defs/partial-expression"
+            },
+            "itemIcon": {
+              "$ref": "#/$defs/partial-expression"
+            },
+            "itemsResults": {
+              "$ref": "#/$defs/partial-expression"
+            }
+          }
+        },
+        {
+          "anyOf": [
+            {
+              "type": "object"
+            },
+            {
+              "$ref": "#/$defs/partial-expression-obj"
+            },
+            {
+              "$ref": "#/$defs/partial-get-items-fetch"
+            }
+          ]
+        }
+      ]
+    },
+    "partial-get-items-fetch": {
+      "type": "object",
+      "required": [
+        "url"
+      ],
+      "properties": {
+        "url": {
+          "$ref": "#/$defs/partial-expression"
+        }
+      }
+    },
+    "partial-cols": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/partial-cols-number"
+        },
+        {
+          "$ref": "#/$defs/partial-cols-obj"
+        }
+      ]
+    },
+    "partial-cols-obj": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "xs": {
+          "$ref": "#/$defs/partial-cols-number"
+        },
+        "sm": {
+          "$ref": "#/$defs/partial-cols-number"
+        },
+        "md": {
+          "$ref": "#/$defs/partial-cols-number"
+        },
+        "lg": {
+          "$ref": "#/$defs/partial-cols-number"
+        },
+        "xl": {
+          "$ref": "#/$defs/partial-cols-number"
+        },
+        "xxl": {
+          "$ref": "#/$defs/partial-cols-number"
+        }
+      }
+    },
+    "partial-cols-number": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 12
+    },
+    "partial-slot": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/$defs/partial-slot-text"
+        },
+        {
+          "$ref": "#/$defs/partial-slot-markdown"
+        },
+        {
+          "$ref": "#/$defs/partial-slot-name"
+        }
+      ]
+    },
+    "partial-slot-text": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text"
+      ],
+      "properties": {
+        "text": {
+          "type": "string"
+        }
+      }
+    },
+    "partial-slot-markdown": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "markdown"
+      ],
+      "properties": {
+        "markdown": {
+          "type": "string"
+        }
+      }
+    },
+    "partial-slot-name": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

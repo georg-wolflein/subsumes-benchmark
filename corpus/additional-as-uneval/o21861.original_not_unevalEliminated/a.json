@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "TableName",
+                "StreamViewType"
+              ],
+              "properties": {
+                "TableName": {
+                  "type": "string"
+                },
+                "StreamViewType": {
+                  "type": "string",
+                  "enum": [
+                    "NEW_IMAGE",
+                    "OLD_IMAGE",
+                    "NEW_AND_OLD_IMAGES",
+                    "KEYS_ONLY"
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^TableName$": true,
+                "^StreamViewType$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

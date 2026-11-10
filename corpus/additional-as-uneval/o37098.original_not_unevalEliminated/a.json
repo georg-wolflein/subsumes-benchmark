@@ -1,0 +1,75 @@
+{
+  "$id": "https://mcda.drugis.org/valueEffect.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "MCDA value effect for the performance table entry of absolute data",
+              "type": "object",
+              "required": [
+                "type",
+                "value"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "exact"
+                  ]
+                },
+                "value": {
+                  "type": "number"
+                },
+                "input": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^value$": true,
+                "^input$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "number"
+                },
+                "scale": {
+                  "type": "string",
+                  "enum": [
+                    "percentage",
+                    "decimal"
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^value$": true,
+                "^scale$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

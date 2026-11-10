@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "internal_id": {
+      "type": "string"
+    },
+    "title_plural": {
+      "$ref": "#/$defs/title"
+    },
+    "id": {
+      "_format": "uri",
+      "type": "string"
+    },
+    "title": {
+      "$ref": "#/$defs/title"
+    },
+    "schema.org": {
+      "_format": "uri",
+      "type": "string"
+    },
+    "parent": {
+      "type": "object"
+    },
+    "children": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "interal_id",
+    "id",
+    "title",
+    "title_plural",
+    "schema.org"
+  ],
+  "type": "object",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                "^([a-z_]){2,5}$": {
+                  "type": "string"
+                }
+              },
+              "title": "Mapping of language code to translation of title",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^([a-z_]){2,5}$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "title": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

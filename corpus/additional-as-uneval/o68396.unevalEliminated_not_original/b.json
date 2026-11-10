@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "stattype": {
+      "type": "string",
+      "enum": [
+        "CATEGORICAL",
+        "NUMERICAL",
+        "IGNORE"
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Schema for MML commands to CREATE GENERATOR",
+              "type": "object",
+              "required": [
+                "metamodel",
+                "columns"
+              ],
+              "properties": {
+                "metamodel": {
+                  "type": "string"
+                },
+                "columns": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^metamodel$": true,
+                "^columns$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/column_def"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "column_def": {
+      "type": "object",
+      "required": [
+        "stattype"
+      ],
+      "properties": {
+        "stattype": {
+          "$ref": "#/$defs/stattype"
+        },
+        "guess": {
+          "$ref": "#/$defs/stattype"
+        }
+      }
+    }
+  }
+}

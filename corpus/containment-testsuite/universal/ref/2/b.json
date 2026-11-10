@@ -1,0 +1,26 @@
+{
+  "anyOf": [
+    {
+      "properties": {
+        "foo": {
+          "type": "integer"
+        },
+        "bar": {
+          "$ref": "#/anyOf/0/properties/foo"
+        }
+      }
+    },
+    {
+      "not": {
+        "properties": {
+          "foo": {
+            "type": "integer"
+          },
+          "bar": {
+            "$ref": "#/anyOf/1/not/properties/foo"
+          }
+        }
+      }
+    }
+  ]
+}

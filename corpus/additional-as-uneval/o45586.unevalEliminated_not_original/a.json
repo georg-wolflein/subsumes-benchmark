@@ -1,0 +1,384 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "clientLabels": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "_uniqueItems": true
+    },
+    "clusterName": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "connectionStrategy": {
+      "properties": {
+        "asyncStart": {
+          "default": false,
+          "type": "boolean"
+        },
+        "connectionRetry": {
+          "properties": {
+            "clusterConnectTimeoutMillis": {
+              "type": "number"
+            },
+            "initialBackoffMillis": {
+              "minimum": 0,
+              "type": "number"
+            },
+            "jitter": {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            "maxBackoffMillis": {
+              "minimum": 0,
+              "type": "number"
+            },
+            "multiplier": {
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "reconnectMode": {
+          "enum": [
+            "on",
+            "off",
+            "async"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "import": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "instanceName": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "listeners": {
+      "items": {
+        "$ref": "#/$defs/listenerConfig"
+      },
+      "type": "array"
+    },
+    "loadBalancer": {
+      "properties": {
+        "type": {
+          "enum": [
+            "roundRobin",
+            "random"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "nearCaches": {
+      "items": {
+        "properties": {
+          "evictionMaxSize": {
+            "$ref": "#/$defs/positiveInteger",
+            "default": "maximum safe integer"
+          },
+          "evictionPolicy": {
+            "default": "none",
+            "enum": [
+              "none",
+              "lru",
+              "lfu",
+              "random"
+            ]
+          },
+          "evictionSamplingCount": {
+            "$ref": "#/$defs/positiveInteger",
+            "default": 8
+          },
+          "evictionSamplingPoolSize": {
+            "$ref": "#/$defs/positiveInteger",
+            "default": 16
+          },
+          "inMemoryFormat": {
+            "default": "binary",
+            "enum": [
+              "object",
+              "binary"
+            ]
+          },
+          "invalidateOnChange": {
+            "default": true,
+            "type": "boolean"
+          },
+          "maxIdleSeconds": {
+            "default": 0,
+            "minimum": 0,
+            "type": "number"
+          },
+          "name": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "timeToLiveSeconds": {
+            "default": 0,
+            "minimum": 0,
+            "type": "number"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "network": {
+      "properties": {
+        "clusterMembers": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array",
+          "_uniqueItems": true
+        },
+        "connectionTimeout": {
+          "default": 5000,
+          "minimum": 1000,
+          "type": "number"
+        },
+        "hazelcastCloud": {
+          "properties": {
+            "discoveryToken": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "enabled": {
+              "default": false,
+              "type": "boolean"
+            }
+          },
+          "type": "object"
+        },
+        "smartRouting": {
+          "default": true,
+          "type": "boolean"
+        },
+        "ssl": {
+          "properties": {
+            "enabled": {
+              "default": false,
+              "type": "boolean"
+            },
+            "factory": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/importPath"
+                },
+                {
+                  "properties": {
+                    "properties": {
+                      "$ref": "#/$defs/propertiesObject"
+                    }
+                  },
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "sslOptions": {
+              "anyOf": [
+                {
+                  "properties": {
+                    "properties": {
+                      "$ref": "#/$defs/propertiesObject"
+                    }
+                  },
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "properties": {
+      "$ref": "#/$defs/propertiesObject"
+    },
+    "reliableTopics": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "overloadPolicy": {
+            "default": "block",
+            "enum": [
+              "discard_oldest",
+              "discard_newest",
+              "block",
+              "error"
+            ]
+          },
+          "readBatchSize": {
+            "$ref": "#/$defs/positiveInteger",
+            "default": 25
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "serialization": {
+      "properties": {
+        "dataSerializableFactories": {
+          "$ref": "#/$defs/factoryConfigArray"
+        },
+        "defaultNumberType": {
+          "default": "double",
+          "enum": [
+            "integer",
+            "float",
+            "double"
+          ]
+        },
+        "globalSerializer": {
+          "$ref": "#/$defs/importPath"
+        },
+        "isBigEndian": {
+          "default": false,
+          "type": "boolean"
+        },
+        "jsonStringDeserializationPolicy": {
+          "default": "eager",
+          "enum": [
+            "eager",
+            "no_deserialization"
+          ]
+        },
+        "portableFactories": {
+          "$ref": "#/$defs/factoryConfigArray"
+        },
+        "portableVersion": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "serializers": {
+          "items": {
+            "allOf": [
+              {
+                "$ref": "#/$defs/importPath"
+              },
+              {
+                "properties": {
+                  "typeId": {
+                    "$ref": "#/$defs/positiveInteger"
+                  }
+                },
+                "required": [
+                  "typeId"
+                ]
+              }
+            ]
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "title": "Hazelcast Node.js Client Configuration",
+  "type": "object",
+  "$defs": {
+    "factoryConfig": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/importPath"
+        },
+        {
+          "properties": {
+            "factoryId": {
+              "$ref": "#/$defs/positiveInteger"
+            }
+          }
+        }
+      ]
+    },
+    "factoryConfigArray": {
+      "items": {
+        "$ref": "#/$defs/factoryConfig"
+      },
+      "type": "array"
+    },
+    "importPath": {
+      "properties": {
+        "exportedName": {
+          "type": "string"
+        },
+        "path": {
+          "format": "uri-reference",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "listenerConfig": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/importPath"
+        },
+        {
+          "properties": {
+            "type": {
+              "enum": [
+                "lifecycle",
+                "membership"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "positiveInteger": {
+      "minimum": 0,
+      "multipleOf": 1,
+      "type": "number"
+    },
+    "propertiesObject": {
+      "additionalProperties": {
+        "type": [
+          "number",
+          "string",
+          "boolean"
+        ]
+      },
+      "propertyNames": {
+        "pattern": "^[^ ]*$"
+      },
+      "type": "object"
+    }
+  }
+}

@@ -1,0 +1,205 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "EncryptedKey": {
+      "title": "EncryptedKey",
+      "type": "object",
+      "properties ": {
+        "EncryptionMethod": {
+          "$ref": "#/$defs/EncryptionMethod"
+        },
+        "KeyInfo": {
+          "$ref": "#/$defs/KeyInfo"
+        },
+        "CipherData": {
+          "$ref": "#/$defs/CipherData"
+        }
+      },
+      "required": [
+        "EncryptionMethod",
+        "KeyInfo",
+        "CipherData"
+      ]
+    },
+    "CipherValue": {
+      "properties": {
+        "CipherValue": {
+          "type": "string"
+        }
+      }
+    },
+    "RetrievalMethod": {
+      "type": "string"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "SecJSON",
+              "type": "object",
+              "properties": {
+                "EncryptedData": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              },
+              "required": [
+                "EncryptedData"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^EncryptedData$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "CipherReference": {
+      "title": "CipherReference",
+      "type": "object",
+      "properties": {
+        "URI": {
+          "type": "string"
+        },
+        "Transforms": {
+          "type": "object",
+          "properties": {
+            "Transform": {
+              "type": "object",
+              "properties": {
+                "Algorithm": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "Algorithm"
+              ]
+            },
+            "Algorithm": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "Algorithm"
+          ]
+        }
+      },
+      "required": [
+        "URI"
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "EncryptionMethod": {
+                  "$ref": "#/$defs/EncryptionMethod"
+                },
+                "KeyInfo": {
+                  "$ref": "#/$defs/KeyInfo"
+                },
+                "CipherData": {
+                  "$ref": "#/$defs/CipherData"
+                }
+              },
+              "required": [
+                "EncryptionMethod",
+                "KeyInfo",
+                "CipherData"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^EncryptionMethod$": true,
+                "^KeyInfo$": true,
+                "^CipherData$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "EncryptionMethod": {
+      "title": "EncryptionMethod",
+      "type": "object",
+      "properties": {
+        "Algorithm": {
+          "type": "string"
+        },
+        "KeySize": {
+          "type": "integer"
+        },
+        "OAEPparams": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "Algorithm"
+      ]
+    },
+    "KeyInfo": {
+      "title": "KeyInfo",
+      "type": "object",
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "EncryptedKey": {
+              "$ref": "#/$defs/EncryptedKey"
+            }
+          },
+          "required": [
+            "EncryptedKey"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "RetrievalMethod": {
+              "$ref": "#/$defs/RetrievalMethod"
+            }
+          },
+          "required": [
+            "RetrievalMethod"
+          ]
+        }
+      ]
+    },
+    "CipherData": {
+      "title": "CipherData",
+      "type": "object",
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "CipherValue": {
+              "$ref": "#/$defs/CipherValue"
+            }
+          },
+          "required": [
+            "CipherValue"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "CipherReference": {
+              "$ref": "#/$defs/CipherReference"
+            }
+          },
+          "required": [
+            "CipherReference"
+          ]
+        }
+      ]
+    }
+  }
+}

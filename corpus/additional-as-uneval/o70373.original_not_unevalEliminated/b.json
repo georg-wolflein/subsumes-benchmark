@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "LISAManagerReferenceNumber": {
+      "$ref": "#/$defs/LISAManagerReferenceNumberType"
+    },
+    "accountID": {
+      "type": "string"
+    },
+    "closeDate": {
+      "$ref": "#/$defs/ISO8601-Date"
+    },
+    "deathNotification": {
+      "additionalProperties": false,
+      "properties": {
+        "DoD": {
+          "$ref": "#/$defs/ISO8601-Date"
+        },
+        "notifiedDate": {
+          "$ref": "#/$defs/ISO8601-Timestamp"
+        }
+      },
+      "required": [
+        "notifiedDate",
+        "DoD"
+      ],
+      "type": "object"
+    },
+    "healthStatus": {
+      "enum": [
+        "default",
+        "dead",
+        "terminally-ill"
+      ],
+      "type": "string"
+    },
+    "investorID": {
+      "$ref": "#/$defs/IDType"
+    },
+    "openDate": {
+      "$ref": "#/$defs/ISO8601-Date"
+    },
+    "status": {
+      "enum": [
+        "open",
+        "closed",
+        "transferred-out"
+      ],
+      "type": "string"
+    },
+    "terminalIllnessNotification": {
+      "properties": {
+        "notifiedDate": {
+          "$ref": "#/$defs/ISO8601-Timestamp"
+        }
+      },
+      "required": [
+        "notifiedDate"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "accountID",
+    "LISAManagerReferenceNumber",
+    "investorID",
+    "status",
+    "openDate"
+  ],
+  "type": "object",
+  "$defs": {
+    "IDType": {
+      "pattern": "^\\d{10}$",
+      "type": "string"
+    },
+    "ISO8601-Date": {
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "type": "string"
+    },
+    "ISO8601-Timestamp": {
+      "pattern": "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}(:\\d{2})?(([+-]\\d{2}(:\\d{2})?)|Z)",
+      "type": "string"
+    },
+    "LISAManagerReferenceNumberType": {
+      "pattern": "^Z\\d{6}$",
+      "type": "string"
+    }
+  }
+}

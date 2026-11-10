@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Vulnerability",
+              "description": "Vulnerability",
+              "type": "object",
+              "properties": {
+                "Name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 512
+                },
+                "Severity": {
+                  "type": "string",
+                  "enum": [
+                    "negligible",
+                    "Negligible",
+                    "low",
+                    "Low",
+                    "medium",
+                    "Medium",
+                    "high",
+                    "High"
+                  ]
+                }
+              },
+              "required": [
+                "Name",
+                "Severity"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^Name$": true,
+                "^Severity$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

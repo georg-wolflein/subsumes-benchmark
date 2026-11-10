@@ -1,0 +1,292 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "regex": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^regex$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "idp_entity_id": {
+                  "type": "string"
+                },
+                "metadata": {
+                  "type": "string"
+                },
+                "idp_cert": {
+                  "type": "string"
+                },
+                "idp_sso": {
+                  "type": "string"
+                },
+                "idp_domain": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^metadata$": true,
+                "^idp_entity_id$": true,
+                "^idp_sso$": true,
+                "^idp_cert$": true,
+                "^idp_domain$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "_id",
+                "metadata",
+                "schema"
+              ],
+              "properties": {
+                "charts": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "hostname": {
+                  "type": "string"
+                },
+                "_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 36
+                },
+                "schema_version": {
+                  "type": "integer"
+                },
+                "authentication": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "http://elasticbox.net/schemas/settings"
+                  ]
+                },
+                "mail": {
+                  "$ref": "#/$defs/modern_7"
+                },
+                "metadata": {
+                  "type": "object",
+                  "properties": {
+                    "resourceVersion": {
+                      "type": "number"
+                    }
+                  }
+                },
+                "deleted": {
+                  "type": "string"
+                }
+              },
+              "type:": "object"
+            },
+            {
+              "patternProperties": {
+                "^metadata$": true,
+                "^schema$": true,
+                "^deleted$": true,
+                "^mail$": true,
+                "^hostname$": true,
+                "^authentication$": true,
+                "^_id$": true,
+                "^charts$": true,
+                "^schema_version$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "server",
+                "no_reply_address"
+              ],
+              "properties": {
+                "server": {
+                  "type": "string"
+                },
+                "ssl": {
+                  "type": "boolean",
+                  "default": false
+                },
+                "authentication": {
+                  "$ref": "#/$defs/modern_8"
+                },
+                "port": {
+                  "type": "integer",
+                  "default": 587
+                },
+                "no_reply_address": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^port$": true,
+                "^authentication$": true,
+                "^server$": true,
+                "^no_reply_address$": true,
+                "^ssl$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "repo_url": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^repo_url$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "username",
+                "password"
+              ],
+              "properties": {
+                "password": {
+                  "type": "string"
+                },
+                "username": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^password$": true,
+                "^username$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "google_oauth": {
+                  "$ref": "#/$defs/modern_4"
+                },
+                "password": {
+                  "$ref": "#/$defs/modern_5"
+                },
+                "saml": {
+                  "$ref": "#/$defs/modern_6"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^google_oauth$": true,
+                "^password$": true,
+                "^saml$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string"
+                },
+                "redirect_uri": {
+                  "type": "string"
+                },
+                "secret": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^key$": true,
+                "^redirect_uri$": true,
+                "^secret$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

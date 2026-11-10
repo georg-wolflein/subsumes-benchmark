@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Common Web Platform Feature Group",
+  "description": "A feature or group of features of the web platform and related technologies",
+  "type": "object",
+  "properties": {
+    "identifier": {
+      "type": "string",
+      "pattern": "^[a-z][a-z-]+[a-z]$"
+    },
+    "version": {
+      "type": "string"
+    },
+    "shortName": {
+      "type": "string"
+    },
+    "longName": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "constituentFeatures": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/query"
+      }
+    },
+    "editorialMetadata": {
+      "$ref": "#/$defs/editorialMetadata"
+    },
+    "$comment": {
+      "$ref": "#/$defs/comment"
+    }
+  },
+  "required": [
+    "identifier",
+    "shortName",
+    "longName",
+    "description",
+    "constituentFeatures"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "comment": {
+      "title": "A comment",
+      "description": "A comment for group authors to describe some internal detail.",
+      "type": "string"
+    },
+    "query": {
+      "title": "Feature support data query",
+      "description": "A query for referencing up feature support data",
+      "type": "object",
+      "properties": {
+        "source": {
+          "oneOf": [
+            {
+              "title": "GitHub repository",
+              "type": "string",
+              "pattern": "([\\w-]+)\\/([\\w-]+)(#.*)?",
+              "examples": [
+                "ddbeck/common-web-feature-mockup"
+              ]
+            },
+            {
+              "title": "Shorthands",
+              "description": "A shorthand for known data sources",
+              "enum": [
+                "bcd"
+              ]
+            }
+          ]
+        },
+        "query": {
+          "type": "string"
+        },
+        "ignoreMissing": {
+          "type": "boolean"
+        },
+        "$comment": {
+          "$ref": "#/$defs/comment"
+        }
+      },
+      "additionalProperties": false
+    },
+    "editorialMetadata": {
+      "title": "Editorial Metadata",
+      "description": "Metadata to support feature group workflows",
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "proposal",
+            "active",
+            "generated",
+            "frozen",
+            "pending-deletion"
+          ]
+        },
+        "managers": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/manager"
+          }
+        },
+        "created": {
+          "$ref": "#/$defs/date"
+        },
+        "lastReviewed": {
+          "$ref": "#/$defs/date"
+        },
+        "lastModified": {
+          "$ref": "#/$defs/date"
+        },
+        "expires": {
+          "$ref": "#/$defs/date"
+        },
+        "$comment": {
+          "$ref": "#/$defs/comment"
+        }
+      },
+      "additionalProperties": false
+    },
+    "manager": {
+      "oneOf": [
+        {
+          "title": "GitHub user name",
+          "type": "string",
+          "pattern": "@[\\w-]+",
+          "examples": [
+            "@ddbeck"
+          ]
+        },
+        {
+          "title": "Automation",
+          "type": "string",
+          "pattern": "\\[[\\w-]+\\]",
+          "examples": [
+            "[some-bot]"
+          ]
+        }
+      ]
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    }
+  }
+}

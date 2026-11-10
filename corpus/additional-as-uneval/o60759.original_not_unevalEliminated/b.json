@@ -1,0 +1,185 @@
+{
+  "$id": "http://www.gandhi.io/schema/project",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "cycle_id"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "cycle_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "status_id": {
+      "type": "string"
+    },
+    "events": {
+      "type": "object",
+      "default": {},
+      "additionalProperties": {
+        "$ref": "#/$defs/event"
+      }
+    },
+    "contents": {
+      "type": "object",
+      "default": {},
+      "additionalProperties": {
+        "$ref": "#/$defs/content"
+      }
+    },
+    "assignments": {
+      "type": "object",
+      "default": {},
+      "additionalProperties": {
+        "$ref": "#/$defs/assignment"
+      }
+    },
+    "invitations": {
+      "type": "object",
+      "default": {},
+      "additionalProperties": {
+        "$ref": "#/$defs/invitation"
+      }
+    },
+    "updated": {
+      "type": "number"
+    },
+    "created": {
+      "type": "number"
+    }
+  },
+  "$defs": {
+    "assignment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "role_id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "constant": {
+            "$data": "0"
+          }
+        },
+        "role_id": {
+          "type": "string"
+        },
+        "invitation_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "constant": {
+            "$data": "0"
+          }
+        },
+        "exports": {
+          "type": "object",
+          "default": {}
+        },
+        "data": {
+          "type": "object",
+          "default": {},
+          "additionalProperties": true
+        },
+        "status_id": {
+          "type": "string",
+          "default": "none",
+          "enum": [
+            "none",
+            "draft",
+            "complete"
+          ]
+        }
+      }
+    },
+    "event": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "object",
+        "required": [
+          "value",
+          "timestamp"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "boolean"
+          },
+          "timestamp": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "invitation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "role_id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "constant": {
+            "$data": "0"
+          }
+        },
+        "role_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "default": ""
+        },
+        "email": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "message": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "CTA",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "readonly": true,
+                  "enum": [
+                    "cta"
+                  ],
+                  "options": {
+                    "hidden": true
+                  }
+                },
+                "text": {
+                  "description": "Text in the call to action link",
+                  "type": "string"
+                },
+                "template": {
+                  "type": "string",
+                  "options": {
+                    "hidden": true
+                  }
+                },
+                "href": {
+                  "description": "Call to action URL",
+                  "type": "string",
+                  "format": "url"
+                },
+                "title": {
+                  "description": "Anchor tag title attribute",
+                  "type": "string"
+                },
+                "type": {
+                  "description": "Type of CTA",
+                  "type": "string",
+                  "enum": [
+                    "primary",
+                    "secondary",
+                    "disabled"
+                  ]
+                }
+              },
+              "required": [
+                "name",
+                "href",
+                "text"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^template$": true,
+                "^name$": true,
+                "^type$": true,
+                "^text$": true,
+                "^title$": true,
+                "^href$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

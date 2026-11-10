@@ -1,0 +1,1027 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "gamelocker-vainglory::matches ",
+  "description": "This is a schema for responses in the JSON API format. For more, see http://jsonapi.org",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/success"
+    },
+    {
+      "$ref": "#/$defs/failure"
+    },
+    {
+      "$ref": "#/$defs/info"
+    }
+  ],
+  "$defs": {
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "source": {
+                  "type": "object",
+                  "properties": {
+                    "pointer": {
+                      "description": "A JSON Pointer [RFC6901] to the associated entity in the request document [e.g. \"/data\" for a primary data object, or \"/data/attributes/title\" for a specific attribute].",
+                      "type": "string"
+                    },
+                    "parameter": {
+                      "description": "A string indicating which query parameter caused the error.",
+                      "type": "string"
+                    }
+                  }
+                },
+                "code": {
+                  "description": "An application-specific error code, expressed as a string value.",
+                  "type": "string"
+                },
+                "links": {
+                  "$ref": "#/$defs/links"
+                },
+                "status": {
+                  "description": "The HTTP status code applicable to this problem, expressed as a string value.",
+                  "type": "string"
+                },
+                "detail": {
+                  "description": "A human-readable explanation specific to this occurrence of the problem.",
+                  "type": "string"
+                },
+                "title": {
+                  "description": "A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.",
+                  "type": "string"
+                },
+                "id": {
+                  "description": "A unique identifier for this particular occurrence of the problem.",
+                  "type": "string"
+                },
+                "meta": {
+                  "$ref": "#/$defs/meta"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^code$": true,
+                "^detail$": true,
+                "^status$": true,
+                "^id$": true,
+                "^title$": true,
+                "^source$": true,
+                "^links$": true,
+                "^meta$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "success": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "errors"
+              ],
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/error"
+                  },
+                  "_uniqueItems": true
+                },
+                "meta": {
+                  "$ref": "#/$defs/meta"
+                },
+                "jsonapi": {
+                  "$ref": "#/$defs/jsonapi"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^errors$": true,
+                "^meta$": true,
+                "^jsonapi$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "data": {
+      "description": "The document's \"primary data\" is a representation of the resource or collection of resources targeted by a request.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/resource"
+        },
+        {
+          "description": "An array of resource objects, an array of resource identifier objects, or an empty array ([]), for requests that target resource collections.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/resource"
+          },
+          "_uniqueItems": true
+        },
+        {
+          "description": "null if the request is one that might correspond to a single resource, but doesn't currently.",
+          "type": "null"
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "data"
+              ],
+              "properties": {
+                "included": {
+                  "description": "To reduce the number of HTTP requests, servers **MAY** allow responses that include related resources along with the requested primary resources. Such responses are called \"compound documents\".",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/resource"
+                  },
+                  "_uniqueItems": true
+                },
+                "data": {
+                  "$ref": "#/$defs/data"
+                },
+                "links": {
+                  "description": "Link members related to the primary data.",
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/links"
+                    },
+                    {
+                      "$ref": "#/$defs/pagination"
+                    }
+                  ]
+                },
+                "jsonapi": {
+                  "$ref": "#/$defs/jsonapi"
+                },
+                "meta": {
+                  "$ref": "#/$defs/meta"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^jsonapi$": true,
+                "^data$": true,
+                "^links$": true,
+                "^included$": true,
+                "^meta$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "info": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "resource": {
+      "$ref": "#/$defs/modern_7"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "The \"type\" and \"id\" to non-empty members.",
+              "type": "object",
+              "required": [
+                "type",
+                "id"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "meta": {
+                  "$ref": "#/$defs/meta"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^id$": true,
+                "^meta$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Members of the relationships object (\"relationships\") represent references from the resource object in which it's defined to other resource objects.",
+              "type": "object",
+              "patternProperties": {
+                "^\\w[-\\w_]*$": {
+                  "$ref": "#/$defs/modern_12"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^\\w[-\\w_]*$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "pagination": {
+      "type": "object",
+      "properties": {
+        "first": {
+          "description": "The first page of data",
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "uri"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "last": {
+          "description": "The last page of data",
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "uri"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "prev": {
+          "description": "The previous page of data",
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "uri"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "next": {
+          "description": "The next page of data",
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "uri"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "modern_14": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "An object describing the server's implementation",
+              "type": "object",
+              "properties": {
+                "version": {
+                  "type": "string"
+                },
+                "meta": {
+                  "$ref": "#/$defs/meta"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^version$": true,
+                "^meta$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "meta"
+              ],
+              "properties": {
+                "meta": {
+                  "$ref": "#/$defs/meta"
+                },
+                "links": {
+                  "$ref": "#/$defs/links"
+                },
+                "jsonapi": {
+                  "$ref": "#/$defs/jsonapi"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^meta$": true,
+                "^links$": true,
+                "^jsonapi$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "failure": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "stats": {
+                  "properties": {
+                    "endGameReason": {
+                      "type": "string"
+                    },
+                    "queue": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "endGameReason",
+                    "queue"
+                  ]
+                },
+                "shardId": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "type": "string"
+                },
+                "titleId": {
+                  "type": "string"
+                },
+                "gameMode": {
+                  "type": "string"
+                },
+                "duration": {
+                  "type": "number"
+                },
+                "patchVersion": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "createdAt",
+                "duration",
+                "gameMode",
+                "patchVersion",
+                "shardId",
+                "stats",
+                "titleId"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^shardId$": true,
+                "^duration$": true,
+                "^createdAt$": true,
+                "^stats$": true,
+                "^gameMode$": true,
+                "^titleId$": true,
+                "^patchVersion$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "matchAttributes": {
+      "$ref": "#/$defs/modern_10"
+    },
+    "empty": {
+      "description": "Describes an empty to-one relationship.",
+      "type": "null"
+    },
+    "modern_16": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Non-standard meta-information that can not be represented as an attribute or relationship.",
+              "type": "object"
+            },
+            {
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "linkage": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_15": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "patchVersion": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "stats": {
+                  "properties": {
+                    "elo_earned_season_4": {
+                      "type": "number"
+                    },
+                    "skillTier": {
+                      "type": "number"
+                    },
+                    "played": {
+                      "type": "number"
+                    },
+                    "karmaLevel": {
+                      "type": "number"
+                    },
+                    "lifetimeGold": {
+                      "type": "number"
+                    },
+                    "xp": {
+                      "type": "number"
+                    },
+                    "elo_earned_season_7": {
+                      "type": "number"
+                    },
+                    "elo_earned_season_5": {
+                      "type": "number"
+                    },
+                    "wins": {
+                      "type": "number"
+                    },
+                    "level": {
+                      "type": "number"
+                    },
+                    "played_ranked": {
+                      "type": "number"
+                    },
+                    "winStreak": {
+                      "type": "number"
+                    },
+                    "elo_earned_season_6": {
+                      "type": "number"
+                    },
+                    "lossStreak": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "elo_earned_season_4",
+                    "elo_earned_season_5",
+                    "elo_earned_season_6",
+                    "elo_earned_season_7",
+                    "karmaLevel",
+                    "level",
+                    "lifetimeGold",
+                    "lossStreak",
+                    "played",
+                    "played_ranked",
+                    "winStreak",
+                    "skillTier",
+                    "wins",
+                    "xp"
+                  ]
+                },
+                "shardId": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "type": "string"
+                },
+                "titleId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "shardId",
+                "stats",
+                "titleId"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^shardId$": true,
+                "^createdAt$": true,
+                "^stats$": true,
+                "^name$": true,
+                "^titleId$": true,
+                "^patchVersion$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "\"Resource objects\" appear in a JSON API document to represent resources.",
+              "type": "object",
+              "required": [
+                "type",
+                "id"
+              ],
+              "properties": {
+                "attributes": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/matchAttributes"
+                    },
+                    {
+                      "$ref": "#/$defs/rosterAttributes"
+                    },
+                    {
+                      "$ref": "#/$defs/participantAttributes"
+                    },
+                    {
+                      "$ref": "#/$defs/playerAttributes"
+                    },
+                    {
+                      "$ref": "#/$defs/assetAttributes"
+                    }
+                  ]
+                },
+                "type": {
+                  "type": "string"
+                },
+                "relationships": {
+                  "$ref": "#/$defs/relationships"
+                },
+                "links": {
+                  "$ref": "#/$defs/links"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "meta": {
+                  "$ref": "#/$defs/meta"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^relationships$": true,
+                "^attributes$": true,
+                "^type$": true,
+                "^id$": true,
+                "^links$": true,
+                "^meta$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "participantAttributes": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_12": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "links": {
+                  "$ref": "#/$defs/links"
+                },
+                "data": {
+                  "description": "Member, whose value represents \"resource linkage\".",
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/relationshipToOne"
+                    },
+                    {
+                      "$ref": "#/$defs/relationshipToMany"
+                    }
+                  ]
+                },
+                "meta": {
+                  "$ref": "#/$defs/meta"
+                }
+              },
+              "anyOf": [
+                {
+                  "required": [
+                    "data"
+                  ]
+                },
+                {
+                  "required": [
+                    "meta"
+                  ]
+                },
+                {
+                  "required": [
+                    "links"
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^links$": true,
+                "^data$": true,
+                "^meta$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "relationshipToOne": {
+      "description": "References to other resource objects in a to-one (\"relationship\"). Relationships can be specified by including a member in a resource's links object.",
+      "anyOf": [
+        {
+          "$ref": "#/$defs/empty"
+        },
+        {
+          "$ref": "#/$defs/linkage"
+        }
+      ]
+    },
+    "relationships": {
+      "$ref": "#/$defs/modern_11"
+    },
+    "links": {
+      "$ref": "#/$defs/modern_13"
+    },
+    "jsonapi": {
+      "$ref": "#/$defs/modern_14"
+    },
+    "relationshipToMany": {
+      "description": "An array of objects each containing \"type\" and \"id\" members for to-many relationships.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/linkage"
+      },
+      "_uniqueItems": true
+    },
+    "playerAttributes": {
+      "$ref": "#/$defs/modern_15"
+    },
+    "meta": {
+      "$ref": "#/$defs/modern_16"
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "shardId": {
+                  "type": "string"
+                },
+                "won": {
+                  "type": "string"
+                },
+                "stats": {
+                  "properties": {
+                    "side": {
+                      "type": "string"
+                    },
+                    "gold": {
+                      "type": "number"
+                    },
+                    "turretsRemaining": {
+                      "type": "number"
+                    },
+                    "turretKills": {
+                      "type": "number"
+                    },
+                    "acesEarned": {
+                      "type": "number"
+                    },
+                    "heroKills": {
+                      "type": "number"
+                    },
+                    "krakenCaptures": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "acesEarned",
+                    "gold",
+                    "heroKills",
+                    "krakenCaptures",
+                    "side",
+                    "turretKills",
+                    "turretsRemaining"
+                  ]
+                }
+              },
+              "required": [
+                "stats",
+                "won",
+                "shardId"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^shardId$": true,
+                "^won$": true,
+                "^stats$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "error": {
+      "$ref": "#/$defs/modern_6"
+    },
+    "link": {
+      "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+      "oneOf": [
+        {
+          "description": "A string containing the link's URL.",
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "object",
+          "required": [
+            "href"
+          ],
+          "properties": {
+            "href": {
+              "description": "A string containing the link's URL.",
+              "type": "string",
+              "format": "uri"
+            },
+            "meta": {
+              "$ref": "#/$defs/meta"
+            }
+          }
+        }
+      ]
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "contentType": {
+                  "type": "string"
+                },
+                "filename": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "URL": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "URL",
+                "contentType",
+                "createdAt",
+                "description",
+                "filename",
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^contentType$": true,
+                "^URL$": true,
+                "^description$": true,
+                "^createdAt$": true,
+                "^name$": true,
+                "^filename$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "rosterAttributes": {
+      "$ref": "#/$defs/modern_8"
+    },
+    "modern_13": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "A resource object **MAY** contain references to other resource objects (\"relationships\"). Relationships may be to-one or to-many. Relationships can be specified by including a member in a resource's links object.",
+              "type": "object",
+              "properties": {
+                "self": {
+                  "description": "A 'self' member, whose value is a URL for the relationship itself (a \"relationship URL\"). This URL allows the client to directly manipulate the relationship. For example, it would allow a client to remove an 'author' from an 'article' without deleting the people resource itself.",
+                  "type": "string",
+                  "format": "uri"
+                },
+                "related": {
+                  "$ref": "#/$defs/link"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^self$": true,
+                "^related$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "assetAttributes": {
+      "$ref": "#/$defs/modern_9"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "actor": {
+                  "type": "string"
+                },
+                "shardId": {
+                  "type": "string"
+                },
+                "stats": {
+                  "properties": {
+                    "kills": {
+                      "type": "number"
+                    },
+                    "winner": {
+                      "type": "boolean"
+                    },
+                    "crystalMineCaptures": {
+                      "type": "number"
+                    },
+                    "skinKey": {
+                      "type": "string"
+                    },
+                    "deaths": {
+                      "type": "number"
+                    },
+                    "turretCaptures": {
+                      "type": "number"
+                    },
+                    "karmaLevel": {
+                      "type": "number"
+                    },
+                    "minionKills": {
+                      "type": "number"
+                    },
+                    "wentAfk": {
+                      "type": "boolean"
+                    },
+                    "goldMineCaptures": {
+                      "type": "number"
+                    },
+                    "krakenCaptures": {
+                      "type": "number"
+                    },
+                    "farm": {
+                      "type": "number"
+                    },
+                    "firstAfkTime": {
+                      "type": "number"
+                    },
+                    "skillTier": {
+                      "type": "number"
+                    },
+                    "assists": {
+                      "type": "number"
+                    },
+                    "items": {
+                      "type": "array"
+                    },
+                    "nonJungleMinionKills": {
+                      "type": "number"
+                    },
+                    "itemGrants": {
+                      "type": "object"
+                    },
+                    "itemSells": {
+                      "type": "object"
+                    },
+                    "jungleKills": {
+                      "type": "number"
+                    },
+                    "itemUses": {
+                      "type": "object"
+                    },
+                    "level": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "assists",
+                    "crystalMineCaptures",
+                    "deaths",
+                    "farm",
+                    "firstAfkTime",
+                    "goldMineCaptures",
+                    "itemGrants",
+                    "itemSells",
+                    "itemUses",
+                    "items",
+                    "jungleKills",
+                    "karmaLevel",
+                    "kills",
+                    "krakenCaptures",
+                    "level",
+                    "minionKills",
+                    "nonJungleMinionKills",
+                    "turretCaptures",
+                    "wentAfk",
+                    "winner"
+                  ]
+                }
+              },
+              "required": [
+                "actor",
+                "stats"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^actor$": true,
+                "^shardId$": true,
+                "^stats$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

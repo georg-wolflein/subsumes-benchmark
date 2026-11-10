@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "additionalProperties": false,
+                "paging": {
+                  "properties": {
+                    "uri": {
+                      "type": "string"
+                    },
+                    "total": {
+                      "minimum": 0.0,
+                      "type": "integer"
+                    },
+                    "next": {
+                      "type": "string"
+                    },
+                    "limit": {
+                      "minimum": 1.0,
+                      "type": "integer"
+                    },
+                    "lastPage": {
+                      "minimum": 1.0,
+                      "type": "integer"
+                    },
+                    "previous": {
+                      "type": "string"
+                    },
+                    "page": {
+                      "minimum": 1.0,
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "uri"
+                  ]
+                },
+                "results": true
+              },
+              "required": [
+                "paging"
+              ],
+              "title": "Cursor response schema for your api",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^additionalProperties$": true,
+                "^paging$": true,
+                "^results$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

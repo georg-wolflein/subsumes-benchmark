@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tree container",
+  "description": "Testing chained containers",
+  "$ref": "#/$defs/LevelOneContainer",
+  "$defs": {
+    "Item": {
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "value": {
+          "type": "integer"
+        }
+      }
+    },
+    "LevelThreeContainer": {
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Item"
+          }
+        }
+      }
+    },
+    "LevelTwoContainer": {
+      "anyOf": [
+        {
+          "properties": {
+            "threes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/LevelThreeContainer"
+              }
+            }
+          }
+        },
+        {
+          "#ref": "#/definitions4/LevelThreeContainer"
+        }
+      ]
+    },
+    "LevelOneContainer": {
+      "anyOf": [
+        {
+          "properties": {
+            "twos": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/LevelTwoContainer"
+              }
+            }
+          }
+        },
+        {
+          "#ref": "#/definitions4/LevelTwoContainer"
+        }
+      ]
+    }
+  }
+}

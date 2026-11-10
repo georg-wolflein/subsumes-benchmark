@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "map1": {
+      "$ref": "#/$defs/MyMap1"
+    },
+    "map2": {
+      "$ref": "#/$defs/MyMap2"
+    },
+    "map3": {
+      "$ref": "#/$defs/MyMap2"
+    }
+  },
+  "required": [
+    "map1",
+    "map2",
+    "map3"
+  ],
+  "type": "object",
+  "$defs": {
+    "MyMap1": {
+      "additionalProperties": {
+        "$ref": "#/$defs/MyType"
+      },
+      "type": "object"
+    },
+    "MyMap2": {
+      "additionalProperties": {
+        "type": [
+          "string",
+          "number"
+        ]
+      },
+      "description": "The additionalProperties annotation should be ignored",
+      "type": "object"
+    },
+    "MyType": {
+      "type": "object"
+    }
+  }
+}

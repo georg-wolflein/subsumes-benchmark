@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Devices",
+              "type": "object",
+              "properties": {
+                "q": {
+                  "type": "string"
+                },
+                "page": {
+                  "type": "integer"
+                },
+                "items_per_page": {
+                  "type": "integer",
+                  "max": 150
+                },
+                "attributes": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^q$": true,
+                "^page$": true,
+                "^items_per_page$": true,
+                "^attributes$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

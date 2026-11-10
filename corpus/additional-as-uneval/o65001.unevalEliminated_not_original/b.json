@@ -1,0 +1,244 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "items": {
+    "$ref": "#/$defs/modern_1"
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "year",
+                "entity",
+                "inputs",
+                "model"
+              ],
+              "properties": {
+                "subsidiary": {
+                  "type": "string"
+                },
+                "model": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "year": {
+                  "type": "integer"
+                },
+                "processing": {
+                  "type": "object",
+                  "properties": {
+                    "totals": {
+                      "type": "object",
+                      "properties": {
+                        "totals": {
+                          "properties": {
+                            "subsidies_received": {
+                              "type": "number"
+                            },
+                            "profit_before_tax": {
+                              "type": "number"
+                            },
+                            "deferred_tax": {
+                              "type": "number"
+                            },
+                            "full_time_equivalents": {
+                              "type": "number"
+                            },
+                            "corporate_tax_paid": {
+                              "type": "number"
+                            },
+                            "turnover": {
+                              "type": "number"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "inputs": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "$ref": "#/$defs/modern_3"
+                  }
+                },
+                "entity": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^inputs$": true,
+                "^entity$": true,
+                "^processing$": true,
+                "^subsidiary$": true,
+                "^model$": true,
+                "^year$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "currency",
+                "factor",
+                "headers"
+              ],
+              "properties": {
+                "factor": {
+                  "type": "integer",
+                  "enum": [
+                    1,
+                    1000,
+                    1000000
+                  ]
+                },
+                "decimal_char": {
+                  "type": "string"
+                },
+                "currency": {
+                  "type": "string"
+                },
+                "group_char": {
+                  "type": "string"
+                },
+                "headers": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "title": {
+                        "type": "string",
+                        "description": "Original column name from the PDF table"
+                      },
+                      "mapping": {
+                        "type": "string",
+                        "description": "The equivalent column name of `title`",
+                        "enum": [
+                          "country",
+                          "turnover",
+                          "profit_before_tax",
+                          "corporate_tax_paid",
+                          "full_time_equivalents",
+                          "deferred_tax",
+                          "subsidies_received"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "title",
+                      "mapping"
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^headers$": true,
+                "^decimal_char$": true,
+                "^group_char$": true,
+                "^currency$": true,
+                "^factor$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "url",
+                "kind",
+                "parameters"
+              ],
+              "properties": {
+                "url": {
+                  "type": "string"
+                },
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "pdf"
+                  ]
+                },
+                "parameters": {
+                  "$ref": "#/$defs/modern_4"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^url$": true,
+                "^kind$": true,
+                "^parameters$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "dimensions": {
+                  "type": "array",
+                  "itemType": {
+                    "type": "object",
+                    "properties": {
+                      "page": {
+                        "type": "integer"
+                      },
+                      "x1": {
+                        "type": "number"
+                      },
+                      "x2": {
+                        "type": "number"
+                      },
+                      "y1": {
+                        "type": "number"
+                      },
+                      "y2": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^dimensions$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

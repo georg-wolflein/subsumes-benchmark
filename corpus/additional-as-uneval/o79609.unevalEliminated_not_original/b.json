@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "created": {
+                  "$ref": "#/$defs/created"
+                },
+                "key": {
+                  "$ref": "#/$defs/key"
+                }
+              },
+              "required": [
+                "key",
+                "created"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^created$": true,
+                "^key$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "key": {
+      "type": "string"
+    },
+    "created": {
+      "_format": "date-time",
+      "description": "when the view was created",
+      "type": "string"
+    }
+  }
+}

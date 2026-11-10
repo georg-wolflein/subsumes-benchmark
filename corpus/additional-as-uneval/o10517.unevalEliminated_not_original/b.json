@@ -1,0 +1,277 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_6",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "billTo": {
+                  "$ref": "#/$defs/USAddress"
+                },
+                "orderDate": {
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}.*$",
+                  "type": "string"
+                },
+                "shipTo": {
+                  "$ref": "#/$defs/USAddress"
+                },
+                "items": {
+                  "$ref": "#/$defs/Items"
+                },
+                "comment": {
+                  "$ref": "#/$defs/comment"
+                }
+              },
+              "required": [
+                "shipTo",
+                "billTo",
+                "items"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^orderDate$": true,
+                "^shipTo$": true,
+                "^items$": true,
+                "^billTo$": true,
+                "^comment$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Purchase order schema for Example.com.\n     Copyright 2000 Example.com. All rights reserved.",
+              "properties": {
+                "purchaseOrder": {
+                  "$ref": "#/$defs/PurchaseOrderType"
+                }
+              },
+              "required": [
+                "purchaseOrder"
+              ],
+              "title": "test/purchaseorder.xsd",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^purchaseOrder$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "city": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "zip": {
+                  "type": "number"
+                },
+                "state": {
+                  "type": "string"
+                },
+                "country": {
+                  "enum": [
+                    "US"
+                  ],
+                  "type": "string"
+                },
+                "street": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "street",
+                "city",
+                "state",
+                "zip"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^city$": true,
+                "^state$": true,
+                "^name$": true,
+                "^country$": true,
+                "^street$": true,
+                "^zip$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "SKU": {
+      "pattern": "\\d{3}-[A-Z]{2}",
+      "type": "string"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "item": {
+                  "items": {
+                    "$ref": "#/$defs/modern_3"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^item$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "shipDate": {
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}.*$",
+                  "type": "string"
+                },
+                "quantity": {
+                  "minimum": 1.0,
+                  "type": "integer"
+                },
+                "USPrice": {
+                  "type": "number"
+                },
+                "comment": {
+                  "$ref": "#/$defs/comment"
+                },
+                "productName": {
+                  "type": "string"
+                },
+                "partNum": {
+                  "$ref": "#/$defs/SKU"
+                },
+                "item": {
+                  "items": {
+                    "$ref": "#/$defs/modern_4"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "productName",
+                "quantity",
+                "USPrice",
+                "partNum"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^item$": true,
+                "^USPrice$": true,
+                "^quantity$": true,
+                "^productName$": true,
+                "^comment$": true,
+                "^partNum$": true,
+                "^shipDate$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "USAddress": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "PurchaseOrderType": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "comment": {
+      "type": "string"
+    },
+    "Items": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "shipDate": {
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}.*$",
+                  "type": "string"
+                },
+                "quantity": {
+                  "minimum": 1.0,
+                  "type": "integer"
+                },
+                "USPrice": {
+                  "type": "number"
+                },
+                "comment": {
+                  "$ref": "#/$defs/comment"
+                },
+                "productName": {
+                  "type": "string"
+                },
+                "partNum": {
+                  "$ref": "#/$defs/SKU"
+                }
+              },
+              "required": [
+                "productName",
+                "quantity",
+                "USPrice",
+                "partNum"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^USPrice$": true,
+                "^quantity$": true,
+                "^productName$": true,
+                "^comment$": true,
+                "^partNum$": true,
+                "^shipDate$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

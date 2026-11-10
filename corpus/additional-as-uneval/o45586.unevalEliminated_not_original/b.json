@@ -1,0 +1,415 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "network": {
+      "properties": {
+        "smartRouting": {
+          "default": true,
+          "type": "boolean"
+        },
+        "ssl": {
+          "properties": {
+            "enabled": {
+              "default": false,
+              "type": "boolean"
+            },
+            "factory": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/importPath"
+                },
+                {
+                  "properties": {
+                    "properties": {
+                      "$ref": "#/$defs/propertiesObject"
+                    }
+                  },
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "sslOptions": {
+              "anyOf": [
+                {
+                  "properties": {
+                    "properties": {
+                      "$ref": "#/$defs/propertiesObject"
+                    }
+                  },
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "type": "object"
+        },
+        "hazelcastCloud": {
+          "properties": {
+            "discoveryToken": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "enabled": {
+              "default": false,
+              "type": "boolean"
+            }
+          },
+          "type": "object"
+        },
+        "clusterMembers": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array",
+          "_uniqueItems": true
+        },
+        "connectionTimeout": {
+          "default": 5000,
+          "minimum": 1000.0,
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "reliableTopics": {
+      "items": {
+        "$ref": "#/$defs/modern_2"
+      },
+      "type": "array"
+    },
+    "listeners": {
+      "items": {
+        "$ref": "#/$defs/listenerConfig"
+      },
+      "type": "array"
+    },
+    "nearCaches": {
+      "items": {
+        "properties": {
+          "name": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "evictionSamplingPoolSize": {
+            "$ref": "#/$defs/positiveInteger",
+            "default": 16
+          },
+          "timeToLiveSeconds": {
+            "default": 0,
+            "minimum": 0.0,
+            "type": "number"
+          },
+          "maxIdleSeconds": {
+            "default": 0,
+            "minimum": 0.0,
+            "type": "number"
+          },
+          "evictionSamplingCount": {
+            "$ref": "#/$defs/positiveInteger",
+            "default": 8
+          },
+          "invalidateOnChange": {
+            "default": true,
+            "type": "boolean"
+          },
+          "evictionMaxSize": {
+            "$ref": "#/$defs/positiveInteger",
+            "default": "maximum safe integer"
+          },
+          "inMemoryFormat": {
+            "default": "binary",
+            "enum": [
+              "object",
+              "binary"
+            ]
+          },
+          "evictionPolicy": {
+            "default": "none",
+            "enum": [
+              "none",
+              "lru",
+              "lfu",
+              "random"
+            ]
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "clientLabels": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "_uniqueItems": true
+    },
+    "serialization": {
+      "properties": {
+        "dataSerializableFactories": {
+          "$ref": "#/$defs/factoryConfigArray"
+        },
+        "globalSerializer": {
+          "$ref": "#/$defs/importPath"
+        },
+        "serializers": {
+          "items": {
+            "allOf": [
+              {
+                "$ref": "#/$defs/importPath"
+              },
+              {
+                "properties": {
+                  "typeId": {
+                    "$ref": "#/$defs/positiveInteger"
+                  }
+                },
+                "required": [
+                  "typeId"
+                ]
+              }
+            ]
+          },
+          "type": "array"
+        },
+        "jsonStringDeserializationPolicy": {
+          "default": "eager",
+          "enum": [
+            "eager",
+            "no_deserialization"
+          ]
+        },
+        "portableVersion": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "isBigEndian": {
+          "default": false,
+          "type": "boolean"
+        },
+        "portableFactories": {
+          "$ref": "#/$defs/factoryConfigArray"
+        },
+        "defaultNumberType": {
+          "default": "double",
+          "enum": [
+            "integer",
+            "float",
+            "double"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "import": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "properties": {
+      "$ref": "#/$defs/propertiesObject"
+    },
+    "loadBalancer": {
+      "properties": {
+        "type": {
+          "enum": [
+            "roundRobin",
+            "random"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "connectionStrategy": {
+      "properties": {
+        "asyncStart": {
+          "default": false,
+          "type": "boolean"
+        },
+        "connectionRetry": {
+          "properties": {
+            "jitter": {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            "clusterConnectTimeoutMillis": {
+              "type": "number"
+            },
+            "initialBackoffMillis": {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            "maxBackoffMillis": {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            "multiplier": {
+              "minimum": 1.0,
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "reconnectMode": {
+          "enum": [
+            "on",
+            "off",
+            "async"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "clusterName": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "instanceName": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "title": "Hazelcast Node.js Client Configuration",
+  "type": "object",
+  "$defs": {
+    "propertiesObject": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "factoryConfigArray": {
+      "items": {
+        "$ref": "#/$defs/factoryConfig"
+      },
+      "type": "array"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "propertyNames": {
+                "pattern": "^[^ ]*$"
+              },
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": [
+                  "number",
+                  "string",
+                  "boolean"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "overloadPolicy": {
+                  "default": "block",
+                  "enum": [
+                    "discard_oldest",
+                    "discard_newest",
+                    "block",
+                    "error"
+                  ]
+                },
+                "readBatchSize": {
+                  "$ref": "#/$defs/positiveInteger",
+                  "default": 25
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^overloadPolicy$": true,
+                "^readBatchSize$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "positiveInteger": {
+      "minimum": 0.0,
+      "multipleOf": 1.0,
+      "type": "number"
+    },
+    "importPath": {
+      "properties": {
+        "exportedName": {
+          "type": "string"
+        },
+        "path": {
+          "format": "uri-reference",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "listenerConfig": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/importPath"
+        },
+        {
+          "properties": {
+            "type": {
+              "enum": [
+                "lifecycle",
+                "membership"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "factoryConfig": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/importPath"
+        },
+        {
+          "properties": {
+            "factoryId": {
+              "$ref": "#/$defs/positiveInteger"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

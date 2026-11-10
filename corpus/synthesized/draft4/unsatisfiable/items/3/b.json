@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "allOf": [
+    {
+      "$defs": {
+        "item": {
+          "prefixItems": [
+            {
+              "$ref": "#/allOf/0/$defs/sub-item"
+            },
+            {
+              "$ref": "#/allOf/0/$defs/sub-item"
+            }
+          ],
+          "items": false,
+          "type": "array"
+        },
+        "sub-item": {
+          "required": [
+            "foo"
+          ],
+          "type": "object"
+        }
+      },
+      "prefixItems": [
+        {
+          "$ref": "#/allOf/0/$defs/item"
+        },
+        {
+          "$ref": "#/allOf/0/$defs/item"
+        },
+        {
+          "$ref": "#/allOf/0/$defs/item"
+        }
+      ],
+      "items": false,
+      "type": "array"
+    },
+    {
+      "$defs": {
+        "item": {
+          "prefixItems": [
+            {
+              "$ref": "#/allOf/1/$defs/sub-item"
+            },
+            {
+              "$ref": "#/allOf/1/$defs/sub-item"
+            }
+          ],
+          "items": false,
+          "type": "array"
+        },
+        "sub-item": {
+          "required": [
+            "foo"
+          ],
+          "type": "object"
+        }
+      },
+      "not": {
+        "prefixItems": [
+          {
+            "$ref": "#/allOf/1/$defs/item"
+          },
+          {
+            "$ref": "#/allOf/1/$defs/item"
+          },
+          {
+            "$ref": "#/allOf/1/$defs/item"
+          }
+        ]
+      },
+      "type": "array"
+    }
+  ]
+}

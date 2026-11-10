@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "edges": {
+      "items": {
+        "$ref": "#/$defs/modern_1"
+      },
+      "type": "array"
+    },
+    "label": {
+      "maxLength": 2048,
+      "minLength": 3,
+      "type": "string"
+    },
+    "nodes": {
+      "items": {
+        "$ref": "#/$defs/modern_2"
+      },
+      "type": "array"
+    },
+    "view": {
+      "$ref": "#/$defs/modern_3"
+    }
+  },
+  "required": [
+    "label",
+    "nodes",
+    "edges",
+    "view"
+  ],
+  "type": "object",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "id": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "gridX": {
+                  "type": [
+                    "null",
+                    "integer"
+                  ]
+                },
+                "gridY": {
+                  "type": [
+                    "null",
+                    "integer"
+                  ]
+                },
+                "id": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "gridX",
+                "gridY",
+                "id"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^gridX$": true,
+                "^gridY$": true,
+                "^id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "gridX": {
+                  "type": [
+                    "null",
+                    "integer"
+                  ]
+                },
+                "gridY": {
+                  "type": [
+                    "null",
+                    "integer"
+                  ]
+                },
+                "zoom": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "gridX",
+                "gridY",
+                "zoom"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^gridX$": true,
+                "^gridY$": true,
+                "^zoom$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_2",
+  "$defs": {
+    "PostalAddress": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "streetAddress": {
+                  "type": "string"
+                },
+                "postalCode": {
+                  "type": "string"
+                },
+                "addressRegion": {
+                  "type": "string"
+                },
+                "addressLocality": {
+                  "type": "string"
+                },
+                "addressCountry": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^addressCountry$": true,
+                "^postalCode$": true,
+                "^streetAddress$": true,
+                "^addressRegion$": true,
+                "^addressLocality$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "url": {
+                  "format": "uri",
+                  "type": "string"
+                },
+                "image": {
+                  "format": "uri",
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "geo": {
+                  "anyOf": [
+                    {
+                      "elevation": {
+                        "type": "number"
+                      },
+                      "latitude": {
+                        "type": "number"
+                      },
+                      "longitude": {
+                        "type": "number"
+                      }
+                    },
+                    {
+                      "box": {
+                        "type": "string"
+                      },
+                      "circle": {
+                        "type": "string"
+                      },
+                      "line": {
+                        "type": "string"
+                      },
+                      "polygon": {
+                        "type": "string"
+                      }
+                    }
+                  ],
+                  "type": "object"
+                },
+                "address": {
+                  "$ref": "#/$defs/PostalAddress"
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "title": "Place",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^image$": true,
+                "^name$": true,
+                "^address$": true,
+                "^geo$": true,
+                "^url$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

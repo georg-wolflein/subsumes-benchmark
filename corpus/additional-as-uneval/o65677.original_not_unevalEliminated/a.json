@@ -1,0 +1,195 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_3",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "bid"
+              ],
+              "properties": {
+                "seat": {
+                  "$ref": "#/$defs/string_40"
+                },
+                "group": {
+                  "$ref": "#/$defs/boolean_int"
+                },
+                "bid": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/bid"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^seat$": true,
+                "^group$": true,
+                "^bid$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "price_units": {
+      "type": "integer",
+      "minimum": 0.0,
+      "maximum": 2.0
+    },
+    "string_40": {
+      "type": "string",
+      "maxLength": 40
+    },
+    "no_bid_reason": {
+      "type": "integer",
+      "minimum": 0.0,
+      "maximum": 3.0
+    },
+    "creative_attribute": {
+      "type": "integer",
+      "minimum": 1.0,
+      "maximum": 14.0
+    },
+    "seatbid": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "impid",
+                "price"
+              ],
+              "properties": {
+                "adid": {
+                  "$ref": "#/$defs/string_40"
+                },
+                "iurl": {
+                  "type": "string"
+                },
+                "adomain": {
+                  "type": "string"
+                },
+                "adm": {
+                  "type": "string",
+                  "maxLength": 1024
+                },
+                "cid": {
+                  "type": "string"
+                },
+                "attr": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/creative_attribute"
+                  }
+                },
+                "impid": {
+                  "$ref": "#/$defs/string_40"
+                },
+                "crid": {
+                  "type": "string"
+                },
+                "nurl": {
+                  "type": "string",
+                  "maxLength": 256
+                },
+                "price": {
+                  "type": "number",
+                  "minimum": 0.0
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^crid$": true,
+                "^adid$": true,
+                "^cid$": true,
+                "^impid$": true,
+                "^attr$": true,
+                "^adm$": true,
+                "^iurl$": true,
+                "^nurl$": true,
+                "^adomain$": true,
+                "^price$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "openrtb-v1_0-schema-bid_response",
+              "description": "json schema for an openrtb v1.0 bid response (http://openrtb.googlecode.com/files/OpenRTB%20Mobile%20RTB%20API%20-%201.0.pdf)",
+              "type": "object",
+              "required": [
+                "id"
+              ],
+              "properties": {
+                "bidid": {
+                  "$ref": "#/$defs/string_40"
+                },
+                "nbr": {
+                  "$ref": "#/$defs/no_bid_reason"
+                },
+                "seatbid": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/seatbid"
+                  }
+                },
+                "id": {
+                  "$ref": "#/$defs/string_40"
+                },
+                "units": {
+                  "$ref": "#/$defs/price_units"
+                },
+                "cur": {
+                  "$ref": "#/$defs/currency"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^bidid$": true,
+                "^nbr$": true,
+                "^units$": true,
+                "^cur$": true,
+                "^id$": true,
+                "^seatbid$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "currency": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 4
+    },
+    "boolean_int": {
+      "type": "integer",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "bid": {
+      "$ref": "#/$defs/modern_2"
+    }
+  }
+}

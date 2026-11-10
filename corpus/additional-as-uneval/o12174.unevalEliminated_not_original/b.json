@@ -1,0 +1,318 @@
+{
+  "$id": "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/schemas/v1.2/dataType.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Data type as described by the specification (version 1.2)",
+  "type": "object",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/refType"
+    },
+    {
+      "$ref": "#/$defs/voidType"
+    },
+    {
+      "$ref": "#/$defs/primitiveType"
+    },
+    {
+      "$ref": "#/$defs/modelType"
+    },
+    {
+      "$ref": "#/$defs/arrayType"
+    }
+  ],
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "type"
+              ],
+              "properties": {
+                "format": {
+                  "type": "string"
+                },
+                "maximum": {
+                  "type": "string"
+                },
+                "enum": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 1,
+                  "_uniqueItems": true
+                },
+                "defaultValue": {
+                  "not": {
+                    "type": [
+                      "array",
+                      "object",
+                      "null"
+                    ]
+                  }
+                },
+                "minimum": {
+                  "type": "string"
+                },
+                "type": {
+                  "enum": [
+                    "boolean",
+                    "integer",
+                    "number",
+                    "string"
+                  ]
+                }
+              },
+              "dependentSchemas": {
+                "format": {
+                  "oneOf": [
+                    {
+                      "properties": {
+                        "type": {
+                          "enum": [
+                            "integer"
+                          ]
+                        },
+                        "format": {
+                          "enum": [
+                            "int32",
+                            "int64"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "properties": {
+                        "type": {
+                          "enum": [
+                            "number"
+                          ]
+                        },
+                        "format": {
+                          "enum": [
+                            "float",
+                            "double"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "properties": {
+                        "type": {
+                          "enum": [
+                            "string"
+                          ]
+                        },
+                        "format": {
+                          "enum": [
+                            "byte",
+                            "date",
+                            "date-time"
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                },
+                "enum": {
+                  "properties": {
+                    "type": {
+                      "enum": [
+                        "string"
+                      ]
+                    }
+                  }
+                },
+                "minimum": {
+                  "properties": {
+                    "type": {
+                      "enum": [
+                        "integer",
+                        "number"
+                      ]
+                    }
+                  }
+                },
+                "maximum": {
+                  "properties": {
+                    "type": {
+                      "enum": [
+                        "integer",
+                        "number"
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^maximum$": true,
+                "^defaultValue$": true,
+                "^format$": true,
+                "^enum$": true,
+                "^type$": true,
+                "^minimum$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "$ref"
+              ],
+              "properties": {
+                "$ref": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^$ref$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "type"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "not": {
+                    "enum": [
+                      "boolean",
+                      "integer",
+                      "number",
+                      "string",
+                      "array"
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "refType": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modelType": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "itemsObject": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/refType"
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/primitiveType"
+            },
+            {
+              "$ref": "#/$defs/modern_3"
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "type",
+                "items"
+              ],
+              "properties": {
+                "type": {
+                  "enum": [
+                    "array"
+                  ]
+                },
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/itemsObject"
+                  }
+                },
+                "_uniqueItems": {
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^items$": true,
+                "^_uniqueItems$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "primitiveType": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "voidType": {
+      "enum": [
+        {
+          "type": "void"
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "type": true,
+                "format": true
+              }
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^format$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "arrayType": {
+      "$ref": "#/$defs/modern_4"
+    }
+  }
+}

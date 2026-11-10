@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "items": {
+    "$ref": "#/$defs/modern_1"
+  },
+  "minItems": 1,
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "regex": {
+                  "type": "boolean",
+                  "default": "false"
+                },
+                "old": {
+                  "type": "string"
+                },
+                "code": {
+                  "type": "string"
+                },
+                "new": {
+                  "type": "string"
+                },
+                "classify": {
+                  "type": "object",
+                  "properties": {
+                    "SOURCE": {
+                      "$ref": "#/$defs/classification"
+                    },
+                    "BINARY": {
+                      "$ref": "#/$defs/classification"
+                    },
+                    "SEMANTIC": {
+                      "$ref": "#/$defs/classification"
+                    },
+                    "OTHER": {
+                      "$ref": "#/$defs/classification"
+                    }
+                  },
+                  "minProperties": 1
+                }
+              },
+              "required": [
+                "code"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^new$": true,
+                "^regex$": true,
+                "^classify$": true,
+                "^old$": true,
+                "^code$": true
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "classification": {
+      "type": "string",
+      "enum": [
+        "EQUIVALENT",
+        "NON_BREAKING",
+        "POTENTIALLY_BREAKING",
+        "BREAKING"
+      ]
+    }
+  }
+}

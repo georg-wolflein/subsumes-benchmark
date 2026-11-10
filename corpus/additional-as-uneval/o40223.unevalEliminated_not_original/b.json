@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "maxLength": 20
+                },
+                "password": {
+                  "type": "string",
+                  "maxLength": 20
+                }
+              },
+              "required": [
+                "username",
+                "password"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^username$": true,
+                "^password$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

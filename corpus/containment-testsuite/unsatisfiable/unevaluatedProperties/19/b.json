@@ -1,0 +1,44 @@
+{
+  "allOf": [
+    {
+      "type": "object",
+      "$ref": "#/allOf/0/$defs/bar",
+      "properties": {
+        "foo": {
+          "type": "string"
+        }
+      },
+      "unevaluatedProperties": false,
+      "$defs": {
+        "bar": {
+          "properties": {
+            "bar": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "properties": {
+        "foo": {
+          "type": "string"
+        }
+      },
+      "unevaluatedProperties": false,
+      "$defs": {
+        "bar": {
+          "properties": {
+            "bar": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "not": {
+        "$ref": "#/allOf/1/$defs/bar"
+      }
+    }
+  ]
+}

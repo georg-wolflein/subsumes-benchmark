@@ -1,0 +1,983 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_16",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Search against any of the subfields in the data center hierarchy",
+              "type": "object",
+              "minProperties": 1,
+              "properties": {
+                "any": {
+                  "description": "Search against any of the data center subfields (level0, url, etc.) for the provided value.",
+                  "type": "string"
+                },
+                "pattern": {
+                  "$ref": "#/$defs/PatternOption"
+                },
+                "url": {
+                  "description": "The Uniform Resource Locator (URL) of the data center.",
+                  "type": "string"
+                },
+                "long_name": {
+                  "description": "The full name of the data center.",
+                  "type": "string"
+                },
+                "uuid": {
+                  "description": "Unique identifier for the data center within the GCMD Keyword Management System.",
+                  "type": "string"
+                },
+                "level_3": {
+                  "description": "Fourth level classification under level 2.",
+                  "type": "string"
+                },
+                "ignore_case": {
+                  "$ref": "#/$defs/IgnoreCaseOption"
+                },
+                "level_2": {
+                  "description": "Third level classification under level 1.",
+                  "type": "string"
+                },
+                "level_1": {
+                  "description": "Second level classification under level 0.",
+                  "type": "string"
+                },
+                "level_0": {
+                  "description": "Top level classification of data centers.",
+                  "type": "string"
+                },
+                "short_name": {
+                  "description": "Abbreviated name of the data center.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^any$": true,
+                "^level_3$": true,
+                "^level_0$": true,
+                "^url$": true,
+                "^level_2$": true,
+                "^pattern$": true,
+                "^uuid$": true,
+                "^ignore_case$": true,
+                "^long_name$": true,
+                "^short_name$": true,
+                "^level_1$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "BoundingBoxCondition": {
+      "description": "Specifies a bounding rectangle search.",
+      "oneOf": [
+        {
+          "type": "array",
+          "description": "Must contain 4 numbers in the following order: west, south, east, north. West and east represent longitudes (-180 to 180), south and north represent latitudes (-90 to 90).",
+          "items": {
+            "type": "number",
+            "minimum": -180.0,
+            "maximum": 180.0
+          },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        {
+          "$ref": "#/$defs/modern_1"
+        }
+      ]
+    },
+    "AttributeValueCondition": {
+      "description": "An attribute value to search against.",
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "integer"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "UMM Science keywords",
+              "type": "object",
+              "minProperties": 1,
+              "properties": {
+                "any": {
+                  "description": "Search against any of the science keyword subfields (category, term, etc.) for the provided value.",
+                  "type": "string"
+                },
+                "pattern": {
+                  "$ref": "#/$defs/PatternOption"
+                },
+                "uuid": {
+                  "description": "Unique identifier for the science keyword within the GCMD Keyword Management System.",
+                  "type": "string"
+                },
+                "ignore_case": {
+                  "$ref": "#/$defs/IgnoreCaseOption"
+                },
+                "topic": {
+                  "type": "string"
+                },
+                "variable_level_2": {
+                  "type": "string"
+                },
+                "variable_level_3": {
+                  "type": "string"
+                },
+                "term": {
+                  "type": "string"
+                },
+                "variable_level_1": {
+                  "type": "string"
+                },
+                "detailed_variable": {
+                  "type": "string"
+                },
+                "category": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^variable_level_3$": true,
+                "^variable_level_1$": true,
+                "^term$": true,
+                "^ignore_case$": true,
+                "^detailed_variable$": true,
+                "^any$": true,
+                "^category$": true,
+                "^topic$": true,
+                "^pattern$": true,
+                "^uuid$": true,
+                "^variable_level_2$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "StringCondition": {
+      "description": "String searches can take either a string or an object with a value to search for and options to apply for the search.",
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/$defs/modern_3"
+        }
+      ]
+    },
+    "modern_12": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Concept ID searches are always case sensitive",
+              "properties": {
+                "value": {
+                  "type": "string"
+                },
+                "pattern": {
+                  "$ref": "#/$defs/PatternOption"
+                }
+              },
+              "required": [
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^value$": true,
+                "^pattern$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Search for additional attributes by name and/or group. One of name or group is required.",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "$ref": "#/$defs/AttributeNameCondition"
+                },
+                "group": {
+                  "$ref": "#/$defs/AttributeGroupCondition"
+                },
+                "pattern": {
+                  "$ref": "#/$defs/PatternOption"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^group$": true,
+                "^pattern$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Specifies a temporal search.",
+              "type": "object",
+              "minProperties": 1,
+              "properties": {
+                "start_date": {
+                  "description": "The temporal coverage start date.",
+                  "format": "date-time",
+                  "type": "string"
+                },
+                "exclude_boundary": {
+                  "description": "If set to true, the search will not include the boundary date times. It has no impact on periodic temporal searches. Defaults to false.",
+                  "type": "boolean"
+                },
+                "recurring_start_day": {
+                  "description": "An integer representing the day to get collections with a temporal extent over a recurring annual period starting on or after the given day.",
+                  "type": "integer",
+                  "minimum": 0.0,
+                  "maximum": 366.0
+                },
+                "end_date": {
+                  "description": "The temporal coverage end date.",
+                  "format": "date-time",
+                  "type": "string"
+                },
+                "recurring_end_day": {
+                  "description": "An integer representing the day to get collections with a temporal extent over a recurring annual period ending on or before the given day.",
+                  "type": "integer",
+                  "minimum": 0.0,
+                  "maximum": 366.0
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^recurring_start_day$": true,
+                "^start_date$": true,
+                "^exclude_boundary$": true,
+                "^recurring_end_day$": true,
+                "^end_date$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_13": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Search against any of the subfields in the platform hierarchy",
+              "type": "object",
+              "minProperties": 1,
+              "properties": {
+                "any": {
+                  "description": "Search against any of the platform subfields (category, series_entity, etc.) for the provided value.",
+                  "type": "string"
+                },
+                "pattern": {
+                  "$ref": "#/$defs/PatternOption"
+                },
+                "long_name": {
+                  "description": "Full name of the platform (source) used to acquire the data.",
+                  "type": "string"
+                },
+                "uuid": {
+                  "description": "Unique identifier for the platform within the GCMD Keyword Management System.",
+                  "type": "string"
+                },
+                "ignore_case": {
+                  "$ref": "#/$defs/IgnoreCaseOption"
+                },
+                "short_name": {
+                  "description": "Abbreviated name of the platform (source) used to acquire the data.",
+                  "type": "string"
+                },
+                "category": {
+                  "description": "Top level classification of platforms.",
+                  "type": "string"
+                },
+                "series_entity": {
+                  "description": "Second level classification under category. These keywords usually (but not always) refer to a series of Earth or space observing satellites.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^any$": true,
+                "^category$": true,
+                "^pattern$": true,
+                "^uuid$": true,
+                "^short_name$": true,
+                "^series_entity$": true,
+                "^ignore_case$": true,
+                "^long_name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Used to specify the value and options to apply when searching against a particular field. 'value' is required.",
+              "type": "object",
+              "properties": {
+                "value": {
+                  "description": "The value to search for the given field.",
+                  "type": "string"
+                },
+                "ignore_case": {
+                  "$ref": "#/$defs/IgnoreCaseOption"
+                },
+                "pattern": {
+                  "$ref": "#/$defs/PatternOption"
+                }
+              },
+              "required": [
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^value$": true,
+                "^ignore_case$": true,
+                "^pattern$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Search against any of the subfields in the UMM location keyword hierarchy",
+              "type": "object",
+              "minProperties": 1,
+              "properties": {
+                "any": {
+                  "description": "Search against any of the location keyword subfields (category, type, etc.) for the provided value.",
+                  "type": "string"
+                },
+                "subregion_3": {
+                  "description": "Fifth level classification under subregion_2.",
+                  "type": "string"
+                },
+                "pattern": {
+                  "$ref": "#/$defs/PatternOption"
+                },
+                "uuid": {
+                  "description": "Unique identifier for the location keyword within the GCMD Keyword Management System.",
+                  "type": "string"
+                },
+                "subregion_2": {
+                  "description": "Fourth level classification under subregion_1.",
+                  "type": "string"
+                },
+                "subregion_1": {
+                  "description": "Third level classification under type.",
+                  "type": "string"
+                },
+                "ignore_case": {
+                  "$ref": "#/$defs/IgnoreCaseOption"
+                },
+                "category": {
+                  "description": "Top level classification of locations.",
+                  "type": "string"
+                },
+                "detailed_location": {
+                  "description": "Filter collections by the detailed location subfield within UMM location keywords.",
+                  "type": "string"
+                },
+                "type": {
+                  "description": "Second level classification under category.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^subregion_3$": true,
+                "^ignore_case$": true,
+                "^subregion_2$": true,
+                "^any$": true,
+                "^category$": true,
+                "^type$": true,
+                "^pattern$": true,
+                "^uuid$": true,
+                "^detailed_location$": true,
+                "^subregion_1$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "IgnoreCaseOption": {
+      "description": "If set to true, the search will be case insensitive and if set to false, the search will be case sensitive. Defaults to true.",
+      "type": "boolean"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Used to specify the value and options to apply when searching against a particular field. 'value' is required.",
+              "type": "object",
+              "properties": {
+                "value": {
+                  "description": "The value to search for the given field.",
+                  "type": "string"
+                },
+                "pattern": {
+                  "$ref": "#/$defs/PatternOption"
+                }
+              },
+              "required": [
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^value$": true,
+                "^pattern$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "PatternOption": {
+      "description": "If set to true, the search will treat the value provided for the given field as a pattern with wild-cards, in which '*' matches zero or more characters and '?' matches any single character. ",
+      "type": "boolean"
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Condition used to filter collection search results from the CMR. If multiple properties are provided in a single condition they will be implicitly AND'ed.",
+              "minProperties": 1,
+              "type": "object",
+              "properties": {
+                "archive_center": {
+                  "description": "Search for data centers with a type of archive center.",
+                  "$ref": "#/$defs/DataCenterCondition"
+                },
+                "provider": {
+                  "description": "UMM Provider",
+                  "$ref": "#/$defs/StringCondition"
+                },
+                "science_keywords": {
+                  "$ref": "#/$defs/modern_7"
+                },
+                "project": {
+                  "description": "UMM project short name",
+                  "$ref": "#/$defs/StringCondition"
+                },
+                "tag": {
+                  "description": "Search against the subfields of associated tag.",
+                  "$ref": "#/$defs/TagCondition"
+                },
+                "additional_attribute_name": {
+                  "$ref": "#/$defs/modern_8"
+                },
+                "temporal": {
+                  "$ref": "#/$defs/modern_9"
+                },
+                "updated_since": {
+                  "description": "Revisions with revision date later than provided value",
+                  "format": "date-time",
+                  "type": "string"
+                },
+                "entry_title": {
+                  "description": "UMM Entry Title",
+                  "$ref": "#/$defs/StringCondition"
+                },
+                "two_d_coordinate_system_name": {
+                  "description": "UMM two dimensional coordinate system name",
+                  "$ref": "#/$defs/StringCondition"
+                },
+                "processing_level_id": {
+                  "description": "UMM Processing Level ID",
+                  "$ref": "#/$defs/StringCondition"
+                },
+                "additional_attribute_value": {
+                  "$ref": "#/$defs/modern_10"
+                },
+                "entry_id": {
+                  "description": "UMM Entry ID",
+                  "$ref": "#/$defs/StringCondition"
+                },
+                "or": {
+                  "description": "Groups together conditions to return the union of the results.",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/QueryCondition"
+                  },
+                  "minItems": 1
+                },
+                "location_keyword": {
+                  "$ref": "#/$defs/modern_11"
+                },
+                "data_center": {
+                  "description": "Search for data centers of any type (archive, distribution, processing, and originating are all searched.)",
+                  "$ref": "#/$defs/DataCenterCondition"
+                },
+                "keyword": {
+                  "description": "Used for free text search across most search fields. Refer to the section 'Find collections by keyword search' on https://cmr.earthdata.nasa.gov/search/site/search_api_docs.html for a list of all fields searched against. Searches are always case insensitive and treat '?' and '*' as wild-cards.",
+                  "type": "string"
+                },
+                "spatial_keyword": {
+                  "description": "UMM spatial keyword",
+                  "$ref": "#/$defs/StringCondition"
+                },
+                "concept_id": {
+                  "description": "CMR concept ID",
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "$ref": "#/$defs/modern_12"
+                    }
+                  ]
+                },
+                "sensor": {
+                  "description": "UMM sensor short name",
+                  "$ref": "#/$defs/StringCondition"
+                },
+                "version": {
+                  "description": "UMM Version",
+                  "$ref": "#/$defs/StringCondition"
+                },
+                "short_name": {
+                  "description": "UMM Short Name",
+                  "$ref": "#/$defs/StringCondition"
+                },
+                "not": {
+                  "description": "Negates the provided condition.",
+                  "$ref": "#/$defs/QueryCondition"
+                },
+                "platform": {
+                  "$ref": "#/$defs/modern_13"
+                },
+                "bounding_box": {
+                  "description": "Specifies a bounding rectangle search.",
+                  "$ref": "#/$defs/BoundingBoxCondition"
+                },
+                "doi": {
+                  "description": "Specifies a Digital Object Identifier search.",
+                  "$ref": "#/$defs/StringCondition"
+                },
+                "additional_attribute_range": {
+                  "$ref": "#/$defs/modern_14"
+                },
+                "instrument": {
+                  "$ref": "#/$defs/modern_15"
+                },
+                "and": {
+                  "description": "Groups together conditions to return the intersection of the results.",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/QueryCondition"
+                  },
+                  "minItems": 1
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^science_keywords$": true,
+                "^updated_since$": true,
+                "^version$": true,
+                "^doi$": true,
+                "^entry_title$": true,
+                "^keyword$": true,
+                "^two_d_coordinate_system_name$": true,
+                "^spatial_keyword$": true,
+                "^additional_attribute_value$": true,
+                "^data_center$": true,
+                "^additional_attribute_range$": true,
+                "^not$": true,
+                "^temporal$": true,
+                "^provider$": true,
+                "^sensor$": true,
+                "^concept_id$": true,
+                "^instrument$": true,
+                "^or$": true,
+                "^additional_attribute_name$": true,
+                "^platform$": true,
+                "^and$": true,
+                "^archive_center$": true,
+                "^entry_id$": true,
+                "^bounding_box$": true,
+                "^short_name$": true,
+                "^processing_level_id$": true,
+                "^tag$": true,
+                "^project$": true,
+                "^location_keyword$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "DataCenterCondition": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Search for additional attributes by an exact value.",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "$ref": "#/$defs/AttributeNameCondition"
+                },
+                "group": {
+                  "$ref": "#/$defs/AttributeGroupCondition"
+                },
+                "type": {
+                  "$ref": "#/$defs/AttributeTypeCondition"
+                },
+                "value": {
+                  "description": "Search for an exact value.",
+                  "$ref": "#/$defs/AttributeValueCondition"
+                }
+              },
+              "required": [
+                "name",
+                "type",
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^group$": true,
+                "^type$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "AttributeTypeCondition": {
+      "description": "The data type of the attribute being searched against.",
+      "enum": [
+        "string",
+        "boolean",
+        "time",
+        "date",
+        "datetime",
+        "int",
+        "float"
+      ]
+    },
+    "QueryCondition": {
+      "$ref": "#/$defs/modern_6"
+    },
+    "AttributeNameCondition": {
+      "description": "Additional attribute name.",
+      "type": "string"
+    },
+    "modern_16": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Query",
+              "description": "A JSON format to support searching for collections in the CMR.",
+              "type": "object",
+              "properties": {
+                "condition": {
+                  "$ref": "#/$defs/QueryCondition"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^condition$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_15": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Search against any of the subfields in the instrument hierarchy",
+              "type": "object",
+              "minProperties": 1,
+              "properties": {
+                "any": {
+                  "description": "Search against any of the instrument subfields (category, class, etc.) for the provided value.",
+                  "type": "string"
+                },
+                "pattern": {
+                  "$ref": "#/$defs/PatternOption"
+                },
+                "subtype": {
+                  "description": "Fourth level classification under type.",
+                  "type": "string"
+                },
+                "long_name": {
+                  "description": "Full name of the instrument used to acquire the data.",
+                  "type": "string"
+                },
+                "uuid": {
+                  "description": "Unique identifier for the instrument within the GCMD Keyword Management System.",
+                  "type": "string"
+                },
+                "ignore_case": {
+                  "$ref": "#/$defs/IgnoreCaseOption"
+                },
+                "short_name": {
+                  "description": "Abbreviated name of the instrument used to acquire the data.",
+                  "type": "string"
+                },
+                "category": {
+                  "description": "Top level classification of instruments.",
+                  "type": "string"
+                },
+                "class": {
+                  "description": "Second level classification under category.",
+                  "type": "string"
+                },
+                "type": {
+                  "description": "Third level classification under class.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^any$": true,
+                "^category$": true,
+                "^type$": true,
+                "^pattern$": true,
+                "^uuid$": true,
+                "^short_name$": true,
+                "^ignore_case$": true,
+                "^long_name$": true,
+                "^class$": true,
+                "^subtype$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "AttributeGroupCondition": {
+      "description": "Additional attribute group, which is generally a namespace.",
+      "type": "string"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "north": {
+                  "type": "number",
+                  "description": "Northern latitude (-90 to 90).",
+                  "minimum": -90.0,
+                  "maximum": 90.0
+                },
+                "south": {
+                  "type": "number",
+                  "description": "Southern latitude (-90 to 90).",
+                  "minimum": -90.0,
+                  "maximum": 90.0
+                },
+                "east": {
+                  "type": "number",
+                  "description": "Eastern longitude (-180 to 180).",
+                  "minimum": -180.0,
+                  "maximum": 180.0
+                },
+                "west": {
+                  "type": "number",
+                  "description": "Western longitude (-180 to 180).",
+                  "minimum": -180.0,
+                  "maximum": 180.0
+                }
+              },
+              "required": [
+                "north",
+                "south",
+                "east",
+                "west"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^north$": true,
+                "^south$": true,
+                "^east$": true,
+                "^west$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "TagCondition": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Search against the subfields of tags associated with the collection",
+              "type": "object",
+              "minProperties": 1,
+              "properties": {
+                "tag_key": {
+                  "description": "Key of the associated tag.",
+                  "type": "string"
+                },
+                "originator_id": {
+                  "description": "Originator id of the associated tag.",
+                  "type": "string"
+                },
+                "pattern": {
+                  "$ref": "#/$defs/PatternOption"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^tag_key$": true,
+                "^originator_id$": true,
+                "^pattern$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_14": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Search for additional attributes by range. One of min_value or max_value are required in addition to name and type.",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "$ref": "#/$defs/AttributeNameCondition"
+                },
+                "exclude_boundary": {
+                  "description": "If set to true, the search will not include the boundary values for min and max values. Defaults to false.",
+                  "type": "boolean"
+                },
+                "max_value": {
+                  "description": "Search for values for an additional attribute which are less than the provided value.",
+                  "$ref": "#/$defs/AttributeValueCondition"
+                },
+                "min_value": {
+                  "description": "Search for values for an additional attribute which are greater than the provided value.",
+                  "$ref": "#/$defs/AttributeValueCondition"
+                },
+                "type": {
+                  "$ref": "#/$defs/AttributeTypeCondition"
+                },
+                "group": {
+                  "$ref": "#/$defs/AttributeGroupCondition"
+                }
+              },
+              "required": [
+                "name",
+                "type"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^group$": true,
+                "^min_value$": true,
+                "^name$": true,
+                "^type$": true,
+                "^exclude_boundary$": true,
+                "^max_value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "CaseInsensitiveStringCondition": {
+      "description": "String searches can take either a string or an object with a value to search for and options to apply for the search. This is similar to StringCondition, but it does not support ignore_case options.",
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/$defs/modern_4"
+        }
+      ]
+    }
+  }
+}

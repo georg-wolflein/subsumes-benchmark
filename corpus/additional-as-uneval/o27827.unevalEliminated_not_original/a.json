@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "errorMessage": {
+    "uniqueItemProperties": "should NOT contain objects with the same offeringId"
+  },
+  "items": {
+    "additionalProperties": false,
+    "properties": {
+      "cpunumber": {
+        "$ref": "#/$defs/HardwareParameterLimits"
+      },
+      "cpuspeed": {
+        "$ref": "#/$defs/HardwareParameterLimits"
+      },
+      "memory": {
+        "$ref": "#/$defs/HardwareParameterLimits"
+      },
+      "offeringId": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "offeringId",
+      "cpunumber",
+      "cpuspeed",
+      "memory"
+    ],
+    "type": "object"
+  },
+  "type": "array",
+  "uniqueItemProperties": [
+    "offeringId"
+  ],
+  "$defs": {
+    "HardwareParameterLimits": {
+      "additionalProperties": false,
+      "properties": {
+        "max": {
+          "minimum": 1,
+          "type": "number"
+        },
+        "min": {
+          "minimum": 1,
+          "type": "number"
+        },
+        "value": {
+          "minimum": 1,
+          "type": "number"
+        }
+      },
+      "required": [
+        "min",
+        "max",
+        "value"
+      ],
+      "type": "object"
+    }
+  }
+}

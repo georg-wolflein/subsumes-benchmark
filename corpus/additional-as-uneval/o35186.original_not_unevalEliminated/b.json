@@ -1,0 +1,378 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "title": "ID",
+      "type": "string"
+    },
+    "initial": {
+      "type": "string"
+    },
+    "key": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "compound",
+        "parallel"
+      ]
+    },
+    "context": {
+      "type": "object"
+    },
+    "states": {
+      "$ref": "#/$defs/statesObject"
+    },
+    "on": {
+      "$ref": "#/$defs/transitionsObject"
+    },
+    "transitions": {
+      "type": "array"
+    },
+    "entry": {
+      "type": "array"
+    },
+    "exit": {
+      "type": "array"
+    },
+    "order": {
+      "$ref": "#/$defs/order"
+    },
+    "invoke": {
+      "$ref": "#/$defs/invokeArray"
+    },
+    "version": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "key",
+    "type",
+    "states"
+  ],
+  "$defs": {
+    "actionObject": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "exec": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/functionObject"
+            }
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "baseStateNode": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "key": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "atomic",
+            "compound",
+            "parallel",
+            "final",
+            "history"
+          ]
+        },
+        "order": {
+          "$ref": "#/$defs/order"
+        }
+      },
+      "required": [
+        "id",
+        "key",
+        "type"
+      ]
+    },
+    "compoundStateNode": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/baseStateNode"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "pattern": "compound"
+            },
+            "entry": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/actionObject"
+              }
+            },
+            "exit": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/actionObject"
+              }
+            },
+            "initial": {
+              "type": "string"
+            },
+            "invoke": {
+              "$ref": "#/$defs/invokeArray"
+            },
+            "on": {
+              "$ref": "#/$defs/transitionsObject"
+            },
+            "states": {
+              "$ref": "#/$defs/statesObject"
+            }
+          },
+          "required": [
+            "states"
+          ]
+        }
+      ]
+    },
+    "parallelStateNode": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/baseStateNode"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "pattern": "parallel"
+            },
+            "entry": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/actionObject"
+              }
+            },
+            "exit": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/actionObject"
+              }
+            },
+            "invoke": {
+              "$ref": "#/$defs/invokeArray"
+            },
+            "on": {
+              "$ref": "#/$defs/transitionsObject"
+            },
+            "states": {
+              "$ref": "#/$defs/statesObject"
+            }
+          },
+          "required": [
+            "states"
+          ]
+        }
+      ]
+    },
+    "atomicStateNode": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/baseStateNode"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "pattern": "atomic"
+            },
+            "entry": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/actionObject"
+              }
+            },
+            "exit": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/actionObject"
+              }
+            },
+            "invoke": {
+              "$ref": "#/$defs/invokeArray"
+            },
+            "on": {
+              "$ref": "#/$defs/transitionsObject"
+            }
+          },
+          "required": [
+            "on"
+          ]
+        }
+      ]
+    },
+    "historyStateNode": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/baseStateNode"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "pattern": "history"
+            },
+            "history": {
+              "type": "string",
+              "enum": [
+                "shallow",
+                "deep"
+              ]
+            }
+          },
+          "required": [
+            "history"
+          ]
+        }
+      ]
+    },
+    "finalStateNode": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/baseStateNode"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "pattern": "final"
+            },
+            "data": {
+              "type": "object"
+            }
+          }
+        }
+      ]
+    },
+    "statesObject": {
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/atomicStateNode"
+            },
+            {
+              "$ref": "#/$defs/compoundStateNode"
+            },
+            {
+              "$ref": "#/$defs/parallelStateNode"
+            },
+            {
+              "$ref": "#/$defs/historyStateNode"
+            },
+            {
+              "$ref": "#/$defs/finalStateNode"
+            }
+          ]
+        }
+      }
+    },
+    "transitionsObject": {
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "actions": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/actionObject"
+                }
+              },
+              "cond": {
+                "type": "object"
+              },
+              "eventType": {
+                "type": "string"
+              },
+              "source": {
+                "type": "string"
+              },
+              "target": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "actions",
+              "eventType",
+              "source",
+              "target"
+            ]
+          }
+        }
+      }
+    },
+    "invokeObject": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "src": {
+          "type": "string"
+        },
+        "autoForward": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "required": [
+        "type",
+        "id",
+        "src"
+      ],
+      "additionalProperties": false
+    },
+    "invokeArray": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/invokeObject"
+      }
+    },
+    "functionObject": {
+      "type": "object",
+      "properties": {
+        "$function": {
+          "type": "string"
+        }
+      }
+    },
+    "order": {
+      "type": "integer"
+    }
+  }
+}

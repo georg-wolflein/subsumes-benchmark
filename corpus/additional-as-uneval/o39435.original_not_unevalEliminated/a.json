@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_3",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Name of the project."
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "description": "Name of the user to grant the accessLevel to."
+                },
+                "accessLevel": {
+                  "type": "string",
+                  "enum": [
+                    "NONE",
+                    "READ",
+                    "WRITE",
+                    "ADMIN"
+                  ],
+                  "description": "Type of permission to grant access to"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^username$": true,
+                "^accessLevel$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "RepoDefinitionsDetails": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "PermissionGrant": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "GetProjectResponse",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Name of the project."
+                },
+                "repos": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/RepoDefinitionsDetails"
+                  },
+                  "description": "List of repos attached to the project."
+                },
+                "permissions": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/PermissionGrant"
+                  }
+                }
+              },
+              "javaName": "GetProjectResponse"
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^repos$": true,
+                "^permissions$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

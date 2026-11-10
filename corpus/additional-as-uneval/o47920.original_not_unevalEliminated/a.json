@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "propertyOrder": 10,
+                  "title": "Name",
+                  "type": "string"
+                },
+                "source": {
+                  "propertyOrder": 60,
+                  "title": "Source configuration",
+                  "type": "object"
+                },
+                "tags": {
+                  "propertyOrder": 40,
+                  "title": "List of tags",
+                  "type": "string"
+                },
+                "streamKey": {
+                  "propertyOrder": 30,
+                  "title": "Stream Key",
+                  "type": "string"
+                },
+                "maxInFlight": {
+                  "default": 1000,
+                  "propertyOrder": 51,
+                  "title": "Message buffer",
+                  "type": "integer"
+                },
+                "targetGate": {
+                  "default": "akka.tcp://hub@localhost:12345/user/gatename",
+                  "propertyOrder": 50,
+                  "title": "Gate address",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "source",
+                "targetGate"
+              ],
+              "title": "Eventsource configuration",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^maxInFlight$": true,
+                "^name$": true,
+                "^streamKey$": true,
+                "^targetGate$": true,
+                "^source$": true,
+                "^tags$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

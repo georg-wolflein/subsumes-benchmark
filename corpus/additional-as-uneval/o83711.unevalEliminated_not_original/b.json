@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HTTP Server",
+  "description": "HTTP server definition and URL list",
+  "type": "object",
+  "properties": {
+    "server": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "pages": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/modern_2"
+      }
+    }
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "address": {
+                  "type": "string"
+                },
+                "port": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "address",
+                "port"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^address$": true,
+                "^port$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "url": {
+                  "type": "string"
+                },
+                "page": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "url",
+                "page"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^url$": true,
+                "^page$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

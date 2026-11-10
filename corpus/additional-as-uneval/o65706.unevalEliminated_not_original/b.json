@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "quota",
+              "properties": {
+                "quota": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              },
+              "required": [
+                "quota"
+              ],
+              "title": "quota"
+            },
+            {
+              "patternProperties": {
+                "^quota$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "api_export_size": {
+                  "default": 500,
+                  "description": "Number of zone records allowed",
+                  "maximum": 2147483647.0,
+                  "minimum": 0.0,
+                  "type": "integer"
+                },
+                "zone_records": {
+                  "default": 500,
+                  "description": "Number of zone records allowed",
+                  "maximum": 2147483647.0,
+                  "minimum": 0.0,
+                  "type": "integer"
+                },
+                "zone_recordsets": {
+                  "default": 500,
+                  "description": "Number of zone recordsets allowed",
+                  "maximum": 2147483647.0,
+                  "minimum": 0.0,
+                  "type": "integer"
+                },
+                "zones": {
+                  "default": 10,
+                  "description": "Number of zones allowed",
+                  "maximum": 2147483647.0,
+                  "minimum": 0.0,
+                  "type": "integer"
+                },
+                "recordset_records": {
+                  "default": 20,
+                  "description": "Number of recordset records allowed",
+                  "maximum": 2147483647.0,
+                  "minimum": 0.0,
+                  "type": "integer"
+                }
+              },
+              "required": [],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^zones$": true,
+                "^zone_records$": true,
+                "^api_export_size$": true,
+                "^zone_recordsets$": true,
+                "^recordset_records$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

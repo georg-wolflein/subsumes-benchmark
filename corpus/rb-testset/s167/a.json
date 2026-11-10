@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Input data schema for training.",
+  "type": "object",
+  "required": [
+    "X",
+    "y"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "X": {
+      "description": "Features; the outer array is over samples.",
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "number"
+        }
+      }
+    },
+    "y": {
+      "description": "Target class labels; the array is over samples.",
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "boolean"
+          }
+        }
+      ]
+    }
+  }
+}

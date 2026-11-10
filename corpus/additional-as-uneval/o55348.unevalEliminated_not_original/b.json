@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "port": {
+                  "maximum": 65535.0,
+                  "minimum": 0.0,
+                  "type": "integer"
+                },
+                "priority": {
+                  "maximum": 65535.0,
+                  "minimum": 0.0,
+                  "type": "integer"
+                },
+                "target": {
+                  "format": "hostname",
+                  "type": "string"
+                },
+                "weight": {
+                  "maximum": 65535.0,
+                  "minimum": 0.0,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "priority",
+                "weight",
+                "port",
+                "target"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^port$": true,
+                "^priority$": true,
+                "^target$": true,
+                "^weight$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

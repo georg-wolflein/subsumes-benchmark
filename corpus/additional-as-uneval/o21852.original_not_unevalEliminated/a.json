@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "ResponseParameters": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "ResourceId": {
+                  "pattern": "^[a-z0-9]+$",
+                  "type": "string"
+                },
+                "ResponseModels": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "StatusCode": {
+                  "pattern": "^\\d{3}$",
+                  "type": "string"
+                },
+                "RestApiId": {
+                  "pattern": "^[a-z0-9]{10}$",
+                  "type": "string"
+                },
+                "HttpMethod": {
+                  "enum": [
+                    "DELETE",
+                    "GET",
+                    "HEAD",
+                    "OPTIONS",
+                    "PATCH",
+                    "POST",
+                    "PUT"
+                  ],
+                  "type": "string"
+                }
+              },
+              "required": [
+                "StatusCode",
+                "HttpMethod",
+                "ResourceId",
+                "RestApiId"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^ResponseModels$": true,
+                "^ResponseParameters$": true,
+                "^ResourceId$": true,
+                "^StatusCode$": true,
+                "^HttpMethod$": true,
+                "^RestApiId$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                "^method\\.response\\.header\\..+$": {
+                  "enum": [
+                    "true",
+                    "false"
+                  ],
+                  "type": "string"
+                }
+              },
+              "properties": {},
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^method\\.response\\.header\\..+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                ".+": {
+                  "type": "string"
+                }
+              },
+              "properties": {},
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                ".+": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

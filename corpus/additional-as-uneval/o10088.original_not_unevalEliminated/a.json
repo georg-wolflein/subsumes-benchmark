@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "schemas": {
+                  "items": {
+                    "$ref": "#/$defs/modern_2"
+                  },
+                  "type": "array"
+                }
+              },
+              "title": "RegisterResourceSchema",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^schemas$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "component": {
+                  "pattern": "^[a-z_]$",
+                  "type": "string"
+                },
+                "group": {
+                  "pattern": "^[a-z_]$",
+                  "type": "string"
+                },
+                "path": {
+                  "pattern": "^[a-zA-Z0-9_\\-\\./]+$",
+                  "type": "string"
+                },
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^component$": true,
+                "^group$": true,
+                "^path$": true,
+                "^schema$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

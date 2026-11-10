@@ -1,0 +1,195 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_3",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "download": {
+                  "$ref": "#/$defs/action"
+                },
+                "upload": {
+                  "$ref": "#/$defs/action"
+                },
+                "verify": {
+                  "$ref": "#/$defs/action"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^download$": true,
+                "^upload$": true,
+                "^verify$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "number"
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "message"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^code$": true,
+                "^message$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "href": {
+                  "type": "string"
+                },
+                "header": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "expires_at": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "href"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^href$": true,
+                "^header$": true,
+                "^expires_at$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Git LFS HTTPS Batch API v1 Response",
+              "type": "object",
+              "properties": {
+                "objects": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_4"
+                  }
+                },
+                "message": {
+                  "type": "string"
+                },
+                "request_id": {
+                  "type": "string"
+                },
+                "documentation_url": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "objects"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^objects$": true,
+                "^message$": true,
+                "^request_id$": true,
+                "^documentation_url$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "action": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "oid": {
+                  "type": "string"
+                },
+                "size": {
+                  "type": "number"
+                },
+                "actions": {
+                  "$ref": "#/$defs/modern_5"
+                },
+                "error": {
+                  "$ref": "#/$defs/modern_6"
+                }
+              },
+              "required": [
+                "oid",
+                "size"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^oid$": true,
+                "^size$": true,
+                "^actions$": true,
+                "^error$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

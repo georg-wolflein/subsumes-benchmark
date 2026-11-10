@@ -1,0 +1,331 @@
+{
+  "$id": "https://raw.githubusercontent.com/microsoft/MLOS/main/mlos_bench/mlos_bench/config/schemas/tunables/tunable-params-schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_6",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "meta": {
+                  "$ref": "#/$defs/tunable_param_meta"
+                },
+                "default": {
+                  "type": [
+                    "string",
+                    "number",
+                    "boolean"
+                  ]
+                },
+                "values": {
+                  "type": "array",
+                  "items": {
+                    "type": [
+                      "string",
+                      "number",
+                      "boolean"
+                    ]
+                  },
+                  "minItems": 1,
+                  "uniqueItems": true
+                },
+                "type": {
+                  "const": "categorical"
+                }
+              },
+              "required": [
+                "type",
+                "default",
+                "values"
+              ],
+              "not": {
+                "required": [
+                  "range",
+                  "special"
+                ]
+              },
+              "$comment": "TODO: add check that default is in values"
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^meta$": true,
+                "^default$": true,
+                "^type$": true,
+                "^values$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "mlos_bench Tunable Params config",
+              "$comment": "Tunable Params Groups config are named collection of one or more CovariantTunableGroups.",
+              "type": "object",
+              "properties": {
+                "$schema": {
+                  "$comment": "Optionally allow the schema to be specified in the top level of the config, but make sure it matches the expected schema.",
+                  "type": "string",
+                  "pattern": "/schemas/tunables/tunable-params-schema.json$"
+                }
+              },
+              "patternProperties": {
+                "^[^$].*$": {
+                  "$ref": "#/$defs/covariant_tunable_group"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^$schema$": true,
+                "^[^$].*$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "^.+$": {
+                  "$ref": "#/$defs/tunable_param"
+                }
+              },
+              "minProperties": 1
+            },
+            {
+              "patternProperties": {
+                "^.+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "tunable_params_set": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "meta": {
+                  "$ref": "#/$defs/tunable_param_meta"
+                },
+                "range": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  },
+                  "minItems": 2,
+                  "maxItems": 2
+                },
+                "default": {
+                  "type": "integer"
+                },
+                "special": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  },
+                  "uniqueItems": true
+                },
+                "type": {
+                  "const": "int"
+                }
+              },
+              "required": [
+                "type",
+                "default",
+                "range"
+              ],
+              "not": {
+                "required": [
+                  "values"
+                ]
+              },
+              "$comment": "TODO: add check that default is in range"
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^meta$": true,
+                "^type$": true,
+                "^special$": true,
+                "^range$": true,
+                "^default$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "tunable_param_int": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "cost": {
+                  "type": "number"
+                },
+                "params": {
+                  "$ref": "#/$defs/tunable_params_set"
+                }
+              },
+              "required": [
+                "cost",
+                "params"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^cost$": true,
+                "^params$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "tunable_param_meta": {
+      "type": "object",
+      "additionalProperties": {
+        "type": [
+          "array",
+          "string",
+          "boolean",
+          "null",
+          "number"
+        ],
+        "items": {
+          "type": [
+            "string",
+            "boolean",
+            "null",
+            "number"
+          ]
+        }
+      }
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "meta": {
+                  "$ref": "#/$defs/tunable_param_meta"
+                },
+                "range": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 2,
+                  "maxItems": 2
+                },
+                "default": {
+                  "type": "number"
+                },
+                "special": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "uniqueItems": true
+                },
+                "type": {
+                  "const": "float"
+                }
+              },
+              "required": [
+                "type",
+                "default",
+                "range"
+              ],
+              "not": {
+                "required": [
+                  "values"
+                ]
+              },
+              "$comment": "TODO: add check that default is in range"
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^meta$": true,
+                "^type$": true,
+                "^special$": true,
+                "^range$": true,
+                "^default$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "covariant_tunable_group": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "tunable_param_float": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "tunable_param": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/tunable_param_categorical"
+        },
+        {
+          "$ref": "#/$defs/tunable_param_int"
+        },
+        {
+          "$ref": "#/$defs/tunable_param_float"
+        }
+      ]
+    },
+    "tunable_param_categorical": {
+      "$ref": "#/$defs/modern_5"
+    }
+  }
+}

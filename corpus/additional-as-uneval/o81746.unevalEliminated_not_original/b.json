@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_2",
+  "$defs": {
+    "linkedCrs": {
+      "properties": {
+        "type": {
+          "enum": [
+            "link"
+          ]
+        },
+        "properties": {
+          "$ref": "#/$defs/linkedObject"
+        }
+      }
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "name"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "FIXME": "semantic validation necessary"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "crs",
+              "description": "a Coordinate Reference System object",
+              "type": [
+                "object",
+                "null"
+              ],
+              "required": [
+                "type",
+                "properties"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "properties": {
+                  "type": "object"
+                }
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/namedCrs"
+                },
+                {
+                  "$ref": "#/$defs/linkedCrs"
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^properties$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "linkedObject": {
+      "type": "object",
+      "required": [
+        "href"
+      ],
+      "properties": {
+        "href": {
+          "type": "string",
+          "format": "uri",
+          "FIXME": "spec says \"dereferenceable\", cannot enforce that"
+        },
+        "type": {
+          "type": "string",
+          "description": "Suggested values: proj4, ogjwkt, esriwkt"
+        }
+      }
+    },
+    "namedCrs": {
+      "properties": {
+        "type": {
+          "enum": [
+            "name"
+          ]
+        },
+        "properties": {
+          "$ref": "#/$defs/modern_1"
+        }
+      }
+    }
+  }
+}

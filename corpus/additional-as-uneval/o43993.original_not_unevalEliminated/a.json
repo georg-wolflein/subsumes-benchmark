@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "StatusNotificationRequest",
+              "type": "object",
+              "properties": {
+                "timestamp": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "connectorId": {
+                  "type": "integer"
+                },
+                "vendorId": {
+                  "type": "string",
+                  "maxLength": 255
+                },
+                "info": {
+                  "type": "string",
+                  "maxLength": 50
+                },
+                "errorCode": {
+                  "type": "string",
+                  "enum": [
+                    "ConnectorLockFailure",
+                    "EVCommunicationError",
+                    "GroundFailure",
+                    "HighTemperature",
+                    "InternalError",
+                    "LocalListConflict",
+                    "NoError",
+                    "OtherError",
+                    "OverCurrentFailure",
+                    "PowerMeterFailure",
+                    "PowerSwitchFailure",
+                    "ReaderFailure",
+                    "ResetFailure",
+                    "UnderVoltage",
+                    "OverVoltage",
+                    "WeakSignal"
+                  ]
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "Available",
+                    "Preparing",
+                    "Charging",
+                    "SuspendedEVSE",
+                    "SuspendedEV",
+                    "Finishing",
+                    "Reserved",
+                    "Unavailable",
+                    "Faulted"
+                  ]
+                },
+                "vendorErrorCode": {
+                  "type": "string",
+                  "maxLength": 50
+                }
+              },
+              "required": [
+                "connectorId",
+                "errorCode",
+                "status"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^timestamp$": true,
+                "^info$": true,
+                "^connectorId$": true,
+                "^vendorErrorCode$": true,
+                "^errorCode$": true,
+                "^vendorId$": true,
+                "^status$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

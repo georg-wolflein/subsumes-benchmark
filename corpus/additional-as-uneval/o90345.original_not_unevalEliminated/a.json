@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "WMSLayer layer",
+              "type": "object",
+              "description": "A layer object may allow overrides on popup content and drawing behavior for individual layers of a web service.",
+              "properties": {
+                "queryable": {
+                  "type": "boolean",
+                  "description": "Boolean specifying whether a layer is queryable or not."
+                },
+                "name": {
+                  "type": "string",
+                  "description": "A string containing a unique name for the layer."
+                },
+                "legendUrl": {
+                  "type": "string",
+                  "description": "A string URL to a legend graphic for the layer."
+                },
+                "showPopup": {
+                  "type": "boolean",
+                  "description": "Boolean specifying whether to display popup or not."
+                },
+                "title": {
+                  "type": "string",
+                  "description": "A user-friendly string title for the layer that can be used in a table of contents."
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^showPopup$": true,
+                "^name$": true,
+                "^title$": true,
+                "^queryable$": true,
+                "^legendUrl$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

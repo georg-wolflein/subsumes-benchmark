@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "end": {
+                  "_format": "date",
+                  "description": "Date your basis period ended",
+                  "title": "End date",
+                  "type": "string"
+                },
+                "start": {
+                  "_format": "date",
+                  "description": "Date your basis period began",
+                  "title": "Start date",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "start",
+                "end"
+              ],
+              "title": "Basis period",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^end$": true,
+                "^start$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

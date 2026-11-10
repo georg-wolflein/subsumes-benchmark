@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "format": {
+                  "description": "Export format",
+                  "type": "string",
+                  "enum": [
+                    "PDF",
+                    "ICAL"
+                  ]
+                },
+                "resourceIds": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "enddate": {
+                  "description": "End date for the export, use pattern yyyy-MM-dd",
+                  "type": "string"
+                },
+                "view": {
+                  "description": "View Rendering",
+                  "type": "string",
+                  "enum": [
+                    "DAY",
+                    "WEEK",
+                    "LIST",
+                    "NA"
+                  ]
+                },
+                "startdate": {
+                  "description": "Start date for the export, use pattern yyyy-MM-dd",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "startdate",
+                "enddate",
+                "format",
+                "view"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^format$": true,
+                "^startdate$": true,
+                "^view$": true,
+                "^enddate$": true,
+                "^resourceIds$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Optional: List of resource ids if the user want to restrict export",
+              "type": "array",
+              "items": {
+                "type": "integer"
+              },
+              "minItems": 0
+            },
+            {
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

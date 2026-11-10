@@ -1,0 +1,439 @@
+# Where the corpus departs from an upstream label, and why.
+#
+# Each [[override]] lists cases and the labels they get in place of upstream's. `a_subsumes_b`
+# and `b_subsumes_a` are true or false; a label that is left out is one the corpus does not
+# claim. The note says what is wrong with upstream's label and is copied into the case.json
+# of every case listed. A case may be listed only once.
+#
+# The labels hold for draft 2020-12 with format asserted and patterns read in the dialect of
+# the Rust regex crate. `make test-corpus` checks every label that can be checked by
+# validating instances, which includes the corrected ones.
+
+
+# ----------------------------------------------------------------------------
+# Schemas that are not valid draft 2020-12, or that do not resolve
+# ----------------------------------------------------------------------------
+
+[[override]]
+note = "The schemas are not valid draft 2020-12: they contain an empty oneOf."
+cases = [
+  "additional-as-uneval/o47922.original_not_unevalEliminated",
+  "additional-as-uneval/o47922.unevalEliminated_not_original",
+]
+
+[[override]]
+note = "The schemas are not valid draft 2020-12: a type array lists \"array\" twice."
+cases = [
+  "additional-as-uneval/o83092.original_not_unevalEliminated",
+  "additional-as-uneval/o83092.unevalEliminated_not_original",
+]
+
+[[override]]
+note = "The schemas do not resolve: upstream's generator renamed an embedded $id when it duplicated the schema, so a relative $ref points nowhere."
+cases = [
+  "containment-testsuite/universal/ref/16",
+  "containment-testsuite/universal/ref/17",
+  "containment-testsuite/unsatisfiable/ref/16",
+  "containment-testsuite/unsatisfiable/ref/17",
+]
+
+
+# ----------------------------------------------------------------------------
+# Patterns that are not valid in the Rust regex dialect
+# ----------------------------------------------------------------------------
+
+[[override]]
+note = "The Rust regex crate rejects the pattern .*{{.+}}.* (repetition quantifier expects a valid decimal), so the schemas have no meaning in its dialect."
+cases = [
+  "additional-as-uneval/o9802.original_not_unevalEliminated",
+  "additional-as-uneval/o9802.unevalEliminated_not_original",
+  "additional-as-uneval/o9804.original_not_unevalEliminated",
+  "additional-as-uneval/o9804.unevalEliminated_not_original",
+  "additional-as-uneval/o9805.original_not_unevalEliminated",
+  "additional-as-uneval/o9805.unevalEliminated_not_original",
+  "additional-as-uneval/o9808.original_not_unevalEliminated",
+  "additional-as-uneval/o9808.unevalEliminated_not_original",
+  "oneof-as-anyof/o9802.anyOf_not_oneOf",
+  "oneof-as-anyof/o9802.oneOf_not_anyOf",
+  "oneof-as-anyof/o9804.anyOf_not_oneOf",
+  "oneof-as-anyof/o9804.oneOf_not_anyOf",
+  "oneof-as-anyof/o9805.anyOf_not_oneOf",
+  "oneof-as-anyof/o9805.oneOf_not_anyOf",
+  "oneof-as-anyof/o9808.anyOf_not_oneOf",
+  "oneof-as-anyof/o9808.oneOf_not_anyOf",
+]
+
+[[override]]
+note = "The Rust regex crate rejects the pattern ^((?!(\\.(nii|nrrd|mp4|avi)\\b)).)*$ (look-around, including look-ahead and look-behind, is not supported), so the schemas have no meaning in its dialect."
+cases = [
+  "uneval-as-additional/unevaluatedProperties_901.translate_not_trivial",
+  "uneval-as-additional/unevaluatedProperties_901.trivial_not_translate",
+]
+
+[[override]]
+note = "The Rust regex crate rejects the pattern ^/[^\\0]+$ (backreferences are not supported), so the schemas have no meaning in its dialect."
+cases = [
+  "additional-as-uneval/o27356.original_not_unevalEliminated",
+  "additional-as-uneval/o27356.unevalEliminated_not_original",
+]
+
+[[override]]
+note = "The Rust regex crate rejects the patterns ^/[^\\0]+$ (backreferences are not supported) and ^[^\\0]+$ (backreferences are not supported), so the schemas have no meaning in its dialect."
+cases = [
+  "additional-as-uneval/o27348.original_not_unevalEliminated",
+  "additional-as-uneval/o27348.unevalEliminated_not_original",
+  "oneof-as-anyof/o27348.anyOf_not_oneOf",
+  "oneof-as-anyof/o27348.oneOf_not_anyOf",
+]
+
+[[override]]
+note = "The Rust regex crate rejects the pattern ^[ !\"#$%&\\'()*+,\\-./0-9:;<=>?@A-Z[\\\\\\]\\^_`a-z{\\|}]+$ (unclosed character class), so the schemas have no meaning in its dialect."
+cases = [
+  "additional-as-uneval/o10012.original_not_unevalEliminated",
+  "additional-as-uneval/o10012.unevalEliminated_not_original",
+]
+
+[[override]]
+note = "The Rust regex crate rejects the pattern ^[A-Za-z0-9\\-._~:/?#[\\]@!$&'()*+,;=%]*$ (unclosed character class), so the schemas have no meaning in its dialect."
+cases = [
+  "additional-as-uneval/o89147.original_not_unevalEliminated",
+  "additional-as-uneval/o89147.unevalEliminated_not_original",
+]
+
+[[override]]
+note = "The Rust regex crate rejects the pattern ^[\\w-/_]+$ (invalid range boundary, must be a literal), so the schemas have no meaning in its dialect."
+cases = [
+  "additional-as-uneval/o36572.original_not_unevalEliminated",
+  "additional-as-uneval/o36572.unevalEliminated_not_original",
+]
+
+[[override]]
+note = "The Rust regex crate rejects the pattern ^\\$[.[].*$ (unclosed character class), so the schemas have no meaning in its dialect."
+cases = [
+  "additional-as-uneval/o57762.original_not_unevalEliminated",
+  "additional-as-uneval/o57762.unevalEliminated_not_original",
+  "oneof-as-anyof/o57762.anyOf_not_oneOf",
+  "oneof-as-anyof/o57762.oneOf_not_anyOf",
+]
+
+[[override]]
+note = "The Rust regex crate rejects the pattern ^\\cC$ (unrecognized escape sequence), so the schemas have no meaning in its dialect."
+cases = [
+  "containment-testsuite/nonvalid/optional/ecmascript-regex/3",
+  "containment-testsuite/reflexive/optional/ecmascript-regex/3",
+  "containment-testsuite/universal/optional/ecmascript-regex/3",
+  "containment-testsuite/unsatisfiable/optional/ecmascript-regex/3",
+  "containment-testsuite/valid/optional/ecmascript-regex/5",
+  "containment-testsuite/valid/optional/ecmascript-regex/6",
+]
+
+[[override]]
+note = "The Rust regex crate rejects the pattern ^\\cc$ (unrecognized escape sequence), so the schemas have no meaning in its dialect."
+cases = [
+  "containment-testsuite/nonvalid/optional/ecmascript-regex/4",
+  "containment-testsuite/reflexive/optional/ecmascript-regex/4",
+  "containment-testsuite/universal/optional/ecmascript-regex/4",
+  "containment-testsuite/unsatisfiable/optional/ecmascript-regex/4",
+  "containment-testsuite/valid/optional/ecmascript-regex/7",
+  "containment-testsuite/valid/optional/ecmascript-regex/8",
+]
+
+[[override]]
+note = "The schemas reference a document whose pattern ^(?!(referent|type|version)$)[a-zA-Z0-9_]*$ the Rust regex crate rejects (look-around, including look-ahead and look-behind, is not supported), so they have no meaning in its dialect."
+cases = [
+  "rb-testset/s87",
+  "rb-testset/s89",
+  "rb-testset/s91",
+  "rb-testset/u90",
+]
+
+
+# ----------------------------------------------------------------------------
+# Labels that do not hold
+# ----------------------------------------------------------------------------
+
+[[override]]
+note = "Upstream's label does not hold: the translation wrote the integer bound 36893488147419103000 as the float 3.6893488147419103e+19, which is 36893488147419103232, so 36893488147419103001 is valid under it and invalid under the original."
+cases = [
+  "additional-as-uneval/o19187.unevalEliminated_not_original",
+]
+
+[[override]]
+note = "Upstream's label does not hold: the translation wrote the integer bound 9223372036854775807 as the float 9.223372036854776e+18, which is 2**63, so 9223372036854775808 is valid under it and invalid under the original."
+cases = [
+  "additional-as-uneval/o90912.unevalEliminated_not_original",
+]
+
+[[override]]
+note = "Upstream's label does not hold. Its generator negates a copy of the schema, and here the copy is not negated at all, so the instance it should reject is valid under it."
+a_subsumes_b = true
+cases = [
+  "containment-testsuite/nonvalid/dynamicRef/1",
+  "containment-testsuite/nonvalid/dynamicRef/2",
+]
+
+[[override]]
+note = "Upstream's label does not hold. Its generator negates a copy of the schema, and here the copy negates only $ref; type and properties stay beside not, so the instance it should reject is valid under it."
+a_subsumes_b = true
+cases = [
+  "containment-testsuite/nonvalid/dynamicRef/9",
+]
+
+[[override]]
+note = "Upstream's label does not hold. Its generator negates a copy of the schema, and here the copy negates only properties of a recursive schema, and the $ref back to the root reaches the negated copy, so the instance is valid under it after all."
+a_subsumes_b = true
+cases = [
+  "containment-testsuite/nonvalid/ref/14",
+]
+
+[[override]]
+note = "Upstream's label does not hold. Its generator negates a copy of the schema, and here the copy's renamed $anchor also changed an enum value."
+cases = [
+  "containment-testsuite/universal/anchor/4",
+  "containment-testsuite/unsatisfiable/anchor/4",
+]
+
+[[override]]
+note = "Upstream's label does not hold. Its generator negates a copy of the schema, and here the copy is not negated at all."
+cases = [
+  "containment-testsuite/universal/dynamicRef/1",
+  "containment-testsuite/universal/dynamicRef/2",
+  "containment-testsuite/unsatisfiable/dynamicRef/1",
+  "containment-testsuite/unsatisfiable/dynamicRef/2",
+]
+
+[[override]]
+note = "Upstream's label does not hold. Its generator negates a copy of the schema, and here the copy negates only items; type stays beside not."
+cases = [
+  "containment-testsuite/universal/dynamicRef/3",
+  "containment-testsuite/unsatisfiable/dynamicRef/3",
+]
+
+[[override]]
+note = "Upstream's label does not hold. Its generator negates a copy of the schema, and here the copy negates only $ref; type and properties stay beside not."
+cases = [
+  "containment-testsuite/universal/dynamicRef/10",
+  "containment-testsuite/universal/dynamicRef/9",
+  "containment-testsuite/unsatisfiable/dynamicRef/10",
+  "containment-testsuite/unsatisfiable/dynamicRef/9",
+]
+
+[[override]]
+note = "Upstream's label does not hold. Its generator negates a copy of the schema, and here the copy's renamed $id also changed an enum value."
+cases = [
+  "containment-testsuite/universal/id/2",
+  "containment-testsuite/unsatisfiable/id/2",
+]
+
+[[override]]
+note = "Upstream's label does not hold. Its generator negates a copy of the schema, and here the copy negates only prefixItems; type and items stay beside not."
+cases = [
+  "containment-testsuite/universal/items/4",
+  "containment-testsuite/unsatisfiable/items/4",
+]
+
+[[override]]
+note = "Upstream's label does not hold. Its generator negates a copy of the schema, and here the copy negates only properties; type and required stay beside not."
+cases = [
+  "containment-testsuite/universal/ref/12",
+  "containment-testsuite/unsatisfiable/ref/12",
+]
+
+[[override]]
+note = "Upstream's label does not hold. Its generator negates a copy of the schema, and here the copy negates only $ref; properties stays beside not."
+cases = [
+  "containment-testsuite/universal/ref/14",
+  "containment-testsuite/unsatisfiable/ref/14",
+]
+
+[[override]]
+note = "Upstream's label does not hold. Its generator negates a copy of the schema, and here the copy's rewritten $ref pointer also changed an enum value."
+cases = [
+  "containment-testsuite/universal/ref/15",
+  "containment-testsuite/unsatisfiable/ref/15",
+]
+
+[[override]]
+note = "Upstream's label does not hold. Its generator negates a copy of the schema, and here the copy negates only $ref; type, prefixItems and unevaluatedItems stay beside not."
+cases = [
+  "containment-testsuite/universal/unevaluatedItems/15",
+  "containment-testsuite/unsatisfiable/unevaluatedItems/15",
+]
+
+[[override]]
+note = "Upstream's label does not hold. Its generator negates a copy of the schema, and here the copy negates only $ref; type, properties and unevaluatedProperties stay beside not."
+cases = [
+  "containment-testsuite/universal/unevaluatedProperties/19",
+  "containment-testsuite/unsatisfiable/unevaluatedProperties/19",
+]
+
+
+# ----------------------------------------------------------------------------
+# Labels that hold only if format is an annotation
+# ----------------------------------------------------------------------------
+
+[[override]]
+note = "Upstream treats format as an annotation here, so it counts every string as valid. With format asserted, the answer depends on whether the string conforms to the format."
+cases = [
+  "containment-testsuite/nonvalid/format/105",
+  "containment-testsuite/nonvalid/format/112",
+  "containment-testsuite/nonvalid/format/119",
+  "containment-testsuite/nonvalid/format/126",
+  "containment-testsuite/nonvalid/format/133",
+  "containment-testsuite/nonvalid/format/14",
+  "containment-testsuite/nonvalid/format/21",
+  "containment-testsuite/nonvalid/format/28",
+  "containment-testsuite/nonvalid/format/35",
+  "containment-testsuite/nonvalid/format/42",
+  "containment-testsuite/nonvalid/format/49",
+  "containment-testsuite/nonvalid/format/56",
+  "containment-testsuite/nonvalid/format/63",
+  "containment-testsuite/nonvalid/format/7",
+  "containment-testsuite/nonvalid/format/70",
+  "containment-testsuite/nonvalid/format/77",
+  "containment-testsuite/nonvalid/format/84",
+  "containment-testsuite/nonvalid/format/91",
+  "containment-testsuite/nonvalid/format/98",
+  "containment-testsuite/unions/format/1",
+  "containment-testsuite/unions/format/10",
+  "containment-testsuite/unions/format/11",
+  "containment-testsuite/unions/format/12",
+  "containment-testsuite/unions/format/13",
+  "containment-testsuite/unions/format/14",
+  "containment-testsuite/unions/format/15",
+  "containment-testsuite/unions/format/16",
+  "containment-testsuite/unions/format/17",
+  "containment-testsuite/unions/format/18",
+  "containment-testsuite/unions/format/19",
+  "containment-testsuite/unions/format/2",
+  "containment-testsuite/unions/format/3",
+  "containment-testsuite/unions/format/4",
+  "containment-testsuite/unions/format/5",
+  "containment-testsuite/unions/format/6",
+  "containment-testsuite/unions/format/7",
+  "containment-testsuite/unions/format/8",
+  "containment-testsuite/unions/format/9",
+  "containment-testsuite/valid/format/105",
+  "containment-testsuite/valid/format/112",
+  "containment-testsuite/valid/format/119",
+  "containment-testsuite/valid/format/126",
+  "containment-testsuite/valid/format/133",
+  "containment-testsuite/valid/format/14",
+  "containment-testsuite/valid/format/21",
+  "containment-testsuite/valid/format/28",
+  "containment-testsuite/valid/format/35",
+  "containment-testsuite/valid/format/42",
+  "containment-testsuite/valid/format/49",
+  "containment-testsuite/valid/format/56",
+  "containment-testsuite/valid/format/63",
+  "containment-testsuite/valid/format/7",
+  "containment-testsuite/valid/format/70",
+  "containment-testsuite/valid/format/77",
+  "containment-testsuite/valid/format/84",
+  "containment-testsuite/valid/format/91",
+  "containment-testsuite/valid/format/98",
+]
+
+[[override]]
+note = "Upstream's label holds only if format is an annotation: a date-time and a date pattern are disjoint."
+cases = [
+  "oneof-as-anyof/o20.anyOf_not_oneOf",
+  "oneof-as-anyof/o21.anyOf_not_oneOf",
+  "oneof-as-anyof/o22.anyOf_not_oneOf",
+  "oneof-as-anyof/o23.anyOf_not_oneOf",
+]
+
+[[override]]
+note = "Upstream's label holds only if format is an annotation: a uri and a hostname are disjoint."
+cases = [
+  "oneof-as-anyof/o58478.anyOf_not_oneOf",
+]
+
+[[override]]
+note = "Upstream's label holds only if format is an annotation: a uuid never contains 32 consecutive alphanumerics, so the required uuid_field is empty."
+cases = [
+  "uneval-as-additional/unevaluatedProperties_856.translate_not_trivial",
+]
+
+
+# ----------------------------------------------------------------------------
+# Labels that depend on the regex dialect
+# ----------------------------------------------------------------------------
+
+[[override]]
+note = "Upstream's label holds only if . matches a line terminator. In the Rust regex dialect . does not match a line feed, so \"aa\\nbb\" is valid under b.json and not under a.json."
+a_subsumes_b = false
+cases = [
+  "handwritten-sc/bool.7.eq1.sub.eq2",
+]
+
+[[override]]
+note = "Upstream's label holds only if . matches a line terminator. In the Rust regex dialect . does not match a line feed, so \"aaa\\nbb\" is valid under b.json and not under a.json."
+a_subsumes_b = false
+cases = [
+  "handwritten-sc/bool.7.strong.sub.eq2",
+]
+
+[[override]]
+note = "Upstream's label holds only if . matches a line terminator. In the Rust regex dialect . does not match a line feed, so [{}, {\"name\": \"foo\\nbar\"}] is valid under b.json and not under a.json."
+a_subsumes_b = false
+cases = [
+  "mergeallof/items_merges_additionalItems.orig_not_merge",
+]
+
+[[override]]
+note = "Upstream's label holds only if . matches a line terminator. In the Rust regex dialect . does not match a line feed, so \"fdsaf\\nabba\" is valid under b.json and not under a.json."
+a_subsumes_b = false
+cases = [
+  "mergeallof/module_merges_pattern_using_allOf.orig_not_merge",
+]
+
+[[override]]
+note = "Upstream's label follows ECMA-262, where \\d matches only the ASCII digits. In the Rust regex dialect \\d matches every Unicode decimal digit, and U+07C0 (NKO DIGIT ZERO) is one."
+a_subsumes_b = false
+cases = [
+  "containment-testsuite/unions/optional/ecmascript-regex/1",
+  "containment-testsuite/valid/optional/ecmascript-regex/13",
+  "containment-testsuite/valid/optional/ecmascript-regex/14",
+]
+
+[[override]]
+note = "Upstream's label follows ECMA-262, where \\d matches only the ASCII digits. In the Rust regex dialect \\d matches every Unicode decimal digit, and U+07C0 (NKO DIGIT ZERO) is one."
+a_subsumes_b = true
+cases = [
+  "containment-testsuite/nonvalid/optional/ecmascript-regex/6",
+  "containment-testsuite/nonvalid/optional/ecmascript-regex/7",
+  "containment-testsuite/valid/optional/ecmascript-regex/10",
+  "containment-testsuite/valid/optional/ecmascript-regex/11",
+]
+
+[[override]]
+note = "Upstream's label follows ECMA-262, where \\s matches U+FEFF (ZERO WIDTH NO-BREAK SPACE). In the Rust regex dialect \\s matches the characters with the Unicode property White_Space, which U+FEFF does not have."
+a_subsumes_b = false
+cases = [
+  "containment-testsuite/unions/optional/ecmascript-regex/2",
+  "containment-testsuite/valid/optional/ecmascript-regex/24",
+]
+
+[[override]]
+note = "Upstream's label follows ECMA-262, where \\s matches U+FEFF (ZERO WIDTH NO-BREAK SPACE). In the Rust regex dialect \\s matches the characters with the Unicode property White_Space, which U+FEFF does not have."
+a_subsumes_b = true
+cases = [
+  "containment-testsuite/nonvalid/optional/ecmascript-regex/15",
+  "containment-testsuite/valid/optional/ecmascript-regex/35",
+]
+
+[[override]]
+note = "Upstream's label follows ECMA-262, where \\w matches only ASCII letters, ASCII digits and the underscore. In the Rust regex dialect \\w matches every Unicode word character, and U+00E9 (LATIN SMALL LETTER E WITH ACUTE) is one."
+a_subsumes_b = false
+cases = [
+  "containment-testsuite/valid/optional/ecmascript-regex/18",
+]
+
+[[override]]
+note = "Upstream's label follows ECMA-262, where \\w matches only ASCII letters, ASCII digits and the underscore. In the Rust regex dialect \\w matches every Unicode word character, and U+00E9 (LATIN SMALL LETTER E WITH ACUTE) is one."
+a_subsumes_b = true
+cases = [
+  "containment-testsuite/nonvalid/optional/ecmascript-regex/9",
+  "containment-testsuite/valid/optional/ecmascript-regex/16",
+]

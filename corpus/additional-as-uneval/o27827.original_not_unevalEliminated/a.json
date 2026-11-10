@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "errorMessage": {
+    "uniqueItemProperties": "should NOT contain objects with the same offeringId"
+  },
+  "items": {
+    "$ref": "#/$defs/modern_2"
+  },
+  "type": "array",
+  "uniqueItemProperties": [
+    "offeringId"
+  ],
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "max": {
+                  "minimum": 1.0,
+                  "type": "number"
+                },
+                "min": {
+                  "minimum": 1.0,
+                  "type": "number"
+                },
+                "value": {
+                  "minimum": 1.0,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "min",
+                "max",
+                "value"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^max$": true,
+                "^min$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "cpunumber": {
+                  "$ref": "#/$defs/HardwareParameterLimits"
+                },
+                "cpuspeed": {
+                  "$ref": "#/$defs/HardwareParameterLimits"
+                },
+                "memory": {
+                  "$ref": "#/$defs/HardwareParameterLimits"
+                },
+                "offeringId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "offeringId",
+                "cpunumber",
+                "cpuspeed",
+                "memory"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^cpunumber$": true,
+                "^cpuspeed$": true,
+                "^memory$": true,
+                "^offeringId$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "HardwareParameterLimits": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

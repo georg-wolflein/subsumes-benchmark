@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "description": "Email resource",
+  "properties": {
+    "attachments": {
+      "items": {
+        "$ref": "#/$defs/attachment"
+      },
+      "type": "array"
+    },
+    "context": {
+      "type": "string"
+    },
+    "email": {
+      "_format": "email",
+      "type": "string"
+    },
+    "mail_template_code": {
+      "type": "string"
+    },
+    "params": {
+      "type": "object"
+    },
+    "schedule_at": {
+      "_format": "date-time",
+      "type": "string"
+    }
+  },
+  "required": [
+    "email",
+    "mail_template_code"
+  ],
+  "type": "object",
+  "$defs": {
+    "attachment": {
+      "additionalProperties": false,
+      "properties": {
+        "content": {
+          "type": "string"
+        },
+        "file": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "file"
+      ],
+      "type": "object"
+    }
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "$id": "https://mcda.drugis.org/tDistribution.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "MCDA student's t distribution for the performance table entry of absolute data",
+              "type": "object",
+              "required": [
+                "type",
+                "parameters"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "dt"
+                  ]
+                },
+                "parameters": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "input": {
+                  "$ref": "#/$defs/modern_3"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^parameters$": true,
+                "^input$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "mu",
+                "stdErr",
+                "dof"
+              ],
+              "properties": {
+                "mu": {
+                  "type": "number"
+                },
+                "stdErr": {
+                  "type": "number"
+                },
+                "dof": {
+                  "type": "number"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^mu$": true,
+                "^stdErr$": true,
+                "^dof$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "mu",
+                "sigma",
+                "sampleSize"
+              ],
+              "properties": {
+                "mu": {
+                  "type": "number"
+                },
+                "sigma": {
+                  "type": "number"
+                },
+                "sampleSize": {
+                  "type": "number"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^mu$": true,
+                "^sigma$": true,
+                "^sampleSize$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

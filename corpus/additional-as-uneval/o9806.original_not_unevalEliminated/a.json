@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "toEmail"
+              ],
+              "properties": {
+                "subject": {
+                  "type": "string",
+                  "max": 255
+                },
+                "timezone": {
+                  "type": "string",
+                  "max": 255
+                },
+                "toEmail": {
+                  "type": "array",
+                  "min": 1,
+                  "max": 10,
+                  "items": {
+                    "type": "string",
+                    "format": "email",
+                    "maxLength": 1024
+                  }
+                },
+                "message": {
+                  "type": "string",
+                  "max": 32767
+                },
+                "time": {
+                  "type": "number"
+                },
+                "theme": {
+                  "type": "string",
+                  "enum": [
+                    "dark",
+                    "light"
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^theme$": true,
+                "^toEmail$": true,
+                "^timezone$": true,
+                "^time$": true,
+                "^subject$": true,
+                "^message$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

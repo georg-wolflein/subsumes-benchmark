@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_2",
+  "$defs": {
+    "CommitModel": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "commitId": {
+                  "type": "string"
+                },
+                "version": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^commitId$": true,
+                "^version$": true,
+                "^createdAt$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "GetAllVersionsResponse",
+              "type": "object",
+              "properties": {
+                "commits": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/CommitModel"
+                  },
+                  "description": "All of the commits for a repository"
+                },
+                "latest": {
+                  "$ref": "#/$defs/CommitModel"
+                }
+              },
+              "javaName": "GetAllVersionsResponse"
+            },
+            {
+              "patternProperties": {
+                "^commits$": true,
+                "^latest$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

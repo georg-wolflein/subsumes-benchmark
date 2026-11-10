@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "plugins": {
+      "properties": {
+        "puppet": {
+          "additionalProperties": false,
+          "minProperties": 1,
+          "properties": {
+            "assets": {
+              "$ref": "#/$defs/absolute_path"
+            },
+            "manifest": {
+              "$ref": "#/$defs/absolute_path"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "title": "Puppet plugin manifest",
+  "type": "object",
+  "$defs": {
+    "absolute_path": {
+      "pattern": "^/[^\\0]+$",
+      "type": "string"
+    }
+  }
+}

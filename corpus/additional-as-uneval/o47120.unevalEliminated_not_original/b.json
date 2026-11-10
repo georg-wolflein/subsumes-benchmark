@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "_summary": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "primarySite": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "tumourSubtype": {
+                  "type": "string"
+                },
+                "tumourType": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^tumourSubtype$": true,
+                "^tumourType$": true,
+                "^_summary$": true,
+                "^type$": true,
+                "^id$": true,
+                "^name$": true,
+                "^primarySite$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "_state": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^_state$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "$id": "https://test.json-schema.org/relative-dynamic-reference-without-bookend/root",
+  "$dynamicAnchor": "meta",
+  "type": "object",
+  "properties": {
+    "foo": {
+      "const": "pass"
+    }
+  },
+  "$defs": {
+    "extended": {
+      "$id": "extended",
+      "$anchor": "meta",
+      "type": "object",
+      "properties": {
+        "bar": {
+          "$ref": "bar"
+        }
+      }
+    },
+    "bar": {
+      "$id": "bar",
+      "type": "object",
+      "properties": {
+        "baz": {
+          "$dynamicRef": "extended#meta"
+        }
+      }
+    }
+  },
+  "not": {
+    "$ref": "extended"
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/MyGame_Example_ArrayTable",
+  "$defs": {
+    "MyGame_Example_ArrayTable": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "MyGame_Example_TestEnum": {
+      "type": "string",
+      "enum": [
+        "A",
+        "B",
+        "C"
+      ]
+    },
+    "MyGame_Example_ArrayStruct": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "a": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 2,
+                  "maxItems": 2
+                },
+                "b": {
+                  "$ref": "#/$defs/MyGame_Example_TestEnum"
+                },
+                "c": {
+                  "$ref": "#/$defs/MyGame_Example_TestEnum",
+                  "minItems": 2,
+                  "maxItems": 2
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^a$": true,
+                "^b$": true,
+                "^c$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "a": {
+                  "type": "number"
+                },
+                "b": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 15,
+                  "maxItems": 15
+                },
+                "c": {
+                  "type": "number"
+                },
+                "d": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/MyGame_Example_NestedStruct"
+                  },
+                  "minItems": 2,
+                  "maxItems": 2
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^a$": true,
+                "^b$": true,
+                "^c$": true,
+                "^d$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "a": {
+                  "$ref": "#/$defs/MyGame_Example_ArrayStruct"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^a$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "MyGame_Example_NestedStruct": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

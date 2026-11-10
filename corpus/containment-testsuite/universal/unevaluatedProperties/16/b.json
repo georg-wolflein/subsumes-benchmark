@@ -1,0 +1,54 @@
+{
+  "anyOf": [
+    {
+      "type": "object",
+      "if": {
+        "properties": {
+          "foo": {
+            "const": "then"
+          }
+        },
+        "required": [
+          "foo"
+        ]
+      },
+      "then": {
+        "properties": {
+          "bar": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "bar"
+        ]
+      },
+      "unevaluatedProperties": false
+    },
+    {
+      "not": {
+        "type": "object",
+        "if": {
+          "properties": {
+            "foo": {
+              "const": "then"
+            }
+          },
+          "required": [
+            "foo"
+          ]
+        },
+        "then": {
+          "properties": {
+            "bar": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "bar"
+          ]
+        },
+        "unevaluatedProperties": false
+      }
+    }
+  ]
+}

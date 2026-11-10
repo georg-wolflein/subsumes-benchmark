@@ -1,0 +1,325 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "MachineBoss expression schema",
+  "$ref": "#/$defs/expr",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "not"
+              ],
+              "properties": {
+                "not": {
+                  "$ref": "#/$defs/expr"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^not$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "*"
+              ],
+              "properties": {
+                "*": {
+                  "type": "array",
+                  "minItems": 2,
+                  "maxItems": 2,
+                  "items": {
+                    "$ref": "#/$defs/expr"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^*$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "pow"
+              ],
+              "properties": {
+                "pow": {
+                  "type": "array",
+                  "minItems": 2,
+                  "maxItems": 2,
+                  "items": {
+                    "$ref": "#/$defs/expr"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^pow$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "expr"
+              ],
+              "properties": {
+                "expr": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^expr$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "+"
+              ],
+              "properties": {
+                "+": {
+                  "type": "array",
+                  "minItems": 2,
+                  "maxItems": 2,
+                  "items": {
+                    "$ref": "#/$defs/expr"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "/"
+              ],
+              "properties": {
+                "/": {
+                  "type": "array",
+                  "minItems": 2,
+                  "maxItems": 2,
+                  "items": {
+                    "$ref": "#/$defs/expr"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^/$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "-"
+              ],
+              "properties": {
+                "-": {
+                  "type": "array",
+                  "minItems": 2,
+                  "maxItems": 2,
+                  "items": {
+                    "$ref": "#/$defs/expr"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^-$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "exp"
+              ],
+              "properties": {
+                "exp": {
+                  "$ref": "#/$defs/expr"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^exp$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "geomsum"
+              ],
+              "properties": {
+                "geomsum": {
+                  "$ref": "#/$defs/expr"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^geomsum$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "expr": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/$defs/modern_1"
+        },
+        {
+          "$ref": "#/$defs/modern_2"
+        },
+        {
+          "$ref": "#/$defs/modern_3"
+        },
+        {
+          "$ref": "#/$defs/modern_4"
+        },
+        {
+          "$ref": "#/$defs/modern_5"
+        },
+        {
+          "$ref": "#/$defs/modern_6"
+        },
+        {
+          "$ref": "#/$defs/modern_7"
+        },
+        {
+          "$ref": "#/$defs/modern_8"
+        },
+        {
+          "$ref": "#/$defs/modern_9"
+        },
+        {
+          "$ref": "#/$defs/modern_10"
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "log"
+              ],
+              "properties": {
+                "log": {
+                  "$ref": "#/$defs/expr"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^log$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

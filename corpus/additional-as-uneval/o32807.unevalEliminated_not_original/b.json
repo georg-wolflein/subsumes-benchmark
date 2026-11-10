@@ -1,0 +1,214 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "aws_identifier": {
+      "minLength": 1,
+      "pattern": "^([\\w\\d].*|\\*)$",
+      "type": "string"
+    },
+    "identifier": {
+      "minLength": 1,
+      "pattern": "^[\\w\\d][\\w\\d-]*$",
+      "type": "string"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "health": {
+                  "type": "string"
+                },
+                "author": {
+                  "$ref": "#/$defs/person"
+                },
+                "name": {
+                  "$ref": "#/$defs/identifier",
+                  "maxLength": 64
+                },
+                "maintainers": {
+                  "items": {
+                    "$ref": "#/$defs/person"
+                  },
+                  "type": "array"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "documentation": {
+                  "type": "string"
+                },
+                "client": {
+                  "type": "string"
+                },
+                "configuration": {
+                  "type": "object"
+                },
+                "universe": {
+                  "$ref": "#/$defs/identifier"
+                },
+                "contributors": {
+                  "items": {
+                    "$ref": "#/$defs/person"
+                  },
+                  "type": "array"
+                },
+                "policy": {
+                  "items": {
+                    "$ref": "#/$defs/asset"
+                  },
+                  "type": "array"
+                },
+                "assets": {
+                  "items": {
+                    "$ref": "#/$defs/asset"
+                  },
+                  "type": "array"
+                },
+                "manage": {
+                  "type": "string"
+                },
+                "repository": {
+                  "properties": {
+                    "type": {
+                      "type": "string"
+                    },
+                    "url": {
+                      "_format": "uri",
+                      "type": "string"
+                    }
+                  },
+                  "type": [
+                    "object",
+                    "string"
+                  ]
+                },
+                "resources": {
+                  "patternProperties": {
+                    ".+": {
+                      "$ref": "#/$defs/version"
+                    }
+                  },
+                  "type": "object"
+                },
+                "region": {
+                  "oneOf": [
+                    {
+                      "items": {
+                        "$ref": "#/$defs/identifier"
+                      },
+                      "type": "array"
+                    },
+                    {
+                      "$ref": "#/$defs/identifier"
+                    }
+                  ]
+                },
+                "keywords": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^maintainers$": true,
+                "^configuration$": true,
+                "^author$": true,
+                "^resources$": true,
+                "^name$": true,
+                "^region$": true,
+                "^assets$": true,
+                "^policy$": true,
+                "^documentation$": true,
+                "^keywords$": true,
+                "^manage$": true,
+                "^universe$": true,
+                "^description$": true,
+                "^contributors$": true,
+                "^client$": true,
+                "^repository$": true,
+                "^health$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "version": {
+      "maxLength": 10,
+      "minLength": 1,
+      "pattern": "^(\\*|\\d{4}\\-\\d{2}\\-\\d{2})$",
+      "type": "string"
+    },
+    "person": {
+      "properties": {
+        "email": {
+          "_format": "email",
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "url": {
+          "_format": "uri",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": [
+        "object",
+        "string"
+      ]
+    },
+    "asset": {
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/aws_identifier"
+        },
+        "permissions": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "region": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/aws_identifier"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/$defs/aws_identifier"
+            }
+          ]
+        },
+        "service": {
+          "$ref": "#/$defs/identifier"
+        }
+      },
+      "required": [
+        "service",
+        "name",
+        "permissions"
+      ],
+      "type": "object"
+    }
+  }
+}

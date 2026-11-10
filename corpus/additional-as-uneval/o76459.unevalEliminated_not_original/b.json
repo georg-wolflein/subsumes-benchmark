@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "put crawl perf results request",
+              "description": "put crawl perf results request",
+              "type": "object",
+              "properties": {
+                "spider": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "status": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "crawlResultsId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "crawlTime": {
+                  "$ref": "#/$defs/modern_4"
+                },
+                "crawlArgs": {
+                  "type": "array",
+                  "minItems": 0,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "_uniqueItems": false
+                }
+              },
+              "required": [
+                "crawlResultsId",
+                "spider",
+                "crawlArgs",
+                "crawlTime",
+                "status"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^status$": true,
+                "^spider$": true,
+                "^crawlTime$": true,
+                "^crawlResultsId$": true,
+                "^crawlArgs$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "dockerImage": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "version": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "dockerImage",
+                "name",
+                "version"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^dockerImage$": true,
+                "^name$": true,
+                "^version$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer"
+                },
+                "message": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "code",
+                "message"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^code$": true,
+                "^message$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "started": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "durationInMs": {
+                  "type": "integer",
+                  "minimum": 0.0
+                }
+              },
+              "required": [
+                "started",
+                "durationInMs"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^started$": true,
+                "^durationInMs$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

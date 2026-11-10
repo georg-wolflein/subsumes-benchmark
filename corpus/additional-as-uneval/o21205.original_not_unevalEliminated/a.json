@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "guid_list": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/guid"
+      },
+      "_uniqueItems": true
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "facet_values": {
+                  "description": "Possible facet_values to show for non-dynamic select facets. All values are shown regardless of the search.",
+                  "$ref": "#/$defs/guid_list"
+                },
+                "parent": {
+                  "description": "The facet_group this facet belongs to.",
+                  "$ref": "#/$defs/guid_list",
+                  "maxItems": 1
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^facet_values$": true,
+                "^parent$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "guid": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "bulk_publishing": {
+                  "type": "boolean"
+                },
+                "links": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "previous_version": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^bulk_publishing$": true,
+                "^links$": true,
+                "^previous_version$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

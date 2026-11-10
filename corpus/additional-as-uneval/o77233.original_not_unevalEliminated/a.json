@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Simple schema for testing Validatable",
+              "type": "object",
+              "properties": {
+                "country": {
+                  "type": "string"
+                },
+                "beers": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "country",
+                "beers"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^country$": true,
+                "^beers$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

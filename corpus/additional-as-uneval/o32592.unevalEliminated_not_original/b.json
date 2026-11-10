@@ -1,0 +1,244 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_5",
+  "$defs": {
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "KEY - user.uid",
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/user"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "location": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Private User Data",
+              "type": "object",
+              "properties": {
+                "uid": {
+                  "description": "Firebase User ID",
+                  "type": "string"
+                },
+                "name": {
+                  "$ref": "#/$defs/name_token"
+                },
+                "email": {
+                  "description": "User's Email Address",
+                  "type": "string",
+                  "format": "email"
+                },
+                "address": {
+                  "$ref": "#/$defs/location"
+                }
+              },
+              "required": [
+                "uid",
+                "name",
+                "email",
+                "address"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^uid$": true,
+                "^name$": true,
+                "^email$": true,
+                "^address$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Location Descriptor",
+              "type": "object",
+              "properties": {
+                "city": {
+                  "description": "City",
+                  "type": "string"
+                },
+                "latitude": {
+                  "description": "Latitude",
+                  "type": "number"
+                },
+                "state": {
+                  "description": "State",
+                  "type": "string"
+                },
+                "postcode": {
+                  "description": "Postal Code",
+                  "type": "string"
+                },
+                "country": {
+                  "description": "Country",
+                  "type": "string"
+                },
+                "longitude": {
+                  "description": "Longitude",
+                  "type": "number"
+                },
+                "neigborhood": {
+                  "description": "Neighborhood Name",
+                  "type": "string"
+                },
+                "address": {
+                  "description": "Street Address",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "address",
+                "city",
+                "state",
+                "postcode",
+                "country",
+                "latitude"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^city$": true,
+                "^neigborhood$": true,
+                "^longitude$": true,
+                "^state$": true,
+                "^latitude$": true,
+                "^address$": true,
+                "^country$": true,
+                "^postcode$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Token Value to Represent a User",
+              "type": "object",
+              "properties": {
+                "uid": {
+                  "description": "User's ID",
+                  "type": "string"
+                },
+                "name": {
+                  "$ref": "#/$defs/name_token"
+                },
+                "photo": {
+                  "description": "User Photo",
+                  "type": "string",
+                  "format": "uri"
+                }
+              },
+              "required": [
+                "uid",
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^uid$": true,
+                "^name$": true,
+                "^photo$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "name_token": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "user": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Token Value to Represent a User Name",
+              "type": "object",
+              "properties": {
+                "display": {
+                  "description": "Display Name",
+                  "type": "string"
+                },
+                "first": {
+                  "description": "Optional First Name",
+                  "type": "string"
+                },
+                "last": {
+                  "description": "Optional Last Name",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "display"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^display$": true,
+                "^first$": true,
+                "^last$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "user_token": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Schema for js-entity-modeling example",
+              "type": "object",
+              "properties": {
+                "users": {
+                  "$ref": "#/$defs/modern_6"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^users$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

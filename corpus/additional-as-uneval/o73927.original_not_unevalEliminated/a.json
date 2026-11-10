@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_3",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "default": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^default$": true
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": [
+                  "null",
+                  "string"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "link": {
+      "properties": {
+        "rel": {
+          "type": "string"
+        },
+        "titles": {
+          "$ref": "#/$defs/modern_1"
+        },
+        "properties": {
+          "$ref": "#/$defs/property"
+        },
+        "template": {
+          "_format": "uri",
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "href": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "aliases": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "expires": {
+                  "_format": "date-time",
+                  "type": "string"
+                },
+                "subject": {
+                  "_format": "uri",
+                  "type": "string"
+                },
+                "links": {
+                  "items": {
+                    "$ref": "#/$defs/link"
+                  },
+                  "type": "array"
+                },
+                "properties": {
+                  "$ref": "#/$defs/property"
+                }
+              },
+              "required": [
+                "subject"
+              ],
+              "title": "JSON schema for host-meta files",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^aliases$": true,
+                "^expires$": true,
+                "^links$": true,
+                "^subject$": true,
+                "^properties$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "property": {
+      "$ref": "#/$defs/modern_2"
+    }
+  }
+}

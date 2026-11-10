@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "data": {
+      "type": "object"
+    },
+    "politicalEntity": {
+      "type": "object"
+    },
+    "bornAt": {
+      "type": "string"
+    },
+    "communityPartner": {
+      "type": "object"
+    },
+    "geography": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "Ideation",
+        "Alpha",
+        "Beta",
+        "Production",
+        "Archival"
+      ],
+      "type": "string"
+    },
+    "categories": {
+      "items": {
+        "$ref": "#/$defs/modern_1"
+      },
+      "type": "array"
+    },
+    "type": {
+      "type": "string"
+    },
+    "contact": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "governmentPartner": {
+      "type": "object"
+    },
+    "moreInfo": {
+      "type": "string"
+    },
+    "conformsTo": {
+      "enum": [
+        "http://codefordc.org/resources/specification.html"
+      ],
+      "type": "string"
+    },
+    "needs": {
+      "items": {
+        "$ref": "#/$defs/modern_3"
+      },
+      "type": "array"
+    },
+    "thumbnailUrl": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "conformsTo",
+    "contact",
+    "status"
+  ],
+  "type": "object",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "category": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^category$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "twitter": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^email$": true,
+                "^name$": true,
+                "^twitter$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "need": {
+                  "type": "string"
+                },
+                "want": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^need$": true,
+                "^want$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

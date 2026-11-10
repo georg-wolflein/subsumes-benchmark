@@ -1,0 +1,1301 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "JSON schema for ESLint configuration files",
+  "type": "object",
+  "properties": {
+    "plugins": {
+      "description": "ESLint supports the use of third-party plugins. Before using the plugin, you have to install it using npm.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "parserOptions": {
+      "description": "The JavaScript language options to be supported",
+      "type": "object",
+      "properties": {
+        "ecmaFeatures": {
+          "$ref": "#/properties/ecmaFeatures"
+        },
+        "ecmaVersion": {
+          "enum": [
+            3,
+            5,
+            6,
+            2015,
+            7,
+            2016,
+            8,
+            2017
+          ],
+          "default": 5,
+          "description": "Set to 3, 5 (default), 6, 7, or 8 to specify the version of ECMAScript you want to use. Alternatively, set to 2015 (same as 6), 2016 (same as 7), or 2017 (same as 8) to use year-based naming."
+        },
+        "sourceType": {
+          "enum": [
+            "script",
+            "module"
+          ],
+          "default": "script",
+          "description": "set to \"script\" (default) or \"module\" if your code is in ECMAScript modules"
+        }
+      }
+    },
+    "globals": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "extends": {
+      "description": "If you want to extend a specific configuration file, you can use the extends property and specify the path to the file. The path can be either relative or absolute.",
+      "type": [
+        "string",
+        "array"
+      ],
+      "items": {
+        "type": "string"
+      }
+    },
+    "rules": {
+      "description": "ESLint comes with a large number of rules. You can modify which rules your project uses either using configuration comments or configuration files.",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/possibleErrors"
+        },
+        {
+          "$ref": "#/$defs/bestPractices"
+        },
+        {
+          "$ref": "#/$defs/strictMode"
+        },
+        {
+          "$ref": "#/$defs/variables"
+        },
+        {
+          "$ref": "#/$defs/nodeAndCommonJs"
+        },
+        {
+          "$ref": "#/$defs/stylisticIssues"
+        },
+        {
+          "$ref": "#/$defs/ecmaScript6"
+        },
+        {
+          "$ref": "#/$defs/legacy"
+        }
+      ]
+    },
+    "ignore": {
+      "description": "A list of file paths/globs that eslint should ignore",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "parser": {
+      "type": "string"
+    },
+    "ecmaFeatures": {
+      "description": "By default, ESLint supports only ECMAScript 5 syntax. You can override that setting to enable support for ECMAScript 6 as well as JSX by using configuration settings.",
+      "type": "object",
+      "properties": {
+        "spread": {
+          "type": "boolean"
+        },
+        "forOf": {
+          "type": "boolean"
+        },
+        "jsx": {
+          "type": "boolean",
+          "description": "enable JSX"
+        },
+        "classes": {
+          "type": "boolean"
+        },
+        "octalLiterals": {
+          "type": "boolean"
+        },
+        "globalReturn": {
+          "type": "boolean",
+          "description": "allow return statements in the global scope"
+        },
+        "destructuring": {
+          "type": "boolean"
+        },
+        "arrowFunctions": {
+          "type": "boolean"
+        },
+        "objectLiteralShorthandProperties": {
+          "type": "boolean"
+        },
+        "regexUFlag": {
+          "type": "boolean"
+        },
+        "impliedStrict": {
+          "type": "boolean",
+          "description": "enable global strict mode (if ecmaVersion is 5 or greater)"
+        },
+        "binaryLiterals": {
+          "type": "boolean"
+        },
+        "unicodeCodePointEscapes": {
+          "type": "boolean"
+        },
+        "templateStrings": {
+          "type": "boolean"
+        },
+        "generators": {
+          "type": "boolean"
+        },
+        "objectLiteralDuplicateProperties": {
+          "type": "boolean"
+        },
+        "experimentalObjectRestSpread": {
+          "type": "boolean",
+          "description": "Enables support for the experimental object rest/spread properties (IMPORTANT: This is an experimental feature that may change significantly in the future. It\u2019s recommended that you do not write rules relying on this functionality unless you are willing to incur maintenance cost when it changes.)"
+        },
+        "defaultParams": {
+          "type": "boolean"
+        },
+        "objectLiteralComputedProperties": {
+          "type": "boolean"
+        },
+        "regexYFlag": {
+          "type": "boolean"
+        },
+        "blockBindings": {
+          "type": "boolean"
+        },
+        "modules": {
+          "type": "boolean"
+        },
+        "superInFunctions": {
+          "type": "boolean"
+        },
+        "restParams": {
+          "type": "boolean"
+        },
+        "objectLiteralShorthandMethods": {
+          "type": "boolean"
+        }
+      }
+    },
+    "settings": {
+      "description": "ESLint supports adding shared settings into configuration file. You can add settings object to ESLint configuration file and it will be supplied to every rule that will be executed. This may be useful if you are adding custom rules and want them to have access to the same information and be easily configurable.",
+      "type": "object"
+    },
+    "env": {
+      "description": "An environment defines global variables that are predefined.",
+      "type": "object",
+      "properties": {
+        "atomtest": {
+          "type": "boolean",
+          "description": "Atom test helper globals"
+        },
+        "applescript": {
+          "type": "boolean",
+          "description": "AppleScript global variables"
+        },
+        "jest": {
+          "type": "boolean",
+          "description": "Jest global variables"
+        },
+        "nashorn": {
+          "type": "boolean",
+          "description": "Java 8 Nashorn global variables"
+        },
+        "protractor": {
+          "type": "boolean",
+          "description": "Protractor global variables"
+        },
+        "prototypejs": {
+          "type": "boolean",
+          "description": "Prototype.js global variables"
+        },
+        "commonjs": {
+          "type": "boolean",
+          "description": "CommonJS global variables and CommonJS scoping (use this for browser-only code that uses Browserify/WebPack)"
+        },
+        "embertest": {
+          "type": "boolean",
+          "description": "Ember test helper globals"
+        },
+        "phantomjs": {
+          "type": "boolean",
+          "description": "PhantomJS global variables"
+        },
+        "worker": {
+          "type": "boolean",
+          "description": "web workers global variables"
+        },
+        "jasmine": {
+          "type": "boolean",
+          "description": "adds all of the Jasmine testing global variables for version 1.3 and 2.0"
+        },
+        "qunit": {
+          "type": "boolean",
+          "description": "QUnit global variables"
+        },
+        "meteor": {
+          "type": "boolean",
+          "description": "Meteor global variables"
+        },
+        "browser": {
+          "type": "boolean",
+          "description": "browser global variables"
+        },
+        "amd": {
+          "type": "boolean",
+          "description": "defines require() and define() as global variables as per the amd spec"
+        },
+        "serviceworker": {
+          "type": "boolean",
+          "description": "Service Worker global variables"
+        },
+        "shelljs": {
+          "type": "boolean",
+          "description": "ShellJS global variables"
+        },
+        "webextensions": {
+          "type": "boolean",
+          "description": "WebExtensions globals"
+        },
+        "mocha": {
+          "type": "boolean",
+          "description": "adds all of the Mocha test global variables"
+        },
+        "es6": {
+          "type": "boolean",
+          "description": "enable all ECMAScript 6 features except for modules"
+        },
+        "jquery": {
+          "type": "boolean",
+          "description": "jQuery global variables"
+        },
+        "node": {
+          "type": "boolean",
+          "description": "Node.js global variables and Node.js scoping"
+        },
+        "greasemonkey": {
+          "type": "boolean",
+          "description": "GreaseMonkey globals"
+        },
+        "shared-node-browser": {
+          "type": "boolean",
+          "description": "Globals common to both Node and Browser"
+        },
+        "mongo": {
+          "type": "boolean",
+          "description": "MongoDB global variables"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "legacy": {
+      "properties": {
+        "max-params": {
+          "$ref": "#/$defs/rule"
+        },
+        "no-plusplus": {
+          "$ref": "#/$defs/rule"
+        },
+        "no-bitwise": {
+          "$ref": "#/$defs/rule"
+        },
+        "max-depth": {
+          "$ref": "#/$defs/rule"
+        },
+        "max-statements": {
+          "$ref": "#/$defs/rule"
+        },
+        "max-len": {
+          "$ref": "#/$defs/rule"
+        }
+      }
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Set each global variable name equal to true to allow the variable to be overwritten or false to disallow overwriting.",
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": "boolean"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "nodeAndCommonJs": {
+      "properties": {
+        "global-require": {
+          "$ref": "#/$defs/rule",
+          "description": "Require require() calls to be placed at top-level module scope"
+        },
+        "no-sync": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow synchronous methods"
+        },
+        "no-process-env": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow the use of process.env"
+        },
+        "handle-callback-err": {
+          "$ref": "#/$defs/rule",
+          "description": "Require error handling in callbacks"
+        },
+        "no-path-concat": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow string concatenation with __dirname and __filename"
+        },
+        "no-process-exit": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow the use of process.exit()"
+        },
+        "no-new-require": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow new operators with calls to require"
+        },
+        "no-mixed-requires": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow require calls to be mixed with regular var declarations"
+        },
+        "no-restricted-modules": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow specified modules when loaded by require"
+        },
+        "callback-return": {
+          "$ref": "#/$defs/rule",
+          "description": "Require return statements after callbacks"
+        }
+      }
+    },
+    "bestPractices": {
+      "properties": {
+        "no-with": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow with statements"
+        },
+        "no-fallthrough": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow fallthrough of case statements"
+        },
+        "no-caller": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow the use of arguments.caller or arguments.callee"
+        },
+        "complexity": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce a maximum cyclomatic complexity allowed in a program"
+        },
+        "wrap-iife": {
+          "$ref": "#/$defs/rule",
+          "description": "Require parentheses around immediate function invocations"
+        },
+        "no-useless-call": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow unnecessary calls to .call() and .apply()"
+        },
+        "eqeqeq": {
+          "$ref": "#/$defs/rule",
+          "description": "Require the use of === and !=="
+        },
+        "no-eq-null": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow null comparisons without type-checking operators"
+        },
+        "no-self-compare": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow comparisons where both sides are exactly the same"
+        },
+        "no-octal": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow octal literals"
+        },
+        "curly": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce consistent brace style for all control statements"
+        },
+        "no-useless-concat": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow unnecessary concatenation of literals or template literals"
+        },
+        "no-eval": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow the use of eval()"
+        },
+        "default-case": {
+          "$ref": "#/$defs/rule",
+          "description": "Require default cases in switch statements"
+        },
+        "no-sequences": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow comma operators"
+        },
+        "no-loop-func": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow function declarations and expressions inside loop statements"
+        },
+        "no-implicit-coercion": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow shorthand type conversions"
+        },
+        "no-new-func": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow new operators with the Function object"
+        },
+        "no-proto": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow the use of the __proto__ property"
+        },
+        "no-unused-expressions": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow unused expressions"
+        },
+        "no-else-return": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow else blocks after return statements in if statements"
+        },
+        "no-native-reassign": {
+          "$ref": "#/$defs/rule"
+        },
+        "no-lone-blocks": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow unnecessary nested blocks"
+        },
+        "no-extend-native": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow extending native types"
+        },
+        "no-void": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow void operators"
+        },
+        "no-useless-escape": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow unnecessary escape characters"
+        },
+        "no-empty-function": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow empty functions"
+        },
+        "array-callback-return": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce return statements in callbacks of array methods"
+        },
+        "dot-notation": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce dot notation whenever possible"
+        },
+        "block-scoped-var": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce the use of variables within the scope they are defined"
+        },
+        "no-empty-pattern": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow empty destructuring patterns"
+        },
+        "no-unmodified-loop-condition": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow unmodified loop conditions"
+        },
+        "vars-on-top": {
+          "$ref": "#/$defs/rule",
+          "description": "Require var declarations be placed at the top of their containing scope"
+        },
+        "guard-for-in": {
+          "$ref": "#/$defs/rule",
+          "description": "Require for-in loops to include an if statement"
+        },
+        "no-floating-decimal": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow leading or trailing decimal points in numeric literals"
+        },
+        "no-div-regex": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow division operators explicitly at the beginning of regular expressions"
+        },
+        "no-param-reassign": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow reassigning function parameters"
+        },
+        "no-iterator": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow the use of the __iterator__ property"
+        },
+        "no-return-assign": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow assignment operators in return statements"
+        },
+        "no-alert": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow the use of alert, confirm, and prompt"
+        },
+        "dot-location": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce consistent newlines before and after dots"
+        },
+        "radix": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce the consistent use of the radix argument when using parseInt()"
+        },
+        "no-script-url": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow javascript: urls"
+        },
+        "no-invalid-this": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow this keywords outside of classes or class-like objects"
+        },
+        "no-warning-comments": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow specified warning terms in comments"
+        },
+        "no-throw-literal": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow throwing literals as exceptions"
+        },
+        "consistent-return": {
+          "$ref": "#/$defs/rule",
+          "description": "Require return statements to either always or never specify values"
+        },
+        "no-redeclare": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow var redeclaration"
+        },
+        "no-new": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow new operators outside of assignments or comparisons"
+        },
+        "no-implied-eval": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow the use of eval()-like methods"
+        },
+        "no-self-assign": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow assignments where both sides are exactly the same"
+        },
+        "no-global-assign": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow assignments to native objects or read-only global variables"
+        },
+        "yoda": {
+          "$ref": "#/$defs/rule",
+          "description": "Require or Disallow \u201cYoda\u201d conditions"
+        },
+        "no-new-wrappers": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow new operators with the String, Number, and Boolean objects"
+        },
+        "accessor-pairs": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce getter and setter pairs in objects"
+        },
+        "require-await": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow async functions which have no await expression"
+        },
+        "no-multi-str": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow multiline strings"
+        },
+        "no-extra-label": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow unnecessary labels"
+        },
+        "no-magic-numbers": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow magic numbers"
+        },
+        "no-case-declarations": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow lexical declarations in case clauses"
+        },
+        "no-multi-spaces": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow multiple spaces"
+        },
+        "no-labels": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow labeled statements"
+        },
+        "no-unused-labels": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow unused labels"
+        },
+        "no-implicit-globals": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow var and named function declarations in the global scope"
+        },
+        "no-extra-bind": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow unnecessary calls to .bind()"
+        },
+        "no-octal-escape": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow octal escape sequences in string literals"
+        }
+      }
+    },
+    "rule": {
+      "oneOf": [
+        {
+          "description": "ESLint rule\n\n0 - turns the rule off\n1 - turn the rule on as a warning (doesn't affect exit code)\n2 - turn the rule on as an error (exit code is 1 when triggered)\n",
+          "type": "integer",
+          "minimum": 0.0,
+          "maximum": 2.0
+        },
+        {
+          "description": "ESLint rule\n\n\"off\" - turns the rule off\n\"warn\" - turn the rule on as a warning (doesn't affect exit code)\n\"error\" - turn the rule on as an error (exit code is 1 when triggered)\n",
+          "type": "string",
+          "enum": [
+            "off",
+            "warn",
+            "error"
+          ]
+        },
+        {
+          "type": "array"
+        }
+      ]
+    },
+    "variables": {
+      "properties": {
+        "no-restricted-globals": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow specified global variables"
+        },
+        "no-label-var": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow labels that share a name with a variable"
+        },
+        "no-delete-var": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow deleting variables"
+        },
+        "no-undef-init": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow initializing variables to undefined"
+        },
+        "no-use-before-define": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow the use of variables before they are defined"
+        },
+        "no-catch-shadow": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow catch clause parameters from shadowing variables in the outer scope"
+        },
+        "no-shadow-restricted-names": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow identifiers from shadowing restricted names"
+        },
+        "no-undefined": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow the use of undefined as an identifier"
+        },
+        "no-shadow": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow var declarations from shadowing variables in the outer scope"
+        },
+        "no-unused-vars": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow unused variables"
+        },
+        "init-declarations": {
+          "$ref": "#/$defs/rule",
+          "description": "Require or disallow initialization in var declarations"
+        },
+        "no-undef": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow the use of undeclared variables unless mentioned in /*global */ comments"
+        }
+      }
+    },
+    "possibleErrors": {
+      "properties": {
+        "valid-typeof": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce comparing typeof expressions against valid strings"
+        },
+        "no-empty-character-class": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow empty character classes in regular expressions"
+        },
+        "no-regex-spaces": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow multiple spaces in regular expressions"
+        },
+        "no-unexpected-multiline": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow confusing multiline expressions"
+        },
+        "no-console": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow the use of console"
+        },
+        "no-duplicate-case": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow duplicate case labels"
+        },
+        "no-constant-condition": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow constant expressions in conditions"
+        },
+        "no-inner-declarations": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow function or var declarations in nested blocks"
+        },
+        "no-unreachable": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow unreachable code after return, throw, continue, and break statements"
+        },
+        "no-debugger": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow the use of debugger"
+        },
+        "use-isnan": {
+          "$ref": "#/$defs/rule",
+          "description": "Require calls to isNaN() when checking for NaN"
+        },
+        "no-unsafe-finally": {
+          "ref": "#/definitions4/rule",
+          "description": "Disallow control flow statements in finally blocks"
+        },
+        "no-cond-assign": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow assignment operators in conditional expressions"
+        },
+        "no-extra-semi": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow unnecessary semicolons"
+        },
+        "no-sparse-arrays": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow sparse arrays"
+        },
+        "no-dupe-args": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow duplicate arguments in function definitions4"
+        },
+        "no-unsafe-negation": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow negating the left operand of relational operators"
+        },
+        "no-invalid-regexp": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow invalid regular expression strings in RegExp constructors"
+        },
+        "no-extra-parens": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow unnecessary parentheses"
+        },
+        "comma-dangle": {
+          "$ref": "#/$defs/rule",
+          "description": "Require or disallow trailing commas"
+        },
+        "no-template-curly-in-string": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow template literal placeholder syntax in regular strings"
+        },
+        "no-control-regex": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow control characters in regular expressions"
+        },
+        "no-empty": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow empty block statements"
+        },
+        "no-func-assign": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow reassigning function declarations"
+        },
+        "no-irregular-whitespace": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow irregular whitespace outside of strings and comments"
+        },
+        "no-extra-boolean-cast": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow unnecessary boolean casts"
+        },
+        "no-obj-calls": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow calling global object properties as functions"
+        },
+        "no-negated-in-lhs": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow negating the left operand in in expressions (deprecated)"
+        },
+        "no-ex-assign": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow reassigning exceptions in catch clauses"
+        },
+        "no-dupe-keys": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow duplicate keys in object literals"
+        },
+        "no-prototype-builtins": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow calling some Object.prototype methods directly on objects"
+        },
+        "valid-jsdoc": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce valid JSDoc comments"
+        }
+      }
+    },
+    "strictMode": {
+      "properties": {
+        "strict": {
+          "$ref": "#/$defs/rule",
+          "description": "require or disallow strict mode directives"
+        }
+      }
+    },
+    "stylisticIssues": {
+      "properties": {
+        "no-nested-ternary": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow nested ternary expressions"
+        },
+        "max-nested-callbacks": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce a maximum depth that callbacks can be nested"
+        },
+        "linebreak-style": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce consistent linebreak style"
+        },
+        "brace-style": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce consistent brace style for blocks"
+        },
+        "no-lonely-if": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow if statements as the only statement in else blocks"
+        },
+        "func-names": {
+          "$ref": "#/$defs/rule",
+          "description": "Require or disallow named function expressions"
+        },
+        "consistent-this": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce consistent naming when capturing the current execution context"
+        },
+        "computed-property-spacing": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce consistent spacing inside computed property brackets"
+        },
+        "operator-linebreak": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce consistent linebreak style for operators"
+        },
+        "indent": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce consistent indentation"
+        },
+        "comma-style": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce consistent comma style"
+        },
+        "camelcase": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce camelcase naming convention"
+        },
+        "no-multiple-empty-lines": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow multiple empty lines"
+        },
+        "block-spacing": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce consistent spacing inside single-line blocks"
+        },
+        "space-unary-ops": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce consistent spacing before or after unary operators"
+        },
+        "func-style": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce the consistent use of either function declarations or expressions"
+        },
+        "no-negated-condition": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow negated conditions"
+        },
+        "multiline-ternary": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce newlines between operands of ternary expressions"
+        },
+        "no-mixed-operators": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow mixed binary operators"
+        },
+        "no-new-object": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow Object constructors"
+        },
+        "object-property-newline": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce placing object properties on separate lines"
+        },
+        "object-curly-spacing": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce consistent spacing inside braces"
+        },
+        "max-statements-per-line": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce a maximum number of statements allowed per line"
+        },
+        "quotes": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce the consistent use of either backticks, double, or single quotes"
+        },
+        "max-params": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce a maximum number of parameters in function definitions4"
+        },
+        "no-restricted-syntax": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow specified syntax"
+        },
+        "no-continue": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow continue statements"
+        },
+        "no-plusplus": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow the unary operators ++ and --"
+        },
+        "func-call-spacing": {
+          "$ref": "#/$defs/rule",
+          "description": "Require or disallow spacing between function identifiers and their invocations"
+        },
+        "id-blacklist": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow specified identifiers"
+        },
+        "array-bracket-spacing": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce consistent spacing inside array brackets"
+        },
+        "keyword-spacing": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce consistent spacing before and after keywords"
+        },
+        "quote-props": {
+          "$ref": "#/$defs/rule",
+          "description": "Require quotes around object literal property names"
+        },
+        "no-tabs": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow tabs in file"
+        },
+        "space-infix-ops": {
+          "$ref": "#/$defs/rule",
+          "description": "Require spacing around operators"
+        },
+        "no-ternary": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow ternary operators"
+        },
+        "comma-dangle": {
+          "$ref": "#/$defs/rule",
+          "description": "Require or disallow trailing commas"
+        },
+        "space-before-blocks": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce consistent spacing before blocks"
+        },
+        "id-length": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce minimum and maximum identifier lengths"
+        },
+        "newline-before-return": {
+          "$ref": "#/$defs/rule",
+          "description": "Require an empty line before return statements"
+        },
+        "space-in-parens": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce consistent spacing inside parentheses"
+        },
+        "no-bitwise": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow bitwise operators"
+        },
+        "wrap-regex": {
+          "$ref": "#/$defs/rule",
+          "description": "Require parenthesis around regex literals"
+        },
+        "space-before-function-paren": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce consistent spacing before function definition opening parenthesis"
+        },
+        "jsx-quotes": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce the consistent use of either double or single quotes in JSX attributes"
+        },
+        "object-shorthand": {
+          "$ref": "#/$defs/rule"
+        },
+        "max-depth": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce a maximum depth that blocks can be nested"
+        },
+        "newline-per-chained-call": {
+          "$ref": "#/$defs/rule",
+          "description": "Require a newline after each call in a method chain"
+        },
+        "Require-jsdoc": {
+          "$ref": "#/$defs/rule",
+          "description": "Require JSDoc comments"
+        },
+        "no-inline-comments": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow inline comments after code"
+        },
+        "newline-after-var": {
+          "$ref": "#/$defs/rule",
+          "description": "Require or disallow an empty line after var declarations"
+        },
+        "comma-spacing": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce consistent spacing before and after commas"
+        },
+        "spaced-comment": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce consistent spacing after the // or /* in a comment"
+        },
+        "no-whitespace-before-property": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow whitespace before properties"
+        },
+        "semi-spacing": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce consistent spacing before and after semicolons"
+        },
+        "no-mixed-spaces-and-tabs": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow mixed spaces and tabs for indentation"
+        },
+        "no-underscore-dangle": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow dangling underscores in identifiers"
+        },
+        "max-statements": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce a maximum number of statements allowed in function blocks"
+        },
+        "capitalized-comments": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce or disallow capitalization of the first letter of a comment"
+        },
+        "object-curly-newline": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce consistent line breaks inside braces"
+        },
+        "padded-blocks": {
+          "$ref": "#/$defs/rule",
+          "description": "Require or disallow padding within blocks"
+        },
+        "sort-keys": {
+          "$ref": "#/$defs/rule",
+          "description": "Requires object keys to be sorted"
+        },
+        "one-var-declaration-per-line": {
+          "$ref": "#/$defs/rule",
+          "description": "Require or disallow newlines around var declarations"
+        },
+        "one-var": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce variables to be declared either together or separately in functions"
+        },
+        "id-match": {
+          "$ref": "#/$defs/rule",
+          "description": "Require identifiers to match a specified regular expression"
+        },
+        "eol-last": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce at least one newline at the end of files"
+        },
+        "sort-vars": {
+          "$ref": "#/$defs/rule",
+          "description": "Require variables within the same declaration block to be sorted"
+        },
+        "no-array-constructor": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow Array constructors"
+        },
+        "max-lines": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce a maximum number of lines per file"
+        },
+        "semi": {
+          "$ref": "#/$defs/rule",
+          "description": "Require or disallow semicolons instead of ASI"
+        },
+        "max-len": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce a maximum line length"
+        },
+        "operator-assignment": {
+          "$ref": "#/$defs/rule",
+          "description": "Require or disallow assignment operator shorthand where possible"
+        },
+        "new-parens": {
+          "$ref": "#/$defs/rule",
+          "description": "Require parentheses when invoking a constructor with no arguments"
+        },
+        "no-trailing-spaces": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow trailing whitespace at the end of lines"
+        },
+        "key-spacing": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce consistent spacing between keys and values in object literal properties"
+        },
+        "lines-around-comment": {
+          "$ref": "#/$defs/rule",
+          "description": "Require empty lines around comments"
+        },
+        "new-cap": {
+          "$ref": "#/$defs/rule",
+          "description": "Require constructor function names to begin with a capital letter"
+        },
+        "unicode-bom": {
+          "$ref": "#/$defs/rule",
+          "description": "Require or disallow Unicode byte order mark (BOM)"
+        },
+        "no-spaced-func": {
+          "$ref": "#/$defs/rule"
+        },
+        "no-unneeded-ternary": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow ternary operators when simpler alternatives exist"
+        }
+      }
+    },
+    "ecmaScript6": {
+      "properties": {
+        "arrow-parens": {
+          "$ref": "#/$defs/rule",
+          "description": "Require parentheses around arrow function arguments"
+        },
+        "no-this-before-super": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow this/super before calling super() in constructors"
+        },
+        "no-confusing-arrow": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow arrow functions where they could be confused with comparisons"
+        },
+        "yield-star-spacing": {
+          "$ref": "#/$defs/rule",
+          "description": "Require or disallow spacing around the * in yield* expressions"
+        },
+        "no-class-assign": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow reassigning class members"
+        },
+        "no-new-symbol": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow new operators with the Symbol object"
+        },
+        "no-useless-rename": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow renaming import, export, and destructured assignments to the same name"
+        },
+        "object-shorthand": {
+          "$ref": "#/$defs/rule",
+          "description": "Require or disallow method and property shorthand syntax for object literals"
+        },
+        "prefer-const": {
+          "$ref": "#/$defs/rule",
+          "description": "Require const declarations for variables that are never reassigned after declared"
+        },
+        "no-dupe-class-members": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow duplicate class members"
+        },
+        "no-duplicate-imports": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow duplicate module imports"
+        },
+        "prefer-reflect": {
+          "$ref": "#/$defs/rule",
+          "description": "Require Reflect methods where applicable"
+        },
+        "arrow-body-style": {
+          "$ref": "#/$defs/rule",
+          "description": "Require braces around arrow function bodies"
+        },
+        "rest-spread-spacing": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce spacing between rest and spread operators and their expressions"
+        },
+        "no-useless-constructor": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow unnecessary constructors"
+        },
+        "no-const-assign": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow reassigning const variables"
+        },
+        "constructor-super": {
+          "$ref": "#/$defs/rule",
+          "description": "Require super() calls in constructors"
+        },
+        "generator-star-spacing": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce consistent spacing around * operators in generator functions"
+        },
+        "prefer-spread": {
+          "$ref": "#/$defs/rule",
+          "description": "Require spread operators instead of .apply()"
+        },
+        "prefer-rest-params": {
+          "$ref": "#/$defs/rule",
+          "description": "Require rest parameters instead of arguments"
+        },
+        "arrow-spacing": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce consistent spacing before and after the arrow in arrow functions"
+        },
+        "prefer-arrow-callback": {
+          "$ref": "#/$defs/rule",
+          "description": "Require arrow functions as callbacks"
+        },
+        "no-restricted-imports": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow specified modules when loaded by import"
+        },
+        "Require-yield": {
+          "$ref": "#/$defs/rule",
+          "description": "Require generator functions to contain yield"
+        },
+        "sort-imports": {
+          "$ref": "#/$defs/rule",
+          "description": "Enforce sorted import declarations within modules"
+        },
+        "no-useless-computed-key": {
+          "$ref": "#/$defs/rule",
+          "description": "Disallow unnecessary computed property keys in object literals"
+        },
+        "template-curly-spacing": {
+          "$ref": "#/$defs/rule",
+          "description": "Require or disallow spacing around embedded expressions of template strings"
+        },
+        "prefer-template": {
+          "$ref": "#/$defs/rule",
+          "description": "Require template literals instead of string concatenation"
+        },
+        "no-var": {
+          "$ref": "#/$defs/rule",
+          "description": "Require let or const instead of var"
+        }
+      }
+    }
+  }
+}

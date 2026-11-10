@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "yarnTimestamp": {
+      "default": "",
+      "type": "string"
+    },
+    "loaderTimestamp": {
+      "default": "",
+      "type": "string"
+    },
+    "yarns": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/FabricArtifactVersion"
+      }
+    },
+    "loaders": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/FabricArtifactVersion"
+      }
+    }
+  },
+  "required": [
+    "loaderTimestamp",
+    "loaders",
+    "yarnTimestamp",
+    "yarns"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "FabricArtifactVersion": {
+      "type": "object",
+      "properties": {
+        "gameVersion": {
+          "type": "string"
+        },
+        "separator": {
+          "type": "string"
+        },
+        "build": {
+          "type": "number"
+        },
+        "maven": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "stable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "maven",
+        "stable",
+        "version"
+      ]
+    }
+  }
+}

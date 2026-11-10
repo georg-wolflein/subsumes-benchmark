@@ -1,0 +1,582 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_9",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "$ref"
+              ],
+              "properties": {
+                "$ref": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^$ref$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "parameter": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "jsonReference": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "emptyResponse": {
+                  "type": "boolean",
+                  "default": false
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Method name"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Method description"
+                },
+                "deprecated_from_version": {
+                  "type": "string"
+                },
+                "errors": {
+                  "$ref": "#/$defs/errors"
+                },
+                "from_version": {
+                  "type": "string"
+                },
+                "parameters": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/parameter"
+                  },
+                  "description": "Input parameters for method"
+                },
+                "access_token_type": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "open",
+                      "user",
+                      "group",
+                      "service"
+                    ],
+                    "description": "Access token type"
+                  },
+                  "description": "Input parameters for method"
+                },
+                "responses": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              },
+              "required": [
+                "name",
+                "access_token_type",
+                "responses"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^deprecated_from_version$": true,
+                "^errors$": true,
+                "^responses$": true,
+                "^name$": true,
+                "^from_version$": true,
+                "^access_token_type$": true,
+                "^parameters$": true,
+                "^emptyResponse$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "itemTypes": {
+      "type": "string",
+      "enum": [
+        "boolean",
+        "integer",
+        "number",
+        "string"
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "$ref": {
+                  "type": "string",
+                  "format": "uri-reference"
+                },
+                "properties": {
+                  "$ref": "#/$defs/modern_8"
+                },
+                "from_version": {
+                  "type": "string"
+                },
+                "oneOf": {
+                  "type": "array"
+                },
+                "deprecated_from_version": {
+                  "type": "string"
+                },
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "array"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "$ref": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "title": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "required": {
+                  "type": "array"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^required$": true,
+                "^deprecated_from_version$": true,
+                "^items$": true,
+                "^oneOf$": true,
+                "^title$": true,
+                "^$ref$": true,
+                "^properties$": true,
+                "^from_version$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "format": {
+                  "type": "string",
+                  "enum": [
+                    "json"
+                  ]
+                },
+                "$ref": {
+                  "type": "string",
+                  "format": "uri-reference"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Parameter name"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Parameter description"
+                },
+                "maxItems": {
+                  "type": "integer",
+                  "minimum": 0.0
+                },
+                "maximum": {
+                  "type": "number"
+                },
+                "minItems": {
+                  "type": "integer",
+                  "minimum": 0.0,
+                  "default": 0
+                },
+                "maxLength": {
+                  "type": "integer",
+                  "minimum": 0.0
+                },
+                "deprecated_from_version": {
+                  "type": "string",
+                  "description": "Property deprecated from version"
+                },
+                "items": {
+                  "$ref": "#/$defs/modern_4"
+                },
+                "from_version": {
+                  "type": "string",
+                  "description": "Property implemented from version"
+                },
+                "enum": {
+                  "type": "array",
+                  "minItems": 1,
+                  "_uniqueItems": true
+                },
+                "enumNames": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 1,
+                  "_uniqueItems": true
+                },
+                "minLength": {
+                  "type": "integer",
+                  "minimum": 0.0,
+                  "default": 0
+                },
+                "minimum": {
+                  "type": "number"
+                },
+                "type": {
+                  "$ref": "#/$defs/parameterTypes",
+                  "description": "Parameter type"
+                },
+                "required": {
+                  "type": "boolean",
+                  "default": false
+                }
+              },
+              "required": [
+                "name",
+                "type"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^maxLength$": true,
+                "^maximum$": true,
+                "^description$": true,
+                "^maxItems$": true,
+                "^name$": true,
+                "^minLength$": true,
+                "^minimum$": true,
+                "^enumNames$": true,
+                "^$ref$": true,
+                "^required$": true,
+                "^minItems$": true,
+                "^deprecated_from_version$": true,
+                "^format$": true,
+                "^items$": true,
+                "^enum$": true,
+                "^from_version$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "responseTypes": {
+      "type": "string",
+      "enum": [
+        "array",
+        "boolean",
+        "integer",
+        "number",
+        "string",
+        "object"
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "$ref": {
+                  "type": "string",
+                  "format": "uri-reference"
+                },
+                "maximum": {
+                  "type": "number"
+                },
+                "enum": {
+                  "type": "array",
+                  "minItems": 1,
+                  "_uniqueItems": true
+                },
+                "enumNames": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 1,
+                  "_uniqueItems": true
+                },
+                "minimum": {
+                  "type": "number"
+                },
+                "type": {
+                  "$ref": "#/$defs/itemTypes"
+                }
+              },
+              "oneOf": [
+                {
+                  "required": [
+                    "type"
+                  ]
+                },
+                {
+                  "required": [
+                    "$ref"
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^maximum$": true,
+                "^enum$": true,
+                "^type$": true,
+                "^minimum$": true,
+                "^enumNames$": true,
+                "^$ref$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "method": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Error name"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Error description"
+                },
+                "deprecated_from_version": {
+                  "type": "string"
+                },
+                "code": {
+                  "type": "integer",
+                  "description": "Error code",
+                  "minimum": 0.0
+                },
+                "from_version": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "code",
+                "description"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^code$": true,
+                "^description$": true,
+                "^deprecated_from_version$": true,
+                "^name$": true,
+                "^from_version$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/error"
+      },
+      "description": "Possible errors"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "^([a-zA-Z0-9_]+)?[rR]esponse$": {
+                  "$ref": "#/$defs/response"
+                }
+              },
+              "description": "References to response objects"
+            },
+            {
+              "patternProperties": {
+                "^([a-zA-Z0-9_]+)?[rR]esponse$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "response": {
+      "$ref": "#/$defs/modern_7"
+    },
+    "parameterArray": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#"
+      }
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "^[a-zA-Z0-9_]+$": {
+                  "$ref": "#/$defs/responseProperty"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^[a-zA-Z0-9_]+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "error": {
+      "$ref": "#/$defs/modern_6"
+    },
+    "responseProperty": {
+      "type": "object",
+      "oneOf": [
+        {
+          "required": [
+            "type"
+          ]
+        },
+        {
+          "required": [
+            "$ref"
+          ]
+        }
+      ],
+      "properties": {
+        "type": {
+          "$ref": "#/$defs/responseTypes"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "API",
+              "description": "API declaration",
+              "type": "object",
+              "properties": {
+                "methods": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/method"
+                  }
+                },
+                "errors": {
+                  "$ref": "#/$defs/errors"
+                },
+                "definitions4": {
+                  "patternProperties": {
+                    "^([a-zA-Z0-9_]+)?[rR]esponse$": {
+                      "$ref": "#/$defs/response"
+                    }
+                  }
+                },
+                "title": {
+                  "type": "string"
+                },
+                "$schema": {
+                  "type": "string",
+                  "format": "uri-reference"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^$schema$": true,
+                "^definitions4$": true,
+                "^errors$": true,
+                "^methods$": true,
+                "^title$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "parameterTypes": {
+      "type": "string",
+      "enum": [
+        "array",
+        "boolean",
+        "integer",
+        "number",
+        "string"
+      ]
+    },
+    "responsePropertyTypes": {
+      "type": "string",
+      "enum": [
+        "array",
+        "boolean",
+        "integer",
+        "number",
+        "string"
+      ]
+    }
+  }
+}

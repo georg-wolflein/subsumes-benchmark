@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "log file entry for ingestion by tsd aggregator",
+  "properties": {
+    "context": {
+      "properties": {},
+      "type": "object"
+    },
+    "data": {
+      "$ref": "#/$defs/data"
+    },
+    "id": {
+      "type": "string"
+    },
+    "level": {
+      "pattern": "^info$",
+      "type": "string"
+    },
+    "name": {
+      "pattern": "^aint.metrics$",
+      "type": "string"
+    },
+    "time": {
+      "_format": "date-time",
+      "type": "string"
+    }
+  },
+  "required": [
+    "time",
+    "name",
+    "level",
+    "data"
+  ],
+  "title": "Query Log",
+  "type": "object",
+  "$defs": {
+    "data": {
+      "properties": {
+        "annotations": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "properties": {
+            "finalTimestamp": {
+              "_format": "date-time",
+              "type": "string"
+            },
+            "initTimestamp": {
+              "_format": "date-time",
+              "type": "string"
+            }
+          },
+          "required": [
+            "initTimestamp",
+            "finalTimestamp"
+          ],
+          "type": "object"
+        },
+        "counters": {
+          "$ref": "#/$defs/metricsList"
+        },
+        "gauges": {
+          "$ref": "#/$defs/metricsList"
+        },
+        "timers": {
+          "$ref": "#/$defs/metricsList"
+        },
+        "version": {
+          "pattern": "^2e$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "annotations",
+        "version"
+      ],
+      "type": "object"
+    },
+    "dataElement": {
+      "properties": {
+        "values": {
+          "items": {
+            "$ref": "#/$defs/sampleObject"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "values"
+      ],
+      "type": "object"
+    },
+    "metricsList": {
+      "additionalProperties": {
+        "$ref": "#/$defs/dataElement"
+      },
+      "type": "object"
+    },
+    "sampleObject": {
+      "properties": {
+        "unit": {
+          "enum": [
+            "nanosecond",
+            "microsecond",
+            "millisecond",
+            "second",
+            "minute",
+            "hour",
+            "day",
+            "week",
+            "bit",
+            "byte",
+            "kilobit",
+            "kilobyte",
+            "megabit",
+            "megabyte",
+            "gigabit",
+            "gigabyte",
+            "terabyte",
+            "petabyte"
+          ],
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "value"
+      ],
+      "type": "object"
+    }
+  }
+}

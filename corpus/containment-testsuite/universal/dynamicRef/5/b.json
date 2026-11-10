@@ -1,0 +1,60 @@
+{
+  "anyOf": [
+    {
+      "$id": "https://test.json-schema.org/dynamic-resolution-with-intermediate-scopes/root",
+      "$ref": "intermediate-scope",
+      "$defs": {
+        "foo": {
+          "$dynamicAnchor": "items",
+          "type": "string"
+        },
+        "intermediate-scope": {
+          "$id": "intermediate-scope",
+          "$ref": "list"
+        },
+        "list": {
+          "$id": "list",
+          "type": "array",
+          "items": {
+            "$dynamicRef": "#items"
+          },
+          "$defs": {
+            "items": {
+              "$comment": "This is only needed to satisfy the bookending requirement",
+              "$dynamicAnchor": "items"
+            }
+          }
+        }
+      }
+    },
+    {
+      "$id": "https://test1.json-schema.org/dynamic-resolution-with-intermediate-scopes/root",
+      "$defs": {
+        "foo": {
+          "$dynamicAnchor": "items1",
+          "type": "string"
+        },
+        "intermediate-scope": {
+          "$id": "intermediate-scope1",
+          "$ref": "list1"
+        },
+        "list": {
+          "$id": "list1",
+          "type": "array",
+          "items": {
+            "$dynamicRef": "#items1"
+          },
+          "$defs": {
+            "items": {
+              "$comment": "This is only needed to satisfy the bookending requirement",
+              "$dynamicAnchor": "items1"
+            }
+          }
+        }
+      },
+      "not": {
+        "$ref": "intermediate-scope1"
+      }
+    }
+  ]
+}

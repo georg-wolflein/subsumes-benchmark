@@ -1,0 +1,1303 @@
+{
+  "$id": "https://github.com/TheDreamPort/rpe021-public/rpe021_schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "title": "RPE-021 Schema"
+                },
+                {
+                  "description": "Schema for network element / activity visualization"
+                },
+                {
+                  "version": "1.0.2"
+                },
+                {
+                  "type": "object"
+                },
+                {
+                  "properties": {
+                    "elem_type": {
+                      "enum": [
+                        "network",
+                        "endpoint",
+                        "connection"
+                      ]
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "data": {
+                      "type": "string"
+                    },
+                    "label": {
+                      "type": "string"
+                    },
+                    "color": {
+                      "enum": [
+                        "red",
+                        "blue",
+                        "gray",
+                        "black",
+                        "white",
+                        "orange",
+                        "yellow",
+                        "green"
+                      ]
+                    },
+                    "id": {
+                      "type": "string"
+                    }
+                  }
+                },
+                {
+                  "required": [
+                    "id",
+                    "timestamp",
+                    "label",
+                    "color",
+                    "elem_type"
+                  ]
+                },
+                {
+                  "allOf": [
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "elem_type": {
+                              "const": "network"
+                            }
+                          }
+                        },
+                        {
+                          "properties": {
+                            "cidr_block": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "cidr_block"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "elem_type": {
+                              "const": "endpoint"
+                            }
+                          }
+                        },
+                        {
+                          "properties": {
+                            "endpoint_type": {
+                              "enum": [
+                                "router",
+                                "switch",
+                                "wap",
+                                "firewall",
+                                "server",
+                                "workstation",
+                                "iot_device",
+                                "ics_device",
+                                "phone"
+                              ]
+                            },
+                            "os_type": {
+                              "enum": [
+                                "windows",
+                                "linux",
+                                "macosx",
+                                "android",
+                                "ios",
+                                "unknown"
+                              ]
+                            },
+                            "network": {
+                              "type": "string"
+                            },
+                            "interfaces": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "mac": {
+                                    "type": "string"
+                                  },
+                                  "ipv4": {
+                                    "type": "string",
+                                    "format": "ipv4"
+                                  },
+                                  "interface_id": {
+                                    "type": "string"
+                                  },
+                                  "label": {
+                                    "type": "string"
+                                  },
+                                  "ipv6": {
+                                    "type": "string",
+                                    "format": "ipv6"
+                                  }
+                                },
+                                "required": [
+                                  "label",
+                                  "interface_id"
+                                ]
+                              }
+                            }
+                          },
+                          "required": [
+                            "endpoint_type",
+                            "interfaces"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "elem_type": {
+                              "const": "connection"
+                            }
+                          }
+                        },
+                        {
+                          "properties": {
+                            "interface_from": {
+                              "type": "string"
+                            },
+                            "interface_to": {
+                              "type": "string"
+                            },
+                            "line_type": {
+                              "enum": [
+                                "solid",
+                                "dotted",
+                                "dashed"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "interface_from",
+                            "interface_to",
+                            "line_type"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^timestamp$": true,
+                "^color$": true,
+                "^label$": true,
+                "^endpoint_type$": true,
+                "^id$": true,
+                "^interface_from$": true,
+                "^elem_type$": true,
+                "^interfaces$": true,
+                "^data$": true,
+                "^interface_to$": true,
+                "^line_type$": true,
+                "^network$": true,
+                "^cidr_block$": true,
+                "^os_type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "title": "RPE-021 Schema"
+                },
+                {
+                  "description": "Schema for network element / activity visualization"
+                },
+                {
+                  "version": "1.0.2"
+                },
+                {
+                  "type": "object"
+                },
+                {
+                  "properties": {
+                    "elem_type": {
+                      "enum": [
+                        "network",
+                        "endpoint",
+                        "connection"
+                      ]
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "data": {
+                      "type": "string"
+                    },
+                    "label": {
+                      "type": "string"
+                    },
+                    "color": {
+                      "enum": [
+                        "red",
+                        "blue",
+                        "gray",
+                        "black",
+                        "white",
+                        "orange",
+                        "yellow",
+                        "green"
+                      ]
+                    },
+                    "id": {
+                      "type": "string"
+                    }
+                  }
+                },
+                {
+                  "required": [
+                    "id",
+                    "timestamp",
+                    "label",
+                    "color",
+                    "elem_type"
+                  ]
+                },
+                {
+                  "allOf": [
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "elem_type": {
+                              "const": "network"
+                            }
+                          }
+                        },
+                        {
+                          "properties": {
+                            "cidr_block": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "cidr_block"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "elem_type": {
+                              "const": "endpoint"
+                            }
+                          }
+                        },
+                        {
+                          "properties": {
+                            "endpoint_type": {
+                              "enum": [
+                                "router",
+                                "switch",
+                                "wap",
+                                "firewall",
+                                "server",
+                                "workstation",
+                                "iot_device",
+                                "ics_device",
+                                "phone"
+                              ]
+                            },
+                            "os_type": {
+                              "enum": [
+                                "windows",
+                                "linux",
+                                "macosx",
+                                "android",
+                                "ios",
+                                "unknown"
+                              ]
+                            },
+                            "network": {
+                              "type": "string"
+                            },
+                            "interfaces": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "mac": {
+                                    "type": "string"
+                                  },
+                                  "ipv4": {
+                                    "type": "string",
+                                    "format": "ipv4"
+                                  },
+                                  "interface_id": {
+                                    "type": "string"
+                                  },
+                                  "label": {
+                                    "type": "string"
+                                  },
+                                  "ipv6": {
+                                    "type": "string",
+                                    "format": "ipv6"
+                                  }
+                                },
+                                "required": [
+                                  "label",
+                                  "interface_id"
+                                ]
+                              }
+                            }
+                          },
+                          "required": [
+                            "endpoint_type",
+                            "interfaces"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "not": {
+                        "properties": {
+                          "elem_type": {
+                            "const": "connection"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^timestamp$": true,
+                "^color$": true,
+                "^label$": true,
+                "^endpoint_type$": true,
+                "^id$": true,
+                "^elem_type$": true,
+                "^interfaces$": true,
+                "^data$": true,
+                "^network$": true,
+                "^cidr_block$": true,
+                "^os_type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "title": "RPE-021 Schema"
+                },
+                {
+                  "description": "Schema for network element / activity visualization"
+                },
+                {
+                  "version": "1.0.2"
+                },
+                {
+                  "type": "object"
+                },
+                {
+                  "properties": {
+                    "elem_type": {
+                      "enum": [
+                        "network",
+                        "endpoint",
+                        "connection"
+                      ]
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "data": {
+                      "type": "string"
+                    },
+                    "label": {
+                      "type": "string"
+                    },
+                    "color": {
+                      "enum": [
+                        "red",
+                        "blue",
+                        "gray",
+                        "black",
+                        "white",
+                        "orange",
+                        "yellow",
+                        "green"
+                      ]
+                    },
+                    "id": {
+                      "type": "string"
+                    }
+                  }
+                },
+                {
+                  "required": [
+                    "id",
+                    "timestamp",
+                    "label",
+                    "color",
+                    "elem_type"
+                  ]
+                },
+                {
+                  "allOf": [
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "elem_type": {
+                              "const": "network"
+                            }
+                          }
+                        },
+                        {
+                          "properties": {
+                            "cidr_block": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "cidr_block"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "not": {
+                        "properties": {
+                          "elem_type": {
+                            "const": "endpoint"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "elem_type": {
+                              "const": "connection"
+                            }
+                          }
+                        },
+                        {
+                          "properties": {
+                            "interface_from": {
+                              "type": "string"
+                            },
+                            "interface_to": {
+                              "type": "string"
+                            },
+                            "line_type": {
+                              "enum": [
+                                "solid",
+                                "dotted",
+                                "dashed"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "interface_from",
+                            "interface_to",
+                            "line_type"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^timestamp$": true,
+                "^color$": true,
+                "^label$": true,
+                "^id$": true,
+                "^interface_from$": true,
+                "^elem_type$": true,
+                "^cidr_block$": true,
+                "^data$": true,
+                "^interface_to$": true,
+                "^line_type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "title": "RPE-021 Schema"
+                },
+                {
+                  "description": "Schema for network element / activity visualization"
+                },
+                {
+                  "version": "1.0.2"
+                },
+                {
+                  "type": "object"
+                },
+                {
+                  "properties": {
+                    "elem_type": {
+                      "enum": [
+                        "network",
+                        "endpoint",
+                        "connection"
+                      ]
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "data": {
+                      "type": "string"
+                    },
+                    "label": {
+                      "type": "string"
+                    },
+                    "color": {
+                      "enum": [
+                        "red",
+                        "blue",
+                        "gray",
+                        "black",
+                        "white",
+                        "orange",
+                        "yellow",
+                        "green"
+                      ]
+                    },
+                    "id": {
+                      "type": "string"
+                    }
+                  }
+                },
+                {
+                  "required": [
+                    "id",
+                    "timestamp",
+                    "label",
+                    "color",
+                    "elem_type"
+                  ]
+                },
+                {
+                  "allOf": [
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "elem_type": {
+                              "const": "network"
+                            }
+                          }
+                        },
+                        {
+                          "properties": {
+                            "cidr_block": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "cidr_block"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "not": {
+                        "properties": {
+                          "elem_type": {
+                            "const": "endpoint"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "not": {
+                        "properties": {
+                          "elem_type": {
+                            "const": "connection"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^timestamp$": true,
+                "^color$": true,
+                "^label$": true,
+                "^id$": true,
+                "^elem_type$": true,
+                "^cidr_block$": true,
+                "^data$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "title": "RPE-021 Schema"
+                },
+                {
+                  "description": "Schema for network element / activity visualization"
+                },
+                {
+                  "version": "1.0.2"
+                },
+                {
+                  "type": "object"
+                },
+                {
+                  "properties": {
+                    "elem_type": {
+                      "enum": [
+                        "network",
+                        "endpoint",
+                        "connection"
+                      ]
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "data": {
+                      "type": "string"
+                    },
+                    "label": {
+                      "type": "string"
+                    },
+                    "color": {
+                      "enum": [
+                        "red",
+                        "blue",
+                        "gray",
+                        "black",
+                        "white",
+                        "orange",
+                        "yellow",
+                        "green"
+                      ]
+                    },
+                    "id": {
+                      "type": "string"
+                    }
+                  }
+                },
+                {
+                  "required": [
+                    "id",
+                    "timestamp",
+                    "label",
+                    "color",
+                    "elem_type"
+                  ]
+                },
+                {
+                  "allOf": [
+                    {
+                      "not": {
+                        "properties": {
+                          "elem_type": {
+                            "const": "network"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "elem_type": {
+                              "const": "endpoint"
+                            }
+                          }
+                        },
+                        {
+                          "properties": {
+                            "endpoint_type": {
+                              "enum": [
+                                "router",
+                                "switch",
+                                "wap",
+                                "firewall",
+                                "server",
+                                "workstation",
+                                "iot_device",
+                                "ics_device",
+                                "phone"
+                              ]
+                            },
+                            "os_type": {
+                              "enum": [
+                                "windows",
+                                "linux",
+                                "macosx",
+                                "android",
+                                "ios",
+                                "unknown"
+                              ]
+                            },
+                            "network": {
+                              "type": "string"
+                            },
+                            "interfaces": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "mac": {
+                                    "type": "string"
+                                  },
+                                  "ipv4": {
+                                    "type": "string",
+                                    "format": "ipv4"
+                                  },
+                                  "interface_id": {
+                                    "type": "string"
+                                  },
+                                  "label": {
+                                    "type": "string"
+                                  },
+                                  "ipv6": {
+                                    "type": "string",
+                                    "format": "ipv6"
+                                  }
+                                },
+                                "required": [
+                                  "label",
+                                  "interface_id"
+                                ]
+                              }
+                            }
+                          },
+                          "required": [
+                            "endpoint_type",
+                            "interfaces"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "elem_type": {
+                              "const": "connection"
+                            }
+                          }
+                        },
+                        {
+                          "properties": {
+                            "interface_from": {
+                              "type": "string"
+                            },
+                            "interface_to": {
+                              "type": "string"
+                            },
+                            "line_type": {
+                              "enum": [
+                                "solid",
+                                "dotted",
+                                "dashed"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "interface_from",
+                            "interface_to",
+                            "line_type"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^timestamp$": true,
+                "^color$": true,
+                "^label$": true,
+                "^endpoint_type$": true,
+                "^id$": true,
+                "^interface_from$": true,
+                "^elem_type$": true,
+                "^interfaces$": true,
+                "^data$": true,
+                "^interface_to$": true,
+                "^line_type$": true,
+                "^network$": true,
+                "^os_type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "title": "RPE-021 Schema"
+                },
+                {
+                  "description": "Schema for network element / activity visualization"
+                },
+                {
+                  "version": "1.0.2"
+                },
+                {
+                  "type": "object"
+                },
+                {
+                  "properties": {
+                    "elem_type": {
+                      "enum": [
+                        "network",
+                        "endpoint",
+                        "connection"
+                      ]
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "data": {
+                      "type": "string"
+                    },
+                    "label": {
+                      "type": "string"
+                    },
+                    "color": {
+                      "enum": [
+                        "red",
+                        "blue",
+                        "gray",
+                        "black",
+                        "white",
+                        "orange",
+                        "yellow",
+                        "green"
+                      ]
+                    },
+                    "id": {
+                      "type": "string"
+                    }
+                  }
+                },
+                {
+                  "required": [
+                    "id",
+                    "timestamp",
+                    "label",
+                    "color",
+                    "elem_type"
+                  ]
+                },
+                {
+                  "allOf": [
+                    {
+                      "not": {
+                        "properties": {
+                          "elem_type": {
+                            "const": "network"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "elem_type": {
+                              "const": "endpoint"
+                            }
+                          }
+                        },
+                        {
+                          "properties": {
+                            "endpoint_type": {
+                              "enum": [
+                                "router",
+                                "switch",
+                                "wap",
+                                "firewall",
+                                "server",
+                                "workstation",
+                                "iot_device",
+                                "ics_device",
+                                "phone"
+                              ]
+                            },
+                            "os_type": {
+                              "enum": [
+                                "windows",
+                                "linux",
+                                "macosx",
+                                "android",
+                                "ios",
+                                "unknown"
+                              ]
+                            },
+                            "network": {
+                              "type": "string"
+                            },
+                            "interfaces": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "mac": {
+                                    "type": "string"
+                                  },
+                                  "ipv4": {
+                                    "type": "string",
+                                    "format": "ipv4"
+                                  },
+                                  "interface_id": {
+                                    "type": "string"
+                                  },
+                                  "label": {
+                                    "type": "string"
+                                  },
+                                  "ipv6": {
+                                    "type": "string",
+                                    "format": "ipv6"
+                                  }
+                                },
+                                "required": [
+                                  "label",
+                                  "interface_id"
+                                ]
+                              }
+                            }
+                          },
+                          "required": [
+                            "endpoint_type",
+                            "interfaces"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "not": {
+                        "properties": {
+                          "elem_type": {
+                            "const": "connection"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^timestamp$": true,
+                "^color$": true,
+                "^label$": true,
+                "^endpoint_type$": true,
+                "^id$": true,
+                "^elem_type$": true,
+                "^interfaces$": true,
+                "^data$": true,
+                "^network$": true,
+                "^os_type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "title": "RPE-021 Schema"
+                },
+                {
+                  "description": "Schema for network element / activity visualization"
+                },
+                {
+                  "version": "1.0.2"
+                },
+                {
+                  "type": "object"
+                },
+                {
+                  "properties": {
+                    "elem_type": {
+                      "enum": [
+                        "network",
+                        "endpoint",
+                        "connection"
+                      ]
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "data": {
+                      "type": "string"
+                    },
+                    "label": {
+                      "type": "string"
+                    },
+                    "color": {
+                      "enum": [
+                        "red",
+                        "blue",
+                        "gray",
+                        "black",
+                        "white",
+                        "orange",
+                        "yellow",
+                        "green"
+                      ]
+                    },
+                    "id": {
+                      "type": "string"
+                    }
+                  }
+                },
+                {
+                  "required": [
+                    "id",
+                    "timestamp",
+                    "label",
+                    "color",
+                    "elem_type"
+                  ]
+                },
+                {
+                  "allOf": [
+                    {
+                      "not": {
+                        "properties": {
+                          "elem_type": {
+                            "const": "network"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "not": {
+                        "properties": {
+                          "elem_type": {
+                            "const": "endpoint"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "elem_type": {
+                              "const": "connection"
+                            }
+                          }
+                        },
+                        {
+                          "properties": {
+                            "interface_from": {
+                              "type": "string"
+                            },
+                            "interface_to": {
+                              "type": "string"
+                            },
+                            "line_type": {
+                              "enum": [
+                                "solid",
+                                "dotted",
+                                "dashed"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "interface_from",
+                            "interface_to",
+                            "line_type"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^timestamp$": true,
+                "^color$": true,
+                "^label$": true,
+                "^id$": true,
+                "^interface_from$": true,
+                "^elem_type$": true,
+                "^data$": true,
+                "^interface_to$": true,
+                "^line_type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "title": "RPE-021 Schema"
+                },
+                {
+                  "description": "Schema for network element / activity visualization"
+                },
+                {
+                  "version": "1.0.2"
+                },
+                {
+                  "type": "object"
+                },
+                {
+                  "properties": {
+                    "elem_type": {
+                      "enum": [
+                        "network",
+                        "endpoint",
+                        "connection"
+                      ]
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "data": {
+                      "type": "string"
+                    },
+                    "label": {
+                      "type": "string"
+                    },
+                    "color": {
+                      "enum": [
+                        "red",
+                        "blue",
+                        "gray",
+                        "black",
+                        "white",
+                        "orange",
+                        "yellow",
+                        "green"
+                      ]
+                    },
+                    "id": {
+                      "type": "string"
+                    }
+                  }
+                },
+                {
+                  "required": [
+                    "id",
+                    "timestamp",
+                    "label",
+                    "color",
+                    "elem_type"
+                  ]
+                },
+                {
+                  "allOf": [
+                    {
+                      "not": {
+                        "properties": {
+                          "elem_type": {
+                            "const": "network"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "not": {
+                        "properties": {
+                          "elem_type": {
+                            "const": "endpoint"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "not": {
+                        "properties": {
+                          "elem_type": {
+                            "const": "connection"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^timestamp$": true,
+                "^color$": true,
+                "^label$": true,
+                "^id$": true,
+                "^elem_type$": true,
+                "^data$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

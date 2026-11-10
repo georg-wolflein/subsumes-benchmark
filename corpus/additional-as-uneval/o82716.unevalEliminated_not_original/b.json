@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "ads_enabled": {
+                  "type": "boolean",
+                  "default": true,
+                  "pbj": {
+                    "type": "boolean",
+                    "rule": "single"
+                  }
+                },
+                "dfp_ad_unit_path": {
+                  "type": "string",
+                  "pattern": "^[\\w\\/\\.:-]+$",
+                  "pbj": {
+                    "type": "string",
+                    "rule": "single"
+                  }
+                },
+                "dfp_cust_params": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^ads_enabled$": true,
+                "^dfp_ad_unit_path$": true,
+                "^dfp_cust_params$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "^[a-zA-Z_]{1}[\\w\\.:-]+$": {
+                  "type": "string",
+                  "pattern": "^[\\w\\/\\.:-]+$"
+                }
+              },
+              "pbj": {
+                "type": "string",
+                "rule": "map"
+              }
+            },
+            {
+              "patternProperties": {
+                "^[a-zA-Z_]{1}[\\w\\.:-]+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "cipher": {
+      "enum": [
+        "aes-128-ctr"
+      ],
+      "type": "string"
+    },
+    "cipherparams": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "ciphertext": {
+      "pattern": "^(([0-9]|[a-f]){2}){0,32}$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "cipher",
+    "cipherparams",
+    "ciphertext"
+  ],
+  "type": "object",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "iv": {
+                  "pattern": "^([0-9]|[a-f]){32}$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "iv"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^iv$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

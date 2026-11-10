@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_3",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Target options.",
+              "properties": {
+                "builder": {
+                  "description": "The builder used for this package.",
+                  "type": "string"
+                },
+                "configurations": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "options": {
+                  "$ref": "#/$defs/options"
+                }
+              },
+              "required": [
+                "builder",
+                "options"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^builder$": true,
+                "^configurations$": true,
+                "^options$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "A map of alternative target options.",
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/options"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "options": {
+      "description": "Target options.",
+      "type": "object"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "A map of available project targets.",
+              "required": [],
+              "title": "Targets schema for validating Architect targets configuration.",
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/target"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "target": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

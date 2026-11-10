@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "locations": {
+      "$ref": "#/$defs/LocationsType"
+    },
+    "version": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "LocationsType": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "location": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/LocationType"
+          }
+        },
+        "numsys": {
+          "type": "integer"
+        }
+      }
+    },
+    "LocationType": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "detectors": {
+          "$ref": "#/$defs/Detectors"
+        },
+        "id": {
+          "type": "string"
+        },
+        "file": {
+          "type": "string",
+          "enum": [
+            "OK",
+            "NONE"
+          ]
+        },
+        "path": {
+          "type": "string"
+        }
+      }
+    },
+    "Detectors": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "detector": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DetectorType"
+          }
+        }
+      }
+    },
+    "DetectorType": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer"
+        },
+        "faze": {
+          "type": "integer"
+        },
+        "lane": {
+          "type": "integer"
+        },
+        "mode": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "title": "serviceTemplatePatch",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "schoolId": {
+                  "type": "string",
+                  "pattern": "[a-f0-9]{24}"
+                },
+                "magicNumber": {
+                  "type": "number"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^schoolId$": true,
+                "^magicNumber$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,1258 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "description": "DForms Form Schema",
+  "required": [
+    "sections"
+  ],
+  "properties": {
+    "sections": {
+      "$ref": "#/$defs/modern_26"
+    },
+    "expressions": {
+      "$ref": "#/$defs/modern_27"
+    }
+  },
+  "$defs": {
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "size": {
+                  "$ref": "#/$defs/fieldSize"
+                },
+                "visible": {
+                  "$ref": "#/$defs/expressionId"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "min": {
+                  "type": "number"
+                },
+                "placeholder": {
+                  "type": "string"
+                },
+                "help": {
+                  "type": "string"
+                },
+                "max": {
+                  "type": "number"
+                },
+                "valid": {
+                  "$ref": "#/$defs/expressionId"
+                },
+                "type": {
+                  "enum": [
+                    "number",
+                    "decimal"
+                  ]
+                },
+                "required": {
+                  "oneOf": [
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "label"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^required$": true,
+                "^max$": true,
+                "^label$": true,
+                "^type$": true,
+                "^placeholder$": true,
+                "^min$": true,
+                "^visible$": true,
+                "^valid$": true,
+                "^help$": true,
+                "^size$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "conditionGreaterThanOrEqualTo": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "$ref": "#/$defs/expressions"
+      }
+    },
+    "conditionLessThan": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "$ref": "#/$defs/expressions"
+      }
+    },
+    "repeatingField": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "numericField": {
+      "$ref": "#/$defs/modern_6"
+    },
+    "textField": {
+      "$ref": "#/$defs/modern_7"
+    },
+    "modern_20": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "fields": {
+                  "type": "object",
+                  "patternProperties": {
+                    "^[a-zA-Z0-9_]+$": {
+                      "$ref": "#/$defs/fields"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^label$": true,
+                "^fields$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "section": {
+      "$ref": "#/$defs/modern_20"
+    },
+    "modern_12": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "equals": {
+                  "$ref": "#/$defs/conditionEquals"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^equals$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "emailField": {
+      "$ref": "#/$defs/modern_21"
+    },
+    "conditionExpression": {
+      "type": "string"
+    },
+    "conditionValue": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    },
+    "modern_22": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "size": {
+                  "$ref": "#/$defs/fieldSize"
+                },
+                "visible": {
+                  "$ref": "#/$defs/expressionId"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "placeholder": {
+                  "type": "string"
+                },
+                "help": {
+                  "type": "string"
+                },
+                "valid": {
+                  "$ref": "#/$defs/expressionId"
+                },
+                "type": {
+                  "enum": [
+                    "date"
+                  ]
+                },
+                "required": {
+                  "oneOf": [
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "label"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^required$": true,
+                "^label$": true,
+                "^type$": true,
+                "^placeholder$": true,
+                "^visible$": true,
+                "^valid$": true,
+                "^help$": true,
+                "^size$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_26": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "^[a-zA-Z0-9_]+$": {
+                  "$ref": "#/$defs/section"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^[a-zA-Z0-9_]+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_14": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "value": {
+                  "$ref": "#/$defs/conditionValue"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_21": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "size": {
+                  "$ref": "#/$defs/fieldSize"
+                },
+                "visible": {
+                  "$ref": "#/$defs/expressionId"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "placeholder": {
+                  "type": "string"
+                },
+                "help": {
+                  "type": "string"
+                },
+                "valid": {
+                  "$ref": "#/$defs/expressionId"
+                },
+                "type": {
+                  "enum": [
+                    "email"
+                  ]
+                },
+                "required": {
+                  "oneOf": [
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "label"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^required$": true,
+                "^label$": true,
+                "^type$": true,
+                "^placeholder$": true,
+                "^visible$": true,
+                "^valid$": true,
+                "^help$": true,
+                "^size$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "^[a-zA-Z0-9_]+$": {
+                  "$ref": "#/$defs/expressions"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^[a-zA-Z0-9_]+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "enumField": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "conditionField": {
+      "type": "string"
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "not": {
+                  "$ref": "#/$defs/conditionNot"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^not$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "conditionNot": {
+      "$ref": "#/$defs/expressions"
+    },
+    "modern_16": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                ">=": {
+                  "$ref": "#/$defs/conditionGreaterThanOrEqualTo"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^>=$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_15": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                ">": {
+                  "$ref": "#/$defs/conditionGreaterThan"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^>$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "datetimeField": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "timeField": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_27": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "^[a-zA-Z0-9_]+$": {
+                  "$ref": "#/$defs/expressions"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^[a-zA-Z0-9_]+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "size": {
+                  "$ref": "#/$defs/fieldSize"
+                },
+                "visible": {
+                  "$ref": "#/$defs/expressionId"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "default": {
+                  "type": "string"
+                },
+                "valid": {
+                  "$ref": "#/$defs/expressionId"
+                },
+                "options": {
+                  "anyOf": [
+                    {
+                      "type": "array",
+                      "minItems": 1,
+                      "_uniqueItems": true,
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "minProperties": 1
+                    }
+                  ]
+                },
+                "help": {
+                  "type": "string"
+                },
+                "type": {
+                  "enum": [
+                    "enum"
+                  ]
+                },
+                "required": {
+                  "oneOf": [
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "label"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^required$": true,
+                "^options$": true,
+                "^label$": true,
+                "^type$": true,
+                "^default$": true,
+                "^visible$": true,
+                "^valid$": true,
+                "^help$": true,
+                "^size$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "size": {
+                  "$ref": "#/$defs/fieldSize"
+                },
+                "visible": {
+                  "$ref": "#/$defs/expressionId"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "help": {
+                  "type": "string"
+                },
+                "valid": {
+                  "$ref": "#/$defs/expressionId"
+                },
+                "suggestions": {
+                  "type": "array"
+                },
+                "placeholder": {
+                  "type": "string"
+                },
+                "type": {
+                  "enum": [
+                    "text"
+                  ]
+                },
+                "required": {
+                  "oneOf": [
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "label"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^required$": true,
+                "^label$": true,
+                "^type$": true,
+                "^suggestions$": true,
+                "^placeholder$": true,
+                "^visible$": true,
+                "^valid$": true,
+                "^help$": true,
+                "^size$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "expressionId": {
+      "type": "string"
+    },
+    "modern_23": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "visible": {
+                  "$ref": "#/$defs/expressionId"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "help": {
+                  "type": "string"
+                },
+                "fields": {
+                  "type": "object",
+                  "patternProperties": {
+                    "^[a-zA-Z0-9_]+$": {
+                      "$ref": "#/$defs/fields"
+                    }
+                  }
+                },
+                "type": {
+                  "enum": [
+                    "multiple"
+                  ]
+                }
+              },
+              "required": [
+                "label"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^help$": true,
+                "^visible$": true,
+                "^fields$": true,
+                "^label$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_17": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "<": {
+                  "$ref": "#/$defs/conditionLessThan"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^<$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "expressions": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/modern_8"
+        },
+        {
+          "$ref": "#/$defs/modern_9"
+        },
+        {
+          "$ref": "#/$defs/modern_10"
+        },
+        {
+          "$ref": "#/$defs/modern_11"
+        },
+        {
+          "$ref": "#/$defs/modern_12"
+        },
+        {
+          "$ref": "#/$defs/modern_13"
+        },
+        {
+          "$ref": "#/$defs/modern_14"
+        },
+        {
+          "$ref": "#/$defs/modern_15"
+        },
+        {
+          "$ref": "#/$defs/modern_16"
+        },
+        {
+          "$ref": "#/$defs/modern_17"
+        },
+        {
+          "$ref": "#/$defs/modern_18"
+        },
+        {
+          "$ref": "#/$defs/modern_19"
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "size": {
+                  "$ref": "#/$defs/fieldSize"
+                },
+                "visible": {
+                  "$ref": "#/$defs/expressionId"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "placeholder": {
+                  "type": "string"
+                },
+                "help": {
+                  "type": "string"
+                },
+                "valid": {
+                  "$ref": "#/$defs/expressionId"
+                },
+                "type": {
+                  "enum": [
+                    "datetime"
+                  ]
+                },
+                "required": {
+                  "oneOf": [
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "label"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^required$": true,
+                "^label$": true,
+                "^type$": true,
+                "^placeholder$": true,
+                "^visible$": true,
+                "^valid$": true,
+                "^help$": true,
+                "^size$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "conditionEquals": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "$ref": "#/$defs/expressions"
+      }
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "and": {
+                  "$ref": "#/$defs/conditionAnd"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^and$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "conditionOr": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "$ref": "#/$defs/expressions"
+      }
+    },
+    "modern_24": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "size": {
+                  "$ref": "#/$defs/fieldSize"
+                },
+                "visible": {
+                  "$ref": "#/$defs/expressionId"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "placeholder": {
+                  "type": "string"
+                },
+                "help": {
+                  "type": "string"
+                },
+                "valid": {
+                  "$ref": "#/$defs/expressionId"
+                },
+                "type": {
+                  "enum": [
+                    "currency"
+                  ]
+                },
+                "required": {
+                  "oneOf": [
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "label"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^required$": true,
+                "^label$": true,
+                "^type$": true,
+                "^placeholder$": true,
+                "^visible$": true,
+                "^valid$": true,
+                "^help$": true,
+                "^size$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "fields": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/textField"
+        },
+        {
+          "$ref": "#/$defs/numericField"
+        },
+        {
+          "$ref": "#/$defs/emailField"
+        },
+        {
+          "$ref": "#/$defs/currencyField"
+        },
+        {
+          "$ref": "#/$defs/staticField"
+        },
+        {
+          "$ref": "#/$defs/enumField"
+        },
+        {
+          "$ref": "#/$defs/multipleField"
+        },
+        {
+          "$ref": "#/$defs/dateField"
+        },
+        {
+          "$ref": "#/$defs/timeField"
+        },
+        {
+          "$ref": "#/$defs/datetimeField"
+        },
+        {
+          "$ref": "#/$defs/repeatingField"
+        }
+      ]
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "or": {
+                  "$ref": "#/$defs/conditionOr"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^or$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "conditionLessThanOrEqualTo": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "$ref": "#/$defs/expressions"
+      }
+    },
+    "modern_18": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "<=": {
+                  "$ref": "#/$defs/conditionLessThanOrEqualTo"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^<=$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "dateField": {
+      "$ref": "#/$defs/modern_22"
+    },
+    "modern_13": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "empty": {
+                  "$ref": "#/$defs/conditionEmpty"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^empty$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "conditionGreaterThan": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "$ref": "#/$defs/expressions"
+      }
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "size": {
+                  "$ref": "#/$defs/fieldSize"
+                },
+                "visible": {
+                  "$ref": "#/$defs/expressionId"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "placeholder": {
+                  "type": "string"
+                },
+                "help": {
+                  "type": "string"
+                },
+                "valid": {
+                  "$ref": "#/$defs/expressionId"
+                },
+                "type": {
+                  "enum": [
+                    "time"
+                  ]
+                },
+                "required": {
+                  "oneOf": [
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "label"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^required$": true,
+                "^label$": true,
+                "^type$": true,
+                "^placeholder$": true,
+                "^visible$": true,
+                "^valid$": true,
+                "^help$": true,
+                "^size$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "multipleField": {
+      "$ref": "#/$defs/modern_23"
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "field": {
+                  "$ref": "#/$defs/conditionField"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^field$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "conditionAnd": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "$ref": "#/$defs/expressions"
+      }
+    },
+    "conditionEmpty": {
+      "$ref": "#/$defs/expressions"
+    },
+    "currencyField": {
+      "$ref": "#/$defs/modern_24"
+    },
+    "fieldSize": {
+      "type": "number",
+      "minimum": 1.0,
+      "maximum": 12.0,
+      "multipleOf": 1.0
+    },
+    "staticField": {
+      "$ref": "#/$defs/modern_25"
+    },
+    "modern_25": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "size": {
+                  "$ref": "#/$defs/fieldSize"
+                },
+                "visible": {
+                  "$ref": "#/$defs/expressionId"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "help": {
+                  "type": "string"
+                },
+                "valid": {
+                  "$ref": "#/$defs/expressionId"
+                },
+                "type": {
+                  "enum": [
+                    "static"
+                  ]
+                }
+              },
+              "required": [
+                "label"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^label$": true,
+                "^type$": true,
+                "^visible$": true,
+                "^valid$": true,
+                "^help$": true,
+                "^size$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_19": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "expression": {
+                  "$ref": "#/$defs/conditionExpression"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^expression$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "inline": {
+                  "type": "boolean"
+                },
+                "expressions": {
+                  "$ref": "#/$defs/modern_5"
+                },
+                "help": {
+                  "type": "string"
+                },
+                "fields": {
+                  "type": "object",
+                  "patternProperties": {
+                    "^[a-zA-Z0-9_]+$": {
+                      "$ref": "#/$defs/fields"
+                    }
+                  }
+                },
+                "minRows": {
+                  "oneOf": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "maxRows": {
+                  "oneOf": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "type": {
+                  "enum": [
+                    "repeating"
+                  ]
+                }
+              },
+              "required": [
+                "label"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^expressions$": true,
+                "^minRows$": true,
+                "^help$": true,
+                "^inline$": true,
+                "^fields$": true,
+                "^label$": true,
+                "^maxRows$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

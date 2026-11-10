@@ -1,0 +1,281 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_4",
+  "$defs": {
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "fall": {
+                  "$ref": "#/$defs/semester"
+                },
+                "winter": {
+                  "$ref": "#/$defs/semester"
+                },
+                "summer": {
+                  "$ref": "#/$defs/semester"
+                }
+              },
+              "required": [
+                "fall",
+                "winter",
+                "summer"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^fall$": true,
+                "^winter$": true,
+                "^summer$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "orList": {
+      "description": "A list of courses where the student can choose any one of them to add to take in the current semester",
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/regularCourse"
+          },
+          {
+            "$ref": "#/$defs/electiveCourse"
+          }
+        ]
+      },
+      "minItems": 2
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "courseList": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/$defs/regularCourse"
+                      },
+                      {
+                        "$ref": "#/$defs/electiveCourse"
+                      },
+                      {
+                        "$ref": "#/$defs/orList"
+                      }
+                    ]
+                  }
+                },
+                "isWorkTerm": {
+                  "type": "string",
+                  "enum": [
+                    "true",
+                    "false"
+                  ]
+                }
+              },
+              "required": [
+                "courseList",
+                "isWorkTerm"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^courseList$": true,
+                "^isWorkTerm$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "pattern": "^\\w{4}\\s{1}\\d{3}$"
+                },
+                "isElective": {
+                  "type": "string",
+                  "pattern": "^false$"
+                },
+                "electiveType": {
+                  "type": "string",
+                  "pattern": "^$"
+                }
+              },
+              "required": [
+                "code",
+                "isElective",
+                "electiveType"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^code$": true,
+                "^isElective$": true,
+                "^electiveType$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "regularCourse": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "pattern": "^$"
+                },
+                "isElective": {
+                  "type": "string",
+                  "pattern": "^true$"
+                },
+                "electiveType": {
+                  "type": "string",
+                  "enum": [
+                    "Science",
+                    "Program",
+                    "General"
+                  ]
+                }
+              },
+              "required": [
+                "code",
+                "isElective",
+                "electiveType"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^code$": true,
+                "^isElective$": true,
+                "^electiveType$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "electiveCourse": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Recommended Sequence",
+              "description": "A sequence of semesters corresponding to a given program as recommended by Concordia University",
+              "type": "object",
+              "properties": {
+                "sequenceInfo": {
+                  "$ref": "#/$defs/modern_5"
+                },
+                "sourceUrl": {
+                  "description": "A visitable web url from which the contents of the sequence were inferred",
+                  "type": "string",
+                  "pattern": "^https?://"
+                },
+                "minTotalCredits": {
+                  "description": "The minimum number of credits needed in order to graduate from the program which this sequence is based upon",
+                  "type": "string",
+                  "pattern": "^\\d+$"
+                },
+                "yearList": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_6"
+                  },
+                  "minItems": 3
+                }
+              },
+              "required": [
+                "sequenceInfo",
+                "sourceUrl",
+                "minTotalCredits",
+                "yearList"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^sequenceInfo$": true,
+                "^sourceUrl$": true,
+                "^minTotalCredits$": true,
+                "^yearList$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Auxiliary info related to the sequence",
+              "type": "object",
+              "properties": {
+                "program": {
+                  "type": "string",
+                  "pattern": "\\w+"
+                },
+                "option": {
+                  "type": "string",
+                  "pattern": "\\w+"
+                },
+                "entryType": {
+                  "type": "string",
+                  "pattern": "\\w+"
+                }
+              },
+              "required": [
+                "program",
+                "option",
+                "entryType"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^program$": true,
+                "^option$": true,
+                "^entryType$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "semester": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

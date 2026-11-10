@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "$$target": "dockerContainerConfig.json",
+              "title": "Docker Runtime Configuration",
+              "description": "Describes the configuration of a Docker runtime.",
+              "properties": {
+                "name": {
+                  "description": "Name of the docker configuration (e.g. prodDockerConfig, betaDockerConfig, etc.).",
+                  "type": "string",
+                  "default": "defaultDockerConfig"
+                },
+                "uri": {
+                  "description": "If type is tgz, then uri identifies how to obtain a tgz file containing the docker binaries.",
+                  "type": "string"
+                },
+                "runtime": {
+                  "description": "Type of container runtime.",
+                  "enum": [
+                    "docker"
+                  ],
+                  "type": "string",
+                  "default": "docker"
+                },
+                "kind": {
+                  "description": "Type of configuration.",
+                  "enum": [
+                    "container"
+                  ],
+                  "type": "string"
+                },
+                "type": {
+                  "description": "Type of docker installation.",
+                  "enum": [
+                    "distro",
+                    "tgz"
+                  ],
+                  "type": "string",
+                  "default": "distro"
+                }
+              },
+              "required": [
+                "name",
+                "runtime",
+                "type"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^runtime$": true,
+                "^kind$": true,
+                "^uri$": true,
+                "^name$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

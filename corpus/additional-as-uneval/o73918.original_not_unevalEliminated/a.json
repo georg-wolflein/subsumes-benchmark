@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "JSON schema for the ASP.NET project config file",
+              "type": "object",
+              "properties": {
+                "Data": {
+                  "type": "object"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Data$": true
+              },
+              "additionalProperties": {
+                "not": {
+                  "type": "array"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

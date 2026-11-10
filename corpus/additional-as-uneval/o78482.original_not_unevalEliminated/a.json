@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "WebpackTranspilerOptions",
+              "type": "object",
+              "properties": {
+                "webpack": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^webpack$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "WebpackOptions",
+              "description": "Configuration for @stryker-mutator/webpack-transpiler",
+              "type": "object",
+              "default": {},
+              "properties": {
+                "configFile": {
+                  "description": "Location of your webpack config file",
+                  "type": "string"
+                },
+                "context": {
+                  "description": "The [webpack context](https://webpack.js.org/configuration/entry-context/#context)",
+                  "type": "string"
+                },
+                "silent": {
+                  "description": "Specify to remove the \"ProgressPlugin\" from your webpack config file (making the process silent)",
+                  "type": "boolean",
+                  "default": true
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^configFile$": true,
+                "^context$": true,
+                "^silent$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

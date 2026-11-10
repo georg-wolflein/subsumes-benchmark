@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "version": {
+                  "type": "string"
+                },
+                "resources": {
+                  "type": "object",
+                  "properties": {
+                    "reference": {
+                      "type": "string"
+                    },
+                    "dbsnp": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "globalQsub": {
+                  "type": "object"
+                },
+                "analyses": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_2"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^version$": true,
+                "^resources$": true,
+                "^globalQsub$": true,
+                "^analyses$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "enable": {
+                  "type": "integer",
+                  "enum": [
+                    0,
+                    1
+                  ]
+                },
+                "program": {
+                  "type": "string"
+                },
+                "outfiles": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                },
+                "description": {
+                  "type": "string"
+                },
+                "params": {
+                  "type": "object"
+                },
+                "outdirs": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                },
+                "javavm": {
+                  "type": "string"
+                },
+                "args": {
+                  "description": "An array of command-line arguments.",
+                  "type": "array"
+                },
+                "inputFormat": {
+                  "type": "string"
+                },
+                "modules": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "analysis": {
+                  "type": "string"
+                },
+                "jar": {
+                  "type": "string"
+                },
+                "qsub": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "host": {
+                      "type": "string"
+                    },
+                    "pe": {
+                      "type": "string"
+                    },
+                    "directory": {
+                      "type": "string"
+                    },
+                    "queue": {
+                      "type": "string"
+                    },
+                    "project": {
+                      "type": "string"
+                    },
+                    "mem": {
+                      "type": "string"
+                    },
+                    "slots": {
+                      "type": "integer"
+                    },
+                    "account": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dependencies": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^modules$": true,
+                "^params$": true,
+                "^analysis$": true,
+                "^jar$": true,
+                "^outfiles$": true,
+                "^args$": true,
+                "^enable$": true,
+                "^inputFormat$": true,
+                "^dependencies$": true,
+                "^description$": true,
+                "^qsub$": true,
+                "^program$": true,
+                "^javavm$": true,
+                "^outdirs$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

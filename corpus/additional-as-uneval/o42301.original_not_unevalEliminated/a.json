@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "org.eclipse.persistence.testing.jaxb.xmlelements.EmployeeCollection",
+  "type": "object",
+  "properties": {
+    "employee-data": {
+      "$ref": "#/$defs/modern_3"
+    }
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "street": {
+                  "type": "string"
+                },
+                "city": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^street$": true,
+                "^city$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Address": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "street": {
+                  "type": "string"
+                },
+                "city": {
+                  "type": "string"
+                },
+                "postalCode": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^street$": true,
+                "^city$": true,
+                "^postalCode$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "CanadianAddress": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "integer": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  }
+                },
+                "address": {
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/$defs/Address"
+                      },
+                      {
+                        "$ref": "#/$defs/CanadianAddress"
+                      }
+                    ]
+                  }
+                },
+                "string": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^integer$": true,
+                "^address$": true,
+                "^string$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

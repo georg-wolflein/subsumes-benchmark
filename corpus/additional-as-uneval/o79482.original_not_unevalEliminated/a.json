@@ -1,0 +1,252 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_5",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "status"
+              ],
+              "properties": {
+                "status": {
+                  "enum": [
+                    "notLaunched",
+                    "inProcess",
+                    "complete"
+                  ]
+                },
+                "latestEvent": {
+                  "type": "integer"
+                },
+                "continuePage": {
+                  "type": "string",
+                  "description": "the URI that the browser should redirect the user to once this reboot is complete, possibly at a new storefront if a patch set apply swapped out the current one"
+                },
+                "events": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/orderedEvent"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^status$": true,
+                "^latestEvent$": true,
+                "^continuePage$": true,
+                "^events$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "tenantStatusEvent": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "orderedEvent": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "kind",
+                "incarnation",
+                "securityGeneration"
+              ],
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "tenantStatusEvent"
+                  ]
+                },
+                "incarnation": {
+                  "type": "integer"
+                },
+                "securityGeneration": {
+                  "type": "integer"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^kind$": true,
+                "^incarnation$": true,
+                "^securityGeneration$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "seq": {
+                  "type": "integer"
+                },
+                "time": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "event": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/tenantEvent"
+                    },
+                    {
+                      "$ref": "#/$defs/appEvent"
+                    },
+                    {
+                      "$ref": "#/$defs/tenantStatusEvent"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "seq",
+                "time",
+                "event"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^seq$": true,
+                "^time$": true,
+                "^event$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "elapsedTime": {
+      "description": "elapsed time of the operation in milliseconds",
+      "type": "integer"
+    },
+    "appEvent": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "tenantEvent": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "kind"
+              ],
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "patchSetApplyRebootStart",
+                    "bumpSecurityGenerationRebootStart",
+                    "simpleRebootStart",
+                    "tenantPreHaltStart",
+                    "tenantPreHaltComplete",
+                    "tenantHaltStart",
+                    "tenantHaltComplete",
+                    "appPatchesApplyStart",
+                    "appPatchesApplyComplete",
+                    "bumpSecurityGenerationComplete",
+                    "tenantPreStartStart",
+                    "tenantPreStartComplete",
+                    "tenantStartStart",
+                    "tenantStartComplete",
+                    "patchSetApplyRebootComplete",
+                    "bumpSecurityGenerationRebootComplete",
+                    "simpleRebootComplete"
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^kind$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "kind",
+                "app"
+              ],
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "appPreHaltStart",
+                    "appPreHaltError",
+                    "appPreHaltTimeout",
+                    "appPreHaltComplete",
+                    "appHaltStart",
+                    "appHaltError",
+                    "appHaltTimeout",
+                    "appHaltComplete",
+                    "appPreStartStart",
+                    "appPreStartError",
+                    "appPreStartTimeout",
+                    "appPreStartComplete",
+                    "appStartStart",
+                    "appStartError",
+                    "appStartTimeout",
+                    "appStartComplete",
+                    "appInstallStart",
+                    "appInstallError",
+                    "appInstallTimeout",
+                    "appInstallComplete",
+                    "appUninstallStart",
+                    "appUninstallError",
+                    "appUninstallTimeout",
+                    "appUninstallComplete",
+                    "appEditComplete"
+                  ]
+                },
+                "app": {
+                  "$ref": "#/$defs/app"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^kind$": true,
+                "^app$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "app": {
+      "type": "string"
+    }
+  }
+}

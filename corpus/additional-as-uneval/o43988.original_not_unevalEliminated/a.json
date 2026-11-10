@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "connectorId": {
+                  "type": "integer"
+                },
+                "expiryDate": {
+                  "_format": "date-time",
+                  "type": "string"
+                },
+                "parentIdTag": {
+                  "maxLength": 20,
+                  "type": "string"
+                },
+                "idTag": {
+                  "maxLength": 20,
+                  "type": "string"
+                },
+                "reservationId": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "connectorId",
+                "expiryDate",
+                "idTag",
+                "reservationId"
+              ],
+              "title": "ReserveNowRequest",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^expiryDate$": true,
+                "^reservationId$": true,
+                "^connectorId$": true,
+                "^parentIdTag$": true,
+                "^idTag$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

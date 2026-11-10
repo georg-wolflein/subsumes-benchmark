@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Schema for MML commands to CREATE GENERATOR",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "metamodel",
+    "columns"
+  ],
+  "properties": {
+    "metamodel": {
+      "type": "string"
+    },
+    "columns": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/column_def"
+      }
+    }
+  },
+  "$defs": {
+    "column_def": {
+      "type": "object",
+      "required": [
+        "stattype"
+      ],
+      "properties": {
+        "stattype": {
+          "$ref": "#/$defs/stattype"
+        },
+        "guess": {
+          "$ref": "#/$defs/stattype"
+        }
+      }
+    },
+    "stattype": {
+      "type": "string",
+      "enum": [
+        "CATEGORICAL",
+        "NUMERICAL",
+        "IGNORE"
+      ]
+    }
+  }
+}

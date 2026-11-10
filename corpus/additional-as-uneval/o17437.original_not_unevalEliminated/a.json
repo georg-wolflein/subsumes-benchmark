@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Accounting period",
+              "properties": {
+                "end": {
+                  "_format": "date",
+                  "description": "Date your books or accounts are made up to or the end of your accounting period",
+                  "title": "End date",
+                  "type": "string"
+                },
+                "start": {
+                  "_format": "date",
+                  "description": "Date your books or accounts start - the beginning of your accounting period",
+                  "title": "Start date",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "start",
+                "end"
+              ],
+              "title": "Accounting period",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^end$": true,
+                "^start$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

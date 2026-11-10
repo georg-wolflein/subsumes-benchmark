@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Info on user created collections",
+  "properties": {
+    "_$id": {
+      "description": "Name of a user created collection's schema",
+      "type": "string"
+    },
+    "fields": {
+      "$ref": "#/$defs/modern_1"
+    }
+  },
+  "title": "App Collections",
+  "type": "object",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "properties": {
+                  "app_title": {
+                    "type": "string"
+                  },
+                  "app_type": {
+                    "type": "string"
+                  },
+                  "app_values": {
+                    "$ref": "#/$defs/modern_2"
+                  }
+                },
+                "required": [
+                  "app_title",
+                  "app_type"
+                ],
+                "type": "object"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": [
+                  "string",
+                  "number"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

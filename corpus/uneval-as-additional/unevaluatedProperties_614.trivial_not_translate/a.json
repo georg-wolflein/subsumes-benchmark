@@ -1,0 +1,261 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "miniRT",
+  "description": "config for webserv",
+  "$ref": "#/$defs/root",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "cgi"
+                  ]
+                },
+                "path": {
+                  "type": "string"
+                },
+                "rule": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "routes": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/$defs/route"
+                  }
+                }
+              },
+              "required": [
+                "type",
+                "path",
+                "rule"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^path$": true,
+                "^rule$": true,
+                "^routes$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "servers": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/server"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^servers$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "server": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "host": {
+                  "type": "string",
+                  "pattern": "^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$"
+                },
+                "port": {
+                  "type": "integer",
+                  "min": 1,
+                  "max": 65535
+                },
+                "root": {
+                  "$ref": "#/$defs/route"
+                }
+              },
+              "required": [
+                "port"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^host$": true,
+                "^port$": true,
+                "^root$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "file-route": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "directoryListing": {
+                  "type": "boolean"
+                },
+                "root": {
+                  "type": "string",
+                  "description": "path to file system root"
+                },
+                "methods": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "file"
+                  ]
+                },
+                "path": {
+                  "type": "string",
+                  "description": "http route path segment"
+                },
+                "routes": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/$defs/route"
+                  }
+                }
+              },
+              "required": [
+                "type",
+                "path"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^root$": true,
+                "^type$": true,
+                "^methods$": true,
+                "^directoryListing$": true,
+                "^routes$": true,
+                "^path$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "PATCH": {
+                  "type": "boolean"
+                },
+                "HEAD": {
+                  "type": "boolean"
+                },
+                "OPTIONS": {
+                  "type": "boolean"
+                },
+                "TRACE": {
+                  "type": "boolean"
+                },
+                "PUT": {
+                  "type": "boolean"
+                },
+                "GET": {
+                  "type": "boolean"
+                },
+                "POST": {
+                  "type": "boolean"
+                },
+                "DELETE": {
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^PATCH$": true,
+                "^GET$": true,
+                "^DELETE$": true,
+                "^HEAD$": true,
+                "^POST$": true,
+                "^OPTIONS$": true,
+                "^PUT$": true,
+                "^TRACE$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "route": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/file-route"
+                },
+                {
+                  "$ref": "#/$defs/cgi-route"
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                ".*": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "cgi-route": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "root": {
+      "$ref": "#/$defs/modern_6"
+    }
+  }
+}

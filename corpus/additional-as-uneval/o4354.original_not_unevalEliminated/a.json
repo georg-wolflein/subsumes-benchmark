@@ -1,0 +1,323 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "light": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/modern_1"
+        },
+        {
+          "$ref": "#/$defs/modern_2"
+        }
+      ]
+    },
+    "ci_server": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/modern_3"
+        },
+        {
+          "$ref": "#/$defs/modern_4"
+        },
+        {
+          "$ref": "#/$defs/modern_5"
+        },
+        {
+          "$ref": "#/$defs/modern_6"
+        }
+      ]
+    },
+    "jobs": {
+      "type": "array",
+      "_uniqueItems": true,
+      "minItems": 0,
+      "items": {
+        "$ref": "#/$defs/modern_7"
+      }
+    }
+  },
+  "required": [
+    "light",
+    "ci_server",
+    "jobs"
+  ],
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": [
+                    "travisci"
+                  ]
+                },
+                "username": {
+                  "type": "string"
+                },
+                "pollrate_s": {
+                  "type": "integer",
+                  "minimum": 1.0
+                }
+              },
+              "required": [
+                "type",
+                "username",
+                "pollrate_s"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^username$": true,
+                "^pollrate_s$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "url": {
+                  "type": "string"
+                },
+                "type": {
+                  "enum": [
+                    "bamboo"
+                  ]
+                },
+                "password": {
+                  "$ref": "#/$defs/nonEmptyString"
+                },
+                "username": {
+                  "$ref": "#/$defs/nonEmptyString"
+                },
+                "pollrate_s": {
+                  "type": "integer",
+                  "minimum": 1.0
+                }
+              },
+              "required": [
+                "type",
+                "url",
+                "pollrate_s"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^username$": true,
+                "^pollrate_s$": true,
+                "^url$": true,
+                "^type$": true,
+                "^password$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": [
+                    "adafruit_lpd8806",
+                    "epistar_lpd8806"
+                  ]
+                },
+                "num_leds": {
+                  "type": "integer",
+                  "minimum": 1.0
+                },
+                "simulate_mode": {
+                  "type": "boolean"
+                },
+                "spidev": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type",
+                "num_leds"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^num_leds$": true,
+                "^simulate_mode$": true,
+                "^spidev$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "branch": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "branch"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^branch$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": [
+                    "console"
+                  ]
+                },
+                "num_leds": {
+                  "type": "integer",
+                  "minimum": 1.0
+                }
+              },
+              "required": [
+                "type",
+                "num_leds"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^num_leds$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": [
+                    "jenkins"
+                  ]
+                },
+                "url": {
+                  "type": "string",
+                  "pattern": "^https?://[0-9a-zA-Z-_.]+:?[0-9]+$"
+                },
+                "pollrate_s": {
+                  "type": "integer",
+                  "minimum": 1.0
+                }
+              },
+              "required": [
+                "type",
+                "url",
+                "pollrate_s"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^url$": true,
+                "^pollrate_s$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": [
+                    "circleci",
+                    "buildkite"
+                  ]
+                },
+                "api_token": {
+                  "type": "string"
+                },
+                "username": {
+                  "type": "string"
+                },
+                "pollrate_s": {
+                  "type": "integer",
+                  "minimum": 1.0
+                }
+              },
+              "required": [
+                "type",
+                "api_token",
+                "username",
+                "pollrate_s"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^api_token$": true,
+                "^username$": true,
+                "^pollrate_s$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Coupon Created Webhook Schema",
+              "description": "Sent when a new coupon (referral code) is created, often when the user is created or interacts with a newly activated program",
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "title": "Code",
+                  "description": "The code to be shared"
+                },
+                "dateCreated": {
+                  "type": "integer",
+                  "title": "Date Created",
+                  "description": "The date this code was created"
+                },
+                "programId": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "title": "Program Id",
+                  "description": "The Id of the program this code was created for"
+                }
+              },
+              "required": [
+                "code",
+                "dateCreated"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^code$": true,
+                "^dateCreated$": true,
+                "^programId$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Schema for IOx application descriptor - version 1.0",
+  "additionalProperties": false,
+  "required": [
+    "manifest-version",
+    "info",
+    "app"
+  ],
+  "type": "object",
+  "properties": {
+    "info": {
+      "$ref": "#/$defs/descriptorschema_1_0.AppInfo"
+    },
+    "app": {
+      "anyOf": [
+        {
+          "required": [
+            "apptype"
+          ],
+          "type": "object",
+          "properties": {
+            "apptype": {
+              "enum": [
+                "vm"
+              ],
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "manifest-version": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "descriptorschema_1_0.AppInfo": {
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version"
+      ],
+      "type": "object",
+      "properties": {
+        "author-name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "author-link": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

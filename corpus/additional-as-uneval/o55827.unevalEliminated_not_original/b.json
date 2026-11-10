@@ -1,0 +1,484 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/v20Package"
+    },
+    {
+      "$ref": "#/$defs/v30Package"
+    },
+    {
+      "$ref": "#/$defs/v40Package"
+    }
+  ],
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "licenses": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_6"
+                  }
+                },
+                "website": {
+                  "type": "string",
+                  "description": "URL to the website of a project. This is generally the URL of the project GitHub repository."
+                },
+                "name": {
+                  "type": "string",
+                  "description": "The name of the package."
+                },
+                "postInstallNotes": {
+                  "type": "string",
+                  "description": "Post installation notes that would be useful to the user of this package."
+                },
+                "scm": {
+                  "type": "string",
+                  "description": "Source control management. This is generally the URL of the project GitHub repository."
+                },
+                "selected": {
+                  "type": "boolean",
+                  "description": "Flag indicating if the package is selected in search results",
+                  "default": false
+                },
+                "framework": {
+                  "type": "boolean",
+                  "default": false,
+                  "description": "True if this package installs a new Mesos framework."
+                },
+                "version": {
+                  "type": "string",
+                  "pattern": "^[-a-zA-Z0-9.]+$",
+                  "description": "The version of the package. We recommend that you use semantic versions. See http://semver.org/ for details on semantic versions."
+                },
+                "preInstallNotes": {
+                  "type": "string",
+                  "description": "Pre installation notes that would be useful to the user of this package."
+                },
+                "minDcosReleaseVersion": {
+                  "$ref": "#/$defs/dcosReleaseVersion",
+                  "description": "The minimum DC/OS Release Version the package can run on."
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Detailed description of what the package does."
+                },
+                "packagingVersion": {
+                  "type": "string",
+                  "enum": [
+                    "3.0"
+                  ],
+                  "description": "The version of the packaging format."
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[^\\s]+$"
+                  },
+                  "description": "A list of keywords associated with the package."
+                },
+                "postUninstallNotes": {
+                  "type": "string",
+                  "description": "Post uninstallation notes that would be useful to the user of this package."
+                },
+                "maintainer": {
+                  "type": "string",
+                  "description": "The maintainer of the package. This is generally an email address."
+                }
+              },
+              "required": [
+                "packagingVersion",
+                "name",
+                "version",
+                "maintainer",
+                "description",
+                "tags"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^postInstallNotes$": true,
+                "^selected$": true,
+                "^version$": true,
+                "^description$": true,
+                "^framework$": true,
+                "^postUninstallNotes$": true,
+                "^name$": true,
+                "^website$": true,
+                "^licenses$": true,
+                "^scm$": true,
+                "^maintainer$": true,
+                "^tags$": true,
+                "^minDcosReleaseVersion$": true,
+                "^preInstallNotes$": true,
+                "^packagingVersion$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The name of the license. For example one of [Apache License Version 2.0 | MIT License | BSD License | Proprietary]"
+                },
+                "url": {
+                  "$ref": "#/$defs/url",
+                  "description": "The URL where the license can be accessed"
+                }
+              },
+              "required": [
+                "name",
+                "url"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^url$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "v40Package": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "url": {
+      "type": "string",
+      "allOf": [
+        {
+          "format": "uri"
+        },
+        {
+          "pattern": "^https?://"
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "licenses": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_2"
+                  }
+                },
+                "website": {
+                  "type": "string",
+                  "description": "URL to the website of a project. This is generally the URL of the project GitHub repository."
+                },
+                "name": {
+                  "type": "string",
+                  "description": "The name of the package."
+                },
+                "postInstallNotes": {
+                  "type": "string",
+                  "description": "Post installation notes that would be useful to the user of this package."
+                },
+                "scm": {
+                  "type": "string",
+                  "description": "Source control management. This is generally the URL of the project GitHub repository."
+                },
+                "selected": {
+                  "type": "boolean",
+                  "description": "Flag indicating if the package is selected in search results",
+                  "default": false
+                },
+                "framework": {
+                  "type": "boolean",
+                  "default": false,
+                  "description": "True if this package installs a new Mesos framework."
+                },
+                "preInstallNotes": {
+                  "type": "string",
+                  "description": "Pre installation notes that would be useful to the user of this package."
+                },
+                "minDcosReleaseVersion": {
+                  "$ref": "#/$defs/dcosReleaseVersion",
+                  "description": "The minimum DC/OS Release Version the package can run on."
+                },
+                "upgradesFrom": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "List of versions that can upgrade to this package. If the property is a list containing the string '*', any version can upgrade to this package. If the property is not set or the empty list, no version can upgrade to this package."
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Detailed description of what the package does."
+                },
+                "packagingVersion": {
+                  "type": "string",
+                  "enum": [
+                    "4.0"
+                  ],
+                  "description": "The version of the packaging format."
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[^\\s]+$",
+                    "description": "A list of keywords associated with the package."
+                  }
+                },
+                "postUninstallNotes": {
+                  "type": "string",
+                  "description": "Post uninstallation notes that would be useful to the user of this package."
+                },
+                "maintainer": {
+                  "type": "string",
+                  "description": "The maintainer of the package. This is generally an email address."
+                },
+                "downgradesTo": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "List of versions that this package can downgrade to. If the property is a list containing the string '*', this package can downgrade to any version. If the property is not set or the empty list, this package cannot downgrade."
+                },
+                "version": {
+                  "type": "string",
+                  "pattern": "^[-a-zA-Z0-9.]+$",
+                  "description": "The version of the package. We recommend that you use semantic versions. See http://semver.org/ for details on semantic versions."
+                }
+              },
+              "required": [
+                "packagingVersion",
+                "name",
+                "version",
+                "maintainer",
+                "description",
+                "tags"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^postInstallNotes$": true,
+                "^selected$": true,
+                "^version$": true,
+                "^description$": true,
+                "^framework$": true,
+                "^postUninstallNotes$": true,
+                "^upgradesFrom$": true,
+                "^name$": true,
+                "^website$": true,
+                "^licenses$": true,
+                "^scm$": true,
+                "^maintainer$": true,
+                "^minDcosReleaseVersion$": true,
+                "^preInstallNotes$": true,
+                "^packagingVersion$": true,
+                "^downgradesTo$": true,
+                "^tags$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "v20Package": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The name of the license. For example one of [Apache License Version 2.0 | MIT License | BSD License | Proprietary]"
+                },
+                "url": {
+                  "$ref": "#/$defs/url",
+                  "description": "The URL where the license can be accessed"
+                }
+              },
+              "required": [
+                "name",
+                "url"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^url$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The name of the license. For example one of [Apache License Version 2.0 | MIT License | BSD License | Proprietary]"
+                },
+                "url": {
+                  "$ref": "#/$defs/url",
+                  "description": "The URL where the license can be accessed"
+                }
+              },
+              "required": [
+                "name",
+                "url"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^url$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "dcosReleaseVersion": {
+      "type": "string",
+      "pattern": "^(?:0|[1-9][0-9]*)(?:\\.(?:0|[1-9][0-9]*))*$",
+      "description": "A string representation of a DC/OS Release Version"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "licenses": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_4"
+                  }
+                },
+                "website": {
+                  "type": "string",
+                  "description": "URL to the website of a project. This is generally the URL of the project GitHub repository."
+                },
+                "name": {
+                  "type": "string",
+                  "description": "The name of the package."
+                },
+                "postInstallNotes": {
+                  "type": "string",
+                  "description": "Post installation notes that would be useful to the user of this package."
+                },
+                "scm": {
+                  "type": "string",
+                  "description": "Source control management. This is generally the URL of the project GitHub repository."
+                },
+                "selected": {
+                  "type": "boolean",
+                  "description": "Flag indicating if the package is selected in search results",
+                  "default": false
+                },
+                "framework": {
+                  "type": "boolean",
+                  "default": false,
+                  "description": "True if this package installs a new Mesos framework."
+                },
+                "version": {
+                  "type": "string",
+                  "description": "The version of the package. We recommend that you use semantic versions. See http://semver.org/ for more details on semantic versions."
+                },
+                "preInstallNotes": {
+                  "type": "string",
+                  "description": "Pre installation notes that would be useful to the user of this package."
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Detailed description of what the package does."
+                },
+                "packagingVersion": {
+                  "type": "string",
+                  "enum": [
+                    "2.0"
+                  ],
+                  "description": "The version of the packaging format. Please do not use this version. It is only here for backwards compatibility. We recommend you use the latest version."
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[^\\s]+$"
+                  },
+                  "description": "A list of keywords associated with the package."
+                },
+                "postUninstallNotes": {
+                  "type": "string",
+                  "description": "Post uninstallation notes that would be useful to the user of this package."
+                },
+                "maintainer": {
+                  "type": "string",
+                  "description": "The maintainer of the package. This is generally an email address."
+                }
+              },
+              "required": [
+                "packagingVersion",
+                "name",
+                "version",
+                "maintainer",
+                "description",
+                "tags"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^postInstallNotes$": true,
+                "^selected$": true,
+                "^version$": true,
+                "^description$": true,
+                "^framework$": true,
+                "^postUninstallNotes$": true,
+                "^name$": true,
+                "^website$": true,
+                "^licenses$": true,
+                "^scm$": true,
+                "^maintainer$": true,
+                "^tags$": true,
+                "^preInstallNotes$": true,
+                "^packagingVersion$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "v30Package": {
+      "$ref": "#/$defs/modern_5"
+    }
+  }
+}

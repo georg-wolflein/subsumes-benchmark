@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Git LFS HTTPS Batch API Request",
+  "type": "object",
+  "properties": {
+    "transfers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "operation": {
+      "type": "string"
+    },
+    "objects": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/modern_1"
+      }
+    }
+  },
+  "required": [
+    "objects",
+    "operation"
+  ],
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "oid": {
+                  "type": "string"
+                },
+                "size": {
+                  "type": "number",
+                  "minimum": 0.0
+                },
+                "authenticated": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "oid",
+                "size"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^oid$": true,
+                "^size$": true,
+                "^authenticated$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

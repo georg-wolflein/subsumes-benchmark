@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "description",
+      "schema",
+      "tests"
+    ],
+    "properties": {
+      "description": {
+        "type": "string"
+      },
+      "schema": {},
+      "tests": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "description",
+            "data",
+            "valid"
+          ],
+          "properties": {
+            "description": {
+              "type": "string"
+            },
+            "data": {},
+            "valid": {
+              "type": "boolean"
+            },
+            "output": {
+              "type": "object",
+              "properties": {
+                "basic": {
+                  "$ref": "#/$defs/outputItem"
+                },
+                "detailed": {
+                  "$ref": "#/$defs/outputItem"
+                },
+                "verbose": {
+                  "$ref": "#/$defs/outputItem"
+                }
+              },
+              "required": [
+                "basic",
+                "detailed",
+                "verbose"
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "minItems": 1
+      }
+    },
+    "additionalProperties": false,
+    "minItems": 1
+  },
+  "$defs": {
+    "outputItem": {
+      "type": "object",
+      "properties": {
+        "valid": {
+          "type": "boolean"
+        },
+        "keywordLocation": {
+          "type": "string"
+        },
+        "absoluteKeywordLocation": {
+          "type": "string",
+          "format": "uri"
+        },
+        "instanceLocation": {
+          "type": "string"
+        },
+        "annotations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/outputItem"
+          }
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/outputItem"
+          }
+        }
+      }
+    }
+  }
+}

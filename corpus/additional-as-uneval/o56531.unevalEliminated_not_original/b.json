@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_2",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "oderOfFirstLastName": {
+                  "type": "boolean"
+                },
+                "timezone": {
+                  "type": "string"
+                },
+                "timeDelimiter": {
+                  "type": "string",
+                  "enum": [
+                    ":",
+                    "-",
+                    " "
+                  ]
+                },
+                "dateFormat": {
+                  "type": "string"
+                },
+                "currency": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "currency",
+                "timezone",
+                "dateFormat",
+                "timeDelimiter",
+                "oderOfFirstLastName"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^currency$": true,
+                "^timezone$": true,
+                "^timeDelimiter$": true,
+                "^dateFormat$": true,
+                "^oderOfFirstLastName$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Party",
+              "type": "object",
+              "properties": {
+                "UUID": {
+                  "type": "string"
+                },
+                "regionalSettings": {
+                  "$ref": "#/$defs/RegionalSettings"
+                },
+                "avatar": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "UUID"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^UUID$": true,
+                "^regionalSettings$": true,
+                "^avatar$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "RegionalSettings": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

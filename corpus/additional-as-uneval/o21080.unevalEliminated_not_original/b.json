@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "minProperties": 1,
+              "properties": {
+                "contractNoticeNumber": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "pageTotal": {
+                  "type": "integer",
+                  "minimum": 1.0
+                },
+                "lotOrder": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                },
+                "variations": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "frameworkExtensionLength": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "frameworkURL": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "lotDescriptions": {
+                  "$ref": "#/$defs/modern_4"
+                },
+                "signaturePageNumber": {
+                  "type": "integer",
+                  "minimum": 1.0
+                },
+                "countersignerRole": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "frameworkAgreementVersion": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "frameworkRefDate": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "countersignerName": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "frameworkAgreementVersion",
+                "variations"
+              ],
+              "title": "Framework.framework_agreement_details Schema",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^countersignerRole$": true,
+                "^frameworkAgreementVersion$": true,
+                "^lotDescriptions$": true,
+                "^frameworkExtensionLength$": true,
+                "^variations$": true,
+                "^frameworkRefDate$": true,
+                "^frameworkURL$": true,
+                "^signaturePageNumber$": true,
+                "^contractNoticeNumber$": true,
+                "^lotOrder$": true,
+                "^countersignerName$": true,
+                "^pageTotal$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/modern_3"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "createdAt": {
+                  "type": "string"
+                },
+                "countersignedAt": {
+                  "type": "string"
+                },
+                "countersignerName": {
+                  "type": "string"
+                },
+                "countersignerRole": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "createdAt"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^createdAt$": true,
+                "^countersignedAt$": true,
+                "^countersignerName$": true,
+                "^countersignerRole$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "minProperties": 1
+            },
+            {
+              "additionalProperties": {
+                "minLength": 1,
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "org.eclipse.persistence.testing.jaxb.xmlvalue.Root",
+  "type": "object",
+  "properties": {
+    "root": {
+      "$ref": "#/$defs/modern_2"
+    }
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "Include": {
+                          "type": "object",
+                          "properties": {
+                            "href": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                "Id": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^value$": true,
+                "^Id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "thing": {
+                  "$ref": "#/$defs/BytesHolderWithXmlId"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^thing$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "BytesHolderWithXmlId": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

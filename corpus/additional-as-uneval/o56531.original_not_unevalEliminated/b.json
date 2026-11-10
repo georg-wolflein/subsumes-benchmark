@@ -1,0 +1,56 @@
+{
+  "$id": "http://dev.host/schema/entities/Party.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Party",
+  "type": "object",
+  "properties": {
+    "UUID": {
+      "type": "string"
+    },
+    "regionalSettings": {
+      "$ref": "#/$defs/RegionalSettings"
+    },
+    "avatar": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "UUID"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "RegionalSettings": {
+      "type": "object",
+      "properties": {
+        "currency": {
+          "type": "string"
+        },
+        "timezone": {
+          "type": "string"
+        },
+        "dateFormat": {
+          "type": "string"
+        },
+        "timeDelimiter": {
+          "type": "string",
+          "enum": [
+            ":",
+            "-",
+            " "
+          ]
+        },
+        "oderOfFirstLastName": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "currency",
+        "timezone",
+        "dateFormat",
+        "timeDelimiter",
+        "oderOfFirstLastName"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

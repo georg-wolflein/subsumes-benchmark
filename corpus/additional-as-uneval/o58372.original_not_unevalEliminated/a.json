@@ -1,0 +1,176 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_2",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "y": {
+                  "type": "number"
+                },
+                "px": {
+                  "type": "number"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "dashed": {
+                  "optional": true,
+                  "type": "boolean"
+                },
+                "fixed": {
+                  "type": "integer"
+                },
+                "py": {
+                  "type": "number"
+                },
+                "r": {
+                  "description": "Radius",
+                  "type": [
+                    "integer",
+                    "string"
+                  ]
+                },
+                "index": {
+                  "type": "integer"
+                },
+                "weight": {
+                  "type": "integer"
+                },
+                "x": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^dashed$": true,
+                "^x$": true,
+                "^name$": true,
+                "^fixed$": true,
+                "^r$": true,
+                "^y$": true,
+                "^px$": true,
+                "^weight$": true,
+                "^py$": true,
+                "^index$": true,
+                "^id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "scale": {
+                  "type": "number"
+                },
+                "links": {
+                  "items": {
+                    "$ref": "#/$defs/modern_3"
+                  },
+                  "type": "array"
+                },
+                "nodes": {
+                  "items": {
+                    "$ref": "#/$defs/node"
+                  },
+                  "type": "array"
+                },
+                "translate": {
+                  "items": {
+                    "type": "number"
+                  },
+                  "type": "array"
+                },
+                "lastId": {
+                  "type": "integer"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^translate$": true,
+                "^lastId$": true,
+                "^scale$": true,
+                "^links$": true,
+                "^nodes$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "strength": {
+                  "type": [
+                    "integer",
+                    "string"
+                  ]
+                },
+                "sourceText": {
+                  "optional": true,
+                  "type": "string"
+                },
+                "dashed": {
+                  "optional": true,
+                  "type": "boolean"
+                },
+                "target": {
+                  "$ref": "#/$defs/node"
+                },
+                "centerText": {
+                  "optional": true,
+                  "type": "string"
+                },
+                "source": {
+                  "$ref": "#/$defs/node"
+                },
+                "targetText": {
+                  "optional": true,
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^target$": true,
+                "^dashed$": true,
+                "^strength$": true,
+                "^source$": true,
+                "^targetText$": true,
+                "^centerText$": true,
+                "^sourceText$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "node": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

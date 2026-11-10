@@ -1,0 +1,69 @@
+{
+  "$id": "https://opendesk.cc/schemata/base/value.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Winnow Value",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "long_description": {
+      "type": "string"
+    },
+    "schema": {
+      "type": "string"
+    },
+    "definitions4": {
+      "type": "object"
+    },
+    "type": {
+      "type": "string"
+    },
+    "images": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/modern_1"
+      }
+    },
+    "value": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "type"
+  ],
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "asset": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "asset"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^asset$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "anyOf": [
+    {
+      "$ref": "#/$defs/TestStruct"
+    }
+  ],
+  "type": "object",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "for testing the schema generator.",
+              "preferredOrder": [
+                "int32Field",
+                "int64Field",
+                "intField"
+              ],
+              "properties": {
+                "int32Field": {
+                  "description": "an integer",
+                  "type": "integer",
+                  "x-intellij-html-description": "an integer"
+                },
+                "int64Field": {
+                  "description": "an integer",
+                  "type": "integer",
+                  "x-intellij-html-description": "an integer"
+                },
+                "intField": {
+                  "description": "an integer",
+                  "type": "integer",
+                  "x-intellij-html-description": "an integer"
+                }
+              },
+              "x-intellij-html-description": "for testing the schema generator."
+            },
+            {
+              "patternProperties": {
+                "^int32Field$": true,
+                "^int64Field$": true,
+                "^intField$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "TestStruct": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

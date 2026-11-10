@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "org.eclipse.persistence.testing.jaxb.xmlidref.object.Root",
+  "type": "object",
+  "properties": {
+    "root": {
+      "$ref": "#/$defs/modern_4"
+    }
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "address-id": {
+                  "type": "string"
+                },
+                "phone-id": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^name$": true,
+                "^address-id$": true,
+                "^phone-id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Address": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "PhoneNumber": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "city": {
+                  "type": "string"
+                },
+                "zip": {
+                  "type": "string"
+                },
+                "aid": {
+                  "type": "string"
+                },
+                "country": {
+                  "type": "string"
+                },
+                "street": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^city$": true,
+                "^aid$": true,
+                "^country$": true,
+                "^street$": true,
+                "^zip$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "number": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^number$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Employee": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "employee": {
+                  "$ref": "#/$defs/Employee"
+                },
+                "address": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/Address"
+                  }
+                },
+                "phone-number": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/PhoneNumber"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^employee$": true,
+                "^address$": true,
+                "^phone-number$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

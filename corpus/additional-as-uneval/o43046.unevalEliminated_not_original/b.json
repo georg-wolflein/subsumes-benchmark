@@ -1,0 +1,777 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/SuiteResult",
+  "$defs": {
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "cells",
+                "status"
+              ],
+              "properties": {
+                "cells": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "status": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^cells$": true,
+                "^status$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "result": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_12": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "headers",
+                "rows"
+              ],
+              "properties": {
+                "headers": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "rows": {
+                  "items": {
+                    "$ref": "#/$defs/row"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^headers$": true,
+                "^rows$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "commentsBeforeDatatable",
+                "comentsAfterDatatable",
+                "specHeading",
+                "fileName",
+                "tags",
+                "executionTime",
+                "executionStatus",
+                "scenarios",
+                "isTableDriven",
+                "datatable",
+                "beforeSpecHookFailures",
+                "afterSpecHookFailures",
+                "passedScenarioCount",
+                "failedScenarioCount",
+                "skippedScenarioCount",
+                "errors"
+              ],
+              "properties": {
+                "commentsBeforeDatatable": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "scenarios": {
+                  "items": {
+                    "$ref": "#/$defs/scenario"
+                  },
+                  "type": "array"
+                },
+                "tags": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "comentsAfterDatatable": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "executionTime": {
+                  "type": "integer"
+                },
+                "specHeading": {
+                  "type": "string"
+                },
+                "failedScenarioCount": {
+                  "type": "integer"
+                },
+                "beforeSpecHookFailures": {
+                  "items": {
+                    "$ref": "#/$defs/hookFailure"
+                  },
+                  "type": "array"
+                },
+                "afterSpecHookFailures": {
+                  "items": {
+                    "$ref": "#/$defs/hookFailure"
+                  },
+                  "type": "array"
+                },
+                "executionStatus": {
+                  "type": "string"
+                },
+                "datatable": {
+                  "$ref": "#/$defs/table"
+                },
+                "errors": {
+                  "items": {
+                    "$ref": "#/$defs/buildError"
+                  },
+                  "type": "array"
+                },
+                "fileName": {
+                  "type": "string"
+                },
+                "skippedScenarioCount": {
+                  "type": "integer"
+                },
+                "passedScenarioCount": {
+                  "type": "integer"
+                },
+                "isTableDriven": {
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^beforeSpecHookFailures$": true,
+                "^errors$": true,
+                "^specHeading$": true,
+                "^failedScenarioCount$": true,
+                "^executionTime$": true,
+                "^tags$": true,
+                "^afterSpecHookFailures$": true,
+                "^fileName$": true,
+                "^isTableDriven$": true,
+                "^executionStatus$": true,
+                "^passedScenarioCount$": true,
+                "^datatable$": true,
+                "^commentsBeforeDatatable$": true,
+                "^scenarios$": true,
+                "^skippedScenarioCount$": true,
+                "^comentsAfterDatatable$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "comment": {
+      "$ref": "#/$defs/modern_7"
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "hookName",
+                "errorMessage",
+                "screenshot",
+                "stackTrace",
+                "tableRowIndex"
+              ],
+              "properties": {
+                "errorMessage": {
+                  "type": "string"
+                },
+                "stackTrace": {
+                  "type": "string"
+                },
+                "screenshot": {
+                  "type": "string"
+                },
+                "tableRowIndex": {
+                  "type": "integer"
+                },
+                "hookName": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^tableRowIndex$": true,
+                "^screenshot$": true,
+                "^hookName$": true,
+                "^errorMessage$": true,
+                "^stackTrace$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "ErrorType",
+                "FileName",
+                "LineNumber",
+                "Message"
+              ],
+              "properties": {
+                "ErrorType": {
+                  "type": "string"
+                },
+                "FileName": {
+                  "type": "string"
+                },
+                "LineNumber": {
+                  "type": "integer"
+                },
+                "Message": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^ErrorType$": true,
+                "^FileName$": true,
+                "^LineNumber$": true,
+                "^Message$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "hookFailure": {
+      "$ref": "#/$defs/modern_9"
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "projectName",
+                "timestamp",
+                "successRate",
+                "environment",
+                "tags",
+                "executionTime",
+                "executionStatus",
+                "specResults",
+                "beforeSuiteHookFailure",
+                "afterSuiteHookFailure",
+                "passedSpecsCount",
+                "failedSpecsCount",
+                "skippedSpecsCount",
+                "basePath"
+              ],
+              "properties": {
+                "projectName": {
+                  "type": "string"
+                },
+                "tags": {
+                  "type": "string"
+                },
+                "failedSpecsCount": {
+                  "type": "integer"
+                },
+                "basePath": {
+                  "type": "string"
+                },
+                "executionTime": {
+                  "type": "integer"
+                },
+                "afterSuiteHookFailure": {
+                  "$ref": "#/$defs/hookFailure"
+                },
+                "environment": {
+                  "type": "string"
+                },
+                "successRate": {
+                  "type": "number"
+                },
+                "timestamp": {
+                  "type": "string"
+                },
+                "executionStatus": {
+                  "type": "string"
+                },
+                "skippedSpecsCount": {
+                  "type": "integer"
+                },
+                "specResults": {
+                  "items": {
+                    "$ref": "#/$defs/spec"
+                  },
+                  "type": "array"
+                },
+                "passedSpecsCount": {
+                  "type": "integer"
+                },
+                "beforeSuiteHookFailure": {
+                  "$ref": "#/$defs/hookFailure"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^beforeSuiteHookFailure$": true,
+                "^timestamp$": true,
+                "^successRate$": true,
+                "^projectName$": true,
+                "^executionStatus$": true,
+                "^environment$": true,
+                "^basePath$": true,
+                "^passedSpecsCount$": true,
+                "^afterSuiteHookFailure$": true,
+                "^failedSpecsCount$": true,
+                "^executionTime$": true,
+                "^specResults$": true,
+                "^tags$": true,
+                "^skippedSpecsCount$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "scenario": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "FragmentKind",
+                "Text",
+                "Name",
+                "Table",
+                "FileName"
+              ],
+              "properties": {
+                "Name": {
+                  "type": "string"
+                },
+                "FragmentKind": {
+                  "type": "integer"
+                },
+                "FileName": {
+                  "type": "string"
+                },
+                "Table": {
+                  "$ref": "#/$defs/table"
+                },
+                "Text": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^Table$": true,
+                "^FragmentKind$": true,
+                "^Name$": true,
+                "^Text$": true,
+                "^FileName$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "itemType",
+                "conceptStep",
+                "items",
+                "result"
+              ],
+              "properties": {
+                "conceptStep": {
+                  "$ref": "#/$defs/step"
+                },
+                "itemType": {
+                  "type": "string"
+                },
+                "items": {
+                  "items": {
+                    "$ref": "#/$defs/item"
+                  },
+                  "type": "array"
+                },
+                "result": {
+                  "$ref": "#/$defs/result"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^conceptStep$": true,
+                "^itemType$": true,
+                "^items$": true,
+                "^result$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "step": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "scenarioHeading",
+                "tags",
+                "executionTime",
+                "executionStatus",
+                "contexts",
+                "teardowns",
+                "items",
+                "beforeScenarioHookFailure",
+                "afterScenarioHookFailure",
+                "skipErrors",
+                "tableRowIndex"
+              ],
+              "properties": {
+                "executionStatus": {
+                  "type": "string"
+                },
+                "skipErrors": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "tags": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "items": {
+                  "items": {
+                    "$ref": "#/$defs/item"
+                  },
+                  "type": "array"
+                },
+                "contexts": {
+                  "items": {
+                    "$ref": "#/$defs/item"
+                  },
+                  "type": "array"
+                },
+                "executionTime": {
+                  "type": "string"
+                },
+                "afterScenarioHookFailure": {
+                  "$ref": "#/$defs/hookFailure"
+                },
+                "scenarioHeading": {
+                  "type": "string"
+                },
+                "tableRowIndex": {
+                  "type": "integer"
+                },
+                "beforeScenarioHookFailure": {
+                  "$ref": "#/$defs/hookFailure"
+                },
+                "teardowns": {
+                  "items": {
+                    "$ref": "#/$defs/item"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^scenarioHeading$": true,
+                "^tableRowIndex$": true,
+                "^afterScenarioHookFailure$": true,
+                "^executionTime$": true,
+                "^tags$": true,
+                "^items$": true,
+                "^contexts$": true,
+                "^teardowns$": true,
+                "^beforeScenarioHookFailure$": true,
+                "^skipErrors$": true,
+                "^executionStatus$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "buildError": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "fragment": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "Text"
+              ],
+              "properties": {
+                "Text": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^Text$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "row": {
+      "$ref": "#/$defs/modern_6"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "fragments",
+                "itemType",
+                "stepText",
+                "table",
+                "beforeStepHookFailure",
+                "afterStepHookFailure",
+                "result"
+              ],
+              "properties": {
+                "fragments": {
+                  "items": {
+                    "$ref": "#/$defs/fragment"
+                  },
+                  "type": "array"
+                },
+                "result": {
+                  "$ref": "#/$defs/result"
+                },
+                "beforeStepHookFailure": {
+                  "$ref": "#/$defs/hookFailure"
+                },
+                "afterStepHookFailure": {
+                  "$ref": "#/$defs/hookFailure"
+                },
+                "itemType": {
+                  "type": "string"
+                },
+                "stepText": {
+                  "type": "string"
+                },
+                "table": {
+                  "$ref": "#/$defs/table"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^afterStepHookFailure$": true,
+                "^fragments$": true,
+                "^itemType$": true,
+                "^table$": true,
+                "^stepText$": true,
+                "^result$": true,
+                "^beforeStepHookFailure$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "spec": {
+      "$ref": "#/$defs/modern_8"
+    },
+    "modern_13": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "Kind",
+                "Step",
+                "Concept",
+                "Comment"
+              ],
+              "properties": {
+                "Comment": {
+                  "$ref": "#/$defs/comment"
+                },
+                "Concept": {
+                  "$ref": "#/$defs/concept"
+                },
+                "Kind": {
+                  "type": "string"
+                },
+                "Step": {
+                  "$ref": "#/$defs/step"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^Comment$": true,
+                "^Concept$": true,
+                "^Kind$": true,
+                "^Step$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "concept": {
+      "$ref": "#/$defs/modern_10"
+    },
+    "SuiteResult": {
+      "$ref": "#/$defs/modern_11"
+    },
+    "table": {
+      "$ref": "#/$defs/modern_12"
+    },
+    "item": {
+      "$ref": "#/$defs/modern_13"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "status",
+                "stackTrace",
+                "screenshot",
+                "errorMessage",
+                "executionTime",
+                "skippedReason",
+                "messages",
+                "errorType"
+              ],
+              "properties": {
+                "messages": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "errorMessage": {
+                  "type": "string"
+                },
+                "skippedReason": {
+                  "type": "string"
+                },
+                "stackTrace": {
+                  "type": "string"
+                },
+                "errorType": {
+                  "type": "string"
+                },
+                "executionTime": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "screenshot": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^errorType$": true,
+                "^screenshot$": true,
+                "^status$": true,
+                "^messages$": true,
+                "^executionTime$": true,
+                "^stackTrace$": true,
+                "^errorMessage$": true,
+                "^skippedReason$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

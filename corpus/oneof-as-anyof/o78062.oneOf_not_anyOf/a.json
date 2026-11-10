@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Competency framework schema",
+  "allOf": [
+    {
+      "$ref": "#/$defs/competency"
+    },
+    {
+      "properties": {
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scale": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            },
+            "levels": {
+              "type": "array",
+              "minItems": 1,
+              "_uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255
+              }
+            }
+          },
+          "required": [
+            "name",
+            "levels"
+          ]
+        }
+      },
+      "required": [
+        "description",
+        "scale"
+      ]
+    }
+  ],
+  "$defs": {
+    "namedObject": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "competency": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/namedObject"
+        },
+        {
+          "anyOf": [
+            {
+              "properties": {
+                "competencies": {
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "items": {
+                    "$ref": "#/$defs/competency"
+                  }
+                }
+              },
+              "required": [
+                "competencies"
+              ]
+            },
+            {
+              "properties": {
+                "abilities": {
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "items": {
+                    "$ref": "#/$defs/ability"
+                  }
+                }
+              },
+              "required": [
+                "abilities"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "ability": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/namedObject"
+        },
+        {
+          "properties": {
+            "level": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            }
+          },
+          "required": [
+            "level"
+          ]
+        }
+      ]
+    }
+  }
+}

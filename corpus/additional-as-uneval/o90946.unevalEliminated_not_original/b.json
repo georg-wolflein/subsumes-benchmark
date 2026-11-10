@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "subject": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/first"
+        },
+        {
+          "$ref": "#/$defs/second"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "discriminator": {
+                  "const": "first"
+                },
+                "first": {
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^discriminator$": true,
+                "^first$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "discriminator": {
+                  "const": "second"
+                },
+                "second": {
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^discriminator$": true,
+                "^second$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "second": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "first": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

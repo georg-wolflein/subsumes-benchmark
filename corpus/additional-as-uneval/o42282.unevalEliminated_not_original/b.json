@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "org.eclipse.persistence.testing.jaxb.annotations.xmlcontainerproperty.Employee",
+  "type": "object",
+  "properties": {
+    "employee": {
+      "$ref": "#/$defs/modern_3"
+    }
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "street": {
+                  "type": "string"
+                },
+                "city": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^street$": true,
+                "^city$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Address": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "PhoneNumber": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "string"
+            },
+            {
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "phone-numbers": {
+                  "type": "object",
+                  "properties": {
+                    "number": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/$defs/PhoneNumber"
+                      }
+                    }
+                  }
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "address": {
+                  "$ref": "#/$defs/Address"
+                },
+                "first-name": {
+                  "type": "string"
+                },
+                "last-name": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^phone-numbers$": true,
+                "^first-name$": true,
+                "^last-name$": true,
+                "^address$": true,
+                "^id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

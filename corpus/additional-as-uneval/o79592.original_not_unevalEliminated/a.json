@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "ct": {
+      "description": "The consuming tenant",
+      "type": "string"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "ca": {
+                  "$ref": "#/$defs/ca"
+                },
+                "created": {
+                  "$ref": "#/$defs/created"
+                },
+                "ct": {
+                  "$ref": "#/$defs/ct"
+                },
+                "id": {
+                  "$ref": "#/$defs/id"
+                }
+              },
+              "required": [
+                "id",
+                "ct",
+                "ca",
+                "created"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^ca$": true,
+                "^created$": true,
+                "^ct$": true,
+                "^id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "ca": {
+      "description": "The consuming app",
+      "type": "string"
+    },
+    "id": {
+      "type": "integer"
+    },
+    "created": {
+      "_format": "date-time",
+      "description": "when the object was created",
+      "type": "string"
+    }
+  }
+}

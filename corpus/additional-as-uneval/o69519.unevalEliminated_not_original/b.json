@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "person": {
+      "$ref": "#/$defs/modern_1"
+    }
+  },
+  "required": [
+    "person"
+  ],
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "first_name": {
+                  "type": "string",
+                  "enum": [
+                    "Andrew"
+                  ]
+                },
+                "last_name": {
+                  "type": "string",
+                  "enum": [
+                    "Smith"
+                  ]
+                }
+              },
+              "required": [
+                "first_name",
+                "last_name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^first_name$": true,
+                "^last_name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "$id": "https://github.com/ryanelian/instapack/settings.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "input": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(.*)$"
+    },
+    "output": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(.*)$"
+    },
+    "jsOut": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(.*)$"
+    },
+    "cssOut": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(.*)$"
+    },
+    "port1": {
+      "type": "integer"
+    },
+    "namespace": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(.*)$"
+    },
+    "umdLibraryMode": {
+      "type": "boolean"
+    },
+    "alias": {
+      "type": "object",
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(.*)$"
+          }
+        ]
+      }
+    },
+    "externals": {
+      "type": "object",
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(.*)$"
+          },
+          {
+            "$ref": "#/$defs/ArrayOfStringValues"
+          },
+          {
+            "type": "object",
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "^(.*)$"
+                },
+                {
+                  "$ref": "#/$defs/ArrayOfStringValues"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "copy": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "library": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(.*)$"
+          },
+          "files": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/ArrayOfStringValues"
+              }
+            ]
+          },
+          "destination": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(.*)$"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "ArrayOfStringValues": {
+      "type": "array",
+      "items": {
+        "description": "A non-empty string",
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^(.*)$"
+      }
+    }
+  }
+}

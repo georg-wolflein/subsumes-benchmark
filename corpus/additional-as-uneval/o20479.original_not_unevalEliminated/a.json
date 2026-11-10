@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "access_token": {
+                  "type": "string"
+                },
+                "expires_in": {
+                  "type": "number"
+                },
+                "refresh_token": {
+                  "type": "string"
+                },
+                "token_type": {
+                  "enum": [
+                    "bearer"
+                  ],
+                  "type": "string"
+                }
+              },
+              "required": [
+                "token_type",
+                "access_token",
+                "expires_in",
+                "refresh_token"
+              ],
+              "title": "refresh",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^access_token$": true,
+                "^expires_in$": true,
+                "^refresh_token$": true,
+                "^token_type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

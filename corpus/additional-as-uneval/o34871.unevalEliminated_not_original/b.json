@@ -1,0 +1,569 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_7",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "default": [
+                null,
+                null
+              ],
+              "description": "Explicit range of time (within a container): an empty segment, a singleton point in time, or a start and end point.",
+              "items": {
+                "$ref": "#/$defs/offset"
+              },
+              "maxItems": 2,
+              "type": "array"
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Publications/products corresponding to study volumes.",
+              "properties": {
+                "url": {
+                  "format": "uri",
+                  "title": "URL or DOI",
+                  "type": "string"
+                },
+                "head": {
+                  "type": "string"
+                },
+                "year": {
+                  "maximum": 2900.0,
+                  "minimum": 1900.0,
+                  "type": "integer"
+                },
+                "authors": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "title": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "head"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^url$": true,
+                "^title$": true,
+                "^head$": true,
+                "^year$": true,
+                "^authors$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Organizational unit within volume containing related files (with common annotations), often corresponding to an individual data session (single visit/acquisition/participant/group/day).",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "assets": {
+                  "description": "Attachment point of assets, which, in the case of timeseries data, should match asset.duration.",
+                  "items": {
+                    "$ref": "#/$defs/asset"
+                  },
+                  "type": "array"
+                },
+                "key": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "date": {
+                  "$ref": "#/$defs/date"
+                },
+                "top": {
+                  "default": false,
+                  "type": "boolean"
+                },
+                "records": {
+                  "description": "Attachment of records to slots.",
+                  "items": {
+                    "$ref": "#/$defs/record"
+                  },
+                  "type": "array"
+                },
+                "release": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/release"
+                    }
+                  ],
+                  "default": null,
+                  "description": "Sharing/release permissions granted by participants on (portions of) contained data."
+                }
+              },
+              "required": [
+                "key"
+              ],
+              "title": "session or materials",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^date$": true,
+                "^name$": true,
+                "^top$": true,
+                "^id$": true,
+                "^records$": true,
+                "^release$": true,
+                "^key$": true,
+                "^assets$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Basic organizational unit for data.",
+              "properties": {
+                "containers": {
+                  "description": "The first container is required and must have 'top' set.",
+                  "items": {
+                    "$ref": "#/$defs/container"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                },
+                "directory": {
+                  "default": "",
+                  "description": "Staging directory (normally within /nyu/stage) within which to find all asset files.",
+                  "title": "Asset base directory",
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "containers"
+              ],
+              "title": "Databrary Volume",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^containers$": true,
+                "^directory$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "container": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Link to externals resources/references.",
+              "properties": {
+                "head": {
+                  "type": "string"
+                },
+                "url": {
+                  "format": "uri",
+                  "title": "URL or DOI",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "head",
+                "url"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^head$": true,
+                "^url$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "offset": {
+      "description": "Point in time in milliseconds or MM:SS.sss, used as endpoint for segment.  Null represents indeterminate value, usually representing +-Infinity as an endpoint.",
+      "pattern": "^[-+]?([0-9]+:){0,2}[0-9]+(\\.[0-9]*)?$",
+      "type": [
+        "number",
+        "string",
+        "null"
+      ]
+    },
+    "date": {
+      "pattern": "^[12][0-9]{3}-[01][0-9]-[0-3][0-9]$",
+      "type": "string"
+    },
+    "link": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Assets reflecting files in primary storage.",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "replace": {
+                  "description": "Original file staging path or asset id to replace.",
+                  "type": [
+                    "string",
+                    "integer"
+                  ]
+                },
+                "options": {
+                  "description": "Additional transcode options to pass to ffmpeg.",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "release": {
+                  "$ref": "#/$defs/release"
+                },
+                "clip": {
+                  "$ref": "#/$defs/segment",
+                  "description": "Portion of source file to extract as this asset. Note that segment is relative to clip start."
+                },
+                "position": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/offset",
+                      "description": "Start point only (end point inferred from length)."
+                    },
+                    {
+                      "$ref": "#/$defs/segment"
+                    },
+                    {
+                      "description": "Automatically postioned immediately following previous positioned asset.",
+                      "enum": [
+                        "auto"
+                      ],
+                      "type": "string"
+                    }
+                  ]
+                },
+                "file": {
+                  "description": "Relative path to file under '/nyu/stage/$directory'.",
+                  "type": "string"
+                }
+              },
+              "title": "file",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^file$": true,
+                "^clip$": true,
+                "^options$": true,
+                "^replace$": true,
+                "^name$": true,
+                "^id$": true,
+                "^release$": true,
+                "^position$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "position": {
+      "default": [
+        null,
+        null
+      ]
+    },
+    "asset": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "record": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Sets of metadata measurements organized into or applying to a single cohesive unit. These are assumed to be unique within a volume, such that two identical records are considered the same object.",
+              "properties": {
+                "ID": {
+                  "type": "string"
+                },
+                "pregnancy term": {
+                  "enum": [
+                    "Full term",
+                    "Preterm"
+                  ],
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "state": {
+                  "enum": [
+                    "AL",
+                    "AK",
+                    "AZ",
+                    "AR",
+                    "CA",
+                    "CO",
+                    "CT",
+                    "DE",
+                    "DC",
+                    "FL",
+                    "GA",
+                    "HI",
+                    "ID",
+                    "IL",
+                    "IN",
+                    "IA",
+                    "KS",
+                    "KY",
+                    "LA",
+                    "ME",
+                    "MT",
+                    "NE",
+                    "NV",
+                    "NH",
+                    "NJ",
+                    "NM",
+                    "NY",
+                    "NC",
+                    "ND",
+                    "OH",
+                    "OK",
+                    "OR",
+                    "MD",
+                    "MA",
+                    "MI",
+                    "MN",
+                    "MS",
+                    "MO",
+                    "PA",
+                    "RI",
+                    "SC",
+                    "SD",
+                    "TN",
+                    "TX",
+                    "UT",
+                    "VT",
+                    "VA",
+                    "WA",
+                    "WV",
+                    "WI",
+                    "WY"
+                  ],
+                  "type": "string"
+                },
+                "setting": {
+                  "enum": [
+                    "Lab",
+                    "Home",
+                    "Classroom",
+                    "Outdoor",
+                    "Clinic"
+                  ],
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "gestational age": {
+                  "$ref": "#/$defs/numeric"
+                },
+                "country": {
+                  "type": "string"
+                },
+                "reason": {
+                  "enum": [
+                    "Did not meet inclusion criteria",
+                    "Procedural/experimenter error",
+                    "Withdrew/fussy/tired",
+                    "Outlier"
+                  ],
+                  "type": "string"
+                },
+                "info": {
+                  "type": "string"
+                },
+                "key": {
+                  "type": "string"
+                },
+                "language": {
+                  "type": "string"
+                },
+                "race": {
+                  "enum": [
+                    "American Indian or Alaska Native",
+                    "Asian",
+                    "Native Hawaiian or Other Pacific Islander",
+                    "Black or African American",
+                    "White",
+                    "More than one",
+                    "Unknown or not reported"
+                  ],
+                  "type": "string"
+                },
+                "disability": {
+                  "type": "string"
+                },
+                "birth weight": {
+                  "$ref": "#/$defs/numeric"
+                },
+                "summary": {
+                  "type": "string"
+                },
+                "gender": {
+                  "enum": [
+                    "Female",
+                    "Male"
+                  ],
+                  "type": "string"
+                },
+                "birthdate": {
+                  "$ref": "#/$defs/date"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "positions": {
+                  "items": {
+                    "$ref": "#/$defs/segment"
+                  },
+                  "type": "array"
+                },
+                "ethnicity": {
+                  "enum": [
+                    "Not Hispanic or Latino",
+                    "Hispanic or Latino"
+                  ],
+                  "type": "string"
+                },
+                "category": {
+                  "description": "Types of records that are relevant for data organization.",
+                  "enum": [
+                    "participant",
+                    "pilot",
+                    "exclusion",
+                    "condition",
+                    "group",
+                    "task",
+                    "context"
+                  ]
+                }
+              },
+              "required": [
+                "key",
+                "category"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^race$": true,
+                "^gestational age$": true,
+                "^description$": true,
+                "^state$": true,
+                "^gender$": true,
+                "^category$": true,
+                "^name$": true,
+                "^summary$": true,
+                "^id$": true,
+                "^country$": true,
+                "^reason$": true,
+                "^ethnicity$": true,
+                "^birthdate$": true,
+                "^positions$": true,
+                "^pregnancy term$": true,
+                "^info$": true,
+                "^ID$": true,
+                "^birth weight$": true,
+                "^language$": true,
+                "^setting$": true,
+                "^disability$": true,
+                "^key$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "segment": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "citation": {
+      "$ref": "#/$defs/modern_6"
+    },
+    "numeric": {
+      "pattern": "^[0-9]*(\\.[0-9]*)?$",
+      "type": "string"
+    },
+    "release": {
+      "description": "Levels at which participants or researchers may choose to share data.",
+      "enum": [
+        null,
+        "PRIVATE",
+        "SHARED",
+        "EXCERPTS",
+        "PUBLIC"
+      ],
+      "title": "sharing release level"
+    }
+  }
+}

@@ -1,0 +1,815 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_9",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "env_add_path": {
+                  "$ref": "#/$defs/stringOrArrayOfStrings"
+                },
+                "uninstaller": {
+                  "$ref": "#/$defs/uninstaller"
+                },
+                "url": {
+                  "$ref": "#/$defs/uriOrArrayOfUris"
+                },
+                "post_install": {
+                  "$ref": "#/$defs/stringOrArrayOfStrings"
+                },
+                "msi": {
+                  "$ref": "#/$defs/stringOrArrayOfStrings",
+                  "description": "Deprecated"
+                },
+                "installer": {
+                  "$ref": "#/$defs/installer"
+                },
+                "hash": {
+                  "$ref": "#/$defs/hash"
+                },
+                "env_set": {
+                  "type": "object"
+                },
+                "extract_dir": {
+                  "$ref": "#/$defs/stringOrArrayOfStrings"
+                },
+                "shortcuts": {
+                  "$ref": "#/$defs/shortcutsArray"
+                },
+                "pre_install": {
+                  "$ref": "#/$defs/stringOrArrayOfStrings"
+                },
+                "checkver": {
+                  "$ref": "#/$defs/checkver"
+                },
+                "bin": {
+                  "$ref": "#/$defs/stringOrArrayOfStringsOrAnArrayOfArrayOfStrings"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^shortcuts$": true,
+                "^msi$": true,
+                "^bin$": true,
+                "^env_set$": true,
+                "^post_install$": true,
+                "^pre_install$": true,
+                "^uninstaller$": true,
+                "^extract_dir$": true,
+                "^url$": true,
+                "^checkver$": true,
+                "^env_add_path$": true,
+                "^installer$": true,
+                "^hash$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "autoupdate": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "32bit": {
+                  "$ref": "#/$defs/architecture"
+                },
+                "64bit": {
+                  "$ref": "#/$defs/architecture"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^32bit$": true,
+                "^64bit$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "uninstaller": {
+      "oneOf": [
+        {
+          "required": [
+            "file"
+          ]
+        },
+        {
+          "required": [
+            "script"
+          ]
+        }
+      ],
+      "properties": {
+        "args": {
+          "$ref": "#/$defs/stringOrArrayOfStrings"
+        },
+        "file": {
+          "type": "string"
+        },
+        "script": {
+          "$ref": "#/$defs/stringOrArrayOfStrings"
+        }
+      },
+      "type": "object"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "url": {
+                  "_format": "uri",
+                  "type": "string"
+                },
+                "architecture": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "hash": {
+                  "$ref": "#/$defs/hashExtraction"
+                },
+                "extract_dir": {
+                  "type": "string"
+                },
+                "note": {
+                  "$ref": "#/$defs/stringOrArrayOfStrings"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^note$": true,
+                "^hash$": true,
+                "^architecture$": true,
+                "^extract_dir$": true,
+                "^url$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "32bit": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "64bit": {
+                  "$ref": "#/$defs/modern_4"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^32bit$": true,
+                "^64bit$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "architecture": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "modern_12": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                "^(.*)$": {
+                  "$ref": "#/$defs/stringOrArrayOfStrings"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^(.*)$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "hash": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/hashPattern"
+        },
+        {
+          "items": {
+            "$ref": "#/$defs/hashPattern"
+          },
+          "minItems": 1,
+          "type": "array",
+          "_uniqueItems": true
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "keep": {
+                  "type": "boolean"
+                },
+                "_comment": {
+                  "description": "Undocumented: only used in scoop-extras/oraclejdk* and scoop-extras/appengine-go",
+                  "type": "string"
+                },
+                "script": {
+                  "$ref": "#/$defs/stringOrArrayOfStrings"
+                },
+                "file": {
+                  "type": "string"
+                },
+                "args": {
+                  "$ref": "#/$defs/stringOrArrayOfStrings"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^keep$": true,
+                "^file$": true,
+                "^args$": true,
+                "^script$": true,
+                "^_comment$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "uriOrArrayOfUris": {
+      "anyOf": [
+        {
+          "_format": "uri",
+          "not": {
+            "pattern": "(\\$)"
+          },
+          "type": "string"
+        },
+        {
+          "items": {
+            "_format": "uri",
+            "not": {
+              "pattern": "(\\$)"
+            },
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array",
+          "_uniqueItems": true
+        }
+      ]
+    },
+    "modern_13": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "extract_dir": {
+                  "type": "string"
+                },
+                "hash": {
+                  "$ref": "#/$defs/hashExtraction"
+                },
+                "url": {
+                  "_format": "uri",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^extract_dir$": true,
+                "^hash$": true,
+                "^url$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "checkver": {
+      "anyOf": [
+        {
+          "_format": "regex",
+          "type": "string"
+        },
+        {
+          "$ref": "#/$defs/modern_7"
+        }
+      ]
+    },
+    "stringOrArrayOfStrings": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      ]
+    },
+    "licenseIdentifiers": {
+      "description": "License identifier based on SPDX License List https://spdx.org/licenses/",
+      "examples": [
+        "Apache-2.0",
+        "BSD-3-Clause",
+        "Freeware",
+        "GPL-2.0-only",
+        "GPL-2.0-or-later",
+        "GPL-3.0-only",
+        "GPL-3.0-or-later",
+        "ISC",
+        "LGPL-2.0-only",
+        "LGPL-2.0-or-later",
+        "LGPL-2.1-only",
+        "LGPL-2.1-or-later",
+        "LGPL-3.0-only",
+        "LGPL-3.0-or-later",
+        "MIT",
+        "MS-PL",
+        "Proprietary",
+        "Public Domain",
+        "Shareware",
+        "Unlicense"
+      ],
+      "type": "string"
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "url": {
+                  "anyOf": [
+                    {
+                      "_format": "uri",
+                      "type": "string"
+                    },
+                    {
+                      "pattern": "^(\\$url|\\$baseurl).[\\w\\d]+$",
+                      "type": "string"
+                    },
+                    {
+                      "pattern": "^.*(\\$url|\\$baseurl).*$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "xpath": {
+                  "type": "string"
+                },
+                "mode": {
+                  "enum": [
+                    "download",
+                    "extract",
+                    "json",
+                    "xpath",
+                    "rdf",
+                    "metalink",
+                    "fosshub",
+                    "sourceforge"
+                  ]
+                },
+                "jp": {
+                  "description": "Same as 'jsonpath'",
+                  "pattern": "^\\$[.[].*$",
+                  "type": "string"
+                },
+                "type": {
+                  "description": "Deprecated, hash type is determined automatically",
+                  "enum": [
+                    "md5",
+                    "sha1",
+                    "sha256",
+                    "sha512"
+                  ]
+                },
+                "jsonpath": {
+                  "pattern": "^\\$[.[].*$",
+                  "type": "string"
+                },
+                "regex": {
+                  "_format": "regex",
+                  "type": "string"
+                },
+                "find": {
+                  "_format": "regex",
+                  "description": "Same as 'regex'",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^find$": true,
+                "^jp$": true,
+                "^mode$": true,
+                "^xpath$": true,
+                "^url$": true,
+                "^type$": true,
+                "^regex$": true,
+                "^jsonpath$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "stringOrArrayOfStringsOrAnArrayOfArrayOfStrings": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "items": {
+            "$ref": "#/$defs/stringOrArrayOfStrings"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      ]
+    },
+    "installer": {
+      "$ref": "#/$defs/modern_8"
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "replace": {
+                  "description": "Allows rearrange the regexp matches",
+                  "type": "string"
+                },
+                "url": {
+                  "_format": "uri",
+                  "type": "string"
+                },
+                "re": {
+                  "_format": "regex",
+                  "description": "Same as 'regex'",
+                  "type": "string"
+                },
+                "useragent": {
+                  "type": "string"
+                },
+                "reverse": {
+                  "description": "Reverse the order of regex matches",
+                  "type": "boolean"
+                },
+                "xpath": {
+                  "type": "string"
+                },
+                "jp": {
+                  "description": "Same as 'jsonpath'",
+                  "pattern": "^\\$[.[].*$",
+                  "type": "string"
+                },
+                "jsonpath": {
+                  "pattern": "^\\$[.[].*$",
+                  "type": "string"
+                },
+                "regex": {
+                  "_format": "regex",
+                  "type": "string"
+                },
+                "github": {
+                  "_format": "uri",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^jp$": true,
+                "^reverse$": true,
+                "^github$": true,
+                "^useragent$": true,
+                "^xpath$": true,
+                "^url$": true,
+                "^regex$": true,
+                "^jsonpath$": true,
+                "^replace$": true,
+                "^re$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "extract_to": {
+                  "$ref": "#/$defs/stringOrArrayOfStrings"
+                },
+                "autoupdate": {
+                  "$ref": "#/$defs/autoupdate"
+                },
+                "env_add_path": {
+                  "$ref": "#/$defs/stringOrArrayOfStrings"
+                },
+                "uninstaller": {
+                  "$ref": "#/$defs/uninstaller"
+                },
+                "url": {
+                  "$ref": "#/$defs/uriOrArrayOfUris"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "msi": {
+                  "$ref": "#/$defs/stringOrArrayOfStrings",
+                  "description": "Deprecated"
+                },
+                "installer": {
+                  "$ref": "#/$defs/installer"
+                },
+                "architecture": {
+                  "$ref": "#/$defs/modern_10"
+                },
+                "license": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/licenseIdentifiers"
+                    },
+                    {
+                      "$ref": "#/$defs/modern_11"
+                    }
+                  ]
+                },
+                "extract_dir": {
+                  "$ref": "#/$defs/stringOrArrayOfStrings"
+                },
+                "cookie": {
+                  "description": "Undocumented: Found at https://github.com/se35710/scoop-java/search?l=JSON&q=cookie",
+                  "type": "object"
+                },
+                "shortcuts": {
+                  "$ref": "#/$defs/shortcutsArray"
+                },
+                "pre_install": {
+                  "$ref": "#/$defs/stringOrArrayOfStrings"
+                },
+                "##": {
+                  "$ref": "#/$defs/stringOrArrayOfStrings",
+                  "description": "A comment."
+                },
+                "suggest": {
+                  "$ref": "#/$defs/modern_12"
+                },
+                "post_install": {
+                  "$ref": "#/$defs/stringOrArrayOfStrings"
+                },
+                "innosetup": {
+                  "description": "True if the installer InnoSetup based. Found in https://github.com/lukesampson/scoop/search?l=JSON&q=innosetup",
+                  "type": "boolean"
+                },
+                "version": {
+                  "pattern": "^[\\w\\.\\-_]+$",
+                  "type": "string"
+                },
+                "persist": {
+                  "$ref": "#/$defs/stringOrArrayOfStringsOrAnArrayOfArrayOfStrings"
+                },
+                "hash": {
+                  "$ref": "#/$defs/hash"
+                },
+                "depends": {
+                  "$ref": "#/$defs/stringOrArrayOfStrings"
+                },
+                "env_set": {
+                  "type": "object"
+                },
+                "psmodule": {
+                  "$ref": "#/$defs/modern_13"
+                },
+                "homepage": {
+                  "_format": "uri",
+                  "type": "string"
+                },
+                "_comment": {
+                  "$ref": "#/$defs/stringOrArrayOfStrings",
+                  "description": "Deprecated. Use ## instead."
+                },
+                "checkver": {
+                  "$ref": "#/$defs/checkver"
+                },
+                "bin": {
+                  "$ref": "#/$defs/stringOrArrayOfStringsOrAnArrayOfArrayOfStrings"
+                },
+                "notes": {
+                  "$ref": "#/$defs/stringOrArrayOfStrings"
+                }
+              },
+              "required": [
+                "version"
+              ],
+              "title": "scoop app manifest schema",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^shortcuts$": true,
+                "^version$": true,
+                "^##$": true,
+                "^notes$": true,
+                "^autoupdate$": true,
+                "^architecture$": true,
+                "^bin$": true,
+                "^env_set$": true,
+                "^psmodule$": true,
+                "^post_install$": true,
+                "^license$": true,
+                "^cookie$": true,
+                "^persist$": true,
+                "^innosetup$": true,
+                "^pre_install$": true,
+                "^uninstaller$": true,
+                "^description$": true,
+                "^homepage$": true,
+                "^msi$": true,
+                "^depends$": true,
+                "^extract_dir$": true,
+                "^url$": true,
+                "^checkver$": true,
+                "^env_add_path$": true,
+                "^suggest$": true,
+                "^extract_to$": true,
+                "^installer$": true,
+                "^_comment$": true,
+                "^hash$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "hashExtraction": {
+      "$ref": "#/$defs/modern_6"
+    },
+    "shortcutsArray": {
+      "items": {
+        "items": {
+          "type": "string"
+        },
+        "maxItems": 4,
+        "minItems": 2,
+        "type": "array"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "identifier": {
+                  "$ref": "#/$defs/licenseIdentifiers"
+                },
+                "url": {
+                  "_format": "uri",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "identifier"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^identifier$": true,
+                "^url$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "hashPattern": {
+      "pattern": "^([a-fA-F0-9]{64}|(sha1|sha256|sha512|md5):([a-fA-F0-9]{32}|[a-fA-F0-9]{40}|[a-fA-F0-9]{64}|[a-fA-F0-9]{128}))$",
+      "type": "string"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "extract_dir": {
+                  "type": "string"
+                },
+                "hash": {
+                  "$ref": "#/$defs/hashExtraction"
+                },
+                "url": {
+                  "_format": "uri",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^extract_dir$": true,
+                "^hash$": true,
+                "^url$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "arrayOfArrayOfStrings": {
+      "items": {
+        "items": {
+          "type": "string"
+        },
+        "minItems": 1,
+        "type": "array"
+      },
+      "minItems": 1,
+      "type": "array"
+    }
+  }
+}

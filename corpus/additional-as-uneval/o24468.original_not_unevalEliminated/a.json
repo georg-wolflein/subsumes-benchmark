@@ -1,0 +1,136 @@
+{
+  "$id": "http://qiskit.org/qobj/results-01/schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "qobj results",
+  "description": "The results of executing a qobj",
+  "type": "object",
+  "required": [
+    "backend",
+    "id",
+    "status"
+  ],
+  "properties": {
+    "execution_id": {
+      "type": "string",
+      "description": "Unique execution id. May be useful for matching with backend logfiles, etc"
+    },
+    "result": {
+      "type": "array",
+      "description": "Corresponding results for array of experiments of the input qobj",
+      "items": {
+        "type": "object",
+        "required": [
+          "status",
+          "success"
+        ],
+        "properties": {
+          "seed": {
+            "type": "string",
+            "description": "Experiment-level random seed"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "counts": {
+                "$ref": "#/$defs/modern_1"
+              },
+              "snapshots": {
+                "type": "object",
+                "description": "Snapshot of simulator internal representation",
+                "example": {
+                  "0": {
+                    "statevector": [
+                      [
+                        0,
+                        0.707
+                      ],
+                      [
+                        0,
+                        0
+                      ],
+                      [
+                        0,
+                        0
+                      ],
+                      [
+                        0.707,
+                        0
+                      ]
+                    ],
+                    "probabilities": [
+                      0.5,
+                      0,
+                      0,
+                      0.5
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "name": {
+            "type": "string",
+            "description": "Experiment name"
+          },
+          "success": {
+            "type": "boolean",
+            "description": "If true, we can trust results for this experiment."
+          },
+          "shots": {
+            "type": "string",
+            "description": "Experiment-level number of shots"
+          },
+          "status": {
+            "type": "string",
+            "description": "Human-readable description of status of this experiment"
+          }
+        }
+      }
+    },
+    "id": {
+      "type": "string",
+      "description": "Job id passed back from the input qobj"
+    },
+    "date": {
+      "type": "string",
+      "_format": "date-time",
+      "description": "Date/time of job execution"
+    },
+    "backend": {
+      "type": "string",
+      "description": "Backend who produced this result"
+    }
+  },
+  "success": {
+    "type": "boolean",
+    "description": "True if complete input qobj executed correctly. (Implies each experiment success)"
+  },
+  "status": {
+    "type": "string",
+    "description": "Human-readable status of complete qobj execution"
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Histogram of results",
+              "example": {
+                "01011": 10,
+                "10001": 102
+              }
+            },
+            {
+              "additionalProperties": {
+                "type": "integer",
+                "minimum": 0.0
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

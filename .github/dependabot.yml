@@ -1,0 +1,21 @@
+version: 2
+updates:
+  - package-ecosystem: uv
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      python-tooling:
+        patterns: ["ruff", "ty"]
+      python-dependencies:
+        patterns: ["*"]
+        exclude-patterns: ["ruff", "ty"]
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      github-actions:
+        patterns: ["*"]

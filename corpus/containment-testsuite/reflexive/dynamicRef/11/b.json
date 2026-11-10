@@ -1,0 +1,34 @@
+{
+  "$id": "https://test.json-schema.org/dynamic-ref-with-multiple-paths/main",
+  "$defs": {
+    "inner": {
+      "$id": "inner",
+      "$dynamicAnchor": "foo",
+      "title": "inner",
+      "additionalProperties": {
+        "$dynamicRef": "#foo"
+      }
+    }
+  },
+  "if": {
+    "propertyNames": {
+      "pattern": "^[a-m]"
+    }
+  },
+  "then": {
+    "title": "any type of node",
+    "$id": "anyLeafNode",
+    "$dynamicAnchor": "foo",
+    "$ref": "main#/$defs/inner"
+  },
+  "else": {
+    "title": "integer node",
+    "$id": "integerNode",
+    "$dynamicAnchor": "foo",
+    "type": [
+      "object",
+      "integer"
+    ],
+    "$ref": "main#/$defs/inner"
+  }
+}

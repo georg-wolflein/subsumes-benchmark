@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Data type fields (section 4.3.3)",
+  "type": "object",
+  "oneOf": [
+    {
+      "required": [
+        "type"
+      ]
+    },
+    {
+      "required": [
+        "$ref"
+      ]
+    }
+  ],
+  "properties": {
+    "format": {
+      "type": "string"
+    },
+    "$ref": {
+      "type": "string"
+    },
+    "items": {
+      "$ref": "#/$defs/itemsObject"
+    },
+    "maximum": {
+      "type": "string"
+    },
+    "enum": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "_uniqueItems": true,
+      "minItems": 1
+    },
+    "minimum": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "defaultValue": {
+      "not": {
+        "type": [
+          "array",
+          "object",
+          "null"
+        ]
+      }
+    },
+    "_uniqueItems": {
+      "type": "boolean"
+    }
+  },
+  "dependentSchemas": {
+    "format": {
+      "oneOf": [
+        {
+          "properties": {
+            "type": {
+              "enum": [
+                "integer"
+              ]
+            },
+            "format": {
+              "enum": [
+                "int32",
+                "int64"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "type": {
+              "enum": [
+                "number"
+              ]
+            },
+            "format": {
+              "enum": [
+                "float",
+                "double"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "type": {
+              "enum": [
+                "string"
+              ]
+            },
+            "format": {
+              "enum": [
+                "byte",
+                "date",
+                "date-time"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "$ref"
+              ],
+              "properties": {
+                "$ref": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^$ref$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "type"
+              ],
+              "properties": {
+                "type": true,
+                "format": true
+              }
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^format$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "itemsObject": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/modern_1"
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#"
+            },
+            {
+              "$ref": "#/$defs/modern_2"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

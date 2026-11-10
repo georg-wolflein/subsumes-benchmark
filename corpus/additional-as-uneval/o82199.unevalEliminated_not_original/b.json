@@ -1,0 +1,173 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "projects",
+    "drivers"
+  ],
+  "properties": {
+    "projects": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/modern_2"
+      }
+    },
+    "releases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z]+$"
+          },
+          "wiki": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "wiki"
+        ]
+      }
+    },
+    "drivers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/modern_3"
+      }
+    }
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string",
+                  "pattern": "^[a-z\\d_\\.-]+@([a-z\\d\\.-]+\\.)+[a-z]+$"
+                },
+                "irc": {
+                  "type": "string"
+                },
+                "launchpad_id": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^email$": true,
+                "^irc$": true,
+                "^launchpad_id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[a-z\\d\\./-]+$"
+                },
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "maintainer": {
+                  "$ref": "#/$defs/user"
+                },
+                "ci_id": {
+                  "type": "string"
+                },
+                "project_id": {
+                  "type": "string"
+                },
+                "releases": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "wiki": {
+                  "type": "string"
+                },
+                "vendor": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "project_id",
+                "vendor",
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^wiki$": true,
+                "^ci_id$": true,
+                "^name$": true,
+                "^vendor$": true,
+                "^maintainer$": true,
+                "^releases$": true,
+                "^project_id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "user": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

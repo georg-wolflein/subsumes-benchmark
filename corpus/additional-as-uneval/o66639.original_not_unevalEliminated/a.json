@@ -1,0 +1,206 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Formal JSON-Schema of PCN Spec",
+  "properties": {
+    "domains": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "metadata": {
+      "properties": {
+        "author": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "steps": {
+      "$ref": "#/$defs/modern_2"
+    }
+  },
+  "required": [
+    "domains",
+    "steps"
+  ],
+  "title": "PCN Spec",
+  "type": "object",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "items": {
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "subtitle": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "title",
+                  "subtitle"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "items": {
+                "properties": {
+                  "value_specific": {
+                    "default": 0,
+                    "type": "integer"
+                  },
+                  "domain": {
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "region": {
+                        "properties": {
+                          "type": {
+                            "enum": [
+                              "independent",
+                              "surrogate",
+                              "direct_leading",
+                              "direct_shared"
+                            ],
+                            "type": "string"
+                          },
+                          "with_domain": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "with_domain"
+                        ],
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "region"
+                    ],
+                    "type": "object"
+                  },
+                  "problems": {
+                    "items": {
+                      "properties": {
+                        "description": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "enum": [
+                            "inconvenient",
+                            "confusing",
+                            "difficult",
+                            "likely_to_fail"
+                          ],
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "value_generic": {
+                    "default": 0,
+                    "type": "integer"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "emphasized": {
+                    "default": false,
+                    "type": "boolean"
+                  },
+                  "predecessors": {
+                    "items": {
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "title": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "enum": [
+                            "normal_relationship",
+                            "loose_temporal_relationship"
+                          ],
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "type"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "enum": [
+                      "process",
+                      "decision",
+                      "wait",
+                      "divergent_process"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "title",
+                  "type",
+                  "domain"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

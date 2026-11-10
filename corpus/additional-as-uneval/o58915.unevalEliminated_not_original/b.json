@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "notification": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              },
+              "required": [
+                "notification"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^notification$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "person_id": {
+                  "type": "integer"
+                },
+                "door_id": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "person_id",
+                "door_id"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^person_id$": true,
+                "^door_id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

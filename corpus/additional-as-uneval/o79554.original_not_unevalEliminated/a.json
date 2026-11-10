@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "items": {
+    "$ref": "#/$defs/categoryActual"
+  },
+  "$defs": {
+    "categoryActual": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "category": {
+                  "type": "integer"
+                },
+                "values": {
+                  "$ref": "#/$defs/values"
+                }
+              },
+              "required": [
+                "category",
+                "values"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^category$": true,
+                "^values$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "values": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    }
+  }
+}

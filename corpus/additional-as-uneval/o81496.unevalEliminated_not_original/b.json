@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "RQ to firefightersPost",
+              "type": "object",
+              "properties": {
+                "city": {
+                  "type": "string"
+                },
+                "latitude": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "notificationId": {
+                  "javaType": "Long"
+                },
+                "creator": {
+                  "type": "string"
+                },
+                "longitude": {
+                  "type": "string"
+                },
+                "actionName": {
+                  "type": "string"
+                },
+                "address": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "notifiactionDate": {
+                  "format": "date-time"
+                },
+                "requestedFirefightersUnitNumber": {
+                  "type": "integer"
+                },
+                "orderedResources": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^city$": true,
+                "^latitude$": true,
+                "^requestedFirefightersUnitNumber$": true,
+                "^orderedResources$": true,
+                "^address$": true,
+                "^actionName$": true,
+                "^notifiactionDate$": true,
+                "^notificationId$": true,
+                "^longitude$": true,
+                "^description$": true,
+                "^creator$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/modern_3"
+              }
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "quantity": {
+                  "type": "integer"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^quantity$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

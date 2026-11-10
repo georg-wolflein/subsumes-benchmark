@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "anyOf": [
+    {
+      "$ref": "#/$defs/_AdaptiveLogType_"
+    }
+  ],
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/_AdaptiveLogType_.propertyTypes"
+                }
+              ],
+              "description": "A registry type log_factory entry.",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^logType$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "_AdaptiveLogType_.propertyTypes": {
+      "properties": {
+        "description": {
+          "contentMediaType": "text/plain",
+          "description": "Description of log type.",
+          "title": "Description",
+          "type": "string"
+        },
+        "logType": {
+          "description": "Type of log.",
+          "title": "Log Type",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "_AdaptiveLogType_": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

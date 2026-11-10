@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "lisaTransactionTypeType": {
+      "enum": [
+        "deposit",
+        "withdrawal",
+        "HTBtransfer",
+        "LIAtransfer",
+        "bonusClaim",
+        "chargeMade"
+      ],
+      "type": "string"
+    },
+    "ISO8601-Date": {
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "type": "string"
+    },
+    "transactionTypeType": {
+      "enum": [
+        "bonus",
+        "charge"
+      ],
+      "type": "string"
+    },
+    "LISAManagerReferenceNumberType": {
+      "pattern": "^Z\\d{6}$",
+      "type": "string"
+    },
+    "chargeReasonCodeType": {
+      "enum": [
+        "over-lisa-limit",
+        "outside-age-range",
+        "chargeable-withdrawal"
+      ],
+      "type": "string"
+    },
+    "IDType": {
+      "pattern": "^\\d{10}$",
+      "type": "string"
+    },
+    "supersedeReasonCodeType": {
+      "enum": [
+        "error-correction",
+        "TBD"
+      ],
+      "type": "string"
+    },
+    "financialPeriodType": {
+      "properties": {
+        "endDate": {
+          "$ref": "#/$defs/ISO8601-Date"
+        },
+        "startDate": {
+          "$ref": "#/$defs/ISO8601-Date"
+        }
+      },
+      "type": "object"
+    },
+    "complianceReasonType": {
+      "enum": [
+        "house-purchase",
+        "over-sixty",
+        "chargeable",
+        "terminal-illness",
+        "death"
+      ],
+      "type": "string"
+    },
+    "ISO8601-Timestamp": {
+      "pattern": "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}(:\\d{2})?(([+-]\\d{2}(:\\d{2})?)|Z)",
+      "type": "string"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "complianceReason": {
+                  "$ref": "#/$defs/complianceReasonType"
+                },
+                "financialPeriod": {
+                  "$ref": "#/$defs/financialPeriodType"
+                },
+                "supersedesTransaction": {
+                  "properties": {
+                    "supersedeReasonCode": {
+                      "$ref": "#/$defs/supersedeReasonCodeType"
+                    },
+                    "supersedeReasonText": {
+                      "type": "string"
+                    },
+                    "supersededLISATransactionID": {
+                      "$ref": "#/$defs/IDType"
+                    }
+                  },
+                  "required": [
+                    "supersededLISATransactionID",
+                    "supersedeReasonCode",
+                    "supersedeReasonText"
+                  ],
+                  "type": "object"
+                },
+                "transactionType": {
+                  "$ref": "#/$defs/lisaTransactionTypeType"
+                },
+                "chargeDueTo": {
+                  "properties": {
+                    "causingLISATransactionID": {
+                      "$ref": "#/$defs/IDType"
+                    },
+                    "chargeReasonCode": {
+                      "$ref": "#/$defs/chargeReasonCodeType"
+                    },
+                    "chargeReasontext": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "chargeReasonCode",
+                    "chargeReasonText",
+                    "causingLISATransactionID"
+                  ],
+                  "type": "object"
+                },
+                "amount": {
+                  "type": "number"
+                },
+                "dateSubmitted": {
+                  "$ref": "#/$defs/ISO8601-Timestamp"
+                },
+                "accountID": {
+                  "$ref": "#/$defs/IDType"
+                },
+                "lisaTransactionID": {
+                  "$ref": "#/$defs/IDType"
+                },
+                "transferFromLISA": {
+                  "properties": {
+                    "LISAManagerReferenceNumber": {
+                      "$ref": "#/$defs/LISAManagerReferenceNumberType"
+                    },
+                    "accountID": {
+                      "$ref": "#/$defs/IDType"
+                    },
+                    "transferDate": {
+                      "$ref": "#/$defs/ISO8601-Date"
+                    }
+                  },
+                  "required": [
+                    "LISAManagerReferenceNumber",
+                    "accountID",
+                    "transferDate"
+                  ],
+                  "type": "object"
+                },
+                "LISAManagerReferenceNumber": {
+                  "$ref": "#/$defs/LISAManagerReferenceNumberType"
+                },
+                "incurredCharge": {
+                  "properties": {
+                    "chargeLISATransactionID": {
+                      "$ref": "#/$defs/IDType"
+                    }
+                  },
+                  "required": [
+                    "chargeLISATransactionID"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "lisaTransactionID",
+                "accountID",
+                "LISAManagerReferenceNumber",
+                "amount",
+                "transactionType",
+                "dateSubmitted",
+                "financialPeriod"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^incurredCharge$": true,
+                "^financialPeriod$": true,
+                "^lisaTransactionID$": true,
+                "^accountID$": true,
+                "^dateSubmitted$": true,
+                "^LISAManagerReferenceNumber$": true,
+                "^complianceReason$": true,
+                "^supersedesTransaction$": true,
+                "^transferFromLISA$": true,
+                "^amount$": true,
+                "^transactionType$": true,
+                "^chargeDueTo$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "minProperties": 1,
+  "maxProperties": 1,
+  "additionalProperties": false,
+  "properties": {
+    "file": {
+      "$ref": "#/$defs/file"
+    },
+    "dir": {
+      "$ref": "#/$defs/dir"
+    },
+    "and": {
+      "type": "array",
+      "items": {
+        "$ref": "#"
+      }
+    },
+    "or": {
+      "type": "array",
+      "items": {
+        "$ref": "#"
+      }
+    }
+  },
+  "$defs": {
+    "file": {
+      "type": "object",
+      "properties": {
+        "mandatory": {
+          "type": "boolean"
+        },
+        "path": {
+          "type": "string"
+        },
+        "rules": {
+          "type": "object",
+          "properties": {
+            "pattern": {
+              "type": "string"
+            },
+            "matching_file": {
+              "type": "string"
+            },
+            "and": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/file/properties/rules"
+              }
+            },
+            "or": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/file/properties/rules"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "maxProperties": 1,
+          "minProperties": 1
+        }
+      },
+      "required": [
+        "mandatory",
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "dir": {
+      "type": "object",
+      "properties": {
+        "mandatory": {
+          "type": "boolean"
+        },
+        "path": {
+          "type": "string"
+        },
+        "rules": {
+          "type": "object",
+          "properties": {
+            "only_folders": {
+              "type": "boolean"
+            },
+            "file": {
+              "$ref": "#/$defs/file"
+            },
+            "dir": {
+              "$ref": "#/$defs/dir"
+            },
+            "and": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/dir/properties/rules"
+              }
+            },
+            "or": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/dir/properties/rules"
+              }
+            }
+          },
+          "minProperties": 1,
+          "maxProperties": 1,
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "mandatory",
+        "path"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

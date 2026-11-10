@@ -1,0 +1,276 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_5",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "filter_type": {
+                  "$ref": "#/$defs/filter_type"
+                },
+                "field": {
+                  "$ref": "#/$defs/field"
+                },
+                "value": {
+                  "$ref": "#/$defs/value"
+                },
+                "range": {
+                  "$ref": "#/$defs/range"
+                }
+              },
+              "oneOf": [
+                {
+                  "required": [
+                    "field",
+                    "value",
+                    "filter_type"
+                  ]
+                },
+                {
+                  "required": [
+                    "field",
+                    "range",
+                    "filter_type"
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^filter_type$": true,
+                "^field$": true,
+                "^value$": true,
+                "^range$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "filter_type": {
+                  "$ref": "#/$defs/filter_type"
+                },
+                "must": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/filters_allowed"
+                  }
+                },
+                "must_not": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/filters_allowed"
+                  }
+                },
+                "should": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/filters_allowed"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^filter_type$": true,
+                "^must$": true,
+                "^must_not$": true,
+                "^should$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "basic_filter": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "bool": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "range": {
+      "type": "array"
+    },
+    "filters_allowed": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/basic_filter"
+        },
+        {
+          "$ref": "#/$defs/exist"
+        },
+        {
+          "$ref": "#/$defs/bool"
+        },
+        {
+          "$ref": "#/$defs/compare"
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "constant": {
+                  "$ref": "#/$defs/constant"
+                },
+                "comparison_operator": {
+                  "$ref": "#/$defs/comparison_operator"
+                },
+                "field1": {
+                  "$ref": "#/$defs/field"
+                },
+                "field2": {
+                  "$ref": "#/$defs/field"
+                },
+                "filter_type": {
+                  "$ref": "#/$defs/filter_type"
+                }
+              },
+              "oneOf": [
+                {
+                  "required": [
+                    "field1",
+                    "field2",
+                    "comparison_operator",
+                    "filter_type"
+                  ]
+                },
+                {
+                  "required": [
+                    "field1",
+                    "constant",
+                    "comparison_operator",
+                    "filter_type"
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^field1$": true,
+                "^comparison_operator$": true,
+                "^constant$": true,
+                "^field2$": true,
+                "^filter_type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "filter_type": {
+      "type": "string",
+      "enum": [
+        "bool",
+        "match",
+        "in",
+        "exist",
+        "compare"
+      ]
+    },
+    "value": {
+      "type": [
+        "string",
+        "number",
+        "boolean",
+        "array",
+        "object"
+      ]
+    },
+    "compare": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "filter_type": {
+                  "$ref": "#/$defs/filter_type"
+                },
+                "field": {
+                  "$ref": "#/$defs/field"
+                }
+              },
+              "required": [
+                "field",
+                "filter_type"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^filter_type$": true,
+                "^field$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "filter": {
+                  "$ref": "#/$defs/bool"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^filter$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "constant": {
+      "type": [
+        "string",
+        "number"
+      ]
+    },
+    "field": {
+      "type": "string"
+    },
+    "exist": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "comparison_operator": {
+      "type": "string",
+      "enum": [
+        "lt",
+        "gt",
+        "lte",
+        "gte",
+        "eq"
+      ]
+    }
+  }
+}

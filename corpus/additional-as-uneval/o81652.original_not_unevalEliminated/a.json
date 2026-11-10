@@ -1,0 +1,445 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "ticket_uri": {
+                  "type": "string"
+                },
+                "terms_uri": {
+                  "type": "string"
+                },
+                "privacy_uri": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^ticket_uri$": true,
+                "^terms_uri$": true,
+                "^privacy_uri$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "venue": {
+                  "type": "number"
+                },
+                "event": {
+                  "type": "number"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^venue$": true,
+                "^event$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "events": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_2"
+                  }
+                },
+                "metadata": {
+                  "$ref": "#/$defs/modern_9"
+                }
+              },
+              "required": [
+                "events",
+                "metadata"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^events$": true,
+                "^metadata$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "location": {
+                  "$ref": "#/$defs/modern_8"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^name$": true,
+                "^location$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "startTime": {
+                  "type": "string"
+                },
+                "timezone": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "endTime": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "id": {
+                  "type": "string"
+                },
+                "coverPicture": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "category": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "type": {
+                  "type": "string"
+                },
+                "venue": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "ticketing": {
+                  "$ref": "#/$defs/modern_5"
+                },
+                "timeFromNow": {
+                  "type": "integer"
+                },
+                "description": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "isCancelled": {
+                  "type": "boolean"
+                },
+                "distances": {
+                  "$ref": "#/$defs/modern_6"
+                },
+                "profilePicture": {
+                  "type": "string"
+                },
+                "place": {
+                  "$ref": "#/$defs/modern_7"
+                },
+                "updatedTime": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "distance",
+                "startTime",
+                "timeFromNow",
+                "distances",
+                "stats",
+                "venue"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^updatedTime$": true,
+                "^isCancelled$": true,
+                "^timeFromNow$": true,
+                "^timezone$": true,
+                "^category$": true,
+                "^name$": true,
+                "^type$": true,
+                "^place$": true,
+                "^id$": true,
+                "^venue$": true,
+                "^coverPicture$": true,
+                "^ticketing$": true,
+                "^startTime$": true,
+                "^profilePicture$": true,
+                "^description$": true,
+                "^distances$": true,
+                "^endTime$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "city": {
+                  "type": "string"
+                },
+                "state": {
+                  "type": "string"
+                },
+                "country": {
+                  "type": "string"
+                },
+                "longitude": {
+                  "type": "number"
+                },
+                "street": {
+                  "type": "string"
+                },
+                "latitude": {
+                  "type": "number"
+                },
+                "zip": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "latitude",
+                "longitude"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^city$": true,
+                "^longitude$": true,
+                "^state$": true,
+                "^latitude$": true,
+                "^country$": true,
+                "^street$": true,
+                "^zip$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "venues": {
+                  "type": "integer"
+                },
+                "venuesWithEvents": {
+                  "type": "integer"
+                },
+                "events": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "venues",
+                "venuesWithEvents",
+                "events"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^venues$": true,
+                "^venuesWithEvents$": true,
+                "^events$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "location": {
+                  "$ref": "#/$defs/modern_4"
+                },
+                "profilePicture": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "categoryList": {
+                  "type": [
+                    "array",
+                    "null"
+                  ]
+                },
+                "coverPicture": {
+                  "type": "string"
+                },
+                "category": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "emails": {
+                  "type": [
+                    "array",
+                    "null"
+                  ]
+                },
+                "about": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "location"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^emails$": true,
+                "^profilePicture$": true,
+                "^category$": true,
+                "^name$": true,
+                "^id$": true,
+                "^categoryList$": true,
+                "^coverPicture$": true,
+                "^about$": true,
+                "^location$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "city": {
+                  "type": "string"
+                },
+                "state": {
+                  "type": "string"
+                },
+                "country": {
+                  "type": "string"
+                },
+                "longitude": {
+                  "type": "number"
+                },
+                "street": {
+                  "type": "string"
+                },
+                "latitude": {
+                  "type": "number"
+                },
+                "zip": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "latitude",
+                "longitude"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^city$": true,
+                "^longitude$": true,
+                "^state$": true,
+                "^latitude$": true,
+                "^country$": true,
+                "^street$": true,
+                "^zip$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

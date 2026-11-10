@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "userinfo": {
+                  "type": "string"
+                },
+                "host": {
+                  "format": "hostname",
+                  "type": "string"
+                },
+                "fragment": {
+                  "type": "string"
+                },
+                "query": {
+                  "type": "string"
+                },
+                "port": {
+                  "minimum": 0.0,
+                  "type": "integer"
+                },
+                "scheme": {
+                  "type": "string"
+                }
+              },
+              "title": "uri",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^port$": true,
+                "^scheme$": true,
+                "^fragment$": true,
+                "^query$": true,
+                "^path$": true,
+                "^host$": true,
+                "^userinfo$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

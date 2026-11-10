@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "BioSamples curation link",
+              "description": "Link together a curation object with a sample using a specific AAP domain as reference for the curation",
+              "type": "object",
+              "required": [
+                "sample",
+                "curation",
+                "domain"
+              ],
+              "properties": {
+                "sample": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^sample$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

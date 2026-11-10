@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "kdf": {
+      "enum": [
+        "scrypt"
+      ],
+      "type": "string"
+    },
+    "kdfparams": {
+      "$ref": "#/$defs/modern_1"
+    }
+  },
+  "required": [
+    "kdf",
+    "kdfparams"
+  ],
+  "type": "object",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "n": {
+                  "minimum": 1.0,
+                  "type": "integer"
+                },
+                "dklen": {
+                  "minimum": 1.0,
+                  "type": "integer"
+                },
+                "p": {
+                  "minimum": 1.0,
+                  "type": "integer"
+                },
+                "salt": {
+                  "pattern": "^(([0-9]|[a-f]){2}){0,32}$",
+                  "type": "string"
+                },
+                "r": {
+                  "minimum": 1.0,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "r",
+                "p",
+                "n",
+                "dklen",
+                "salt"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^dklen$": true,
+                "^p$": true,
+                "^salt$": true,
+                "^n$": true,
+                "^r$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

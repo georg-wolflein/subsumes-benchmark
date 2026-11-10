@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "get spiders response",
+              "properties": {
+                "links": {
+                  "properties": {
+                    "self": {
+                      "properties": {
+                        "href": {
+                          "_format": "uri",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "href"
+                      ],
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "self"
+                  ],
+                  "type": "object"
+                },
+                "spiders": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              },
+              "required": [
+                "spiders",
+                "links"
+              ],
+              "title": "get spiders response",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^links$": true,
+                "^spiders$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {},
+              "type": "object"
+            },
+            {
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

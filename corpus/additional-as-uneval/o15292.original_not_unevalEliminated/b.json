@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/T",
+  "$defs": {
+    "Data": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "value": {
+          "$ref": "#/$defs/Value"
+        }
+      },
+      "required": [
+        "type",
+        "value"
+      ],
+      "title": "Data",
+      "type": "object"
+    },
+    "FSData": {
+      "additionalProperties": false,
+      "properties": {
+        "driver": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "driver",
+        "location"
+      ],
+      "title": "FSData",
+      "type": "object"
+    },
+    "T": {
+      "additionalProperties": false,
+      "properties": {
+        "chunk_id": {
+          "_format": "uuid",
+          "type": "string"
+        },
+        "data": {
+          "$ref": "#/$defs/Data"
+        },
+        "output_chunk_id": {
+          "_format": "uuid",
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "chunk_id",
+        "data",
+        "output_chunk_id",
+        "state"
+      ],
+      "title": "T",
+      "type": "object"
+    },
+    "Value": {
+      "additionalProperties": false,
+      "properties": {
+        "fs_data": {
+          "$ref": "#/$defs/FSData"
+        }
+      },
+      "required": [
+        "fs_data"
+      ],
+      "title": "Value",
+      "type": "object"
+    }
+  }
+}

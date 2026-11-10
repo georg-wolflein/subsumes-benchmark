@@ -1,0 +1,189 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Git LFS HTTPS Batch API Response",
+  "type": "object",
+  "properties": {
+    "documentation_url": {
+      "type": "string"
+    },
+    "transfer": {
+      "type": "string"
+    },
+    "request_id": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    },
+    "objects": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/modern_3"
+      }
+    }
+  },
+  "required": [
+    "objects"
+  ],
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "download": {
+                  "$ref": "#/$defs/action"
+                },
+                "upload": {
+                  "$ref": "#/$defs/action"
+                },
+                "verify": {
+                  "$ref": "#/$defs/action"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^download$": true,
+                "^upload$": true,
+                "^verify$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "href": {
+                  "type": "string"
+                },
+                "header": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "expires_in": {
+                  "type": "number",
+                  "maximum": 2147483647.0,
+                  "minimum": -2147483647.0
+                },
+                "expires_at": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "href"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^href$": true,
+                "^header$": true,
+                "^expires_in$": true,
+                "^expires_at$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "size": {
+                  "type": "number",
+                  "minimum": 0.0
+                },
+                "oid": {
+                  "type": "string"
+                },
+                "error": {
+                  "$ref": "#/$defs/modern_4"
+                },
+                "actions": {
+                  "$ref": "#/$defs/modern_5"
+                },
+                "authenticated": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "oid",
+                "size"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^oid$": true,
+                "^authenticated$": true,
+                "^actions$": true,
+                "^error$": true,
+                "^size$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "action": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "number"
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "message"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^code$": true,
+                "^message$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

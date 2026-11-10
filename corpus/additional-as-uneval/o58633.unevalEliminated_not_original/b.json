@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "nc:Vehicle": {
+                  "description": "a vehicle or array of vehicles",
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/nc:VehicleType"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/$defs/nc:VehicleType"
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^nc:Vehicle$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "nc:VehicleType": {
+      "description": "a vehicle type",
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {}
+        }
+      ]
+    }
+  }
+}

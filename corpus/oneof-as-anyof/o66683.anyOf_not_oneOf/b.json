@@ -1,0 +1,391 @@
+{
+  "$id": "https://github.com/pegasus-isi/craft-schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "title": "Design Flow",
+  "properties": {
+    "name": {
+      "minLength": 1,
+      "description": "Design flow name.",
+      "type": "string"
+    },
+    "tools": {
+      "description": "List of tools from the flow.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "minLength": 1,
+            "description": "A short, unique, informative identifier containing only alphanumeric characters and underscores.",
+            "type": "string",
+            "pattern": "^[0-9a-zA-Z -_]*$"
+          },
+          "sc-id": {
+            "minLength": 1,
+            "description": "The id for the tool in the software catalog",
+            "type": "string",
+            "pattern": "^[0-9a-zA-Z -_]*$"
+          },
+          "name": {
+            "minLength": 1,
+            "description": "A human-readable name for the tool.",
+            "type": "string"
+          },
+          "version": {
+            "minLength": 1,
+            "description": "Tool version.",
+            "type": "string"
+          },
+          "script": {
+            "minLength": 1,
+            "description": "Installation and configuration script.",
+            "type": "string"
+          },
+          "functionality": {
+            "type": "object",
+            "properties": {
+              "description": {
+                "description": "Description of the stage.",
+                "type": "string"
+              },
+              "notes": {
+                "description": "Additional notes.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "description"
+            ]
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "minLength": 1,
+                  "description": "A short, unique, informative identifier containing only alphanumeric characters and underscores.",
+                  "type": "string",
+                  "pattern": "^[0-9a-zA-Z -_]*$"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "purpose": {
+                  "type": "string"
+                },
+                "notes": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "description",
+                "purpose"
+              ]
+            }
+          }
+        },
+        "anyOf": [
+          {
+            "required": [
+              "id",
+              "name",
+              "version",
+              "functionality"
+            ]
+          },
+          {
+            "required": [
+              "sc-id",
+              "options"
+            ]
+          }
+        ]
+      }
+    },
+    "files": {
+      "description": "List of files from the flow.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "minLength": 1,
+            "description": "A short, unique, informative identifier containing only alphanumeric characters and underscores.",
+            "type": "string",
+            "pattern": "^[0-9a-zA-Z -_]*$"
+          },
+          "content": {
+            "type": "string"
+          },
+          "format": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^(https?|ftp|file)://"
+          }
+        }
+      }
+    },
+    "stages": {
+      "description": "List of stages from the flow.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "minLength": 1,
+            "description": "A short, unique, informative identifier containing only alphanumeric characters and underscores.",
+            "type": "string",
+            "pattern": "^[0-9a-zA-Z -_]*$"
+          },
+          "name": {
+            "minLength": 1,
+            "description": "A human-readable name for the stage.",
+            "type": "string"
+          },
+          "tool": {
+            "type": "object",
+            "properties": {
+              "tool-id": {
+                "description": "ID of a custom defined tool",
+                "type": "string"
+              },
+              "sc-tool-id": {
+                "description": "ID of a tool from the software catalog",
+                "type": "string"
+              },
+              "option-control-module": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "minLength": 1,
+                      "description": "A short, unique, informative identifier containing only alphanumeric characters and underscores.",
+                      "type": "string",
+                      "pattern": "^[0-9a-zA-Z -_]*$"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "purpose": {
+                      "type": "string"
+                    },
+                    "notes": {
+                      "type": "string"
+                    },
+                    "designer-guide": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "description",
+                    "purpose"
+                  ]
+                }
+              }
+            },
+            "anyOf": [
+              {
+                "required": [
+                  "tool-id"
+                ]
+              },
+              {
+                "required": [
+                  "sc-tool-id"
+                ]
+              }
+            ]
+          },
+          "inputs": {
+            "type": "object",
+            "properties": {
+              "files": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "description": "ID of an input file.",
+                      "type": "string",
+                      "pattern": "^[0-9a-zA-Z -_]*$"
+                    },
+                    "optional": {
+                      "description": "Whether this input is optional.",
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "provided-by": {
+                      "enum": [
+                        "User",
+                        "Vendor"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "provided-by"
+                  ]
+                }
+              },
+              "libraries": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "minLength": 1,
+                      "description": "A short, unique, informative identifier containing only alphanumeric characters and underscores.",
+                      "type": "string",
+                      "pattern": "^[0-9a-zA-Z -_]*$"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "compatible_versions": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "link": {
+                      "type": "string",
+                      "format": "uri",
+                      "pattern": "^(https?|ftp|file)://"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "compatible_versions"
+                  ]
+                }
+              },
+              "interaction": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "minLength": 1,
+                      "description": "A short, unique, informative identifier containing only alphanumeric characters and underscores.",
+                      "type": "string",
+                      "pattern": "^[0-9a-zA-Z -_]*$"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "notes": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "files"
+            ]
+          },
+          "outputs": {
+            "type": "object",
+            "properties": {
+              "files": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "minLength": 1,
+                      "description": "A short, unique, informative identifier containing only alphanumeric characters and underscores.",
+                      "type": "string",
+                      "pattern": "^[0-9a-zA-Z -_]*$"
+                    },
+                    "report": {
+                      "type": "boolean",
+                      "default": false
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "report"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "files"
+            ]
+          },
+          "flow-control": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "minLength": 1,
+                  "description": "A short, unique, informative identifier containing only alphanumeric characters and underscores.",
+                  "type": "string",
+                  "pattern": "^[0-9a-zA-Z -_]*$"
+                },
+                "condition": {
+                  "enum": [
+                    "Success",
+                    "Error"
+                  ]
+                },
+                "route-to": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "notes": {
+                  "type": "string"
+                },
+                "designer-guide": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "condition",
+                "route-to",
+                "description"
+              ]
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "tool",
+          "inputs",
+          "outputs",
+          "flow-control"
+        ]
+      }
+    }
+  },
+  "required": [
+    "name",
+    "tools",
+    "stages"
+  ]
+}

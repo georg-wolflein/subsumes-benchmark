@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/MyObject",
+  "$defs": {
+    "C.C": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "c": {
+                  "$ref": "#/$defs/B.B"
+                }
+              },
+              "required": [
+                "c"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^c$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "B.B": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "MyObject": {
+      "$ref": "#/$defs/D.D"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "d": {
+                  "$ref": "#/$defs/C.C"
+                }
+              },
+              "required": [
+                "d"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^d$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "b": true
+              },
+              "required": [
+                "b"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^b$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "D.D": {
+      "$ref": "#/$defs/modern_3"
+    }
+  }
+}

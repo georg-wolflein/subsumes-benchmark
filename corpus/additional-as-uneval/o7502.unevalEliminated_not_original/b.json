@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "arr": {
+                  "description": "An array of different items.",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "description": "A nested object.",
+                        "properties": {
+                          "item1": {
+                            "description": "A required property.",
+                            "title": "Item1",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "item1"
+                        ],
+                        "title": "Obj",
+                        "type": "object"
+                      },
+                      {
+                        "description": "A numeric value.",
+                        "title": "Num",
+                        "type": "number"
+                      }
+                    ],
+                    "description": "An array item.",
+                    "title": "Item"
+                  },
+                  "maxItems": 3,
+                  "title": "Arr",
+                  "type": "array"
+                },
+                "obj": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^arr$": true,
+                "^obj$": true
+              },
+              "additionalProperties": {
+                "description": "An additional property.",
+                "properties": {
+                  "primitive": {
+                    "description": "A primitive value.",
+                    "title": "Primitive",
+                    "type": "number"
+                  }
+                },
+                "title": "Optional",
+                "type": "object"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "An object with optional props.",
+              "title": "Obj",
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "description": "An optional value.",
+                "title": "Key",
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

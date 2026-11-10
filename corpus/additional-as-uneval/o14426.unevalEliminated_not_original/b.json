@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_4",
+  "$defs": {
+    "identifier": {
+      "title": "id",
+      "description": "StatusContol identifier",
+      "type": "object",
+      "properties": {
+        "$oid": {
+          "type": "string"
+        }
+      }
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "data",
+              "description": "StatusContol Info",
+              "type": "object",
+              "required": [
+                "timestamp",
+                "targetKpInstance",
+                "sourceKpInstance",
+                "request"
+              ],
+              "properties": {
+                "timestamp": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "targetKpInstance": {
+                  "type": "string"
+                },
+                "sourceKpInstance": {
+                  "type": "string"
+                },
+                "request": {
+                  "$ref": "#/$defs/reqObj"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^timestamp$": true,
+                "^targetKpInstance$": true,
+                "^sourceKpInstance$": true,
+                "^request$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "data": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "$date"
+              ],
+              "properties": {
+                "$date": {
+                  "type": "string",
+                  "_format": "date-time"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^$date$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "reqObj": {
+      "title": "request",
+      "description": "request data",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/modern_3"
+      },
+      "minItems": 1
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "array for request",
+              "type": "object",
+              "required": [
+                "key",
+                "value"
+              ],
+              "properties": {
+                "key": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^key$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "StatusControlRequest Schema",
+              "type": "object",
+              "required": [
+                "StatusControlRequest"
+              ],
+              "properties": {
+                "_id": {
+                  "type": "object",
+                  "$ref": "#/$defs/identifier"
+                },
+                "StatusControlRequest": {
+                  "type": "object",
+                  "$ref": "#/$defs/data"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^_id$": true,
+                "^StatusControlRequest$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

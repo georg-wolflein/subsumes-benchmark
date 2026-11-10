@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "org.eclipse.persistence.testing.jaxb.xmlelements.Employee",
+  "type": "object",
+  "properties": {
+    "employee-data": {
+      "$ref": "#/$defs/modern_2"
+    }
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "street": {
+                  "type": "string"
+                },
+                "city": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^street$": true,
+                "^city$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Address": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "integer": {
+                  "type": "integer"
+                },
+                "address": {
+                  "$ref": "#/$defs/Address"
+                },
+                "string": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^integer$": true,
+                "^address$": true,
+                "^string$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

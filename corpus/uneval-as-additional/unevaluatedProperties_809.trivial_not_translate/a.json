@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/one"
+                },
+                {
+                  "properties": {
+                    "b": true
+                  }
+                },
+                {
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/two"
+                    },
+                    {
+                      "not": {
+                        "properties": {
+                          "y": true
+                        },
+                        "required": [
+                          "y"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^a$": true,
+                "^b$": true,
+                "^x$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/one"
+                },
+                {
+                  "properties": {
+                    "b": true
+                  }
+                },
+                {
+                  "allOf": [
+                    {
+                      "not": {
+                        "$ref": "#/$defs/two"
+                      }
+                    },
+                    {
+                      "properties": {
+                        "y": true
+                      },
+                      "required": [
+                        "y"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^a$": true,
+                "^b$": true,
+                "^y$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "two": {
+      "properties": {
+        "x": true
+      },
+      "required": [
+        "x"
+      ]
+    },
+    "one": {
+      "properties": {
+        "a": true
+      }
+    }
+  }
+}

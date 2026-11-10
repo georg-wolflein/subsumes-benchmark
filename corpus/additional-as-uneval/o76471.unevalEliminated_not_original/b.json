@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "get crawl result response",
+              "properties": {
+                "id": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "links": {
+                  "properties": {
+                    "self": {
+                      "properties": {
+                        "href": {
+                          "_format": "uri",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "href"
+                      ],
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "self"
+                  ],
+                  "type": "object"
+                },
+                "results": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              },
+              "required": [
+                "id",
+                "results",
+                "links"
+              ],
+              "title": "get crawl result response",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^links$": true,
+                "^results$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {},
+              "type": "object"
+            },
+            {
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

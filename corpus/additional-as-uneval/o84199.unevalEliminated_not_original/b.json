@@ -1,0 +1,198 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "Warning!": {
+                  "type": "string"
+                },
+                "config": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              },
+              "required": [
+                "Warning!",
+                "config"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^Warning!$": true,
+                "^config$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "propertyNames": {
+                "pattern": "^[a-zA-Z0-9_.\\-]+$"
+              },
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/modern_3"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "properties": {
+                    "type": {
+                      "const": "select"
+                    }
+                  },
+                  "required": [
+                    "options"
+                  ]
+                },
+                {
+                  "not": {
+                    "required": [
+                      "options"
+                    ]
+                  },
+                  "properties": {
+                    "type": {
+                      "enum": [
+                        "integer",
+                        "text",
+                        "boolean",
+                        "array",
+                        "password",
+                        "email",
+                        "color",
+                        "float",
+                        "graph",
+                        "dashboard-select",
+                        "snmp3auth",
+                        "ldap-groups",
+                        "ad-groups"
+                      ],
+                      "type": "string"
+                    }
+                  }
+                }
+              ],
+              "dependentSchemas": {
+                "group": {
+                  "required": [
+                    "order",
+                    "section"
+                  ]
+                },
+                "order": {
+                  "required": [
+                    "group",
+                    "section"
+                  ]
+                },
+                "section": {
+                  "required": [
+                    "group",
+                    "order"
+                  ]
+                }
+              },
+              "properties": {
+                "section": {
+                  "type": "string"
+                },
+                "options": {
+                  "minProperties": 2,
+                  "type": "object"
+                },
+                "order": {
+                  "type": "integer"
+                },
+                "disabled": {
+                  "type": "boolean"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "validate": {
+                  "propertyNames": {
+                    "pattern": "^value",
+                    "type": "string"
+                  }
+                },
+                "hidden": {
+                  "type": "boolean"
+                },
+                "default": true,
+                "units": {
+                  "type": "string"
+                },
+                "when": {
+                  "properties": {
+                    "operator": {
+                      "enum": [
+                        "equals",
+                        "in"
+                      ],
+                      "type": "string"
+                    },
+                    "setting": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": [
+                        "string",
+                        "array"
+                      ]
+                    }
+                  }
+                },
+                "group": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^group$": true,
+                "^section$": true,
+                "^order$": true,
+                "^units$": true,
+                "^options$": true,
+                "^disabled$": true,
+                "^default$": true,
+                "^hidden$": true,
+                "^validate$": true,
+                "^when$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,337 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Solidarity",
+  "description": "A rule-set and config for the Solidarity JSON checker",
+  "type": "object",
+  "properties": {
+    "config": {
+      "output": {
+        "description": "Identify what kind output should happen when a check is called",
+        "type": "string",
+        "enum": [
+          "moderate",
+          "verbose",
+          "silent"
+        ]
+      }
+    },
+    "requirements": {
+      "$ref": "#/$defs/modern_2"
+    }
+  },
+  "required": [
+    "requirements"
+  ],
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Custom Rule",
+              "type": "object",
+              "properties": {
+                "plugin": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "fix": {
+                  "type": "string"
+                },
+                "rule": {
+                  "enum": [
+                    "custom"
+                  ]
+                },
+                "match": {
+                  "type": "string",
+                  "description": "A regexp to search the output."
+                },
+                "error": {
+                  "type": "string"
+                },
+                "ci": {
+                  "type": "boolean"
+                },
+                "platform": {
+                  "enum": [
+                    "darwin",
+                    "macos",
+                    "freebsd",
+                    "linux",
+                    "sunos",
+                    "win32",
+                    "windows"
+                  ]
+                }
+              },
+              "required": [
+                "rule",
+                "plugin",
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^rule$": true,
+                "^fix$": true,
+                "^ci$": true,
+                "^platform$": true,
+                "^match$": true,
+                "^error$": true,
+                "^name$": true,
+                "^plugin$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "List of requirement rules for your particular environment",
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/cli"
+                    },
+                    {
+                      "$ref": "#/$defs/dir"
+                    },
+                    {
+                      "$ref": "#/$defs/file"
+                    },
+                    {
+                      "$ref": "#/$defs/env"
+                    },
+                    {
+                      "$ref": "#/$defs/shell"
+                    },
+                    {
+                      "$ref": "#/$defs/custom"
+                    }
+                  ]
+                },
+                "minItems": 1,
+                "_uniqueItems": true
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "dir": {
+      "description": "Dir Rule",
+      "type": "object",
+      "properties": {
+        "fix": {
+          "type": "string"
+        },
+        "rule": {
+          "enum": [
+            "dir",
+            "directory"
+          ]
+        },
+        "error": {
+          "type": "string"
+        },
+        "ci": {
+          "type": "boolean"
+        },
+        "platform": {
+          "enum": [
+            "darwin",
+            "macos",
+            "freebsd",
+            "linux",
+            "sunos",
+            "win32",
+            "windows"
+          ]
+        }
+      },
+      "required": [
+        "rule",
+        "location"
+      ]
+    },
+    "file": {
+      "description": "File Rule",
+      "type": "object",
+      "properties": {
+        "fix": {
+          "type": "string"
+        },
+        "rule": {
+          "enum": [
+            "file"
+          ]
+        },
+        "error": {
+          "type": "string"
+        },
+        "ci": {
+          "type": "boolean"
+        },
+        "platform": {
+          "enum": [
+            "darwin",
+            "macos",
+            "freebsd",
+            "linux",
+            "sunos",
+            "win32",
+            "windows"
+          ]
+        }
+      },
+      "required": [
+        "rule",
+        "location"
+      ]
+    },
+    "cli": {
+      "description": "CLI Rule",
+      "type": "object",
+      "properties": {
+        "line": {
+          "type": [
+            "string",
+            "integer"
+          ]
+        },
+        "fix": {
+          "type": "string"
+        },
+        "rule": {
+          "enum": [
+            "cli"
+          ]
+        },
+        "error": {
+          "type": "string"
+        },
+        "ci": {
+          "type": "boolean"
+        },
+        "platform": {
+          "enum": [
+            "darwin",
+            "macos",
+            "freebsd",
+            "linux",
+            "sunos",
+            "win32",
+            "windows"
+          ]
+        },
+        "matchIndex": {
+          "type": "integer"
+        },
+        "binary": {
+          "type": "string"
+        },
+        "semver": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "rule",
+        "binary"
+      ]
+    },
+    "env": {
+      "description": "ENV Rule",
+      "type": "object",
+      "properties": {
+        "fix": {
+          "type": "string"
+        },
+        "rule": {
+          "enum": [
+            "env"
+          ]
+        },
+        "error": {
+          "type": "string"
+        },
+        "ci": {
+          "type": "boolean"
+        },
+        "platform": {
+          "enum": [
+            "darwin",
+            "macos",
+            "freebsd",
+            "linux",
+            "sunos",
+            "win32",
+            "windows"
+          ]
+        }
+      },
+      "required": [
+        "rule",
+        "variable"
+      ]
+    },
+    "custom": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "shell": {
+      "description": "Shell Rule",
+      "type": "object",
+      "properties": {
+        "fix": {
+          "type": "string"
+        },
+        "rule": {
+          "enum": [
+            "shell"
+          ]
+        },
+        "match": {
+          "type": "string",
+          "description": "A regexp to search the output."
+        },
+        "error": {
+          "type": "string"
+        },
+        "ci": {
+          "type": "boolean"
+        },
+        "platform": {
+          "enum": [
+            "darwin",
+            "macos",
+            "freebsd",
+            "linux",
+            "sunos",
+            "win32",
+            "windows"
+          ]
+        }
+      },
+      "required": [
+        "rule",
+        "match"
+      ]
+    }
+  }
+}

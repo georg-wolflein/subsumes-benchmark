@@ -1,0 +1,736 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_16",
+  "$defs": {
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "timeout": {
+                  "type": "string",
+                  "description": "Deployment stop timeout represented in terms of seconds or minutes. e.g: 30s for timeout of 30 seconds. The application will be sent SIGTERM signal and will have this time for its cleanup.",
+                  "default": "30s"
+                },
+                "check-retries": {
+                  "type": "number",
+                  "description": "Maximum no. of retries to be attempted to check if deployment is stopped.",
+                  "default": "10"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^timeout$": true,
+                "^check-retries$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "notification": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "host": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                ".*": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "maxLength": 4096
+                    },
+                    {
+                      "$ref": "#/$defs/encrypted-type"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                ".*": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_12": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "description": "Used for enabling/disabling notification"
+                },
+                "url": {
+                  "type": "string",
+                  "description": "Github API url base"
+                },
+                "token": {
+                  "description": "Github Oauth token",
+                  "type": "object",
+                  "$ref": "#/$defs/encrypted-type"
+                },
+                "level": {
+                  "description": "Min level for the message to activate this notifier",
+                  "type": "number"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^enabled$": true,
+                "^url$": true,
+                "^token$": true,
+                "^level$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "deployment-stop": {
+      "$ref": "#/$defs/modern_6"
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "ci": {
+                  "$ref": "#/$defs/hook-list"
+                },
+                "builder": {
+                  "$ref": "#/$defs/hook-list"
+                },
+                "scm-push": {
+                  "$ref": "#/$defs/hook-list"
+                },
+                "scm-create": {
+                  "$ref": "#/$defs/hook-list"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^ci$": true,
+                "^builder$": true,
+                "^scm-push$": true,
+                "^scm-create$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_13": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "hosts": {
+                  "description": "Hosts associated with the proxy",
+                  "patternProperties": {
+                    ".*": {
+                      "$ref": "#/$defs/host"
+                    }
+                  }
+                },
+                "upstreams": {
+                  "description": "Backends associated with the proxy",
+                  "patternProperties": {
+                    ".*": {
+                      "$ref": "#/$defs/upstream"
+                    }
+                  }
+                },
+                "listeners": {
+                  "description": "TCP Listeners associated with proxy (for tcp based proxy)",
+                  "patternProperties": {
+                    ".*": {
+                      "$ref": "#/$defs/listener"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^hosts$": true,
+                "^upstreams$": true,
+                "^listeners$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "description": "Used for enabling/disabling notification"
+                },
+                "level": {
+                  "description": "Min level for the message to activate this notifier",
+                  "type": "number"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^enabled$": true,
+                "^level$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "hooks": {
+      "$ref": "#/$defs/modern_8"
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "attempts": {
+                  "type": "number",
+                  "description": "Maximum number of attempts for deployment check before marking deployment as failed.",
+                  "default": "10"
+                },
+                "path": {
+                  "type": "string",
+                  "description": "Optional path to be used for performing deployment check. If null, empty or un-specified, only discover check is performed.",
+                  "default": ""
+                },
+                "timeout": {
+                  "type": "string",
+                  "description": "Deployment check timeout represented in terms of seconds or minutes. e.g: 20s for timeout of 20 seconds",
+                  "default": "5s"
+                },
+                "port": {
+                  "type": "number",
+                  "description": "Application internal Port to be used for discover check (Value of 0 disable discover check)",
+                  "minimum": 0.0
+                },
+                "min-nodes": {
+                  "type": "number",
+                  "description": "Minimum number of nodes for deployment. (Used for deployment check)",
+                  "minimum": 1.0
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^min-nodes$": true,
+                "^port$": true,
+                "^attempts$": true,
+                "^timeout$": true,
+                "^path$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Proxy Host definition",
+              "type": "object",
+              "properties": {
+                "hostname": {
+                  "description": "Hostname(s) to be registered with proxy. If multiple hosts need to be specified, separate them using comma or space",
+                  "type": "string",
+                  "pattern": "^[a-zA-Z0-9\\-.\\s,]*[a-zA-Z0-9\\s\\-,]$"
+                },
+                "locations": {
+                  "description": "Locations for given proxy host.",
+                  "patternProperties": {
+                    ".*": {
+                      "$ref": "#/$defs/location"
+                    }
+                  }
+                },
+                "enabled": {
+                  "description": "Is host enabled?",
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^hostname$": true,
+                "^locations$": true,
+                "^enabled$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "deployment": {
+                  "description": "Deployment configuration.",
+                  "$ref": "#/$defs/deployment"
+                },
+                "url": {
+                  "description": "URL for the deployer",
+                  "type": "string"
+                },
+                "endpoints": {
+                  "type": "object"
+                },
+                "enabled": {
+                  "description": "Is deployer enabled?",
+                  "type": "boolean"
+                },
+                "templates": {
+                  "type": "object"
+                },
+                "proxy": {
+                  "$ref": "#/$defs/proxy"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^endpoints$": true,
+                "^url$": true,
+                "^proxy$": true,
+                "^enabled$": true,
+                "^templates$": true,
+                "^deployment$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "health": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Proxy location definition for a given proxy path",
+              "type": "object",
+              "properties": {
+                "path": {
+                  "description": "Path to be used for proxy",
+                  "type": "string"
+                },
+                "enabled": {
+                  "description": "Is location enabled?",
+                  "type": "boolean"
+                },
+                "force-ssl": {
+                  "description": "If SSL needs to be forced at the given path",
+                  "default": false,
+                  "type": "boolean"
+                },
+                "allowed-acls": {
+                  "type": "array",
+                  "description": "List of Allowed proxy ACLs",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "port": {
+                  "description": "Internal container port for proxy.",
+                  "type": "number"
+                },
+                "denied-acls": {
+                  "type": "array",
+                  "description": "List of Denied proxy ACLs",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^port$": true,
+                "^denied-acls$": true,
+                "^force-ssl$": true,
+                "^path$": true,
+                "^allowed-acls$": true,
+                "^enabled$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "deployment": {
+      "$ref": "#/$defs/modern_9"
+    },
+    "location": {
+      "$ref": "#/$defs/modern_10"
+    },
+    "modern_16": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "$anchor": "job-config-evaluated-v1",
+              "type": "object",
+              "title": "Schema for Evaluated Job Config",
+              "properties": {
+                "security": {
+                  "type": "object",
+                  "$ref": "#/$defs/security"
+                },
+                "scm": {
+                  "type": "object"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "deployers": {
+                  "patternProperties": {
+                    ".*": {
+                      "$ref": "#/$defs/deployer"
+                    }
+                  }
+                },
+                "hooks": {
+                  "$ref": "#/$defs/hooks"
+                },
+                "notifications": {
+                  "$ref": "#/$defs/notifications"
+                },
+                "environment": {
+                  "type": "object",
+                  "$ref": "#/$defs/environment",
+                  "description": "Defines top level environment (key, value) support"
+                },
+                "schedule": {
+                  "type": "string",
+                  "description": "Run this deployment as scheduled job."
+                }
+              },
+              "required": [
+                "enabled"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^deployers$": true,
+                "^security$": true,
+                "^environment$": true,
+                "^notifications$": true,
+                "^scm$": true,
+                "^hooks$": true,
+                "^schedule$": true,
+                "^enabled$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_15": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Proxy Upstream (Backend) definition",
+              "type": "object",
+              "properties": {
+                "health": {
+                  "$ref": "#/$defs/health"
+                },
+                "mode": {
+                  "description": "Proxy mode (http or tcp)",
+                  "enum": [
+                    "http",
+                    "tcp"
+                  ],
+                  "default": "http"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^health$": true,
+                "^mode$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "listener": {
+      "description": "Proxy TCP Listener definition",
+      "type": "object"
+    },
+    "security": {
+      "type": "object",
+      "properties": {
+        "profile": {
+          "type": "string"
+        }
+      }
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Health check definition for proxy upstream",
+              "type": "object",
+              "properties": {
+                "timeout": {
+                  "type": "string",
+                  "description": "Health check timeout represented in terms of seconds or minutes. e.g: 20s for timeout of 20 seconds"
+                },
+                "uri": {
+                  "type": "string",
+                  "description": "Path to be used for health check. If empty or not specified, tcp based check is used."
+                },
+                "interval": {
+                  "type": "string",
+                  "description": "Interval to be used for health check. e.g.: 30s to run health check every 30 seconds."
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^timeout$": true,
+                "^uri$": true,
+                "^interval$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "notification-hipchat": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "deployment-check": {
+      "$ref": "#/$defs/modern_11"
+    },
+    "hook-type": {
+      "enabled": {
+        "type": "boolean"
+      }
+    },
+    "deployer": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "url": {
+                  "type": "string",
+                  "description": "Hipchat v2 api url"
+                },
+                "enabled": {
+                  "type": "boolean",
+                  "description": "Used for enabling/disabling notification"
+                },
+                "colors": {
+                  "type": "object",
+                  "description": "Color mapping"
+                },
+                "token": {
+                  "description": "Hipchat API v2 token (personal/ room) for notification",
+                  "type": "object",
+                  "$ref": "#/$defs/encrypted-type"
+                },
+                "room": {
+                  "type": "string",
+                  "description": "Room to be used for notification"
+                },
+                "level": {
+                  "description": "Min level for the message to activate this notifier",
+                  "type": "number"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^token$": true,
+                "^level$": true,
+                "^url$": true,
+                "^colors$": true,
+                "^enabled$": true,
+                "^room$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "notification-github": {
+      "$ref": "#/$defs/modern_12"
+    },
+    "proxy": {
+      "$ref": "#/$defs/modern_13"
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "maxLength": 512
+                },
+                "stop": {
+                  "type": "object",
+                  "$ref": "#/$defs/deployment-stop"
+                },
+                "version": {
+                  "type": "string",
+                  "maxLength": 100
+                },
+                "check": {
+                  "$ref": "#/$defs/deployment-check"
+                },
+                "nodes": {
+                  "type": "number",
+                  "maximum": 12.0,
+                  "minimum": 1.0
+                },
+                "type": {
+                  "enum": [
+                    "blue-green",
+                    "red-green",
+                    "a/b",
+                    "custom"
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^version$": true,
+                "^stop$": true,
+                "^check$": true,
+                "^type$": true,
+                "^name$": true,
+                "^nodes$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "environment": {
+      "$ref": "#/$defs/modern_7"
+    },
+    "encrypted-type": {
+      "$ref": "#/$defs/modern_14"
+    },
+    "upstream": {
+      "$ref": "#/$defs/modern_15"
+    },
+    "modern_14": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "string"
+                },
+                "encrypted": {
+                  "type": "boolean",
+                  "default": false
+                }
+              },
+              "required": [
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^value$": true,
+                "^encrypted$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "notifications": {
+      "patternProperties": {
+        "hipchat": {
+          "$ref": "#/$defs/notification-hipchat"
+        },
+        "github": {
+          "$ref": "#/$defs/notification-github"
+        },
+        ".*": {
+          "$ref": "#/$defs/notification"
+        }
+      }
+    },
+    "hook-list": {
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "$ref": "#/$defs/hook-type"
+        }
+      }
+    }
+  }
+}

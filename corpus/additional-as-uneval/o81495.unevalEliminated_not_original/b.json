@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "RS from firefightersPost",
+              "properties": {
+                "availableEquipment": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "availableUnits": {
+                  "type": "integer"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^availableEquipment$": true,
+                "^availableUnits$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/modern_3"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "quantity": {
+                  "type": "integer"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^quantity$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,210 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_5",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "browsers": {
+                  "$ref": "#/$defs/browsers"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^browsers$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "releases": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              },
+              "required": [
+                "name",
+                "releases"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^releases$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/release_statement"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "browsers": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "chrome_android": {
+                  "$ref": "#/$defs/browser_statement"
+                },
+                "opera": {
+                  "$ref": "#/$defs/browser_statement"
+                },
+                "uc_android": {
+                  "$ref": "#/$defs/browser_statement"
+                },
+                "firefox_android": {
+                  "$ref": "#/$defs/browser_statement"
+                },
+                "samsunginternet_android": {
+                  "$ref": "#/$defs/browser_statement"
+                },
+                "chrome": {
+                  "$ref": "#/$defs/browser_statement"
+                },
+                "safari": {
+                  "$ref": "#/$defs/browser_statement"
+                },
+                "edge": {
+                  "$ref": "#/$defs/browser_statement"
+                },
+                "edge_mobile": {
+                  "$ref": "#/$defs/browser_statement"
+                },
+                "webview_android": {
+                  "$ref": "#/$defs/browser_statement"
+                },
+                "nodejs": {
+                  "$ref": "#/$defs/browser_statement"
+                },
+                "safari_ios": {
+                  "$ref": "#/$defs/browser_statement"
+                },
+                "uc_chinese_android": {
+                  "$ref": "#/$defs/browser_statement"
+                },
+                "ie": {
+                  "$ref": "#/$defs/browser_statement"
+                },
+                "qq_android": {
+                  "$ref": "#/$defs/browser_statement"
+                },
+                "opera_android": {
+                  "$ref": "#/$defs/browser_statement"
+                },
+                "firefox": {
+                  "$ref": "#/$defs/browser_statement"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^uc_android$": true,
+                "^safari$": true,
+                "^qq_android$": true,
+                "^nodejs$": true,
+                "^ie$": true,
+                "^webview_android$": true,
+                "^uc_chinese_android$": true,
+                "^samsunginternet_android$": true,
+                "^chrome_android$": true,
+                "^opera$": true,
+                "^chrome$": true,
+                "^edge_mobile$": true,
+                "^edge$": true,
+                "^opera_android$": true,
+                "^safari_ios$": true,
+                "^firefox_android$": true,
+                "^firefox$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "release_statement": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "browser_statement": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "release_date": {
+                  "format": "date",
+                  "type": "string"
+                },
+                "release_notes": {
+                  "format": "uri",
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "retired",
+                    "current",
+                    "exclusive",
+                    "beta",
+                    "nightly",
+                    "esr",
+                    "planned"
+                  ],
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^release_date$": true,
+                "^release_notes$": true,
+                "^status$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

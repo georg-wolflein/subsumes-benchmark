@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "anyOf": [
+    {
+      "$ref": "#/$defs/_AdaptiveInterface_"
+    }
+  ],
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/_AdaptiveInterface_.propertyTypes"
+                }
+              ],
+              "description": "Adaptive interface object.",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "_AdaptiveInterface_.propertyTypes": {
+      "properties": {
+        "description": {
+          "contentMediaType": "text/plain",
+          "description": "Description of this interface",
+          "title": "Description",
+          "type": "string"
+        },
+        "name": {
+          "description": "Interface name.",
+          "title": "Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object"
+    },
+    "_AdaptiveInterface_": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

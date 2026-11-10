@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "anyOf": [
+    {
+      "$ref": "#/$defs/_AdaptiveLayoutComponentTypeCategory_"
+    }
+  ],
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/_AdaptiveLayoutComponentTypeCategory_.propertyTypes"
+                }
+              ],
+              "description": "Layout Component Type Category.",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^category$": true,
+                "^description$": true,
+                "^label$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "_AdaptiveLayoutComponentTypeCategory_.propertyTypes": {
+      "properties": {
+        "category": {
+          "description": "Layout Component Type category id. The layout component type category groups similar layout component types together logically.",
+          "title": "Category",
+          "type": "string"
+        },
+        "description": {
+          "contentMediaType": "text/plain",
+          "description": "Description of layout component type category.",
+          "title": "Description",
+          "type": "string"
+        },
+        "label": {
+          "description": "Label to represent this category.",
+          "title": "Label",
+          "type": "string"
+        }
+      },
+      "required": [
+        "category"
+      ],
+      "type": "object"
+    },
+    "_AdaptiveLayoutComponentTypeCategory_": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

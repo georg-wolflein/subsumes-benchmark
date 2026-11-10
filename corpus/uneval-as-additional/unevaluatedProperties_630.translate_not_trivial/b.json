@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "anyOf": [
+    {
+      "$ref": "#/$defs/_AdaptiveEnvironmentRegistryType_"
+    }
+  ],
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/_AdaptiveEnvironmentRegistryType_.propertyTypes"
+                }
+              ],
+              "description": "An environment registry type.",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^allowReregister$": true,
+                "^description$": true,
+                "^registryType$": true,
+                "^objectType$": true,
+                "^autoRegister$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "_AdaptiveEnvironmentRegistryType_.propertyTypes": {
+      "properties": {
+        "description": {
+          "contentMediaType": "text/plain",
+          "description": "Description of registry type.",
+          "title": "Description",
+          "type": "string"
+        },
+        "objectType": {
+          "description": "There is an /afw/<objectType>/<key> object for each registered entry.",
+          "title": "Object Type",
+          "type": "string"
+        },
+        "registryType": {
+          "description": "Registry type.",
+          "title": "Registry Type",
+          "type": "string"
+        },
+        "allowReregister": {
+          "description": "Indicates reregister of a key is allowed.",
+          "title": "Allow Reregister",
+          "type": "boolean"
+        },
+        "autoRegister": {
+          "description": "Indicates if entries are automatically added for this type.",
+          "title": "Auto Register",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "_AdaptiveEnvironmentRegistryType_": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

@@ -1,0 +1,97 @@
+[project]
+name = "subsumes-benchmark"
+version = "0.1.0"
+description = "A benchmark corpus for JSON Schema inclusion: pairs of draft 2020-12 schemas with known answers."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Georg Wölflein", email = "georgw7777@gmail.com" }]
+requires-python = ">=3.13"
+keywords = ["json-schema", "subschema", "inclusion", "containment", "benchmark"]
+classifiers = [
+  "Private :: Do Not Upload",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Typing :: Typed",
+]
+# The build needs the standard library only; what the tests need is in the dev group.
+dependencies = []
+
+[project.urls]
+Repository = "https://github.com/georg-wolflein/subsumes-benchmark"
+Issues = "https://github.com/georg-wolflein/subsumes-benchmark/issues"
+
+[build-system]
+requires = ["uv_build>=0.12.3,<0.14.0"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+src = ["src", "tests"]
+extend-exclude = ["corpus/**", "sources/**"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.ruff.lint]
+select = [
+  "E",       # pycodestyle errors
+  "W",       # pycodestyle warnings
+  "F",       # pyflakes
+  "I",       # isort
+  "B",       # flake8-bugbear
+  "C4",      # flake8-comprehensions
+  "UP",      # pyupgrade
+  "D",       # pydocstyle
+  "TID",     # tidy imports (disallow relative imports)
+  "ICN",     # import conventions
+  "SIM",     # simplify code
+  "PTH",     # use pathlib
+  "N",       # PEP8 naming
+  "FURB",    # refurb
+  "RUF",     # Ruff rules
+  "PT",      # pytest style
+  "TC",      # imports only needed for type checking
+  "PLC0415", # import-outside-top-level
+]
+ignore = [
+  "D417",   # requires documentation for every function parameter
+  "D1",     # missing docstrings
+  "RUF001", # unicode
+]
+pydocstyle = { convention = "google" }
+isort = { combine-as-imports = true }
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E501"]
+
+[tool.ty.rules]
+unused-ignore-comment = "warn"
+redundant-cast = "ignore"
+
+[tool.ty.environment]
+root = ["src", "tests"]
+
+[tool.ty.src]
+exclude = ["corpus", "sources"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["tests"]
+addopts = "--import-mode=importlib -m 'not slow'"
+markers = ["slow: reads every schema of the corpus; deselected by default"]
+
+[dependency-groups]
+dev = [
+    "jsonschema>=4.26.0",
+    "pydantic-core>=2.50.4",
+    "pytest>=9.2.0",
+    "referencing>=0.37.0",
+    "ruff>=0.17.4",
+    "ty>=0.0.100",
+]

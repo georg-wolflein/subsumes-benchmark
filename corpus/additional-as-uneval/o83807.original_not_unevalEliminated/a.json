@@ -1,0 +1,293 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_4",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "updater",
+              "type": "object",
+              "required": [
+                "type",
+                "parameters"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "description": "type"
+                },
+                "parameters": {
+                  "$ref": "#/$defs/modern_6"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^parameters$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "description": "parameters"
+            },
+            {
+              "items": {
+                "anyOf": [
+                  false,
+                  true
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "nestedLimiter": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "parameterless limiter or boolean operator at start of array"
+        },
+        {
+          "$ref": "#/$defs/modern_1"
+        },
+        {
+          "$ref": "#/$defs/modern_3"
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "description": "type"
+                },
+                "parameters": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^parameters$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "description": "parameters"
+            },
+            {
+              "items": {
+                "anyOf": [
+                  false,
+                  true
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array"
+            },
+            {
+              "items": {
+                "anyOf": [
+                  false,
+                  {
+                    "$ref": "#/$defs/nestedLimiter",
+                    "description": "nested limiters optionally prefixed with boolean operator"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "title": "VCMI bonus system format",
+              "description": "Subsection of several formats, used to add generic bonuses to objects",
+              "required": [
+                "type"
+              ],
+              "properties": {
+                "duration": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  ],
+                  "description": "duration"
+                },
+                "effectRange": {
+                  "type": "string",
+                  "description": "effectRange"
+                },
+                "subtype": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    }
+                  ],
+                  "description": "subtype"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "description"
+                },
+                "valueType": {
+                  "type": "string",
+                  "description": "valueType"
+                },
+                "stacking": {
+                  "type": "string",
+                  "description": "stacking"
+                },
+                "turns": {
+                  "type": "number",
+                  "description": "turns"
+                },
+                "propagator": {
+                  "description": "propagator",
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "description": "0"
+                      }
+                    }
+                  ]
+                },
+                "addInfo": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "anyof": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "description": "addInfo"
+                },
+                "val": {
+                  "type": "number",
+                  "description": "val"
+                },
+                "limiters": {
+                  "$ref": "#/$defs/nestedLimiter",
+                  "description": "limiter"
+                },
+                "sourceID": {
+                  "type": "number",
+                  "description": "sourceID"
+                },
+                "sourceType": {
+                  "type": "string",
+                  "description": "sourceType"
+                },
+                "updater": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "$ref": "#/$defs/modern_5"
+                    }
+                  ]
+                },
+                "type": {
+                  "type": "string",
+                  "description": "type"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^updater$": true,
+                "^propagator$": true,
+                "^effectRange$": true,
+                "^val$": true,
+                "^description$": true,
+                "^stacking$": true,
+                "^type$": true,
+                "^sourceType$": true,
+                "^valueType$": true,
+                "^limiters$": true,
+                "^addInfo$": true,
+                "^sourceID$": true,
+                "^duration$": true,
+                "^turns$": true,
+                "^subtype$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

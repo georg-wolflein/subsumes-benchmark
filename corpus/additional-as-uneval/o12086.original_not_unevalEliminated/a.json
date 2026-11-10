@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "httpMethod": {
+                  "pattern": "^GET$",
+                  "type": "string"
+                },
+                "path": {
+                  "pattern": "^/contributions",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "path",
+                "httpMethod"
+              ],
+              "self": {
+                "format": "jsonschema",
+                "name": "contributions/request",
+                "vendor": "com.nordstrom",
+                "version": "1-0-0"
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^httpMethod$": true,
+                "^path$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

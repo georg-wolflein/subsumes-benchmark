@@ -1,0 +1,289 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_7",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "movements": {
+                  "$ref": "#/$defs/Movements"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "exitlanes": {
+                  "type": "integer"
+                },
+                "next": {
+                  "type": "string"
+                },
+                "bound": {
+                  "type": "string",
+                  "enum": [
+                    "NORTH",
+                    "SOUTH",
+                    "EAST",
+                    "WEST"
+                  ]
+                },
+                "id": {
+                  "type": "string"
+                },
+                "distance": {
+                  "type": "integer"
+                },
+                "speed": {
+                  "type": "integer"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^next$": true,
+                "^exitlanes$": true,
+                "^distance$": true,
+                "^speed$": true,
+                "^name$": true,
+                "^id$": true,
+                "^bound$": true,
+                "^movements$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "direction": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/DirectionType"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^direction$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "lanes": {
+                  "type": "integer"
+                },
+                "dir": {
+                  "type": "string",
+                  "enum": [
+                    "LT",
+                    "ST",
+                    "RT"
+                  ]
+                },
+                "overlap": {
+                  "type": "string",
+                  "enum": [
+                    "E",
+                    "F",
+                    "A",
+                    "G",
+                    "B",
+                    "C",
+                    "H",
+                    "D"
+                  ]
+                },
+                "faze": {
+                  "type": "integer"
+                },
+                "perm": {
+                  "type": "integer"
+                },
+                "value": {
+                  "type": "string"
+                },
+                "display": {
+                  "type": "string",
+                  "enum": [
+                    "BALL",
+                    "ARROW",
+                    "STDLEFT"
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^lanes$": true,
+                "^overlap$": true,
+                "^dir$": true,
+                "^display$": true,
+                "^value$": true,
+                "^faze$": true,
+                "^perm$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "geometries": {
+                  "$ref": "#/$defs/GeometriesType"
+                },
+                "version": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^geometries$": true,
+                "^version$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "directions": {
+                  "$ref": "#/$defs/Directions"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "file": {
+                  "type": "string",
+                  "enum": [
+                    "OK",
+                    "NONE"
+                  ]
+                },
+                "path": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^directions$": true,
+                "^id$": true,
+                "^file$": true,
+                "^path$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "MovementType": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "GeometryType": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "movement": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/MovementType"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^movement$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Movements": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "GeometriesType": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "geometry": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/GeometryType"
+                  }
+                },
+                "path": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^geometry$": true,
+                "^path$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "DirectionType": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "Directions": {
+      "$ref": "#/$defs/modern_6"
+    }
+  }
+}

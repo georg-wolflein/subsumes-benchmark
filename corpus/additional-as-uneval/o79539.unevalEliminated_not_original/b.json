@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "$ref": "#/$defs/id"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "phase": {
+                  "description": "Buckets have a phase, which represents the approximate part of the recruitment process this bucket is for - for example the phase 'interview' might have several buckets (e.g. 'line manager interview', etc.).",
+                  "enum": [
+                    "new",
+                    "screening",
+                    "interview",
+                    "selection",
+                    "offer",
+                    "approval",
+                    "hire",
+                    "onboard",
+                    "decline",
+                    "other"
+                  ]
+                },
+                "key": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "label",
+                "phase"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^label$": true,
+                "^phase$": true,
+                "^key$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "id": {
+      "type": "integer"
+    }
+  }
+}

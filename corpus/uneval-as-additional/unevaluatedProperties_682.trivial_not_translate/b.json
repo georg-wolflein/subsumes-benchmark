@@ -1,0 +1,174 @@
+{
+  "$id": "https://github.com/TheDreamPort/rpe021-public/rpe021_schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RPE-021 Schema",
+  "description": "Schema for network element / activity visualization",
+  "version": "1.0.2",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "label": {
+      "type": "string"
+    },
+    "color": {
+      "enum": [
+        "red",
+        "blue",
+        "gray",
+        "black",
+        "white",
+        "orange",
+        "yellow",
+        "green"
+      ]
+    },
+    "data": {
+      "type": "string"
+    },
+    "elem_type": {
+      "enum": [
+        "network",
+        "endpoint",
+        "connection"
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "timestamp",
+    "label",
+    "color",
+    "elem_type"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "elem_type": {
+            "const": "network"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "cidr_block": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "cidr_block"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "elem_type": {
+            "const": "endpoint"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "endpoint_type": {
+            "enum": [
+              "router",
+              "switch",
+              "wap",
+              "firewall",
+              "server",
+              "workstation",
+              "iot_device",
+              "ics_device",
+              "phone"
+            ]
+          },
+          "os_type": {
+            "enum": [
+              "windows",
+              "linux",
+              "macosx",
+              "android",
+              "ios",
+              "unknown"
+            ]
+          },
+          "network": {
+            "type": "string"
+          },
+          "interfaces": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "interface_id": {
+                  "type": "string"
+                },
+                "ipv4": {
+                  "type": "string",
+                  "format": "ipv4"
+                },
+                "ipv6": {
+                  "type": "string",
+                  "format": "ipv6"
+                },
+                "mac": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "label",
+                "interface_id"
+              ]
+            }
+          }
+        },
+        "required": [
+          "endpoint_type",
+          "interfaces"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "elem_type": {
+            "const": "connection"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "interface_from": {
+            "type": "string"
+          },
+          "interface_to": {
+            "type": "string"
+          },
+          "line_type": {
+            "enum": [
+              "solid",
+              "dotted",
+              "dashed"
+            ]
+          }
+        },
+        "required": [
+          "interface_from",
+          "interface_to",
+          "line_type"
+        ]
+      }
+    }
+  ],
+  "additionalProperties": false
+}

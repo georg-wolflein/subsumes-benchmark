@@ -1,0 +1,51 @@
+{
+  "$id": "http://footown.com/generic/credentials+v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "a generic user credentials schema",
+  "type": "object",
+  "required": [
+    "username",
+    "password"
+  ],
+  "properties": {
+    "credentials": {
+      "type": "object",
+      "username": {
+        "description": "The persons unique id in the system",
+        "$ref": "#/$defs/login"
+      },
+      "password": {
+        "description": "The persons unique id in the system",
+        "$ref": "#/$defs/login"
+      },
+      "api": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/nested"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "login": {
+      "type": "string",
+      "minLength": 1
+    },
+    "nested": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/login"
+        }
+      ]
+    }
+  }
+}

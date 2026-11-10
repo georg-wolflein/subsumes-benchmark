@@ -1,0 +1,30 @@
+{
+  "$id": "http://judkins.house/apis/k2/v1/autoScalingConfig.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$$target": "autoScalingConfig.json",
+  "title": "AutoScaling configurations",
+  "description": "Describes the autoScaling configuration for a nodePool.",
+  "properties": {
+    "minNodes": {
+      "description": "Minimum number of nodes the cluster auto-scaler should scale down to.",
+      "minimum": 1,
+      "type": "number"
+    },
+    "maxNodes": {
+      "description": "Maximum number of nodes the cluster auto-scaler should scale up to.",
+      "minimum": 2,
+      "type": "number"
+    },
+    "enabled": {
+      "description": "Enable or disable the cluster auto-scaler addon.",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "minNodes",
+    "maxNodes",
+    "enabled"
+  ],
+  "additionalProperties": false,
+  "type": "object"
+}

@@ -1,0 +1,400 @@
+{
+  "$id": "https://www.github.com/MISP/MISP/format/2.4/schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "Event": {
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "string"
+        },
+        "Org": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "uuid": {
+              "type": "string"
+            }
+          }
+        },
+        "orgc_id": {
+          "type": "string"
+        },
+        "locked": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "string"
+        },
+        "Tag": {
+          "$ref": "#/$defs/modern_1"
+        },
+        "ShadowAttribute": {
+          "$ref": "#/$defs/modern_2"
+        },
+        "Attribute": {
+          "$ref": "#/$defs/modern_3"
+        },
+        "RelatedEvent": {
+          "$ref": "#/$defs/modern_6"
+        },
+        "Orgc": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "uuid": {
+              "type": "string"
+            }
+          }
+        },
+        "distribution": {
+          "type": "string"
+        },
+        "sharing_group_id": {
+          "type": "string"
+        },
+        "uuid": {
+          "type": "string"
+        },
+        "published": {
+          "type": "boolean"
+        },
+        "info": {
+          "type": "string"
+        },
+        "attribute_count": {
+          "type": "string"
+        },
+        "publish_timestamp": {
+          "type": "string"
+        },
+        "analysis": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        },
+        "proposal_email_lock": {
+          "type": "boolean"
+        },
+        "threat_level_id": {
+          "type": "string"
+        },
+        "org_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "orgc_id",
+        "org_id",
+        "date",
+        "threat_level_id",
+        "info",
+        "published",
+        "uuid",
+        "attribute_count",
+        "analysis",
+        "timestamp",
+        "distribution",
+        "proposal_email_lock",
+        "locked",
+        "publish_timestamp",
+        "sharing_group_id",
+        "Org",
+        "Orgc",
+        "Attribute",
+        "ShadowAttribute",
+        "RelatedEvent",
+        "Tag"
+      ]
+    }
+  },
+  "required": [
+    "Event"
+  ],
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "items": true
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "Org": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "uuid": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "Orgc": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "uuid": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "Event": {
+                    "$ref": "#/$defs/modern_7"
+                  }
+                }
+              }
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "colour": {
+                    "type": "string"
+                  },
+                  "exportable": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "timestamp": {
+                    "type": "string"
+                  },
+                  "distribution": {
+                    "type": "string"
+                  },
+                  "orgc_id": {
+                    "type": "string"
+                  },
+                  "info": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "analysis": {
+                    "type": "string"
+                  },
+                  "date": {
+                    "type": "string"
+                  },
+                  "uuid": {
+                    "type": "string"
+                  },
+                  "published": {
+                    "type": "boolean"
+                  },
+                  "threat_level_id": {
+                    "type": "string"
+                  },
+                  "org_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "items": true
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "timestamp": {
+                    "type": "string"
+                  },
+                  "distribution": {
+                    "type": "string"
+                  },
+                  "to_ids": {
+                    "type": "boolean"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "comment": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "event_id": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string"
+                  },
+                  "uuid": {
+                    "type": "string"
+                  },
+                  "SharingGroup": {
+                    "$ref": "#/$defs/modern_4"
+                  },
+                  "sharing_group_id": {
+                    "type": "string"
+                  },
+                  "ShadowAttribute": {
+                    "$ref": "#/$defs/modern_5"
+                  },
+                  "category": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "items": true
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

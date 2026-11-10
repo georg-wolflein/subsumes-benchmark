@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "anyOf": [
+    {
+      "$ref": "#/$defs/_AdaptiveContentType_"
+    }
+  ],
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/_AdaptiveContentType_.propertyTypes"
+                }
+              ],
+              "description": "There is one of these for each media type registered for a content type implementation.",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^mediaType$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "_AdaptiveContentType_": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "_AdaptiveContentType_.propertyTypes": {
+      "properties": {
+        "mediaType": {
+          "description": "Key of entry.",
+          "title": "Media Type",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  }
+}

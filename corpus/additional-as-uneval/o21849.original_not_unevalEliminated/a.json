@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "Type",
+                "HttpMethod",
+                "ResourceId",
+                "RestApiId"
+              ],
+              "properties": {
+                "RequestTemplates": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "ResourceId": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9]+$"
+                },
+                "CacheNamespace": {
+                  "type": "string"
+                },
+                "RequestParameters": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "IntegrationHttpMethod": {
+                  "type": "string"
+                },
+                "RestApiId": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9]{10}$"
+                },
+                "Uri": {
+                  "type": "string"
+                },
+                "CacheKeyParameters": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "Credentials": {
+                  "type": "string"
+                },
+                "HttpMethod": {
+                  "type": "string",
+                  "enum": [
+                    "DELETE",
+                    "GET",
+                    "HEAD",
+                    "OPTIONS",
+                    "PATCH",
+                    "POST",
+                    "PUT"
+                  ]
+                },
+                "Type": {
+                  "type": "string",
+                  "enum": [
+                    "HTTP",
+                    "AWS",
+                    "MOCK"
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^RequestParameters$": true,
+                "^ResourceId$": true,
+                "^HttpMethod$": true,
+                "^CacheKeyParameters$": true,
+                "^Uri$": true,
+                "^RequestTemplates$": true,
+                "^RestApiId$": true,
+                "^Credentials$": true,
+                "^IntegrationHttpMethod$": true,
+                "^Type$": true,
+                "^CacheNamespace$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {},
+              "patternProperties": {
+                ".+": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                ".+": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {},
+              "patternProperties": {
+                "^integration\\.request\\.(querystring|path|header)\\..+$": {
+                  "type": "string",
+                  "pattern": "^(method\\.request\\.(querystring|header|path)\\..+)|('.*')$"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^integration\\.request\\.(querystring|path|header)\\..+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

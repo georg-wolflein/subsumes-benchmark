@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "subject": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 255
+                },
+                "state": {
+                  "type": "string",
+                  "enum": [
+                    "new",
+                    "acknowledged",
+                    "resolved"
+                  ]
+                },
+                "data": true,
+                "eventTags": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "message": {
+                  "type": "string",
+                  "maxLength": 32767
+                },
+                "deviceId": {
+                  "type": "string",
+                  "pattern": "^[A-Fa-f\\d]{24}$"
+                },
+                "level": {
+                  "type": "string",
+                  "enum": [
+                    "info",
+                    "warning",
+                    "error",
+                    "critical"
+                  ]
+                }
+              },
+              "required": [
+                "level",
+                "subject"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^state$": true,
+                "^level$": true,
+                "^subject$": true,
+                "^eventTags$": true,
+                "^data$": true,
+                "^message$": true,
+                "^deviceId$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "^[0-9a-zA-Z_-]{1,255}$": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 255
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^[0-9a-zA-Z_-]{1,255}$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

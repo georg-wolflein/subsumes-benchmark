@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "description": "details of the social networks enabled by this tenant",
+  "items": {
+    "$ref": "#/$defs/socialNetwork"
+  },
+  "$defs": {
+    "socialNetwork": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "name of the network, e.g. LinkedIn"
+        },
+        "icon": {
+          "type": "string",
+          "format": "uri",
+          "description": "uri of a thumbnail image representing the social network"
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri",
+          "description": "uri that a candidate can follow to connect to the social network"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "icon",
+        "uri"
+      ]
+    }
+  }
+}

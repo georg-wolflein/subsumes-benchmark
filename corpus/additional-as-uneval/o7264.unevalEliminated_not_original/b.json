@@ -1,0 +1,263 @@
+{
+  "$id": "http://holi0317.net/schemas",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "updateUrl": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "formatVersion": {
+      "type": "integer",
+      "enum": [
+        1
+      ]
+    },
+    "modId": {
+      "type": "string"
+    },
+    "license": {
+      "type": "string"
+    },
+    "references": {
+      "type": "object",
+      "properties": {}
+    },
+    "authors": {
+      "type": "object",
+      "patternProperties": {
+        ".+": {
+          "type": "string"
+        }
+      }
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "uid": {
+      "type": "string"
+    },
+    "repo": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "versions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "urls",
+          "version"
+        ],
+        "properties": {
+          "sha1": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "urls": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "downloadType": {
+                      "type": "string",
+                      "enum": [
+                        "direct",
+                        "parallel",
+                        "sequential"
+                      ],
+                      "default": "parallel"
+                    },
+                    "priority": {
+                      "type": "number",
+                      "default": 0
+                    }
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "downloadType": {
+                    "type": "string",
+                    "enum": [
+                      "direct",
+                      "parallel",
+                      "sequential",
+                      "encoded"
+                    ],
+                    "default": "parallel"
+                  },
+                  "priority": {
+                    "type": "number"
+                  }
+                }
+              }
+            ]
+          },
+          "version": {
+            "type": "string"
+          },
+          "references": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "provides": {
+                  "type": "string"
+                },
+                "depends": {
+                  "type": "string"
+                },
+                "suggests": {
+                  "type": "string"
+                },
+                "recommends": {
+                  "type": "string"
+                },
+                "conflicts": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "installType": {
+            "type": "string",
+            "enum": [
+              "forgeMod",
+              "forgeCoreMod",
+              "liteloaderMod",
+              "extract",
+              "group"
+            ],
+            "default": "forgeMod"
+          },
+          "type": {
+            "type": "string",
+            "default": "release"
+          }
+        }
+      }
+    },
+    "urls": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "formatVersion",
+    "updateUrl",
+    "uid",
+    "repo",
+    "versions",
+    "name"
+  ],
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "website": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                },
+                "source": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                },
+                "donation": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                },
+                "icon": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                },
+                "logo": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                },
+                "issues": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                },
+                "forum": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                },
+                "wiki": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^issues$": true,
+                "^forum$": true,
+                "^wiki$": true,
+                "^logo$": true,
+                "^donation$": true,
+                "^icon$": true,
+                "^website$": true,
+                "^source$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

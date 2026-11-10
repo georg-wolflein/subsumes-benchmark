@@ -1,0 +1,145 @@
+{
+  "$id": "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/schemas/v1.2/dataTypeBase.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Data type fields (section 4.3.3)",
+  "type": "object",
+  "oneOf": [
+    {
+      "required": [
+        "type"
+      ]
+    },
+    {
+      "required": [
+        "$ref"
+      ]
+    }
+  ],
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "$ref": {
+      "type": "string"
+    },
+    "format": {
+      "type": "string"
+    },
+    "defaultValue": {
+      "not": {
+        "type": [
+          "array",
+          "object",
+          "null"
+        ]
+      }
+    },
+    "enum": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "_uniqueItems": true,
+      "minItems": 1
+    },
+    "minimum": {
+      "type": "string"
+    },
+    "maximum": {
+      "type": "string"
+    },
+    "items": {
+      "$ref": "#/$defs/itemsObject"
+    },
+    "_uniqueItems": {
+      "type": "boolean"
+    }
+  },
+  "dependentSchemas": {
+    "format": {
+      "oneOf": [
+        {
+          "properties": {
+            "type": {
+              "enum": [
+                "integer"
+              ]
+            },
+            "format": {
+              "enum": [
+                "int32",
+                "int64"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "type": {
+              "enum": [
+                "number"
+              ]
+            },
+            "format": {
+              "enum": [
+                "float",
+                "double"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "type": {
+              "enum": [
+                "string"
+              ]
+            },
+            "format": {
+              "enum": [
+                "byte",
+                "date",
+                "date-time"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "itemsObject": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "$ref"
+          ],
+          "properties": {
+            "$ref": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#"
+            },
+            {
+              "required": [
+                "type"
+              ],
+              "properties": {
+                "type": {},
+                "format": {}
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

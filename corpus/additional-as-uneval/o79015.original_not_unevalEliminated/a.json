@@ -1,0 +1,382 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_7",
+  "$defs": {
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "type": {
+                  "const": "octet"
+                },
+                "value": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type",
+                "value"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "timestamp": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "type": {
+                  "const": "timestamp"
+                },
+                "value": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type",
+                "value"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "refOrSchema": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/reference"
+        },
+        {
+          "$ref": "#/$defs/schema"
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                "^x-": true
+              },
+              "properties": {
+                "message-id": {
+                  "$ref": "#/$defs/shortStr",
+                  "description": "application message identifier"
+                },
+                "timestamp": {
+                  "$ref": "#/$defs/timestamp",
+                  "description": "message timestamp"
+                },
+                "refOrSchema": {
+                  "$ref": "#/$defs/refOrSchema"
+                },
+                "reply-to": {
+                  "$ref": "#/$defs/shortStr",
+                  "description": "address to reply to"
+                },
+                "user-id": {
+                  "$ref": "#/$defs/shortStr",
+                  "description": "creating user id"
+                },
+                "content-type": {
+                  "$ref": "#/$defs/shortStr",
+                  "description": "MIME content type"
+                },
+                "address": {
+                  "$ref": "#/$defs/address"
+                },
+                "app-id": {
+                  "$ref": "#/$defs/shortStr",
+                  "description": "creating application id"
+                },
+                "expiration": {
+                  "$ref": "#/$defs/shortStr",
+                  "description": "message expiration specification"
+                },
+                "content-encoding": {
+                  "$ref": "#/$defs/shortStr",
+                  "description": "MIME content encoding"
+                },
+                "correlation-id": {
+                  "$ref": "#/$defs/shortStr",
+                  "description": "application correlation identifier"
+                },
+                "priority": {
+                  "$ref": "#/$defs/propertyOctet",
+                  "description": "message priority, 0 to 9"
+                },
+                "noTypeWithExample": {
+                  "$ref": "#/$defs/noTypeWithExample"
+                },
+                "delivery-mode": {
+                  "$ref": "#/$defs/propertyOctet",
+                  "description": "non-persistent (1) or persistent (2)"
+                },
+                "noTypeWithExamples": {
+                  "$ref": "#/$defs/noTypeWithExamples"
+                },
+                "headers": {
+                  "$ref": "#/$defs/table",
+                  "description": "message header field table"
+                },
+                "type": {
+                  "$ref": "#/$defs/shortStr",
+                  "description": "message type name"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^delivery-mode$": true,
+                "^expiration$": true,
+                "^x-": true,
+                "^timestamp$": true,
+                "^content-encoding$": true,
+                "^content-type$": true,
+                "^address$": true,
+                "^message-id$": true,
+                "^app-id$": true,
+                "^priority$": true,
+                "^reply-to$": true,
+                "^correlation-id$": true,
+                "^user-id$": true,
+                "^headers$": true,
+                "^noTypeWithExamples$": true,
+                "^refOrSchema$": true,
+                "^noTypeWithExample$": true,
+                "^type$": true
+              },
+              "additionalProperties": {
+                "$ref": "#/$defs/property"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "shortStr": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "type": {
+                  "const": "shortstr"
+                },
+                "value": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type",
+                "value"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "scalar": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "schema": {
+      "type": "object",
+      "x-go-type": "map[string]interface{}"
+    },
+    "noTypeWithExamples": {
+      "examples": [
+        {
+          "age": 30,
+          "firstName": "John",
+          "lastName": "Doe"
+        },
+        {
+          "age": null,
+          "firstName": "Sarah",
+          "gender": "F",
+          "lastName": "Connor"
+        }
+      ]
+    },
+    "property": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/scalar"
+        },
+        {
+          "$ref": "#/$defs/table"
+        }
+      ]
+    },
+    "stringedType": {
+      "enum": [
+        "bit",
+        "octet",
+        "short",
+        "long",
+        "longlong",
+        "shortstr",
+        "longstr",
+        "timestamp"
+      ],
+      "type": "string"
+    },
+    "reference": {
+      "properties": {
+        "$ref": {
+          "$ref": "#/$defs/referenceObject"
+        }
+      },
+      "required": [
+        "$ref"
+      ],
+      "type": "object"
+    },
+    "referenceObject": {
+      "format": "uri-reference",
+      "type": "string"
+    },
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/property"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "propertyOctet": {
+      "$ref": "#/$defs/modern_6"
+    },
+    "noTypeWithExample": {
+      "example": {
+        "age": 30,
+        "firstName": "John",
+        "lastName": "Doe"
+      }
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "type": {
+                  "$ref": "#/$defs/stringedType"
+                },
+                "value": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type",
+                "value"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "address": {
+      "properties": {
+        "address1": {
+          "type": "string"
+        },
+        "address2": {
+          "type": "string"
+        },
+        "addressStripped": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        }
+      }
+    },
+    "table": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "type": {
+                  "const": "table"
+                },
+                "value": {
+                  "$ref": "#/$defs/modern_5"
+                }
+              },
+              "required": [
+                "type",
+                "value"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

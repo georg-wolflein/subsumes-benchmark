@@ -1,0 +1,35 @@
+{
+  "$id": "https://registry.hzdr.de/crp/picongpu/schema/picongpu.pypicongpu.species.operation.momentum.temperature.Temperature",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "(positive) temperature of a species",
+              "type": "object",
+              "required": [
+                "temperature_kev"
+              ],
+              "properties": {
+                "temperature_kev": {
+                  "description": "temperature in keV, zero forbidden: if at rest, do not use this object",
+                  "type": "number",
+                  "exclusiveMinimum": 0.0
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^temperature_kev$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

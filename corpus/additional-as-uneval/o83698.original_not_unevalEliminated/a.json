@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Order",
+  "description": "Order billing and shipping information",
+  "type": "object",
+  "properties": {
+    "orders": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/modern_1"
+      }
+    }
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "shipTo": {
+                  "type": "string"
+                },
+                "shipAddress": {
+                  "type": "string"
+                },
+                "billAddress": {
+                  "type": "string"
+                },
+                "order": {
+                  "type": "string"
+                },
+                "loyaltyId": {
+                  "type": "string"
+                },
+                "loyaltyBonus": {
+                  "type": "string"
+                },
+                "billTo": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "order",
+                "billTo",
+                "billAddress"
+              ],
+              "dependentRequired": {
+                "shipTo": [
+                  "shipAddress"
+                ],
+                "loyaltyId": [
+                  "loyaltyBonus"
+                ]
+              }
+            },
+            {
+              "patternProperties": {
+                "^order$": true,
+                "^shipTo$": true,
+                "^billTo$": true,
+                "^loyaltyBonus$": true,
+                "^shipAddress$": true,
+                "^billAddress$": true,
+                "^loyaltyId$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,191 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "plans": {
+      "items": {
+        "additionalProperties": false,
+        "anyOf": [
+          {
+            "required": [
+              "pool"
+            ]
+          },
+          {
+            "required": [
+              "virtualServer"
+            ]
+          }
+        ],
+        "properties": {
+          "description": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "name": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "pool": {
+            "$ref": "#/$defs/poolType"
+          },
+          "virtualServer": {
+            "$ref": "#/$defs/virtualServerType"
+          }
+        },
+        "required": [
+          "name",
+          "description"
+        ]
+      },
+      "minItems": 1,
+      "type": "array"
+    }
+  },
+  "required": [
+    "plans"
+  ],
+  "type": "object",
+  "$defs": {
+    "healthMonitorType": {
+      "type": "object",
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "name": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ]
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "interval": {
+              "maximum": 86400,
+              "minimum": 1,
+              "type": "integer"
+            },
+            "name": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "recv": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "send": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "timeout": {
+              "maximum": 86400,
+              "minimum": 1,
+              "type": "integer"
+            },
+            "type": {
+              "enum": [
+                "http",
+                "tcp"
+              ],
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "type"
+          ]
+        }
+      ]
+    },
+    "policyType": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "poolType": {
+      "additionalProperties": false,
+      "anyOf": [
+        {
+          "required": [
+            "balance"
+          ]
+        },
+        {
+          "required": [
+            "healthMonitors"
+          ]
+        }
+      ],
+      "properties": {
+        "balance": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "healthMonitors": {
+          "items": {
+            "$ref": "#/$defs/healthMonitorType"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "profileType": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "sslProfileType": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "virtualServerType": {
+      "additionalProperties": false,
+      "anyOf": [
+        {
+          "required": [
+            "profiles"
+          ]
+        },
+        {
+          "required": [
+            "policies"
+          ]
+        },
+        {
+          "required": [
+            "sslProfiles"
+          ]
+        }
+      ],
+      "properties": {
+        "policies": {
+          "items": {
+            "$ref": "#/$defs/policyType"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "profiles": {
+          "items": {
+            "$ref": "#/$defs/profileType"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "sslProfiles": {
+          "items": {
+            "$ref": "#/$defs/sslProfileType"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "type": "object"
+    }
+  }
+}

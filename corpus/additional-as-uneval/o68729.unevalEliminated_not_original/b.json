@@ -1,0 +1,316 @@
+{
+  "$id": "http://github.com/push2cloud/push2cloud/schemas/deployment-manifest.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "deployment manifest",
+  "description": "In the deployment manifest, the deployment target specific information is defined, such as domain and service mappings.",
+  "type": "object",
+  "example": {
+    "name": "push2cloud-example",
+    "version": "1.0.0",
+    "description": "deployment manifest for push2cloud example",
+    "target": {
+      "type": "cloudfoundry",
+      "api": "https://api.lyra-836.appcloud.swisscom.com",
+      "space": "${SPACE}",
+      "org": "${ORG}",
+      "delay": 500,
+      "maxRetries": 60
+    },
+    "release": {
+      "name": "push2cloud-example",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/push2cloud/push2cloud.git",
+        "referenceValue": "master"
+      },
+      "manifest": "example/manifests/release.json"
+    },
+    "secureAppConnections": true,
+    "domains": {
+      "public": "scapp.io",
+      "internal": "scapp.io"
+    },
+    "serviceMapping": {
+      "*-db": {
+        "type": "redis",
+        "plan": "small"
+      }
+    },
+    "applicationDefaults": {
+      "memory": "512M",
+      "disk": "512M",
+      "instances": 1,
+      "startTimeout": 100,
+      "stageTimeout": 200,
+      "gracePeriod": 20,
+      "buildpack": "https://github.com/cloudfoundry/nodejs-buildpack.git",
+      "env": {
+        "SYSTEM_VERSION": "${SYSTEM_VERSION}"
+      }
+    },
+    "apps": {
+      "push2cloud-example-host": {
+        "routes": {
+          "public": [
+            "push2cloud-example-host-${space}"
+          ]
+        }
+      },
+      "push2cloud-example-api": {
+        "routes": {
+          "internal": [
+            "${appname}-${space}"
+          ]
+        }
+      }
+    }
+  },
+  "properties": {
+    "serviceMapping": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "name": {
+      "type": "string",
+      "description": "Identifier for the deployment. Can stay the same for multiple deployment."
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of the deployment."
+    },
+    "domains": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "version": {
+      "type": "string",
+      "description": "The version of your deployment. Use [semver](http://semver.org/)."
+    },
+    "target": {
+      "type": "object",
+      "description": "target desc",
+      "properties": {
+        "delay": {
+          "type": "number",
+          "description": "target delay desc",
+          "default": 500
+        },
+        "space": {
+          "type": "string",
+          "description": "target space desc"
+        },
+        "maxRetries": {
+          "type": "number",
+          "description": "target maxRetries desc",
+          "default": 60
+        },
+        "api": {
+          "type": "string",
+          "description": "target api desc"
+        },
+        "type": {
+          "type": "string",
+          "description": "target type desc",
+          "default": "cloudfoundry"
+        },
+        "org": {
+          "type": "string",
+          "description": "target org desc"
+        }
+      }
+    },
+    "release": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "release name desc"
+        },
+        "manifest": {
+          "type": "string",
+          "description": "release manifest desc"
+        },
+        "source": {
+          "type": "object",
+          "description": "source definition for the release.",
+          "properties": {
+            "type": {
+              "type": "string",
+              "description": "Type of the source.",
+              "default": "git"
+            },
+            "url": {
+              "type": "string",
+              "description": "URL for the source. For git use https://"
+            },
+            "referenceValue": {
+              "type": "string",
+              "description": "The specific reference to retrieve from the source. For git, this can be a commit-id, tag (tags/${tag}) or branch"
+            },
+            "postClone": {
+              "type": "string",
+              "description": "Script to execute after the source has been cloned."
+            }
+          }
+        }
+      }
+    },
+    "applicationDefaults": {
+      "type": "object",
+      "properties": {
+        "disk": {
+          "type": "string",
+          "description": "the amount of disk the app requires, e.g.: 128M, 1G",
+          "pattern": "^[0-9]*[MG]$",
+          "default": "256M"
+        },
+        "instances": {
+          "description": "the base amount of instances",
+          "type": "integer",
+          "minimum": 1.0,
+          "default": 1
+        },
+        "buildpack": {
+          "description": "buildbpack to build the application",
+          "type": "string"
+        },
+        "stageTimeout": {
+          "description": "how long the app can take to stage before it is considered an error",
+          "type": "integer",
+          "minimum": 0.0,
+          "default": 300
+        },
+        "startTimeout": {
+          "description": "how long the app can take to start before it is considered an error",
+          "type": "integer",
+          "minimum": 0.0
+        },
+        "gracePeriod": {
+          "description": "how long the app has to run without crashing to be considered successfully started",
+          "type": "integer",
+          "minimum": 0.0,
+          "default": 40
+        },
+        "env": {
+          "$ref": "#/$defs/modern_3"
+        },
+        "memory": {
+          "description": "the amount of memory the app requires, e.g.: 128M, 1G",
+          "type": "string",
+          "pattern": "^[0-9]*[MG]$",
+          "default": "256M"
+        }
+      }
+    },
+    "secureAppConnections": {
+      "type": "boolean",
+      "description": "secureAppConnections desc"
+    },
+    "apps": {
+      "$ref": "#/$defs/modern_4"
+    }
+  },
+  "required": [
+    "name",
+    "version",
+    "target",
+    "release"
+  ],
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string"
+                  },
+                  "plan": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "environment variables to set/substitue for this app",
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "routes": {
+                    "$ref": "#/$defs/modern_5"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

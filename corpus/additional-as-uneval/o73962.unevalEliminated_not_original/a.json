@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "title": "device",
+  "additionalProperties": false,
+  "properties": {
+    "locations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Location"
+      }
+    },
+    "configuration": {
+      "$ref": "#/$defs/DeviceConfigurationArchive"
+    },
+    "status": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/DeviceStatus"
+      }
+    },
+    "deviceInfo": {
+      "$ref": "#/$defs/DeviceInfo"
+    },
+    "guid": {
+      "type": "string"
+    },
+    "uri": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "Location": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "DeviceConfigurationArchive": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "configurations": {
+          "type": "string"
+        }
+      }
+    },
+    "DeviceStatus": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {}
+    },
+    "DeviceInfo": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "deviceType": {
+          "type": "string",
+          "enum": [
+            "OTHER",
+            "STREETLIGHT_AREA",
+            "VARIABLE_MESSAGE_SIGN",
+            "PARKING_HOUSE",
+            "DETECTOR",
+            "TRAFFIC_LIGHT_CONTROLLER"
+          ]
+        },
+        "manufacturer": {
+          "type": "string"
+        },
+        "designation": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "org.eclipse.persistence.testing.jaxb.annotations.xmlpath.self.PaymentInf",
+  "type": "object",
+  "properties": {
+    "PaymentInf": {
+      "$ref": "#/$defs/modern_1"
+    }
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "CreditorFrstName": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "paymentId": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^CreditorFrstName$": true,
+                "^paymentId$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

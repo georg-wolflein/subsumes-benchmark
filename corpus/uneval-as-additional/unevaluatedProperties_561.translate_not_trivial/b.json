@@ -1,0 +1,439 @@
+{
+  "$id": "https://json-layout.github.io/layout-keyword",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "layout keyword",
+  "errorMessage": {
+    "anyOf": "layout keyword must be a string with a valid component name, or a more complete object definition, or an array of children, or a switch structure"
+  },
+  "anyOf": [
+    {
+      "$ref": "#/$defs/comp-name"
+    },
+    {
+      "$ref": "#/$defs/partial-children"
+    },
+    {
+      "$ref": "#/$defs/partial-comp-object"
+    },
+    {
+      "$ref": "#/$defs/partial-switch"
+    }
+  ],
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": [
+                    "string",
+                    "integer"
+                  ]
+                },
+                "cols": {
+                  "$ref": "#/$defs/partial-cols"
+                }
+              },
+              "allOf": [
+                {
+                  "$ref": "#/$defs/partial-comp-object"
+                },
+                true
+              ]
+            },
+            {
+              "patternProperties": {
+                "^if$": true,
+                "^children$": true,
+                "^items$": true,
+                "^cols$": true,
+                "^autofocus$": true,
+                "^options$": true,
+                "^slots$": true,
+                "^label$": true,
+                "^messages$": true,
+                "^listActions$": true,
+                "^comp$": true,
+                "^title$": true,
+                "^key$": true,
+                "^constData$": true,
+                "^defaultData$": true,
+                "^listEditMode$": true,
+                "^step$": true,
+                "^transformData$": true,
+                "^getItems$": true,
+                "^subtitle$": true,
+                "^help$": true,
+                "^props$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "partial-switch": {
+      "type": "object",
+      "required": [
+        "switch"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "switch": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/partial-comp-object"
+          }
+        }
+      }
+    },
+    "partial-get-items-obj": {
+      "type": "object",
+      "allOf": [
+        {
+          "properties": {
+            "itemsResults": {
+              "$ref": "#/$defs/partial-expression"
+            },
+            "itemKey": {
+              "$ref": "#/$defs/partial-expression"
+            },
+            "itemIcon": {
+              "$ref": "#/$defs/partial-expression"
+            },
+            "itemValue": {
+              "$ref": "#/$defs/partial-expression"
+            },
+            "itemTitle": {
+              "$ref": "#/$defs/partial-expression"
+            }
+          }
+        },
+        {
+          "anyOf": [
+            {
+              "type": "object"
+            },
+            {
+              "$ref": "#/$defs/partial-expression-obj"
+            },
+            {
+              "$ref": "#/$defs/partial-get-items-fetch"
+            }
+          ]
+        }
+      ]
+    },
+    "comp-name": {
+      "title": "component name",
+      "type": "string",
+      "errorMessage": {
+        "enum": "component name is unknown"
+      },
+      "enum": [
+        "none",
+        "text-field",
+        "number-field",
+        "textarea",
+        "markdown",
+        "checkbox",
+        "switch",
+        "slider",
+        "date-picker",
+        "date-time-picker",
+        "time-picker",
+        "color-picker",
+        "combobox",
+        "number-combobox",
+        "section",
+        "list",
+        "select",
+        "autocomplete",
+        "tabs",
+        "vertical-tabs",
+        "expansion-panels",
+        "stepper",
+        "one-of-select",
+        "file-input"
+      ]
+    },
+    "partial-cols-obj": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "xs": {
+          "$ref": "#/$defs/partial-cols-number"
+        },
+        "xxl": {
+          "$ref": "#/$defs/partial-cols-number"
+        },
+        "lg": {
+          "$ref": "#/$defs/partial-cols-number"
+        },
+        "sm": {
+          "$ref": "#/$defs/partial-cols-number"
+        },
+        "xl": {
+          "$ref": "#/$defs/partial-cols-number"
+        },
+        "md": {
+          "$ref": "#/$defs/partial-cols-number"
+        }
+      }
+    },
+    "partial-slot-text": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text"
+      ],
+      "properties": {
+        "text": {
+          "type": "string"
+        }
+      }
+    },
+    "partial-select-item": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "value": true
+          }
+        }
+      ]
+    },
+    "partial-cols-number": {
+      "type": "integer",
+      "minimum": 0.0,
+      "maximum": 12.0
+    },
+    "partial-slot": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/$defs/partial-slot-text"
+        },
+        {
+          "$ref": "#/$defs/partial-slot-markdown"
+        },
+        {
+          "$ref": "#/$defs/partial-slot-name"
+        }
+      ]
+    },
+    "partial-get-items-fetch": {
+      "type": "object",
+      "required": [
+        "url"
+      ],
+      "properties": {
+        "url": {
+          "$ref": "#/$defs/partial-expression"
+        }
+      }
+    },
+    "partial-slot-name": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "partial-cols": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/partial-cols-number"
+        },
+        {
+          "$ref": "#/$defs/partial-cols-obj"
+        }
+      ]
+    },
+    "partial-expression": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/$defs/partial-expression-obj"
+        }
+      ]
+    },
+    "partial-children": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "$ref": "#/$defs/partial-child"
+          }
+        ]
+      }
+    },
+    "partial-comp-object": {
+      "title": "partial comp object",
+      "type": "object",
+      "properties": {
+        "messages": {
+          "type": "object"
+        },
+        "listEditMode": {
+          "type": "string",
+          "enum": [
+            "inline",
+            "inline-single",
+            "menu",
+            "dialog"
+          ]
+        },
+        "if": {
+          "$ref": "#/$defs/partial-expression"
+        },
+        "autofocus": {
+          "type": "boolean"
+        },
+        "listActions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "add",
+              "edit",
+              "delete",
+              "sort",
+              "duplicate"
+            ]
+          }
+        },
+        "getItems": {
+          "$ref": "#/$defs/partial-get-items"
+        },
+        "defaultData": {
+          "$ref": "#/$defs/partial-expression"
+        },
+        "subtitle": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "children": {
+          "$ref": "#/$defs/partial-children"
+        },
+        "step": {
+          "type": "number"
+        },
+        "comp": {
+          "$ref": "#/$defs/comp-name"
+        },
+        "label": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/partial-select-item"
+          }
+        },
+        "options": {
+          "type": "object"
+        },
+        "help": {
+          "type": "string"
+        },
+        "slots": {
+          "type": "object",
+          "patternProperties": {
+            ".*": {
+              "$ref": "#/$defs/partial-slot"
+            }
+          }
+        },
+        "constData": {
+          "$ref": "#/$defs/partial-expression"
+        },
+        "title": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "props": {
+          "type": "object"
+        },
+        "transformData": {
+          "$ref": "#/$defs/partial-expression"
+        },
+        "cols": {
+          "$ref": "#/$defs/partial-cols"
+        }
+      }
+    },
+    "partial-get-items": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/$defs/partial-get-items-obj"
+        }
+      ]
+    },
+    "partial-expression-obj": {
+      "type": "object",
+      "required": [
+        "expr"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "js-fn",
+            "js-eval",
+            "js-tpl"
+          ]
+        },
+        "expr": {
+          "type": "string"
+        }
+      }
+    },
+    "partial-slot-markdown": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "markdown"
+      ],
+      "properties": {
+        "markdown": {
+          "type": "string"
+        }
+      }
+    },
+    "partial-child": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

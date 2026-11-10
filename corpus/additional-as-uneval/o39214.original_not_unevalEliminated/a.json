@@ -1,0 +1,41 @@
+{
+  "$id": "https://raw.githubusercontent.com/ajv-validator/ajv/master/lib/refs/data.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Meta-schema for $data reference (JSON Schema extension proposal)",
+              "type": "object",
+              "required": [
+                "$data"
+              ],
+              "properties": {
+                "$data": {
+                  "type": "string",
+                  "anyOf": [
+                    {
+                      "format": "relative-json-pointer"
+                    },
+                    {
+                      "format": "json-pointer"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^$data$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

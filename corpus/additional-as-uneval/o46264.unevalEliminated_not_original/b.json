@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Transaction Info",
+              "type": "object",
+              "properties": {
+                "splitChild": {
+                  "type": "boolean"
+                },
+                "void": {
+                  "type": "boolean"
+                },
+                "transfer": {
+                  "type": "boolean"
+                },
+                "transferTo": {
+                  "type": "boolean"
+                },
+                "splitParent": {
+                  "type": "boolean"
+                },
+                "flag": {
+                  "type": "integer"
+                },
+                "investment": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "investment",
+                "splitChild",
+                "splitParent",
+                "transfer",
+                "transferTo",
+                "void"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^void$": true,
+                "^transfer$": true,
+                "^investment$": true,
+                "^splitChild$": true,
+                "^splitParent$": true,
+                "^transferTo$": true,
+                "^flag$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

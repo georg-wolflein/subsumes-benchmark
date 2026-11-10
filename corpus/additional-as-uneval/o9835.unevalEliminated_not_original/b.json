@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "format": "email",
+                  "maxLength": 1024
+                },
+                "csv": {
+                  "type": "string"
+                },
+                "nameColumn": {
+                  "type": "string"
+                },
+                "makeUniqueKeySecret": {
+                  "type": "boolean"
+                },
+                "descriptionColumn": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "csv"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^descriptionColumn$": true,
+                "^nameColumn$": true,
+                "^csv$": true,
+                "^makeUniqueKeySecret$": true,
+                "^email$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,507 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/feed",
+  "$defs": {
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "suggested": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "suggested"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^suggested$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "targets": {
+      "items": {
+        "$ref": "#/$defs/target"
+      },
+      "minItems": 1,
+      "type": "array",
+      "_uniqueItems": true
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "odds": {
+                  "$ref": "#/$defs/default_odds"
+                },
+                "targets": {
+                  "$ref": "#/$defs/targets"
+                },
+                "url": {
+                  "format": "uri",
+                  "type": "string"
+                },
+                "image": {
+                  "format": "uri",
+                  "type": "string"
+                },
+                "description": {
+                  "maxLength": 255,
+                  "type": "string"
+                },
+                "deadline": {
+                  "format": "interval",
+                  "type": "string"
+                },
+                "version": {
+                  "pattern": "^[0-9]+(\\.[0-9]+){1,2}$",
+                  "type": "string"
+                },
+                "labels": {
+                  "$ref": "#/$defs/default_labels"
+                },
+                "customs": {
+                  "$ref": "#/$defs/customs"
+                },
+                "operator": {
+                  "$ref": "#/$defs/operator"
+                },
+                "broadcast_date": {
+                  "type": "string"
+                },
+                "address": {
+                  "type": "string"
+                },
+                "category": {
+                  "enum": [
+                    "sports",
+                    "politics",
+                    "entertainment",
+                    "economics",
+                    "other"
+                  ]
+                },
+                "title": {
+                  "maxLength": 64,
+                  "type": "string"
+                },
+                "type": {
+                  "enum": [
+                    "binary",
+                    "cfd",
+                    "all"
+                  ]
+                }
+              },
+              "required": [
+                "address",
+                "title"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^targets$": true,
+                "^version$": true,
+                "^deadline$": true,
+                "^description$": true,
+                "^image$": true,
+                "^broadcast_date$": true,
+                "^odds$": true,
+                "^labels$": true,
+                "^url$": true,
+                "^category$": true,
+                "^type$": true,
+                "^address$": true,
+                "^customs$": true,
+                "^title$": true,
+                "^operator$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "initial": {
+                  "type": "number"
+                },
+                "suggested": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "initial",
+                "suggested"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^initial$": true,
+                "^suggested$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "description": {
+                  "maxLength": 255,
+                  "type": "string"
+                },
+                "image": {
+                  "format": "uri",
+                  "type": "string"
+                },
+                "name": {
+                  "maxLength": 64,
+                  "type": "string"
+                },
+                "url": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^image$": true,
+                "^name$": true,
+                "^url$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "feed_properties": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "cfd_feed": {
+      "properties": {
+        "broadcast_date": {
+          "format": "interval",
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "cfd",
+            null
+          ]
+        }
+      },
+      "required": [
+        "broadcast_date",
+        "deadline"
+      ],
+      "type": "object"
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "bear": {
+                  "maxLength": 32,
+                  "type": "string"
+                },
+                "bull": {
+                  "maxLength": 32,
+                  "type": "string"
+                },
+                "equal": {
+                  "maxLength": 32,
+                  "type": "string"
+                },
+                "not_equal": {
+                  "maxLength": 32,
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^bear$": true,
+                "^bull$": true,
+                "^equal$": true,
+                "^not_equal$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "operator": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "odds": {
+                  "$ref": "#/$defs/default_odds"
+                },
+                "image": {
+                  "format": "uri",
+                  "type": "string"
+                },
+                "labels": {
+                  "$ref": "#/$defs/target_labels"
+                },
+                "value": {
+                  "type": "number"
+                },
+                "text": {
+                  "maxLength": 64,
+                  "type": "string"
+                },
+                "deadline": {
+                  "format": "date-time",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "text",
+                "value",
+                "deadline"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^deadline$": true,
+                "^image$": true,
+                "^odds$": true,
+                "^labels$": true,
+                "^text$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "target": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "target_labels": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "initial": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "initial"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^initial$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "all_feed": {
+      "properties": {
+        "type": {
+          "enum": [
+            "all",
+            null
+          ]
+        }
+      },
+      "required": [
+        "targets",
+        "broadcast_interval"
+      ],
+      "type": "object"
+    },
+    "binary_feed": {
+      "properties": {
+        "broadcast_date": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "binary",
+            null
+          ]
+        }
+      },
+      "required": [
+        "broadcast_date",
+        "targets"
+      ],
+      "type": "object"
+    },
+    "default_labels": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/modern_8"
+        },
+        {
+          "anyOf": [
+            {
+              "properties": {
+                "equal": {
+                  "maxLength": 32,
+                  "type": "string"
+                },
+                "not_equal": {
+                  "maxLength": 32,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "equal",
+                "not_equal"
+              ],
+              "type": "object"
+            },
+            {
+              "properties": {
+                "bear": {
+                  "maxLength": 32,
+                  "type": "string"
+                },
+                "bull": {
+                  "maxLength": 32,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "bear",
+                "bull"
+              ],
+              "type": "object"
+            }
+          ]
+        }
+      ]
+    },
+    "customs": {
+      "patternProperties": {
+        ".": {
+          "type": [
+            "string",
+            "number"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "feed": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/feed_properties"
+        },
+        {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/binary_feed"
+            },
+            {
+              "$ref": "#/$defs/cfd_feed"
+            },
+            {
+              "$ref": "#/$defs/all_feed"
+            }
+          ]
+        }
+      ]
+    },
+    "default_odds": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/modern_5"
+        },
+        {
+          "$ref": "#/$defs/modern_6"
+        },
+        {
+          "$ref": "#/$defs/modern_7"
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "equal": {
+                  "maxLength": 32,
+                  "type": "string"
+                },
+                "not_equal": {
+                  "maxLength": 32,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "equal",
+                "not_equal"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^equal$": true,
+                "^not_equal$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

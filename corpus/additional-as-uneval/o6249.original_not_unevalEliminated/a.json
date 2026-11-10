@@ -1,0 +1,202 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/modern_1"
+    },
+    {
+      "$ref": "#/$defs/modern_2"
+    }
+  ],
+  "$defs": {
+    "bodyTemplate": {
+      "title": "Body Template",
+      "type": "string",
+      "minLength": 1
+    },
+    "authToken": {
+      "title": "Auth Token",
+      "type": "string",
+      "minLength": 1,
+      "messages": {
+        "required": "Auth Token is required"
+      }
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "bodyTemplate": {
+                  "$ref": "#/$defs/bodyTemplate"
+                },
+                "authToken": {
+                  "$ref": "#/$defs/authToken"
+                },
+                "accountSid": {
+                  "$ref": "#/$defs/accountSid"
+                },
+                "mediaUrl": {
+                  "$ref": "#/$defs/mediaUrl"
+                },
+                "toNumbers": {
+                  "$ref": "#/$defs/toNumbers"
+                },
+                "maxPrice": {
+                  "$ref": "#/$defs/maxPrice"
+                },
+                "fromNumber": {
+                  "$ref": "#/$defs/fromNumber"
+                }
+              },
+              "allOf": [
+                {
+                  "required": [
+                    "accountSid",
+                    "authToken",
+                    "toNumbers",
+                    "fromNumber"
+                  ]
+                },
+                {
+                  "anyOf": [
+                    {
+                      "required": [
+                        "bodyTemplate"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "mediaUrl"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^fromNumber$": true,
+                "^mediaUrl$": true,
+                "^accountSid$": true,
+                "^toNumbers$": true,
+                "^authToken$": true,
+                "^bodyTemplate$": true,
+                "^maxPrice$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "accountSid": {
+      "title": "Account Sid",
+      "type": "string",
+      "minLength": 1,
+      "messages": {
+        "required": "Account Sid is required"
+      }
+    },
+    "mediaUrl": {
+      "title": "Media URL",
+      "type": "string",
+      "minLength": 1,
+      "format": "uri"
+    },
+    "toNumbers": {
+      "title": "Send to ...",
+      "type": "array",
+      "items": {
+        "title": "SMS Number",
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "maxPrice": {
+      "title": "Max. Price Template",
+      "type": "string"
+    },
+    "fromNumber": {
+      "title": "From Number Template",
+      "type": "string",
+      "minLength": 1
+    },
+    "messagingServiceSid": {
+      "title": "Messaging Service Sid Template",
+      "type": "string",
+      "minLength": 1
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "bodyTemplate": {
+                  "$ref": "#/$defs/bodyTemplate"
+                },
+                "authToken": {
+                  "$ref": "#/$defs/authToken"
+                },
+                "accountSid": {
+                  "$ref": "#/$defs/accountSid"
+                },
+                "messagingServiceSid": {
+                  "$ref": "#/$defs/messagingServiceSid"
+                },
+                "mediaUrl": {
+                  "$ref": "#/$defs/mediaUrl"
+                },
+                "toNumbers": {
+                  "$ref": "#/$defs/toNumbers"
+                },
+                "maxPrice": {
+                  "$ref": "#/$defs/maxPrice"
+                }
+              },
+              "allOf": [
+                {
+                  "required": [
+                    "accountSid",
+                    "authToken",
+                    "toNumbers",
+                    "messagingServiceSid"
+                  ]
+                },
+                {
+                  "anyOf": [
+                    {
+                      "required": [
+                        "bodyTemplate"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "mediaUrl"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^messagingServiceSid$": true,
+                "^mediaUrl$": true,
+                "^accountSid$": true,
+                "^toNumbers$": true,
+                "^authToken$": true,
+                "^bodyTemplate$": true,
+                "^maxPrice$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

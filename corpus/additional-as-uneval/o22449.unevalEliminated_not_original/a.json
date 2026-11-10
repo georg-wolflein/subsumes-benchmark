@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "feeds": {
+      "items": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "replies": {
+            "$ref": "#/$defs/replies"
+          }
+        },
+        "required": [
+          "name",
+          "replies"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "query": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "query",
+    "feeds"
+  ],
+  "type": "object",
+  "$defs": {
+    "metadata": {
+      "additionalProperties": {
+        "type": "array"
+      },
+      "type": "object"
+    },
+    "replies": {
+      "items": {
+        "properties": {
+          "metadata": {
+            "$ref": "#/$defs/metadata"
+          },
+          "reply": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "reply"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    }
+  }
+}

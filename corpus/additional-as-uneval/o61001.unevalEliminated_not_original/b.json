@@ -1,0 +1,196 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_3",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Detail of one CVE",
+              "properties": {
+                "cwe": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "attribution": {
+                  "type": "string"
+                },
+                "severity": {
+                  "type": "string"
+                },
+                "cvss": {
+                  "$ref": "#/$defs/cvss"
+                },
+                "references": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                },
+                "id": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "cvss",
+                "description",
+                "severity",
+                "id",
+                "references"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^severity$": true,
+                "^id$": true,
+                "^attribution$": true,
+                "^cvss$": true,
+                "^cwe$": true,
+                "^references$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "score": {
+                  "type": "number"
+                },
+                "vector": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "score",
+                "vector"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^score$": true,
+                "^vector$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "CVEcheck worker results",
+              "properties": {
+                "schema": {
+                  "$ref": "#/$defs/modern_4"
+                },
+                "_release": {
+                  "type": "string",
+                  "description": "Unique release id in form of \"ecosystem:package:version\""
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "success",
+                    "error"
+                  ]
+                },
+                "details": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/cvecheck_details"
+                  }
+                },
+                "summary": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "status",
+                "details",
+                "summary"
+              ],
+              "title": "cvecheck_results-v3-0-1"
+            },
+            {
+              "patternProperties": {
+                "^schema$": true,
+                "^_release$": true,
+                "^details$": true,
+                "^status$": true,
+                "^summary$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Name of the schema",
+                  "pattern": "^[a-zA-Z0-9_]+$"
+                },
+                "version": {
+                  "type": "string",
+                  "description": "Version of the schema",
+                  "pattern": "^[0-9]+-[0-9]+-[0-9]+$"
+                },
+                "url": {
+                  "type": "string",
+                  "description": "Full URL of the schema",
+                  "format": "uri"
+                }
+              },
+              "required": [
+                "name",
+                "version"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^version$": true,
+                "^url$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "cvecheck_details": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "cvss": {
+      "$ref": "#/$defs/modern_2"
+    }
+  }
+}

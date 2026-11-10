@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "items": {
+    "$ref": "#/$defs/mapping"
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "tas.personal.givenName": {
+                  "type": "string"
+                },
+                "tas.personal.familyName": {
+                  "type": "string"
+                },
+                "tas.personal.email": {
+                  "type": "string"
+                },
+                "tas.personal.image": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^tas.personal.givenName$": true,
+                "^tas.personal.familyName$": true,
+                "^tas.personal.email$": true,
+                "^tas.personal.image$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "mapping": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

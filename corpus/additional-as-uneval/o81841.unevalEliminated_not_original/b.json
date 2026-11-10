@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Limits",
+              "properties": {
+                "limits": {
+                  "description": "Limits",
+                  "properties": {
+                    "absolute": {
+                      "properties": {
+                        "maxDomainRecords": {
+                          "type": "integer"
+                        },
+                        "maxDomains": {
+                          "type": "integer"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              },
+              "title": "limits"
+            },
+            {
+              "patternProperties": {
+                "^limits$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

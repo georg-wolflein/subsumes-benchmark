@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "items": {
+    "properties": {
+      "key": {
+        "title": "Key/Attribute",
+        "type": "string"
+      },
+      "value": {
+        "title": "Value",
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "expression_type": {
+                "default": "stage-output-selector",
+                "enum": [
+                  "stage-output-selector"
+                ],
+                "type": "string"
+              },
+              "flatten": {
+                "type": "boolean"
+              },
+              "output": {
+                "type": "string"
+              },
+              "stages": {
+                "type": "string"
+              },
+              "unwrap": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "expression_type"
+            ],
+            "type": "object"
+          }
+        ]
+      }
+    },
+    "type": "object"
+  },
+  "title": "Parameter Selection",
+  "type": "array"
+}

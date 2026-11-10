@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "ASN.1 Types Library General Information schema",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "$ref": "#/$defs/nonEmptyString"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "license": {
+                  "type": "string"
+                },
+                "version": {
+                  "type": "string"
+                },
+                "vendor": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^version$": true,
+                "^description$": true,
+                "^name$": true,
+                "^vendor$": true,
+                "^license$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

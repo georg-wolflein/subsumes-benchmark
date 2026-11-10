@@ -1,0 +1,62 @@
+{
+  "allOf": [
+    {
+      "type": "object",
+      "properties": {
+        "foo": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "string"
+            }
+          ],
+          "unevaluatedItems": false
+        }
+      },
+      "anyOf": [
+        {
+          "properties": {
+            "foo": {
+              "prefixItems": [
+                true,
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "not": {
+        "type": "object",
+        "properties": {
+          "foo": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "type": "string"
+              }
+            ],
+            "unevaluatedItems": false
+          }
+        },
+        "anyOf": [
+          {
+            "properties": {
+              "foo": {
+                "prefixItems": [
+                  true,
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

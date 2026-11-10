@@ -1,0 +1,182 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "anyOf": [
+    {
+      "$ref": "#/$defs/_AdaptiveFunctionTestCase_"
+    }
+  ],
+  "$defs": {
+    "_AdaptiveFunctionTestCase_.propertyTypes": {
+      "properties": {
+        "description": {
+          "contentMediaType": "text/plain",
+          "description": "This is the function test's description, used for documentation purposes.",
+          "title": "Description",
+          "type": "string"
+        },
+        "brief": {
+          "description": "This is a predicate for the function test with the first letter capitalized and without a trailing period.",
+          "title": "Brief",
+          "type": "string"
+        },
+        "arguments": {
+          "description": "These are the arguments to pass to the function to be tested.",
+          "items": {
+            "$ref": "#/$defs/_AdaptiveFunctionTestArgument_",
+            "description": "These are the arguments to pass to the function to be tested.",
+            "title": "The function arguments",
+            "type": "object"
+          },
+          "title": "Arguments",
+          "type": "array"
+        },
+        "implemented": {
+          "description": "If true, this test case has been implemented.",
+          "title": "Implemented",
+          "type": "boolean"
+        },
+        "result": {
+          "$ref": "#/$defs/_AdaptiveFunctionTestResult_",
+          "description": "When this test case is executed, this is the expected result.",
+          "title": "Result",
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "type": "object"
+    },
+    "_AdaptiveFunctionTestArgument_": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "_AdaptiveFunctionTestArgument_.propertyTypes": {
+      "properties": {
+        "dataType": {
+          "description": "",
+          "title": "Data Type",
+          "type": "string"
+        },
+        "dataTypeParameter": {
+          "description": "Data type parameter",
+          "title": "Data Type Parameter",
+          "type": "string"
+        },
+        "value": {
+          "description": "",
+          "title": "Value"
+        }
+      },
+      "type": "object"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/_AdaptiveFunctionTestArgument_.propertyTypes"
+                }
+              ],
+              "description": "An adaptive function test argument.",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^dataType$": true,
+                "^dataTypeParameter$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "_AdaptiveFunctionTestResult_": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/_AdaptiveFunctionTestResult_.propertyTypes"
+                }
+              ],
+              "description": "When this test case is executed, this is the expected result.",
+              "title": "Result",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^dataType$": true,
+                "^dataTypeParameter$": true,
+                "^error$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/_AdaptiveFunctionTestCase_.propertyTypes"
+                }
+              ],
+              "description": "An adaptive function test case.",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^brief$": true,
+                "^description$": true,
+                "^arguments$": true,
+                "^result$": true,
+                "^implemented$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "_AdaptiveFunctionTestCase_": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "_AdaptiveFunctionTestResult_.propertyTypes": {
+      "properties": {
+        "dataType": {
+          "description": "",
+          "title": "Data Type",
+          "type": "string"
+        },
+        "dataTypeParameter": {
+          "description": "Data type parameter",
+          "title": "Data Type Parameter",
+          "type": "string"
+        },
+        "error": {
+          "description": "When set, this indicates that this test result produces an error.",
+          "title": "Error",
+          "type": "boolean"
+        },
+        "value": {
+          "description": "",
+          "title": "Value"
+        }
+      },
+      "type": "object"
+    }
+  }
+}

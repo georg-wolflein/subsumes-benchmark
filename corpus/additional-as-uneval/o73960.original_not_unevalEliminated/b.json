@@ -1,0 +1,1157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "formatVersion": {
+      "type": "string"
+    },
+    "version": {
+      "$ref": "#/$defs/Version"
+    },
+    "defaultVariant": {
+      "type": "integer"
+    },
+    "mapData": {
+      "$ref": "#/$defs/MapData"
+    },
+    "controlData": {
+      "$ref": "#/$defs/ControlData"
+    }
+  },
+  "$defs": {
+    "Version": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "versionID": {
+          "type": "integer"
+        },
+        "timestamp": {
+          "type": "integer"
+        },
+        "startDate": {
+          "type": "integer"
+        },
+        "endDate": {
+          "type": "integer"
+        },
+        "comment": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "versionID"
+      ]
+    },
+    "MapData": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "msgIssueRevision": {
+          "type": "integer"
+        },
+        "intersections": {
+          "$ref": "#/$defs/IntersectionGeometryList"
+        },
+        "dataParameters": {
+          "$ref": "#/$defs/DataParameters"
+        },
+        "restrictionList": {
+          "$ref": "#/$defs/RestrictionClassList"
+        }
+      }
+    },
+    "IntersectionGeometryList": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "intersectionGeometry": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/IntersectionGeometry"
+          }
+        }
+      }
+    },
+    "IntersectionGeometry": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "id": {
+          "$ref": "#/$defs/IntersectionReferenceID"
+        },
+        "revision": {
+          "type": "integer"
+        },
+        "refPoint": {
+          "$ref": "#/$defs/Position3D"
+        },
+        "laneWidth": {
+          "type": "integer"
+        },
+        "speedLimits": {
+          "$ref": "#/$defs/SpeedLimitList"
+        },
+        "laneSet": {
+          "$ref": "#/$defs/LaneList"
+        }
+      },
+      "required": [
+        "revision",
+        "laneWidth"
+      ]
+    },
+    "IntersectionReferenceID": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "region": {
+          "type": "integer"
+        },
+        "id": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "region",
+        "id"
+      ]
+    },
+    "Position3D": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "lat": {
+          "type": "integer"
+        },
+        "altitude": {
+          "type": "integer"
+        },
+        "long": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "lat",
+        "long"
+      ]
+    },
+    "SpeedLimitList": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "regulatorySpeedLimit": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RegulatorySpeedLimit"
+          }
+        }
+      }
+    },
+    "RegulatorySpeedLimit": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "TRUCK_MAX_SPEED",
+            "VEHICLE_MAX_SPEED",
+            "VEHICLES_WITH_TRAILERS_NIGHT_MAX_SPEED",
+            "MAX_SPEED_IN_SCHOOL_ZONE_WHEN_CHILDREN_ARE_PRESENT",
+            "VEHICLE_NIGHT_MAX_SPEED",
+            "MAX_SPEED_IN_SCHOOL_ZONE",
+            "VEHICLES_WITH_TRAILERS_MIN_SPEED",
+            "NOMINAL_SPEED",
+            "VEHICLES_WITH_TRAILERS_MAX_SPEED",
+            "TRUCK_NIGHT_MAX_SPEED",
+            "TRUCK_MIN_SPEED",
+            "MAX_SPEED_IN_CONSTRUCTION_ZONE",
+            "VEHICLE_MIN_SPEED",
+            "UNKNOWN"
+          ]
+        },
+        "speed": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "speed"
+      ]
+    },
+    "LaneList": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "genericLane": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/GenericLane"
+          }
+        }
+      }
+    },
+    "GenericLane": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "laneID": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "ingressApproach": {
+          "type": "integer"
+        },
+        "egressApproach": {
+          "type": "integer"
+        },
+        "laneAttributes": {
+          "$ref": "#/$defs/LaneAttributes"
+        },
+        "nodes": {
+          "$ref": "#/$defs/NodeSetXY"
+        },
+        "connectsTo": {
+          "$ref": "#/$defs/ConnectToList"
+        },
+        "regional": {
+          "$ref": "#/$defs/REGIONRegGenericLane"
+        }
+      },
+      "required": [
+        "laneID"
+      ]
+    },
+    "LaneAttributes": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "directionalUse": {
+          "type": "string"
+        },
+        "sharedWith": {
+          "type": "string"
+        },
+        "vehicle": {
+          "type": "string"
+        },
+        "crosswalk": {
+          "type": "string"
+        },
+        "bikeLane": {
+          "type": "string"
+        },
+        "trackedvehicle": {
+          "type": "string"
+        }
+      }
+    },
+    "NodeSetXY": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "nodeXY": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NodeXY"
+          }
+        }
+      }
+    },
+    "NodeXY": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "nodeLatLon": {
+          "$ref": "#/$defs/NodeLLmD64B"
+        },
+        "attributes": {
+          "$ref": "#/$defs/NodeAttributeSetXY"
+        }
+      }
+    },
+    "NodeLLmD64B": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "lat": {
+          "type": "integer"
+        },
+        "lon": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "lat",
+        "lon"
+      ]
+    },
+    "NodeAttributeSetXY": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "localNode": {
+          "$ref": "#/$defs/NodeAttributeXYList"
+        },
+        "disabled": {
+          "$ref": "#/$defs/SegmentAttributesXYList"
+        },
+        "enabled": {
+          "$ref": "#/$defs/SegmentAttributesXYList"
+        },
+        "data": {
+          "$ref": "#/$defs/LaneDataAttributeList"
+        },
+        "dwidth": {
+          "type": "integer"
+        },
+        "delevation": {
+          "type": "integer"
+        }
+      }
+    },
+    "NodeAttributeXYList": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "nodeAttributeXY": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "DOWNSTREAM_START_NODE",
+              "ROUNDED_CAP_STYLE_A",
+              "CURB_PRESENT_AT_STEP_OFF",
+              "YIELD",
+              "HYDRANT_PRESENT",
+              "MERGE_POINT",
+              "DOWNSTREAM_STOP_LINE",
+              "CLOSED_TO_TRAFFIC",
+              "SAFE_ISLAND",
+              "ROUNDED_CAP_STYLE_B",
+              "RESERVED",
+              "STOP_LINE",
+              "DIVERGE_POINT"
+            ]
+          }
+        }
+      }
+    },
+    "SegmentAttributesXYList": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "segmentAttributeXY": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "BIKE_BOX_IN_FRONT",
+              "TAPER_TO_CENTER_LINE",
+              "TURN_OUT_POINT_ON_LEFT",
+              "SHARED_WITH_TRACKED_VEHICLE",
+              "MERGING_LANE_LEFT",
+              "TAPER_TO_LEFT",
+              "CURB_ON_RIGHT",
+              "TRANSIT_STOP_ON_LEFT",
+              "MERGING_LANE_RIGHT",
+              "HEAD_IN_PARKING",
+              "LOADINGZONE_ON_RIGHT",
+              "ADAPTIVE_TIMING_PRESENT",
+              "TRANSIT_STOP_ON_RIGHT",
+              "COST_TO_PARK",
+              "PARTIAL_CURB_INTRUSION",
+              "AUDIBLE_SIGNALING_PRESENT",
+              "TIME_RESTRICTIONS_ON_PARKING",
+              "TAPER_TO_RIGHT",
+              "ADJACENT_PARKING_ON_LEFT",
+              "RUMBLE_STRIP_PRESENT",
+              "WHITE_LINE",
+              "TURN_OUT_POINT_ON_RIGHT",
+              "LOADINGZONE_ON_LEFT",
+              "LOW_CURBS_PRESENT",
+              "UN_EVEN_PAVEMENT_PRESENT",
+              "PARALLEL_PARKING",
+              "TRANSIT_STOP_IN_LANE",
+              "RF_SIGNAL_REQUEST_PRESENT",
+              "SAFE_ISLAND",
+              "DO_NOT_BLOCK",
+              "RESERVED",
+              "ADJACENT_BIKE_LANE_ON_RIGHT",
+              "ADJACENT_PARKING_ON_RIGHT",
+              "CURB_ON_LEFT",
+              "MID_BLOCK_CURB_PRESENT",
+              "FREE_PARKING",
+              "SHARED_BIKE_LANE",
+              "ADJACENT_BIKE_LANE_ON_LEFT"
+            ]
+          }
+        }
+      }
+    },
+    "LaneDataAttributeList": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "laneDataAttribute": {
+          "$ref": "#/$defs/LaneDataAttribute"
+        }
+      }
+    },
+    "LaneDataAttribute": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "speedLimitsOrRegional": {
+          "type": "array",
+          "items": {}
+        }
+      }
+    },
+    "ConnectToList": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "connection": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Connection"
+          }
+        }
+      }
+    },
+    "Connection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "connectingLane": {
+          "$ref": "#/$defs/ConnectingLane"
+        },
+        "remoteIntersection": {
+          "$ref": "#/$defs/IntersectionReferenceID"
+        },
+        "signalGroup": {
+          "type": "integer"
+        },
+        "userClass": {
+          "type": "integer"
+        },
+        "connectionID": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "connectionID"
+      ]
+    },
+    "ConnectingLane": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "lane": {
+          "type": "integer"
+        },
+        "maneuver": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "lane"
+      ]
+    },
+    "REGIONRegGenericLane": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "addGrpC": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ConnectionTrajectoryAddGrpC"
+          }
+        }
+      }
+    },
+    "ConnectionTrajectoryAddGrpC": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "nodes": {
+          "$ref": "#/$defs/NodeSetXY"
+        },
+        "connectionID": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "connectionID"
+      ]
+    },
+    "DataParameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "processAgency": {
+          "type": "string"
+        },
+        "lastCheckedDate": {
+          "type": "string"
+        }
+      }
+    },
+    "RestrictionClassList": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "restrictionClassAssignment": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RestrictionClassAssignment"
+          }
+        }
+      }
+    },
+    "RestrictionClassAssignment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "users": {
+          "$ref": "#/$defs/RestrictionUserTypeList"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "RestrictionUserTypeList": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "user": {
+          "$ref": "#/$defs/RestrictionUserType"
+        }
+      }
+    },
+    "RestrictionUserType": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "basicTypeOrRegional": {
+          "type": "array",
+          "items": {}
+        }
+      }
+    },
+    "ControlData": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "controller": {
+          "$ref": "#/$defs/TLC"
+        },
+        "controlledIntersections": {
+          "$ref": "#/$defs/IntersectionGeometryAddList"
+        }
+      }
+    },
+    "TLC": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "descriptiveName": {
+          "type": "string"
+        },
+        "uniqueID": {
+          "type": "string"
+        },
+        "alias": {
+          "type": "string"
+        },
+        "tlcIdentifier": {
+          "type": "string"
+        },
+        "vlogID": {
+          "type": "string"
+        },
+        "brand": {
+          "type": "string"
+        },
+        "tlcType": {
+          "type": "string"
+        },
+        "serialNumber": {
+          "type": "string"
+        },
+        "tlcPosition": {
+          "$ref": "#/$defs/Position3D"
+        },
+        "inputs": {
+          "$ref": "#/$defs/InputList"
+        },
+        "outputs": {
+          "$ref": "#/$defs/OutputList"
+        }
+      }
+    },
+    "InputList": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "input": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/VlogIO"
+          }
+        }
+      }
+    },
+    "VlogIO": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ioName": {
+          "type": "string"
+        },
+        "alias": {
+          "type": "string"
+        },
+        "ioType": {
+          "type": "string"
+        },
+        "vlogIdx": {
+          "type": "integer"
+        },
+        "comment": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "vlogIdx"
+      ]
+    },
+    "OutputList": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "output": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/VlogIO"
+          }
+        }
+      }
+    },
+    "IntersectionGeometryAddList": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "controlledIntersection": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/IntersectionGeometryAdd"
+          }
+        }
+      }
+    },
+    "IntersectionGeometryAdd": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "intersectionID": {
+          "$ref": "#/$defs/IntersectionReferenceID"
+        },
+        "name": {
+          "type": "string"
+        },
+        "descriptiveName": {
+          "type": "string"
+        },
+        "alias": {
+          "type": "string"
+        },
+        "intersectionType": {
+          "type": "string",
+          "enum": [
+            "INTERSECTION",
+            "ROUNDABOUT"
+          ]
+        },
+        "approaches": {
+          "$ref": "#/$defs/ApproachList"
+        },
+        "variants": {
+          "$ref": "#/$defs/VariantList"
+        },
+        "sensors": {
+          "$ref": "#/$defs/SensorList"
+        },
+        "signalGroups": {
+          "$ref": "#/$defs/SignalGroupList"
+        },
+        "signalGroupRelations": {
+          "$ref": "#/$defs/SignalGroupRelationList"
+        }
+      }
+    },
+    "ApproachList": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "approach": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Approach"
+          }
+        }
+      }
+    },
+    "Approach": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "approachID": {
+          "type": "integer"
+        },
+        "alias": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "approachLanes": {
+          "$ref": "#/$defs/LaneReferenceList"
+        }
+      },
+      "required": [
+        "approachID"
+      ]
+    },
+    "LaneReferenceList": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "approachLane": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ApproachLane"
+          }
+        }
+      }
+    },
+    "ApproachLane": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "lanePosition": {
+          "type": "integer"
+        },
+        "laneID": {
+          "type": "integer"
+        },
+        "capacity": {
+          "type": "integer"
+        },
+        "length": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "laneID"
+      ]
+    },
+    "VariantList": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "variant": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Variant"
+          }
+        }
+      }
+    },
+    "Variant": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "variantID": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "variantCategory": {
+          "type": "string",
+          "enum": [
+            "ENVIRONMENTAL",
+            "TEMPORARILY_CLOSED",
+            "ROAD_WORK",
+            "CONGESTION",
+            "EVENT",
+            "NORMAL_OPERATION",
+            "EXTREME_WEATHER_CONDITION",
+            "CLOSED",
+            "INCIDENT",
+            "EMERGENCY"
+          ]
+        },
+        "enabledLanes": {
+          "$ref": "#/$defs/EnabledLaneList"
+        },
+        "vlogIndicator": {
+          "$ref": "#/$defs/VlogIndicator"
+        },
+        "activePeriods": {
+          "$ref": "#/$defs/ActivePeriodList"
+        },
+        "comment": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "variantID"
+      ]
+    },
+    "EnabledLaneList": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "laneID": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "VlogIndicator": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "vlogCat": {
+          "type": "string",
+          "enum": [
+            "FC",
+            "US",
+            "DP",
+            "IS",
+            "DS"
+          ]
+        },
+        "vlogIdx": {
+          "type": "integer"
+        },
+        "matchValue": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "vlogIdx",
+        "matchValue"
+      ]
+    },
+    "ActivePeriodList": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "activePeriod": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ActivePeriod"
+          }
+        }
+      }
+    },
+    "ActivePeriod": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "days": {
+          "type": "integer"
+        },
+        "beginTime": {
+          "type": "integer"
+        },
+        "endTime": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "days"
+      ]
+    },
+    "SensorList": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sensor": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Sensor"
+          }
+        }
+      }
+    },
+    "Sensor": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sensorID": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "alias": {
+          "type": "string"
+        },
+        "sensorDeviceType": {
+          "type": "string",
+          "enum": [
+            "INFRARED",
+            "INDUCTION_LOOP",
+            "RADAR",
+            "CAMERA",
+            "RADIO",
+            "PRESSURE_SENSOR",
+            "COMMUNICATION_LOOP",
+            "MOTION_DETECTOR",
+            "PUSH_BUTTON",
+            "UNKNOWN"
+          ]
+        },
+        "sensorOutput": {
+          "type": "string"
+        },
+        "vlogIdx": {
+          "type": "integer"
+        },
+        "sensorPosition": {
+          "$ref": "#/$defs/Position"
+        },
+        "length": {
+          "type": "integer"
+        },
+        "width": {
+          "type": "integer"
+        },
+        "geoShape": {
+          "$ref": "#/$defs/GeoShape"
+        },
+        "sensorAllocations": {
+          "$ref": "#/$defs/SensorAllocationList"
+        },
+        "sensorRelations": {
+          "$ref": "#/$defs/SensorRelationList"
+        },
+        "gapTime": {
+          "type": "integer"
+        },
+        "occupationTime": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "sensorID"
+      ]
+    },
+    "Position": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "lat": {
+          "type": "integer"
+        },
+        "long": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "lat",
+        "long"
+      ]
+    },
+    "GeoShape": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "indexPoint": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/IndexedPosition"
+          }
+        }
+      }
+    },
+    "IndexedPosition": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "index": {
+          "type": "integer"
+        },
+        "lat": {
+          "type": "integer"
+        },
+        "long": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "index",
+        "lat",
+        "long"
+      ]
+    },
+    "SensorAllocationList": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sensorAllocation": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SensorAllocation"
+          }
+        }
+      }
+    },
+    "SensorAllocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "laneID": {
+          "type": "integer"
+        },
+        "distance": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "laneID"
+      ]
+    },
+    "SensorRelationList": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sensorRelation": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SensorRelation"
+          }
+        }
+      }
+    },
+    "SensorRelation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "laneID": {
+          "type": "integer"
+        },
+        "purpose": {
+          "type": "string",
+          "enum": [
+            "GAP_VERIFICATION",
+            "CONGESTION",
+            "PLATOON",
+            "GAP_MEASURE",
+            "SAFETY",
+            "VERIFICATION",
+            "MEASURE"
+          ]
+        }
+      },
+      "required": [
+        "laneID"
+      ]
+    },
+    "SignalGroupList": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sg": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SignalGroup"
+          }
+        }
+      }
+    },
+    "SignalGroup": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "signalGroup": {
+          "type": "integer"
+        },
+        "alias": {
+          "type": "string"
+        },
+        "vlogIdx": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "signalGroup",
+        "vlogIdx"
+      ]
+    },
+    "SignalGroupRelationList": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "signalGroupRelation": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SignalGroupRelation"
+          }
+        }
+      }
+    },
+    "SignalGroupRelation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "fromSignalGroup": {
+          "type": "integer"
+        },
+        "toSignalGroup": {
+          "type": "integer"
+        },
+        "alias": {
+          "type": "string"
+        },
+        "clearanceTimeType": {
+          "type": "string",
+          "enum": [
+            "PROTECTED_BY_CLEARANCE",
+            "PROTECTED_BY_INTERGREEN"
+          ]
+        },
+        "clearanceTime": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "fromSignalGroup",
+        "toSignalGroup"
+      ]
+    }
+  }
+}

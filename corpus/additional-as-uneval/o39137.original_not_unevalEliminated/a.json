@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_3",
+  "$defs": {
+    "fileReplacement": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/modern_1"
+        },
+        {
+          "$ref": "#/$defs/modern_2"
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "replaceWith": {
+                  "type": "string"
+                },
+                "src": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "src",
+                "replaceWith"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^replaceWith$": true,
+                "^src$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "replace": {
+                  "type": "string"
+                },
+                "with": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "replace",
+                "with"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^replace$": true,
+                "^with$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Universal target options for Build Facade.",
+              "properties": {
+                "partialBrowserConfig": {
+                  "description": "Partial webpack config for browser.",
+                  "type": "string"
+                },
+                "verbose": {
+                  "default": false,
+                  "description": "Adds more details to output logging.",
+                  "type": "boolean"
+                },
+                "fileReplacements": {
+                  "default": [],
+                  "description": "Replace files with other files in the build.",
+                  "items": {
+                    "$ref": "#/$defs/fileReplacement"
+                  },
+                  "type": "array"
+                },
+                "deleteOutputPath": {
+                  "default": true,
+                  "description": "Delete the output path before building.",
+                  "type": "boolean"
+                },
+                "partialServerConfig": {
+                  "description": "Partial webpack config for server.",
+                  "type": "string"
+                },
+                "fileLoaderEmitFile": {
+                  "default": false,
+                  "description": "DEPRECATED server builder doesn't emit any file since angular v9",
+                  "type": "boolean"
+                },
+                "bundleDependenciesWhitelist": {
+                  "description": "DEPRECATED use \"externalDependencies\" in server builder",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "serverTarget": {
+                  "description": "Target to server.",
+                  "type": "string"
+                },
+                "browserTarget": {
+                  "description": "Target to browser.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "browserTarget",
+                "serverTarget"
+              ],
+              "title": "Universal Target",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^bundleDependenciesWhitelist$": true,
+                "^partialServerConfig$": true,
+                "^fileLoaderEmitFile$": true,
+                "^fileReplacements$": true,
+                "^deleteOutputPath$": true,
+                "^partialBrowserConfig$": true,
+                "^browserTarget$": true,
+                "^serverTarget$": true,
+                "^verbose$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

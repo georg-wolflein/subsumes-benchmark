@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "ParentId",
+    "RestApiId",
+    "ChildResources"
+  ],
+  "properties": {
+    "ParentId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+$"
+    },
+    "RestApiId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]{10}$"
+    },
+    "ChildResources": {
+      "$ref": "#/$defs/childresources"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "childresources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/childresource"
+      }
+    },
+    "childresource": {
+      "required": [
+        "PathPart"
+      ],
+      "additionalProperties": false,
+      "type": "object",
+      "properties": {
+        "PathPart": {
+          "type": "string",
+          "pattern": "^(\\{[\\w\\-]+\\})|([\\w\\-]+)$"
+        },
+        "ChildResources": {
+          "$ref": "#/$defs/childresources"
+        }
+      }
+    }
+  }
+}

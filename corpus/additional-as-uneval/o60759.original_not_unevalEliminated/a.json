@@ -1,0 +1,348 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_6",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "id",
+                "role_id"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "email": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null
+                },
+                "role_id": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string",
+                  "constant": {
+                    "$data": "0"
+                  }
+                },
+                "message": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^role_id$": true,
+                "^name$": true,
+                "^id$": true,
+                "^message$": true,
+                "^email$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "id",
+                "title",
+                "cycle_id"
+              ],
+              "properties": {
+                "status_id": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "updated": {
+                  "type": "number"
+                },
+                "invitations": {
+                  "$ref": "#/$defs/modern_7"
+                },
+                "cycle_id": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "events": {
+                  "$ref": "#/$defs/modern_8"
+                },
+                "created": {
+                  "type": "number"
+                },
+                "assignments": {
+                  "$ref": "#/$defs/modern_9"
+                },
+                "contents": {
+                  "$ref": "#/$defs/modern_10"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^updated$": true,
+                "^invitations$": true,
+                "^assignments$": true,
+                "^title$": true,
+                "^events$": true,
+                "^contents$": true,
+                "^status_id$": true,
+                "^id$": true,
+                "^created$": true,
+                "^cycle_id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "default": {}
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/content"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "invitation": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "default": {}
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/invitation"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "id"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "constant": {
+                    "$data": "0"
+                  }
+                },
+                "exports": {
+                  "type": "object",
+                  "default": {}
+                },
+                "data": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "status_id": {
+                  "type": "string",
+                  "default": "none",
+                  "enum": [
+                    "none",
+                    "draft",
+                    "complete"
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^exports$": true,
+                "^data$": true,
+                "^status_id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "default": {}
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/event"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "default": {}
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/assignment"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "content": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "default": {}
+            },
+            {
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "assignment": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "value",
+                "timestamp"
+              ],
+              "properties": {
+                "value": {
+                  "type": "boolean"
+                },
+                "timestamp": {
+                  "type": "number"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^value$": true,
+                "^timestamp$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "event": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/modern_4"
+      }
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "id",
+                "role_id"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "constant": {
+                    "$data": "0"
+                  }
+                },
+                "role_id": {
+                  "type": "string"
+                },
+                "invitation_id": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "default": null
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^role_id$": true,
+                "^invitation_id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,550 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "working_dir": {
+                  "type": "string"
+                },
+                "cmd": {
+                  "type": "string"
+                },
+                "init": {
+                  "$ref": "#/$defs/modern_6"
+                },
+                "disabled": {
+                  "type": [
+                    "boolean",
+                    "string"
+                  ]
+                }
+              },
+              "required": [
+                "working_dir",
+                "cmd"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^working_dir$": true,
+                "^cmd$": true,
+                "^init$": true,
+                "^disabled$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "subtype": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "cmd": {
+                  "type": "string"
+                },
+                "working_dir": {
+                  "type": "string"
+                },
+                "disabled": {
+                  "type": [
+                    "boolean",
+                    "string"
+                  ]
+                },
+                "telemetry_timeout": {
+                  "type": "number"
+                },
+                "type": {
+                  "enum": [
+                    "module_class",
+                    "module_method",
+                    "inproc",
+                    "sys"
+                  ]
+                },
+                "init": {
+                  "$ref": "#/$defs/modern_11"
+                }
+              },
+              "required": [
+                "name",
+                "working_dir",
+                "cmd",
+                "init"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^working_dir$": true,
+                "^init$": true,
+                "^name$": true,
+                "^disabled$": true,
+                "^subtype$": true,
+                "^telemetry_timeout$": true,
+                "^type$": true,
+                "^cmd$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "general": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "spouts": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_10"
+                  }
+                },
+                "bolts": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_12"
+                  }
+                },
+                "variables": {
+                  "type": "object",
+                  "patternProperties": {
+                    "^.*$": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "required": [
+                "general",
+                "spouts",
+                "bolts",
+                "variables"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^general$": true,
+                "^spouts$": true,
+                "^bolts$": true,
+                "^variables$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "working_dir": {
+                  "type": "string"
+                },
+                "cmd": {
+                  "type": "string"
+                },
+                "init": {
+                  "$ref": "#/$defs/modern_8"
+                },
+                "disabled": {
+                  "type": [
+                    "boolean",
+                    "string"
+                  ]
+                }
+              },
+              "required": [
+                "working_dir",
+                "cmd"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^working_dir$": true,
+                "^cmd$": true,
+                "^init$": true,
+                "^disabled$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "weight": {
+                  "type": "integer"
+                },
+                "worker_affinity": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "initialization": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_3"
+                  }
+                },
+                "description": {
+                  "type": "string"
+                },
+                "shutdown": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_5"
+                  }
+                },
+                "shutdown_hard": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_7"
+                  }
+                },
+                "wrapper": {
+                  "$ref": "#/$defs/modern_9"
+                },
+                "pass_binary_messages": {
+                  "type": "boolean"
+                },
+                "heartbeat": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "heartbeat"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^wrapper$": true,
+                "^shutdown_hard$": true,
+                "^weight$": true,
+                "^heartbeat$": true,
+                "^shutdown$": true,
+                "^pass_binary_messages$": true,
+                "^worker_affinity$": true,
+                "^initialization$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_12": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "subtype": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "cmd": {
+                  "type": "string"
+                },
+                "inputs": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_13"
+                  }
+                },
+                "working_dir": {
+                  "type": "string"
+                },
+                "disabled": {
+                  "type": [
+                    "boolean",
+                    "string"
+                  ]
+                },
+                "telemetry_timeout": {
+                  "type": "number"
+                },
+                "type": {
+                  "enum": [
+                    "module_class",
+                    "module_method",
+                    "inproc",
+                    "sys"
+                  ]
+                },
+                "init": {
+                  "$ref": "#/$defs/modern_14"
+                },
+                "allow_parallel": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "name",
+                "working_dir",
+                "cmd",
+                "inputs",
+                "init"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^working_dir$": true,
+                "^name$": true,
+                "^disabled$": true,
+                "^telemetry_timeout$": true,
+                "^init$": true,
+                "^inputs$": true,
+                "^type$": true,
+                "^cmd$": true,
+                "^subtype$": true,
+                "^allow_parallel$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "ping_child_timeout": {
+                  "type": "number"
+                },
+                "ping_parent_timeout": {
+                  "type": "number"
+                },
+                "log_level": {
+                  "type": "string",
+                  "enum": [
+                    "debug",
+                    "log",
+                    "info",
+                    "normal",
+                    "warn",
+                    "error",
+                    "none"
+                  ]
+                },
+                "ping_child_interval": {
+                  "type": "number"
+                },
+                "ping_parent_interval": {
+                  "type": "number"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^ping_child_interval$": true,
+                "^log_level$": true,
+                "^ping_parent_timeout$": true,
+                "^ping_parent_interval$": true,
+                "^ping_child_timeout$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_13": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "source": {
+                  "type": "string"
+                },
+                "stream_id": {
+                  "type": "string"
+                },
+                "disabled": {
+                  "type": [
+                    "boolean",
+                    "string"
+                  ]
+                }
+              },
+              "required": [
+                "source"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^source$": true,
+                "^stream_id$": true,
+                "^disabled$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "working_dir": {
+                  "type": "string"
+                },
+                "cmd": {
+                  "type": "string"
+                },
+                "init": {
+                  "$ref": "#/$defs/modern_4"
+                },
+                "disabled": {
+                  "type": [
+                    "boolean",
+                    "string"
+                  ]
+                }
+              },
+              "required": [
+                "working_dir",
+                "cmd"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^working_dir$": true,
+                "^cmd$": true,
+                "^init$": true,
+                "^disabled$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "modern_14": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

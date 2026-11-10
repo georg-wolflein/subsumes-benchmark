@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/modern_1"
+    },
+    {
+      "$ref": "#/$defs/modern_3"
+    }
+  ],
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "locks": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_2"
+                  }
+                },
+                "next_cursor": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "locks"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^locks$": true,
+                "^next_cursor$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "unlocked_at": {
+                  "type": "string"
+                },
+                "committer": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "email"
+                  ]
+                },
+                "locked_at": {
+                  "type": "string"
+                },
+                "path": {
+                  "type": "string"
+                },
+                "commit_sha": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "path",
+                "commit_sha",
+                "locked_at"
+              ]
+            },
+            {
+              "items": {
+                "anyOf": [
+                  false,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "locks": {
+                  "type": "null"
+                },
+                "error": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "error"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^locks$": true,
+                "^error$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Place Search Schema",
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string",
+                  "pattern": "@([\\-\\+]?\\d+(\\.\\d+)?),([\\-\\+]?\\d+(\\.\\d+)?)"
+                },
+                "country": {
+                  "type": "array"
+                },
+                "id": {
+                  "type": "array"
+                },
+                "q": {
+                  "type": "string"
+                },
+                "type": {
+                  "items": {
+                    "enum": [
+                      "neighbourhood",
+                      "locality",
+                      "localadmin",
+                      "county",
+                      "region",
+                      "country",
+                      "continent",
+                      "country",
+                      "planet",
+                      "local",
+                      "metro",
+                      "major"
+                    ]
+                  },
+                  "type": "array"
+                },
+                "limit": {
+                  "type": "integer",
+                  "minimum": 1.0,
+                  "maximum": 200.0
+                }
+              },
+              "required": []
+            },
+            {
+              "patternProperties": {
+                "^limit$": true,
+                "^type$": true,
+                "^id$": true,
+                "^country$": true,
+                "^location$": true,
+                "^q$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

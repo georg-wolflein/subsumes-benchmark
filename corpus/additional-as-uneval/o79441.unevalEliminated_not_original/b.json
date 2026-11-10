@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "packageName": {
+                  "type": "string"
+                },
+                "includePackageVersions": {
+                  "type": "boolean",
+                  "default": false
+                }
+              },
+              "required": [
+                "packageName"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^packageName$": true,
+                "^includePackageVersions$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,243 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_3",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                "^[A-Za-z0-9_\\-]+$": {
+                  "$ref": "#/$defs/modern_6"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^[A-Za-z0-9_\\-]+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                "^[A-Za-z]{0,2}$": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^[A-Za-z]{0,2}$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "pattern": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "enum": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 1,
+                  "type": "array",
+                  "_uniqueItems": true
+                }
+              },
+              "required": [
+                "enum"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^enum$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                "^[A-Za-z0-9_\\-]+$": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/pattern"
+                    },
+                    {
+                      "$ref": "#/$defs/enum"
+                    }
+                  ],
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^[A-Za-z0-9_\\-]+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "pattern": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "pattern"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^pattern$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "enum": {
+      "$ref": "#/definitions4/modern_1"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Spider Metadata",
+              "properties": {
+                "authenticatingFactors": {
+                  "$ref": "#/$defs/modern_4"
+                },
+                "url": {
+                  "_format": "uri",
+                  "type": "string"
+                },
+                "factorDisplayNames": {
+                  "$ref": "#/$defs/modern_5"
+                },
+                "ttlInSeconds": {
+                  "maximum": 86400.0,
+                  "minimum": 60.0,
+                  "type": "integer"
+                },
+                "paranoiaLevel": {
+                  "enum": [
+                    "low",
+                    "medium",
+                    "high"
+                  ],
+                  "type": "string"
+                },
+                "identifyingFactors": {
+                  "$ref": "#/$defs/modern_7"
+                },
+                "factorDisplayOrder": {
+                  "items": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "minItems": 1,
+                  "type": "array",
+                  "_uniqueItems": true
+                },
+                "maxCrawlTimeInSeconds": {
+                  "maximum": 300.0,
+                  "minimum": 5.0,
+                  "type": "integer"
+                },
+                "maxConcurrentCrawls": {
+                  "maximum": 25.0,
+                  "minimum": 1.0,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "url"
+              ],
+              "title": "Spider Metadata",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^factorDisplayNames$": true,
+                "^authenticatingFactors$": true,
+                "^url$": true,
+                "^factorDisplayOrder$": true,
+                "^ttlInSeconds$": true,
+                "^maxConcurrentCrawls$": true,
+                "^maxCrawlTimeInSeconds$": true,
+                "^identifyingFactors$": true,
+                "^paranoiaLevel$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                "^[A-Za-z0-9_\\-]+$": {
+                  "$ref": "#/$defs/pattern",
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^[A-Za-z0-9_\\-]+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

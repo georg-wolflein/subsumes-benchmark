@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "anyOf": [
+    {
+      "properties": {
+        "accountSid": {
+          "$ref": "#/$defs/accountSid"
+        },
+        "authToken": {
+          "$ref": "#/$defs/authToken"
+        },
+        "toNumbers": {
+          "$ref": "#/$defs/toNumbers"
+        },
+        "fromNumber": {
+          "$ref": "#/$defs/fromNumber"
+        },
+        "bodyTemplate": {
+          "$ref": "#/$defs/bodyTemplate"
+        },
+        "mediaUrl": {
+          "$ref": "#/$defs/mediaUrl"
+        },
+        "maxPrice": {
+          "$ref": "#/$defs/maxPrice"
+        }
+      },
+      "allOf": [
+        {
+          "required": [
+            "accountSid",
+            "authToken",
+            "toNumbers",
+            "fromNumber"
+          ]
+        },
+        {
+          "anyOf": [
+            {
+              "required": [
+                "bodyTemplate"
+              ]
+            },
+            {
+              "required": [
+                "mediaUrl"
+              ]
+            }
+          ]
+        }
+      ],
+      "additionalProperties": false
+    },
+    {
+      "properties": {
+        "accountSid": {
+          "$ref": "#/$defs/accountSid"
+        },
+        "authToken": {
+          "$ref": "#/$defs/authToken"
+        },
+        "toNumbers": {
+          "$ref": "#/$defs/toNumbers"
+        },
+        "messagingServiceSid": {
+          "$ref": "#/$defs/messagingServiceSid"
+        },
+        "bodyTemplate": {
+          "$ref": "#/$defs/bodyTemplate"
+        },
+        "mediaUrl": {
+          "$ref": "#/$defs/mediaUrl"
+        },
+        "maxPrice": {
+          "$ref": "#/$defs/maxPrice"
+        }
+      },
+      "allOf": [
+        {
+          "required": [
+            "accountSid",
+            "authToken",
+            "toNumbers",
+            "messagingServiceSid"
+          ]
+        },
+        {
+          "anyOf": [
+            {
+              "required": [
+                "bodyTemplate"
+              ]
+            },
+            {
+              "required": [
+                "mediaUrl"
+              ]
+            }
+          ]
+        }
+      ],
+      "additionalProperties": false
+    }
+  ],
+  "$defs": {
+    "accountSid": {
+      "title": "Account Sid",
+      "type": "string",
+      "minLength": 1,
+      "messages": {
+        "required": "Account Sid is required"
+      }
+    },
+    "authToken": {
+      "title": "Auth Token",
+      "type": "string",
+      "minLength": 1,
+      "messages": {
+        "required": "Auth Token is required"
+      }
+    },
+    "toNumbers": {
+      "title": "Send to ...",
+      "type": "array",
+      "items": {
+        "title": "SMS Number",
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "fromNumber": {
+      "title": "From Number Template",
+      "type": "string",
+      "minLength": 1
+    },
+    "messagingServiceSid": {
+      "title": "Messaging Service Sid Template",
+      "type": "string",
+      "minLength": 1
+    },
+    "bodyTemplate": {
+      "title": "Body Template",
+      "type": "string",
+      "minLength": 1
+    },
+    "mediaUrl": {
+      "title": "Media URL",
+      "type": "string",
+      "minLength": 1,
+      "format": "uri"
+    },
+    "maxPrice": {
+      "title": "Max. Price Template",
+      "type": "string"
+    }
+  }
+}

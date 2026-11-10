@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "A person's name, with semantic components.",
+              "name": "PersonName",
+              "properties": {
+                "additional": {
+                  "description": "Any additional name components.",
+                  "items": {
+                    "$type": "string"
+                  },
+                  "type": "array"
+                },
+                "family": {
+                  "description": "The family name.",
+                  "type": "string"
+                },
+                "given": {
+                  "description": "The given name.",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^additional$": true,
+                "^family$": true,
+                "^given$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

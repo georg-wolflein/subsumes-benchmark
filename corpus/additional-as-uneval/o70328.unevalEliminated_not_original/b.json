@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "serial": {
+                  "max": 214748364,
+                  "min": 0,
+                  "type": "integer"
+                },
+                "refresh": {
+                  "max": 214748364,
+                  "min": 0,
+                  "type": "integer"
+                },
+                "minimun": {
+                  "max": 214748364,
+                  "min": 0,
+                  "type": "integer"
+                },
+                "mname": {
+                  "format": "hostname",
+                  "type": "string"
+                },
+                "expire": {
+                  "max": 214748364,
+                  "min": 0,
+                  "type": "integer"
+                },
+                "retry": {
+                  "max": 214748364,
+                  "min": 0,
+                  "type": "integer"
+                },
+                "rname": {
+                  "format": "hostname",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "mname",
+                "rname",
+                "serial",
+                "refresh",
+                "retry",
+                "expire",
+                "minimun"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^retry$": true,
+                "^rname$": true,
+                "^minimun$": true,
+                "^refresh$": true,
+                "^serial$": true,
+                "^expire$": true,
+                "^mname$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

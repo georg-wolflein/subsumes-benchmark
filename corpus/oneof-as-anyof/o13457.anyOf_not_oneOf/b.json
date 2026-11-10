@@ -1,0 +1,864 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Schema for the xAPI Statements endpoint",
+  "getParameters": {
+    "type": [
+      "object",
+      "array"
+    ],
+    "anyOf": [
+      {
+        "type": "array",
+        "maxItems": 0
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "statementId",
+                "voidedStatementId"
+              ]
+            }
+          ]
+        },
+        "properties": {
+          "statementId": {
+            "$ref": "#/$defs/uuid"
+          },
+          "voidedStatementId": {
+            "$ref": "#/$defs/uuid"
+          },
+          "agent": {
+            "type": "object",
+            "anyOf": [
+              {
+                "$ref": "#/$defs/agent"
+              },
+              {
+                "$ref": "#/$defs/group"
+              }
+            ]
+          },
+          "verb": {
+            "type": "string",
+            "format": "iri"
+          },
+          "activity": {
+            "type": "string",
+            "format": "iri"
+          },
+          "registration": {
+            "type": "string",
+            "anyOf": [
+              {
+                "$ref": "#/$defs/uuid"
+              }
+            ]
+          },
+          "related_activities": {
+            "type": "boolean"
+          },
+          "related_agents": {
+            "type": "boolean"
+          },
+          "since": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "until": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "until_id": {
+            "type": "string"
+          },
+          "since_id": {
+            "type": "string"
+          },
+          "limit": {
+            "type": "number",
+            "minimum": 0
+          },
+          "format": {
+            "enum": [
+              "ids",
+              "exact",
+              "canonical"
+            ]
+          },
+          "attachments": {
+            "type": "boolean"
+          },
+          "ascending": {
+            "type": "boolean"
+          }
+        }
+      }
+    ]
+  },
+  "postBody": {
+    "type": [
+      "object",
+      "array"
+    ],
+    "anyOf": [
+      {
+        "$ref": "#/$defs/statement"
+      },
+      {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/statement"
+        }
+      }
+    ]
+  },
+  "putParameters": {
+    "type": [
+      "object",
+      "array"
+    ],
+    "required": [
+      "statementId"
+    ],
+    "properties": {
+      "statementId": {
+        "$ref": "#/$defs/uuid"
+      }
+    }
+  },
+  "putBody": {
+    "type": "object",
+    "anyOf": [
+      {
+        "$ref": "#/$defs/statement"
+      }
+    ]
+  },
+  "$defs": {
+    "statement": {
+      "type": "object",
+      "required": [
+        "actor",
+        "verb",
+        "object"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/uuid"
+        },
+        "version": {
+          "type": "string",
+          "enum": [
+            "1.0.0"
+          ]
+        },
+        "actor": {
+          "type": "object",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/agent"
+            },
+            {
+              "$ref": "#/$defs/group"
+            }
+          ]
+        },
+        "verb": {
+          "type": "object",
+          "required": [
+            "id"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "format": "iri"
+            },
+            "display": {
+              "$ref": "#/$defs/languagemap"
+            }
+          },
+          "additionalProperties": false
+        },
+        "object": {
+          "type": "object",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/activity"
+            },
+            {
+              "$ref": "#/$defs/objectagent"
+            },
+            {
+              "$ref": "#/$defs/group"
+            },
+            {
+              "$ref": "#/$defs/statementref"
+            },
+            {
+              "$ref": "#/$defs/substatement"
+            }
+          ]
+        },
+        "objectType": {},
+        "result": {
+          "type": "object",
+          "properties": {
+            "score": {
+              "type": "object",
+              "properties": {
+                "scaled": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "raw": {
+                  "type": "number"
+                },
+                "min": {
+                  "type": "number"
+                },
+                "max": {
+                  "type": "number"
+                }
+              }
+            },
+            "success": {
+              "type": "boolean"
+            },
+            "completion": {
+              "type": "boolean"
+            },
+            "response": {
+              "type": "string"
+            },
+            "duration": {
+              "type": "string"
+            },
+            "extensions": {
+              "$ref": "#/$defs/extensions"
+            }
+          },
+          "additionalProperties": false
+        },
+        "context": {
+          "type": "object",
+          "properties": {
+            "registration": {
+              "type": "string",
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/uuid"
+                }
+              ]
+            },
+            "instructor": {
+              "type": "object",
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/agent"
+                },
+                {
+                  "$ref": "#/$defs/group"
+                }
+              ]
+            },
+            "team": {
+              "type": "object",
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/agent"
+                },
+                {
+                  "$ref": "#/$defs/group"
+                }
+              ]
+            },
+            "contextActivities": {
+              "type": "object",
+              "properties": {
+                "parent": {
+                  "type": [
+                    "object",
+                    "array"
+                  ],
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/activity"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/$defs/activity"
+                      }
+                    }
+                  ]
+                },
+                "grouping": {
+                  "type": [
+                    "object",
+                    "array"
+                  ],
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/activity"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/$defs/activity"
+                      }
+                    }
+                  ]
+                },
+                "category": {
+                  "type": [
+                    "object",
+                    "array"
+                  ],
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/activity"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/$defs/activity"
+                      }
+                    }
+                  ]
+                },
+                "other": {
+                  "type": [
+                    "object",
+                    "array"
+                  ],
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/activity"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/$defs/activity"
+                      }
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": false
+            },
+            "revision": {
+              "type": "string"
+            },
+            "platform": {
+              "type": "string"
+            },
+            "language": {
+              "type": "string"
+            },
+            "statement": {
+              "$ref": "#/$defs/statementref"
+            },
+            "extensions": {
+              "$ref": "#/$defs/extensions"
+            }
+          },
+          "additionalProperties": false
+        },
+        "timestamp": {
+          "type": "string"
+        },
+        "stored": {
+          "type": "string"
+        },
+        "authority": {
+          "type": "object",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/agent"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "member": {
+                  "type": "array",
+                  "minItems": 2,
+                  "maxItems": 2
+                }
+              },
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/anonymousgroup"
+                }
+              ]
+            }
+          ]
+        },
+        "voided": {
+          "type": "boolean"
+        },
+        "attachments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/attachment"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "statementref": {
+      "type": "object",
+      "required": [
+        "objectType",
+        "id"
+      ],
+      "properties": {
+        "objectType": {
+          "enum": [
+            "StatementRef"
+          ]
+        },
+        "id": {
+          "$ref": "#/$defs/uuid"
+        }
+      },
+      "additionalProperties": false
+    },
+    "substatement": {
+      "type": "object",
+      "required": [
+        "objectType"
+      ],
+      "properties": {
+        "objectType": {
+          "enum": [
+            "SubStatement"
+          ]
+        },
+        "object": {
+          "type": "object",
+          "properties": {
+            "objectType": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "Activity",
+                    "Agent",
+                    "Group",
+                    "StatementRef"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      },
+      "patternProperties": {
+        "^(id|stored|authority|voided|version)$": {
+          "type": "null"
+        }
+      },
+      "anyOf": [
+        {
+          "$ref": "#/$defs/statement"
+        }
+      ]
+    },
+    "activity": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "iri"
+        },
+        "objectType": {
+          "enum": [
+            "Activity"
+          ]
+        },
+        "definition": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "$ref": "#/$defs/languagemap"
+            },
+            "description": {
+              "$ref": "#/$defs/languagemap"
+            },
+            "type": {
+              "type": "string",
+              "format": "iri"
+            },
+            "moreInfo": {
+              "type": "string",
+              "format": "uri"
+            },
+            "interactionType": {
+              "enum": [
+                "true-false",
+                "choice",
+                "fill-in",
+                "long-fill-in",
+                "matching",
+                "performance",
+                "sequencing",
+                "likert",
+                "numeric",
+                "other"
+              ]
+            },
+            "correctResponsesPattern": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "extensions": {
+              "$ref": "#/$defs/extensions"
+            }
+          },
+          "patternProperties": {
+            "^(choices|scale|source|target|steps)$": {
+              "type": [
+                "object",
+                "array"
+              ],
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/interaction"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/interaction"
+                  }
+                }
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "extensions": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-Z][a-zA-Z+.-]*:": {}
+      },
+      "additionalProperties": false
+    },
+    "languagemap": {
+      "type": "object",
+      "patternProperties": {
+        "^(([a-zA-Z]{2,8}((-[a-zA-Z]{3}){0,3})(-[a-zA-Z]{4})?((-[a-zA-Z]{2})|(-\\d{3}))?(-[a-zA-Z\\d]{4,8})*(-[a-zA-Z\\d](-[a-zA-Z\\d]{1,8})+)*)|x(-[a-zA-Z\\d]{1,8})+|en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-klingon|i-lux|i-mingo|i-navajo|i-pwn|i-tao|i-tsu|i-tay|sgn-BE-FR|sgn-BE-NL|sgn-CH-DE)$": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "mbox": {
+      "type": "object",
+      "required": [
+        "mbox"
+      ],
+      "properties": {
+        "mbox": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^mailto:"
+        }
+      },
+      "patternProperties": {
+        "^(mbox_sha1sum|account|openid)$": {
+          "type": "null"
+        }
+      }
+    },
+    "mbox_sha1sum": {
+      "type": "object",
+      "required": [
+        "mbox_sha1sum"
+      ],
+      "properties": {
+        "mbox_sha1sum": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]{40}$"
+        }
+      },
+      "patternProperties": {
+        "^(mbox|account|openid)$": {
+          "type": "null"
+        }
+      }
+    },
+    "account": {
+      "type": "object",
+      "required": [
+        "account"
+      ],
+      "properties": {
+        "account": {
+          "type": "object",
+          "required": [
+            "homePage",
+            "name"
+          ],
+          "properties": {
+            "homePage": {
+              "type": "string",
+              "format": "uri"
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "patternProperties": {
+        "^(mbox_sha1sum|mbox|openid)$": {
+          "type": "null"
+        }
+      }
+    },
+    "openid": {
+      "type": "object",
+      "required": [
+        "openid"
+      ],
+      "properties": {
+        "openid": {
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "patternProperties": {
+        "^(mbox_sha1sum|account|mbox)$": {
+          "type": "null"
+        }
+      }
+    },
+    "inversefunctional": {
+      "type": "object",
+      "anyOf": [
+        {
+          "$ref": "#/$defs/mbox"
+        },
+        {
+          "$ref": "#/$defs/mbox_sha1sum"
+        },
+        {
+          "$ref": "#/$defs/account"
+        },
+        {
+          "$ref": "#/$defs/openid"
+        }
+      ]
+    },
+    "objectagent": {
+      "type": "object",
+      "required": [
+        "objectType"
+      ],
+      "properties": {
+        "objectType": {
+          "type": "string"
+        }
+      },
+      "anyOf": [
+        {
+          "$ref": "#/$defs/agent"
+        }
+      ]
+    },
+    "agent": {
+      "type": "object",
+      "allOf": [
+        {
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "objectType": {
+              "enum": [
+                "Agent"
+              ]
+            },
+            "mbox": {},
+            "mbox_sha1sum": {},
+            "account": {},
+            "openid": {}
+          },
+          "additionalProperties": false
+        },
+        {
+          "additionalProperties": true,
+          "anyOf": [
+            {
+              "$ref": "#/$defs/mbox"
+            },
+            {
+              "$ref": "#/$defs/mbox_sha1sum"
+            },
+            {
+              "$ref": "#/$defs/account"
+            },
+            {
+              "$ref": "#/$defs/openid"
+            }
+          ]
+        }
+      ]
+    },
+    "group": {
+      "type": "object",
+      "anyOf": [
+        {
+          "$ref": "#/$defs/anonymousgroup"
+        },
+        {
+          "$ref": "#/$defs/identifiedgroup"
+        }
+      ]
+    },
+    "anonymousgroup": {
+      "required": [
+        "objectType",
+        "member"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "objectType": {
+          "enum": [
+            "Group"
+          ]
+        },
+        "member": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/agent"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "identifiedgroup": {
+      "required": [
+        "objectType"
+      ],
+      "allOf": [
+        {
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "objectType": {
+              "enum": [
+                "Group"
+              ]
+            },
+            "member": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/agent"
+              }
+            },
+            "mbox": {},
+            "mbox_sha1sum": {},
+            "account": {},
+            "openid": {}
+          },
+          "additionalProperties": false
+        },
+        {
+          "additionalProperties": true,
+          "anyOf": [
+            {
+              "$ref": "#/$defs/mbox"
+            },
+            {
+              "$ref": "#/$defs/mbox_sha1sum"
+            },
+            {
+              "$ref": "#/$defs/account"
+            },
+            {
+              "$ref": "#/$defs/openid"
+            }
+          ]
+        }
+      ]
+    },
+    "uuid": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "attachment": {
+      "type": "object",
+      "required": [
+        "usageType",
+        "display",
+        "contentType",
+        "length",
+        "sha2"
+      ],
+      "properties": {
+        "usageType": {
+          "type": "string",
+          "format": "iri"
+        },
+        "display": {
+          "$ref": "#/$defs/languagemap"
+        },
+        "description": {
+          "$ref": "#/$defs/languagemap"
+        },
+        "contentType": {
+          "type": "string"
+        },
+        "length": {
+          "type": "number",
+          "minimum": 0
+        },
+        "sha2": {
+          "type": "string"
+        },
+        "fileUrl": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "interaction": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "description": {
+          "$ref": "#/$defs/languagemap"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

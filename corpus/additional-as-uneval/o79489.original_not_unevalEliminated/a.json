@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "A set of SAML values that uniquely identify this person, consistently across TAS apps, and with any number of potential IdPs",
+              "required": [
+                "pt",
+                "samlKey",
+                "nameID",
+                "entityID"
+              ],
+              "properties": {
+                "pt": {
+                  "$ref": "#/$defs/principalType",
+                  "description": "principal type"
+                },
+                "samlKey": {
+                  "type": "string",
+                  "description": "key of the SAML assertion with the the TAS core SAML database"
+                },
+                "nameID": {
+                  "type": "string"
+                },
+                "entityID": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^pt$": true,
+                "^samlKey$": true,
+                "^nameID$": true,
+                "^entityID$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "principalType": {
+      "enum": [
+        "user",
+        "candidate"
+      ],
+      "description": "a class of principal (typically a human) identifiable by SSO. In theory developer-defined but for now only TAS can create."
+    }
+  }
+}

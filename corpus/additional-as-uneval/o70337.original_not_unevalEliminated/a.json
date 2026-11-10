@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Tld",
+              "properties": {
+                "tld": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              },
+              "required": [
+                "tld"
+              ],
+              "title": "tld"
+            },
+            {
+              "patternProperties": {
+                "^tld$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "description": "Tld name",
+                  "format": "tldname",
+                  "immutable": true,
+                  "maxLength": 255,
+                  "type": "string"
+                },
+                "description": {
+                  "description": "Description for the tld",
+                  "maxLength": 160,
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "links": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "id": {
+                  "description": "Tld identifier",
+                  "pattern": "^([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}$",
+                  "readOnly": true,
+                  "type": "string"
+                },
+                "created_at": {
+                  "description": "Date and time of tld creation",
+                  "format": "date-time",
+                  "readOnly": true,
+                  "type": "string"
+                },
+                "updated_at": {
+                  "description": "Date and time of last tld modification",
+                  "format": "date-time",
+                  "readOnly": true,
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^updated_at$": true,
+                "^description$": true,
+                "^created_at$": true,
+                "^id$": true,
+                "^links$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "self": {
+                  "format": "url",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^self$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

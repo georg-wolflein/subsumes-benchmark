@@ -1,0 +1,718 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "attributes": {
+      "type": "object",
+      "properties": {
+        "meta_attributes": {
+          "type": "object",
+          "description": "Description for meta_attributes"
+        },
+        "email": {
+          "type": "string",
+          "description": "Description for email"
+        },
+        "reference": {
+          "type": "string",
+          "description": "Description for reference"
+        }
+      }
+    },
+    "type": {
+      "type": "string",
+      "description": "The json_api type for any customer account",
+      "pattern": "^customer_accounts$"
+    },
+    "relationships": {
+      "type": "object",
+      "properties": {
+        "cart": {
+          "type": "object",
+          "properties": {
+            "links": {
+              "$ref": "#/$defs/modern_1"
+            },
+            "data": {
+              "$ref": "#/$defs/modern_2"
+            },
+            "meta": {
+              "$ref": "#/$defs/modern_3"
+            }
+          }
+        },
+        "orders": {
+          "type": "object",
+          "properties": {
+            "links": {
+              "$ref": "#/$defs/modern_4"
+            },
+            "data": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/modern_5"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_6"
+                  }
+                }
+              ]
+            },
+            "meta": {
+              "$ref": "#/$defs/modern_7"
+            }
+          }
+        },
+        "notes": {
+          "type": "object",
+          "properties": {
+            "links": {
+              "$ref": "#/$defs/modern_8"
+            },
+            "data": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/modern_9"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_10"
+                  }
+                }
+              ]
+            },
+            "meta": {
+              "$ref": "#/$defs/modern_11"
+            }
+          }
+        },
+        "addresses": {
+          "type": "object",
+          "properties": {
+            "links": {
+              "$ref": "#/$defs/modern_12"
+            },
+            "data": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/modern_13"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_14"
+                  }
+                }
+              ]
+            },
+            "meta": {
+              "$ref": "#/$defs/modern_15"
+            }
+          }
+        },
+        "password_recovery": {
+          "type": "object",
+          "properties": {
+            "links": {
+              "$ref": "#/$defs/modern_16"
+            },
+            "data": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/modern_17"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_18"
+                  }
+                }
+              ]
+            },
+            "meta": {
+              "$ref": "#/$defs/modern_19"
+            }
+          }
+        },
+        "customer_segments": {
+          "type": "object",
+          "properties": {
+            "links": {
+              "$ref": "#/$defs/modern_20"
+            },
+            "data": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/modern_21"
+              }
+            },
+            "meta": {
+              "$ref": "#/$defs/modern_22"
+            }
+          }
+        }
+      }
+    },
+    "links": {
+      "$ref": "#/$defs/modern_23"
+    },
+    "id": {
+      "type": "string",
+      "description": "A unique identifier for the customer account"
+    },
+    "meta": {
+      "$ref": "#/$defs/modern_24"
+    }
+  },
+  "$defs": {
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "The id and type form a pointer into the 'included' top level document property",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "The id and type form a pointer into the 'included' top level document property",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "self": {
+                  "type": "string"
+                },
+                "related": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^self$": true,
+                "^related$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "modern_20": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "self": {
+                  "type": "string"
+                },
+                "related": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^self$": true,
+                "^related$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_12": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "self": {
+                  "type": "string"
+                },
+                "related": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^self$": true,
+                "^related$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "self": {
+                  "type": "string"
+                },
+                "related": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^self$": true,
+                "^related$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_24": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "The id and type form a pointer into the 'included' top level document property",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "modern_22": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "modern_14": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "The id and type form a pointer into the 'included' top level document property",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_21": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "The id and type form a pointer into the 'included' top level document property",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "The id and type form a pointer into the 'included' top level document property",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_16": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "self": {
+                  "type": "string"
+                },
+                "related": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^self$": true,
+                "^related$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_15": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "modern_23": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "self": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^self$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_17": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "The id and type form a pointer into the 'included' top level document property",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "The id and type form a pointer into the 'included' top level document property",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_18": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "The id and type form a pointer into the 'included' top level document property",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_13": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "The id and type form a pointer into the 'included' top level document property",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_19": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "self": {
+                  "type": "string"
+                },
+                "related": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^self$": true,
+                "^related$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

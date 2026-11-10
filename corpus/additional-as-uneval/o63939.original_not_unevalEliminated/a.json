@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "scheduleToStartTimeout": {
+                  "description": "Max time from schedule to start for a task",
+                  "maximum": 31536000.0,
+                  "minimum": 1.0,
+                  "type": "integer"
+                },
+                "name": {
+                  "description": "Activity name",
+                  "maxLength": 64,
+                  "minLength": 3,
+                  "type": "string"
+                },
+                "heartbeatTimeout": {
+                  "description": "Max time between heartbeat",
+                  "maximum": 99999999.0,
+                  "minimum": 1.0,
+                  "type": "integer"
+                },
+                "description": {
+                  "description": "Activity description",
+                  "maxLength": 256,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "startToCloseTimeout": {
+                  "description": "Max time from start to close for a task",
+                  "maximum": 31536000.0,
+                  "minimum": 1.0,
+                  "type": "integer"
+                },
+                "activityTaskList": {
+                  "description": "Tasklist (queue) where task are stacked and polled from",
+                  "maxLength": 64,
+                  "minLength": 3,
+                  "pattern": "^[\\w\\.\\- ]+$",
+                  "type": "string"
+                },
+                "version": {
+                  "description": "Activity version",
+                  "maxLength": 32,
+                  "minLength": 1,
+                  "pattern": "^[\\w\\.\\- ]+$",
+                  "type": "string"
+                },
+                "scheduleToCloseTimeout": {
+                  "description": "Max time from schedule to close for a task",
+                  "maximum": 31536000.0,
+                  "minimum": 1.0,
+                  "type": "integer"
+                },
+                "class": {
+                  "description": "Class name implementing this activity",
+                  "maxLength": 256,
+                  "minLength": 8,
+                  "pattern": "^[\\w\\-]+$",
+                  "type": "string"
+                },
+                "file": {
+                  "description": "File implementing this activity",
+                  "maxLength": 1024,
+                  "minLength": 16,
+                  "pattern": "^[\\w\\-\\./]+\\.php+$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "version",
+                "description",
+                "file",
+                "class",
+                "activityTaskList",
+                "scheduleToStartTimeout",
+                "scheduleToCloseTimeout",
+                "startToCloseTimeout",
+                "heartbeatTimeout"
+              ],
+              "title": "Schemas for activities items in activities array of main config file",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^activityTaskList$": true,
+                "^heartbeatTimeout$": true,
+                "^name$": true,
+                "^scheduleToStartTimeout$": true,
+                "^startToCloseTimeout$": true,
+                "^class$": true,
+                "^scheduleToCloseTimeout$": true,
+                "^file$": true,
+                "^version$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "currentTime": {
+                  "_format": "date-time",
+                  "type": "string"
+                },
+                "interval": {
+                  "type": "number"
+                },
+                "status": {
+                  "enum": [
+                    "Accepted",
+                    "Pending",
+                    "Rejected"
+                  ],
+                  "type": "string"
+                }
+              },
+              "required": [
+                "status",
+                "currentTime",
+                "interval"
+              ],
+              "title": "BootNotificationResponse",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^currentTime$": true,
+                "^interval$": true,
+                "^status$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

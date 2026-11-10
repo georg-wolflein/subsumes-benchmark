@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Postal address for Canada",
+  "description": "Postal addresses for the country of Canada",
+  "type": "object",
+  "properties": {
+    "address": {
+      "$ref": "#/$defs/modern_1"
+    }
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "number": {
+                  "type": "string"
+                },
+                "city": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "province": {
+                  "$ref": "#/$defs/CAN_province"
+                },
+                "street": {
+                  "type": "string"
+                },
+                "postalCode": {
+                  "$ref": "#/$defs/CAN_postalCode"
+                },
+                "street2": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "number",
+                "street",
+                "city",
+                "province",
+                "postalCode"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^street$": true,
+                "^city$": true,
+                "^postalCode$": true,
+                "^province$": true,
+                "^street2$": true,
+                "^name$": true,
+                "^number$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "CAN_postalCode": {
+      "type": "string",
+      "pattern": "^[A-Z][0-9][A-Z]( )?[0-9][A-Z][0-9]$"
+    },
+    "CAN_province": {
+      "type": "string",
+      "enum": [
+        "AB",
+        "BC",
+        "MB",
+        "NB",
+        "NL",
+        "NS",
+        "NT",
+        "NU",
+        "ON",
+        "PE",
+        "QC",
+        "SK",
+        "YT"
+      ]
+    }
+  }
+}

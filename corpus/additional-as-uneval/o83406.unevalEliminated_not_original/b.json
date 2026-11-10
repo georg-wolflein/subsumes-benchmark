@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Jupyter Interactive Widget View JSON schema.",
+              "type": "object",
+              "properties": {
+                "version_major": {
+                  "description": "Format version (major)",
+                  "type": "number",
+                  "minimum": 1.0,
+                  "maximum": 1.0
+                },
+                "version_minor": {
+                  "description": "Format version (minor)",
+                  "type": "number"
+                },
+                "model_id": {
+                  "description": "Unique identifier of the widget model to be displayed",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "model_id"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^version_major$": true,
+                "^version_minor$": true,
+                "^model_id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

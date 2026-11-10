@@ -1,0 +1,69 @@
+{
+  "$id": "http://snowflakepowe.red/stone/schema/platform",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "BiosFiles": {
+      "additionalProperties": false,
+      "patternProperties": {
+        "(^.+\\..+)|(^[a-zA-Z0-9_-]+)": {
+          "items": {
+            "pattern": "^[a-f0-9]{32}$",
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "FileTypes": {
+      "minItems": 1,
+      "patternProperties": {
+        "^BIOS$": {
+          "pattern": "^application\\/vnd\\.stone-romfile\\..+-sys",
+          "type": "string"
+        },
+        "^RSRC$": {
+          "pattern": "^application\\/vnd\\.stone-romfile\\..+-resource",
+          "type": "string"
+        },
+        "^\\.": {
+          "pattern": "^application\\/vnd\\.stone-romfile\\..+",
+          "type": "string"
+        }
+      },
+      "required": [
+        "RSRC"
+      ],
+      "type": "object",
+      "_uniqueItems": true
+    },
+    "FriendlyName": {
+      "type": "string"
+    },
+    "MaximumInputs": {
+      "type": "integer"
+    },
+    "Metadata": {
+      "additionalProperties": false,
+      "patternProperties": {
+        "^platform_": {
+          "type": "string"
+        }
+      },
+      "properties": {},
+      "type": "object"
+    },
+    "PlatformID": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "PlatformID",
+    "Metadata",
+    "MaximumInputs",
+    "FriendlyName",
+    "FileTypes"
+  ],
+  "type": "object"
+}

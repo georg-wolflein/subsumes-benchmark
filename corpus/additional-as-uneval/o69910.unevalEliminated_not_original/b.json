@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Subscribe user",
+  "properties": {
+    "users": {
+      "items": {
+        "$ref": "#/$defs/user_subscription"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "users"
+  ],
+  "title": "Bulk Subscribe",
+  "type": "object",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "required": [
+                    "list_id"
+                  ],
+                  "title": "Required list_id"
+                },
+                {
+                  "required": [
+                    "list_code"
+                  ],
+                  "title": "Required list_code"
+                }
+              ],
+              "properties": {
+                "email": {
+                  "format": "email",
+                  "type": "string"
+                },
+                "subscribe": {
+                  "type": "boolean"
+                },
+                "user_id": {
+                  "type": "integer"
+                },
+                "utm_params": {
+                  "type": "object"
+                },
+                "variant_id": {
+                  "type": "integer"
+                },
+                "list_code": {
+                  "type": "string"
+                },
+                "list_id": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "email",
+                "user_id",
+                "subscribe"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^list_id$": true,
+                "^variant_id$": true,
+                "^list_code$": true,
+                "^subscribe$": true,
+                "^utm_params$": true,
+                "^email$": true,
+                "^user_id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "user_subscription": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

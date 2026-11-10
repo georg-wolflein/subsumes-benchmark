@@ -1,0 +1,217 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "atomic-reactor user params",
+  "type": [
+    "object",
+    "null"
+  ],
+  "properties": {
+    "flatpak": {
+      "type": "boolean"
+    },
+    "reactor_config_map": {
+      "type": "string"
+    },
+    "git_ref": {
+      "type": "string"
+    },
+    "triggered_after_koji_task": {
+      "type": "integer"
+    },
+    "koji_parent_build": {
+      "type": "string"
+    },
+    "git_uri": {
+      "type": "string"
+    },
+    "release": {
+      "type": "string"
+    },
+    "build_from": {
+      "type": "string"
+    },
+    "orchestrator_deadline": {
+      "type": "integer"
+    },
+    "koji_task_id": {
+      "type": "integer"
+    },
+    "build_type": {
+      "enum": [
+        "orchestrator",
+        "worker"
+      ]
+    },
+    "imagestream_name": {
+      "type": "string"
+    },
+    "compose_ids": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "reactor_config_override": {
+      "type": "object"
+    },
+    "name": {
+      "type": "string"
+    },
+    "image_tag": {
+      "type": "string"
+    },
+    "koji_target": {
+      "type": "string"
+    },
+    "git_commit_depth": {
+      "type": "integer"
+    },
+    "trigger_imagestreamtag": {
+      "type": "string"
+    },
+    "signing_intent": {
+      "type": "string"
+    },
+    "tags_from_yaml": {
+      "type": "boolean"
+    },
+    "yum_repourls": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "customize_conf": {
+      "type": "string"
+    },
+    "operator_manifests_extract_platform": {
+      "type": "string"
+    },
+    "isolated": {
+      "type": "boolean"
+    },
+    "additional_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "scratch": {
+      "type": "boolean"
+    },
+    "build_image": {
+      "type": "string"
+    },
+    "koji_upload_dir": {
+      "type": "string"
+    },
+    "build_json_dir": {
+      "type": "string"
+    },
+    "platforms": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "base_image": {
+      "type": "string"
+    },
+    "build_imagestream": {
+      "type": "string"
+    },
+    "filesystem_koji_task_id": {
+      "type": "integer"
+    },
+    "arrangement_version": {
+      "type": "integer"
+    },
+    "operator_bundle_replacement_pullspecs": {
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      }
+    },
+    "worker_deadline": {
+      "type": "integer"
+    },
+    "kind": {
+      "type": "string"
+    },
+    "parent_images_digests": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "platform": {
+      "type": "string"
+    },
+    "git_branch": {
+      "type": "string"
+    },
+    "component": {
+      "type": "string"
+    },
+    "user": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "build_json_dir",
+    "build_type",
+    "git_ref",
+    "git_uri",
+    "user"
+  ],
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "^.+:.+$": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              },
+              "_uniqueItems": true
+            },
+            {
+              "patternProperties": {
+                "^.+:.+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Image with tags",
+              "type": "object",
+              "patternProperties": {
+                "^application/.*json$": {
+                  "description": "Manifest digest",
+                  "type": "string",
+                  "pattern": "^sha256:.+"
+                }
+              },
+              "_uniqueItems": true
+            },
+            {
+              "patternProperties": {
+                "^application/.*json$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

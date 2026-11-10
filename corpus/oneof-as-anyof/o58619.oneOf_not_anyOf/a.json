@@ -1,0 +1,112 @@
+{
+  "$id": "https://example.com/restapi/HasEnum.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HasEnum",
+  "type": "object",
+  "properties": {
+    "foo": {
+      "$ref": "#/$defs/MyEnum"
+    },
+    "bar": {
+      "enum": [
+        "blue",
+        "green",
+        5,
+        4.0,
+        null
+      ]
+    },
+    "baz": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/MyEnum"
+        },
+        {
+          "enum": [
+            "blue",
+            "orange",
+            6,
+            3
+          ]
+        }
+      ]
+    },
+    "justRefs": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/MyEnum"
+        },
+        {
+          "$ref": "#/$defs/MyEnum2"
+        }
+      ]
+    },
+    "bazAnyOf": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/MyEnum"
+        },
+        {
+          "enum": [
+            "blue",
+            "orange",
+            6,
+            3
+          ]
+        }
+      ]
+    },
+    "bazOneOf": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/MyEnum"
+        },
+        {
+          "enum": [
+            "blue",
+            "orange",
+            6,
+            3
+          ]
+        }
+      ]
+    },
+    "justRefsAnyOf": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/MyEnum"
+        },
+        {
+          "$ref": "#/$defs/MyEnum2"
+        }
+      ]
+    },
+    "justRefsOneOf": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/MyEnum"
+        },
+        {
+          "$ref": "#/$defs/MyEnum2"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "MyEnum": {
+      "enum": [
+        "red",
+        "orange",
+        6,
+        9.0,
+        null
+      ]
+    },
+    "MyEnum2": {
+      "enum": [
+        "stuff",
+        "things"
+      ]
+    }
+  }
+}

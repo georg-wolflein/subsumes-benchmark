@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "GetCompositeScheduleResponse",
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "Accepted",
+                    "Rejected"
+                  ]
+                },
+                "connectorId": {
+                  "type": "integer"
+                },
+                "scheduleStart": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "chargingSchedule": {
+                  "type": "object",
+                  "properties": {
+                    "duration": {
+                      "type": "integer"
+                    },
+                    "chargingSchedulePeriod": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "startPeriod": {
+                            "type": "integer"
+                          },
+                          "limit": {
+                            "type": "number",
+                            "multipleOf": 0.1
+                          },
+                          "numberPhases": {
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "startPeriod",
+                          "limit"
+                        ]
+                      }
+                    },
+                    "startSchedule": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "chargingRateUnit": {
+                      "type": "string",
+                      "enum": [
+                        "A",
+                        "W"
+                      ]
+                    },
+                    "minChargingRate": {
+                      "type": "number",
+                      "multipleOf": 0.1
+                    }
+                  },
+                  "required": [
+                    "chargingRateUnit",
+                    "chargingSchedulePeriod"
+                  ]
+                }
+              },
+              "required": [
+                "status"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^status$": true,
+                "^connectorId$": true,
+                "^scheduleStart$": true,
+                "^chargingSchedule$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

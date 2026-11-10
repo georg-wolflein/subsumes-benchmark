@@ -1,0 +1,223 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": [
+                "string",
+                "object"
+              ],
+              "properties": {
+                "class": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "class"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^class$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Accompli configuration schema",
+              "type": "object",
+              "properties": {
+                "$extend": {
+                  "type": "string"
+                },
+                "hosts": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_2"
+                  }
+                },
+                "events": {
+                  "$ref": "#/$defs/modern_4"
+                },
+                "deployment": {
+                  "$ref": "#/$defs/modern_7"
+                }
+              },
+              "required": [
+                "hosts",
+                "events",
+                "deployment"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^$extend$": true,
+                "^hosts$": true,
+                "^events$": true,
+                "^deployment$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "strategy": {
+                  "type": "string"
+                },
+                "connection": {
+                  "$ref": "#/$defs/modern_8"
+                }
+              },
+              "required": [
+                "strategy"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^strategy$": true,
+                "^connection$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "connectionType": {
+                  "type": "string"
+                },
+                "stage": {
+                  "type": "string",
+                  "pattern": "^test|acceptance|production$"
+                },
+                "connectionOptions": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "path": {
+                  "type": "string"
+                },
+                "hostname": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "stage",
+                "connectionType",
+                "hostname",
+                "path"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^connectionType$": true,
+                "^stage$": true,
+                "^path$": true,
+                "^hostname$": true,
+                "^connectionOptions$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {}
+            },
+            {
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "subscribers": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_5"
+                  }
+                },
+                "listeners": {
+                  "$ref": "#/$defs/modern_6"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^subscribers$": true,
+                "^listeners$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

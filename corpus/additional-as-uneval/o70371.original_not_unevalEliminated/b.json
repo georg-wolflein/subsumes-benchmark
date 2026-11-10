@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "LISAManagerReferenceNumber": {
+      "$ref": "#/$defs/LISAManagerReferenceNumberType"
+    },
+    "_links": {
+      "type": "object"
+    },
+    "accountID": {
+      "$ref": "#/$defs/IDType"
+    },
+    "amount": {
+      "type": "number"
+    },
+    "applicablePeriod": {
+      "properties": {
+        "endDate": {
+          "$ref": "#/$defs/ISO8601-Date"
+        },
+        "startDate": {
+          "$ref": "#/$defs/ISO8601-Date"
+        }
+      },
+      "type": "object"
+    },
+    "hmrcTransactionID": {
+      "$ref": "#/$defs/IDType"
+    },
+    "paymentForTransaction": {
+      "$ref": "#/$defs/IDType"
+    },
+    "paymentReference": {
+      "$ref": "#/$defs/IDType"
+    },
+    "transactionTimestamp": {
+      "$ref": "#/$defs/ISO8601-Timestamp"
+    },
+    "transactionType": {
+      "$ref": "#/$defs/transactionTypeType"
+    }
+  },
+  "required": [
+    "hmrcTransactionID",
+    "accountID",
+    "LISAManagerReferenceNumber",
+    "paymentReference",
+    "amount",
+    "paymentForTransaction",
+    "transactionType",
+    "applicablePeriod"
+  ],
+  "type": "object",
+  "$defs": {
+    "IDType": {
+      "pattern": "^\\d{10}$",
+      "type": "string"
+    },
+    "ISO8601-Date": {
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "type": "string"
+    },
+    "ISO8601-Timestamp": {
+      "pattern": "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}(:\\d{2})?(([+-]\\d{2}(:\\d{2})?)|Z)",
+      "type": "string"
+    },
+    "LISAManagerReferenceNumberType": {
+      "pattern": "^Z\\d{6}$",
+      "type": "string"
+    },
+    "financialPeriodType": {
+      "properties": {
+        "endDate": {
+          "$ref": "#/$defs/ISO8601-Date"
+        },
+        "startDate": {
+          "$ref": "#/$defs/ISO8601-Date"
+        }
+      },
+      "type": "object"
+    },
+    "transactionTypeType": {
+      "enum": [
+        "bonus",
+        "charge"
+      ],
+      "type": "string"
+    }
+  }
+}

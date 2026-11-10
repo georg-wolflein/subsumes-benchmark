@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "allOf": [
+    {
+      "$ref": "#/$defs/subdocument"
+    },
+    {
+      "required": [
+        "_id"
+      ]
+    }
+  ],
+  "$defs": {
+    "subdocument": {
+      "type": "object",
+      "patternProperties": {
+        "^[^$]": {
+          "$ref": "#/$defs/value"
+        }
+      },
+      "additionalProperties": false
+    },
+    "value": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/$binary"
+        },
+        {
+          "$ref": "#/$defs/$date"
+        },
+        {
+          "$ref": "#/$defs/$oid"
+        },
+        {
+          "$ref": "#/$defs/$timestamp"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/value"
+          }
+        },
+        {
+          "$ref": "#/$defs/subdocument"
+        }
+      ]
+    },
+    "$binary": {
+      "type": "object",
+      "properties": {
+        "$binary": {
+          "type": "string"
+        },
+        "$type": {
+          "type": "string",
+          "pattern": "[a-z0-9]"
+        }
+      },
+      "required": [
+        "$binary",
+        "$type"
+      ],
+      "additionalProperties": false
+    },
+    "$date": {
+      "type": "object",
+      "properties": {
+        "$date": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "$date"
+      ],
+      "additionalProperties": false
+    },
+    "$oid": {
+      "type": "object",
+      "properties": {
+        "$oid": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{24}$"
+        }
+      },
+      "required": [
+        "$oid"
+      ],
+      "additionalProperties": false
+    },
+    "$timestamp": {
+      "type": "object",
+      "properties": {
+        "$timestamp": {
+          "type": "object",
+          "properties": {
+            "t": {
+              "type": "integer"
+            },
+            "i": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "t",
+            "i"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "$timestamp"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

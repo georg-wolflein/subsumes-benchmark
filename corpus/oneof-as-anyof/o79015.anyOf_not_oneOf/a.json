@@ -1,0 +1,251 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": {
+    "$ref": "#/$defs/property"
+  },
+  "patternProperties": {
+    "^x-": {}
+  },
+  "properties": {
+    "address": {
+      "$ref": "#/$defs/address"
+    },
+    "app-id": {
+      "$ref": "#/$defs/shortStr",
+      "description": "creating application id"
+    },
+    "content-encoding": {
+      "$ref": "#/$defs/shortStr",
+      "description": "MIME content encoding"
+    },
+    "content-type": {
+      "$ref": "#/$defs/shortStr",
+      "description": "MIME content type"
+    },
+    "correlation-id": {
+      "$ref": "#/$defs/shortStr",
+      "description": "application correlation identifier"
+    },
+    "delivery-mode": {
+      "$ref": "#/$defs/propertyOctet",
+      "description": "non-persistent (1) or persistent (2)"
+    },
+    "expiration": {
+      "$ref": "#/$defs/shortStr",
+      "description": "message expiration specification"
+    },
+    "headers": {
+      "$ref": "#/$defs/table",
+      "description": "message header field table"
+    },
+    "message-id": {
+      "$ref": "#/$defs/shortStr",
+      "description": "application message identifier"
+    },
+    "noTypeWithExample": {
+      "$ref": "#/$defs/noTypeWithExample"
+    },
+    "noTypeWithExamples": {
+      "$ref": "#/$defs/noTypeWithExamples"
+    },
+    "priority": {
+      "$ref": "#/$defs/propertyOctet",
+      "description": "message priority, 0 to 9"
+    },
+    "refOrSchema": {
+      "$ref": "#/$defs/refOrSchema"
+    },
+    "reply-to": {
+      "$ref": "#/$defs/shortStr",
+      "description": "address to reply to"
+    },
+    "timestamp": {
+      "$ref": "#/$defs/timestamp",
+      "description": "message timestamp"
+    },
+    "type": {
+      "$ref": "#/$defs/shortStr",
+      "description": "message type name"
+    },
+    "user-id": {
+      "$ref": "#/$defs/shortStr",
+      "description": "creating user id"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "address": {
+      "properties": {
+        "address1": {
+          "type": "string"
+        },
+        "address2": {
+          "type": "string"
+        },
+        "addressStripped": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        }
+      }
+    },
+    "noTypeWithExample": {
+      "example": {
+        "age": 30,
+        "firstName": "John",
+        "lastName": "Doe"
+      }
+    },
+    "noTypeWithExamples": {
+      "examples": [
+        {
+          "age": 30,
+          "firstName": "John",
+          "lastName": "Doe"
+        },
+        {
+          "age": null,
+          "firstName": "Sarah",
+          "gender": "F",
+          "lastName": "Connor"
+        }
+      ]
+    },
+    "property": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/scalar"
+        },
+        {
+          "$ref": "#/$defs/table"
+        }
+      ]
+    },
+    "propertyOctet": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "octet"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "value"
+      ],
+      "type": "object"
+    },
+    "refOrSchema": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/reference"
+        },
+        {
+          "$ref": "#/$defs/schema"
+        }
+      ]
+    },
+    "reference": {
+      "properties": {
+        "$ref": {
+          "$ref": "#/$defs/referenceObject"
+        }
+      },
+      "required": [
+        "$ref"
+      ],
+      "type": "object"
+    },
+    "referenceObject": {
+      "format": "uri-reference",
+      "type": "string"
+    },
+    "scalar": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "$ref": "#/$defs/stringedType"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "value"
+      ],
+      "type": "object"
+    },
+    "schema": {
+      "type": "object",
+      "x-go-type": "map[string]interface{}"
+    },
+    "shortStr": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "shortstr"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "value"
+      ],
+      "type": "object"
+    },
+    "stringedType": {
+      "enum": [
+        "bit",
+        "octet",
+        "short",
+        "long",
+        "longlong",
+        "shortstr",
+        "longstr",
+        "timestamp"
+      ],
+      "type": "string"
+    },
+    "table": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "table"
+        },
+        "value": {
+          "additionalProperties": {
+            "$ref": "#/$defs/property"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "type",
+        "value"
+      ],
+      "type": "object"
+    },
+    "timestamp": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "timestamp"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "value"
+      ],
+      "type": "object"
+    }
+  }
+}

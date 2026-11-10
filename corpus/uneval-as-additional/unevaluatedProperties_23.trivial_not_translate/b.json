@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/Root"
+    }
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "Root": {
+      "type": "object",
+      "properties": {
+        "_templates": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "enforce-admins": {
+          "type": "boolean"
+        },
+        "deletion": {
+          "type": "boolean"
+        },
+        "linear-history": {
+          "type": "boolean"
+        },
+        "signed-commits": {
+          "type": "boolean"
+        },
+        "pushes": {
+          "$ref": "#/$defs/Pushes"
+        },
+        "status-checks": {
+          "$ref": "#/$defs/StatusChecks"
+        },
+        "pull-request-reviews": {
+          "$ref": "#/$defs/PullRequestReviews"
+        }
+      },
+      "title": "Root"
+    },
+    "StatusChecks": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "strict": {
+          "type": "boolean"
+        },
+        "required": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "StatusChecks"
+    },
+    "Pushes": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "force-push": {
+          "type": "boolean"
+        },
+        "restrict-to": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "Pushes"
+    },
+    "PullRequestReviews": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "bypassers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "resolved-conversations": {
+          "type": "boolean"
+        },
+        "codeowner-approvals": {
+          "type": "boolean"
+        },
+        "approval-count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 6
+        },
+        "pull-request-reviews": {
+          "$ref": "#/$defs/PullRequestReviews"
+        },
+        "dismissals": {
+          "$ref": "#/$defs/Dismissals"
+        }
+      },
+      "title": "PullRequestReviews"
+    },
+    "Dismissals": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "staled": {
+          "type": "boolean"
+        },
+        "restrict": {
+          "type": "boolean"
+        },
+        "restrict-to": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "Dismissals"
+    }
+  }
+}

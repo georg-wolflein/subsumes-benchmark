@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "ForgeVersion": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/ForgeDownload"
+        },
+        "changelog": {
+          "description": "The changelog info",
+          "$ref": "#/$defs/ForgeDownload"
+        },
+        "universal": {
+          "$ref": "#/$defs/ForgeDownload"
+        },
+        "version": {
+          "description": "The forge version (without minecraft version)",
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        },
+        "mcversion": {
+          "description": "The minecraft version",
+          "type": "string"
+        },
+        "type": {
+          "description": "The type of the forge release. The `common` means the normal release.",
+          "enum": [
+            "buggy",
+            "common",
+            "latest",
+            "recommended"
+          ],
+          "type": "string"
+        },
+        "launcher": {
+          "$ref": "#/$defs/ForgeDownload"
+        },
+        "installer": {
+          "$ref": "#/$defs/ForgeDownload"
+        },
+        "mdk": {
+          "$ref": "#/$defs/ForgeDownload"
+        }
+      },
+      "required": [
+        "date",
+        "installer",
+        "mcversion",
+        "type",
+        "universal",
+        "version"
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "^[0-9]+$": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": {
+                      "default": "",
+                      "type": "string"
+                    },
+                    "versions": {
+                      "default": [],
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/$defs/ForgeVersion"
+                      }
+                    },
+                    "mcversion": {
+                      "default": "",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "mcversion",
+                    "timestamp",
+                    "versions"
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^[0-9]+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "ForgeDownload": {
+      "type": "object",
+      "properties": {
+        "md5": {
+          "type": "string"
+        },
+        "sha1": {
+          "type": "string"
+        },
+        "path": {
+          "description": "The url path to concat with forge maven",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "sha1"
+      ]
+    }
+  }
+}

@@ -1,0 +1,323 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_4",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "sources": {
+                  "$ref": "#/$defs/sources"
+                },
+                "confidence": {
+                  "$ref": "#/$defs/confidence"
+                }
+              },
+              "required": [
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^value$": true,
+                "^sources$": true,
+                "^confidence$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "date_first_cited": {
+                  "$ref": "#/$defs/complex_date_with_actual"
+                },
+                "date_last_cited": {
+                  "$ref": "#/$defs/complex_date_with_actual"
+                },
+                "rank": {
+                  "$ref": "#/$defs/complex_string"
+                },
+                "start_date_description": {
+                  "$ref": "#/$defs/complex_string"
+                },
+                "end_date_description": {
+                  "$ref": "#/$defs/complex_string"
+                },
+                "organization_id": {
+                  "$ref": "#/$defs/complex_string"
+                },
+                "title": {
+                  "$ref": "#/$defs/complex_string"
+                },
+                "site_id": {
+                  "$ref": "#/$defs/complex_string"
+                },
+                "role": {
+                  "$ref": "#/$defs/complex_string"
+                }
+              },
+              "required": [
+                "organization_id"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^date_last_cited$": true,
+                "^role$": true,
+                "^site_id$": true,
+                "^rank$": true,
+                "^organization_id$": true,
+                "^start_date_description$": true,
+                "^end_date_description$": true,
+                "^title$": true,
+                "^date_first_cited$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "string",
+                  "pattern": "^[0-9]{4}(-[0-9]{2}){0,2}$"
+                },
+                "sources": {
+                  "$ref": "#/$defs/sources"
+                },
+                "confidence": {
+                  "$ref": "#/$defs/confidence"
+                }
+              },
+              "required": [
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^value$": true,
+                "^sources$": true,
+                "^confidence$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "confidence": {
+      "type": "string",
+      "enum": [
+        "Low",
+        "Medium",
+        "High"
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "string",
+                  "pattern": "^[0-9]{4}(-[0-9]{2}){0,2}$"
+                },
+                "sources": {
+                  "$ref": "#/$defs/sources"
+                },
+                "confidence": {
+                  "$ref": "#/$defs/confidence"
+                },
+                "actual": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^value$": true,
+                "^sources$": true,
+                "^confidence$": true,
+                "^actual$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Person",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "$ref": "#/$defs/complex_string"
+                },
+                "gid": {
+                  "type": "integer"
+                },
+                "row": {
+                  "type": "integer"
+                },
+                "id": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$"
+                },
+                "other_names": {
+                  "$ref": "#/$defs/modern_5"
+                },
+                "division_id": {
+                  "type": "string",
+                  "pattern": "^ocd-division/country:[a-z]{2}$"
+                },
+                "notes": {
+                  "$ref": "#/$defs/modern_6"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "person"
+                  ]
+                },
+                "memberships": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_7"
+                  }
+                }
+              },
+              "required": [
+                "type",
+                "division_id",
+                "gid",
+                "row",
+                "id",
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^notes$": true,
+                "^name$": true,
+                "^id$": true,
+                "^division_id$": true,
+                "^gid$": true,
+                "^row$": true,
+                "^memberships$": true,
+                "^other_names$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "string"
+                },
+                "sources": {
+                  "$ref": "#/$defs/sources"
+                },
+                "confidence": {
+                  "$ref": "#/$defs/confidence"
+                }
+              },
+              "required": [
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^value$": true,
+                "^sources$": true,
+                "^confidence$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "complex_string": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "complex_date": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "complex_date_with_actual": {
+      "$ref": "#/$defs/modern_3"
+    }
+  }
+}

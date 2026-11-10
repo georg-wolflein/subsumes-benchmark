@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "grade": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "meta": {
+                  "$ref": "#/$defs/modern_3"
+                }
+              },
+              "required": [
+                "grade",
+                "meta"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^grade$": true,
+                "^meta$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "skill_id": {
+                  "type": "number"
+                },
+                "lesson_id": {
+                  "type": "string"
+                },
+                "mark": {
+                  "type": "number"
+                },
+                "deleted_at": {
+                  "format": "date-time",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "student_id": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "mark",
+                "skill_id",
+                "lesson_id",
+                "student_id",
+                "deleted_at"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^deleted_at$": true,
+                "^student_id$": true,
+                "^mark$": true,
+                "^lesson_id$": true,
+                "^skill_id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "timestamp": {
+                  "_format": "date-time",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "timestamp"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^timestamp$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

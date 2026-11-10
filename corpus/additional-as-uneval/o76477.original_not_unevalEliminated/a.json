@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "create tasks response",
+              "description": "create tasks response",
+              "type": "object",
+              "properties": {
+                "exitCode": {
+                  "type": "integer"
+                },
+                "stdout": {
+                  "type": "string"
+                },
+                "stderr": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "exitCode",
+                "stdout",
+                "stderr"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^exitCode$": true,
+                "^stdout$": true,
+                "^stderr$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

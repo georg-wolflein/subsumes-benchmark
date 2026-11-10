@@ -1,0 +1,210 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "legal project billing record",
+  "type": "object",
+  "properties": {
+    "approval": {
+      "$ref": "#/$defs/approval"
+    },
+    "client": {
+      "$ref": "#/$defs/client"
+    },
+    "completed": {
+      "$ref": "#/$defs/completed"
+    },
+    "contacts": {
+      "$ref": "#/$defs/contacts"
+    },
+    "limit": {
+      "properties": {
+        "type": {
+          "enum": [
+            "cap",
+            "estimate"
+          ]
+        },
+        "amount": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "parties": {
+      "$ref": "#/$defs/parties"
+    },
+    "project": {
+      "$ref": "#/$defs/project"
+    },
+    "service": {
+      "$ref": "#/$defs/service"
+    },
+    "tags": {
+      "$ref": "#/$defs/tags"
+    }
+  },
+  "required": [
+    "client",
+    "contacts",
+    "project",
+    "service"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "approval": {
+      "title": "project approval",
+      "properties": {
+        "by": {
+          "$ref": "#/$defs/person"
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "method": {
+          "enum": [
+            "e-mail",
+            "GitHub",
+            "conversation"
+          ]
+        }
+      },
+      "required": [
+        "by",
+        "date",
+        "method"
+      ],
+      "additionalProperties": false
+    },
+    "client": {
+      "title": "client name",
+      "type": "string",
+      "minLength": 1
+    },
+    "completed": {
+      "title": "date of completion",
+      "type": "string",
+      "format": "date-time"
+    },
+    "contacts": {
+      "title": "project contacts",
+      "description": "client personnel involved in the project",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/person"
+      },
+      "minItems": 1,
+      "_uniqueItems": true
+    },
+    "parties": {
+      "title": "counterparties",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "_uniqueItems": true
+    },
+    "project": {
+      "title": "project title",
+      "type": "string",
+      "minLength": 1
+    },
+    "tags": {
+      "title": "project metadata tags",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "_uniqueItems": true
+    },
+    "person": {
+      "title": "name of a person",
+      "type": "string",
+      "minLength": 1
+    },
+    "entry": {
+      "title": "total time entry",
+      "description": "entry of total time served",
+      "type": "object",
+      "properties": {
+        "adjustment": {
+          "$ref": "#/$defs/adjustment"
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "narrative": {
+          "$ref": "#/$defs/narrative"
+        },
+        "time": {
+          "type": "number",
+          "multipleOf": 0.25,
+          "minimum": 0.25
+        },
+        "spans": {
+          "$ref": "#/$defs/span"
+        }
+      },
+      "required": [
+        "narrative"
+      ],
+      "additionalProperties": false
+    },
+    "adjustment": {
+      "title": "time entry manual adjustment",
+      "type": "number",
+      "multipleOf": 0.25
+    },
+    "narrative": {
+      "title": "narrative",
+      "description": "list of tasks performed",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "_uniqueItems": true
+    },
+    "service": {
+      "title": "list of service entries",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/entry"
+      }
+    },
+    "span": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "adjustment": {
+            "$ref": "#/$defs/adjustment"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "start",
+          "end"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

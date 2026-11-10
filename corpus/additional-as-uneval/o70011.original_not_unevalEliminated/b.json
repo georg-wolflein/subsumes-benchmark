@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "regex": {
+        "type": "boolean",
+        "default": "false"
+      },
+      "code": {
+        "type": "string"
+      },
+      "old": {
+        "type": "string"
+      },
+      "new": {
+        "type": "string"
+      },
+      "classify": {
+        "type": "object",
+        "properties": {
+          "SOURCE": {
+            "$ref": "#/$defs/classification"
+          },
+          "BINARY": {
+            "$ref": "#/$defs/classification"
+          },
+          "SEMANTIC": {
+            "$ref": "#/$defs/classification"
+          },
+          "OTHER": {
+            "$ref": "#/$defs/classification"
+          }
+        },
+        "minProperties": 1
+      }
+    },
+    "additionalProperties": {
+      "type": "string"
+    },
+    "required": [
+      "code"
+    ]
+  },
+  "minItems": 1,
+  "$defs": {
+    "classification": {
+      "type": "string",
+      "enum": [
+        "EQUIVALENT",
+        "NON_BREAKING",
+        "POTENTIALLY_BREAKING",
+        "BREAKING"
+      ]
+    }
+  }
+}

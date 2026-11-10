@@ -1,0 +1,34 @@
+{
+  "$id": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.5.4/utils/video_subtitle.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Video Subtitle Configuration Schema.",
+  "description": "Data about different subtitle encodings and confidences of auto-transcribed content.",
+  "type": "object",
+  "properties": {
+    "confidence": {
+      "type": "number",
+      "description": "How confident the transcriber (human or automated) is of the accuracy of the subtitles."
+    },
+    "urls": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/subtitle_url"
+      },
+      "description": "The locations of any subtitle transcriptions of the video."
+    }
+  },
+  "$defs": {
+    "subtitle_url": {
+      "properties": {
+        "_format": {
+          "type": "string",
+          "description": "The format of the subtitles (e.g. SRT, DFXP, WEB_VTT, etc)"
+        },
+        "url": {
+          "type": "string",
+          "description": "The url of the subtitle stream."
+        }
+      }
+    }
+  }
+}

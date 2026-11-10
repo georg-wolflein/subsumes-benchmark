@@ -1,0 +1,290 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "allOf": [
+    {
+      "additionalProperties": false,
+      "properties": {
+        "__version": {
+          "exclusiveMinimum": 0,
+          "type": "integer"
+        },
+        "dag": {
+          "$ref": "#/$defs/dag"
+        }
+      },
+      "required": [
+        "__version",
+        "dag"
+      ],
+      "type": "object"
+    }
+  ],
+  "type": "object",
+  "$defs": {
+    "color": {
+      "pattern": "^#[a-fA-F0-9]{3,6}$",
+      "type": "string"
+    },
+    "dag": {
+      "additionalProperties": false,
+      "properties": {
+        "_access_control": {
+          "$ref": "#/$defs/dict"
+        },
+        "_concurrency": {
+          "type": "number"
+        },
+        "_dag_id": {
+          "type": "string"
+        },
+        "_default_view": {
+          "type": "string"
+        },
+        "_description": {
+          "type": "string"
+        },
+        "catchup": {
+          "type": "boolean"
+        },
+        "dagrun_timeout": {
+          "$ref": "#/$defs/timedelta"
+        },
+        "default_args": {
+          "$ref": "#/$defs/dict"
+        },
+        "doc_md": {
+          "type": "string"
+        },
+        "end_date": {
+          "$ref": "#/$defs/datetime"
+        },
+        "fileloc": {
+          "type": "string"
+        },
+        "is_paused_upon_creation": {
+          "type": "boolean"
+        },
+        "is_subdag": {
+          "type": "boolean"
+        },
+        "max_active_runs": {
+          "type": "number"
+        },
+        "orientation": {
+          "type": "string"
+        },
+        "params": {
+          "$ref": "#/$defs/dict"
+        },
+        "schedule_interval": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/typed_timedelta"
+            },
+            {
+              "$ref": "#/$defs/typed_relativedelta"
+            }
+          ]
+        },
+        "start_date": {
+          "$ref": "#/$defs/datetime"
+        },
+        "tags": {
+          "type": "array"
+        },
+        "tasks": {
+          "$ref": "#/$defs/tasks"
+        },
+        "timezone": {
+          "$ref": "#/$defs/timezone"
+        }
+      },
+      "required": [
+        "_dag_id",
+        "fileloc",
+        "tasks"
+      ],
+      "type": "object"
+    },
+    "datetime": {
+      "description": "A date time, stored as fractional seconds since the epoch",
+      "type": "number"
+    },
+    "dict": {
+      "description": "A python dictionary containing values of any type",
+      "type": "object"
+    },
+    "extra_links": {
+      "items": {
+        "maxProperties": 1,
+        "minProperties": 1,
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "operator": {
+      "$comment": "A task/operator in a DAG",
+      "additionalProperties": true,
+      "properties": {
+        "_downstream_task_ids": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "_operator_extra_links": {
+          "$ref": "#/$defs/extra_links"
+        },
+        "_task_module": {
+          "type": "string"
+        },
+        "_task_type": {
+          "type": "string"
+        },
+        "depends_on_past": {
+          "type": "boolean"
+        },
+        "do_xcom_push": {
+          "type": "boolean"
+        },
+        "end_date": {
+          "$ref": "#/$defs/datetime"
+        },
+        "execution_timeout": {
+          "$ref": "#/$defs/timedelta"
+        },
+        "executor_config": {
+          "$ref": "#/$defs/dict"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "params": {
+          "$ref": "#/$defs/dict"
+        },
+        "pool": {
+          "type": "string"
+        },
+        "pool_slots": {
+          "type": "number"
+        },
+        "priority_weight": {
+          "type": "number"
+        },
+        "queue": {
+          "type": "string"
+        },
+        "retries": {
+          "type": "number"
+        },
+        "retry_delay": {
+          "$ref": "#/$defs/timedelta"
+        },
+        "retry_exponential_backoff": {
+          "type": "boolean"
+        },
+        "start_date": {
+          "$ref": "#/$defs/datetime"
+        },
+        "subdag": {
+          "$ref": "#/$defs/dag"
+        },
+        "task_id": {
+          "type": "string"
+        },
+        "template_fields": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "trigger_rule": {
+          "type": "string"
+        },
+        "ui_color": {
+          "$ref": "#/$defs/color"
+        },
+        "ui_fgcolor": {
+          "$ref": "#/$defs/color"
+        },
+        "wait_for_downstream": {
+          "type": "boolean"
+        },
+        "weight_rule": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "_task_type",
+        "_task_module",
+        "task_id",
+        "ui_color",
+        "ui_fgcolor",
+        "template_fields"
+      ],
+      "type": "object"
+    },
+    "tasks": {
+      "additionalProperties": {
+        "$ref": "#/$defs/operator"
+      },
+      "type": "array"
+    },
+    "timedelta": {
+      "minimum": 0,
+      "type": "number"
+    },
+    "timezone": {
+      "type": "string"
+    },
+    "typed_relativedelta": {
+      "description": "A dateutil.relativedelta.relativedelta object",
+      "properties": {
+        "__type": {
+          "const": "relativedelta",
+          "type": "string"
+        },
+        "__var": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "properties": {
+            "weekday": {
+              "items": {
+                "type": "integer"
+              },
+              "maxItems": 2,
+              "minItems": 1,
+              "type": "array"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "typed_timedelta": {
+      "additionalProperties": false,
+      "properties": {
+        "__type": {
+          "const": "timedelta",
+          "type": "string"
+        },
+        "__var": {
+          "$ref": "#/$defs/timedelta"
+        }
+      },
+      "required": [
+        "__type",
+        "__var"
+      ],
+      "type": "object"
+    }
+  }
+}

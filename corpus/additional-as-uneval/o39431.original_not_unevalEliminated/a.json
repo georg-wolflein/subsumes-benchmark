@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_2",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Name of the project."
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "FindProjectResponse",
+              "type": "object",
+              "properties": {
+                "projectDetails": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/ProjectDetails"
+                  }
+                },
+                "totalSize": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "totalSize"
+              ],
+              "javaName": "FindProjectResponse"
+            },
+            {
+              "patternProperties": {
+                "^projectDetails$": true,
+                "^totalSize$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "ProjectDetails": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "anyOf": [
+    {
+      "allOf": [
+        {
+          "$ref": "#/$defs/id_foo"
+        }
+      ],
+      "$defs": {
+        "A": {
+          "type": "integer"
+        }
+      }
+    },
+    {
+      "$defs": {
+        "A": {
+          "type": "integer"
+        }
+      },
+      "not": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/id_foo1"
+          }
+        ]
+      }
+    }
+  ],
+  "$defs": {
+    "id_foo": {
+      "type": "integer"
+    },
+    "id_foo1": {
+      "type": "integer"
+    }
+  }
+}

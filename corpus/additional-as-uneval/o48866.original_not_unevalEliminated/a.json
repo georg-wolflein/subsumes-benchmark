@@ -1,0 +1,2108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_18",
+  "$defs": {
+    "modern_37": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Code": {
+                  "type": "string",
+                  "pattern": "^[A-Z]{2}$"
+                },
+                "Label": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Code$": true,
+                "^Label$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_34": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Contact": {
+                  "type": "string"
+                },
+                "Use": {
+                  "type": "object",
+                  "properties": {
+                    "Code": {
+                      "type": "string",
+                      "enum": [
+                        "gtalk",
+                        "skype",
+                        "icq",
+                        "aim",
+                        "msn",
+                        "yahoo"
+                      ]
+                    },
+                    "Label": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Contact$": true,
+                "^Use$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_20": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Code": {
+                  "type": "string",
+                  "pattern": "^[A-U]{1}$"
+                },
+                "Label": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Code$": true,
+                "^Label$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "languageNameType": {
+      "description": "The mother language code is defined in the included schema 'EuropassISOLanguages'.",
+      "type": "object",
+      "properties": {
+        "Description": {
+          "$ref": "#/$defs/modern_3"
+        }
+      }
+    },
+    "modern_35": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Contact": {
+                  "type": "string"
+                },
+                "Use": {
+                  "type": "object",
+                  "properties": {
+                    "Code": {
+                      "type": "string",
+                      "enum": [
+                        "home",
+                        "work",
+                        "mobile"
+                      ]
+                    },
+                    "Label": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Contact$": true,
+                "^Use$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Code": {
+                  "type": "string",
+                  "enum": [
+                    "personal",
+                    "business",
+                    "blog",
+                    "portfolio"
+                  ]
+                },
+                "Label": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Code$": true,
+                "^Label$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_24": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "SpokenProduction": {
+                  "$ref": "#/$defs/cefrLevelType"
+                },
+                "Reading": {
+                  "$ref": "#/$defs/cefrLevelType"
+                },
+                "SpokenInteraction": {
+                  "$ref": "#/$defs/cefrLevelType"
+                },
+                "Listening": {
+                  "$ref": "#/$defs/cefrLevelType"
+                },
+                "Writing": {
+                  "$ref": "#/$defs/cefrLevelType"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Reading$": true,
+                "^Writing$": true,
+                "^SpokenInteraction$": true,
+                "^SpokenProduction$": true,
+                "^Listening$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Code": {
+                  "type": "string"
+                },
+                "Label": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Code$": true,
+                "^Label$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "cefrLevelType": {
+      "type": "string",
+      "enum": [
+        "A1",
+        "A2",
+        "B1",
+        "B2",
+        "C1",
+        "C2"
+      ]
+    },
+    "modern_14": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Heading": {
+                  "$ref": "#/$defs/documentationHeadingType"
+                },
+                "InterDocument": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "ref": {
+                        "$ref": "#/$defs/documentTypeType"
+                      }
+                    }
+                  },
+                  "minItems": 0
+                },
+                "IntraDocument": {
+                  "$ref": "#/$defs/referenceToListType"
+                },
+                "ExtraDocument": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Description": {
+                        "type": "string"
+                      },
+                      "href": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "minItems": 0
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Heading$": true,
+                "^InterDocument$": true,
+                "^IntraDocument$": true,
+                "^ExtraDocument$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_21": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Skills",
+              "description": "Contains a sequence of skills and competences that the learner has acquired during any formal or informal experience.",
+              "type": "object",
+              "properties": {
+                "Organisational": {
+                  "$ref": "#/$defs/genericSkillType"
+                },
+                "Other": {
+                  "$ref": "#/$defs/genericSkillType"
+                },
+                "Communication": {
+                  "$ref": "#/$defs/genericSkillType"
+                },
+                "Computer": {
+                  "description": "Describes a person's computer skills, including self assesement and c ertifications if applicable",
+                  "type": "object",
+                  "allOf": [
+                    {
+                      "properties": {
+                        "Description": {
+                          "type": "string"
+                        },
+                        "ProficiencyLevel": {
+                          "$ref": "#/$defs/modern_22"
+                        },
+                        "Certificate": {
+                          "description": "Describes a list of computer certificates",
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/$defs/modern_23"
+                          },
+                          "minItems": 0
+                        }
+                      }
+                    },
+                    {
+                      "$ref": "#/$defs/sectionReferenceToListType"
+                    }
+                  ]
+                },
+                "Linguistic": {
+                  "type": "object",
+                  "properties": {
+                    "MotherTongue": {
+                      "type": "array",
+                      "items": {
+                        "allOf": [
+                          {
+                            "$ref": "#/$defs/languageNameType"
+                          },
+                          {
+                            "$ref": "#/$defs/sectionReferenceToListType"
+                          }
+                        ]
+                      },
+                      "minItems": 0
+                    },
+                    "ForeignLanguage": {
+                      "type": "array",
+                      "items": {
+                        "allOf": [
+                          {
+                            "$ref": "#/$defs/languageNameType"
+                          },
+                          {
+                            "properties": {
+                              "ProficiencyLevel": {
+                                "$ref": "#/$defs/modern_24"
+                              },
+                              "Experience": {
+                                "description": "Describes a list of linguistic experiences",
+                                "type": "array",
+                                "items": {
+                                  "allOf": [
+                                    {
+                                      "$ref": "#/$defs/basicExperienceType"
+                                    },
+                                    {
+                                      "properties": {
+                                        "Area": {
+                                          "type": "object",
+                                          "properties": {
+                                            "Code": {
+                                              "type": "string",
+                                              "enum": [
+                                                "studying_training_language",
+                                                "work_language",
+                                                "living_traveling_language",
+                                                "mediating_groups_language"
+                                              ]
+                                            },
+                                            "Label": {
+                                              "type": "string"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  ]
+                                },
+                                "minItems": 0
+                              },
+                              "Certificate": {
+                                "description": "Describes a list of linguistic certificates",
+                                "type": "array",
+                                "items": {
+                                  "$ref": "#/$defs/modern_25"
+                                },
+                                "minItems": 0
+                              }
+                            }
+                          },
+                          {
+                            "$ref": "#/$defs/sectionReferenceToListType"
+                          }
+                        ]
+                      },
+                      "minItems": 0
+                    }
+                  }
+                },
+                "JobRelated": {
+                  "$ref": "#/$defs/genericSkillType"
+                },
+                "Driving": {
+                  "allOf": [
+                    {
+                      "properties": {
+                        "Description": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "enum": [
+                              "A",
+                              "B",
+                              "C",
+                              "D",
+                              "A1",
+                              "B1",
+                              "C1",
+                              "D1",
+                              "BE",
+                              "CE",
+                              "DE",
+                              "C1E",
+                              "D1E"
+                            ]
+                          },
+                          "minItems": 0
+                        }
+                      }
+                    },
+                    {
+                      "$ref": "#/$defs/sectionReferenceToListType"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Driving$": true,
+                "^JobRelated$": true,
+                "^Linguistic$": true,
+                "^Computer$": true,
+                "^Organisational$": true,
+                "^Other$": true,
+                "^Communication$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "From": {
+                  "$ref": "#/$defs/structuredDateType"
+                },
+                "To": {
+                  "$ref": "#/$defs/structuredDateType"
+                },
+                "Current": {
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^From$": true,
+                "^To$": true,
+                "^Current$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "preferencesType": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/modern_1"
+      },
+      "minItems": 0
+    },
+    "modern_32": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Defines the email address of an individual.",
+              "type": "object",
+              "properties": {
+                "Contact": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Contact$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "basicExperienceType": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/periodType"
+        },
+        {
+          "properties": {
+            "Description": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "$ref": "#/$defs/sectionReferenceToListType"
+        }
+      ]
+    },
+    "genericSkillType": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/sectionReferenceToListType"
+        },
+        {
+          "properties": {
+            "Description": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Defines the label to indicate that there are documents accompanying a letter. It is described by a code (optional) and a label. E.g. code: heading_1, label: Enclosed.",
+              "type": "object",
+              "properties": {
+                "Code": {
+                  "type": "string",
+                  "pattern": "^heading_[1-9]{1}$"
+                },
+                "Label": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Code$": true,
+                "^Label$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Code": {
+                  "type": "string",
+                  "enum": [
+                    "business"
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Code$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "referenceToListType": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "idref": {
+            "type": "string"
+          }
+        }
+      },
+      "minItems": 0
+    },
+    "documentationHeadingType": {
+      "$ref": "#/$defs/modern_6"
+    },
+    "modern_43": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Opening": {
+                  "type": "string"
+                },
+                "MainBody": {
+                  "type": "string"
+                },
+                "Closing": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Opening$": true,
+                "^MainBody$": true,
+                "^Closing$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_16": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "The occupational field is described by a code and a label. E.g. code: 41150, label: Secretary.",
+              "type": "object",
+              "properties": {
+                "Code": {
+                  "type": "string",
+                  "pattern": "^[0-9]{5}$"
+                },
+                "Label": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Code$": true,
+                "^Label$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_15": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Defines the closing salutation in a letter. It is described by a code (optional) and a label. E.g. code: closing_salutation_2, label: Your's faithfully.",
+              "type": "object",
+              "properties": {
+                "Code": {
+                  "type": "string",
+                  "pattern": "^closing-salut-[1-9]{1}([0-9]{1})?$"
+                },
+                "Label": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Code$": true,
+                "^Label$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "documentBundleType": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/documentTypeType"
+      }
+    },
+    "websiteType": {
+      "$ref": "#/$defs/modern_7"
+    },
+    "modern_27": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Code": {
+                  "type": "string",
+                  "enum": [
+                    "preferred_job",
+                    "job_applied_for",
+                    "studies_applied_for",
+                    "position",
+                    "personal_statement"
+                  ]
+                },
+                "Label": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Code$": true,
+                "^Label$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "format": {
+                  "type": "string",
+                  "enum": [
+                    "s&#xa;z m (c)",
+                    "s, z m (c)",
+                    "s,m z c",
+                    "s, m, z c",
+                    "s z m (c)",
+                    "s z m c",
+                    "s p-z m (c)",
+                    "s p-z m c",
+                    "s, p-z m (c)",
+                    "s, z m, c",
+                    "s, m, p-z (c)",
+                    "s, m z (c)",
+                    "s, z-m (c)",
+                    "s, m, z (c)",
+                    "text/short",
+                    "text/long",
+                    "text/long/suffix",
+                    "text/long/texts",
+                    "numeric/long",
+                    "numeric/medium",
+                    "numeric/short"
+                  ]
+                },
+                "name": {
+                  "type": "string"
+                },
+                "show": {
+                  "type": "boolean"
+                },
+                "justify": {
+                  "type": "boolean"
+                },
+                "order": {
+                  "type": "string",
+                  "enum": [
+                    "FirstName Surname",
+                    "Surname FirstName",
+                    "Title FirstName Surname",
+                    "Title Surname FirstName",
+                    "FirstName Surname Title",
+                    "Surname FirstName Title",
+                    "Identification Headline WorkExperience Education Skills Achievement ReferenceTo",
+                    "Identification Headline Education WorkExperience Skills Achievement ReferenceTo",
+                    "Identification Skills ReferenceTo",
+                    "Addressee Letter.SubjectLine Letter.OpeningSalutation Letter.Body Letter.Localisation Letter.ClosingSalutation",
+                    "Letter.SubjectLine Addressee Letter.OpeningSalutation Letter.Body Letter.Localisation Letter.ClosingSalutation",
+                    "Letter.Localisation Addressee Letter.SubjectLine Letter.OpeningSalutation Letter.Body Letter.ClosingSalutation",
+                    "Letter.SubjectLine Addressee Letter.Localisation Letter.OpeningSalutation Letter.Body Letter.ClosingSalutation",
+                    "Letter.Localisation Letter.SubjectLine Addressee Letter.OpeningSalutation Letter.Body Letter.ClosingSalutation",
+                    "Addressee Letter.Localisation Letter.SubjectLine Letter.OpeningSalutation Letter.Body Letter.ClosingSalutation",
+                    "Addressee Letter.SubjectLine Letter.Localisation Letter.OpeningSalutation Letter.Body Letter.ClosingSalutation",
+                    "Date Place",
+                    "Place Date"
+                  ]
+                },
+                "position": {
+                  "type": "string",
+                  "enum": [
+                    "left-align",
+                    "right-align",
+                    "middle-align"
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^order$": true,
+                "^format$": true,
+                "^show$": true,
+                "^justify$": true,
+                "^name$": true,
+                "^position$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_42": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Municipality": {
+                  "type": "string"
+                },
+                "Country": {
+                  "$ref": "#/$defs/countryType"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Municipality$": true,
+                "^Country$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "personNameType": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "organisationType": {
+      "type": "object",
+      "properties": {
+        "Name": {
+          "type": "string"
+        },
+        "ContactInfo": {
+          "type": "object",
+          "properties": {
+            "Address": {
+              "type": "object",
+              "properties": {
+                "Contact": {
+                  "$ref": "#/$defs/addressType"
+                }
+              }
+            },
+            "Website": {
+              "$ref": "#/$defs/organisationalWebsiteType"
+            }
+          }
+        }
+      }
+    },
+    "modern_31": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Contains all the available methods of contacting individual.",
+              "type": "object",
+              "properties": {
+                "Email": {
+                  "$ref": "#/$defs/modern_32"
+                },
+                "Address": {
+                  "$ref": "#/$defs/modern_33"
+                },
+                "InstantMessaging": {
+                  "description": "Lists the instant messaging accounts numbers owned by the individual.",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_34"
+                  },
+                  "minItems": 0
+                },
+                "Website": {
+                  "description": "Lists the websites that are owned, built by or refer to the individual.",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/websiteType"
+                  },
+                  "minItems": 0
+                },
+                "Telephone": {
+                  "description": "Lists the telephone numbers owned by the individual.",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_35"
+                  },
+                  "minItems": 0
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Address$": true,
+                "^Email$": true,
+                "^Telephone$": true,
+                "^InstantMessaging$": true,
+                "^Website$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Contact": {
+                  "type": "string"
+                },
+                "Use": {
+                  "$ref": "#/$defs/modern_8"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Contact$": true,
+                "^Use$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_38": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Addressee": {
+                  "$ref": "#/$defs/modern_39"
+                },
+                "Letter": {
+                  "$ref": "#/$defs/modern_40"
+                },
+                "Documentation": {
+                  "$ref": "#/$defs/genericDocumentationType"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Addressee$": true,
+                "^Letter$": true,
+                "^Documentation$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_23": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Title": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Title$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_17": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Defines a country. The country is described by a code and a label. E.g. code: FR, label: France.",
+              "type": "object",
+              "properties": {
+                "Code": {
+                  "description": "Defines the country code type. The type is defined in the included schema 'EuropassISOCountries'. ",
+                  "type": "string",
+                  "pattern": "^[A-Z]{2}$"
+                },
+                "Label": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Code$": true,
+                "^Label$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Describes the name of a person. Consists of a title (optionally), a first-name and surname.",
+              "type": "object",
+              "properties": {
+                "Title": {
+                  "type": "object",
+                  "properties": {
+                    "Code": {
+                      "type": "string",
+                      "enum": [
+                        "mr",
+                        "ms",
+                        "mrs",
+                        "miss",
+                        "dr"
+                      ]
+                    },
+                    "Label": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "FirstName": {
+                  "type": "string"
+                },
+                "Surname": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Title$": true,
+                "^FirstName$": true,
+                "^Surname$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "sectionReferenceToListType": {
+      "type": "object",
+      "properties": {
+        "ReferenceTo": {
+          "$ref": "#/$defs/referenceToListType"
+        }
+      }
+    },
+    "modern_28": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Code": {
+                  "type": "string",
+                  "pattern": "^[0-9]{5}$"
+                },
+                "Label": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Code$": true,
+                "^Label$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "documentTypeType": {
+      "type": "string",
+      "enum": [
+        "ECV_ESP",
+        "ESP",
+        "ECV",
+        "ELP",
+        "ECL",
+        "EX"
+      ]
+    },
+    "modern_12": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Defines the opening salutation in a letter. It is described by a code (optional) and a label. E.g. code: salutation_2, label: Dear Mrs.",
+              "type": "object",
+              "properties": {
+                "Code": {
+                  "type": "string",
+                  "pattern": "^opening-salut-[1-9]{1}([0-9]{1})?(-impersonal)?$"
+                },
+                "Label": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Code$": true,
+                "^Label$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_45": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "metadata information about this document",
+              "type": "object",
+              "properties": {
+                "CreationDate": {
+                  "type": "string"
+                },
+                "LastUpdateDate": {
+                  "type": "string"
+                },
+                "DocumentType": {
+                  "$ref": "#/$defs/documentTypeType"
+                },
+                "XSDVersion": {
+                  "type": "string",
+                  "pattern": "^V[0-9]\\.[0-9]$"
+                },
+                "Comment": {
+                  "type": "string"
+                },
+                "Document": {
+                  "$ref": "#/$defs/documentBundleType"
+                },
+                "Generator": {
+                  "type": "string"
+                },
+                "EuropassLogo": {
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^XSDVersion$": true,
+                "^Comment$": true,
+                "^Document$": true,
+                "^LastUpdateDate$": true,
+                "^CreationDate$": true,
+                "^Generator$": true,
+                "^DocumentType$": true,
+                "^EuropassLogo$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "ictLevelType": {
+      "type": "string",
+      "enum": [
+        "A",
+        "B",
+        "C"
+      ]
+    },
+    "modern_41": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Date": {
+                  "$ref": "#/$defs/structuredDateType"
+                },
+                "Place": {
+                  "$ref": "#/$defs/modern_42"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Date$": true,
+                "^Place$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "organisationalWebsiteType": {
+      "$ref": "#/$defs/modern_9"
+    },
+    "modern_39": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "PersonName": {
+                  "$ref": "#/$defs/personNameType"
+                },
+                "Position": {
+                  "$ref": "#/$defs/occupationalFieldType"
+                },
+                "Organisation": {
+                  "$ref": "#/$defs/organisationType"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^PersonName$": true,
+                "^Position$": true,
+                "^Organisation$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_30": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Code": {
+                  "type": "string",
+                  "pattern": "^[0-9]{2}$"
+                },
+                "Label": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Code$": true,
+                "^Label$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "structuredDateType": {
+      "$ref": "#/$defs/modern_11"
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Contact": {
+                  "type": "string"
+                },
+                "Use": {
+                  "$ref": "#/$defs/modern_10"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Contact$": true,
+                "^Use$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_29": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Code": {
+                  "type": "string",
+                  "pattern": "^[1-8]{1}$"
+                },
+                "Label": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Code$": true,
+                "^Label$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "openingSalutationType": {
+      "$ref": "#/$defs/modern_12"
+    },
+    "addressType": {
+      "$ref": "#/$defs/modern_13"
+    },
+    "modern_18": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "A JSON Representation of a Europass Document corresponding to Europass XML 3.3.0",
+              "type": "object",
+              "properties": {
+                "SkillsPassport": {
+                  "$ref": "#/$defs/modern_19"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^SkillsPassport$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_13": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "AddressLine2": {
+                  "type": "string"
+                },
+                "Municipality": {
+                  "type": "string"
+                },
+                "PostalCode": {
+                  "type": "string"
+                },
+                "Country": {
+                  "$ref": "#/$defs/countryType"
+                },
+                "AddressLine": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^AddressLine2$": true,
+                "^Country$": true,
+                "^Municipality$": true,
+                "^PostalCode$": true,
+                "^AddressLine$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "genericDocumentationType": {
+      "$ref": "#/$defs/modern_14"
+    },
+    "modern_22": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "ProblemSolving": {
+                  "$ref": "#/$defs/ictLevelType"
+                },
+                "ContentCreation": {
+                  "$ref": "#/$defs/ictLevelType"
+                },
+                "Communication": {
+                  "$ref": "#/$defs/ictLevelType"
+                },
+                "Information": {
+                  "$ref": "#/$defs/ictLevelType"
+                },
+                "Safety": {
+                  "$ref": "#/$defs/ictLevelType"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^ContentCreation$": true,
+                "^Information$": true,
+                "^ProblemSolving$": true,
+                "^Safety$": true,
+                "^Communication$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "closingSalutationType": {
+      "$ref": "#/$defs/modern_15"
+    },
+    "fileDataType": {
+      "type": "object",
+      "properties": {
+        "Name": {
+          "type": "string"
+        },
+        "Data": {
+          "type": "string",
+          "contentEncoding": "base64"
+        },
+        "Metadata": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/modern_4"
+          },
+          "minItems": 0
+        },
+        "Id": {
+          "type": "string"
+        }
+      }
+    },
+    "modern_44": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Salutation": {
+                  "$ref": "#/$defs/openingSalutationType"
+                },
+                "PersonName": {
+                  "$ref": "#/$defs/personNameType"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Salutation$": true,
+                "^PersonName$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_33": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Defines the residence address of an individual.",
+              "type": "object",
+              "properties": {
+                "Contact": {
+                  "$ref": "#/$defs/addressType"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Contact$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_26": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "desired employment/ occupation field",
+              "description": "Contains a headline label for the current document. It is optional and may accommodate various cases.",
+              "type": "object",
+              "properties": {
+                "Type": {
+                  "$ref": "#/$defs/modern_27"
+                },
+                "Description": {
+                  "$ref": "#/$defs/modern_28"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Type$": true,
+                "^Description$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_36": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Contains demographics-related information about the individual. It includes the birthdate, gender and list of nationalities.",
+              "type": "object",
+              "properties": {
+                "Birthdate": {
+                  "$ref": "#/$defs/structuredDateType"
+                },
+                "Gender": {
+                  "type": "object",
+                  "properties": {
+                    "Code": {
+                      "type": "string",
+                      "enum": [
+                        "M",
+                        "F"
+                      ]
+                    },
+                    "Label": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "Nationality": {
+                  "description": "Defines a nationality. The nationality is described by a code and is a text only element. E.g. code: DE, label: German.",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_37"
+                  },
+                  "minItems": 0
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Birthdate$": true,
+                "^Gender$": true,
+                "^Nationality$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Year": {
+                  "type": "number"
+                },
+                "Month": {
+                  "type": "number"
+                },
+                "Day": {
+                  "type": "number"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Year$": true,
+                "^Month$": true,
+                "^Day$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "periodType": {
+      "type": "object",
+      "properties": {
+        "Period": {
+          "$ref": "#/$defs/modern_5"
+        }
+      }
+    },
+    "occupationalFieldType": {
+      "$ref": "#/$defs/modern_16"
+    },
+    "countryType": {
+      "$ref": "#/$defs/modern_17"
+    },
+    "modern_25": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Title": {
+                  "type": "string"
+                },
+                "AwardingBody": {
+                  "type": "string"
+                },
+                "Date": {
+                  "$ref": "#/$defs/structuredDateType"
+                },
+                "Level": {
+                  "$ref": "#/$defs/cefrLevelType"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Title$": true,
+                "^AwardingBody$": true,
+                "^Date$": true,
+                "^Level$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_40": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Localisation": {
+                  "$ref": "#/$defs/modern_41"
+                },
+                "SubjectLine": {
+                  "type": "string"
+                },
+                "Body": {
+                  "$ref": "#/$defs/modern_43"
+                },
+                "OpeningSalutation": {
+                  "$ref": "#/$defs/modern_44"
+                },
+                "ClosingSalutation": {
+                  "$ref": "#/$defs/closingSalutationType"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^OpeningSalutation$": true,
+                "^Localisation$": true,
+                "^Body$": true,
+                "^SubjectLine$": true,
+                "^ClosingSalutation$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_19": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Defines a sequence of elements that fully describe a Europass XML document.",
+              "properties": {
+                "LearnerInfo": {
+                  "type": "object",
+                  "properties": {
+                    "WorkExperience": {
+                      "title": "list of work experiences",
+                      "description": "Contains an list of work experiences. The order of those experiences is defined by the related printing preferences.",
+                      "type": "array",
+                      "items": {
+                        "allOf": [
+                          {
+                            "$ref": "#/$defs/basicExperienceType"
+                          },
+                          {
+                            "properties": {
+                              "Position": {
+                                "$ref": "#/$defs/occupationalFieldType"
+                              },
+                              "Activities": {
+                                "type": "string"
+                              },
+                              "Employer": {
+                                "allOf": [
+                                  {
+                                    "$ref": "#/$defs/organisationType"
+                                  },
+                                  {
+                                    "properties": {
+                                      "Sector": {
+                                        "$ref": "#/$defs/modern_20"
+                                      }
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          },
+                          {
+                            "$ref": "#/$defs/sectionReferenceToListType"
+                          }
+                        ]
+                      },
+                      "minItems": 0
+                    },
+                    "Achievement": {
+                      "title": "Achievements",
+                      "description": "Contains a list of additional information about the various achievements of an individual, such as participation to conferences, workshops, memberships to organisations, list of publications, etc.",
+                      "type": "array",
+                      "items": {
+                        "allOf": [
+                          {
+                            "$ref": "#/$defs/sectionReferenceToListType"
+                          },
+                          {
+                            "properties": {
+                              "Title": {
+                                "type": "object",
+                                "properties": {
+                                  "Code": {
+                                    "type": "string",
+                                    "enum": [
+                                      "honors_awards",
+                                      "publications",
+                                      "presentations",
+                                      "projects",
+                                      "citations",
+                                      "memberships",
+                                      "conferences",
+                                      "seminars",
+                                      "workshops",
+                                      "references",
+                                      "signature_equivalent",
+                                      "courses",
+                                      "certifications"
+                                    ]
+                                  },
+                                  "Label": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              "Description": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "minItems": 0
+                    },
+                    "Skills": {
+                      "$ref": "#/$defs/modern_21"
+                    },
+                    "ReferenceTo": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "idref": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "minItems": 0
+                    },
+                    "Headline": {
+                      "$ref": "#/$defs/modern_26"
+                    },
+                    "Education": {
+                      "title": "list of education experiences",
+                      "description": "Contains an list of learning achievements or a training periods (formal or not). The order of those experiences is defined by the related printing preferences.",
+                      "type": "array",
+                      "items": {
+                        "allOf": [
+                          {
+                            "$ref": "#/$defs/basicExperienceType"
+                          },
+                          {
+                            "properties": {
+                              "Level": {
+                                "$ref": "#/$defs/modern_29"
+                              },
+                              "Title": {
+                                "type": "string"
+                              },
+                              "Activities": {
+                                "type": "string"
+                              },
+                              "Field": {
+                                "$ref": "#/$defs/modern_30"
+                              },
+                              "Organisation": {
+                                "$ref": "#/$defs/organisationType"
+                              }
+                            }
+                          },
+                          {
+                            "$ref": "#/$defs/sectionReferenceToListType"
+                          }
+                        ]
+                      },
+                      "minItems": 0
+                    },
+                    "Identification": {
+                      "title": "Personal Information",
+                      "description": "Contains the personal information of the individual, which includes at least the name, and contact information, demographics and photo.",
+                      "type": "object",
+                      "properties": {
+                        "Photo": {
+                          "allOf": [
+                            {
+                              "$ref": "#/$defs/fileDataType"
+                            },
+                            {
+                              "properties": {
+                                "MimeType": {
+                                  "type": "string",
+                                  "enum": [
+                                    "image/jpeg",
+                                    "image/pjpeg",
+                                    "image/png",
+                                    "image/x-png"
+                                  ]
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        "ContactInfo": {
+                          "$ref": "#/$defs/modern_31"
+                        },
+                        "PersonName": {
+                          "$ref": "#/$defs/personNameType"
+                        },
+                        "Signature": {
+                          "allOf": [
+                            {
+                              "$ref": "#/$defs/fileDataType"
+                            },
+                            {
+                              "properties": {
+                                "MimeType": {
+                                  "type": "string",
+                                  "enum": [
+                                    "image/jpeg",
+                                    "image/pjpeg",
+                                    "image/png",
+                                    "image/x-png"
+                                  ]
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        "Demographics": {
+                          "$ref": "#/$defs/modern_36"
+                        }
+                      }
+                    }
+                  }
+                },
+                "PrintingPreferences": {
+                  "title": "Printing preferences",
+                  "type": "object",
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "ECV": {
+                          "$ref": "#/$defs/preferencesType"
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "ELP": {
+                          "$ref": "#/$defs/preferencesType"
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "ECL": {
+                          "$ref": "#/$defs/preferencesType"
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "ESP": {
+                          "$ref": "#/$defs/preferencesType"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "CoverLetter": {
+                  "$ref": "#/$defs/modern_38"
+                },
+                "Attachment": {
+                  "type": "array",
+                  "items": {
+                    "allOf": [
+                      {
+                        "$ref": "#/$defs/fileDataType"
+                      },
+                      {
+                        "properties": {
+                          "MimeType": {
+                            "type": "string",
+                            "enum": [
+                              "image/jpeg",
+                              "image/pjpeg",
+                              "image/png",
+                              "image/x-png",
+                              "application/pdf"
+                            ]
+                          },
+                          "Description": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "minItems": 0
+                },
+                "DocumentInfo": {
+                  "$ref": "#/$defs/modern_45"
+                },
+                "Locale": {
+                  "title": "the language of this document",
+                  "type": "string",
+                  "pattern": "^[a-z]{2}$"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^LearnerInfo$": true,
+                "^DocumentInfo$": true,
+                "^CoverLetter$": true,
+                "^Attachment$": true,
+                "^PrintingPreferences$": true,
+                "^Locale$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Key": {
+                  "type": "string"
+                },
+                "Value": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Key$": true,
+                "^Value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

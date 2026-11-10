@@ -1,0 +1,46 @@
+{
+  "allOf": [
+    {
+      "type": "array",
+      "$ref": "#/allOf/0/$defs/bar",
+      "prefixItems": [
+        {
+          "type": "string"
+        }
+      ],
+      "unevaluatedItems": false,
+      "$defs": {
+        "bar": {
+          "prefixItems": [
+            true,
+            {
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "string"
+        }
+      ],
+      "unevaluatedItems": false,
+      "$defs": {
+        "bar": {
+          "prefixItems": [
+            true,
+            {
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "not": {
+        "$ref": "#/allOf/1/$defs/bar"
+      }
+    }
+  ]
+}

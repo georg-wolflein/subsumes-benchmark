@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Advertisement status for the supplied advertisement",
+              "properties": {
+                "postedBy": {
+                  "type": "string"
+                },
+                "expiredBy": {
+                  "type": "string"
+                },
+                "datePosted": {
+                  "type": "number"
+                },
+                "referenceCode": {
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "open",
+                    "expired"
+                  ]
+                },
+                "dateExpired": {
+                  "type": "number"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "advertisementId": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^datePosted$": true,
+                "^referenceCode$": true,
+                "^postedBy$": true,
+                "^expiredBy$": true,
+                "^status$": true,
+                "^dateExpired$": true,
+                "^title$": true,
+                "^advertisementId$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

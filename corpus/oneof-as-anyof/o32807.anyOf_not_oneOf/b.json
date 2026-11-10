@@ -1,0 +1,182 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "assets": {
+      "items": {
+        "$ref": "#/$defs/asset"
+      },
+      "type": "array"
+    },
+    "author": {
+      "$ref": "#/$defs/person"
+    },
+    "client": {
+      "type": "string"
+    },
+    "configuration": {
+      "type": "object"
+    },
+    "contributors": {
+      "items": {
+        "$ref": "#/$defs/person"
+      },
+      "type": "array"
+    },
+    "description": {
+      "type": "string"
+    },
+    "documentation": {
+      "type": "string"
+    },
+    "health": {
+      "type": "string"
+    },
+    "keywords": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "maintainers": {
+      "items": {
+        "$ref": "#/$defs/person"
+      },
+      "type": "array"
+    },
+    "manage": {
+      "type": "string"
+    },
+    "name": {
+      "$ref": "#/$defs/identifier",
+      "maxLength": 64
+    },
+    "policy": {
+      "items": {
+        "$ref": "#/$defs/asset"
+      },
+      "type": "array"
+    },
+    "region": {
+      "anyOf": [
+        {
+          "items": {
+            "$ref": "#/$defs/identifier"
+          },
+          "type": "array"
+        },
+        {
+          "$ref": "#/$defs/identifier"
+        }
+      ]
+    },
+    "repository": {
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "url": {
+          "_format": "uri",
+          "type": "string"
+        }
+      },
+      "type": [
+        "object",
+        "string"
+      ]
+    },
+    "resources": {
+      "patternProperties": {
+        ".+": {
+          "$ref": "#/$defs/version"
+        }
+      },
+      "type": "object"
+    },
+    "universe": {
+      "$ref": "#/$defs/identifier"
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "type": "object",
+  "$defs": {
+    "asset": {
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/aws_identifier"
+        },
+        "permissions": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "region": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/aws_identifier"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/$defs/aws_identifier"
+            }
+          ]
+        },
+        "service": {
+          "$ref": "#/$defs/identifier"
+        }
+      },
+      "required": [
+        "service",
+        "name",
+        "permissions"
+      ],
+      "type": "object"
+    },
+    "aws_identifier": {
+      "minLength": 1,
+      "pattern": "^([\\w\\d].*|\\*)$",
+      "type": "string"
+    },
+    "identifier": {
+      "minLength": 1,
+      "pattern": "^[\\w\\d][\\w\\d-]*$",
+      "type": "string"
+    },
+    "person": {
+      "properties": {
+        "email": {
+          "_format": "email",
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "url": {
+          "_format": "uri",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": [
+        "object",
+        "string"
+      ]
+    },
+    "version": {
+      "maxLength": 10,
+      "minLength": 1,
+      "pattern": "^(\\*|\\d{4}\\-\\d{2}\\-\\d{2})$",
+      "type": "string"
+    }
+  }
+}

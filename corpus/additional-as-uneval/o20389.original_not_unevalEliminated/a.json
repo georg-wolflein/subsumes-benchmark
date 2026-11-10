@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Project Schema",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The name of the project"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "A short description of the project."
+                },
+                "short_name": {
+                  "type": "string",
+                  "description": "The short name of the project."
+                },
+                "category_id": {
+                  "type": "integer",
+                  "description": "The category ID of the project."
+                },
+                "webhook": {
+                  "type": "string",
+                  "description": "A webhook URL for the project."
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^webhook$": true,
+                "^description$": true,
+                "^name$": true,
+                "^category_id$": true,
+                "^short_name$": true
+              },
+              "additionalProperties": {
+                "type": "string",
+                "description": "Additional keys and values used to update the project's info field."
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

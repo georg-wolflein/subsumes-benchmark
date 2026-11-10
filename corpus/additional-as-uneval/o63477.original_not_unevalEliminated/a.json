@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "ramlTitle": {
+      "type": "string"
+    },
+    "validationViolations": {
+      "$ref": "#/$defs/stringArray"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "stringArray": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

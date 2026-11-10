@@ -1,0 +1,402 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_6",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": [
+                "null",
+                "object"
+              ]
+            },
+            {
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "EdityProject",
+              "type": "object",
+              "properties": {
+                "defaultPage": {
+                  "type": [
+                    "null",
+                    "string"
+                  ],
+                  "description": "The default page for the project. Defaults to \"index\"."
+                },
+                "editComponents": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "description": "The list of components to show when editing.",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "vars": {
+                  "$ref": "#/$defs/modern_7"
+                },
+                "editPageSettings": {
+                  "$ref": "#/$defs/modern_8"
+                },
+                "compilers": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "description": "Definitions of the compilers.",
+                  "items": {
+                    "$ref": "#/$defs/CompilerDefinition"
+                  }
+                },
+                "linkedContent": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "description": "The list of linked content for the entire project.",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "additionalContent": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "description": "Additional content folders to copy.",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "postBuildTasks": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "description": "Definitions for post build tasks.",
+                  "items": {
+                    "$ref": "#/$defs/BuildTaskDefinition"
+                  }
+                },
+                "draftComponents": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "description": "The list of components to show in draft mode.",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "postPublishTasks": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "description": "Definitions for post publish tasks.",
+                  "items": {
+                    "$ref": "#/$defs/BuildTaskDefinition"
+                  }
+                },
+                "contentMap": {
+                  "$ref": "#/$defs/modern_9"
+                },
+                "preBuildTasks": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "description": "Definitions for pre build tasks.",
+                  "items": {
+                    "$ref": "#/$defs/BuildTaskDefinition"
+                  }
+                },
+                "buildVars": {
+                  "$ref": "#/$defs/modern_10"
+                },
+                "publishTasks": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "description": "Definitions for publish tasks.",
+                  "items": {
+                    "$ref": "#/$defs/BuildTaskDefinition"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^preBuildTasks$": true,
+                "^editComponents$": true,
+                "^postPublishTasks$": true,
+                "^postBuildTasks$": true,
+                "^editPageSettings$": true,
+                "^additionalContent$": true,
+                "^contentMap$": true,
+                "^publishTasks$": true,
+                "^vars$": true,
+                "^compilers$": true,
+                "^linkedContent$": true,
+                "^draftComponents$": true,
+                "^defaultPage$": true,
+                "^buildVars$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "CompilerTypes": {
+      "type": "string",
+      "description": "",
+      "x-enumNames": [
+        "Html",
+        "Json"
+      ],
+      "enum": [
+        "Html",
+        "Json"
+      ]
+    },
+    "LinkedContentEntry": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": [
+                "null",
+                "object"
+              ],
+              "description": "The main set of variables, this is always active."
+            },
+            {
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "file"
+              ],
+              "properties": {
+                "file": {
+                  "type": "string"
+                },
+                "async": {
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^file$": true,
+                "^async$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": [
+                "null",
+                "object"
+              ],
+              "description": "This map maps named content to a collection of javascript and css files."
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/LinkedContentEntry"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "dependencies": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "css": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "js": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "$ref": "#/$defs/JavascriptEntry"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^dependencies$": true,
+                "^css$": true,
+                "^js$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": [
+                    "null",
+                    "string"
+                  ]
+                },
+                "settings": {
+                  "$ref": "#/$defs/modern_5"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^settings$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "CompilerDefinition": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": [
+                "null",
+                "object"
+              ],
+              "description": "Variables that are used only during build / compile / publish. These can override the values in Vars."
+            },
+            {
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "$ref": "#/$defs/CompilerTypes"
+                },
+                "extension": {
+                  "type": [
+                    "null",
+                    "string"
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^extension$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "JavascriptEntry": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": [
+                "null",
+                "object"
+              ],
+              "description": "This dictionary holds settings that will be echoed to the page as a javascript object. It is used to\nstore client side configuration. These variables cannot be directly output to the page, but instead must\nbe written by calling the editPageSettings() macro. These values will be written in plain text to the page,\nso do not include secret info here."
+            },
+            {
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "BuildTaskDefinition": {
+      "$ref": "#/$defs/modern_4"
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "maxProperties": 1,
+  "anyOf": [
+    {
+      "properties": {
+        "a": {
+          "type": "string",
+          "pattern": "a|b|c"
+        }
+      },
+      "additionalProperties": {
+        "type": "string",
+        "_pattern": "(a|b)c",
+        "pattern": "ac",
+        "_patternWeak": "(a|b?)|c",
+        "maxLength": 3
+      }
+    },
+    {
+      "properties": {
+        "a": {
+          "type": "string",
+          "pattern": "a|b|c"
+        }
+      },
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "z",
+        "minLength": 2
+      }
+    }
+  ]
+}

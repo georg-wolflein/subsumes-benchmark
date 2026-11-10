@@ -1,0 +1,26 @@
+{
+  "$id": "https://test.json-schema.org/unmatched-dynamic-anchor/root",
+  "$defs": {
+    "foo": {
+      "$dynamicAnchor": "items",
+      "type": "string"
+    },
+    "list": {
+      "$id": "list",
+      "type": "array",
+      "items": {
+        "$dynamicRef": "#items"
+      },
+      "$defs": {
+        "items": {
+          "$comment": "This is only needed to give the reference somewhere to resolve to when it behaves like $ref",
+          "$anchor": "items",
+          "$dynamicAnchor": "foo"
+        }
+      }
+    }
+  },
+  "not": {
+    "$ref": "list"
+  }
+}

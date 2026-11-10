@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "TriggerMessageRequest",
+              "type": "object",
+              "properties": {
+                "requestedMessage": {
+                  "type": "string",
+                  "enum": [
+                    "BootNotification",
+                    "DiagnosticsStatusNotification",
+                    "FirmwareStatusNotification",
+                    "Heartbeat",
+                    "MeterValues",
+                    "StatusNotification"
+                  ]
+                },
+                "connectorId": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "requestedMessage"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^requestedMessage$": true,
+                "^connectorId$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

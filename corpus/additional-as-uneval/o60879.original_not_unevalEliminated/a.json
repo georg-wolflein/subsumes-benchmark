@@ -1,0 +1,83 @@
+{
+  "$id": "http://mindsnacks.github.io/Zinc/schemas/v1/catalog.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "id",
+    "format"
+  ],
+  "properties": {
+    "bundles": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "versions": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 1.0
+      }
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "next_version": {
+      "type": "integer"
+    },
+    "format": {
+      "type": "string",
+      "pattern": "1"
+    }
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                ".+": {
+                  "type": "object",
+                  "properties": {
+                    "distributions": {
+                      "$ref": "#/$defs/modern_2"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                ".+": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                ".+": {
+                  "type": "integer"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                ".+": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

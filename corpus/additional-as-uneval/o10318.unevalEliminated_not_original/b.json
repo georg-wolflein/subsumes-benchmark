@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "items": {
+    "$ref": "#/$defs/modern_1"
+  },
+  "readOnly": true,
+  "type": "array",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "href": {
+                  "format": "uri",
+                  "type": "string"
+                },
+                "rel": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "href",
+                "rel"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^href$": true,
+                "^rel$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

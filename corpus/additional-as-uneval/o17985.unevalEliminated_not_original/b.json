@@ -1,0 +1,490 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_6",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "title": "Account",
+              "description": "Account represents a registered User",
+              "properties": {
+                "Id": {
+                  "description": "The unique identifier for a Account's Profile",
+                  "type": "number",
+                  "format": "int64",
+                  "minimum": 1.0
+                },
+                "URL": {
+                  "description": "Salted Password of the Account",
+                  "type": "string",
+                  "minLength": 6
+                },
+                "Password": {
+                  "description": "Salted Password of the Account",
+                  "type": "string",
+                  "minLength": 6
+                },
+                "Salt": {
+                  "description": "Salt used to hash Password of the Account",
+                  "type": "string",
+                  "minLength": 0,
+                  "maxLength": 255
+                },
+                "StatusConstant": {
+                  "description": "Status of the Account",
+                  "type": "string",
+                  "enum": [
+                    "registered",
+                    "unregistered",
+                    "needsManualVerification"
+                  ],
+                  "default": "registered"
+                },
+                "URLName": {
+                  "description": "Salted Password of the Account",
+                  "type": "string",
+                  "minLength": 6
+                },
+                "EmailStatusConstant": {
+                  "description": "Status of the Account's Email",
+                  "type": "string",
+                  "enum": [
+                    "verified",
+                    "notVerified"
+                  ],
+                  "default": "notVerified"
+                },
+                "CreatedAt": {
+                  "description": "Profile's creation time",
+                  "type": "string",
+                  "format": "date-time",
+                  "default": "now()"
+                },
+                "PasswordStatusConstant": {
+                  "description": "Status of the Account's Password",
+                  "type": "string",
+                  "enum": [
+                    "valid",
+                    "needsReset",
+                    "generated"
+                  ],
+                  "default": "valid"
+                },
+                "EmailAddress": {
+                  "description": "Email Address of the Account",
+                  "type": "string",
+                  "format": "email"
+                },
+                "ProfileId": {
+                  "description": "The unique identifier for a Account's Profile",
+                  "type": "number",
+                  "format": "int64",
+                  "minimum": 1.0
+                }
+              },
+              "functions": {
+                "One": {
+                  "type": "object",
+                  "title": "One",
+                  "properties": {
+                    "incoming": {
+                      "$ref": "#/$defs/Account"
+                    },
+                    "outgoing": {
+                      "$ref": "#/$defs/Account"
+                    }
+                  }
+                },
+                "Create": {
+                  "type": "object",
+                  "title": "One",
+                  "properties": {
+                    "incoming": {
+                      "$ref": "#/$defs/Account"
+                    },
+                    "outgoing": {
+                      "$ref": "#/$defs/Account"
+                    }
+                  }
+                },
+                "Update": {
+                  "type": "object",
+                  "title": "One",
+                  "properties": {
+                    "incoming": {
+                      "$ref": "#/$defs/Account"
+                    },
+                    "outgoing": {
+                      "$ref": "#/$defs/Account"
+                    }
+                  }
+                },
+                "Delete": {
+                  "type": "object",
+                  "title": "One",
+                  "properties": {
+                    "incoming": {
+                      "$ref": "#/$defs/Account"
+                    },
+                    "outgoing": {
+                      "$ref": "#/$defs/Account"
+                    }
+                  }
+                },
+                "Some": {
+                  "type": "object",
+                  "title": "One",
+                  "properties": {
+                    "incoming": {
+                      "$ref": "#/$defs/Account"
+                    },
+                    "outgoing": {
+                      "type": "array",
+                      "items": [
+                        {
+                          "$ref": "#/$defs/Account"
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              "required": [
+                "Password",
+                "EmailAddress"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^URL$": true,
+                "^Password$": true,
+                "^CreatedAt$": true,
+                "^EmailStatusConstant$": true,
+                "^Salt$": true,
+                "^URLName$": true,
+                "^ProfileId$": true,
+                "^Id$": true,
+                "^StatusConstant$": true,
+                "^EmailAddress$": true,
+                "^PasswordStatusConstant$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "title": "Account",
+              "description": "Account module handles all the operations regarding Account management.",
+              "properties": {}
+            },
+            {
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "title": "Config",
+              "description": "Config represents the required options for this module to work",
+              "properties": {
+                "Postgres": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "Mongo": {
+                  "$ref": "#/$defs/modern_3"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Postgres$": true,
+                "^Mongo$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "title": "Postgres",
+              "description": "Postgres holds the all credentials for postgres db connection.",
+              "properties": {
+                "Username": {
+                  "description": "Username holds the username for the postgres",
+                  "type": "string",
+                  "minLength": 4,
+                  "maxLength": 24
+                },
+                "DBName": {
+                  "description": "DBName holds the database name for the postgres",
+                  "type": "string",
+                  "minLength": 4,
+                  "maxLength": 24
+                },
+                "Password": {
+                  "description": "Password holds the password for the postgres",
+                  "type": "string",
+                  "minLength": 4,
+                  "maxLength": 24
+                },
+                "Port": {
+                  "description": "The port number for postgres config",
+                  "type": "number",
+                  "format": "int64",
+                  "minimum": 1024.0
+                },
+                "Host": {
+                  "description": "Host holds the hostname for the postgres",
+                  "type": "string",
+                  "minLength": 4,
+                  "maxLength": 24
+                }
+              },
+              "$defs": {}
+            },
+            {
+              "patternProperties": {
+                "^Password$": true,
+                "^Username$": true,
+                "^Port$": true,
+                "^DBName$": true,
+                "^Host$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "Profile": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "Config": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "title": "Mongo",
+              "description": "Mongo holds the all credentials for Mongo db connection.",
+              "properties": {
+                "Username": {
+                  "description": "Username holds the username for the Mongo",
+                  "type": "string",
+                  "minLength": 4,
+                  "maxLength": 24
+                },
+                "DBName": {
+                  "description": "DBName holds the database name for the Mongo",
+                  "type": "string",
+                  "minLength": 4,
+                  "maxLength": 24
+                },
+                "Password": {
+                  "description": "Password holds the password for the Mongo",
+                  "type": "string",
+                  "minLength": 4,
+                  "maxLength": 24
+                },
+                "Port": {
+                  "description": "The port number for Mongo config",
+                  "type": "number",
+                  "format": "int64",
+                  "minimum": 1024.0
+                },
+                "Host": {
+                  "description": "Host holds the hostname for the Mongo",
+                  "type": "string",
+                  "minLength": 4,
+                  "maxLength": 24
+                }
+              },
+              "$defs": {}
+            },
+            {
+              "patternProperties": {
+                "^Password$": true,
+                "^Username$": true,
+                "^Port$": true,
+                "^DBName$": true,
+                "^Host$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "Account": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "title": "Profile",
+              "description": "Profile represents a registered Account's Public Info",
+              "generators": [
+                {
+                  "sql-definition": {
+                    "roleName": "social",
+                    "grants": [
+                      "SELECT",
+                      "UPDATE"
+                    ],
+                    "databaseName": "mydatabase",
+                    "schemaName": "account"
+                  }
+                }
+              ],
+              "properties": {
+                "LastName": {
+                  "description": "Last Name of the Account",
+                  "type": "string",
+                  "minLength": 0,
+                  "maxLength": 255
+                },
+                "Id": {
+                  "description": "The unique identifier for a Account's Profile",
+                  "type": "number",
+                  "format": "int64",
+                  "minimum": 1.0
+                },
+                "AvatarURL": {
+                  "description": "URL of the Account's Avatar",
+                  "type": "string"
+                },
+                "FirstName": {
+                  "description": "First Name of the Account",
+                  "type": "string",
+                  "minLength": 0,
+                  "maxLength": 255
+                },
+                "Nick": {
+                  "description": "Nick is the unique name for the Accounts",
+                  "type": "string",
+                  "minLength": 4,
+                  "maxLength": 24
+                },
+                "CreatedAt": {
+                  "description": "Profile's creation time",
+                  "type": "string",
+                  "format": "date-time",
+                  "default": "now()"
+                }
+              },
+              "functions": {
+                "One": {
+                  "type": "object",
+                  "title": "One",
+                  "properties": {
+                    "incoming": {
+                      "$ref": "#/$defs/Profile"
+                    },
+                    "outgoing": {
+                      "$ref": "#/$defs/Profile"
+                    }
+                  }
+                },
+                "Create": {
+                  "type": "object",
+                  "title": "One",
+                  "properties": {
+                    "incoming": {
+                      "$ref": "#/$defs/Profile"
+                    },
+                    "outgoing": {
+                      "$ref": "#/$defs/Profile"
+                    }
+                  }
+                },
+                "Update": {
+                  "type": "object",
+                  "title": "One",
+                  "properties": {
+                    "incoming": {
+                      "$ref": "#/$defs/Profile"
+                    },
+                    "outgoing": {
+                      "$ref": "#/$defs/Profile"
+                    }
+                  }
+                },
+                "Delete": {
+                  "type": "object",
+                  "title": "One",
+                  "properties": {
+                    "incoming": {
+                      "$ref": "#/$defs/Profile"
+                    },
+                    "outgoing": {
+                      "$ref": "#/$defs/Profile"
+                    }
+                  }
+                },
+                "Some": {
+                  "type": "object",
+                  "title": "One",
+                  "properties": {
+                    "incoming": {
+                      "$ref": "#/$defs/Profile"
+                    },
+                    "outgoing": {
+                      "type": "array",
+                      "items": [
+                        {
+                          "$ref": "#/$defs/Profile"
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              "required": [
+                "Nick"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^LastName$": true,
+                "^CreatedAt$": true,
+                "^Nick$": true,
+                "^FirstName$": true,
+                "^Id$": true,
+                "^AvatarURL$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

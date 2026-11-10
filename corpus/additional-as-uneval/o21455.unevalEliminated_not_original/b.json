@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "emailAddress": {
+                  "pattern": "^[^@^\\s]+@[^@^\\.^\\s]+(\\.[^@^\\.^\\s]*)*.gov.uk",
+                  "type": "string"
+                },
+                "mobileNumber": {
+                  "pattern": "^\\+44[\\d]{10}$",
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "emailAddress",
+                "mobileNumber",
+                "password"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^emailAddress$": true,
+                "^mobileNumber$": true,
+                "^password$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

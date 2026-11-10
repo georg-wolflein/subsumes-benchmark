@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "required": [
+                    "list_id"
+                  ]
+                },
+                {
+                  "required": [
+                    "list_code"
+                  ]
+                }
+              ],
+              "description": "Unsubscribe",
+              "examples": [
+                {
+                  "email": "test@test.com",
+                  "list_id": 1,
+                  "user_id": 1,
+                  "variant_id": 1
+                },
+                {
+                  "email": "test@test.com",
+                  "list_code": "123",
+                  "user_id": 1,
+                  "variant_id": null
+                }
+              ],
+              "properties": {
+                "email": {
+                  "_format": "email",
+                  "type": "string"
+                },
+                "user_id": {
+                  "type": "integer"
+                },
+                "utm_params": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "variant_id": {
+                  "anyOf": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "list_code": {
+                  "type": "string"
+                },
+                "list_id": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "email",
+                "user_id"
+              ],
+              "title": "Unsubscribe",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^list_id$": true,
+                "^variant_id$": true,
+                "^list_code$": true,
+                "^utm_params$": true,
+                "^email$": true,
+                "^user_id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "utm_campaign": {
+                  "type": "string"
+                },
+                "utm_content": {
+                  "type": "string"
+                },
+                "utm_medium": {
+                  "type": "string"
+                },
+                "utm_source": {
+                  "type": "string"
+                }
+              },
+              "title": "Utm params",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^utm_campaign$": true,
+                "^utm_content$": true,
+                "^utm_medium$": true,
+                "^utm_source$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

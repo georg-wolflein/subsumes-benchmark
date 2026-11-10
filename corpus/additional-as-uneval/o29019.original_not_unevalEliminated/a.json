@@ -1,0 +1,552 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_2",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "exists": {
+                  "type": "boolean"
+                },
+                "doiString": {
+                  "type": [
+                    "string"
+                  ]
+                }
+              },
+              "required": [
+                "exists"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^exists$": true,
+                "^doiString$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "exists": {
+                  "type": "boolean"
+                },
+                "parentIdentifierString": {
+                  "type": [
+                    "string"
+                  ]
+                }
+              },
+              "required": [
+                "exists"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^exists$": true,
+                "^parentIdentifierString$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Assessment of the titles in the metadata.",
+              "type": "object",
+              "properties": {
+                "title": {
+                  "$ref": "#/$defs/modern_11"
+                },
+                "alternateTitle": {
+                  "$ref": "#/$defs/modern_12"
+                }
+              },
+              "required": [
+                "title",
+                "alternateTitle"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^title$": true,
+                "^alternateTitle$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "precision": {
+                  "enum": [
+                    "Years",
+                    "Days",
+                    "Nanos",
+                    "UNDEFINED",
+                    "INVALID"
+                  ]
+                },
+                "validSearchFormat": {
+                  "enum": [
+                    true,
+                    false,
+                    "UNDEFINED"
+                  ]
+                },
+                "utcDateTimeString": {
+                  "type": "string"
+                },
+                "zoneSpecified": {
+                  "type": "string"
+                },
+                "exists": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "exists",
+                "precision",
+                "validSearchFormat",
+                "zoneSpecified",
+                "utcDateTimeString"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^validSearchFormat$": true,
+                "^precision$": true,
+                "^exists$": true,
+                "^utcDateTimeString$": true,
+                "^zoneSpecified$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "exists": {
+                  "type": "boolean"
+                },
+                "matchesIdentifiers": {
+                  "description": "Resolves to true if 'granule' specified as hierarchy level and both fileId & parentId provided OR if no hierarchy level specified.",
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "exists",
+                "matchesIdentifiers"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^exists$": true,
+                "^matchesIdentifiers$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Inventory Manager Analysis Schema",
+              "description": "The shape of the analysis object generated within Inventory Manager for a successfully parsed metadata document. Content within this object is related to the quality of the content of specific metadata fields, which can be used downstream to determine whether or not a given document should be accepted into another service, such as the OneStop search platform.",
+              "type": "object",
+              "properties": {
+                "identification": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "description": {
+                  "$ref": "#/$defs/modern_8"
+                },
+                "thumbnail": {
+                  "$ref": "#/$defs/modern_9"
+                },
+                "titles": {
+                  "$ref": "#/$defs/modern_10"
+                },
+                "spatialBounding": {
+                  "$ref": "#/$defs/modern_13"
+                },
+                "temporalBounding": {
+                  "$ref": "#/$defs/modern_14"
+                },
+                "dataAccess": {
+                  "$ref": "#/$defs/modern_16"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^titles$": true,
+                "^identification$": true,
+                "^dataAccess$": true,
+                "^spatialBounding$": true,
+                "^thumbnail$": true,
+                "^temporalBounding$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_12": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "exists": {
+                  "type": "boolean"
+                },
+                "characters": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "exists",
+                "characters"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^exists$": true,
+                "^characters$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Assessment of the description in the metadata.",
+              "type": "object",
+              "properties": {
+                "exists": {
+                  "type": "boolean"
+                },
+                "characters": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "exists",
+                "characters"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^exists$": true,
+                "^characters$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Assessment of the thumbnail information in the metadata.",
+              "type": "object",
+              "properties": {
+                "exists": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "exists"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^exists$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_13": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Assessment of the spatial bounding in the metadata.",
+              "type": "object",
+              "properties": {
+                "exists": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "exists"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^exists$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Assessment of the identifying elements of the metadata.",
+              "type": "object",
+              "properties": {
+                "fileIdentifier": {
+                  "$ref": "#/$defs/modern_4"
+                },
+                "doi": {
+                  "$ref": "#/$defs/modern_5"
+                },
+                "parentIdentifier": {
+                  "$ref": "#/$defs/modern_6"
+                },
+                "hierarchyLevelName": {
+                  "$ref": "#/$defs/modern_7"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^fileIdentifier$": true,
+                "^doi$": true,
+                "^parentIdentifier$": true,
+                "^hierarchyLevelName$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_14": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Assessment of the temporal bounding in the metadata.",
+              "type": "object",
+              "properties": {
+                "begin": {
+                  "$ref": "#/$defs/dateInfo"
+                },
+                "end": {
+                  "$ref": "#/$defs/dateInfo"
+                },
+                "instant": {
+                  "$ref": "#/$defs/dateInfo"
+                },
+                "range": {
+                  "$ref": "#/$defs/modern_15"
+                }
+              },
+              "required": [
+                "begin",
+                "end",
+                "instant",
+                "range"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^begin$": true,
+                "^end$": true,
+                "^instant$": true,
+                "^range$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "exists": {
+                  "type": "boolean"
+                },
+                "fileIdentifierString": {
+                  "type": [
+                    "string"
+                  ]
+                }
+              },
+              "required": [
+                "exists"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^exists$": true,
+                "^fileIdentifierString$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_16": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Assessment of the data access elements in the metadata.",
+              "type": "object",
+              "properties": {
+                "exists": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "exists"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^exists$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_15": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "descriptor": {
+                  "enum": [
+                    "BOUNDED",
+                    "INSTANT",
+                    "INVALID",
+                    "ONGOING",
+                    "UNDEFINED"
+                  ]
+                },
+                "beginLTEEnd": {
+                  "enum": [
+                    true,
+                    false,
+                    "UNDEFINED"
+                  ]
+                }
+              },
+              "required": [
+                "descriptor",
+                "beginLTEEnd"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^descriptor$": true,
+                "^beginLTEEnd$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "dateInfo": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "exists": {
+                  "type": "boolean"
+                },
+                "characters": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "exists",
+                "characters"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^exists$": true,
+                "^characters$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

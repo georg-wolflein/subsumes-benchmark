@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_2",
+  "$defs": {
+    "WatchDetails": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "projectName": {
+                  "type": "string"
+                },
+                "repoName": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^projectName$": true,
+                "^repoName$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "GetWatchesResponse",
+              "type": "object",
+              "properties": {
+                "watches": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/WatchDetails"
+                  }
+                }
+              },
+              "javaName": "GetWatchesResponse"
+            },
+            {
+              "patternProperties": {
+                "^watches$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

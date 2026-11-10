@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "retries": {
+                  "type": "integer"
+                },
+                "retryInterval": {
+                  "type": "integer"
+                },
+                "stopTime": {
+                  "_format": "date-time",
+                  "type": "string"
+                },
+                "startTime": {
+                  "_format": "date-time",
+                  "type": "string"
+                },
+                "location": {
+                  "_format": "uri",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "location"
+              ],
+              "title": "GetDiagnosticsRequest",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^retryInterval$": true,
+                "^stopTime$": true,
+                "^location$": true,
+                "^retries$": true,
+                "^startTime$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

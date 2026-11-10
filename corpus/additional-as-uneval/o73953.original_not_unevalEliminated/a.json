@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_5",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "locations": {
+                  "$ref": "#/$defs/LocationsType"
+                },
+                "version": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^locations$": true,
+                "^version$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Detectors": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/LocationType"
+                  }
+                },
+                "numsys": {
+                  "type": "integer"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^location$": true,
+                "^numsys$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "DetectorType": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "LocationType": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "detectors": {
+                  "$ref": "#/$defs/Detectors"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "file": {
+                  "type": "string",
+                  "enum": [
+                    "OK",
+                    "NONE"
+                  ]
+                },
+                "path": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^detectors$": true,
+                "^id$": true,
+                "^file$": true,
+                "^path$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "LocationsType": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "detector": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/DetectorType"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^detector$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "lane": {
+                  "type": "integer"
+                },
+                "code": {
+                  "type": "integer"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "faze": {
+                  "type": "integer"
+                },
+                "mode": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^mode$": true,
+                "^lane$": true,
+                "^id$": true,
+                "^faze$": true,
+                "^code$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

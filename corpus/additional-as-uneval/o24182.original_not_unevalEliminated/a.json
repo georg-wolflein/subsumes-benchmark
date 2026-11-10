@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Okapi Permission Object",
+              "type": "object",
+              "properties": {
+                "displayName": {
+                  "type": "string"
+                },
+                "visible": {
+                  "type": "boolean"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "subPermissions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "permissionName": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^subPermissions$": true,
+                "^permissionName$": true,
+                "^displayName$": true,
+                "^visible$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,215 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_3",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Feature support data query",
+              "description": "A query for referencing up feature support data",
+              "type": "object",
+              "properties": {
+                "source": {
+                  "oneOf": [
+                    {
+                      "title": "GitHub repository",
+                      "type": "string",
+                      "pattern": "([\\w-]+)\\/([\\w-]+)(#.*)?",
+                      "examples": [
+                        "ddbeck/common-web-feature-mockup"
+                      ]
+                    },
+                    {
+                      "title": "Shorthands",
+                      "description": "A shorthand for known data sources",
+                      "enum": [
+                        "bcd"
+                      ]
+                    }
+                  ]
+                },
+                "query": {
+                  "type": "string"
+                },
+                "ignoreMissing": {
+                  "type": "boolean"
+                },
+                "$comment": {
+                  "$ref": "#/$defs/comment"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^source$": true,
+                "^query$": true,
+                "^ignoreMissing$": true,
+                "^$comment$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "query": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Editorial Metadata",
+              "description": "Metadata to support feature group workflows",
+              "type": "object",
+              "properties": {
+                "managers": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "$ref": "#/$defs/manager"
+                  }
+                },
+                "expires": {
+                  "$ref": "#/$defs/date"
+                },
+                "lastModified": {
+                  "$ref": "#/$defs/date"
+                },
+                "lastReviewed": {
+                  "$ref": "#/$defs/date"
+                },
+                "status": {
+                  "enum": [
+                    "proposal",
+                    "active",
+                    "generated",
+                    "frozen",
+                    "pending-deletion"
+                  ]
+                },
+                "$comment": {
+                  "$ref": "#/$defs/comment"
+                },
+                "created": {
+                  "$ref": "#/$defs/date"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^$comment$": true,
+                "^managers$": true,
+                "^created$": true,
+                "^expires$": true,
+                "^status$": true,
+                "^lastReviewed$": true,
+                "^lastModified$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "editorialMetadata": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Common Web Platform Feature Group",
+              "description": "A feature or group of features of the web platform and related technologies",
+              "type": "object",
+              "properties": {
+                "identifier": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z-]+[a-z]$"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "editorialMetadata": {
+                  "$ref": "#/$defs/editorialMetadata"
+                },
+                "version": {
+                  "type": "string"
+                },
+                "shortName": {
+                  "type": "string"
+                },
+                "constituentFeatures": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "$ref": "#/$defs/query"
+                  }
+                },
+                "$comment": {
+                  "$ref": "#/$defs/comment"
+                },
+                "longName": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "identifier",
+                "shortName",
+                "longName",
+                "description",
+                "constituentFeatures"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^version$": true,
+                "^description$": true,
+                "^$comment$": true,
+                "^identifier$": true,
+                "^constituentFeatures$": true,
+                "^editorialMetadata$": true,
+                "^longName$": true,
+                "^shortName$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "manager": {
+      "oneOf": [
+        {
+          "title": "GitHub user name",
+          "type": "string",
+          "pattern": "@[\\w-]+",
+          "examples": [
+            "@ddbeck"
+          ]
+        },
+        {
+          "title": "Automation",
+          "type": "string",
+          "pattern": "\\[[\\w-]+\\]",
+          "examples": [
+            "[some-bot]"
+          ]
+        }
+      ]
+    },
+    "comment": {
+      "title": "A comment",
+      "description": "A comment for group authors to describe some internal detail.",
+      "type": "string"
+    }
+  }
+}

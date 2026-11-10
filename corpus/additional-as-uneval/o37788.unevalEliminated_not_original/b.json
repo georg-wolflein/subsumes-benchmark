@@ -1,0 +1,226 @@
+{
+  "$id": "https://tabris.com/texts-schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tabris.js Text Resources JSON Schema",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/textResources"
+    }
+  ],
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Scale Selector",
+              "type": "object",
+              "patternProperties": {
+                "^([0-9]\\.?[0-9]*)x$": {
+                  "$ref": "#/$defs/textResource"
+                }
+              },
+              "minProperties": 1
+            },
+            {
+              "patternProperties": {
+                "^([0-9]\\.?[0-9]*)x$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Locale Selector",
+              "type": "object",
+              "patternProperties": {
+                "^[a-zA-Z][a-zA-Z][a-zA-Z]?(-[\\-a-zA-Z0-9]+)?$": {
+                  "$ref": "#/$defs/textResource"
+                }
+              },
+              "minProperties": 1,
+              "not": {
+                "required": [
+                  "ios"
+                ]
+              }
+            },
+            {
+              "patternProperties": {
+                "^[a-zA-Z][a-zA-Z][a-zA-Z]?(-[\\-a-zA-Z0-9]+)?$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "textResources": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "$schema": {
+                  "type": "string"
+                },
+                "$scaleFactor": {
+                  "enum": [
+                    "nearest",
+                    "lower",
+                    "higher"
+                  ]
+                },
+                "$fallbackLanguage": {
+                  "type": "string",
+                  "pattern": "^[a-zA-Z][a-zA-Z][a-zA-Z]?(-[\\-a-zA-Z0-9]+)?$"
+                }
+              },
+              "patternProperties": {
+                "^[a-z][a-zA-Z][a-zA-Z0-9]+$": {
+                  "$ref": "#/$defs/textResource"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^$schema$": true,
+                "^$scaleFactor$": true,
+                "^$fallbackLanguage$": true,
+                "^[a-z][a-zA-Z][a-zA-Z0-9]+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Platform Selector",
+              "type": "object",
+              "properties": {
+                "ios": {
+                  "$ref": "#/$defs/textResource"
+                },
+                "android": {
+                  "$ref": "#/$defs/textResource"
+                }
+              },
+              "required": [
+                "ios",
+                "android"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^ios$": true,
+                "^android$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "textDefinition": {
+      "type": "string"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Resource Reference",
+              "type": "object",
+              "required": [
+                "ref"
+              ],
+              "properties": {
+                "ref": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^ref$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Inherit Marker",
+              "type": "object",
+              "properties": {
+                "inherit": {
+                  "enum": [
+                    true
+                  ]
+                }
+              },
+              "required": [
+                "inherit"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^inherit$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "textSelector": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/modern_2"
+        },
+        {
+          "$ref": "#/$defs/modern_3"
+        },
+        {
+          "$ref": "#/$defs/modern_4"
+        },
+        {
+          "$ref": "#/$defs/modern_5"
+        },
+        {
+          "$ref": "#/$defs/modern_6"
+        }
+      ]
+    },
+    "textResource": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/textDefinition"
+        },
+        {
+          "$ref": "#/$defs/textSelector"
+        }
+      ]
+    }
+  }
+}

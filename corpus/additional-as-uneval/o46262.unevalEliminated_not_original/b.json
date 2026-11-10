@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_2",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "integer",
+                  "description": "A unique ID for Security"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "symbol": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^_id$": true,
+                "^name$": true,
+                "^symbol$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Security Holding",
+              "type": "object",
+              "properties": {
+                "marketValue": {
+                  "type": "number"
+                },
+                "price": {
+                  "type": "number"
+                },
+                "quantity": {
+                  "type": "number"
+                },
+                "security": {
+                  "$ref": "#/$defs/Security"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^marketValue$": true,
+                "^price$": true,
+                "^quantity$": true,
+                "^security$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Security": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

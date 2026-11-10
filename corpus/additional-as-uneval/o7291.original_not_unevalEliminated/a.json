@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "dead_features": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "false_optionals": {
+      "$ref": "#/$defs/modern_2"
+    }
+  },
+  "type": "object",
+  "required": [
+    "dead_features",
+    "false_optionals"
+  ],
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "map of declared optional features that are dead with the time points in which are dead in case of evolution, empty list otherwise."
+            },
+            {
+              "additionalProperties": {
+                "type": "array",
+                "description": "List of time points in which optional feature are dead (i.e., can not be selected). Empty in case of no evolution.",
+                "items": {
+                  "type": "integer"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "map of declared optional features that are false optionals with the time points in which are false optionals in case of evolution, empty list otherwise."
+            },
+            {
+              "additionalProperties": {
+                "type": "array",
+                "description": "List of time points in which optional feature are false optionals (i.e., must be selected). Empty in case of no evolution.",
+                "items": {
+                  "type": "integer"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

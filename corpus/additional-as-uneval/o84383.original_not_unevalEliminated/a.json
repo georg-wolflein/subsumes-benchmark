@@ -1,0 +1,848 @@
+{
+  "$id": "https://tredly.com/docs/tredlyfile-json-schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "schema for an JSON Tredlyfile",
+  "type": "object",
+  "required": [
+    "container"
+  ],
+  "properties": {
+    "container": {
+      "type": "object",
+      "properties": {
+        "persistentStorage": {
+          "$ref": "#/$defs/modern_7"
+        },
+        "buildOptions": {
+          "$ref": "#/$defs/modern_8"
+        },
+        "customDNS": {
+          "type": "array",
+          "_uniqueItems": true,
+          "optional": true,
+          "default": {},
+          "items": {
+            "$ref": "#/$defs/validIpv4"
+          }
+        },
+        "technicalOptions": {
+          "$ref": "#/$defs/modern_9"
+        },
+        "replicate": {
+          "description": "When set to yes, this allows a container to be replicated within its container group. This is required if 'group' has been set.",
+          "type": "boolean",
+          "default": false
+        },
+        "startOrder": {
+          "description": "Order in which this container is started within your container group.",
+          "type": "integer",
+          "minimum": 1.0,
+          "maximum": 99.0,
+          "default": 1
+        },
+        "proxy": {
+          "$ref": "#/$defs/modern_10"
+        },
+        "resourceLimits": {
+          "$ref": "#/$defs/modern_12"
+        },
+        "operations": {
+          "$ref": "#/$defs/modern_13"
+        },
+        "name": {
+          "description": "Unique per partition. Hostname of this container will this value",
+          "type": "string",
+          "pattern": "^[-_a-zA-Z0-9]+$"
+        },
+        "firewall": {
+          "type": "object",
+          "optional": true,
+          "properties": {
+            "ipv4Whitelist": {
+              "type": "array",
+              "optional": true,
+              "_uniqueItems": true,
+              "default": {},
+              "items": {
+                "$ref": "#/$defs/validIpv4WithCidr"
+              }
+            },
+            "allowPorts": {
+              "$ref": "#/$defs/modern_14"
+            }
+          }
+        },
+        "restrictTo": {
+          "description": "The version of Tredly this file is compatible with.",
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(\\*|[0-9](?:\\.(\\*|[0-9]{1,}(?:\\.(\\*|[0-9]{1,}))?)?)?)$"
+            },
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "maxLength": 0
+            }
+          ]
+        },
+        "group": {
+          "description": "Add this container to a particular group.",
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^[-_a-zA-Z0-9]+$"
+            },
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "maxLength": 0
+            }
+          ],
+          "optional": true
+        }
+      }
+    }
+  },
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "installPackage"
+                  ]
+                },
+                "value": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "operationFolderFileMapping": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "layer4Proxy": {
+                  "description": "Layer4 proxy allows the container to use the Hosts external IP and forward traffic to your container on specific ports.",
+                  "type": "boolean",
+                  "default": false
+                },
+                "layer7Proxy": {
+                  "description": "Group of properties for URL(s) the container services and responds to.",
+                  "optional": true,
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_11"
+                  }
+                }
+              },
+              "required": [
+                "layer4Proxy"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^layer4Proxy$": true,
+                "^layer7Proxy$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "fileFolderMapping"
+                  ]
+                },
+                "source": {
+                  "type": "string"
+                },
+                "target": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "source",
+                "target"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^source$": true,
+                "^target$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "inOutPorts": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "in": {
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/$defs/validPort"
+                      },
+                      {
+                        "$ref": "#/$defs/validAnyPort"
+                      }
+                    ]
+                  },
+                  "default": {}
+                },
+                "out": {
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/$defs/validPort"
+                      },
+                      {
+                        "$ref": "#/$defs/validAnyPort"
+                      }
+                    ]
+                  },
+                  "default": {}
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^in$": true,
+                "^out$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "uriProtocolHttps": {
+      "type": "string",
+      "pattern": "^https:\\/\\/"
+    },
+    "validIpv4": {
+      "pattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"
+    },
+    "typeSizeMegabyte": {
+      "type": "string",
+      "pattern": "^[0-9]+(m|M)(b|B)?$"
+    },
+    "operationInstallPackage": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "modern_14": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "optional": true,
+              "_uniqueItems": true,
+              "properties": {
+                "udp": {
+                  "$ref": "#/$defs/inOutPorts"
+                },
+                "tcp": {
+                  "$ref": "#/$defs/inOutPorts"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^udp$": true,
+                "^tcp$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "resourceUnlimited": {
+      "type": "string",
+      "enum": [
+        "unlimited"
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "url": {
+                  "$ref": "#/$defs/uriProtocolHttp"
+                },
+                "cert": {
+                  "type": "null",
+                  "enum": [
+                    null
+                  ]
+                }
+              },
+              "required": [
+                "url",
+                "cert"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^url$": true,
+                "^cert$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "uriProtocolHttp": {
+      "type": "string",
+      "pattern": "^http:\\/\\/"
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "exec"
+                  ]
+                },
+                "value": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "value"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "operationExec": {
+      "$ref": "#/$defs/modern_6"
+    },
+    "validIpv4WithCidr": {
+      "type": "string",
+      "pattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(/([0-9]|[1-2][0-9]|3[0-2]))?$"
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "optional": true,
+              "description": "Create a persistent block of storage for this container",
+              "properties": {
+                "identifier": {
+                  "description": "A unique name to identify this block of persistent storage.",
+                  "type": "string",
+                  "pattern": "^[-_a-zA-Z0-9]+$"
+                },
+                "mountPoint": {
+                  "description": "The path within the container that the persistent storage will be mounted.",
+                  "$ref": "#/$defs/stringPath"
+                }
+              },
+              "required": [
+                "identifier",
+                "mountPoint"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^identifier$": true,
+                "^mountPoint$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "arrayOfOperations": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/operationExec"
+          },
+          {
+            "$ref": "#/$defs/operationFolderFileMapping"
+          },
+          {
+            "$ref": "#/$defs/operationInstallPackage"
+          }
+        ]
+      }
+    },
+    "modern_12": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Limit resources used by this container.",
+              "type": "object",
+              "properties": {
+                "maxCpu": {
+                  "description": "The total number of cores or percent this container can utilise.",
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^[0-9]+%$"
+                    },
+                    {
+                      "type": "integer",
+                      "minimum": 1.0
+                    },
+                    {
+                      "$ref": "#/$defs/resourceUnlimited"
+                    }
+                  ],
+                  "optional": true,
+                  "default": "unlimited"
+                },
+                "maxHdd": {
+                  "description": "The total amount of disk space, in Gigabytes (G) or Megabytes (M), this container.",
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/typeSizeMegabyte"
+                    },
+                    {
+                      "$ref": "#/$defs/typeSizeGigabyte"
+                    },
+                    {
+                      "$ref": "#/$defs/resourceUnlimited"
+                    }
+                  ],
+                  "optional": true,
+                  "default": "unlimited"
+                },
+                "maxRam": {
+                  "description": "The total amount of RAM, in Gigabytes (G) or Megabytes (M), this container can utilise.",
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/typeSizeMegabyte"
+                    },
+                    {
+                      "$ref": "#/$defs/typeSizeGigabyte"
+                    },
+                    {
+                      "$ref": "#/$defs/resourceUnlimited"
+                    }
+                  ],
+                  "optional": true,
+                  "default": "unlimited"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^maxCpu$": true,
+                "^maxHdd$": true,
+                "^maxRam$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "typeSizeGigabyte": {
+      "type": "string",
+      "pattern": "^[0-9]+(g|G)(b|B)?$"
+    },
+    "positiveInteger": {
+      "type": "integer",
+      "minimum": 0.0
+    },
+    "validAnyPort": {
+      "type": "string",
+      "enum": [
+        "any"
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "publish": {
+                  "description": "When set to true, on push to a Tredly host this container will be automatically validated and built.",
+                  "type": "boolean",
+                  "default": true
+                }
+              },
+              "required": [
+                "publish"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^publish$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "httpsRedirect": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "These options will be set when the container is created.",
+              "type": "object",
+              "optional": true,
+              "properties": {
+                "enforce_statfs": {
+                  "$ref": "#/$defs/binaryStringType"
+                },
+                "allow.sysvipc": {
+                  "$ref": "#/$defs/binaryStringType"
+                },
+                "exec.clean": {
+                  "$ref": "#/$defs/binaryStringType"
+                },
+                "exec.poststart": {
+                  "$ref": "#/$defs/stringPath"
+                },
+                "devfs_ruleset": {
+                  "$ref": "#/$defs/positiveInteger"
+                },
+                "exec.fib": {
+                  "$ref": "#/$defs/binaryStringType"
+                },
+                "allow.chflags": {
+                  "$ref": "#/$defs/binaryStringType"
+                },
+                "stop.timeout": {
+                  "$ref": "#/$defs/binaryStringType"
+                },
+                "allow.raw_sockets": {
+                  "$ref": "#/$defs/binaryStringType"
+                },
+                "exec.timeout": {
+                  "$ref": "#/$defs/binaryStringType"
+                },
+                "children.max": {
+                  "$ref": "#/$defs/positiveInteger"
+                },
+                "allow.set_hostname": {
+                  "$ref": "#/$defs/binaryStringType"
+                },
+                "allow.mount.nullfs": {
+                  "$ref": "#/$defs/binaryStringType"
+                },
+                "mount.devfs": {
+                  "$ref": "#/$defs/binaryStringType"
+                },
+                "allow.mount.procfs": {
+                  "$ref": "#/$defs/binaryStringType"
+                },
+                "securelevel": {
+                  "type": "integer",
+                  "minimum": -1.0,
+                  "maximum": 3.0
+                },
+                "allow.mount.devfs": {
+                  "$ref": "#/$defs/binaryStringType"
+                },
+                "allow.socket_af": {
+                  "$ref": "#/$defs/binaryStringType"
+                },
+                "allow.mount.tmpfs": {
+                  "$ref": "#/$defs/binaryStringType"
+                },
+                "exec.stop": {
+                  "$ref": "#/$defs/stringPath"
+                },
+                "mount.fdescfs": {
+                  "$ref": "#/$defs/binaryStringType"
+                },
+                "allow.quotas": {
+                  "$ref": "#/$defs/binaryStringType"
+                },
+                "exec.prestop": {
+                  "$ref": "#/$defs/stringPath"
+                },
+                "allow.mount": {
+                  "$ref": "#/$defs/binaryStringType"
+                },
+                "allow.mount.zfs": {
+                  "$ref": "#/$defs/binaryStringType"
+                },
+                "exec.prestart": {
+                  "$ref": "#/$defs/stringPath"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^allow.mount$": true,
+                "^exec.stop$": true,
+                "^allow.socket_af$": true,
+                "^allow.quotas$": true,
+                "^exec.poststart$": true,
+                "^enforce_statfs$": true,
+                "^allow.mount.procfs$": true,
+                "^exec.prestop$": true,
+                "^allow.mount.devfs$": true,
+                "^allow.raw_sockets$": true,
+                "^children.max$": true,
+                "^allow.mount.nullfs$": true,
+                "^exec.fib$": true,
+                "^devfs_ruleset$": true,
+                "^exec.clean$": true,
+                "^exec.timeout$": true,
+                "^securelevel$": true,
+                "^allow.chflags$": true,
+                "^allow.set_hostname$": true,
+                "^allow.sysvipc$": true,
+                "^exec.prestart$": true,
+                "^allow.mount.zfs$": true,
+                "^stop.timeout$": true,
+                "^allow.mount.tmpfs$": true,
+                "^mount.devfs$": true,
+                "^mount.fdescfs$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "httpRedirect": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_13": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "onStart": {
+                  "$ref": "#/$defs/arrayOfExecOperationsOnly"
+                },
+                "onStop": {
+                  "$ref": "#/$defs/arrayOfExecOperationsOnly"
+                },
+                "onCreate": {
+                  "$ref": "#/$defs/arrayOfOperations"
+                },
+                "onDestroy": {
+                  "$ref": "#/$defs/arrayOfExecOperationsOnly"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^onStart$": true,
+                "^onStop$": true,
+                "^onCreate$": true,
+                "^onDestroy$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "validPort": {
+      "type": "integer",
+      "minimum": 1.0,
+      "maximum": 65535.0
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "url": {
+                  "$ref": "#/$defs/uriProtocolHttps"
+                },
+                "cert": {
+                  "description": "SSL certificate to apply to a http redirect 'from' URL.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "url",
+                "cert"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^url$": true,
+                "^cert$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "stringPath": {
+      "type": "string",
+      "pattern": "^/"
+    },
+    "binaryStringType": {
+      "type": "string",
+      "enum": [
+        "0",
+        "1"
+      ]
+    },
+    "arrayOfExecOperationsOnly": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/operationExec"
+      }
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "url": {
+                  "type": "string"
+                },
+                "cert": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "enableWebsocket": {
+                  "optional": true,
+                  "type": "boolean",
+                  "default": false
+                },
+                "maxFileSize": {
+                  "type": "string",
+                  "optional": true,
+                  "pattern": "^[0-9]+(m|g)$",
+                  "default": "1m"
+                },
+                "redirects": {
+                  "type": "array",
+                  "optional": true,
+                  "items": {
+                    "type": "object",
+                    "anyOf": [
+                      {
+                        "$ref": "#/$defs/httpRedirect"
+                      },
+                      {
+                        "$ref": "#/$defs/httpsRedirect"
+                      }
+                    ]
+                  }
+                },
+                "errorResponse": {
+                  "type": "boolean",
+                  "default": true
+                }
+              },
+              "required": [
+                "url",
+                "cert"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^redirects$": true,
+                "^enableWebsocket$": true,
+                "^errorResponse$": true,
+                "^cert$": true,
+                "^maxFileSize$": true,
+                "^url$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

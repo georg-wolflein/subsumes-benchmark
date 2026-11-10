@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "items": {
+    "$ref": "#/$defs/GameBaseVariant"
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": [
+                    "null",
+                    "string"
+                  ]
+                },
+                "id": {
+                  "type": "string"
+                },
+                "contentId": {
+                  "type": "string"
+                },
+                "iconUrl": {
+                  "type": [
+                    "null",
+                    "string"
+                  ]
+                },
+                "internalName": {
+                  "type": "string"
+                },
+                "supportedGameModes": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              },
+              "required": [
+                "name",
+                "internalName",
+                "iconUrl",
+                "supportedGameModes",
+                "id",
+                "contentId"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^id$": true,
+                "^iconUrl$": true,
+                "^contentId$": true,
+                "^internalName$": true,
+                "^supportedGameModes$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "GameBaseVariant": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": [
+                "null",
+                "array"
+              ],
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

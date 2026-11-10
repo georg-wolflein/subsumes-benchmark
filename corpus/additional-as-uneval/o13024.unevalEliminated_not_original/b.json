@@ -1,0 +1,763 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_14",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": [
+                "array",
+                "object"
+              ],
+              "properties": {
+                "r": {
+                  "type": "number"
+                },
+                "g": {
+                  "type": "number"
+                },
+                "b": {
+                  "type": "number"
+                },
+                "a": {
+                  "type": "number"
+                }
+              },
+              "minItems": 0,
+              "maxItems": 4
+            },
+            {
+              "patternProperties": {
+                "^r$": true,
+                "^g$": true,
+                "^b$": true,
+                "^a$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "reflectivity": {
+                  "type": "number",
+                  "minimum": 0.0,
+                  "maximum": 1.0
+                },
+                "colour": {
+                  "$ref": "#/$defs/colour"
+                },
+                "refractivity": {
+                  "minimum": -1.0,
+                  "maximum": 1.0
+                },
+                "specularity": {
+                  "type": "number"
+                },
+                "type": {
+                  "enum": [
+                    "solid"
+                  ]
+                }
+              },
+              "required": [
+                "type",
+                "colour"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^colour$": true,
+                "^type$": true,
+                "^reflectivity$": true,
+                "^specularity$": true,
+                "^refractivity$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "polygon": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_15": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "position": {
+                  "$ref": "#/$defs/vector"
+                },
+                "direction": {
+                  "$ref": "#/$defs/vector"
+                },
+                "up": {
+                  "$ref": "#/$defs/vector"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^position$": true,
+                "^direction$": true,
+                "^up$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "type": {
+                  "enum": [
+                    "plane"
+                  ]
+                },
+                "position": {
+                  "$ref": "#/$defs/vector"
+                },
+                "normal": {
+                  "$ref": "#/$defs/vector"
+                },
+                "material": {
+                  "$ref": "#/$defs/material"
+                }
+              },
+              "required": [
+                "type",
+                "position",
+                "normal",
+                "material"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^position$": true,
+                "^normal$": true,
+                "^material$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "type": {
+                  "enum": [
+                    "direction"
+                  ]
+                },
+                "direction": {
+                  "$ref": "#/$defs/vector"
+                },
+                "colour": {
+                  "$ref": "#/$defs/colour"
+                }
+              },
+              "required": [
+                "type",
+                "direction",
+                "colour"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^direction$": true,
+                "^colour$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "cylinder": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "type": {
+                  "enum": [
+                    "polygon"
+                  ]
+                },
+                "points": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/vector"
+                  },
+                  "minItems": 3,
+                  "maxItems": 4,
+                  "_uniqueItems": true
+                },
+                "texCoords": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/vector"
+                  },
+                  "minItems": 3,
+                  "maxItems": 4
+                },
+                "material": {
+                  "$ref": "#/$defs/material"
+                }
+              },
+              "required": [
+                "type",
+                "points",
+                "material"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^points$": true,
+                "^texCoords$": true,
+                "^material$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "scaling": {
+                  "$ref": "#/$defs/vector"
+                },
+                "reflectivity": {
+                  "type": "number",
+                  "minimum": 0.0,
+                  "maximum": 1.0
+                },
+                "refractivity": {
+                  "minimum": -1.0,
+                  "maximum": 1.0
+                },
+                "specularity": {
+                  "type": "number"
+                },
+                "type": {
+                  "enum": [
+                    "texture"
+                  ]
+                }
+              },
+              "required": [
+                "type",
+                "path"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^scaling$": true,
+                "^path$": true,
+                "^reflectivity$": true,
+                "^specularity$": true,
+                "^refractivity$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "colour": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "direction": {
+                  "enum": [
+                    "horizontal",
+                    "vertical"
+                  ]
+                },
+                "reflectivity": {
+                  "type": "number",
+                  "minimum": 0.0,
+                  "maximum": 1.0
+                },
+                "refractivity": {
+                  "minimum": -1.0,
+                  "maximum": 1.0
+                },
+                "colour1": {
+                  "$ref": "#/$defs/colour"
+                },
+                "specularity": {
+                  "type": "number"
+                },
+                "type": {
+                  "enum": [
+                    "pattern-stripe"
+                  ]
+                },
+                "colour2": {
+                  "$ref": "#/$defs/colour"
+                },
+                "multiplier": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "type",
+                "direction",
+                "multiplier",
+                "colour1",
+                "colour2"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^colour1$": true,
+                "^type$": true,
+                "^colour2$": true,
+                "^multiplier$": true,
+                "^direction$": true,
+                "^reflectivity$": true,
+                "^specularity$": true,
+                "^refractivity$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_13": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "attenuation-quadratic": {
+                  "type": "number"
+                },
+                "colour": {
+                  "$ref": "#/$defs/colour"
+                },
+                "position": {
+                  "$ref": "#/$defs/vector"
+                },
+                "type": {
+                  "enum": [
+                    "point"
+                  ]
+                },
+                "attenuation-linear": {
+                  "type": "number"
+                },
+                "attenuation-constant": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "type",
+                "position",
+                "colour",
+                "attenuation-constant",
+                "attenuation-linear",
+                "attenuation-quadratic"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^attenuation-constant$": true,
+                "^attenuation-quadratic$": true,
+                "^colour$": true,
+                "^type$": true,
+                "^attenuation-linear$": true,
+                "^position$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "material": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/solidMaterial"
+        },
+        {
+          "$ref": "#/$defs/textureMaterial"
+        },
+        {
+          "$ref": "#/$defs/stripedMaterial"
+        }
+      ]
+    },
+    "directionLight": {
+      "$ref": "#/$defs/modern_7"
+    },
+    "stripedMaterial": {
+      "$ref": "#/$defs/modern_9"
+    },
+    "modern_14": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "lights": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "oneOf": [
+                      {
+                        "$ref": "#/$defs/directionLight"
+                      },
+                      {
+                        "$ref": "#/$defs/pointLight"
+                      }
+                    ]
+                  },
+                  "_uniqueItems": true
+                },
+                "ambientColour": {
+                  "$ref": "#/$defs/colour"
+                },
+                "objects": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "oneOf": [
+                      {
+                        "$ref": "#/$defs/sphere"
+                      },
+                      {
+                        "$ref": "#/$defs/torus"
+                      },
+                      {
+                        "$ref": "#/$defs/cone"
+                      },
+                      {
+                        "$ref": "#/$defs/cylinder"
+                      },
+                      {
+                        "$ref": "#/$defs/plane"
+                      },
+                      {
+                        "$ref": "#/$defs/polygon"
+                      }
+                    ]
+                  },
+                  "_uniqueItems": true
+                },
+                "backgroundColour": {
+                  "$ref": "#/$defs/colour"
+                },
+                "camera": {
+                  "$ref": "#/$defs/modern_15"
+                }
+              },
+              "required": [
+                "objects"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^objects$": true,
+                "^ambientColour$": true,
+                "^lights$": true,
+                "^camera$": true,
+                "^backgroundColour$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "minorRadius": {
+                  "type": "number",
+                  "minimum": 0.0
+                },
+                "type": {
+                  "enum": [
+                    "torus"
+                  ]
+                },
+                "majorRadius": {
+                  "type": "number",
+                  "minimum": 0.0
+                },
+                "position": {
+                  "$ref": "#/$defs/vector"
+                },
+                "material": {
+                  "$ref": "#/$defs/material"
+                }
+              },
+              "required": [
+                "type",
+                "position",
+                "majorRadius",
+                "minorRadius",
+                "material"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^majorRadius$": true,
+                "^material$": true,
+                "^type$": true,
+                "^minorRadius$": true,
+                "^position$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "type": {
+                  "enum": [
+                    "sphere"
+                  ]
+                },
+                "position": {
+                  "$ref": "#/$defs/vector"
+                },
+                "radius": {
+                  "type": "number",
+                  "minimum": 0.0
+                },
+                "material": {
+                  "$ref": "#/$defs/material"
+                }
+              },
+              "required": [
+                "type",
+                "position",
+                "radius",
+                "material"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^position$": true,
+                "^radius$": true,
+                "^material$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "plane": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "sphere": {
+      "$ref": "#/$defs/modern_10"
+    },
+    "vector": {
+      "$ref": "#/$defs/modern_11"
+    },
+    "modern_12": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "height": {
+                  "type": "number",
+                  "minimum": 0.0
+                },
+                "radius": {
+                  "type": "number",
+                  "minimum": 0.0
+                },
+                "type": {
+                  "enum": [
+                    "cone"
+                  ]
+                },
+                "position": {
+                  "$ref": "#/$defs/vector"
+                },
+                "material": {
+                  "$ref": "#/$defs/material"
+                }
+              },
+              "required": [
+                "type",
+                "position",
+                "radius",
+                "height",
+                "material"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^radius$": true,
+                "^material$": true,
+                "^type$": true,
+                "^height$": true,
+                "^position$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "torus": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "cone": {
+      "$ref": "#/$defs/modern_12"
+    },
+    "pointLight": {
+      "$ref": "#/$defs/modern_13"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "height": {
+                  "type": "number",
+                  "minimum": 0.0
+                },
+                "radius": {
+                  "type": "number",
+                  "minimum": 0.0
+                },
+                "type": {
+                  "enum": [
+                    "cylinder"
+                  ]
+                },
+                "position": {
+                  "$ref": "#/$defs/vector"
+                },
+                "material": {
+                  "$ref": "#/$defs/material"
+                }
+              },
+              "required": [
+                "type",
+                "position",
+                "radius",
+                "height",
+                "material"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^radius$": true,
+                "^material$": true,
+                "^type$": true,
+                "^height$": true,
+                "^position$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "solidMaterial": {
+      "$ref": "#/$defs/modern_6"
+    },
+    "textureMaterial": {
+      "$ref": "#/$defs/modern_8"
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": [
+                "array",
+                "object"
+              ],
+              "properties": {
+                "x": {
+                  "type": "number"
+                },
+                "y": {
+                  "type": "number"
+                },
+                "z": {
+                  "type": "number"
+                }
+              },
+              "minItems": 0,
+              "maxItems": 3
+            },
+            {
+              "patternProperties": {
+                "^x$": true,
+                "^y$": true,
+                "^z$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_2",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "content": {
+                  "type": "string"
+                },
+                "file": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "file"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^content$": true,
+                "^file$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Email resource",
+              "properties": {
+                "schedule_at": {
+                  "_format": "date-time",
+                  "type": "string"
+                },
+                "mail_template_code": {
+                  "type": "string"
+                },
+                "email": {
+                  "_format": "email",
+                  "type": "string"
+                },
+                "context": {
+                  "type": "string"
+                },
+                "params": {
+                  "type": "object"
+                },
+                "attachments": {
+                  "items": {
+                    "$ref": "#/$defs/attachment"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "email",
+                "mail_template_code"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^mail_template_code$": true,
+                "^params$": true,
+                "^context$": true,
+                "^attachments$": true,
+                "^schedule_at$": true,
+                "^email$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "attachment": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

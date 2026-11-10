@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "project description file",
+              "name": "Module",
+              "properties": {
+                "require": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "path": {
+                  "type": "object",
+                  "description": "path config",
+                  "properties": {
+                    "modules": {
+                      "type": "string",
+                      "description": "modules path"
+                    },
+                    "applications": {
+                      "type": "string",
+                      "description": "applications path"
+                    }
+                  }
+                }
+              },
+              "required": [
+                "require",
+                "path"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^require$": true,
+                "^path$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "This is a hash of module name (keys) and version constraints (values) that are required to run this module."
+            },
+            {
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,596 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_8",
+  "$defs": {
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "anyOf": [
+                {
+                  "required": [
+                    "applied"
+                  ]
+                },
+                {
+                  "required": [
+                    "failed"
+                  ]
+                },
+                {
+                  "required": [
+                    "newFailed"
+                  ]
+                },
+                {
+                  "required": [
+                    "reconciled"
+                  ]
+                }
+              ],
+              "properties": {
+                "applied": {
+                  "type": "integer",
+                  "minimum": 1.0
+                },
+                "failed": {
+                  "type": "integer",
+                  "minimum": 1.0
+                },
+                "newFailed": {
+                  "type": "integer",
+                  "minimum": 1.0
+                },
+                "reconciled": {
+                  "type": "integer",
+                  "minimum": 1.0
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^applied$": true,
+                "^failed$": true,
+                "^newFailed$": true,
+                "^reconciled$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "payload": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "anyOf": [
+                {
+                  "required": [
+                    "checked"
+                  ]
+                },
+                {
+                  "required": [
+                    "failureReason"
+                  ]
+                }
+              ],
+              "properties": {
+                "failureReason": {
+                  "$ref": "#/$defs/error"
+                },
+                "checked": {
+                  "type": "integer",
+                  "minimum": 0.0
+                },
+                "problems": {
+                  "type": "array",
+                  "minItems": 1,
+                  "$ref": "#/$defs/validationProblem"
+                },
+                "took": {
+                  "type": "integer"
+                },
+                "version": {
+                  "type": "integer"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^version$": true,
+                "^checked$": true,
+                "^took$": true,
+                "^problems$": true,
+                "^failureReason$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "anyOf": [
+                {
+                  "required": [
+                    "sync"
+                  ]
+                },
+                {
+                  "required": [
+                    "service"
+                  ]
+                }
+              ],
+              "properties": {
+                "sync": {
+                  "type": "string"
+                },
+                "service": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^sync$": true,
+                "^service$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "httpError": {
+      "required": [
+        "name",
+        "code"
+      ],
+      "properties": {
+        "name": {
+          "enum": [
+            "httperror"
+          ]
+        },
+        "code": {
+          "type": "integer"
+        }
+      }
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "anyOf": [
+                {
+                  "required": [
+                    "sent"
+                  ]
+                },
+                {
+                  "required": [
+                    "failed"
+                  ]
+                }
+              ],
+              "properties": {
+                "sent": {
+                  "type": "integer",
+                  "minimum": 1.0
+                },
+                "failed": {
+                  "type": "integer",
+                  "minimum": 1.0
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^sent$": true,
+                "^failed$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "nsError": {
+      "required": [
+        "name",
+        "code"
+      ],
+      "properties": {
+        "name": {
+          "enum": [
+            "nserror"
+          ]
+        },
+        "code": {
+          "type": "integer"
+        }
+      }
+    },
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "name"
+              ],
+              "properties": {
+                "name": {
+                  "enum": [
+                    "addons",
+                    "bookmarks",
+                    "clients",
+                    "forms",
+                    "history",
+                    "passwords",
+                    "prefs",
+                    "tabs"
+                  ]
+                },
+                "incoming": {
+                  "$ref": "#/$defs/modern_6"
+                },
+                "failureReason": {
+                  "$ref": "#/$defs/error"
+                },
+                "outgoing": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "$ref": "#/$defs/outgoingBatch"
+                  }
+                },
+                "took": {
+                  "type": "integer",
+                  "minimum": 1.0
+                },
+                "status": {
+                  "type": "string"
+                },
+                "validation": {
+                  "$ref": "#/$defs/modern_7"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^outgoing$": true,
+                "^took$": true,
+                "^status$": true,
+                "^name$": true,
+                "^validation$": true,
+                "^incoming$": true,
+                "^failureReason$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "otherError": {
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "enum": [
+            "othererror"
+          ]
+        },
+        "error": {
+          "type": "string"
+        }
+      }
+    },
+    "outgoingBatch": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "event": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 6
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "when",
+                "took"
+              ],
+              "properties": {
+                "why": {
+                  "enum": [
+                    "startup",
+                    "schedule",
+                    "score",
+                    "user",
+                    "tabs"
+                  ]
+                },
+                "failureReason": {
+                  "$ref": "#/$defs/error"
+                },
+                "didLogin": {
+                  "type": "boolean"
+                },
+                "took": {
+                  "type": "integer",
+                  "minimum": -1.0
+                },
+                "engines": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "$ref": "#/$defs/engine"
+                  }
+                },
+                "status": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "when": {
+                  "type": "integer"
+                },
+                "devices": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/device"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^took$": true,
+                "^status$": true,
+                "^when$": true,
+                "^why$": true,
+                "^devices$": true,
+                "^didLogin$": true,
+                "^engines$": true,
+                "^failureReason$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "sqlError": {
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "enum": [
+            "sqlerror"
+          ]
+        },
+        "code": {
+          "type": "integer"
+        }
+      }
+    },
+    "validationProblem": {
+      "required": [
+        "name",
+        "count"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "count": {
+          "type": "integer"
+        }
+      }
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "schema for Sync pings, documentation avaliable in toolkit/components/telemetry/docs/sync-ping.rst",
+              "type": "object",
+              "required": [
+                "version",
+                "syncs",
+                "why",
+                "uid"
+              ],
+              "properties": {
+                "discarded": {
+                  "type": "integer",
+                  "minimum": 1.0
+                },
+                "why": {
+                  "enum": [
+                    "shutdown",
+                    "schedule",
+                    "idchange"
+                  ]
+                },
+                "version": {
+                  "type": "integer",
+                  "minimum": 0.0
+                },
+                "deviceID": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "uid": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{32}$"
+                },
+                "events": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "$ref": "#/$defs/event"
+                  }
+                },
+                "syncs": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "$ref": "#/$defs/payload"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^version$": true,
+                "^events$": true,
+                "^deviceID$": true,
+                "^syncs$": true,
+                "^why$": true,
+                "^discarded$": true,
+                "^uid$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "error": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/httpError"
+        },
+        {
+          "$ref": "#/$defs/nsError"
+        },
+        {
+          "$ref": "#/$defs/shutdownError"
+        },
+        {
+          "$ref": "#/$defs/authError"
+        },
+        {
+          "$ref": "#/$defs/otherError"
+        },
+        {
+          "$ref": "#/$defs/unexpectedError"
+        },
+        {
+          "$ref": "#/$defs/sqlError"
+        }
+      ]
+    },
+    "authError": {
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "enum": [
+            "autherror"
+          ]
+        },
+        "from": {
+          "enum": [
+            "tokenserver",
+            "fxaccounts",
+            "hawkclient"
+          ]
+        }
+      }
+    },
+    "shutdownError": {
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "enum": [
+            "shutdownerror"
+          ]
+        }
+      }
+    },
+    "device": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "engine": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "unexpectedError": {
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "enum": [
+            "unexpectederror"
+          ]
+        },
+        "error": {
+          "type": "string"
+        }
+      }
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "os",
+                "id",
+                "version"
+              ],
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "os": {
+                  "type": "string"
+                },
+                "version": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^os$": true,
+                "^version$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "",
+              "properties": {
+                "minute": {
+                  "maximum": 59.0,
+                  "minimum": 0.0,
+                  "type": "integer"
+                },
+                "timezone": {
+                  "default": "UTC",
+                  "type": "string"
+                },
+                "year": {
+                  "type": "integer"
+                },
+                "hour": {
+                  "maximum": 23.0,
+                  "minimum": 0.0,
+                  "type": "integer"
+                },
+                "second": {
+                  "maximum": 59.0,
+                  "minimum": 0.0,
+                  "type": "integer"
+                },
+                "day": {
+                  "maximum": 31.0,
+                  "minimum": 1.0,
+                  "type": "integer"
+                },
+                "month": {
+                  "maximum": 12.0,
+                  "minimum": 1.0,
+                  "type": "integer"
+                }
+              },
+              "title": "date_time",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^year$": true,
+                "^month$": true,
+                "^timezone$": true,
+                "^day$": true,
+                "^second$": true,
+                "^hour$": true,
+                "^minute$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

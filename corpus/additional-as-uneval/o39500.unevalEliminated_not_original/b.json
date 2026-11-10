@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "schema for a currency",
+              "properties": {
+                "label": {
+                  "maxLength": 64,
+                  "type": "string"
+                },
+                "code": {
+                  "maxLength": 4,
+                  "type": "string"
+                },
+                "id": {
+                  "_format": "uuid",
+                  "type": "string"
+                },
+                "separator": {
+                  "properties": {
+                    "decimal": {
+                      "maxLength": 1,
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "thousands": {
+                      "maxLength": 1,
+                      "minLength": 1,
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "thousands",
+                    "decimal"
+                  ],
+                  "type": "object"
+                },
+                "prefix": {
+                  "maxLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "code",
+                "label",
+                "separator"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^code$": true,
+                "^label$": true,
+                "^id$": true,
+                "^separator$": true,
+                "^prefix$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

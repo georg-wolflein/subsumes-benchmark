@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "org.eclipse.persistence.testing.jaxb.annotations.xmlvalue.text.Top",
+  "type": "object",
+  "properties": {
+    "top": {
+      "$ref": "#/$defs/modern_2"
+    }
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "middle1Attr": {
+                  "type": "string"
+                },
+                "middle2Attr": {
+                  "type": "string"
+                },
+                "bottomAttr": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^middle1Attr$": true,
+                "^middle2Attr$": true,
+                "^bottomAttr$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "middle1": {
+                  "$ref": "#/$defs/Middle1"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^middle1$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Middle1": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

@@ -1,0 +1,361 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Schema for package.json.",
+  "properties": {
+    "__stdlib__": {
+      "description": "project meta data",
+      "properties": {
+        "envs": {
+          "description": "supported environments",
+          "properties": {
+            "browser": {
+              "type": "boolean"
+            },
+            "node": {
+              "type": "boolean"
+            }
+          },
+          "type": "object"
+        },
+        "stability": {
+          "description": "package stability",
+          "type": "string"
+        }
+      },
+      "required": [],
+      "type": "object"
+    },
+    "author": {
+      "$ref": "#/$defs/person",
+      "description": "package author"
+    },
+    "bin": {
+      "$ref": "#/$defs/path-map",
+      "description": "package executables"
+    },
+    "browser": {
+      "description": "main package entry point for a browser environment",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/path"
+        },
+        {
+          "$ref": "#/$defs/path-map"
+        }
+      ]
+    },
+    "bugs": {
+      "additionalProperties": false,
+      "description": "bug reporting",
+      "properties": {
+        "url": {
+          "$ref": "#/$defs/uri-http"
+        }
+      },
+      "required": [
+        "url"
+      ],
+      "type": "object"
+    },
+    "contributors": {
+      "description": "package contributors",
+      "items": {
+        "$ref": "#/$defs/person"
+      },
+      "minItems": 1,
+      "type": "array",
+      "_uniqueItems": true
+    },
+    "dependencies": {
+      "$ref": "#/$defs/dependency-map",
+      "description": "package dependencies"
+    },
+    "description": {
+      "description": "package description",
+      "minLength": 1,
+      "type": "string"
+    },
+    "devDependencies": {
+      "$ref": "#/$defs/dependency-map",
+      "description": "package development dependencies"
+    },
+    "directories": {
+      "additionalProperties": false,
+      "description": "package directories",
+      "properties": {
+        "benchmark": {
+          "$ref": "#/$defs/path"
+        },
+        "bin": {
+          "$ref": "#/$defs/path"
+        },
+        "data": {
+          "$ref": "#/$defs/path"
+        },
+        "doc": {
+          "$ref": "#/$defs/path"
+        },
+        "example": {
+          "$ref": "#/$defs/path"
+        },
+        "include": {
+          "$ref": "#/$defs/path"
+        },
+        "lib": {
+          "$ref": "#/$defs/path"
+        },
+        "man": {
+          "$ref": "#/$defs/path"
+        },
+        "scripts": {
+          "$ref": "#/$defs/path"
+        },
+        "src": {
+          "$ref": "#/$defs/path"
+        },
+        "test": {
+          "$ref": "#/$defs/path"
+        }
+      },
+      "required": [],
+      "type": "object"
+    },
+    "engines": {
+      "$ref": "#/$defs/string-map",
+      "description": "supported engines"
+    },
+    "gypfile": {
+      "description": "boolean instructing npm that a package is a binary addon that needs compiling and that npm should invoke node-gyp",
+      "type": "boolean"
+    },
+    "homepage": {
+      "$ref": "#/$defs/uri-http",
+      "description": "package homepage"
+    },
+    "keywords": {
+      "description": "package keywords",
+      "items": {
+        "$ref": "#/$defs/keyword"
+      },
+      "type": "array",
+      "_uniqueItems": true
+    },
+    "license": {
+      "description": "package license",
+      "minLength": 1,
+      "type": "string"
+    },
+    "licenses": {
+      "description": "package licenses",
+      "items": {
+        "$ref": "#/$defs/license-object"
+      },
+      "minItems": 1,
+      "type": "array",
+      "_uniqueItems": true
+    },
+    "main": {
+      "$ref": "#/$defs/path",
+      "description": "main package entry point"
+    },
+    "maintainers": {
+      "description": "package maintainers",
+      "items": {
+        "$ref": "#/$defs/person"
+      },
+      "minItems": 1,
+      "type": "array",
+      "_uniqueItems": true
+    },
+    "name": {
+      "description": "package name",
+      "pattern": "^@?[a-z](?:[-\\/]?[_a-z0-9]+)*$",
+      "type": "string"
+    },
+    "os": {
+      "description": "supported operating systems",
+      "items": {
+        "$ref": "#/$defs/operating-system"
+      },
+      "type": "array",
+      "_uniqueItems": true
+    },
+    "repositories": {
+      "description": "package repositories",
+      "items": {
+        "$ref": "#/$defs/repo-object"
+      },
+      "minItems": 1,
+      "type": "array",
+      "_uniqueItems": true
+    },
+    "repository": {
+      "$ref": "#/$defs/repo-object",
+      "description": "package repository"
+    },
+    "scripts": {
+      "$ref": "#/$defs/string-map",
+      "description": "package scripts"
+    },
+    "types": {
+      "$ref": "#/$defs/path",
+      "description": "package TypeScript definitions3"
+    },
+    "unpkg": {
+      "$ref": "#/$defs/path",
+      "description": "main package entry point for the unpkg CDN"
+    },
+    "version": {
+      "$ref": "#/$defs/semver",
+      "description": "package version"
+    }
+  },
+  "required": [
+    "name",
+    "version",
+    "description",
+    "author",
+    "contributors",
+    "main",
+    "scripts",
+    "homepage",
+    "repository",
+    "bugs",
+    "dependencies",
+    "devDependencies",
+    "engines",
+    "license",
+    "keywords"
+  ],
+  "type": "object",
+  "$defs": {
+    "dependency-map": {
+      "$ref": "#/$defs/string-map"
+    },
+    "email": {
+      "description": "email address",
+      "pattern": "@",
+      "type": "string"
+    },
+    "keyword": {
+      "pattern": "^[a-z0-9](?:[_\\.\\- ]?[a-z0-9]+)*$",
+      "type": "string"
+    },
+    "license-object": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "pattern": "[a-zA-Z0-9 _\\-\\.]+",
+          "type": "string"
+        },
+        "url": {
+          "$ref": "#/$defs/uri-http"
+        }
+      },
+      "required": [
+        "type",
+        "url"
+      ],
+      "type": "object"
+    },
+    "operating-system": {
+      "enum": [
+        "aix",
+        "darwin",
+        "freebsd",
+        "linux",
+        "macos",
+        "openbsd",
+        "sunos",
+        "win32",
+        "windows"
+      ],
+      "type": "string"
+    },
+    "path": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "path-map": {
+      "additionalProperties": false,
+      "patternProperties": {
+        ".+": {
+          "$ref": "#/$defs/path"
+        }
+      },
+      "type": "object"
+    },
+    "person": {
+      "description": "author, contributor, or maintainer",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/person-object"
+        }
+      ]
+    },
+    "person-object": {
+      "properties": {
+        "email": {
+          "$ref": "#/$defs/email"
+        },
+        "name": {
+          "pattern": "[a-zA-Z ]",
+          "type": "string"
+        },
+        "url": {
+          "$ref": "#/$defs/uri-http"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object"
+    },
+    "repo-object": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "pattern": "[a-zA-Z]",
+          "type": "string"
+        },
+        "url": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/uri-http"
+            },
+            {
+              "$ref": "#/$defs/uri-git"
+            }
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "url"
+      ],
+      "type": "object"
+    },
+    "semver": {
+      "description": "semantic version",
+      "pattern": "^\\d+\\.\\d+\\.\\d+",
+      "type": "string"
+    },
+    "string-map": {
+      "additionalProperties": false,
+      "patternProperties": {
+        ".+": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "uri-git": {
+      "pattern": "^git://",
+      "type": "string"
+    },
+    "uri-http": {
+      "pattern": "^https?://",
+      "type": "string"
+    }
+  }
+}

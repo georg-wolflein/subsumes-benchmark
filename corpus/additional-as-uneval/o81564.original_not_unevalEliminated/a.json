@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "city": {
+                  "type": "string"
+                },
+                "zip": {
+                  "type": "string",
+                  "pattern": "^[0-9]{5}(-[0-9]{4})?$"
+                },
+                "state": {
+                  "type": "string"
+                },
+                "country": {
+                  "type": "string"
+                },
+                "line1": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "line1",
+                "city",
+                "state",
+                "zip",
+                "country"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^zip$": true,
+                "^city$": true,
+                "^line1$": true,
+                "^state$": true,
+                "^country$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

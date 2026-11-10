@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "org.eclipse.persistence.testing.jaxb.annotations.xmlidref.self.Customer",
+  "type": "object",
+  "properties": {
+    "customer": {
+      "$ref": "#/$defs/modern_4"
+    }
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "contact": {
+                  "$ref": "#/$defs/Contact"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^contact$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Contact": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "PhoneNumber": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "idRefPhoneNumber": {
+                  "type": "string"
+                },
+                "idRefPhoneNumbers": {
+                  "type": "object",
+                  "properties": {
+                    "idRefPhoneNumber": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^idRefPhoneNumber$": true,
+                "^idRefPhoneNumbers$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "AddressSelfSource": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "address": {
+                  "$ref": "#/$defs/AddressSelfSource"
+                },
+                "phoneNumber": {
+                  "$ref": "#/$defs/PhoneNumber"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^address$": true,
+                "^phoneNumber$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

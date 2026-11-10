@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "packages": {
+      "items": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "framework": {
+            "default": false,
+            "description": "True if this package installs a new Mesos framework.",
+            "type": "boolean"
+          },
+          "currentVersion": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "versions": {
+            "$ref": "#/$defs/modern_1"
+          },
+          "tags": {
+            "items": {
+              "pattern": "^[^\\s]+$",
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "name",
+          "currentVersion",
+          "versions",
+          "description",
+          "tags"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "version": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "version",
+    "packages"
+  ],
+  "type": "object",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Maps software versions to their latest package.",
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "CreateCalculation",
+              "type": "object",
+              "properties": {
+                "etaSeconds": {
+                  "title": "ETA Seconds",
+                  "description": "The estimated amount of time it will take to compute the tax calculation",
+                  "type": "number",
+                  "minimum": 0.0
+                }
+              },
+              "required": [
+                "etaSeconds"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^etaSeconds$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "break": {
+      "enum": [
+        "none",
+        "paragraph",
+        "page"
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Stages",
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/modern_2"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "text",
+                "prompt"
+              ],
+              "properties": {
+                "stage": {
+                  "type": "string"
+                },
+                "description": {
+                  "$ref": "#/$defs/text"
+                },
+                "prompt": {
+                  "$ref": "#/$defs/text"
+                },
+                "text": {
+                  "type": "string"
+                },
+                "condition": {
+                  "type": "string"
+                },
+                "action": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^action$": true,
+                "^description$": true,
+                "^stage$": true,
+                "^condition$": true,
+                "^text$": true,
+                "^prompt$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "text": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Stage",
+              "properties": {
+                "stage": {
+                  "type": "string"
+                },
+                "choices": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_3"
+                  },
+                  "minItems": 1
+                },
+                "text": {
+                  "$ref": "#/$defs/text"
+                },
+                "end": {
+                  "$ref": "#/$defs/break"
+                },
+                "start": {
+                  "$ref": "#/$defs/break"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^end$": true,
+                "^stage$": true,
+                "^start$": true,
+                "^choices$": true,
+                "^text$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

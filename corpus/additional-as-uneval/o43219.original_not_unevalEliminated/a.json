@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_2",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Data1": {
+                  "type": "integer"
+                },
+                "Data2": {
+                  "type": "integer"
+                },
+                "Data3": {
+                  "type": "integer"
+                },
+                "Data4": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "Data1",
+                "Data2",
+                "Data3",
+                "Data4"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^Data1$": true,
+                "^Data2$": true,
+                "^Data3$": true,
+                "^Data4$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Id": {
+                  "type": "string"
+                },
+                "MetRequirements": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/Requirement"
+                  }
+                },
+                "PreviousMetRequirements": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/Requirement"
+                  }
+                }
+              },
+              "required": [
+                "Id",
+                "MetRequirements",
+                "PreviousMetRequirements"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^Id$": true,
+                "^MetRequirements$": true,
+                "^PreviousMetRequirements$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Requirement": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

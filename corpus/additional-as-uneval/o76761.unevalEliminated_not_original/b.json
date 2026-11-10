@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "text": {
+                  "type": "string"
+                },
+                "time": {
+                  "description": "UNIX time at which the comment was made",
+                  "minimum": 0.0,
+                  "type": "integer"
+                },
+                "username": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "text",
+                "time",
+                "username"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^text$": true,
+                "^time$": true,
+                "^username$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

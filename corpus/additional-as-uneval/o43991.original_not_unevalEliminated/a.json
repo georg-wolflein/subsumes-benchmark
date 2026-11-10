@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "SetChargingProfileRequest",
+              "type": "object",
+              "properties": {
+                "connectorId": {
+                  "type": "integer"
+                },
+                "csChargingProfiles": {
+                  "type": "object",
+                  "properties": {
+                    "chargingProfileKind": {
+                      "type": "string",
+                      "enum": [
+                        "Absolute",
+                        "Recurring",
+                        "Relative"
+                      ]
+                    },
+                    "validTo": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "validFrom": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "chargingProfilePurpose": {
+                      "type": "string",
+                      "enum": [
+                        "ChargePointMaxProfile",
+                        "TxDefaultProfile",
+                        "TxProfile"
+                      ]
+                    },
+                    "stackLevel": {
+                      "type": "integer"
+                    },
+                    "transactionId": {
+                      "type": "integer"
+                    },
+                    "chargingSchedule": {
+                      "type": "object",
+                      "properties": {
+                        "duration": {
+                          "type": "integer"
+                        },
+                        "chargingSchedulePeriod": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "startPeriod": {
+                                "type": "integer"
+                              },
+                              "limit": {
+                                "type": "number",
+                                "multipleOf": 0.1
+                              },
+                              "numberPhases": {
+                                "type": "integer"
+                              }
+                            },
+                            "required": [
+                              "startPeriod",
+                              "limit"
+                            ]
+                          }
+                        },
+                        "startSchedule": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "chargingRateUnit": {
+                          "type": "string",
+                          "enum": [
+                            "A",
+                            "W"
+                          ]
+                        },
+                        "minChargingRate": {
+                          "type": "number",
+                          "multipleOf": 0.1
+                        }
+                      },
+                      "required": [
+                        "chargingRateUnit",
+                        "chargingSchedulePeriod"
+                      ]
+                    },
+                    "chargingProfileId": {
+                      "type": "integer"
+                    },
+                    "recurrencyKind": {
+                      "type": "string",
+                      "enum": [
+                        "Daily",
+                        "Weekly"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "chargingProfileId",
+                    "stackLevel",
+                    "chargingProfilePurpose",
+                    "chargingProfileKind",
+                    "chargingSchedule"
+                  ]
+                }
+              },
+              "required": [
+                "connectorId",
+                "csChargingProfiles"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^connectorId$": true,
+                "^csChargingProfiles$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

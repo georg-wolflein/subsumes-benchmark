@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "name": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "description": {
+      "type": "string"
+    },
+    "namespace": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "version": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "downloadURL": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "updateURL": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "icon": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "include": {
+      "$ref": "#/$defs/multiString"
+    },
+    "exclude": {
+      "$ref": "#/$defs/multiString"
+    },
+    "match": {
+      "$ref": "#/$defs/multiString"
+    },
+    "require": {
+      "$ref": "#/$defs/multiString"
+    },
+    "resource": {
+      "$ref": "#/$defs/multiString"
+    },
+    "grant": {
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "unsafeWindow",
+              "GM_getValue",
+              "GM_setValue",
+              "GM_listValues",
+              "GM_deleteValue",
+              "GM_getResourceText",
+              "GM_getResourceURL",
+              "GM_addStyle",
+              "GM_log",
+              "GM_openInTab",
+              "GM_registerMenuCommand",
+              "GM_setClipboard",
+              "GM_xmlhttpRequest"
+            ]
+          },
+          "_uniqueItems": true
+        },
+        {
+          "type": "string",
+          "enum": [
+            "none"
+          ]
+        }
+      ],
+      "default": "none"
+    },
+    "run-at": {
+      "type": "string",
+      "enum": [
+        "document-end",
+        "document-start",
+        "document-idle"
+      ],
+      "default": "document-end"
+    },
+    "noframes": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "additionalProperties": {
+    "anyOf": [
+      {
+        "$ref": "#/$defs/multiString"
+      },
+      {
+        "type": "boolean"
+      }
+    ]
+  },
+  "required": [
+    "name",
+    "namespace",
+    "version"
+  ],
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "multiString": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/nonEmptyString"
+          },
+          "_uniqueItems": true
+        }
+      ]
+    }
+  }
+}

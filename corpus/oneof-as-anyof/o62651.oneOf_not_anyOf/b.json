@@ -1,0 +1,110 @@
+{
+  "$id": "http://n7space.com/asn1-lib-module-schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "ASN.1 Types Library Module Metadata schema",
+  "type": "object",
+  "properties": {
+    "name": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "description": {
+      "type": "string"
+    },
+    "submodules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/$defs/nonEmptyString"
+          },
+          "description": {
+            "type": "string"
+          },
+          "elements": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "$ref": "#/$defs/nonEmptyString"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "asn1Files": {
+                  "$ref": "#/$defs/fileList"
+                },
+                "additionalFiles": {
+                  "$ref": "#/$defs/fileList"
+                },
+                "conflicts": {
+                  "$ref": "#/$defs/referenceList"
+                },
+                "requires": {
+                  "$ref": "#/$defs/referenceList"
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "fileList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/nonEmptyString"
+      }
+    },
+    "externalReference": {
+      "type": "object",
+      "properties": {
+        "module": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "submodule": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "element": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      },
+      "required": [
+        "submodule",
+        "element"
+      ],
+      "additionalProperties": false
+    },
+    "referenceList": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/nonEmptyString"
+          },
+          {
+            "$ref": "#/$defs/externalReference"
+          }
+        ]
+      }
+    }
+  }
+}

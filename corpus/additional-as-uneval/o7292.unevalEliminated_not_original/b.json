@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Final configuration",
+              "type": "object",
+              "properties": {
+                "result": {
+                  "description": "The result may be sat or unsat",
+                  "type": "string"
+                },
+                "features": {
+                  "description": "list representing which features are selected if result = sat",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "attributes": {
+                  "description": "list representing the values of the attributes if result = sat",
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "value"
+                    ]
+                  }
+                },
+                "constraints": {
+                  "description": "list representing the constraints that causes the FM to be void",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "result"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^result$": true,
+                "^features$": true,
+                "^attributes$": true,
+                "^constraints$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

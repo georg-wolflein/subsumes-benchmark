@@ -1,0 +1,465 @@
+{
+  "$id": "http://iccl.inf.tu-dresden.de/marpl/schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MARPL rules",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "const": "rule"
+    },
+    "body": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/relational-atom"
+          },
+          {
+            "$ref": "#/$defs/set-atom"
+          },
+          {
+            "$ref": "#/$defs/specifier-atom"
+          }
+        ]
+      }
+    },
+    "head": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/relational-atom-with-dots"
+        },
+        {
+          "$ref": "#/$defs/relational-atom-with-function-term"
+        }
+      ]
+    }
+  },
+  "required": [
+    "body",
+    "head"
+  ],
+  "$defs": {
+    "object-variable": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "variable"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "type",
+        "name"
+      ]
+    },
+    "object-literal": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "literal"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "type",
+        "name"
+      ]
+    },
+    "literal-expression": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "literal-expression"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "type",
+        "name"
+      ]
+    },
+    "object-term": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/object-variable"
+        },
+        {
+          "$ref": "#/$defs/object-literal"
+        },
+        {
+          "$ref": "#/$defs/literal-expression"
+        }
+      ]
+    },
+    "set-literal": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "set-term"
+        },
+        "assignments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "attribute": {
+                "$ref": "#/$defs/object-term"
+              },
+              "value": {
+                "$ref": "#/$defs/object-term"
+              }
+            },
+            "required": [
+              "attribute",
+              "value"
+            ]
+          },
+          "_uniqueItems": true
+        }
+      },
+      "required": [
+        "type",
+        "assignments"
+      ]
+    },
+    "set-literal-with-dots": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "set-term"
+        },
+        "assignments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "attribute": {
+                "$ref": "#/$defs/object-term"
+              },
+              "value": {
+                "oneOf": [
+                  {
+                    "$ref": "#/$defs/object-term"
+                  },
+                  {
+                    "$ref": "#/$defs/dot"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "attribute",
+              "value"
+            ]
+          },
+          "_uniqueItems": true
+        }
+      },
+      "required": [
+        "type",
+        "assignments"
+      ]
+    },
+    "set-variable": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "set-variable"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "type",
+        "name"
+      ]
+    },
+    "set-term": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/set-literal"
+        },
+        {
+          "$ref": "#/$defs/set-variable"
+        }
+      ]
+    },
+    "set-atom": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "set-atom"
+        },
+        "attribute": {
+          "$ref": "#/$defs/object-term"
+        },
+        "value": {
+          "$ref": "#/$defs/object-term"
+        },
+        "set": {
+          "$ref": "#/$defs/set-term"
+        }
+      },
+      "required": [
+        "type",
+        "attribute",
+        "value",
+        "set"
+      ]
+    },
+    "relational-atom-base": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "relational-atom"
+        },
+        "predicate": {
+          "$ref": "#/$defs/object-term"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/object-term"
+          }
+        },
+        "annotation": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "type",
+        "predicate",
+        "arguments",
+        "annotation"
+      ]
+    },
+    "function-term": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "function-term"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/object-term"
+              },
+              {
+                "$ref": "#/$defs/set-term"
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "type",
+        "name",
+        "arguments"
+      ]
+    },
+    "relational-atom": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/relational-atom-base"
+        },
+        {
+          "properties": {
+            "annotation": {
+              "$ref": "#/$defs/set-term"
+            }
+          }
+        }
+      ]
+    },
+    "relational-atom-with-dots": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/relational-atom-base"
+        },
+        {
+          "properties": {
+            "annotation": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/set-literal-with-dots"
+                },
+                {
+                  "$ref": "#/$defs/set-variable"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "relational-atom-with-function-term": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/relational-atom-base"
+        },
+        {
+          "properties": {
+            "annotation": {
+              "$ref": "#/$defs/function-term"
+            }
+          }
+        }
+      ]
+    },
+    "placeholder": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "star",
+            "plus"
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "assignment": {
+      "type": "object",
+      "properties": {
+        "attribute": {
+          "$ref": "#/$defs/object-term"
+        },
+        "value": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/object-term"
+            },
+            {
+              "$ref": "#/$defs/placeholder"
+            }
+          ]
+        }
+      },
+      "required": [
+        "attribute",
+        "value"
+      ]
+    },
+    "dot": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "dot"
+        },
+        "fromSpecifier": {
+          "$ref": "#/$defs/set-variable"
+        },
+        "item": {
+          "$ref": "#/$defs/object-literal"
+        }
+      }
+    },
+    "specifier": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "open-specifier",
+            "closed-specifier"
+          ]
+        },
+        "assigmnents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/assignment"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "assignments"
+      ]
+    },
+    "specifier-expression": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "union",
+            "intersection",
+            "difference"
+          ]
+        },
+        "specifiers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/specifier-term"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "type",
+        "specifiers"
+      ]
+    },
+    "specifier-term": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/specifier"
+        },
+        {
+          "$ref": "#/$defs/specifier-expression"
+        }
+      ]
+    },
+    "specifier-atom": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "specifier-atom"
+        },
+        "specifier": {
+          "$ref": "#/$defs/specifier-term"
+        },
+        "set": {
+          "$ref": "#/$defs/set-variable"
+        }
+      },
+      "required": [
+        "specifier",
+        "set"
+      ]
+    }
+  }
+}

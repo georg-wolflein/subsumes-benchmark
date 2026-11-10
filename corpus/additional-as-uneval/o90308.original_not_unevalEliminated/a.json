@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Ground",
+              "type": "object",
+              "description": "Ground defines the main surface of the web scene, based on elevation layers. This object defines the ground properties to be set in the slides.",
+              "properties": {
+                "transparency": {
+                  "type": "integer",
+                  "description": "The transparency of the ground surface (including basemap). The value has to lie between `100` (full transparency) and `0` (full opacity).",
+                  "minimum": 0.0,
+                  "maximum": 100.0
+                }
+              },
+              "esriDocumentation": {
+                "examples": [
+                  {
+                    "title": "ground",
+                    "code": {
+                      "ground": {
+                        "transparency": 30
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "patternProperties": {
+                "^transparency$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

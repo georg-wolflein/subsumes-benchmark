@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "flutter.yaml",
+              "type": "object",
+              "properties": {
+                "services": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "assets": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "uses-material-design": {
+                  "type": "boolean"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "fonts": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_2"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^uses-material-design$": true,
+                "^fonts$": true,
+                "^name$": true,
+                "^services$": true,
+                "^assets$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "family": {
+                  "type": "string"
+                },
+                "fonts": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_3"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^family$": true,
+                "^fonts$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "asset": {
+                  "type": "string"
+                },
+                "weight": {
+                  "type": "integer"
+                },
+                "style": {
+                  "enum": [
+                    "normal",
+                    "italic"
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^asset$": true,
+                "^weight$": true,
+                "^style$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "test json schema",
+              "type": "object",
+              "properties": {
+                "optObj": {
+                  "type": "object",
+                  "default": {
+                    "hello": "world"
+                  }
+                },
+                "optArray": {
+                  "type": "array",
+                  "default": [
+                    "my-default-value"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "optEmpty": {
+                  "type": "array",
+                  "default": []
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^optObj$": true,
+                "^optArray$": true,
+                "^optEmpty$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

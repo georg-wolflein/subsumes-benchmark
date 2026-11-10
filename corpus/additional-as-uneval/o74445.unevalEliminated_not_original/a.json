@@ -1,0 +1,257 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Organization",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "organization"
+      ]
+    },
+    "division_id": {
+      "type": "string",
+      "pattern": "^ocd-division/country:[a-z]{2}$"
+    },
+    "gid": {
+      "type": "integer"
+    },
+    "row": {
+      "type": "integer"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$"
+    },
+    "parents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/complex_string"
+          },
+          "date_first_cited": {
+            "$ref": "#/$defs/complex_date"
+          },
+          "date_last_cited": {
+            "$ref": "#/$defs/complex_date"
+          },
+          "classification": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": "string",
+                "enum": [
+                  "Administrative",
+                  "Command",
+                  "Informal",
+                  "Organization/Administrative"
+                ]
+              },
+              "sources": {
+                "$ref": "#/$defs/sources"
+              },
+              "confidence": {
+                "$ref": "#/$defs/confidence"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "value"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "id"
+        ]
+      }
+    },
+    "name": {
+      "$ref": "#/$defs/complex_string"
+    },
+    "root_name": {
+      "$ref": "#/$defs/simple_string"
+    },
+    "other_names": {
+      "$ref": "#/$defs/complex_string_array"
+    },
+    "classification": {
+      "$ref": "#/$defs/complex_string_array"
+    },
+    "sites": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/complex_string"
+          },
+          "date_first_cited": {
+            "$ref": "#/$defs/complex_date"
+          },
+          "date_last_cited": {
+            "$ref": "#/$defs/complex_date"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "id"
+        ]
+      }
+    },
+    "areas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/complex_string"
+          },
+          "date_first_cited": {
+            "$ref": "#/$defs/complex_date"
+          },
+          "date_last_cited": {
+            "$ref": "#/$defs/complex_date"
+          },
+          "open_ended": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "value"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "id"
+        ]
+      }
+    },
+    "memberships": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "organization_id": {
+            "$ref": "#/$defs/complex_string"
+          },
+          "date_first_cited": {
+            "$ref": "#/$defs/complex_date"
+          },
+          "date_last_cited": {
+            "$ref": "#/$defs/complex_date"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "organization_id"
+        ]
+      }
+    },
+    "notes": {
+      "$ref": "#/$defs/simple_string"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "type",
+    "division_id",
+    "gid",
+    "row",
+    "id",
+    "name"
+  ],
+  "$defs": {
+    "simple_string": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "value"
+      ]
+    },
+    "complex_date": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string",
+          "pattern": "^[0-9]{4}(-[0-9]{2}){0,2}$"
+        },
+        "sources": {
+          "$ref": "#/$defs/sources"
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "value"
+      ]
+    },
+    "complex_string": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string"
+        },
+        "sources": {
+          "$ref": "#/$defs/sources"
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "value"
+      ]
+    },
+    "complex_string_array": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sources": {
+          "$ref": "#/$defs/sources"
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "value"
+      ]
+    },
+    "confidence": {
+      "type": "string",
+      "enum": [
+        "Low",
+        "Medium",
+        "High"
+      ]
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

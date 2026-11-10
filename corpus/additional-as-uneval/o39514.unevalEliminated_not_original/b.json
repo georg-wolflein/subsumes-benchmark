@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "schema for a vendor",
+              "properties": {
+                "id": {
+                  "_format": "uuid",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "The vendor name, e.g. Eviratec",
+                  "maxLength": 64,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "name"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

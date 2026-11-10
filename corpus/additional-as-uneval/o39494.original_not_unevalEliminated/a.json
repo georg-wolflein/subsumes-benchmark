@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "schema for an app client",
+              "properties": {
+                "app_id": {
+                  "_format": "uuid",
+                  "type": "string"
+                },
+                "id": {
+                  "_format": "uuid",
+                  "type": "string"
+                },
+                "label": {
+                  "maxLength": 64,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "app_id",
+                "label"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^app_id$": true,
+                "^id$": true,
+                "^label$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

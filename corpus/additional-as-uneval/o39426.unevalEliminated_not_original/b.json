@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_2",
+  "$defs": {
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "CreateRepoRequest",
+              "type": "object",
+              "properties": {
+                "bumper": {
+                  "type": "string",
+                  "description": "The bumper to be used when creating a repo."
+                },
+                "scmUrl": {
+                  "type": "string",
+                  "description": "The URL to get the repo, if provided can help when trying to clone a repo."
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Description of the repo."
+                },
+                "history": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/CreateHistory"
+                  },
+                  "description": "Seed the repo with history."
+                }
+              },
+              "javaName": "CreateRepoRequest"
+            },
+            {
+              "patternProperties": {
+                "^bumper$": true,
+                "^scmUrl$": true,
+                "^description$": true,
+                "^history$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "version": {
+                  "type": "string",
+                  "description": "Version of the new history."
+                },
+                "commitId": {
+                  "type": "string",
+                  "description": "Commit for the element in history."
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "An optional time for when the commit was created."
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^version$": true,
+                "^commitId$": true,
+                "^createdAt$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "CreateHistory": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

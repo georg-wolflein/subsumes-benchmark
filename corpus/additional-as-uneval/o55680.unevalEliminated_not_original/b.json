@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Todo",
+              "type": "object",
+              "properties": {
+                "status_name": {
+                  "description": "The name of the status",
+                  "type": "string",
+                  "maxLength": 255
+                },
+                "id": {
+                  "type": "string",
+                  "description": "The unique identifier for a todo."
+                },
+                "updated": {
+                  "description": "The date and time that the todo was last modified",
+                  "type": "string",
+                  "format": "datetime"
+                },
+                "status": {
+                  "type": "string",
+                  "description": "2 if task has been completed",
+                  "enum": [
+                    "1",
+                    "2"
+                  ]
+                },
+                "title": {
+                  "type": "string",
+                  "description": "The title of the todo",
+                  "minLength": 1,
+                  "maxLength": 255
+                },
+                "created": {
+                  "description": "The date and time that the todo was created",
+                  "type": "string",
+                  "format": "datetime"
+                }
+              },
+              "required": [
+                "title",
+                "status",
+                "created",
+                "updated"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^status_name$": true,
+                "^updated$": true,
+                "^status$": true,
+                "^id$": true,
+                "^title$": true,
+                "^created$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

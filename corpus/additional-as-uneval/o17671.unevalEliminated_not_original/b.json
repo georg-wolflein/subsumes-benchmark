@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/MyAlias",
+  "$defs": {
+    "interface-0": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "alias": {
+                  "$ref": "#/$defs/MyAlias"
+                },
+                "self": {
+                  "$ref": "#/$defs/interface-0"
+                }
+              },
+              "required": [
+                "alias",
+                "self"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^alias$": true,
+                "^self$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "MyAlias": {
+      "$ref": "#/$defs/interface-0"
+    }
+  }
+}

@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_5",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "title": "device",
+              "properties": {
+                "locations": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/Location"
+                  }
+                },
+                "deviceInfo": {
+                  "$ref": "#/$defs/DeviceInfo"
+                },
+                "guid": {
+                  "type": "string"
+                },
+                "uri": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/DeviceStatus"
+                  }
+                },
+                "configuration": {
+                  "$ref": "#/$defs/DeviceConfigurationArchive"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^locations$": true,
+                "^configuration$": true,
+                "^uri$": true,
+                "^deviceInfo$": true,
+                "^status$": true,
+                "^guid$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Location": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "DeviceInfo": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "configurations": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^configurations$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {}
+            },
+            {
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "deviceType": {
+                  "type": "string",
+                  "enum": [
+                    "OTHER",
+                    "STREETLIGHT_AREA",
+                    "VARIABLE_MESSAGE_SIGN",
+                    "PARKING_HOUSE",
+                    "DETECTOR",
+                    "TRAFFIC_LIGHT_CONTROLLER"
+                  ]
+                },
+                "manufacturer": {
+                  "type": "string"
+                },
+                "designation": {
+                  "type": "string"
+                },
+                "version": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^deviceType$": true,
+                "^manufacturer$": true,
+                "^designation$": true,
+                "^version$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "DeviceStatus": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "DeviceConfigurationArchive": {
+      "$ref": "#/$defs/modern_2"
+    }
+  }
+}

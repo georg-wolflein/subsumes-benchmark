@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_2",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "s": {
+                  "type": "string"
+                },
+                "m": {
+                  "type": "string"
+                },
+                "l": {
+                  "type": "string"
+                },
+                "default": {
+                  "type": "string"
+                },
+                "xl": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^xl$": true,
+                "^l$": true,
+                "^s$": true,
+                "^default$": true,
+                "^m$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "s": {
+                  "type": "string"
+                },
+                "m": {
+                  "type": "string"
+                },
+                "alternateText": {
+                  "type": "string"
+                },
+                "options": {
+                  "$ref": "#/$defs/options"
+                },
+                "l": {
+                  "type": "string"
+                },
+                "default": {
+                  "type": "string"
+                },
+                "xl": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "alternateText",
+                "default"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^alternateText$": true,
+                "^xl$": true,
+                "^l$": true,
+                "^s$": true,
+                "^options$": true,
+                "^default$": true,
+                "^m$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "options": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

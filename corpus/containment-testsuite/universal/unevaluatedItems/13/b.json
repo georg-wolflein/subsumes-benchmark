@@ -1,0 +1,78 @@
+{
+  "anyOf": [
+    {
+      "type": "array",
+      "prefixItems": [
+        {
+          "const": "foo"
+        }
+      ],
+      "if": {
+        "prefixItems": [
+          true,
+          {
+            "const": "bar"
+          }
+        ]
+      },
+      "then": {
+        "prefixItems": [
+          true,
+          true,
+          {
+            "const": "then"
+          }
+        ]
+      },
+      "else": {
+        "prefixItems": [
+          true,
+          true,
+          true,
+          {
+            "const": "else"
+          }
+        ]
+      },
+      "unevaluatedItems": false
+    },
+    {
+      "not": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "const": "foo"
+          }
+        ],
+        "if": {
+          "prefixItems": [
+            true,
+            {
+              "const": "bar"
+            }
+          ]
+        },
+        "then": {
+          "prefixItems": [
+            true,
+            true,
+            {
+              "const": "then"
+            }
+          ]
+        },
+        "else": {
+          "prefixItems": [
+            true,
+            true,
+            true,
+            {
+              "const": "else"
+            }
+          ]
+        },
+        "unevaluatedItems": false
+      }
+    }
+  ]
+}

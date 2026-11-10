@@ -1,0 +1,185 @@
+{
+  "$id": "http://www.cornutum.org/tcases/system-test-schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_3",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Defines a test case for a system function",
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "minimum": 0.0
+                },
+                "name": {
+                  "type": "string"
+                },
+                "has": {
+                  "$ref": "#/$defs/annotation"
+                }
+              },
+              "required": [
+                "id"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^name$": true,
+                "^has$": true
+              },
+              "additionalProperties": {
+                "$ref": "#/$defs/inputDef"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "annotation": {
+      "description": "Defines a set of output annotations",
+      "type": "object",
+      "patternProperties": {
+        ".": {
+          "type": "string"
+        }
+      },
+      "minProperties": 1
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "has": {
+                  "$ref": "#/$defs/annotation"
+                },
+                "value": {
+                  "type": "string"
+                },
+                "NA": {
+                  "type": "boolean"
+                },
+                "failure": {
+                  "type": "boolean"
+                }
+              },
+              "oneOf": [
+                {
+                  "required": [
+                    "value"
+                  ],
+                  "properties": {
+                    "NA": false
+                  }
+                },
+                {
+                  "required": [
+                    "NA"
+                  ],
+                  "properties": {
+                    "value": false,
+                    "failure": false
+                  }
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^has$": true,
+                "^value$": true,
+                "^NA$": true,
+                "^failure$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "testCase": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "bindingDef": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "inputDef": {
+      "description": "Defines bindings for a set of input variables of the same type",
+      "type": "object",
+      "minProperties": 1,
+      "patternProperties": {
+        ".": {
+          "$ref": "#/$defs/bindingDef"
+        }
+      }
+    },
+    "function": {
+      "description": "Defines the test cases for a system function",
+      "oneOf": [
+        {
+          "description": "Deprecated: For compatibility with version<=3.0.1",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/testCase"
+          }
+        },
+        {
+          "type": "object",
+          "properties": {
+            "testCases": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/testCase"
+              }
+            },
+            "has": {
+              "$ref": "#/$defs/annotation"
+            }
+          },
+          "required": [
+            "testCases"
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "System Test Model",
+              "description": "Defines test cases for a system (version: ${project.version})",
+              "type": "object",
+              "properties": {
+                "system": {
+                  "type": "string"
+                },
+                "has": {
+                  "$ref": "#/$defs/annotation"
+                }
+              },
+              "required": [
+                "system"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^system$": true,
+                "^has$": true
+              },
+              "additionalProperties": {
+                "$ref": "#/$defs/function"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

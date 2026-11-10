@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "repositories": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/pkgRepo"
+      }
+    }
+  },
+  "required": [
+    "repositories"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "httpUri": {
+      "type": "string",
+      "allOf": [
+        {
+          "format": "uri"
+        },
+        {
+          "pattern": "^https?://"
+        }
+      ]
+    },
+    "pkgRepo": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "uri": {
+          "$ref": "#/$defs/httpUri"
+        }
+      },
+      "required": [
+        "name",
+        "uri"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

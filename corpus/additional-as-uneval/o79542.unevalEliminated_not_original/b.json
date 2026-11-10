@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "notifications": {
+                  "$ref": "#/$defs/notifications"
+                },
+                "internalFlag": {
+                  "$ref": "#/$defs/internalFlag"
+                }
+              },
+              "required": [
+                "notifications",
+                "internalFlag"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^notifications$": true,
+                "^internalFlag$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "internalFlag": {
+      "type": "boolean",
+      "description": "whether this candidate is an internal"
+    },
+    "notifications": {
+      "type": "boolean",
+      "description": "whether this candidate wants to receive email alerts about new jobs"
+    }
+  }
+}

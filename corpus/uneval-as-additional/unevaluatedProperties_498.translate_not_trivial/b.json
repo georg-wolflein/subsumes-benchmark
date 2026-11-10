@@ -1,0 +1,351 @@
+{
+  "$id": "https://l2beat.com/config.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "^.+$": {
+                  "type": "object",
+                  "required": [
+                    "type"
+                  ],
+                  "properties": {
+                    "type": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^.+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Description for contracts and their methods",
+              "patternProperties": {
+                "^.+$": {
+                  "$ref": "#/$defs/modern_7"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^.+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "An object which keys are contract identifiers and values are names of shared modules",
+              "type": "object",
+              "patternProperties": {
+                "^.+$": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^.+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Discovery config",
+              "description": "A configuration file for smart contract discovery",
+              "type": "object",
+              "required": [
+                "name",
+                "initialAddresses"
+              ],
+              "properties": {
+                "name": {
+                  "description": "An identifier for this project",
+                  "type": "string"
+                },
+                "maxDepth": {
+                  "description": "Maximum depth of discovery",
+                  "type": "integer",
+                  "minimum": 0.0
+                },
+                "overrides": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "initialAddresses": {
+                  "description": "A list of addresses that discovery starts from",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/address"
+                  }
+                },
+                "descriptions": {
+                  "$ref": "#/$defs/modern_6"
+                },
+                "names": {
+                  "$ref": "#/$defs/modern_9"
+                },
+                "maxAddresses": {
+                  "description": "Maximum number of addresses that a discovery script can put on its stack",
+                  "type": "integer",
+                  "minimum": 0.0
+                },
+                "$schema": {
+                  "type": "string"
+                },
+                "sharedModules": {
+                  "$ref": "#/$defs/modern_10"
+                },
+                "chain": {
+                  "description": "Chain on which to run the discovery on",
+                  "type": "string",
+                  "enum": [
+                    "ethereum",
+                    "arbitrum",
+                    "optimism",
+                    "polygon-pos",
+                    "bsc",
+                    "avalanche",
+                    "celo",
+                    "linea",
+                    "base",
+                    "polygon-zkevm",
+                    "gnosis"
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^descriptions$": true,
+                "^maxDepth$": true,
+                "^overrides$": true,
+                "^initialAddresses$": true,
+                "^name$": true,
+                "^names$": true,
+                "^chain$": true,
+                "^sharedModules$": true,
+                "^$schema$": true,
+                "^maxAddresses$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "description": {
+                  "type": "string"
+                },
+                "methods": {
+                  "$ref": "#/$defs/modern_8"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "description": true,
+                "methods": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Specific configuration for discovered contracts",
+              "patternProperties": {
+                "^.+$": {
+                  "$ref": "#/$defs/modern_3"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^.+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "^.+$": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^.+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Human-readable names for discovered contracts",
+              "patternProperties": {
+                "^0x[a-fA-F\\d]{40}$": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^0x[a-fA-F\\d]{40}$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Key-Value store for description <Method>: <Description>",
+              "patternProperties": {
+                "^.+$": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^.+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "methods": {
+                  "$ref": "#/$defs/modern_4"
+                },
+                "description": {
+                  "description": "Description for the contract ",
+                  "type": "string"
+                },
+                "ignoreInWatchMode": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "proxyType": {
+                  "type": "string"
+                },
+                "ignoreRelatives": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "fields": {
+                  "$ref": "#/$defs/modern_5"
+                },
+                "ignoreMethods": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "ignoreDiscovery": {
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^ignoreMethods$": true,
+                "^description$": true,
+                "^proxyType$": true,
+                "^ignoreDiscovery$": true,
+                "^fields$": true,
+                "^ignoreInWatchMode$": true,
+                "^ignoreRelatives$": true,
+                "^methods$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "address": {
+      "type": "string",
+      "pattern": "^0x[a-fA-F\\d]{40}$"
+    }
+  }
+}

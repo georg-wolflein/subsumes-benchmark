@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "total": {
+      "type": "object",
+      "description": "Total income source amounts",
+      "properties": {
+        "income": {
+          "description": "The total income for the income source. The value must be between 0.00 and 99999999999999.98.",
+          "type": "number",
+          "title": "Income",
+          "multipleOf": 0.01,
+          "example": "500.25"
+        },
+        "expenses": {
+          "description": "The total expenses for the income source. The value must be between 0.00 and 99999999999999.98.",
+          "type": "number",
+          "title": "Expenses",
+          "example": "500.25"
+        },
+        "additions": {
+          "description": "The total additions to net profit (or deductions from net loss). The value must be between 0.00 and 99999999999999.98.",
+          "type": "number",
+          "title": "Additions",
+          "multipleOf": 0.01,
+          "example": "500.25"
+        },
+        "deductions": {
+          "description": "The total deductions from net loss (or additions to net profit). The value must be between 0.00 and 99999999999999.98.",
+          "type": "number",
+          "title": "Deductions",
+          "multipleOf": 0.01,
+          "example": "500.25"
+        }
+      },
+      "required": [
+        "income",
+        "expenses"
+      ],
+      "additionalProperties": false
+    },
+    "profit": {
+      "type": "object",
+      "properties": {
+        "net": {
+          "description": "The net profit of the income source. The value must be between 0.00 and 99999999999999.98.",
+          "type": "number",
+          "title": "Net",
+          "multipleOf": 0.01,
+          "example": "500.25"
+        },
+        "taxable": {
+          "description": "The taxable net profit of the income source. The value must be between 0.00 and 99999999999999.98.",
+          "type": "number",
+          "title": "Taxable",
+          "multipleOf": 0.01,
+          "example": "500.25"
+        }
+      },
+      "required": [
+        "net",
+        "taxable"
+      ],
+      "additionalProperties": false
+    },
+    "loss": {
+      "type": "object",
+      "properties": {
+        "net": {
+          "description": "The net loss of the income source. The value must be between 0.00 and 99999999999999.98.",
+          "type": "number",
+          "title": "Net",
+          "multipleOf": 0.01,
+          "example": "500.25"
+        },
+        "taxable": {
+          "description": "The taxable net loss of the income source. The value must be between 0.00 and 99999999999999.98.",
+          "type": "number",
+          "title": "Taxable",
+          "multipleOf": 0.01,
+          "example": "500.25"
+        }
+      },
+      "required": [
+        "net",
+        "taxable"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "total",
+    "profit",
+    "loss"
+  ]
+}

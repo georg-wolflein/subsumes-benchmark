@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Set Stream Metadata",
+              "type": "object",
+              "properties": {
+                "maxCount": {
+                  "type": "integer",
+                  "minimum": 1.0
+                },
+                "maxAge": {
+                  "type": "integer",
+                  "minimum": 1.0
+                },
+                "metadataJson": {
+                  "type": "object",
+                  "x-schema-form": {
+                    "key": "metadataJson",
+                    "type": "textarea",
+                    "rows": 30
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^maxCount$": true,
+                "^maxAge$": true,
+                "^metadataJson$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

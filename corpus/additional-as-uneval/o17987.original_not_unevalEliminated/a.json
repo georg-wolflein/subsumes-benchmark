@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "This is the format describing the command for the PlanetWars game, used in the development off MOZAIC",
+              "properties": {
+                "moves": {
+                  "description": "Describes what you want to do in the current turn",
+                  "items": {
+                    "$ref": "#/$defs/modern_2"
+                  },
+                  "type": "array"
+                }
+              },
+              "title": "PlanetWars"
+            },
+            {
+              "patternProperties": {
+                "^moves$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "a command",
+              "properties": {
+                "destination": {
+                  "type": "string"
+                },
+                "origin": {
+                  "type": "string"
+                },
+                "ship_count": {
+                  "minimum": 0.0,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "origin",
+                "destination",
+                "ship_count"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^destination$": true,
+                "^origin$": true,
+                "^ship_count$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

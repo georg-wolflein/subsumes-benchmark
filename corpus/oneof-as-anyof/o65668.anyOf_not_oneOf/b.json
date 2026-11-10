@@ -1,0 +1,221 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "native-schema_request_v1_0",
+  "description": "json schema for a Native v1.0 request",
+  "type": "object",
+  "required": [
+    "native"
+  ],
+  "properties": {
+    "native": {
+      "$ref": "#/$defs/native"
+    }
+  },
+  "$defs": {
+    "native": {
+      "type": "object",
+      "required": [
+        "assets"
+      ],
+      "properties": {
+        "ver": {
+          "type": "string"
+        },
+        "layout": {
+          "$ref": "#/$defs/native_layout_id"
+        },
+        "adunit": {
+          "$ref": "#/$defs/native_ad_unit_id"
+        },
+        "plcmtcnt": {
+          "$ref": "#/$defs/positive_int"
+        },
+        "seq": {
+          "$ref": "#/$defs/positive_int"
+        },
+        "assets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/asset"
+          }
+        },
+        "ext": {
+          "type": "object"
+        }
+      }
+    },
+    "asset": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "required": {
+          "$ref": "#/$defs/boolean_int"
+        },
+        "title": {
+          "$ref": "#/$defs/title"
+        },
+        "img": {
+          "$ref": "#/$defs/image"
+        },
+        "video": {
+          "$ref": "#/$defs/video"
+        },
+        "data": {
+          "$ref": "#/$defs/data"
+        },
+        "ext": {
+          "type": "object"
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "title"
+          ]
+        },
+        {
+          "required": [
+            "img"
+          ]
+        },
+        {
+          "required": [
+            "video"
+          ]
+        },
+        {
+          "required": [
+            "data"
+          ]
+        }
+      ]
+    },
+    "title": {
+      "type": "object",
+      "required": [
+        "len"
+      ],
+      "properties": {
+        "len": {
+          "$ref": "#/$defs/positive_int"
+        },
+        "ext": {
+          "type": "object"
+        }
+      }
+    },
+    "image": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/$defs/image_asset_type"
+        },
+        "w": {
+          "$ref": "#/$defs/positive_int"
+        },
+        "wmin": {
+          "$ref": "#/$defs/positive_int"
+        },
+        "h": {
+          "$ref": "#/$defs/positive_int"
+        },
+        "hmin": {
+          "$ref": "#/$defs/positive_int"
+        },
+        "mimes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "ext": {
+          "type": "object"
+        }
+      }
+    },
+    "video": {
+      "type": "object",
+      "required": [
+        "mimes",
+        "minduration",
+        "maxduration",
+        "protocols"
+      ],
+      "properties": {
+        "mimes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "minduration": {
+          "$ref": "#/$defs/positive_int"
+        },
+        "maxduration": {
+          "$ref": "#/$defs/positive_int"
+        },
+        "protocols": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/video_bid_response_protocol"
+          }
+        },
+        "ext": {
+          "type": "object"
+        }
+      }
+    },
+    "data": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "$ref": "#/$defs/data_asset_type"
+        },
+        "len": {
+          "$ref": "#/$defs/positive_int"
+        },
+        "ext": {
+          "type": "object"
+        }
+      }
+    },
+    "native_layout_id": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "native_ad_unit_id": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "video_bid_response_protocol": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 6
+    },
+    "data_asset_type": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "image_asset_type": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "boolean_int": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "positive_int": {
+      "type": "integer",
+      "minimum": 0
+    }
+  }
+}

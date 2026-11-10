@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "anyOf": [
+    {
+      "items": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/file_common"
+          },
+          {
+            "$ref": "#/$defs/file_not_extracted"
+          }
+        ]
+      }
+    },
+    {
+      "items": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/file_common"
+          },
+          {
+            "$ref": "#/$defs/file_extracted"
+          }
+        ]
+      }
+    }
+  ],
+  "$defs": {
+    "file_common": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "file_not_extracted": {
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "file",
+            "dir",
+            "link"
+          ]
+        }
+      },
+      "not": {
+        "$ref": "#/$defs/file_extracted"
+      }
+    },
+    "file_extracted": {
+      "required": [
+        "user",
+        "group"
+      ],
+      "properties": {
+        "user": {
+          "type": "string",
+          "minLength": 1
+        },
+        "group": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "anyOf": [
+        {
+          "$ref": "#/$defs/file_extracted_file"
+        },
+        {
+          "$ref": "#/$defs/file_extracted_dir"
+        },
+        {
+          "$ref": "#/$defs/file_extracted_link"
+        }
+      ]
+    },
+    "file_extracted_file": {
+      "required": [
+        "type",
+        "size",
+        "mode"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "file"
+          ]
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mode": {
+          "type": "string",
+          "pattern": "^[0-4]?[0-7]{3}$"
+        }
+      }
+    },
+    "file_extracted_dir": {
+      "required": [
+        "type",
+        "size",
+        "mode",
+        "files"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "dir"
+          ]
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mode": {
+          "type": "string",
+          "pattern": "^[0-4]?[0-7]{3}$"
+        },
+        "files": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "file_extracted_link": {
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "link"
+          ]
+        }
+      }
+    }
+  }
+}

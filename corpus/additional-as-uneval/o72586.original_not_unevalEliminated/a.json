@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "visible": {
+                  "type": "boolean"
+                },
+                "tags": {
+                  "items": {
+                    "enum": [
+                      "inaccurate",
+                      "incomplete",
+                      "proprietary",
+                      "not-a-number"
+                    ],
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "id": {
+                  "pattern": "^[a-z0-9-]+$",
+                  "type": "string"
+                },
+                "related": {
+                  "items": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "categories": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "keywords": {
+                  "items": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "furtherReading": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "title": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "title",
+                "visible"
+              ],
+              "title": "Article",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^related$": true,
+                "^keywords$": true,
+                "^categories$": true,
+                "^id$": true,
+                "^furtherReading$": true,
+                "^title$": true,
+                "^visible$": true,
+                "^tags$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "format": "uri",
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

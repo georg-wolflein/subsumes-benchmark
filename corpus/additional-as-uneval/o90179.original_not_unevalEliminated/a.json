@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "colorModulationInfo",
+              "type": "object",
+              "description": "Indicates whether modulation should be used to render the point.",
+              "properties": {
+                "field": {
+                  "type": "string",
+                  "description": "the attribute to use as a source for the modulation amplitude"
+                },
+                "maxValue": {
+                  "type": "number",
+                  "description": "maximum value to compute modulation linear mapping"
+                },
+                "minValue": {
+                  "type": "number",
+                  "description": "minimum value to compute modulation linear mapping"
+                }
+              },
+              "required": [
+                "field",
+                "maxValue",
+                "minValue"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^field$": true,
+                "^maxValue$": true,
+                "^minValue$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "ClearChargingProfileRequest",
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "connectorId": {
+                  "type": "integer"
+                },
+                "chargingProfilePurpose": {
+                  "type": "string",
+                  "enum": [
+                    "ChargePointMaxProfile",
+                    "TxDefaultProfile",
+                    "TxProfile"
+                  ]
+                },
+                "stackLevel": {
+                  "type": "integer"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^connectorId$": true,
+                "^chargingProfilePurpose$": true,
+                "^stackLevel$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

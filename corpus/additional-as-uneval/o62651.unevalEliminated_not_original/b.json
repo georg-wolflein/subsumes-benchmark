@@ -1,0 +1,184 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_2",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "module": {
+                  "$ref": "#/$defs/nonEmptyString"
+                },
+                "submodule": {
+                  "$ref": "#/$defs/nonEmptyString"
+                },
+                "element": {
+                  "$ref": "#/$defs/nonEmptyString"
+                }
+              },
+              "required": [
+                "submodule",
+                "element"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^module$": true,
+                "^submodule$": true,
+                "^element$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "externalReference": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "ASN.1 Types Library Module Metadata schema",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "$ref": "#/$defs/nonEmptyString"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "submodules": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_3"
+                  }
+                }
+              },
+              "required": [
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^description$": true,
+                "^submodules$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "fileList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/nonEmptyString"
+      }
+    },
+    "referenceList": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/nonEmptyString"
+          },
+          {
+            "$ref": "#/$defs/externalReference"
+          }
+        ]
+      }
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "$ref": "#/$defs/nonEmptyString"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "elements": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_4"
+                  }
+                }
+              },
+              "required": [
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^description$": true,
+                "^elements$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "$ref": "#/$defs/nonEmptyString"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "conflicts": {
+                  "$ref": "#/$defs/referenceList"
+                },
+                "asn1Files": {
+                  "$ref": "#/$defs/fileList"
+                },
+                "requires": {
+                  "$ref": "#/$defs/referenceList"
+                },
+                "additionalFiles": {
+                  "$ref": "#/$defs/fileList"
+                }
+              },
+              "required": [
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^additionalFiles$": true,
+                "^description$": true,
+                "^conflicts$": true,
+                "^name$": true,
+                "^asn1Files$": true,
+                "^requires$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

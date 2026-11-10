@@ -1,0 +1,498 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_5",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "The description of a given's JSON Path Plus test",
+              "type": "object",
+              "required": [
+                "description",
+                "expected",
+                "documents"
+              ],
+              "properties": {
+                "description": {
+                  "description": "The description of the test",
+                  "type": "string"
+                },
+                "expected": {
+                  "description": "The expected result of the test. Hence, the values and their paths which are supposed to be found.",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/SpectralPath"
+                  }
+                },
+                "documents": {
+                  "$ref": "#/$defs/Documents"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^expected$": true,
+                "^documents$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "ThenTest": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "The description of a test checking the problems returned when executing this rule.",
+              "type": "object",
+              "required": [
+                "description",
+                "expected",
+                "documents"
+              ],
+              "properties": {
+                "description": {
+                  "description": "The description of the test",
+                  "type": "string"
+                },
+                "expected": {
+                  "description": "The expected result of the test. Hence, the Spectral paths of the problems detected.\nIts value is an empty array if provided documents are valid.\n",
+                  "type": "array",
+                  "minItems": 0,
+                  "items": {
+                    "$ref": "#/$defs/SpectralPath"
+                  }
+                },
+                "documents": {
+                  "$ref": "#/$defs/Documents"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^expected$": true,
+                "^documents$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "VersionNumber": {
+      "type": "string"
+    },
+    "JsonSchemaVersions": {
+      "type": "array",
+      "default": [
+        "2020-12"
+      ],
+      "items": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/VersionNumber"
+          },
+          {
+            "enum": [
+              "$schema",
+              "loose",
+              "draft4",
+              "draft6",
+              "draft7",
+              "2019-09",
+              "2020-12"
+            ]
+          }
+        ]
+      }
+    },
+    "SpectralPath": {
+      "description": "The Spectral path targeting the found element (as returned by Spectral).",
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "integer"
+          }
+        ]
+      },
+      "minItems": 1
+    },
+    "Documents": {
+      "description": "A list of or a single test document",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/Document"
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/Document"
+          }
+        }
+      ]
+    },
+    "AsyncApiVersions": {
+      "type": "array",
+      "default": [
+        "2.0",
+        "2.1",
+        "2.2",
+        "2.3",
+        "2.4",
+        "2.5",
+        "2.6"
+      ],
+      "items": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/VersionNumber"
+          },
+          {
+            "enum": [
+              "2.0",
+              "2.1",
+              "2.2",
+              "2.3",
+              "2.4",
+              "2.5",
+              "2.6"
+            ]
+          }
+        ]
+      }
+    },
+    "GivenTest": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Spectral Ruleset Test Suite",
+              "description": "A machine-readable description of tests to run to ensure a Spectral Ruleset or a subset\nor it works as intended. In its current version, the format only deals with\nrules, not aliases or extends.\n\nA single test suite file may or may not contain all of the tests for all rules contained\nin a ruleset. For maintainability and readability, it could be interesting that a test \nsuite focuses on a single rule, and so have as many test suite files as rules.\nThough it would be possible to split the tests of a single rule across test suite, it is\nnot recommended to do so.\n",
+              "type": "object",
+              "required": [
+                "spectralTestSuite",
+                "ruleset",
+                "rules"
+              ],
+              "properties": {
+                "spectralTestSuite": {
+                  "description": "The version of Spectral Ruleset Test Suite used",
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/VersionNumber"
+                    },
+                    {
+                      "enum": [
+                        "0.1"
+                      ]
+                    }
+                  ]
+                },
+                "ruleset": {
+                  "description": "The relative or absolute filepath or url to the Spectral Ruleset file containing\nthe elements to be tested. The file can be either in YAML or JSON format.\n",
+                  "type": "string"
+                },
+                "rules": {
+                  "description": "Rule tests. Each key of this object corresponds to a rule name,\nhence the the keys of rules in a Spectral ruleset.\n",
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/$defs/RuleTests"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^spectralTestSuite$": true,
+                "^ruleset$": true,
+                "^rules$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "OpenApiVersions": {
+      "type": "array",
+      "default": [
+        "2.0",
+        "3.0",
+        "3.1"
+      ],
+      "items": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/VersionNumber"
+          },
+          {
+            "enum": [
+              "2.0",
+              "3.0",
+              "3.1"
+            ]
+          }
+        ]
+      }
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "document"
+              ],
+              "properties": {
+                "versions": {
+                  "description": "The versions to use to generate the documents",
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/VersionNumber"
+                    },
+                    {
+                      "type": "array",
+                      "minItems": 1,
+                      "uniqueItems": true,
+                      "items": {
+                        "$ref": "#/$defs/VersionNumber"
+                      }
+                    }
+                  ]
+                },
+                "document": {
+                  "description": "Will be used as a template if more than one versions are provided",
+                  "$ref": "#/$defs/SpecificationDocument"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^versions$": true,
+                "^document$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "SpecificationDocument": {
+      "type": "object",
+      "oneOf": [
+        {
+          "required": [
+            "swagger"
+          ]
+        },
+        {
+          "required": [
+            "openapi"
+          ]
+        },
+        {
+          "required": [
+            "asyncapi"
+          ]
+        }
+      ]
+    },
+    "RuleTests": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "Document": {
+      "description": "A document that will be used as template to find what is expected across the versions.\nIf no version is provided (direct specification document, or no `versions`` provided), \nthe document is considered as a template, and documents matching rule test versions \nwill be generated.\n",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/SpecificationDocument"
+        },
+        {
+          "$ref": "#/$defs/modern_3"
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Tests to validate a Spectral rule works as intended",
+              "type": "object",
+              "allOf": [
+                {
+                  "anyOf": [
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "format": {
+                              "const": "openapi"
+                            }
+                          }
+                        },
+                        {
+                          "properties": {
+                            "versions": {
+                              "$ref": "#/$defs/OpenApiVersions"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "not": {
+                        "properties": {
+                          "format": {
+                            "const": "openapi"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "anyOf": [
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "format": {
+                              "const": "asyncapi"
+                            }
+                          }
+                        },
+                        {
+                          "properties": {
+                            "versions": {
+                              "$ref": "#/$defs/AsyncApiVersions"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "not": {
+                        "properties": {
+                          "format": {
+                            "const": "asyncapi"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "anyOf": [
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "format": {
+                              "const": "jsonschema"
+                            }
+                          }
+                        },
+                        {
+                          "properties": {
+                            "versions": {
+                              "$ref": "#/$defs/JsonSchemaVersions"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "not": {
+                        "properties": {
+                          "format": {
+                            "const": "jsonschema"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ],
+              "properties": {
+                "format": {
+                  "description": "The format targeted by this rule",
+                  "type": "string",
+                  "enum": [
+                    "openapi",
+                    "asyncapi",
+                    "jsonschema"
+                  ]
+                },
+                "given": {
+                  "description": "The list of test checking the JSON Path Plus path(s) provided in given:\n\n- find something and the value is what is expected (minimal, at least one of those)\n- do not find what is supposed to ignore (for complex path involving filters)\n",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/GivenTest"
+                  }
+                },
+                "versions": {
+                  "description": "The version of the format targeted by this rule",
+                  "type": "array",
+                  "minItems": 1,
+                  "uniqueItems": true
+                },
+                "then": {
+                  "description": "The list of tests checking the rule returns the expected problems or not.\nThere must be at least a test checking problems are returned, and test without problems.\n",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/ThenTest"
+                  }
+                },
+                "severity": {
+                  "description": "The severity of the problems returned by the rule",
+                  "type": "string",
+                  "enum": [
+                    "error",
+                    "warn",
+                    "info",
+                    "hint"
+                  ]
+                },
+                "recommended": {
+                  "description": "Is the rule recommended (activated)?",
+                  "type": "boolean",
+                  "default": true
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^format$": true,
+                "^severity$": true,
+                "^given$": true,
+                "^then$": true,
+                "^recommended$": true,
+                "^versions$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

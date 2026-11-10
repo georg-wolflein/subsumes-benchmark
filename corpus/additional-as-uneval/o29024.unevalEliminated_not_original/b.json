@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Inventory Manager Publishing Schema",
+              "description": "TBD",
+              "type": "object",
+              "properties": {
+                "private": {
+                  "type": "boolean"
+                },
+                "until": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "private"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^private$": true,
+                "^until$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

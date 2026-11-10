@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "patternProperties": {
+    ".*": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "request": {
+            "type": "string"
+          },
+          "requestHeaders": {
+            "patternProperties": {
+              ".*": {
+                "$ref": "#/$defs/stringArray"
+              }
+            },
+            "type": "object"
+          },
+          "requestViolations": {
+            "$ref": "#/$defs/stringArray"
+          },
+          "response": {
+            "type": "string"
+          },
+          "responseHeaders": {
+            "patternProperties": {
+              ".*": {
+                "$ref": "#/$defs/stringArray"
+              }
+            },
+            "type": "object"
+          },
+          "responseViolations": {
+            "$ref": "#/$defs/stringArray"
+          }
+        },
+        "required": [
+          "id",
+          "request",
+          "requestHeaders",
+          "requestViolations",
+          "response",
+          "responseHeaders",
+          "responseViolations"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "stringArray": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    }
+  }
+}

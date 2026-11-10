@@ -1,0 +1,1727 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "abi": {
+      "$ref": "#/$defs/modern_39"
+    },
+    "name": {
+      "description": "Wrapper Name",
+      "pattern": "^[a-zA-Z0-9\\-\\_]+$",
+      "type": "string"
+    },
+    "type": {
+      "description": "Wrapper Package Type",
+      "enum": [
+        "wasm",
+        "interface",
+        "plugin"
+      ],
+      "type": "string"
+    },
+    "version": {
+      "description": "WRAP Standard Version",
+      "enum": [
+        "0.1.0",
+        "0.1"
+      ],
+      "type": "string"
+    }
+  },
+  "required": [
+    "version",
+    "name",
+    "type",
+    "abi"
+  ],
+  "type": "object",
+  "$defs": {
+    "modern_37": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/enumDefinition"
+                },
+                {
+                  "$ref": "#/$defs/importedDefinition"
+                }
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                ".*": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_20": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "interfaces": {
+                  "items": {
+                    "$ref": "#/$defs/interfaceImplementedDefinition"
+                  },
+                  "type": "array"
+                },
+                "properties": {
+                  "items": {
+                    "$ref": "#/$defs/propertyDefinition"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^interfaces$": true,
+                "^properties$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_28": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "enabled"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^enabled$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "namespace": {
+                  "type": "string"
+                },
+                "nativeType": {
+                  "type": "string"
+                },
+                "uri": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "uri",
+                "namespace",
+                "nativeType"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^namespace$": true,
+                "^nativeType$": true,
+                "^uri$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_14": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "isInterface": {
+                  "type": [
+                    "boolean"
+                  ]
+                },
+                "methods": {
+                  "items": {
+                    "$ref": "#/$defs/methodDefinition"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^isInterface$": true,
+                "^methods$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_21": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "comment": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^comment$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/genericDefinition"
+                },
+                {
+                  "$ref": "#/$defs/modern_6"
+                }
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^required$": true,
+                "^map$": true,
+                "^scalar$": true,
+                "^array$": true,
+                "^enum$": true,
+                "^name$": true,
+                "^type$": true,
+                "^unresolvedObjectOrEnum$": true,
+                "^object$": true,
+                ".*": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_32": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "required": {
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^required$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "unresolvedObjectOrEnumRef": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "map": {
+                  "$ref": "#/$defs/mapDefinition"
+                },
+                "object": {
+                  "$ref": "#/$defs/objectRef"
+                },
+                "unresolvedObjectOrEnum": {
+                  "$ref": "#/$defs/unresolvedObjectOrEnumRef"
+                },
+                "enum": {
+                  "allOf": [
+                    {
+                      "$ref": "#/definitions1/enumRef"
+                    }
+                  ],
+                  "required": [
+                    "type"
+                  ]
+                },
+                "array": {
+                  "$ref": "#/$defs/arrayDefinition"
+                },
+                "scalar": {
+                  "$ref": "#/$defs/scalarDefinition"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^map$": true,
+                "^scalar$": true,
+                "^array$": true,
+                "^enum$": true,
+                "^unresolvedObjectOrEnum$": true,
+                "^object$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "importedEnvDefinition": {
+      "$ref": "#/$defs/modern_18"
+    },
+    "modern_48": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "isInterface": {
+                  "type": [
+                    "boolean"
+                  ]
+                },
+                "methods": {
+                  "items": {
+                    "$ref": "#/$defs/methodDefinition"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^isInterface$": true,
+                "^methods$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "objectDefinition": {
+      "$ref": "#/$defs/modern_19"
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "capabilities": {
+                  "$ref": "#/$defs/capabilityDefinition"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^capabilities$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_43": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "imports": {
+                  "items": {
+                    "$ref": "#/$defs/importedModuleRef"
+                  },
+                  "type": "array"
+                },
+                "interfaces": {
+                  "items": {
+                    "$ref": "#/$defs/interfaceImplementedDefinition"
+                  },
+                  "type": "array"
+                },
+                "methods": {
+                  "items": {
+                    "$ref": "#/$defs/methodDefinition"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^imports$": true,
+                "^interfaces$": true,
+                "^methods$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_16": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "key": {
+                  "$ref": "#/$defs/mapKeyDefinition"
+                },
+                "value": {
+                  "$ref": "#/$defs/genericDefinition"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^key$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_15": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/anyDefinition"
+                },
+                {
+                  "$ref": "#/$defs/withComment"
+                },
+                {
+                  "$ref": "#/$defs/modern_16"
+                }
+              ],
+              "required": [
+                "key",
+                "value"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                ".*": true,
+                "^comment$": true,
+                "^key$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_50": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "constants": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^constants$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_27": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "getImplementations": {
+                  "$ref": "#/$defs/modern_28"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^getImplementations$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/genericDefinition"
+                }
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^required$": true,
+                "^kind$": true,
+                "^name$": true,
+                "^type$": true,
+                ".*": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "scalarType": {
+      "enum": [
+        "UInt",
+        "UInt8",
+        "UInt16",
+        "UInt32",
+        "Int",
+        "Int8",
+        "Int16",
+        "Int32",
+        "String",
+        "Boolean",
+        "Bytes",
+        "BigInt",
+        "BigNumber",
+        "JSON"
+      ],
+      "type": "string"
+    },
+    "withComment": {
+      "$ref": "#/$defs/modern_21"
+    },
+    "modern_42": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/genericDefinition"
+                },
+                {
+                  "$ref": "#/$defs/withComment"
+                },
+                {
+                  "$ref": "#/$defs/modern_43"
+                }
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                ".*": true,
+                "^imports$": true,
+                "^interfaces$": true,
+                "^methods$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "withKind": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_34": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "item": {
+                  "$ref": "#/$defs/genericDefinition"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^item$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "moduleDefinition": {
+      "$ref": "#/$defs/modern_22"
+    },
+    "objectRef": {
+      "$ref": "#/$defs/modern_24"
+    },
+    "modern_31": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "arguments": {
+                  "items": {
+                    "$ref": "#/$defs/propertyDefinition"
+                  },
+                  "type": "array"
+                },
+                "env": {
+                  "$ref": "#/$defs/modern_32"
+                },
+                "return": {
+                  "$ref": "#/$defs/propertyDefinition"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^arguments$": true,
+                "^env$": true,
+                "^return$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/genericDefinition"
+                }
+              ],
+              "properties": {
+                "type": {
+                  "$ref": "#/$defs/scalarType"
+                }
+              },
+              "required": [
+                "type"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                ".*": true,
+                "^name$": true,
+                "^required$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "enumDefinition": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_38": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/objectDefinition"
+                },
+                {
+                  "$ref": "#/$defs/importedDefinition"
+                },
+                {
+                  "$ref": "#/$defs/withComment"
+                }
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                ".*": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_23": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "imports": {
+                  "items": {
+                    "$ref": "#/$defs/importedModuleRef"
+                  },
+                  "type": "array"
+                },
+                "interfaces": {
+                  "items": {
+                    "$ref": "#/$defs/interfaceImplementedDefinition"
+                  },
+                  "type": "array"
+                },
+                "methods": {
+                  "items": {
+                    "$ref": "#/$defs/methodDefinition"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^imports$": true,
+                "^interfaces$": true,
+                "^methods$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_17": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "type": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "kind": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "kind"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^kind$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_49": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/genericDefinition"
+                },
+                {
+                  "$ref": "#/$defs/withComment"
+                },
+                {
+                  "$ref": "#/$defs/modern_50"
+                }
+              ],
+              "required": [
+                "constants"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                ".*": true,
+                "^constants$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "anyDefinition": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "modern_12": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "type": {
+                  "$ref": "#/$defs/mapKeyType"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "propertyDefinition": {
+      "$ref": "#/$defs/modern_25"
+    },
+    "interfaceImplementedDefinition": {
+      "$ref": "#/$defs/modern_26"
+    },
+    "capabilityDefinition": {
+      "$ref": "#/$defs/modern_27"
+    },
+    "modern_45": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/importedObjectDefinition"
+                }
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                ".*": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_52": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "capabilities": {
+                  "$ref": "#/$defs/capabilityDefinition"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^capabilities$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_41": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "interfaces": {
+                  "items": {
+                    "$ref": "#/$defs/interfaceImplementedDefinition"
+                  },
+                  "type": "array"
+                },
+                "properties": {
+                  "items": {
+                    "$ref": "#/$defs/propertyDefinition"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^interfaces$": true,
+                "^properties$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_46": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/objectDefinition"
+                },
+                {
+                  "$ref": "#/$defs/importedDefinition"
+                },
+                {
+                  "$ref": "#/$defs/withComment"
+                }
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                ".*": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "scalarDefinition": {
+      "$ref": "#/$defs/modern_7"
+    },
+    "modern_35": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/withKind"
+                },
+                {
+                  "$ref": "#/$defs/modern_36"
+                }
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                ".*": true,
+                "^name$": true,
+                "^required$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_39": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "objectTypes": {
+                  "items": {
+                    "$ref": "#/$defs/modern_40"
+                  },
+                  "type": "array"
+                },
+                "moduleType": {
+                  "$ref": "#/$defs/modern_42"
+                },
+                "version": {
+                  "const": "0.1",
+                  "description": "ABI Version",
+                  "type": "string"
+                },
+                "importedEnumTypes": {
+                  "items": {
+                    "$ref": "#/$defs/modern_44"
+                  },
+                  "type": "array"
+                },
+                "importedEnvTypes": {
+                  "items": {
+                    "$ref": "#/$defs/modern_45"
+                  },
+                  "type": "array"
+                },
+                "importedObjectTypes": {
+                  "items": {
+                    "$ref": "#/$defs/modern_46"
+                  },
+                  "type": "array"
+                },
+                "importedModuleTypes": {
+                  "items": {
+                    "$ref": "#/$defs/modern_47"
+                  },
+                  "type": "array"
+                },
+                "enumTypes": {
+                  "items": {
+                    "$ref": "#/$defs/modern_49"
+                  },
+                  "type": "array"
+                },
+                "envType": {
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/objectDefinition"
+                    }
+                  ],
+                  "type": "object"
+                },
+                "interfaceTypes": {
+                  "items": {
+                    "$ref": "#/$defs/modern_51"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^version$": true,
+                "^enumTypes$": true,
+                "^importedEnvTypes$": true,
+                "^objectTypes$": true,
+                "^importedModuleTypes$": true,
+                "^importedObjectTypes$": true,
+                "^interfaceTypes$": true,
+                "^moduleType$": true,
+                "^envType$": true,
+                "^importedEnumTypes$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_30": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/genericDefinition"
+                },
+                {
+                  "$ref": "#/$defs/withComment"
+                },
+                {
+                  "$ref": "#/$defs/modern_31"
+                }
+              ],
+              "required": [
+                "return"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^required$": true,
+                "^env$": true,
+                "^arguments$": true,
+                "^name$": true,
+                "^type$": true,
+                "^return$": true,
+                ".*": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "importedDefinition": {
+      "$ref": "#/$defs/modern_8"
+    },
+    "modern_24": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/genericDefinition"
+                }
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                ".*": true,
+                "^name$": true,
+                "^required$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "interfaceDefinition": {
+      "$ref": "#/$defs/modern_9"
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/genericDefinition"
+                },
+                {
+                  "$ref": "#/$defs/importedDefinition"
+                },
+                {
+                  "$ref": "#/$defs/modern_10"
+                }
+              ],
+              "required": [
+                "capabilities"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^required$": true,
+                "^capabilities$": true,
+                "^name$": true,
+                "^type$": true,
+                ".*": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_29": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/genericDefinition"
+                }
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                ".*": true,
+                "^name$": true,
+                "^required$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "mapKeyDefinition": {
+      "$ref": "#/$defs/modern_11"
+    },
+    "modern_18": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/importedObjectDefinition"
+                }
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^required$": true,
+                "^name$": true,
+                "^type$": true,
+                "^comment$": true,
+                "^interfaces$": true,
+                "^properties$": true,
+                ".*": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_13": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/genericDefinition"
+                },
+                {
+                  "$ref": "#/$defs/importedDefinition"
+                },
+                {
+                  "$ref": "#/$defs/withComment"
+                },
+                {
+                  "$ref": "#/$defs/modern_14"
+                }
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^required$": true,
+                "^isInterface$": true,
+                "^name$": true,
+                "^type$": true,
+                "^methods$": true,
+                "^comment$": true,
+                ".*": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/genericDefinition"
+                },
+                {
+                  "$ref": "#/$defs/withComment"
+                },
+                {
+                  "$ref": "#/$defs/modern_4"
+                }
+              ],
+              "required": [
+                "constants"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^required$": true,
+                "^constants$": true,
+                "^name$": true,
+                "^type$": true,
+                "^comment$": true,
+                ".*": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "importedModuleDefinition": {
+      "$ref": "#/$defs/modern_13"
+    },
+    "mapDefinition": {
+      "$ref": "#/$defs/modern_15"
+    },
+    "modern_22": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/genericDefinition"
+                },
+                {
+                  "$ref": "#/$defs/withComment"
+                },
+                {
+                  "$ref": "#/$defs/modern_23"
+                }
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^required$": true,
+                "^name$": true,
+                "^methods$": true,
+                "^interfaces$": true,
+                ".*": true,
+                "^imports$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "enumRef": {
+      "$ref": "#/$defs/modern_29"
+    },
+    "modern_44": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/enumDefinition"
+                },
+                {
+                  "$ref": "#/$defs/importedDefinition"
+                }
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                ".*": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_33": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/anyDefinition"
+                },
+                {
+                  "$ref": "#/$defs/modern_34"
+                }
+              ],
+              "required": [
+                "item"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                ".*": true,
+                "^item$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "methodDefinition": {
+      "$ref": "#/$defs/modern_30"
+    },
+    "modern_26": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/genericDefinition"
+                }
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                ".*": true,
+                "^name$": true,
+                "^required$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "arrayDefinition": {
+      "$ref": "#/$defs/modern_33"
+    },
+    "mapKeyType": {
+      "enum": [
+        "UInt",
+        "UInt8",
+        "UInt16",
+        "UInt32",
+        "Int",
+        "Int8",
+        "Int16",
+        "Int32",
+        "String"
+      ],
+      "type": "string"
+    },
+    "modern_36": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "type": [
+                    "string"
+                  ]
+                },
+                "required": {
+                  "type": [
+                    "boolean"
+                  ]
+                },
+                "type": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^required$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "genericDefinition": {
+      "$ref": "#/$defs/modern_35"
+    },
+    "importedEnumDefinition": {
+      "$ref": "#/$defs/modern_37"
+    },
+    "modern_47": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/genericDefinition"
+                },
+                {
+                  "$ref": "#/$defs/importedDefinition"
+                },
+                {
+                  "$ref": "#/$defs/withComment"
+                },
+                {
+                  "$ref": "#/$defs/modern_48"
+                }
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                ".*": true,
+                "^isInterface$": true,
+                "^methods$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/anyDefinition"
+                },
+                {
+                  "$ref": "#/$defs/modern_12"
+                }
+              ],
+              "required": [
+                "type"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                ".*": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "importedObjectDefinition": {
+      "$ref": "#/$defs/modern_38"
+    },
+    "importedModuleRef": {
+      "$ref": "#/$defs/modern_17"
+    },
+    "modern_51": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/genericDefinition"
+                },
+                {
+                  "$ref": "#/$defs/importedDefinition"
+                },
+                {
+                  "$ref": "#/$defs/modern_52"
+                }
+              ],
+              "required": [
+                "capabilities"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                ".*": true,
+                "^capabilities$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_25": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/withComment"
+                },
+                {
+                  "$ref": "#/$defs/anyDefinition"
+                }
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                ".*": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_40": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/genericDefinition"
+                },
+                {
+                  "$ref": "#/$defs/withComment"
+                },
+                {
+                  "$ref": "#/$defs/modern_41"
+                }
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                ".*": true,
+                "^interfaces$": true,
+                "^properties$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_19": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/genericDefinition"
+                },
+                {
+                  "$ref": "#/$defs/withComment"
+                },
+                {
+                  "$ref": "#/$defs/modern_20"
+                }
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^required$": true,
+                "^name$": true,
+                "^type$": true,
+                "^comment$": true,
+                "^interfaces$": true,
+                "^properties$": true,
+                ".*": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "envDefinition": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/objectDefinition"
+        }
+      ],
+      "type": "object"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "constants": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^constants$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

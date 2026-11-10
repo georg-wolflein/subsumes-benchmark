@@ -1,0 +1,199 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_4",
+  "$defs": {
+    "border": {
+      "type": "string"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "bottomBody": {
+                  "$ref": "#/$defs/border"
+                },
+                "bodyJoin": {
+                  "$ref": "#/$defs/border"
+                },
+                "bottomRight": {
+                  "$ref": "#/$defs/border"
+                },
+                "bottomJoin": {
+                  "$ref": "#/$defs/border"
+                },
+                "bodyLeft": {
+                  "$ref": "#/$defs/border"
+                },
+                "topRight": {
+                  "$ref": "#/$defs/border"
+                },
+                "bottomLeft": {
+                  "$ref": "#/$defs/border"
+                },
+                "bodyRight": {
+                  "$ref": "#/$defs/border"
+                },
+                "joinLeft": {
+                  "$ref": "#/$defs/border"
+                },
+                "joinBody": {
+                  "$ref": "#/$defs/border"
+                },
+                "topLeft": {
+                  "$ref": "#/$defs/border"
+                },
+                "joinRight": {
+                  "$ref": "#/$defs/border"
+                },
+                "topBody": {
+                  "$ref": "#/$defs/border"
+                },
+                "joinJoin": {
+                  "$ref": "#/$defs/border"
+                },
+                "topJoin": {
+                  "$ref": "#/$defs/border"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^topLeft$": true,
+                "^bottomBody$": true,
+                "^topJoin$": true,
+                "^joinBody$": true,
+                "^joinJoin$": true,
+                "^bottomLeft$": true,
+                "^joinLeft$": true,
+                "^bodyLeft$": true,
+                "^topRight$": true,
+                "^bottomJoin$": true,
+                "^joinRight$": true,
+                "^bodyRight$": true,
+                "^bottomRight$": true,
+                "^bodyJoin$": true,
+                "^topBody$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "truncate": {
+                  "type": "number"
+                },
+                "paddingRight": {
+                  "type": "number"
+                },
+                "alignment": {
+                  "enum": [
+                    "left",
+                    "right",
+                    "center"
+                  ],
+                  "type": "string"
+                },
+                "wrapWord": {
+                  "type": "boolean"
+                },
+                "width": {
+                  "type": "number"
+                },
+                "paddingLeft": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^width$": true,
+                "^truncate$": true,
+                "^paddingLeft$": true,
+                "^paddingRight$": true,
+                "^alignment$": true,
+                "^wrapWord$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "borders": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "columns": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                "^[0-9]+$": {
+                  "$ref": "#/$defs/column"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^[0-9]+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "column": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "border": {
+                  "$ref": "#/$defs/borders"
+                },
+                "columnCount": {
+                  "type": "number"
+                },
+                "columnDefault": {
+                  "$ref": "#/$defs/column"
+                },
+                "columns": {
+                  "$ref": "#/$defs/columns"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^border$": true,
+                "^columnCount$": true,
+                "^columnDefault$": true,
+                "^columns$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

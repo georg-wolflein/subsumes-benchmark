@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Other",
+              "description": "Other",
+              "type": "object",
+              "properties": {
+                "nonResidentLandlord": {
+                  "title": "Non Resident Landlord",
+                  "description": "An explicit declaration that the user is a Non-Resident Landlord. The default is FALSE",
+                  "type": "boolean",
+                  "example": "true"
+                },
+                "rarJointLet": {
+                  "title": "Other Capital allowance",
+                  "description": "A notification that the Rent A Room income (RAR) is shared with another individual.",
+                  "type": "boolean",
+                  "example": "true"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^nonResidentLandlord$": true,
+                "^rarJointLet$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "browsers": {
+      "$ref": "#/$defs/browsers"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "browser_statement": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "releases": {
+          "additionalProperties": {
+            "$ref": "#/$defs/release_statement"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "name",
+        "releases"
+      ],
+      "type": "object"
+    },
+    "browsers": {
+      "additionalProperties": false,
+      "properties": {
+        "chrome": {
+          "$ref": "#/$defs/browser_statement"
+        },
+        "chrome_android": {
+          "$ref": "#/$defs/browser_statement"
+        },
+        "edge": {
+          "$ref": "#/$defs/browser_statement"
+        },
+        "edge_mobile": {
+          "$ref": "#/$defs/browser_statement"
+        },
+        "firefox": {
+          "$ref": "#/$defs/browser_statement"
+        },
+        "firefox_android": {
+          "$ref": "#/$defs/browser_statement"
+        },
+        "ie": {
+          "$ref": "#/$defs/browser_statement"
+        },
+        "nodejs": {
+          "$ref": "#/$defs/browser_statement"
+        },
+        "opera": {
+          "$ref": "#/$defs/browser_statement"
+        },
+        "opera_android": {
+          "$ref": "#/$defs/browser_statement"
+        },
+        "qq_android": {
+          "$ref": "#/$defs/browser_statement"
+        },
+        "safari": {
+          "$ref": "#/$defs/browser_statement"
+        },
+        "safari_ios": {
+          "$ref": "#/$defs/browser_statement"
+        },
+        "samsunginternet_android": {
+          "$ref": "#/$defs/browser_statement"
+        },
+        "uc_android": {
+          "$ref": "#/$defs/browser_statement"
+        },
+        "uc_chinese_android": {
+          "$ref": "#/$defs/browser_statement"
+        },
+        "webview_android": {
+          "$ref": "#/$defs/browser_statement"
+        }
+      },
+      "type": "object"
+    },
+    "release_statement": {
+      "additionalProperties": false,
+      "properties": {
+        "release_date": {
+          "format": "date",
+          "type": "string"
+        },
+        "release_notes": {
+          "format": "uri",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "retired",
+            "current",
+            "exclusive",
+            "beta",
+            "nightly",
+            "esr",
+            "planned"
+          ],
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  }
+}

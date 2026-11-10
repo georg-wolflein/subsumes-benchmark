@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "openrtb-v1_0-schema-bid_response",
+  "description": "json schema for an openrtb v1.0 bid response (http://openrtb.googlecode.com/files/OpenRTB%20Mobile%20RTB%20API%20-%201.0.pdf)",
+  "type": "object",
+  "required": [
+    "id"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "$ref": "#/$defs/string_40"
+    },
+    "bidid": {
+      "$ref": "#/$defs/string_40"
+    },
+    "nbr": {
+      "$ref": "#/$defs/no_bid_reason"
+    },
+    "cur": {
+      "$ref": "#/$defs/currency"
+    },
+    "units": {
+      "$ref": "#/$defs/price_units"
+    },
+    "seatbid": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/seatbid"
+      }
+    }
+  },
+  "$defs": {
+    "seatbid": {
+      "type": "object",
+      "required": [
+        "bid"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "seat": {
+          "$ref": "#/$defs/string_40"
+        },
+        "group": {
+          "$ref": "#/$defs/boolean_int"
+        },
+        "bid": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/bid"
+          }
+        }
+      }
+    },
+    "bid": {
+      "type": "object",
+      "required": [
+        "impid",
+        "price"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "impid": {
+          "$ref": "#/$defs/string_40"
+        },
+        "price": {
+          "type": "number",
+          "minimum": 0
+        },
+        "adid": {
+          "$ref": "#/$defs/string_40"
+        },
+        "nurl": {
+          "type": "string",
+          "maxLength": 256
+        },
+        "adm": {
+          "type": "string",
+          "maxLength": 1024
+        },
+        "adomain": {
+          "type": "string"
+        },
+        "iurl": {
+          "type": "string"
+        },
+        "cid": {
+          "type": "string"
+        },
+        "crid": {
+          "type": "string"
+        },
+        "attr": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/creative_attribute"
+          }
+        }
+      }
+    },
+    "creative_attribute": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 14
+    },
+    "price_units": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2
+    },
+    "no_bid_reason": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 3
+    },
+    "boolean_int": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "currency": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 4
+    },
+    "string_40": {
+      "type": "string",
+      "maxLength": 40
+    }
+  }
+}

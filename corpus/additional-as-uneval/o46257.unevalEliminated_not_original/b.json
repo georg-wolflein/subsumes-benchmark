@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_4",
+  "$defs": {
+    "InvestmentTransaction": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "integer"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^label$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "integer",
+                  "description": "A unique ID for Security"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "symbol": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^_id$": true,
+                "^name$": true,
+                "^symbol$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "integer",
+                  "description": "A unique ID for InvestmentTransaction"
+                },
+                "price": {
+                  "type": "number"
+                },
+                "quantity": {
+                  "type": "number"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^_id$": true,
+                "^price$": true,
+                "^quantity$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "InvestmentActivity": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "Security": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Investment Info",
+              "type": "object",
+              "properties": {
+                "activity": {
+                  "$ref": "#/$defs/InvestmentActivity"
+                },
+                "security": {
+                  "$ref": "#/$defs/Security"
+                },
+                "transaction": {
+                  "$ref": "#/$defs/InvestmentTransaction"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^activity$": true,
+                "^security$": true,
+                "^transaction$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

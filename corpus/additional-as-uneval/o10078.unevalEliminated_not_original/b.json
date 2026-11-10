@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "comparison": {
+                  "default": "gte",
+                  "enum": [
+                    "eq",
+                    "gt",
+                    "lt",
+                    "gte",
+                    "lte"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "default": "info",
+                  "enum": [
+                    "debug",
+                    "info",
+                    "warn",
+                    "error",
+                    "critical"
+                  ],
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^comparison$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "source": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "tags": {
+                  "properties": {
+                    "match": {
+                      "enum": [
+                        "all",
+                        "exact",
+                        "any"
+                      ],
+                      "type": "string"
+                    },
+                    "value": {
+                      "items": {
+                        "not": {
+                          "enum": [
+                            "logs"
+                          ]
+                        },
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                },
+                "createdAt": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "time": {
+                  "$ref": "#/$defs/modern_4"
+                },
+                "level": {
+                  "$ref": "#/$defs/modern_5"
+                }
+              },
+              "title": "EventRequest",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^level$": true,
+                "^createdAt$": true,
+                "^time$": true,
+                "^source$": true,
+                "^tags$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "options": {
+                  "type": "string"
+                },
+                "pattern": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "pattern"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^options$": true,
+                "^pattern$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "since": {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                "until": {
+                  "format": "date-time",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^since$": true,
+                "^until$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "since": {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                "until": {
+                  "format": "date-time",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^since$": true,
+                "^until$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

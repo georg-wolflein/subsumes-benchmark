@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Gadget definition schema",
+              "properties": {
+                "module": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "settings": {
+                  "$ref": "#/$defs/modern_3"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^module$": true,
+                "^settings$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "messages": {
+                  "description": "Messages this gadget depends upon",
+                  "type": "array"
+                },
+                "styles": {
+                  "description": "List of CSS pages included in this gadget",
+                  "type": "array"
+                },
+                "position": {
+                  "default": "bottom",
+                  "description": "Whether this module should be loaded asynchronously after the page loads (bottom) or synchronously before the page is rendered (top)",
+                  "enum": [
+                    "top",
+                    "bottom"
+                  ],
+                  "type": "string"
+                },
+                "scripts": {
+                  "description": "List of JavaScript pages included in this gadget",
+                  "type": "array"
+                },
+                "dependencies": {
+                  "description": "ResourceLoader modules this gadget depends upon",
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^styles$": true,
+                "^scripts$": true,
+                "^dependencies$": true,
+                "^messages$": true,
+                "^position$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "hidden": {
+                  "default": false,
+                  "description": "Whether this gadget is hidden from preferences",
+                  "type": "boolean"
+                },
+                "default": {
+                  "default": false,
+                  "description": "Whether this gadget is enabled by default",
+                  "type": "boolean"
+                },
+                "rights": {
+                  "description": "The rights required to be able to enable/load this gadget",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "skins": {
+                  "description": "Skins supported by this gadget; empty or true if all skins are supported",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": [
+                    "array",
+                    "boolean"
+                  ]
+                },
+                "category": {
+                  "default": "",
+                  "description": "Key of the category this gadget belongs to",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^hidden$": true,
+                "^category$": true,
+                "^default$": true,
+                "^rights$": true,
+                "^skins$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

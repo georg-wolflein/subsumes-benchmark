@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "uri": {
+                  "$ref": "#/$defs/httpUri"
+                },
+                "index": {
+                  "type": "integer",
+                  "minimum": 0.0
+                }
+              },
+              "required": [
+                "name",
+                "uri"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^uri$": true,
+                "^index$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "httpUri": {
+      "type": "string",
+      "allOf": [
+        {
+          "format": "uri"
+        },
+        {
+          "pattern": "^https?://"
+        }
+      ]
+    }
+  }
+}

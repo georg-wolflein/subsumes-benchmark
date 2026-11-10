@@ -1,0 +1,701 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "testUrlParams": {
+      "$ref": "#/$defs/testUrlParams"
+    },
+    "name": {
+      "type": "string"
+    },
+    "testCases": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/modern_1"
+      }
+    },
+    "only": {
+      "type": "boolean"
+    },
+    "checkIsSupported": {
+      "type": "object",
+      "properties": {
+        "testUrlParams": {
+          "$ref": "#/$defs/testUrlParams"
+        },
+        "capabilityName": {
+          "type": "string"
+        },
+        "toggleId": {
+          "type": "string"
+        },
+        "domElementName": {
+          "type": "string"
+        },
+        "expectedOutput": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "platforms": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "version": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "testCases"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "testUrlParams": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "enum": [
+              "env",
+              "appDefOverrides",
+              "sessionId",
+              "frameContext",
+              "hostClientType",
+              "hostView"
+            ]
+          },
+          {
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "testUrlParams": {
+                          "$ref": "#/$defs/testUrlParams"
+                        },
+                        "expectedSecondViewTarget": {
+                          "type": "string"
+                        },
+                        "expectedIFrameTarget": {
+                          "type": "string"
+                        },
+                        "skipForCallbackBasedRuns": {
+                          "type": "boolean"
+                        },
+                        "expectedWindowOpenTarget": {
+                          "type": "string"
+                        },
+                        "expectedAlertValue": {
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            }
+                          ]
+                        },
+                        "modulesToDisable": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "version": {
+                          "type": "string"
+                        },
+                        "platformsExcluded": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "title": {
+                          "type": "string"
+                        },
+                        "only": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "title"
+                      ]
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "type": "object"
+                        },
+                        {
+                          "allOf": [
+                            {
+                              "properties": {
+                                "boxSelector": {
+                                  "type": "string"
+                                },
+                                "skipJsonStringifyOnInputValue": {
+                                  "type": "boolean"
+                                },
+                                "type": {
+                                  "const": "callResponse"
+                                },
+                                "checkboxState": {
+                                  "type": "boolean"
+                                },
+                                "expectedTestAppValue": {
+                                  "type": "string"
+                                },
+                                "requestPermissionBeforeThisCall": {
+                                  "type": "object",
+                                  "properties": {
+                                    "boxSelector": {
+                                      "type": "string"
+                                    },
+                                    "consentPermission": {
+                                      "type": "boolean"
+                                    }
+                                  }
+                                },
+                                "inputValue": true
+                              },
+                              "required": [
+                                "boxSelector"
+                              ]
+                            },
+                            {
+                              "not": {
+                                "properties": {
+                                  "type": {
+                                    "const": "raiseEvent"
+                                  },
+                                  "eventName": {
+                                    "type": "string"
+                                  },
+                                  "eventData": true
+                                },
+                                "required": [
+                                  "eventName"
+                                ]
+                              }
+                            },
+                            {
+                              "not": {
+                                "properties": {
+                                  "eventName": {
+                                    "type": "string"
+                                  },
+                                  "boxSelector": {
+                                    "type": "string"
+                                  },
+                                  "expectedAlertValueOnRegistration": {
+                                    "oneOf": [
+                                      {
+                                        "type": "string"
+                                      },
+                                      {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "string"
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "expectedTestAppValue": {
+                                    "type": "string"
+                                  },
+                                  "type": {
+                                    "const": "registerAndRaiseEvent"
+                                  },
+                                  "eventData": true,
+                                  "inputValue": true
+                                },
+                                "required": [
+                                  "boxSelector",
+                                  "eventName"
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "required": [
+                    "type"
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^testUrlParams$": true,
+                "^expectedIFrameTarget$": true,
+                "^modulesToDisable$": true,
+                "^checkboxState$": true,
+                "^skipJsonStringifyOnInputValue$": true,
+                "^only$": true,
+                "^skipForCallbackBasedRuns$": true,
+                "^expectedAlertValue$": true,
+                "^version$": true,
+                "^expectedSecondViewTarget$": true,
+                "^expectedTestAppValue$": true,
+                "^boxSelector$": true,
+                "^type$": true,
+                "^requestPermissionBeforeThisCall$": true,
+                "^inputValue$": true,
+                "^platformsExcluded$": true,
+                "^title$": true,
+                "^expectedWindowOpenTarget$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "testUrlParams": {
+                          "$ref": "#/$defs/testUrlParams"
+                        },
+                        "expectedSecondViewTarget": {
+                          "type": "string"
+                        },
+                        "expectedIFrameTarget": {
+                          "type": "string"
+                        },
+                        "skipForCallbackBasedRuns": {
+                          "type": "boolean"
+                        },
+                        "expectedWindowOpenTarget": {
+                          "type": "string"
+                        },
+                        "expectedAlertValue": {
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            }
+                          ]
+                        },
+                        "modulesToDisable": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "version": {
+                          "type": "string"
+                        },
+                        "platformsExcluded": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "title": {
+                          "type": "string"
+                        },
+                        "only": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "title"
+                      ]
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "type": "object"
+                        },
+                        {
+                          "allOf": [
+                            {
+                              "not": {
+                                "properties": {
+                                  "boxSelector": {
+                                    "type": "string"
+                                  },
+                                  "skipJsonStringifyOnInputValue": {
+                                    "type": "boolean"
+                                  },
+                                  "type": {
+                                    "const": "callResponse"
+                                  },
+                                  "checkboxState": {
+                                    "type": "boolean"
+                                  },
+                                  "expectedTestAppValue": {
+                                    "type": "string"
+                                  },
+                                  "requestPermissionBeforeThisCall": {
+                                    "type": "object",
+                                    "properties": {
+                                      "boxSelector": {
+                                        "type": "string"
+                                      },
+                                      "consentPermission": {
+                                        "type": "boolean"
+                                      }
+                                    }
+                                  },
+                                  "inputValue": true
+                                },
+                                "required": [
+                                  "boxSelector"
+                                ]
+                              }
+                            },
+                            {
+                              "properties": {
+                                "type": {
+                                  "const": "raiseEvent"
+                                },
+                                "eventName": {
+                                  "type": "string"
+                                },
+                                "eventData": true
+                              },
+                              "required": [
+                                "eventName"
+                              ]
+                            },
+                            {
+                              "not": {
+                                "properties": {
+                                  "eventName": {
+                                    "type": "string"
+                                  },
+                                  "boxSelector": {
+                                    "type": "string"
+                                  },
+                                  "expectedAlertValueOnRegistration": {
+                                    "oneOf": [
+                                      {
+                                        "type": "string"
+                                      },
+                                      {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "string"
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "expectedTestAppValue": {
+                                    "type": "string"
+                                  },
+                                  "type": {
+                                    "const": "registerAndRaiseEvent"
+                                  },
+                                  "eventData": true,
+                                  "inputValue": true
+                                },
+                                "required": [
+                                  "boxSelector",
+                                  "eventName"
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "required": [
+                    "type"
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^testUrlParams$": true,
+                "^expectedIFrameTarget$": true,
+                "^expectedSecondViewTarget$": true,
+                "^type$": true,
+                "^modulesToDisable$": true,
+                "^platformsExcluded$": true,
+                "^eventName$": true,
+                "^only$": true,
+                "^skipForCallbackBasedRuns$": true,
+                "^expectedAlertValue$": true,
+                "^version$": true,
+                "^title$": true,
+                "^eventData$": true,
+                "^expectedWindowOpenTarget$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "testUrlParams": {
+                          "$ref": "#/$defs/testUrlParams"
+                        },
+                        "expectedSecondViewTarget": {
+                          "type": "string"
+                        },
+                        "expectedIFrameTarget": {
+                          "type": "string"
+                        },
+                        "skipForCallbackBasedRuns": {
+                          "type": "boolean"
+                        },
+                        "expectedWindowOpenTarget": {
+                          "type": "string"
+                        },
+                        "expectedAlertValue": {
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            }
+                          ]
+                        },
+                        "modulesToDisable": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "version": {
+                          "type": "string"
+                        },
+                        "platformsExcluded": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "title": {
+                          "type": "string"
+                        },
+                        "only": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "title"
+                      ]
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "type": "object"
+                        },
+                        {
+                          "allOf": [
+                            {
+                              "not": {
+                                "properties": {
+                                  "boxSelector": {
+                                    "type": "string"
+                                  },
+                                  "skipJsonStringifyOnInputValue": {
+                                    "type": "boolean"
+                                  },
+                                  "type": {
+                                    "const": "callResponse"
+                                  },
+                                  "checkboxState": {
+                                    "type": "boolean"
+                                  },
+                                  "expectedTestAppValue": {
+                                    "type": "string"
+                                  },
+                                  "requestPermissionBeforeThisCall": {
+                                    "type": "object",
+                                    "properties": {
+                                      "boxSelector": {
+                                        "type": "string"
+                                      },
+                                      "consentPermission": {
+                                        "type": "boolean"
+                                      }
+                                    }
+                                  },
+                                  "inputValue": true
+                                },
+                                "required": [
+                                  "boxSelector"
+                                ]
+                              }
+                            },
+                            {
+                              "not": {
+                                "properties": {
+                                  "type": {
+                                    "const": "raiseEvent"
+                                  },
+                                  "eventName": {
+                                    "type": "string"
+                                  },
+                                  "eventData": true
+                                },
+                                "required": [
+                                  "eventName"
+                                ]
+                              }
+                            },
+                            {
+                              "properties": {
+                                "eventName": {
+                                  "type": "string"
+                                },
+                                "boxSelector": {
+                                  "type": "string"
+                                },
+                                "expectedAlertValueOnRegistration": {
+                                  "oneOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string"
+                                      }
+                                    }
+                                  ]
+                                },
+                                "expectedTestAppValue": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "const": "registerAndRaiseEvent"
+                                },
+                                "eventData": true,
+                                "inputValue": true
+                              },
+                              "required": [
+                                "boxSelector",
+                                "eventName"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "required": [
+                    "type"
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^testUrlParams$": true,
+                "^expectedIFrameTarget$": true,
+                "^modulesToDisable$": true,
+                "^eventName$": true,
+                "^only$": true,
+                "^skipForCallbackBasedRuns$": true,
+                "^expectedAlertValue$": true,
+                "^expectedAlertValueOnRegistration$": true,
+                "^version$": true,
+                "^expectedSecondViewTarget$": true,
+                "^expectedTestAppValue$": true,
+                "^boxSelector$": true,
+                "^type$": true,
+                "^inputValue$": true,
+                "^platformsExcluded$": true,
+                "^title$": true,
+                "^eventData$": true,
+                "^expectedWindowOpenTarget$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "appInteractionValidationProperties": {
+      "type": "object",
+      "properties": {
+        "expectedAlertValue": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "expectedTestAppValue": {
+          "type": "string"
+        },
+        "expectedWindowOpenTarget": {
+          "type": "string"
+        },
+        "expectedIFrameTarget": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

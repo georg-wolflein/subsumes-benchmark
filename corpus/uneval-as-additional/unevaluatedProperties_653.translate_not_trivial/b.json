@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "not": {
+    "$ref": "#/$defs/modern_1"
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$comment": "this subschema must still produce annotations internally, even though the 'not' will ultimately discard them"
+                },
+                true
+              ]
+            },
+            {
+              "additionalProperties": false
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "$comment": "this subschema must still produce annotations internally, even though the 'not' will ultimately discard them"
+                },
+                {
+                  "properties": {
+                    "foo": true
+                  }
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^foo$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

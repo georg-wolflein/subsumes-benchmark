@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "allOf": [
+    {
+      "$defs": {
+        "a": {
+          "type": "integer"
+        },
+        "b": {
+          "$ref": "#/allOf/0/$defs/a"
+        },
+        "c": {
+          "$ref": "#/allOf/0/$defs/b"
+        }
+      },
+      "$ref": "#/allOf/0/$defs/c"
+    },
+    {
+      "$defs": {
+        "a": {
+          "type": "integer"
+        },
+        "b": {
+          "$ref": "#/allOf/1/$defs/a"
+        },
+        "c": {
+          "$ref": "#/allOf/1/$defs/b"
+        }
+      },
+      "not": {
+        "$ref": "#/allOf/1/$defs/c"
+      }
+    }
+  ]
+}

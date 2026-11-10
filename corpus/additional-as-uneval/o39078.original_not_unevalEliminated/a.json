@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Generate phone number list",
+              "properties": {
+                "$tool": {
+                  "const": "city-mobile-sections",
+                  "description": "Must be set to city-mobile-sections",
+                  "type": "string"
+                },
+                "dist": {
+                  "description": "The output path (relative to the pwd).",
+                  "type": "string"
+                },
+                "driver": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "column": {
+                  "description": "Column name.",
+                  "enum": [
+                    "province",
+                    "city"
+                  ]
+                },
+                "$schema": {
+                  "type": "string"
+                },
+                "value": {
+                  "description": "Column value.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "$tool",
+                "dist",
+                "column",
+                "value",
+                "driver"
+              ],
+              "title": "city-mobile-sections Config",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^$schema$": true,
+                "^$tool$": true,
+                "^dist$": true,
+                "^driver$": true,
+                "^value$": true,
+                "^column$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "default": {},
+              "description": "Typeorm driver.",
+              "properties": {
+                "database": {
+                  "default": "phone",
+                  "description": "Database name to connect to",
+                  "type": "string"
+                },
+                "username": {
+                  "default": "postgres",
+                  "description": "Database username",
+                  "type": "string"
+                },
+                "host": {
+                  "default": "localhost",
+                  "description": "Database host",
+                  "type": "string"
+                },
+                "port": {
+                  "default": 5432,
+                  "description": "Database port",
+                  "type": "integer"
+                },
+                "type": {
+                  "default": "postgres",
+                  "description": "Database type, sync with typeorm.DriverType",
+                  "enum": [
+                    "mysql",
+                    "postgres",
+                    "mariadb",
+                    "sqlite",
+                    "oracle",
+                    "mssql",
+                    "websql"
+                  ],
+                  "type": "string"
+                },
+                "password": {
+                  "default": "postgres",
+                  "description": "Database password",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type",
+                "host",
+                "port",
+                "username",
+                "password",
+                "database"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^port$": true,
+                "^username$": true,
+                "^database$": true,
+                "^host$": true,
+                "^type$": true,
+                "^password$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

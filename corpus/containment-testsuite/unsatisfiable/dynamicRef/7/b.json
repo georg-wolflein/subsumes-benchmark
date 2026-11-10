@@ -1,0 +1,52 @@
+{
+  "allOf": [
+    {
+      "$id": "https://test.json-schema.org/dynamic-resolution-without-bookend/root",
+      "$ref": "list",
+      "$defs": {
+        "foo": {
+          "$dynamicAnchor": "items",
+          "type": "string"
+        },
+        "list": {
+          "$id": "list",
+          "type": "array",
+          "items": {
+            "$dynamicRef": "#items"
+          },
+          "$defs": {
+            "items": {
+              "$comment": "This is only needed to give the reference somewhere to resolve to when it behaves like $ref",
+              "$anchor": "items"
+            }
+          }
+        }
+      }
+    },
+    {
+      "$id": "https://test1.json-schema.org/dynamic-resolution-without-bookend/root",
+      "$defs": {
+        "foo": {
+          "$dynamicAnchor": "items1",
+          "type": "string"
+        },
+        "list": {
+          "$id": "list1",
+          "type": "array",
+          "items": {
+            "$dynamicRef": "#items1"
+          },
+          "$defs": {
+            "items": {
+              "$comment": "This is only needed to give the reference somewhere to resolve to when it behaves like $ref",
+              "$anchor": "items1"
+            }
+          }
+        }
+      },
+      "not": {
+        "$ref": "list1"
+      }
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "followsFrom": {
+                  "type": "string"
+                },
+                "data": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "origin": {
+                  "type": "string"
+                },
+                "timeOrigin": {
+                  "_format": "date-time",
+                  "type": "string"
+                },
+                "schema": {
+                  "_format": "url",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "schema",
+                "origin",
+                "timeOrigin",
+                "data"
+              ],
+              "self": {
+                "format": "jsonschema",
+                "name": "retail-stream-ingress",
+                "vendor": "com.nordstrom",
+                "version": "1-0-0"
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^schema$": true,
+                "^origin$": true,
+                "^timeOrigin$": true,
+                "^followsFrom$": true,
+                "^data$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "schema": {
+                  "_format": "url",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "schema"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^schema$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

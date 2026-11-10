@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "org.eclipse.persistence.testing.jaxb.annotations.xmlpath.Root",
+  "type": "object",
+  "properties": {
+    "root": {
+      "$ref": "#/$defs/modern_4"
+    }
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "personal-info": {
+                  "type": "object",
+                  "properties": {
+                    "first-name": {
+                      "type": "string"
+                    },
+                    "last-name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "contact-info": {
+                  "type": "object",
+                  "properties": {
+                    "address-id": {
+                      "type": "string"
+                    },
+                    "phones": {
+                      "type": "object",
+                      "properties": {
+                        "phone-number": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/$defs/PhoneNumber"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "employee-info": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    }
+                  }
+                },
+                "any-object-root": true,
+                "responsibilities": {
+                  "type": "object",
+                  "properties": {
+                    "responsibility": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "any-collection-root": {
+                  "type": "array",
+                  "items": true
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^personal-info$": true,
+                "^responsibilities$": true,
+                "^employee-info$": true,
+                "^any-object-root$": true,
+                "^contact-info$": true,
+                "^any-collection-root$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "Address": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "PhoneNumber": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "string"
+            },
+            {
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "street": {
+                  "type": "string"
+                },
+                "city": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^street$": true,
+                "^city$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Employee": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "employees": {
+                  "type": "object",
+                  "properties": {
+                    "employee": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/$defs/Employee"
+                      }
+                    }
+                  }
+                },
+                "addresses": {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/$defs/Address"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^employees$": true,
+                "^addresses$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

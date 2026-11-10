@@ -1,0 +1,211 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "version": {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              },
+              "required": [
+                "version",
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^version$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "crawlLog": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 512
+                },
+                "chromeDriverLog": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 512
+                },
+                "screenshot": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 512
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^crawlLog$": true,
+                "^chromeDriverLog$": true,
+                "^screenshot$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "validate spider output",
+              "description": "validate spider output",
+              "type": "object",
+              "properties": {
+                "_metadata": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "_debug": {
+                  "$ref": "#/$defs/modern_6"
+                }
+              },
+              "required": [
+                "_metadata"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^_metadata$": true,
+                "^_debug$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "crawlTime": {
+                  "$ref": "#/$defs/modern_4"
+                },
+                "spider": {
+                  "$ref": "#/$defs/modern_5"
+                },
+                "crawlArgs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^sha256:[a-f0-9]{64}$"
+                  },
+                  "_uniqueItems": false
+                }
+              },
+              "required": [
+                "status",
+                "crawlTime",
+                "spider",
+                "crawlArgs"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^status$": true,
+                "^crawlTime$": true,
+                "^spider$": true,
+                "^crawlArgs$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "minimum": 0.0
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "message"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^code$": true,
+                "^message$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "started": {
+                  "type": "string"
+                },
+                "durationInMs": {
+                  "type": "integer",
+                  "minimum": 0.0
+                }
+              },
+              "required": [
+                "started",
+                "durationInMs"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^started$": true,
+                "^durationInMs$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

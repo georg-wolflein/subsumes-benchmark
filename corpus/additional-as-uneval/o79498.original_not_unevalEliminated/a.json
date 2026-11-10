@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "tas.personal.image": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "tas.roles": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "tas.personal.givenName": {
+                  "type": "string"
+                },
+                "tas.personal.familyName": {
+                  "type": "string"
+                },
+                "nameID": {
+                  "type": "string"
+                },
+                "tas.personal.email": {
+                  "type": "string"
+                },
+                "entityID": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^tas.personal.image$": true,
+                "^tas.personal.email$": true,
+                "^tas.personal.givenName$": true,
+                "^tas.personal.familyName$": true,
+                "^entityID$": true,
+                "^nameID$": true,
+                "^tas.roles$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

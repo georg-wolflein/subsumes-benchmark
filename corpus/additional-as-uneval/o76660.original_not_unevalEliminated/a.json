@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "$anchor": "score",
+              "type": "object",
+              "properties": {
+                "scaled": {
+                  "type": "number",
+                  "minimum": -1.0,
+                  "maximum": 1.0
+                },
+                "raw": {
+                  "type": "number"
+                },
+                "min": {
+                  "type": "number"
+                },
+                "max": {
+                  "type": "number"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^scaled$": true,
+                "^raw$": true,
+                "^min$": true,
+                "^max$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

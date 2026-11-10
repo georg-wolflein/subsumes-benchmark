@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_2",
+  "$defs": {
+    "checkRequiredFalseAndUniqueFalse": {
+      "properties": {
+        "required": {
+          "type": "boolean",
+          "enum": [
+            false
+          ]
+        },
+        "unique": {
+          "type": "boolean",
+          "enum": [
+            false
+          ]
+        }
+      }
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Migration field",
+              "description": "Representation of a single field from migrations.csv",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "title": "Field name",
+                  "description": "Database field name",
+                  "type": "string",
+                  "minLength": 1
+                },
+                "non-searchable": {
+                  "title": "Searchable flag",
+                  "description": "Defines whether or not the field is searchable",
+                  "type": "boolean",
+                  "default": false
+                },
+                "unique": {
+                  "title": "Unique flag",
+                  "description": "Defines whether or not the field is contains unique value",
+                  "type": "boolean",
+                  "default": false
+                },
+                "type": {
+                  "title": "Field type",
+                  "description": "Database field type (think: field handlers)",
+                  "type": "string",
+                  "minLength": 1
+                },
+                "required": {
+                  "title": "Required flag",
+                  "description": "Defines whether or not the field is required",
+                  "type": "boolean",
+                  "default": false
+                }
+              },
+              "required": [
+                "name",
+                "type"
+              ],
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/checkRequiredFalseAndUniqueFalse"
+                },
+                {
+                  "$ref": "#/$defs/checkRequiredFalseAndUniqueAny"
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^required$": true,
+                "^name$": true,
+                "^type$": true,
+                "^unique$": true,
+                "^non-searchable$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "CSV migration",
+              "description": "CSV migration configuration",
+              "type": "object",
+              "properties": {},
+              "required": [
+                "id",
+                "created",
+                "modified"
+              ]
+            },
+            {
+              "additionalProperties": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/migrationField"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "checkRequiredFalseAndUniqueAny": {
+      "properties": {
+        "required": {
+          "type": "boolean",
+          "enum": [
+            true
+          ]
+        },
+        "unique": {
+          "type": "boolean",
+          "enum": [
+            true,
+            false
+          ]
+        }
+      }
+    },
+    "migrationField": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

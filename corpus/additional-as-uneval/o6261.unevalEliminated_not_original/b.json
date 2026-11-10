@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "config": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "outputIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "key": {
+                  "title": "Mqtt Topic",
+                  "type": "string",
+                  "pattern": "^[0-9a-zA-Z_-]{1,230}$",
+                  "messages": {
+                    "required": "A mqtt topic is required",
+                    "pattern": "Must be a valid mqtt topic"
+                  }
+                },
+                "meta": {
+                  "type": "object"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "mqttTopic"
+                  ]
+                }
+              },
+              "required": [
+                "key",
+                "type"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^outputIds$": true,
+                "^config$": true,
+                "^meta$": true,
+                "^type$": true,
+                "^key$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

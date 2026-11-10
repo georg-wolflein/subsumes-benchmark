@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "org.eclipse.persistence.testing.jaxb.xmlelements.Root",
+  "type": "object",
+  "properties": {
+    "root": {
+      "$ref": "#/$defs/modern_1"
+    }
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "string": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "root": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/properties/root"
+                  }
+                },
+                "theName": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^string$": true,
+                "^root$": true,
+                "^theName$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

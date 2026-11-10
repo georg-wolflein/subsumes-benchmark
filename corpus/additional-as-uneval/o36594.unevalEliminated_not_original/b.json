@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "is_available": {
+                  "type": "boolean"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "color": {
+                  "type": "string"
+                },
+                "max_delay": {
+                  "description": "In seconds. The resource can be booked at most max_delay in advance",
+                  "type": "integer",
+                  "minimum": 0.0
+                },
+                "periodic_booking": {
+                  "type": "boolean"
+                },
+                "validation": {
+                  "type": "boolean"
+                },
+                "min_delay": {
+                  "description": "In seconds. The resource must be booked at least min_delay in advance",
+                  "type": "integer",
+                  "minimum": 0.0
+                },
+                "icon": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "periodic_booking",
+                "is_available"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^is_available$": true,
+                "^min_delay$": true,
+                "^color$": true,
+                "^max_delay$": true,
+                "^icon$": true,
+                "^validation$": true,
+                "^name$": true,
+                "^periodic_booking$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

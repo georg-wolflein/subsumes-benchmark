@@ -1,0 +1,533 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_11",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "dependencies": {
+                  "$ref": "#/$defs/PackageDependencyMap",
+                  "description": "Map from NPM package to version. Any version syntax supported by NPM is\nsupported here."
+                },
+                "label": {
+                  "description": "Required label to identify this version map.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "dependencies",
+                "label"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^dependencies$": true,
+                "^label$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "description": "Name of the browser:\n\nOptions:\n   - chrome\n   - firefox\n   - safari\n   - edge\n   - ie",
+                  "enum": [
+                    "edge"
+                  ],
+                  "type": "string"
+                },
+                "remoteUrl": {
+                  "description": "A remote WebDriver server HTTP address to launch the browser from.",
+                  "type": "string"
+                },
+                "windowSize": {
+                  "$ref": "#/$defs/WindowSize",
+                  "description": "The size of new windows created from this browser. Defaults to 1024x768."
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^remoteUrl$": true,
+                "^windowSize$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "PackageDependencyMap": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "A mapping from NPM package name to version specifier, as used in a\npackage.json's \"dependencies\" and \"devDependencies\".",
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "ConfigFileBenchmark": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "ChromeConfig": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "description": "Name of the browser:\n\nOptions:\n   - chrome\n   - firefox\n   - safari\n   - edge\n   - ie",
+                  "enum": [
+                    "safari"
+                  ],
+                  "type": "string"
+                },
+                "remoteUrl": {
+                  "description": "A remote WebDriver server HTTP address to launch the browser from.",
+                  "type": "string"
+                },
+                "windowSize": {
+                  "$ref": "#/$defs/WindowSize",
+                  "description": "The size of new windows created from this browser. Defaults to 1024x768."
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^remoteUrl$": true,
+                "^windowSize$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "description": "Name of the browser:\n\nOptions:\n   - chrome\n   - firefox\n   - safari\n   - edge\n   - ie",
+                  "enum": [
+                    "ie"
+                  ],
+                  "type": "string"
+                },
+                "remoteUrl": {
+                  "description": "A remote WebDriver server HTTP address to launch the browser from.",
+                  "type": "string"
+                },
+                "windowSize": {
+                  "$ref": "#/$defs/WindowSize",
+                  "description": "The size of new windows created from this browser. Defaults to 1024x768."
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^remoteUrl$": true,
+                "^windowSize$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "ConfigFilePackageVersion": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "height": {
+                  "description": "Height of the browser window in pixels. Defaults to 768.",
+                  "minimum": 0.0,
+                  "type": "integer"
+                },
+                "width": {
+                  "description": "Width of the browser window in pixels. Defaults to 1024.",
+                  "minimum": 0.0,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "height",
+                "width"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^height$": true,
+                "^width$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "binary": {
+                  "description": "Path to the binary to use when launching this browser, instead of the\ndefault one.",
+                  "type": "string"
+                },
+                "addArguments": {
+                  "description": "Additional command-line arguments to pass when launching the browser.",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "windowSize": {
+                  "$ref": "#/$defs/WindowSize",
+                  "description": "The size of new windows created from this browser. Defaults to 1024x768."
+                },
+                "name": {
+                  "description": "Name of the browser:\n\nOptions:\n   - chrome\n   - firefox\n   - safari\n   - edge\n   - ie",
+                  "enum": [
+                    "firefox"
+                  ],
+                  "type": "string"
+                },
+                "remoteUrl": {
+                  "description": "A remote WebDriver server HTTP address to launch the browser from.",
+                  "type": "string"
+                },
+                "headless": {
+                  "description": "Whether to launch the headless (no GUI) version of this browser.",
+                  "type": "boolean"
+                },
+                "preferences": {
+                  "$ref": "#/$defs/modern_10"
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^binary$": true,
+                "^name$": true,
+                "^preferences$": true,
+                "^windowSize$": true,
+                "^addArguments$": true,
+                "^remoteUrl$": true,
+                "^headless$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "SafariConfig": {
+      "$ref": "#/$defs/modern_7"
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Expected format of the top-level JSON config file. Note this interface is\nused to generate the JSON schema for validation.",
+              "properties": {
+                "resolveBareModules": {
+                  "description": "Whether to automatically convert ES module imports with bare module\nspecifiers to paths.",
+                  "type": "boolean"
+                },
+                "benchmarks": {
+                  "description": "Benchmarks to run.",
+                  "items": {
+                    "$ref": "#/$defs/ConfigFileBenchmark"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                },
+                "root": {
+                  "description": "Root directory to serve benchmarks from (default current directory).",
+                  "type": "string"
+                },
+                "horizons": {
+                  "description": "The degrees of difference to try and resolve when auto-sampling\n(e.g. 0ms, +1ms, -1ms, 0%, +1%, -1%, default 0%).",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "sampleSize": {
+                  "description": "Minimum number of times to run each benchmark (default 50).",
+                  "minimum": 2.0,
+                  "type": "integer"
+                },
+                "$schema": {
+                  "description": "An optional reference to the JSON Schema for this file.\n\nIf none is given, and the file is a valid tachometer config file,\ntachometer will write back to the config file to give this a value.",
+                  "type": "string"
+                },
+                "timeout": {
+                  "description": "The maximum number of minutes to spend auto-sampling (default 3).",
+                  "minimum": 0.0,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "benchmarks"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^$schema$": true,
+                "^timeout$": true,
+                "^resolveBareModules$": true,
+                "^horizons$": true,
+                "^benchmarks$": true,
+                "^sampleSize$": true,
+                "^root$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "WindowSize": {
+      "$ref": "#/$defs/modern_8"
+    },
+    "FirefoxConfig": {
+      "$ref": "#/$defs/modern_9"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "binary": {
+                  "description": "Path to the binary to use when launching this browser, instead of the\ndefault one.",
+                  "type": "string"
+                },
+                "headless": {
+                  "description": "Whether to launch the headless (no GUI) version of this browser.",
+                  "type": "boolean"
+                },
+                "removeArguments": {
+                  "description": "Command-line arguments that WebDriver normally adds by default when\nlaunching the browser, which you would like to omit.",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "windowSize": {
+                  "$ref": "#/$defs/WindowSize",
+                  "description": "The size of new windows created from this browser. Defaults to 1024x768."
+                },
+                "name": {
+                  "description": "Name of the browser:\n\nOptions:\n   - chrome\n   - firefox\n   - safari\n   - edge\n   - ie",
+                  "enum": [
+                    "chrome"
+                  ],
+                  "type": "string"
+                },
+                "remoteUrl": {
+                  "description": "A remote WebDriver server HTTP address to launch the browser from.",
+                  "type": "string"
+                },
+                "addArguments": {
+                  "description": "Additional command-line arguments to pass when launching the browser.",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "cpuThrottlingRate": {
+                  "description": "Optional CPU Throttling rate. (1 is no throttle, 2 is 2x slowdown,\netc). This is currently only supported in headless mode.",
+                  "minimum": 1.0,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^binary$": true,
+                "^cpuThrottlingRate$": true,
+                "^name$": true,
+                "^removeArguments$": true,
+                "^windowSize$": true,
+                "^addArguments$": true,
+                "^remoteUrl$": true,
+                "^headless$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "IEConfig": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Advanced preferences that are usually set from the about:config page\nin Firefox (see\nhttps://support.mozilla.org/en-US/kb/about-config-editor-firefox).",
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": [
+                  "string",
+                  "number",
+                  "boolean"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "EdgeConfig": {
+      "$ref": "#/$defs/modern_6"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Expected format of a benchmark in a JSON config file.",
+              "properties": {
+                "name": {
+                  "description": "An optional label for this benchmark. Defaults to the URL.",
+                  "type": "string"
+                },
+                "url": {
+                  "description": "A fully qualified URL, or a local path to an HTML file or directory. If a\ndirectory, must contain an index.html. Query parameters are permitted on\nlocal paths (e.g. 'my/benchmark.html?foo=bar').",
+                  "type": "string"
+                },
+                "browser": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/ChromeConfig"
+                    },
+                    {
+                      "$ref": "#/$defs/FirefoxConfig"
+                    },
+                    {
+                      "$ref": "#/$defs/SafariConfig"
+                    },
+                    {
+                      "$ref": "#/$defs/EdgeConfig"
+                    },
+                    {
+                      "$ref": "#/$defs/IEConfig"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "description": "Which browser to run the benchmark in.\n\nOptions:\n   - chrome (default)\n   - chrome-headless\n   - firefox\n   - firefox-headless\n   - safari\n   - edge\n   - ie"
+                },
+                "expand": {
+                  "description": "Recursively expand this benchmark configuration with any number of\nvariations. Useful for testing the same base configuration with e.g.\nmultiple browers or package versions.",
+                  "items": {
+                    "$ref": "#/$defs/ConfigFileBenchmark"
+                  },
+                  "type": "array"
+                },
+                "measurement": {
+                  "description": "Which time interval to measure.\n\nOptions:\n   - callback: bench.start() to bench.stop() (default for fully qualified\n     URLs.\n   - fcp: first contentful paint (default for local paths)\n   - global: result returned from window.tachometerResult (or custom\n       expression set via measurementExpression)",
+                  "enum": [
+                    "callback",
+                    "fcp",
+                    "global"
+                  ],
+                  "type": "string"
+                },
+                "measurementExpression": {
+                  "description": "Expression to use to retrieve global result.  Defaults to\n`window.tachometerResult`.",
+                  "type": "string"
+                },
+                "packageVersions": {
+                  "$ref": "#/$defs/ConfigFilePackageVersion",
+                  "description": "Optional NPM dependency overrides to apply and install. Only supported with\nlocal paths."
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^measurementExpression$": true,
+                "^packageVersions$": true,
+                "^browser$": true,
+                "^url$": true,
+                "^name$": true,
+                "^measurement$": true,
+                "^expand$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

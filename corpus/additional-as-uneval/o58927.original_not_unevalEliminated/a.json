@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_3",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "tag": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "track": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "duration": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "url": {
+                  "_format": "uri",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^duration$": true,
+                "^name$": true,
+                "^url$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "The JSON schema that matches album info.",
+              "properties": {
+                "url": {
+                  "_format": "uri",
+                  "type": "string"
+                },
+                "tags": {
+                  "items": {
+                    "$ref": "#/$defs/tag"
+                  },
+                  "type": "array"
+                },
+                "tracks": {
+                  "items": {
+                    "$ref": "#/$defs/track"
+                  },
+                  "type": "array"
+                },
+                "raw": {
+                  "type": "object"
+                },
+                "artist": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "imageUrl": {
+                  "_format": "uri",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "artist",
+                "title",
+                "url",
+                "tracks",
+                "raw"
+              ],
+              "title": "album-info",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^tracks$": true,
+                "^url$": true,
+                "^imageUrl$": true,
+                "^title$": true,
+                "^artist$": true,
+                "^raw$": true,
+                "^tags$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

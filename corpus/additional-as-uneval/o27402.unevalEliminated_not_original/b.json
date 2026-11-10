@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "commandline": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "default": ""
+    },
+    "stdout": {
+      "type": "string",
+      "pattern": "^gs://(.+)",
+      "default": ""
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/pathpair"
+      }
+    },
+    "resources": {
+      "type": "object",
+      "properties": {
+        "memunit": {
+          "$ref": "#/$defs/bytesunit"
+        },
+        "disk": {
+          "type": "integer",
+          "minimum": 1.0
+        },
+        "diskunit": {
+          "$ref": "#/$defs/bytesunit"
+        },
+        "mem": {
+          "type": "integer",
+          "minimum": 1.0
+        },
+        "cpus": {
+          "type": "number",
+          "minimum": 0.1
+        }
+      },
+      "required": [
+        "cpus",
+        "mem",
+        "disk"
+      ]
+    },
+    "stderr": {
+      "type": "string",
+      "pattern": "^gs://(.+)",
+      "default": ""
+    },
+    "docker": {
+      "type": "string"
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/pathpair"
+      }
+    }
+  },
+  "required": [
+    "inputs",
+    "commandline",
+    "outputs",
+    "resources",
+    "docker"
+  ],
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "cloud": {
+                  "type": "string",
+                  "pattern": "(^gs://(.+))|(^http://(.+))|(^https://(.+))"
+                },
+                "local": {
+                  "type": "string",
+                  "pattern": "^/(.*)"
+                }
+              },
+              "required": [
+                "cloud",
+                "local"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^cloud$": true,
+                "^local$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "bytesunit": {
+      "type": "string",
+      "pattern": "^BYTES|^KB|^MB|^GB|^TB",
+      "default": "MB"
+    },
+    "pathpair": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

@@ -1,0 +1,289 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_7",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "timingPlan": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/TimingPlan"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^timingPlan$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Std": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "phase": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/PhaseType"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^phase$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "SignalTimingDataType": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "signalTimingData": {
+                  "$ref": "#/$defs/SignalTimingDataType"
+                },
+                "version": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^signalTimingData$": true,
+                "^version$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "file": {
+                  "type": "string",
+                  "enum": [
+                    "OK",
+                    "NONE"
+                  ]
+                },
+                "name": {
+                  "type": "string"
+                },
+                "timingPlans": {
+                  "$ref": "#/$defs/TimingPlans"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^file$": true,
+                "^timingPlans$": true,
+                "^name$": true,
+                "^id$": true,
+                "^path$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "TimingPlan": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "std": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/Std"
+                  }
+                },
+                "numsys": {
+                  "type": "integer"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^std$": true,
+                "^numsys$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "TimingPlans": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "PhaseType": {
+      "$ref": "#/$defs/modern_6"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "phases": {
+                  "$ref": "#/$defs/Phases"
+                },
+                "min": {
+                  "type": "integer"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "offset": {
+                  "type": "integer"
+                },
+                "cycle": {
+                  "type": "integer"
+                },
+                "sigplan": {
+                  "type": "integer"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^phases$": true,
+                "^sigplan$": true,
+                "^id$": true,
+                "^offset$": true,
+                "^cycle$": true,
+                "^min$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Phases": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "minvar": {
+                  "type": "integer"
+                },
+                "clear": {
+                  "type": "integer"
+                },
+                "serves": {
+                  "type": "integer"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "split": {
+                  "type": "integer"
+                },
+                "variable": {
+                  "type": "integer"
+                },
+                "fixed": {
+                  "type": "integer"
+                },
+                "disp": {
+                  "type": "string",
+                  "enum": [
+                    "EW_L",
+                    "SB_L",
+                    "NB_W",
+                    "SB_W",
+                    "WB_G",
+                    "NB_L",
+                    "EW_W",
+                    "NS_W",
+                    "EB_W",
+                    "NS_E",
+                    "NS_L",
+                    "WB_L",
+                    "SB_G",
+                    "EB_L",
+                    "WB_B",
+                    "EW_G"
+                  ]
+                },
+                "value": {
+                  "type": "string"
+                },
+                "rof": {
+                  "type": "integer"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^minvar$": true,
+                "^rof$": true,
+                "^serves$": true,
+                "^split$": true,
+                "^disp$": true,
+                "^value$": true,
+                "^variable$": true,
+                "^id$": true,
+                "^fixed$": true,
+                "^clear$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

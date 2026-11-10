@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EMT order list schema for AMTweaker",
+  "type": "array",
+  "items": {
+    "$ref": "#/$defs/modern_1"
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "Display name for the order. Can be a translation tag defined as a resource (realm assts.economical.lang)",
+                  "type": "string"
+                },
+                "request": {
+                  "description": "Requested item. Either an ore dictionary tag or an item in the form modid:item:damage",
+                  "type": "string",
+                  "oneOf": [
+                    {
+                      "pattern": "^[^:]+$"
+                    },
+                    {
+                      "pattern": "^[^:]+:[^:]+:[0-9]+$"
+                    }
+                  ]
+                },
+                "reward": {
+                  "description": "MP reward for fulfilling the order.",
+                  "type": "integer",
+                  "minimum": 1.0
+                },
+                "season": {
+                  "description": "Order season. none (default), spring, summer, autumn or winter.",
+                  "enum": [
+                    "none",
+                    "spring",
+                    "summer",
+                    "autumn",
+                    "winter"
+                  ]
+                },
+                "amount": {
+                  "description": "Amount of items necessary to fulfill the order.",
+                  "type": "integer",
+                  "minimum": 1.0
+                },
+                "biome": {
+                  "description": "Order biome category. none (default), plane, cold, arid, damp or hell.",
+                  "enum": [
+                    "none",
+                    "plane",
+                    "cold",
+                    "arid",
+                    "damp",
+                    "hell"
+                  ]
+                },
+                "type": {
+                  "description": "Order type. single (1 day), ",
+                  "enum": [
+                    "single",
+                    "short",
+                    "middle",
+                    "long"
+                  ]
+                }
+              },
+              "required": [
+                "request",
+                "amount",
+                "reward",
+                "type",
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^season$": true,
+                "^reward$": true,
+                "^name$": true,
+                "^type$": true,
+                "^request$": true,
+                "^biome$": true,
+                "^amount$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

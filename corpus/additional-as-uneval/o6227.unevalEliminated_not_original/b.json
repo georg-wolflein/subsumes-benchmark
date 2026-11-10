@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/modern_1"
+    },
+    {
+      "$ref": "#/$defs/modern_2"
+    }
+  ],
+  "$defs": {
+    "_changeTypeOthers": {
+      "title": "Change Type",
+      "enum": [
+        "percent",
+        "percentInc",
+        "percentDec",
+        "value",
+        "valueInc",
+        "valueDec"
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "valuePath": {
+                  "$ref": "#/$defs/valuePath"
+                },
+                "changeType": {
+                  "$ref": "#/$defs/_changeTypeOthers"
+                },
+                "changeThreshold": {
+                  "$ref": "#/$defs/changeThreshold"
+                },
+                "prevValuePath": {
+                  "$ref": "#/$defs/prevValuePath"
+                }
+              },
+              "required": [
+                "valuePath",
+                "changeType",
+                "changeThreshold"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^valuePath$": true,
+                "^changeType$": true,
+                "^changeThreshold$": true,
+                "^prevValuePath$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "valuePath": {
+                  "$ref": "#/$defs/valuePath"
+                },
+                "changeType": {
+                  "$ref": "#/$defs/_changeTypeAny"
+                },
+                "prevValuePath": {
+                  "$ref": "#/$defs/prevValuePath"
+                }
+              },
+              "required": [
+                "valuePath",
+                "changeType"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^valuePath$": true,
+                "^changeType$": true,
+                "^prevValuePath$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "changeThreshold": {
+      "title": "Change Threshold",
+      "description": "Amount of change required",
+      "type": "number"
+    },
+    "_changeTypeAny": {
+      "title": "Change Type",
+      "enum": [
+        "any"
+      ]
+    },
+    "valuePath": {
+      "title": "Value Path",
+      "description": "JSON Path of where to find value to check in payload",
+      "type": "string",
+      "minLength": 1
+    },
+    "prevValuePath": {
+      "title": "Previous Value Path",
+      "description": "JSON path of where to put the previous triggering value and time",
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

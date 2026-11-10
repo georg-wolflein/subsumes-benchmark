@@ -1,0 +1,205 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "format": {
+                  "type": "string",
+                  "enum": [
+                    "unknown",
+                    1,
+                    2,
+                    3,
+                    4
+                  ],
+                  "pbj": {
+                    "type": "string-enum",
+                    "rule": "single"
+                  }
+                },
+                "file_ext": {
+                  "type": "string",
+                  "pattern": "^[\\w\\.-]+$",
+                  "pbj": {
+                    "type": "string",
+                    "rule": "single"
+                  }
+                },
+                "url": {
+                  "type": "string",
+                  "pattern": "^(https?:\\/\\/)?([\\da-z\\.-]+)\\.([a-z\\.]{2,6})([\\/\\w \\.-]*)*\\/?$",
+                  "pbj": {
+                    "type": "text",
+                    "rule": "single",
+                    "format": "url"
+                  }
+                },
+                "description": {
+                  "type": "string",
+                  "minLength": 0,
+                  "maxLength": 255,
+                  "pbj": {
+                    "type": "string",
+                    "rule": "single"
+                  }
+                },
+                "entry_id": {
+                  "type": "string",
+                  "pattern": "^[\\w-]+$",
+                  "pbj": {
+                    "type": "string",
+                    "rule": "single"
+                  }
+                },
+                "version": {
+                  "type": "integer",
+                  "default": 0,
+                  "minimum": 0.0,
+                  "maximum": 65535.0,
+                  "pbj": {
+                    "type": "small-int",
+                    "rule": "single"
+                  }
+                },
+                "id": {
+                  "type": "string",
+                  "pattern": "^[\\w-]+$",
+                  "pbj": {
+                    "type": "string",
+                    "rule": "single"
+                  }
+                },
+                "language": {
+                  "type": "string",
+                  "minLength": 0,
+                  "maxLength": 255,
+                  "pbj": {
+                    "type": "string",
+                    "rule": "single"
+                  }
+                },
+                "created_at": {
+                  "type": "integer",
+                  "minimum": -2147483648.0,
+                  "maximum": 2147483647.0,
+                  "pbj": {
+                    "type": "timestamp",
+                    "rule": "single",
+                    "useTypeDefault": false
+                  }
+                },
+                "updated_at": {
+                  "type": "integer",
+                  "minimum": -2147483648.0,
+                  "maximum": 2147483647.0,
+                  "pbj": {
+                    "type": "timestamp",
+                    "rule": "single",
+                    "useTypeDefault": false
+                  }
+                },
+                "deleted_at": {
+                  "type": "integer",
+                  "minimum": -2147483648.0,
+                  "maximum": 2147483647.0,
+                  "pbj": {
+                    "type": "timestamp",
+                    "rule": "single",
+                    "useTypeDefault": false
+                  }
+                },
+                "is_default": {
+                  "type": "boolean",
+                  "pbj": {
+                    "type": "boolean",
+                    "rule": "single"
+                  }
+                },
+                "size": {
+                  "type": "integer",
+                  "default": 0,
+                  "minimum": 0.0,
+                  "maximum": 16777215.0,
+                  "pbj": {
+                    "type": "medium-int",
+                    "rule": "single"
+                  }
+                },
+                "accuracy": {
+                  "type": "integer",
+                  "default": 0,
+                  "minimum": 0.0,
+                  "maximum": 65535.0,
+                  "pbj": {
+                    "type": "small-int",
+                    "rule": "single"
+                  }
+                },
+                "_schema": {
+                  "type": "string",
+                  "pattern": "^pbj:([a-z0-9-]+):([a-z0-9\\.-]+):([a-z0-9-]+)?:([a-z0-9-]+):([0-9]+-[0-9]+-[0-9]+)$",
+                  "default": "pbj:triniti:ovp.kaltura::caption:1-0-0"
+                },
+                "language_code": {
+                  "type": "string",
+                  "pattern": "^\\w+$",
+                  "pbj": {
+                    "type": "string",
+                    "rule": "single"
+                  }
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "unknown",
+                    -1,
+                    0,
+                    2,
+                    3,
+                    7,
+                    9
+                  ],
+                  "pbj": {
+                    "type": "string-enum",
+                    "rule": "single"
+                  }
+                }
+              },
+              "required": [
+                "_schema"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^deleted_at$": true,
+                "^description$": true,
+                "^format$": true,
+                "^url$": true,
+                "^status$": true,
+                "^accuracy$": true,
+                "^created_at$": true,
+                "^_schema$": true,
+                "^entry_id$": true,
+                "^language$": true,
+                "^is_default$": true,
+                "^updated_at$": true,
+                "^version$": true,
+                "^language_code$": true,
+                "^id$": true,
+                "^size$": true,
+                "^file_ext$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

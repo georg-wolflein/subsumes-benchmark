@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "labelExpressionInfo",
+              "type": "object",
+              "description": "The labelExpressionInfo allows label text to be read similar to that of Popups's description property.",
+              "properties": {
+                "expression": {
+                  "type": "string",
+                  "description": "An [Arcade expression](https://developers.arcgis.com/arcade/) evaluating to either a string or a number."
+                }
+              },
+              "esriDocumentation": {
+                "examples": [
+                  {
+                    "title": "labelExpressionInfo",
+                    "code": {
+                      "labelExpressionInfo": {
+                        "expression": "return $feature[\"state_name\"] + \" (arcade)\";"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "patternProperties": {
+                "^expression$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

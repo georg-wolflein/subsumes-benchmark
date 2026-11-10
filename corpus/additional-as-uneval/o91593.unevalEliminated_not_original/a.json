@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "border": {
+      "$ref": "#/$defs/borders"
+    },
+    "columnDefault": {
+      "$ref": "#/$defs/column"
+    },
+    "columns": {
+      "$ref": "#/$defs/columns"
+    },
+    "drawHorizontalLine": {
+      "typeof": "function"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "border": {
+      "type": "string"
+    },
+    "borders": {
+      "additionalProperties": false,
+      "properties": {
+        "bodyJoin": {
+          "$ref": "#/$defs/border"
+        },
+        "bodyLeft": {
+          "$ref": "#/$defs/border"
+        },
+        "bodyRight": {
+          "$ref": "#/$defs/border"
+        },
+        "bottomBody": {
+          "$ref": "#/$defs/border"
+        },
+        "bottomJoin": {
+          "$ref": "#/$defs/border"
+        },
+        "bottomLeft": {
+          "$ref": "#/$defs/border"
+        },
+        "bottomRight": {
+          "$ref": "#/$defs/border"
+        },
+        "joinBody": {
+          "$ref": "#/$defs/border"
+        },
+        "joinJoin": {
+          "$ref": "#/$defs/border"
+        },
+        "joinLeft": {
+          "$ref": "#/$defs/border"
+        },
+        "joinRight": {
+          "$ref": "#/$defs/border"
+        },
+        "topBody": {
+          "$ref": "#/$defs/border"
+        },
+        "topJoin": {
+          "$ref": "#/$defs/border"
+        },
+        "topLeft": {
+          "$ref": "#/$defs/border"
+        },
+        "topRight": {
+          "$ref": "#/$defs/border"
+        }
+      },
+      "type": "object"
+    },
+    "column": {
+      "additionalProperties": false,
+      "properties": {
+        "alignment": {
+          "enum": [
+            "left",
+            "right",
+            "center"
+          ],
+          "type": "string"
+        },
+        "paddingLeft": {
+          "type": "number"
+        },
+        "paddingRight": {
+          "type": "number"
+        },
+        "truncate": {
+          "type": "number"
+        },
+        "width": {
+          "type": "number"
+        },
+        "wrapWord": {
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "columns": {
+      "additionalProperties": false,
+      "patternProperties": {
+        "^[0-9]+$": {
+          "$ref": "#/$defs/column"
+        }
+      },
+      "type": "object"
+    }
+  }
+}

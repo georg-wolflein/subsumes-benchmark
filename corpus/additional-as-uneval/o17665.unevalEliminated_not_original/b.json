@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/MyObject",
+  "$defs": {
+    "MyString": {
+      "type": "string"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "object": {
+                  "$ref": "#/$defs/MySubObject"
+                },
+                "primitive": {
+                  "$ref": "#/$defs/MyString"
+                }
+              },
+              "required": [
+                "primitive",
+                "object"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^object$": true,
+                "^primitive$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "propA": {
+                  "type": "number"
+                },
+                "propB": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "propA",
+                "propB"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^propA$": true,
+                "^propB$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "MyObject": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "MySubObject": {
+      "$ref": "#/$defs/modern_2"
+    }
+  }
+}

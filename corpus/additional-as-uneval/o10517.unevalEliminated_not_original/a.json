@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Purchase order schema for Example.com.\n     Copyright 2000 Example.com. All rights reserved.",
+  "properties": {
+    "purchaseOrder": {
+      "$ref": "#/$defs/PurchaseOrderType"
+    }
+  },
+  "required": [
+    "purchaseOrder"
+  ],
+  "title": "test/purchaseorder.xsd",
+  "type": "object",
+  "$defs": {
+    "Items": {
+      "additionalProperties": false,
+      "properties": {
+        "item": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "USPrice": {
+                "type": "number"
+              },
+              "comment": {
+                "$ref": "#/$defs/comment"
+              },
+              "item": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "USPrice": {
+                      "type": "number"
+                    },
+                    "comment": {
+                      "$ref": "#/$defs/comment"
+                    },
+                    "partNum": {
+                      "$ref": "#/$defs/SKU"
+                    },
+                    "productName": {
+                      "type": "string"
+                    },
+                    "quantity": {
+                      "minimum": 1,
+                      "type": "integer"
+                    },
+                    "shipDate": {
+                      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}.*$",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "productName",
+                    "quantity",
+                    "USPrice",
+                    "partNum"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "partNum": {
+                "$ref": "#/$defs/SKU"
+              },
+              "productName": {
+                "type": "string"
+              },
+              "quantity": {
+                "minimum": 1,
+                "type": "integer"
+              },
+              "shipDate": {
+                "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}.*$",
+                "type": "string"
+              }
+            },
+            "required": [
+              "productName",
+              "quantity",
+              "USPrice",
+              "partNum"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "PurchaseOrderType": {
+      "additionalProperties": false,
+      "properties": {
+        "billTo": {
+          "$ref": "#/$defs/USAddress"
+        },
+        "comment": {
+          "$ref": "#/$defs/comment"
+        },
+        "items": {
+          "$ref": "#/$defs/Items"
+        },
+        "orderDate": {
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}.*$",
+          "type": "string"
+        },
+        "shipTo": {
+          "$ref": "#/$defs/USAddress"
+        }
+      },
+      "required": [
+        "shipTo",
+        "billTo",
+        "items"
+      ],
+      "type": "object"
+    },
+    "SKU": {
+      "pattern": "\\d{3}-[A-Z]{2}",
+      "type": "string"
+    },
+    "USAddress": {
+      "additionalProperties": false,
+      "properties": {
+        "city": {
+          "type": "string"
+        },
+        "country": {
+          "enum": [
+            "US"
+          ],
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "street": {
+          "type": "string"
+        },
+        "zip": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "name",
+        "street",
+        "city",
+        "state",
+        "zip"
+      ],
+      "type": "object"
+    },
+    "comment": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "TenantDescriptor",
+              "description": "Tenant information",
+              "type": "object",
+              "properties": {
+                "id": {
+                  "description": "Tenant ID",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Tenant name",
+                  "type": "string"
+                },
+                "description": {
+                  "description": "Tenant description",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^name$": true,
+                "^description$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

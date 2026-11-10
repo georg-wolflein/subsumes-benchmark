@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "launchKey": {
+                  "type": "string",
+                  "description": "an unguessable key used to get information about a previously launched patchSet"
+                }
+              },
+              "required": [
+                "launchKey"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^launchKey$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

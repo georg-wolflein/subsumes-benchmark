@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "filename": {
+                  "maxLength": 160,
+                  "minLength": 5,
+                  "type": "string"
+                },
+                "name": {
+                  "maxLength": 160,
+                  "minLength": 5,
+                  "type": "string"
+                },
+                "serviceId": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "name",
+                "serviceId"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^filename$": true,
+                "^name$": true,
+                "^serviceId$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

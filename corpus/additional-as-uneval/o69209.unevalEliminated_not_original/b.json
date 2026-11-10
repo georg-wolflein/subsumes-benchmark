@@ -1,0 +1,4137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "sbg:canvas_y": {
+      "type": "number"
+    },
+    "sbg:modifiedOn": {
+      "type": "number"
+    },
+    "sbg:revision": {
+      "type": "number"
+    },
+    "hints": {
+      "type": "array",
+      "items": true
+    },
+    "sbg:links": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/SBGLink"
+      }
+    },
+    "sbg:toolkit": {
+      "type": "string"
+    },
+    "sbg:sbgMaintained": {
+      "type": "boolean"
+    },
+    "sbg:createdBy": {
+      "type": "string"
+    },
+    "sbg:project": {
+      "type": "string"
+    },
+    "requirements": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/DockerRequirement"
+          },
+          {
+            "$ref": "#/$defs/SubworkflowFeatureRequirement"
+          },
+          {
+            "$ref": "#/$defs/CreateFileRequirement"
+          },
+          {
+            "$ref": "#/$defs/EnvVarRequirement"
+          },
+          {
+            "$ref": "#/$defs/ScatterFeatureRequirement"
+          },
+          {
+            "$ref": "#/$defs/SchemaDefRequirement"
+          },
+          {
+            "$ref": "#/$defs/ExpressionEngineRequirement"
+          }
+        ]
+      }
+    },
+    "sbg:image_url": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sbg:revisionInfo": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/SBGRevision"
+      }
+    },
+    "sbg:canvas_zoom": {
+      "type": "number"
+    },
+    "sbg:contributors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sbg:validationErrors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sbg:categories": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sbg:toolkitVersion": {
+      "type": "string"
+    },
+    "sbg:modifiedBy": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "sbg:id": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    },
+    "sbg:revisionNotes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sbg:toolAuthor": {
+      "type": "string"
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/WorkflowOutputParameter"
+      }
+    },
+    "id": {
+      "type": "string"
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/SBGWorkflowInputParameter"
+      }
+    },
+    "class": {
+      "type": "string",
+      "enum": [
+        "Workflow"
+      ]
+    },
+    "sbg:canvas_x": {
+      "type": "number"
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/WorkflowStep"
+      }
+    },
+    "cwlVersion": {
+      "$ref": "#/$defs/CWLVersions",
+      "description": "CWL document version"
+    },
+    "sbg:license": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "inputs",
+    "outputs",
+    "class",
+    "steps"
+  ],
+  "$defs": {
+    "ScatterMethod": {
+      "type": "string",
+      "enum": [
+        "dotproduct",
+        "nested_crossproduct",
+        "flat_crossproduct"
+      ]
+    },
+    "WorkflowInputEnumSchema": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "enum"
+          ]
+        },
+        "symbols": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "symbols"
+      ]
+    },
+    "InputSchema": {
+      "type": "object",
+      "properties": {
+        "inputBinding": {
+          "$ref": "#/$defs/Binding"
+        },
+        "items": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "null"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "boolean"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "int"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "long"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "float"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "double"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "bytes"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "string"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "File"
+              ]
+            },
+            {
+              "$ref": "#/$defs/InputSchema"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "null"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "boolean"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "int"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "long"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "float"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "double"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "bytes"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "string"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "File"
+                    ]
+                  },
+                  {
+                    "$ref": "#/$defs/InputSchema"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "symbols": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/InputSchema"
+          }
+        },
+        "values": {
+          "type": "string"
+        },
+        "type": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "record"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "array"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "enum"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "map"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "null"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "boolean"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "int"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "long"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "float"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "double"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "bytes"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "string"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "File"
+              ]
+            },
+            {
+              "$ref": "#/$defs/InputSchema"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "record"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "array"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "enum"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "map"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "null"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "boolean"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "int"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "long"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "float"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "double"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "bytes"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "string"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "File"
+                    ]
+                  },
+                  {
+                    "$ref": "#/$defs/InputSchema"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "$ref": "#/$defs/Expression"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "SBGRevision": {
+      "type": "object",
+      "properties": {
+        "sbg:revision": {
+          "type": "number"
+        },
+        "sbg:modifiedBy": {
+          "type": "string"
+        },
+        "sbg:revisionNotes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sbg:modifiedOn": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "sbg:revision",
+        "sbg:modifiedBy",
+        "sbg:revisionNotes",
+        "sbg:modifiedOn"
+      ]
+    },
+    "ExpressionTool": {
+      "type": "object",
+      "properties": {
+        "sbg:modifiedOn": {
+          "type": "number"
+        },
+        "sbg:revision": {
+          "type": "number"
+        },
+        "hints": {
+          "type": "array",
+          "items": true
+        },
+        "sbg:links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SBGLink"
+          }
+        },
+        "sbg:toolkit": {
+          "type": "string"
+        },
+        "sbg:sbgMaintained": {
+          "type": "boolean"
+        },
+        "sbg:project": {
+          "type": "string"
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/DockerRequirement"
+              },
+              {
+                "$ref": "#/$defs/SubworkflowFeatureRequirement"
+              },
+              {
+                "$ref": "#/$defs/CreateFileRequirement"
+              },
+              {
+                "$ref": "#/$defs/EnvVarRequirement"
+              },
+              {
+                "$ref": "#/$defs/ScatterFeatureRequirement"
+              },
+              {
+                "$ref": "#/$defs/SchemaDefRequirement"
+              },
+              {
+                "$ref": "#/$defs/ExpressionEngineRequirement"
+              }
+            ]
+          }
+        },
+        "class": {
+          "type": "string",
+          "enum": [
+            "ExpressionTool"
+          ]
+        },
+        "sbg:revisionInfo": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SBGRevision"
+          }
+        },
+        "sbg:contributors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sbg:license": {
+          "type": "string"
+        },
+        "sbg:validationErrors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sbg:categories": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sbg:toolkitVersion": {
+          "type": "string"
+        },
+        "sbg:modifiedBy": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "sbg:id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "sbg:revisionNotes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sbg:toolAuthor": {
+          "type": "string"
+        },
+        "outputs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OutputParameter"
+          }
+        },
+        "id": {
+          "type": "string"
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/InputParameter"
+          }
+        },
+        "sbg:createdBy": {
+          "type": "string"
+        },
+        "expression": {
+          "$ref": "#/$defs/Expression"
+        }
+      },
+      "required": [
+        "class",
+        "expression",
+        "inputs",
+        "outputs"
+      ]
+    },
+    "CommandOutputBinding": {
+      "type": "object",
+      "properties": {
+        "secondaryFiles": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Expression"
+            },
+            {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "$ref": "#/$defs/Expression"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "sbg:inheritMetadataFrom": {
+          "type": "string"
+        },
+        "glob": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Expression"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "loadContents": {
+          "type": "boolean"
+        },
+        "outputEval": {
+          "$ref": "#/$defs/Expression"
+        },
+        "sbg:metadata": {
+          "$ref": "#/$defs/modern_1"
+        }
+      }
+    },
+    "CommandInputMapSchema": {
+      "type": "object",
+      "properties": {
+        "inputBinding": {
+          "$ref": "#/$defs/CommandLineBinding"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "map"
+          ]
+        },
+        "values": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "values"
+      ]
+    },
+    "CWLVersions": {
+      "type": "string",
+      "enum": [
+        "sbg:draft-2"
+      ]
+    },
+    "CommandOutputSchema": {
+      "type": "object",
+      "properties": {
+        "outputBinding": {
+          "$ref": "#/$defs/CommandOutputBinding"
+        },
+        "type": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "null"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "boolean"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "int"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "long"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "float"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "double"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "bytes"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "string"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "File"
+              ]
+            },
+            {
+              "$ref": "#/$defs/CommandOutputSchema"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/CommandOutputMapSchema"
+            },
+            {
+              "$ref": "#/$defs/CommandOutputArraySchema"
+            },
+            {
+              "$ref": "#/$defs/CommandOutputRecordSchema"
+            },
+            {
+              "$ref": "#/$defs/CommandOutputEnumSchema"
+            },
+            {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "null"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "boolean"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "int"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "long"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "float"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "double"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "bytes"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "string"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "File"
+                    ]
+                  },
+                  {
+                    "$ref": "#/$defs/CommandOutputSchema"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "$ref": "#/$defs/CommandOutputMapSchema"
+                  },
+                  {
+                    "$ref": "#/$defs/CommandOutputArraySchema"
+                  },
+                  {
+                    "$ref": "#/$defs/CommandOutputEnumSchema"
+                  },
+                  {
+                    "$ref": "#/$defs/CommandOutputRecordSchema"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "ExpressionEngineRequirement": {
+      "type": "object",
+      "properties": {
+        "engineConfig": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "id": {
+          "type": "string"
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/DockerRequirement"
+              },
+              {
+                "$ref": "#/$defs/SubworkflowFeatureRequirement"
+              },
+              {
+                "$ref": "#/$defs/CreateFileRequirement"
+              },
+              {
+                "$ref": "#/$defs/EnvVarRequirement"
+              },
+              {
+                "$ref": "#/$defs/ScatterFeatureRequirement"
+              },
+              {
+                "$ref": "#/$defs/SchemaDefRequirement"
+              },
+              {
+                "$ref": "#/$defs/ExpressionEngineRequirement"
+              }
+            ]
+          }
+        },
+        "class": {
+          "type": "string",
+          "enum": [
+            "ExpressionEngineRequirement"
+          ]
+        },
+        "engineCommand": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      },
+      "required": [
+        "class",
+        "id"
+      ]
+    },
+    "ScatterFeatureRequirement": {
+      "type": "object",
+      "properties": {}
+    },
+    "SubworkflowFeatureRequirement": {
+      "type": "object",
+      "properties": {}
+    },
+    "CommandOutputParameter": {
+      "type": "object",
+      "properties": {
+        "sbg:fileTypes": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "outputBinding": {
+          "$ref": "#/$defs/CommandOutputBinding"
+        },
+        "id": {
+          "type": "string"
+        },
+        "default": true,
+        "type": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "null"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "boolean"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "int"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "long"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "float"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "double"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "bytes"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "string"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "File"
+              ]
+            },
+            {
+              "$ref": "#/$defs/CommandOutputSchema"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "null"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "boolean"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "int"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "long"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "float"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "double"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "bytes"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "string"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "File"
+                    ]
+                  },
+                  {
+                    "$ref": "#/$defs/CommandOutputSchema"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "streamable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "SBGLink": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "id"
+      ]
+    },
+    "CommandInputEnumSchema": {
+      "type": "object",
+      "properties": {
+        "inputBinding": {
+          "$ref": "#/$defs/CommandLineBinding"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "enum"
+          ]
+        },
+        "symbols": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "symbols",
+        "name"
+      ]
+    },
+    "WorkflowStepOutput": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "WorkflowOutputParameter": {
+      "type": "object",
+      "properties": {
+        "sbg:fileTypes": {
+          "type": "string"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "description": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "sbg:y": {
+          "type": "number"
+        },
+        "default": true,
+        "type": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "null"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "boolean"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "int"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "long"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "float"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "double"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "bytes"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "string"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "File"
+              ]
+            },
+            {
+              "$ref": "#/$defs/OutputSchema"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "null"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "boolean"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "int"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "long"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "float"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "double"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "bytes"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "string"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "File"
+                    ]
+                  },
+                  {
+                    "$ref": "#/$defs/OutputSchema"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "linkMerge": {
+          "$ref": "#/$defs/LinkMergeMethod"
+        },
+        "sbg:x": {
+          "type": "number"
+        },
+        "streamable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "CommandLineTool": {
+      "type": "object",
+      "properties": {
+        "permanentFailCodes": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "successCodes": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "sbg:modifiedOn": {
+          "type": "number"
+        },
+        "stdout": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Expression"
+            }
+          ]
+        },
+        "temporaryFailCodes": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "sbg:revision": {
+          "type": "number"
+        },
+        "hints": {
+          "type": "array",
+          "items": true
+        },
+        "sbg:links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SBGLink"
+          }
+        },
+        "sbg:toolkit": {
+          "type": "string"
+        },
+        "sbg:sbgMaintained": {
+          "type": "boolean"
+        },
+        "sbg:createdBy": {
+          "type": "string"
+        },
+        "sbg:project": {
+          "type": "string"
+        },
+        "class": {
+          "type": "string",
+          "enum": [
+            "CommandLineTool"
+          ]
+        },
+        "sbg:revisionInfo": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SBGRevision"
+          }
+        },
+        "sbg:contributors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sbg:validationErrors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sbg:categories": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sbg:toolkitVersion": {
+          "type": "string"
+        },
+        "sbg:modifiedBy": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "sbg:id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "sbg:revisionNotes": {
+          "type": "string"
+        },
+        "sbg:toolAuthor": {
+          "type": "string"
+        },
+        "outputs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CommandOutputParameter"
+          }
+        },
+        "baseCommand": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Expression"
+            },
+            {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "$ref": "#/$defs/Expression"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "id": {
+          "type": "string"
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CommandInputParameter"
+          }
+        },
+        "stdin": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Expression"
+            }
+          ]
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/DockerRequirement"
+              },
+              {
+                "$ref": "#/$defs/SubworkflowFeatureRequirement"
+              },
+              {
+                "$ref": "#/$defs/CreateFileRequirement"
+              },
+              {
+                "$ref": "#/$defs/EnvVarRequirement"
+              },
+              {
+                "$ref": "#/$defs/ScatterFeatureRequirement"
+              },
+              {
+                "$ref": "#/$defs/SchemaDefRequirement"
+              },
+              {
+                "$ref": "#/$defs/ExpressionEngineRequirement"
+              }
+            ]
+          }
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/CommandLineBinding"
+              }
+            ]
+          }
+        },
+        "sbg:license": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "inputs",
+        "outputs",
+        "class",
+        "baseCommand"
+      ]
+    },
+    "CommandInputSchema": {
+      "type": "object",
+      "properties": {
+        "inputBinding": {
+          "$ref": "#/$defs/CommandLineBinding"
+        },
+        "type": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "null"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "boolean"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "int"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "long"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "float"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "double"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "bytes"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "string"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "File"
+              ]
+            },
+            {
+              "$ref": "#/$defs/CommandInputSchema"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/CommandInputMapSchema"
+            },
+            {
+              "$ref": "#/$defs/CommandInputArraySchema"
+            },
+            {
+              "$ref": "#/$defs/CommandInputRecordSchema"
+            },
+            {
+              "$ref": "#/$defs/CommandInputEnumSchema"
+            },
+            {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "null"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "boolean"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "int"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "long"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "float"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "double"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "bytes"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "string"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "File"
+                    ]
+                  },
+                  {
+                    "$ref": "#/$defs/CommandInputSchema"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "$ref": "#/$defs/CommandInputMapSchema"
+                  },
+                  {
+                    "$ref": "#/$defs/CommandInputArraySchema"
+                  },
+                  {
+                    "$ref": "#/$defs/CommandInputEnumSchema"
+                  },
+                  {
+                    "$ref": "#/$defs/CommandInputRecordSchema"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "CommandLineBinding": {
+      "type": "object",
+      "properties": {
+        "secondaryFiles": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Expression"
+            },
+            {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "$ref": "#/$defs/Expression"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "prefix": {
+          "type": "string"
+        },
+        "valueFrom": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Expression"
+            }
+          ]
+        },
+        "itemSeparator": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "separate": {
+          "type": "boolean"
+        },
+        "position": {
+          "type": "number"
+        },
+        "loadContents": {
+          "type": "boolean"
+        }
+      }
+    },
+    "WorkflowInputSchema": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "null"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "boolean"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "int"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "long"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "float"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "double"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "bytes"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "string"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "File"
+              ]
+            },
+            {
+              "$ref": "#/$defs/WorkflowInputSchema"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/WorkflowInputMapSchema"
+            },
+            {
+              "$ref": "#/$defs/WorkflowInputArraySchema"
+            },
+            {
+              "$ref": "#/$defs/WorkflowInputRecordSchema"
+            },
+            {
+              "$ref": "#/$defs/WorkflowInputEnumSchema"
+            },
+            {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "null"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "boolean"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "int"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "long"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "float"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "double"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "bytes"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "string"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "File"
+                    ]
+                  },
+                  {
+                    "$ref": "#/$defs/WorkflowInputSchema"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "$ref": "#/$defs/WorkflowInputMapSchema"
+                  },
+                  {
+                    "$ref": "#/$defs/WorkflowInputArraySchema"
+                  },
+                  {
+                    "$ref": "#/$defs/WorkflowInputEnumSchema"
+                  },
+                  {
+                    "$ref": "#/$defs/WorkflowInputRecordSchema"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "WorkflowInputMapSchema": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "map"
+          ]
+        },
+        "values": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "values"
+      ]
+    },
+    "Binding": {
+      "type": "object",
+      "properties": {
+        "loadContents": {
+          "type": "boolean"
+        },
+        "secondaryFiles": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Expression"
+            },
+            {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "$ref": "#/$defs/Expression"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "WorkflowStep": {
+      "type": "object",
+      "properties": {
+        "scatterMethod": {
+          "$ref": "#/$defs/ScatterMethod"
+        },
+        "description": {
+          "type": "string"
+        },
+        "run": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CommandLineTool"
+            },
+            {
+              "$ref": "#/$defs/ExpressionTool"
+            },
+            {
+              "$ref": "#/$defs/Workflow"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "label": {
+          "type": "string"
+        },
+        "outputs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/WorkflowStepOutput"
+          }
+        },
+        "hints": {
+          "type": "array",
+          "items": true
+        },
+        "scatter": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/DockerRequirement"
+              },
+              {
+                "$ref": "#/$defs/SubworkflowFeatureRequirement"
+              },
+              {
+                "$ref": "#/$defs/CreateFileRequirement"
+              },
+              {
+                "$ref": "#/$defs/EnvVarRequirement"
+              },
+              {
+                "$ref": "#/$defs/ScatterFeatureRequirement"
+              },
+              {
+                "$ref": "#/$defs/SchemaDefRequirement"
+              },
+              {
+                "$ref": "#/$defs/ExpressionEngineRequirement"
+              }
+            ]
+          }
+        },
+        "id": {
+          "type": "string"
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/WorkflowStepInput"
+          }
+        }
+      },
+      "required": [
+        "inputs",
+        "outputs",
+        "run"
+      ]
+    },
+    "Expression": {
+      "type": "object",
+      "properties": {
+        "engine": {
+          "type": "string"
+        },
+        "script": {
+          "type": "string"
+        },
+        "class": {
+          "type": "string",
+          "enum": [
+            "Expression"
+          ]
+        }
+      },
+      "required": [
+        "engine",
+        "script",
+        "class"
+      ]
+    },
+    "EnvVarRequirement": {
+      "type": "object",
+      "properties": {}
+    },
+    "WorkflowInputRecordSchema": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "record"
+          ]
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/WorkflowInputSchema"
+              },
+              {
+                "$ref": "#/$defs/WorkflowInputArraySchema"
+              },
+              {
+                "$ref": "#/$defs/WorkflowInputRecordSchema"
+              },
+              {
+                "$ref": "#/$defs/WorkflowInputEnumSchema"
+              },
+              {
+                "$ref": "#/$defs/WorkflowInputMapSchema"
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "type",
+        "fields"
+      ]
+    },
+    "CommandOutputEnumSchema": {
+      "type": "object",
+      "properties": {
+        "outputBinding": {
+          "$ref": "#/$defs/CommandOutputBinding"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "enum"
+          ]
+        },
+        "symbols": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "symbols"
+      ]
+    },
+    "DockerRequirement": {
+      "type": "object",
+      "properties": {
+        "dockerPull": {
+          "type": "string"
+        },
+        "dockerOutputDirectory": {
+          "type": "string"
+        },
+        "class": {
+          "type": "string",
+          "enum": [
+            "DockerRequirement"
+          ]
+        },
+        "dockerImageId": {
+          "type": "string"
+        },
+        "dockerLoad": {
+          "type": "string"
+        },
+        "dockerFile": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "class"
+      ]
+    },
+    "Workflow": {
+      "type": "object",
+      "properties": {
+        "sbg:canvas_y": {
+          "type": "number"
+        },
+        "sbg:modifiedOn": {
+          "type": "number"
+        },
+        "sbg:revision": {
+          "type": "number"
+        },
+        "hints": {
+          "type": "array",
+          "items": true
+        },
+        "sbg:links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SBGLink"
+          }
+        },
+        "sbg:toolkit": {
+          "type": "string"
+        },
+        "sbg:sbgMaintained": {
+          "type": "boolean"
+        },
+        "sbg:createdBy": {
+          "type": "string"
+        },
+        "sbg:project": {
+          "type": "string"
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/DockerRequirement"
+              },
+              {
+                "$ref": "#/$defs/SubworkflowFeatureRequirement"
+              },
+              {
+                "$ref": "#/$defs/CreateFileRequirement"
+              },
+              {
+                "$ref": "#/$defs/EnvVarRequirement"
+              },
+              {
+                "$ref": "#/$defs/ScatterFeatureRequirement"
+              },
+              {
+                "$ref": "#/$defs/SchemaDefRequirement"
+              },
+              {
+                "$ref": "#/$defs/ExpressionEngineRequirement"
+              }
+            ]
+          }
+        },
+        "sbg:image_url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sbg:revisionInfo": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SBGRevision"
+          }
+        },
+        "sbg:canvas_zoom": {
+          "type": "number"
+        },
+        "sbg:contributors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sbg:license": {
+          "type": "string"
+        },
+        "sbg:validationErrors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sbg:categories": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sbg:toolkitVersion": {
+          "type": "string"
+        },
+        "sbg:modifiedBy": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "sbg:id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "sbg:revisionNotes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sbg:toolAuthor": {
+          "type": "string"
+        },
+        "outputs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/WorkflowOutputParameter"
+          }
+        },
+        "id": {
+          "type": "string"
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SBGWorkflowInputParameter"
+          }
+        },
+        "class": {
+          "type": "string",
+          "enum": [
+            "Workflow"
+          ]
+        },
+        "sbg:canvas_x": {
+          "type": "number"
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/WorkflowStep"
+          }
+        }
+      },
+      "required": [
+        "inputs",
+        "outputs",
+        "class",
+        "steps"
+      ]
+    },
+    "FileDef": {
+      "type": "object",
+      "properties": {
+        "filename": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Expression"
+            }
+          ]
+        },
+        "fileContent": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Expression"
+            }
+          ]
+        }
+      },
+      "required": [
+        "filename",
+        "fileContent"
+      ]
+    },
+    "CommandInputArraySchema": {
+      "type": "object",
+      "properties": {
+        "inputBinding": {
+          "$ref": "#/$defs/CommandLineBinding"
+        },
+        "items": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "null"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "boolean"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "int"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "long"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "float"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "double"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "bytes"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "string"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "File"
+              ]
+            },
+            {
+              "$ref": "#/$defs/CommandInputSchema"
+            },
+            {
+              "$ref": "#/$defs/CommandInputMapSchema"
+            },
+            {
+              "$ref": "#/$defs/CommandInputArraySchema"
+            },
+            {
+              "$ref": "#/$defs/CommandInputRecordSchema"
+            },
+            {
+              "$ref": "#/$defs/CommandInputEnumSchema"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "null"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "boolean"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "int"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "long"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "float"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "double"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "bytes"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "string"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "File"
+                    ]
+                  },
+                  {
+                    "$ref": "#/$defs/CommandInputSchema"
+                  },
+                  {
+                    "$ref": "#/$defs/CommandInputMapSchema"
+                  },
+                  {
+                    "$ref": "#/$defs/CommandInputArraySchema"
+                  },
+                  {
+                    "$ref": "#/$defs/CommandInputEnumSchema"
+                  },
+                  {
+                    "$ref": "#/$defs/CommandInputRecordSchema"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "array"
+          ]
+        }
+      },
+      "required": [
+        "items",
+        "type"
+      ]
+    },
+    "CommandOutputArraySchema": {
+      "type": "object",
+      "properties": {
+        "outputBinding": {
+          "$ref": "#/$defs/CommandOutputBinding"
+        },
+        "items": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "null"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "boolean"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "int"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "long"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "float"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "double"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "bytes"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "string"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "File"
+              ]
+            },
+            {
+              "$ref": "#/$defs/CommandOutputSchema"
+            },
+            {
+              "$ref": "#/$defs/CommandOutputMapSchema"
+            },
+            {
+              "$ref": "#/$defs/CommandOutputArraySchema"
+            },
+            {
+              "$ref": "#/$defs/CommandOutputRecordSchema"
+            },
+            {
+              "$ref": "#/$defs/CommandOutputEnumSchema"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "null"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "boolean"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "int"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "long"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "float"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "double"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "bytes"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "string"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "File"
+                    ]
+                  },
+                  {
+                    "$ref": "#/$defs/CommandOutputSchema"
+                  },
+                  {
+                    "$ref": "#/$defs/CommandOutputMapSchema"
+                  },
+                  {
+                    "$ref": "#/$defs/CommandOutputArraySchema"
+                  },
+                  {
+                    "$ref": "#/$defs/CommandOutputEnumSchema"
+                  },
+                  {
+                    "$ref": "#/$defs/CommandOutputRecordSchema"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "array"
+          ]
+        }
+      },
+      "required": [
+        "items",
+        "type"
+      ]
+    },
+    "OutputSchema": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "null"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "boolean"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "int"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "long"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "float"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "double"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "bytes"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "string"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "File"
+              ]
+            },
+            {
+              "$ref": "#/$defs/OutputSchema"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "null"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "boolean"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "int"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "long"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "float"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "double"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "bytes"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "string"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "File"
+                    ]
+                  },
+                  {
+                    "$ref": "#/$defs/OutputSchema"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "symbols": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OutputSchema"
+          }
+        },
+        "values": {
+          "type": "string"
+        },
+        "type": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "record"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "array"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "enum"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "map"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "null"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "boolean"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "int"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "long"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "float"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "double"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "bytes"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "string"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "File"
+              ]
+            },
+            {
+              "$ref": "#/$defs/OutputSchema"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "record"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "array"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "enum"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "map"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "null"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "boolean"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "int"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "long"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "float"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "double"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "bytes"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "string"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "File"
+                    ]
+                  },
+                  {
+                    "$ref": "#/$defs/OutputSchema"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "CommandInputRecordSchema": {
+      "type": "object",
+      "properties": {
+        "inputBinding": {
+          "$ref": "#/$defs/CommandLineBinding"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "record"
+          ]
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/CommandInputSchema"
+              },
+              {
+                "$ref": "#/$defs/CommandInputArraySchema"
+              },
+              {
+                "$ref": "#/$defs/CommandInputRecordSchema"
+              },
+              {
+                "$ref": "#/$defs/CommandInputEnumSchema"
+              },
+              {
+                "$ref": "#/$defs/CommandInputMapSchema"
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "type",
+        "fields"
+      ]
+    },
+    "LinkMergeMethod": {
+      "type": "string",
+      "enum": [
+        "merge_nested",
+        "merge_flattened"
+      ]
+    },
+    "CommandOutputMapSchema": {
+      "type": "object",
+      "properties": {
+        "outputBinding": {
+          "$ref": "#/$defs/CommandOutputBinding"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "map"
+          ]
+        },
+        "values": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "values"
+      ]
+    },
+    "WorkflowInputArraySchema": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "null"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "boolean"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "int"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "long"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "float"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "double"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "bytes"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "string"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "File"
+              ]
+            },
+            {
+              "$ref": "#/$defs/WorkflowInputSchema"
+            },
+            {
+              "$ref": "#/$defs/WorkflowInputMapSchema"
+            },
+            {
+              "$ref": "#/$defs/WorkflowInputArraySchema"
+            },
+            {
+              "$ref": "#/$defs/WorkflowInputRecordSchema"
+            },
+            {
+              "$ref": "#/$defs/WorkflowInputEnumSchema"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "null"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "boolean"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "int"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "long"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "float"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "double"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "bytes"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "string"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "File"
+                    ]
+                  },
+                  {
+                    "$ref": "#/$defs/WorkflowInputSchema"
+                  },
+                  {
+                    "$ref": "#/$defs/WorkflowInputMapSchema"
+                  },
+                  {
+                    "$ref": "#/$defs/WorkflowInputArraySchema"
+                  },
+                  {
+                    "$ref": "#/$defs/WorkflowInputEnumSchema"
+                  },
+                  {
+                    "$ref": "#/$defs/WorkflowInputRecordSchema"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "array"
+          ]
+        }
+      },
+      "required": [
+        "items",
+        "type"
+      ]
+    },
+    "OutputParameter": {
+      "type": "object",
+      "properties": {
+        "sbg:fileTypes": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "default": true,
+        "type": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "null"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "boolean"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "int"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "long"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "float"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "double"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "bytes"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "string"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "File"
+              ]
+            },
+            {
+              "$ref": "#/$defs/OutputSchema"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "null"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "boolean"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "int"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "long"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "float"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "double"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "bytes"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "string"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "File"
+                    ]
+                  },
+                  {
+                    "$ref": "#/$defs/OutputSchema"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "streamable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "InputParameter": {
+      "type": "object",
+      "properties": {
+        "inputBinding": {
+          "$ref": "#/$defs/Binding"
+        },
+        "sbg:fileTypes": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "default": true,
+        "type": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "null"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "boolean"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "int"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "long"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "float"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "double"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "bytes"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "string"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "File"
+              ]
+            },
+            {
+              "$ref": "#/$defs/InputSchema"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "null"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "boolean"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "int"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "long"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "float"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "double"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "bytes"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "string"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "File"
+                    ]
+                  },
+                  {
+                    "$ref": "#/$defs/InputSchema"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "streamable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "SBGWorkflowInputParameter": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "sbg:y": {
+          "type": "number"
+        },
+        "sbg:includeInPorts": {
+          "type": "boolean"
+        },
+        "type": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "null"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "boolean"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "int"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "long"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "float"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "double"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "bytes"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "string"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "File"
+              ]
+            },
+            {
+              "$ref": "#/$defs/WorkflowInputSchema"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "null"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "boolean"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "int"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "long"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "float"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "double"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "bytes"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "string"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "File"
+                    ]
+                  },
+                  {
+                    "$ref": "#/$defs/WorkflowInputSchema"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "sbg:x": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "CreateFileRequirement": {
+      "type": "object",
+      "properties": {
+        "class": {
+          "type": "string",
+          "enum": [
+            "CreateFileRequirement"
+          ]
+        },
+        "fileDef": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FileDef"
+          }
+        }
+      },
+      "required": [
+        "class",
+        "fileDef"
+      ]
+    },
+    "CommandInputParameter": {
+      "type": "object",
+      "properties": {
+        "inputBinding": {
+          "$ref": "#/$defs/CommandLineBinding"
+        },
+        "sbg:fileTypes": {
+          "type": "string"
+        },
+        "sbg:category": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "default": true,
+        "type": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "null"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "boolean"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "int"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "long"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "float"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "double"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "bytes"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "string"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
+                "File"
+              ]
+            },
+            {
+              "$ref": "#/$defs/CommandInputSchema"
+            },
+            {
+              "$ref": "#/$defs/CommandInputArraySchema"
+            },
+            {
+              "$ref": "#/$defs/CommandInputMapSchema"
+            },
+            {
+              "$ref": "#/$defs/CommandInputEnumSchema"
+            },
+            {
+              "$ref": "#/$defs/CommandInputRecordSchema"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "null"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "boolean"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "int"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "long"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "float"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "double"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "bytes"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "string"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "File"
+                    ]
+                  },
+                  {
+                    "$ref": "#/$defs/CommandInputSchema"
+                  },
+                  {
+                    "$ref": "#/$defs/CommandInputArraySchema"
+                  },
+                  {
+                    "$ref": "#/$defs/CommandInputMapSchema"
+                  },
+                  {
+                    "$ref": "#/$defs/CommandInputEnumSchema"
+                  },
+                  {
+                    "$ref": "#/$defs/CommandInputRecordSchema"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "streamable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "WorkflowStepInput": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "linkMerge": {
+          "$ref": "#/$defs/LinkMergeMethod"
+        },
+        "default": true
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "CommandOutputRecordSchema": {
+      "type": "object",
+      "properties": {
+        "outputBinding": {
+          "$ref": "#/$defs/CommandOutputBinding"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "record"
+          ]
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/CommandOutputSchema"
+              },
+              {
+                "$ref": "#/$defs/CommandOutputArraySchema"
+              },
+              {
+                "$ref": "#/$defs/CommandOutputRecordSchema"
+              },
+              {
+                "$ref": "#/$defs/CommandOutputEnumSchema"
+              },
+              {
+                "$ref": "#/$defs/CommandOutputMapSchema"
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "type",
+        "fields"
+      ]
+    },
+    "SchemaDefRequirement": {
+      "type": "object",
+      "properties": {}
+    }
+  }
+}

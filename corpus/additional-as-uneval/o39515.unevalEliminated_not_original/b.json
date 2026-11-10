@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "schema for a vendor app",
+              "properties": {
+                "id": {
+                  "_format": "uuid",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "The public app name, e.g. Eviratec CRM",
+                  "maxLength": 64,
+                  "type": "string"
+                },
+                "vendor_id": {
+                  "_format": "uuid",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "vendor_id",
+                "name"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^name$": true,
+                "^vendor_id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "allOf": [
+    {
+      "$ref": "#/$defs/one"
+    },
+    {
+      "properties": {
+        "b": true
+      }
+    },
+    {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/two"
+        },
+        {
+          "properties": {
+            "y": true
+          },
+          "required": [
+            "y"
+          ]
+        }
+      ]
+    }
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "one": {
+      "properties": {
+        "a": true
+      }
+    },
+    "two": {
+      "properties": {
+        "x": true
+      },
+      "required": [
+        "x"
+      ]
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "New ResultSet Message",
+              "description": "Pulse message sent whenever a new result-set is created.",
+              "type": "object",
+              "properties": {
+                "version": {
+                  "title": "Message-format version",
+                  "enum": [
+                    1
+                  ]
+                },
+                "project": {
+                  "title": "Project Name",
+                  "description": "Identifier for treeherder project, like `try` or `mozilla-central`.",
+                  "type": "string"
+                },
+                "revision_hash": {
+                  "title": "Revision Hash Identifier",
+                  "description": "Identifier for the result-set that was created.",
+                  "type": "string"
+                },
+                "repository_url": {
+                  "title": "Repository URL",
+                  "description": "URL for the repository for the revision.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "version",
+                "revision_hash"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^version$": true,
+                "^project$": true,
+                "^revision_hash$": true,
+                "^repository_url$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

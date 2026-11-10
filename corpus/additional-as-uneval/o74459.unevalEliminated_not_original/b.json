@@ -1,0 +1,62 @@
+{
+  "$id": "http://api.example.com/credit-card.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "cardHolderName": {
+                  "type": "string",
+                  "minLength": 5,
+                  "maxLength": 64
+                },
+                "cvvNumber": {
+                  "type": "string",
+                  "pattern": "^[0-9]{3}$"
+                },
+                "expireDateMonth": {
+                  "type": "integer",
+                  "minimum": 1.0,
+                  "maximum": 12.0
+                },
+                "expireDateYear": {
+                  "type": "integer",
+                  "minimum": 18.0,
+                  "maximum": 30.0
+                },
+                "cardNumber": {
+                  "type": "string",
+                  "minLength": 15,
+                  "maxLength": 16,
+                  "pattern": "^[0-9]{16}$"
+                }
+              },
+              "required": [
+                "cardHolderName",
+                "cardNumber",
+                "expireDateMonth",
+                "expireDateYear",
+                "cvvNumber"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^cardHolderName$": true,
+                "^expireDateYear$": true,
+                "^expireDateMonth$": true,
+                "^cvvNumber$": true,
+                "^cardNumber$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

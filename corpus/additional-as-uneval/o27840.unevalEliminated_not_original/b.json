@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/FilterOfferingEnabled"
+    },
+    {
+      "$ref": "#/$defs/FilterOfferingDisabled"
+    }
+  ],
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/OfferingsForZone"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "filterOfferings": {
+                  "const": false
+                },
+                "zones": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              },
+              "required": [
+                "filterOfferings"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^filterOfferings$": true,
+                "^zones$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "FilterOfferingDisabled": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/OfferingsForZone"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "ComputeOfferings": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "OfferingsForZone": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "FilterOfferingEnabled": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "computeOfferings": {
+                  "$ref": "#/$defs/ComputeOfferings"
+                },
+                "diskOfferings": {
+                  "$ref": "#/$defs/DiskOfferings"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^computeOfferings$": true,
+                "^diskOfferings$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "DiskOfferings": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "filterOfferings": {
+                  "const": true
+                },
+                "zones": {
+                  "$ref": "#/$defs/modern_5"
+                }
+              },
+              "required": [
+                "filterOfferings",
+                "zones"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^filterOfferings$": true,
+                "^zones$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

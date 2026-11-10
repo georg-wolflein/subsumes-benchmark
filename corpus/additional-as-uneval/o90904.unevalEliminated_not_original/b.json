@@ -1,0 +1,188 @@
+{
+  "$id": "http://labcompass.futurecode.com/map.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "trap2": {
+      "$ref": "#/$defs/trap"
+    },
+    "section3layout": {
+      "$ref": "#/$defs/sectionLayout"
+    },
+    "rooms": {
+      "items": {
+        "properties": {
+          "y": {
+            "type": "string"
+          },
+          "contents": {
+            "items": {
+              "$ref": "#/$defs/content"
+            },
+            "type": "array"
+          },
+          "exits": {
+            "$ref": "#/$defs/modern_1"
+          },
+          "id": {
+            "type": "string"
+          },
+          "x": {
+            "type": "string"
+          },
+          "areacode": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "secretPassage": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "areacode",
+          "id",
+          "x",
+          "y",
+          "contents",
+          "exits"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "section1layout": {
+      "$ref": "#/$defs/sectionLayout"
+    },
+    "section2layout": {
+      "$ref": "#/$defs/sectionLayout"
+    },
+    "phase1": {
+      "$ref": "#/$defs/phase"
+    },
+    "weapon": {
+      "$ref": "#/$defs/weapon"
+    },
+    "difficulty": {
+      "$ref": "#/$defs/difficulty"
+    },
+    "trap1": {
+      "$ref": "#/$defs/trap"
+    },
+    "date": {
+      "pattern": "\\d{4}-\\d{2}-\\d{2}",
+      "type": "string"
+    },
+    "phase2": {
+      "$ref": "#/$defs/phase"
+    }
+  },
+  "required": [
+    "difficulty",
+    "date",
+    "weapon",
+    "phase1",
+    "phase2",
+    "trap1",
+    "trap2",
+    "rooms"
+  ],
+  "title": "LabCompass Map File",
+  "type": "object",
+  "$defs": {
+    "roomId": {
+      "type": "string"
+    },
+    "difficulty": {
+      "enum": [
+        "Normal",
+        "Cruel",
+        "Merciless",
+        "Uber"
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "propertyNames": {
+                "$ref": "#/$defs/direction"
+              },
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/roomId"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "phase": {
+      "enum": [
+        "NoPhase",
+        "ChargeDisruptors",
+        "Conduits",
+        "Essences",
+        "Fonts",
+        "Gargoyles",
+        "Idols",
+        "Lieutenants",
+        "Portals"
+      ]
+    },
+    "trap": {
+      "enum": [
+        "NoTrap",
+        "BladeSentries",
+        "Darts",
+        "FurnaceTraps",
+        "Saws",
+        "Spikes",
+        "SpinningBlades"
+      ]
+    },
+    "direction": {
+      "enum": [
+        "N",
+        "NE",
+        "E",
+        "SE",
+        "S",
+        "SW",
+        "W",
+        "NW",
+        "C"
+      ]
+    },
+    "weapon": {
+      "enum": [
+        "NoWeapon",
+        "TwoSwords",
+        "SwordAndShield",
+        "TwoHandedMace"
+      ]
+    },
+    "sectionLayout": {
+      "type": "string"
+    },
+    "content": {
+      "enum": [
+        "Switch puzzle",
+        "Lever puzzle",
+        "Floor puzzle",
+        "Escort gauntlet",
+        "Trap gauntlet",
+        "darkshrine",
+        "argus",
+        "golden-key",
+        "golden-door",
+        "silver-key",
+        "silver-door"
+      ]
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "loop": {
+                  "type": "integer",
+                  "minimum": 0.0
+                },
+                "username": {
+                  "type": "string"
+                },
+                "text": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "integer",
+                  "minimum": 0.0
+                },
+                "time": {
+                  "type": "integer"
+                },
+                "like": {
+                  "type": "integer",
+                  "minimum": 0.0
+                },
+                "repost": {
+                  "type": "integer",
+                  "minimum": 0.0
+                }
+              },
+              "required": [
+                "username",
+                "id",
+                "comment",
+                "repost",
+                "like",
+                "time",
+                "text"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^username$": true,
+                "^repost$": true,
+                "^loop$": true,
+                "^comment$": true,
+                "^text$": true,
+                "^like$": true,
+                "^id$": true,
+                "^time$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

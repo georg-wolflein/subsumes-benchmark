@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Maps set",
+  "description": "A set of maps",
+  "type": "array",
+  "items": {
+    "$ref": "#/$defs/modern_1"
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Map",
+              "description": "A map",
+              "type": "object",
+              "properties": {
+                "url": {
+                  "description": "The map download URL",
+                  "type": "string"
+                },
+                "description": {
+                  "description": "The map description",
+                  "type": "string"
+                },
+                "img": {
+                  "description": "The map thumbnail image URL",
+                  "type": "string"
+                },
+                "version": {
+                  "description": "The map download version",
+                  "type": "integer",
+                  "minimum": 1.0
+                },
+                "mapCategory": {
+                  "description": "The map category",
+                  "type": "string",
+                  "enum": [
+                    "BEST",
+                    "GOOD",
+                    "DEVELOPMENT",
+                    "EXPERIMENTAL"
+                  ]
+                },
+                "mapName": {
+                  "description": "The map name",
+                  "type": "string"
+                },
+                "mapType": {
+                  "description": "The map type",
+                  "type": "string",
+                  "enum": [
+                    "MAP",
+                    "MAP_SKIN",
+                    "MAP_TOOL"
+                  ]
+                }
+              },
+              "required": [
+                "mapName",
+                "url",
+                "version",
+                "description"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^version$": true,
+                "^description$": true,
+                "^url$": true,
+                "^img$": true,
+                "^mapCategory$": true,
+                "^mapName$": true,
+                "^mapType$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

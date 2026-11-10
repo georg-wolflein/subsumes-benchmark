@@ -1,0 +1,624 @@
+{
+  "$id": "http://provenance.ecs.soton.ac.uk/prov-json/schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Schema for a PROV-JSON document",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "prefix": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-Z0-9_\\-]+$": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "entity": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/entity"
+      }
+    },
+    "activity": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/activity"
+      }
+    },
+    "agent": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/agent"
+      }
+    },
+    "wasGeneratedBy": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/generation"
+      }
+    },
+    "used": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/usage"
+      }
+    },
+    "wasInformedBy": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/communication"
+      }
+    },
+    "wasStartedBy": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/start"
+      }
+    },
+    "wasEndedby": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/end"
+      }
+    },
+    "wasInvalidatedBy": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/invalidation"
+      }
+    },
+    "wasDerivedFrom": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/derivation"
+      }
+    },
+    "wasAttributedTo": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/attribution"
+      }
+    },
+    "wasAssociatedWith": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/association"
+      }
+    },
+    "actedOnBehalfOf": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/delegation"
+      }
+    },
+    "wasInfluencedBy": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/influence"
+      }
+    },
+    "specializationOf": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/specialization"
+      }
+    },
+    "alternateOf": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/alternate"
+      }
+    },
+    "hadMember": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/membership"
+      }
+    },
+    "bundle": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/bundle"
+      }
+    }
+  },
+  "$defs": {
+    "typedLiteral": {
+      "title": "PROV-JSON Typed Literal",
+      "type": "object",
+      "properties": {
+        "$": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "format": "uri"
+        },
+        "lang": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "$"
+      ],
+      "additionalProperties": false
+    },
+    "stringLiteral": {
+      "type": "string"
+    },
+    "numberLiteral": {
+      "type": "number"
+    },
+    "booleanLiteral": {
+      "type": "boolean"
+    },
+    "literalArray": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/stringLiteral"
+          },
+          {
+            "$ref": "#/$defs/numberLiteral"
+          },
+          {
+            "$ref": "#/$defs/booleanLiteral"
+          },
+          {
+            "$ref": "#/$defs/typedLiteral"
+          }
+        ]
+      }
+    },
+    "attributeValues": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/stringLiteral"
+        },
+        {
+          "$ref": "#/$defs/numberLiteral"
+        },
+        {
+          "$ref": "#/$defs/booleanLiteral"
+        },
+        {
+          "$ref": "#/$defs/typedLiteral"
+        },
+        {
+          "$ref": "#/$defs/literalArray"
+        }
+      ]
+    },
+    "entity": {
+      "type": "object",
+      "title": "entity",
+      "additionalProperties": {
+        "$ref": "#/$defs/attributeValues"
+      }
+    },
+    "agent": {
+      "$ref": "#/$defs/entity"
+    },
+    "activity": {
+      "type": "object",
+      "title": "activity",
+      "prov:startTime": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "prov:endTime": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/attributeValues"
+      }
+    },
+    "generation": {
+      "type": "object",
+      "title": "generation/usage",
+      "properties": {
+        "prov:entity": {
+          "type": "string",
+          "format": "uri"
+        },
+        "prov:activity": {
+          "type": "string",
+          "format": "uri"
+        },
+        "prov:time": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "prov:entity"
+      ],
+      "additionalProperties": {
+        "$ref": "#/$defs/attributeValues"
+      }
+    },
+    "usage": {
+      "$ref": "#/$defs/generation"
+    },
+    "communication": {
+      "type": "object",
+      "title": "communication",
+      "properties": {
+        "prov:informant": {
+          "type": "string",
+          "format": "uri"
+        },
+        "prov:informed": {
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "prov:informant",
+        "prov:informed"
+      ],
+      "additionalProperties": {
+        "$ref": "#/$defs/attributeValues"
+      }
+    },
+    "start": {
+      "type": "object",
+      "title": "start/end",
+      "properties": {
+        "prov:activity": {
+          "type": "string",
+          "format": "uri"
+        },
+        "prov:time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "prov:trigger": {
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "prov:activity"
+      ],
+      "additionalProperties": {
+        "$ref": "#/$defs/attributeValues"
+      }
+    },
+    "end": {
+      "$ref": "#/$defs/start"
+    },
+    "invalidation": {
+      "type": "object",
+      "title": "invalidation",
+      "properties": {
+        "prov:entity": {
+          "type": "string",
+          "format": "uri"
+        },
+        "prov:time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "prov:activity": {
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "prov:entity"
+      ],
+      "additionalProperties": {
+        "$ref": "#/$defs/attributeValues"
+      }
+    },
+    "derivation": {
+      "type": "object",
+      "title": "derivation",
+      "properties": {
+        "prov:generatedEntity": {
+          "type": "string",
+          "format": "uri"
+        },
+        "prov:usedEntity": {
+          "type": "string",
+          "format": "uri"
+        },
+        "prov:activity": {
+          "type": "string",
+          "format": "uri"
+        },
+        "prov:generation": {
+          "type": "string",
+          "format": "uri"
+        },
+        "prov:usage": {
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "prov:generatedEntity",
+        "prov:usedEntity"
+      ],
+      "additionalProperties": {
+        "$ref": "#/$defs/attributeValues"
+      }
+    },
+    "attribution": {
+      "type": "object",
+      "title": "attribution",
+      "properties": {
+        "prov:entity": {
+          "type": "string",
+          "format": "uri"
+        },
+        "prov:agent": {
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "prov:entity",
+        "prov:agent"
+      ],
+      "additionalProperties": {
+        "$ref": "#/$defs/attributeValues"
+      }
+    },
+    "association": {
+      "type": "object",
+      "title": "association",
+      "properties": {
+        "prov:activity": {
+          "type": "string",
+          "format": "uri"
+        },
+        "prov:agent": {
+          "type": "string",
+          "format": "uri"
+        },
+        "prov:plan": {
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "prov:activity"
+      ],
+      "additionalProperties": {
+        "$ref": "#/$defs/attributeValues"
+      }
+    },
+    "delegation": {
+      "type": "object",
+      "title": "delegation",
+      "properties": {
+        "prov:delegate": {
+          "type": "string",
+          "format": "uri"
+        },
+        "prov:responsible": {
+          "type": "string",
+          "format": "uri"
+        },
+        "prov:activity": {
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "prov:delegate",
+        "prov:responsible"
+      ],
+      "additionalProperties": {
+        "$ref": "#/$defs/attributeValues"
+      }
+    },
+    "influence": {
+      "type": "object",
+      "title": "",
+      "properties": {
+        "prov:influencer": {
+          "type": "string",
+          "format": "uri"
+        },
+        "prov:influencee": {
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "prov:influencer",
+        "prov:influencee"
+      ],
+      "additionalProperties": {
+        "$ref": "#/$defs/attributeValues"
+      }
+    },
+    "specialization": {
+      "type": "object",
+      "title": "specialization",
+      "properties": {
+        "prov:generalEntity": {
+          "type": "string",
+          "format": "uri"
+        },
+        "prov:specificEntity": {
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "prov:generalEntity",
+        "prov:specificEntity"
+      ],
+      "additionalProperties": {
+        "$ref": "#/$defs/attributeValues"
+      }
+    },
+    "alternate": {
+      "type": "object",
+      "title": "alternate",
+      "properties": {
+        "prov:alternate1": {
+          "type": "string",
+          "format": "uri"
+        },
+        "prov:alternate2": {
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "prov:alternate1",
+        "prov:alternate2"
+      ],
+      "additionalProperties": {
+        "$ref": "#/$defs/attributeValues"
+      }
+    },
+    "membership": {
+      "type": "object",
+      "title": "membership",
+      "properties": {
+        "prov:collection": {
+          "type": "string",
+          "format": "uri"
+        },
+        "prov:entity": {
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "prov:collection",
+        "prov:entity"
+      ],
+      "additionalProperties": {
+        "$ref": "#/$defs/attributeValues"
+      }
+    },
+    "bundle": {
+      "type": "object",
+      "title": "bundle",
+      "properties": {
+        "prefix": {
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z0-9_\\-]+$": {
+              "type": "string",
+              "format": "uri"
+            }
+          }
+        },
+        "entity": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/entity"
+          }
+        },
+        "activity": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/activity"
+          }
+        },
+        "agent": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/agent"
+          }
+        },
+        "wasGeneratedBy": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/generation"
+          }
+        },
+        "used": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/usage"
+          }
+        },
+        "wasInformedBy": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/communication"
+          }
+        },
+        "wasStartedBy": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/start"
+          }
+        },
+        "wasEndedby": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/end"
+          }
+        },
+        "wasInvalidatedBy": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/invalidation"
+          }
+        },
+        "wasDerivedFrom": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/derivation"
+          }
+        },
+        "wasAttributedTo": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/attribution"
+          }
+        },
+        "wasAssociatedWith": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/association"
+          }
+        },
+        "actedOnBehalfOf": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/delegation"
+          }
+        },
+        "wasInfluencedBy": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/influence"
+          }
+        },
+        "specializationOf": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/specialization"
+          }
+        },
+        "alternateOf": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/alternate"
+          }
+        },
+        "hadMember": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/membership"
+          }
+        }
+      }
+    }
+  }
+}

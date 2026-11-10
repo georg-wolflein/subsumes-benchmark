@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "offeringChangePolicy": {
+                  "enum": [
+                    "contains-all",
+                    "exactly-match",
+                    "no-restrictions"
+                  ],
+                  "type": "string"
+                },
+                "offeringChangePolicyIgnoreTags": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "_uniqueItems": true
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^offeringChangePolicy$": true,
+                "^offeringChangePolicyIgnoreTags$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

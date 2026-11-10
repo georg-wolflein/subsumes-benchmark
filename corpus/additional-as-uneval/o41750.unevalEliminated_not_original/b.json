@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "User Schema",
+              "type": "object",
+              "properties": {
+                "expirationDate": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "username": {
+                  "type": "string"
+                },
+                "enrollmentDate": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "openDate": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "patronGroup": {
+                  "type": "string"
+                },
+                "active": {
+                  "type": "boolean"
+                },
+                "barcode": {
+                  "type": "string"
+                },
+                "lastUpdateDate": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "personal": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "meta": {
+                  "type": "object"
+                }
+              },
+              "required": [
+                "username",
+                "id"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^barcode$": true,
+                "^personal$": true,
+                "^enrollmentDate$": true,
+                "^active$": true,
+                "^expirationDate$": true,
+                "^meta$": true,
+                "^type$": true,
+                "^id$": true,
+                "^openDate$": true,
+                "^patronGroup$": true,
+                "^lastUpdateDate$": true,
+                "^username$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "middleName": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "dateOfBirth": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "mobilePhone": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "firstName": {
+                  "type": "string"
+                },
+                "preferredContact": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "enum": [
+                        "EMAIL",
+                        "MAIL",
+                        "TEXT",
+                        "PHONE",
+                        "MOBILE"
+                      ]
+                    },
+                    "desc": {
+                      "type": "string",
+                      "enum": [
+                        "Email",
+                        "Mail (Primary Address)",
+                        "Text message",
+                        "Phone",
+                        "Mobile phone"
+                      ]
+                    }
+                  }
+                },
+                "phone": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "lastName"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^phone$": true,
+                "^lastName$": true,
+                "^mobilePhone$": true,
+                "^middleName$": true,
+                "^firstName$": true,
+                "^dateOfBirth$": true,
+                "^preferredContact$": true,
+                "^email$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

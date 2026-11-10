@@ -1,0 +1,726 @@
+{
+  "$id": "https://github.com/MISP/MISP/blob/2.4/format/2.4/schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Validator for misp events",
+  "type": "object",
+  "properties": {
+    "Event": {
+      "$ref": "#/$defs/event"
+    }
+  },
+  "required": [
+    "Event"
+  ],
+  "$defs": {
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "uuid": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "uuid"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^name$": true,
+                "^uuid$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "sharing_group_org": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "tag": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "source": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "uuid": {
+                  "type": "string"
+                },
+                "authors": {
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "tag_id": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "galaxy_id": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "meta": {
+                  "type": "object"
+                },
+                "value": {
+                  "type": "string"
+                },
+                "tag_name": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^authors$": true,
+                "^description$": true,
+                "^tag_id$": true,
+                "^meta$": true,
+                "^type$": true,
+                "^id$": true,
+                "^value$": true,
+                "^source$": true,
+                "^galaxy_id$": true,
+                "^uuid$": true,
+                "^tag_name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_12": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Server": {
+                  "$ref": "#/$defs/server"
+                },
+                "sharing_group_id": {
+                  "type": "string"
+                },
+                "server_id": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "all_orgs": {
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^server_id$": true,
+                "^all_orgs$": true,
+                "^id$": true,
+                "^Server$": true,
+                "^sharing_group_id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "SharingGroupOrg": {
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "items": {
+                    "$ref": "#/$defs/sharing_group_org"
+                  }
+                },
+                "name": {
+                  "type": "string"
+                },
+                "releasability": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "uuid": {
+                  "type": "string"
+                },
+                "organisation_uuid": {
+                  "type": "string"
+                },
+                "sync_user_id": {
+                  "type": "string"
+                },
+                "modified": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "SharingGroupServer": {
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "items": {
+                    "$ref": "#/$defs/sharing_group_server"
+                  }
+                },
+                "Organisation": {
+                  "$ref": "#/$defs/org"
+                },
+                "org_id": {
+                  "type": "string"
+                },
+                "roaming": {
+                  "type": "boolean"
+                },
+                "local": {
+                  "type": "boolean"
+                },
+                "created": {
+                  "type": "string"
+                },
+                "active": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "uuid"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^org_id$": true,
+                "^Organisation$": true,
+                "^description$": true,
+                "^roaming$": true,
+                "^active$": true,
+                "^name$": true,
+                "^uuid$": true,
+                "^local$": true,
+                "^created$": true,
+                "^sync_user_id$": true,
+                "^modified$": true,
+                "^SharingGroupServer$": true,
+                "^organisation_uuid$": true,
+                "^releasability$": true,
+                "^id$": true,
+                "^SharingGroupOrg$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "uuid": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "uuid"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^name$": true,
+                "^uuid$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "exportable": {
+                  "type": "boolean"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "colour": {
+                  "type": "string"
+                },
+                "hide_tag": {
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^hide_tag$": true,
+                "^colour$": true,
+                "^exportable$": true,
+                "^name$": true,
+                "^id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "attribute": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "sharing_group": {
+      "$ref": "#/$defs/modern_8"
+    },
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "disable_correlation": {
+                  "type": "boolean"
+                },
+                "timestamp": {
+                  "type": "string"
+                },
+                "distribution": {
+                  "type": "string"
+                },
+                "to_ids": {
+                  "type": "boolean"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "event_id": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                },
+                "deleted": {
+                  "type": "boolean"
+                },
+                "uuid": {
+                  "type": "string"
+                },
+                "data": {
+                  "type": "string"
+                },
+                "SharingGroup": {
+                  "$ref": "#/$defs/sharing_group"
+                },
+                "sharing_group_id": {
+                  "type": "string"
+                },
+                "Tag": {
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "items": {
+                    "$ref": "#/$defs/tag"
+                  }
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "ShadowAttribute": {
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "items": {
+                    "$ref": "#/$defs/attribute"
+                  }
+                },
+                "category": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^disable_correlation$": true,
+                "^SharingGroup$": true,
+                "^timestamp$": true,
+                "^Tag$": true,
+                "^category$": true,
+                "^id$": true,
+                "^comment$": true,
+                "^ShadowAttribute$": true,
+                "^uuid$": true,
+                "^value$": true,
+                "^sharing_group_id$": true,
+                "^data$": true,
+                "^to_ids$": true,
+                "^deleted$": true,
+                "^distribution$": true,
+                "^event_id$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "orgc": {
+      "$ref": "#/$defs/modern_9"
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "event_creator_email": {
+                  "type": "string"
+                },
+                "disable_correlation": {
+                  "type": "boolean"
+                },
+                "timestamp": {
+                  "type": "string"
+                },
+                "Org": {
+                  "$ref": "#/$defs/org"
+                },
+                "Galaxy": {
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "items": {
+                    "$ref": "#/$defs/galaxy"
+                  }
+                },
+                "orgc_id": {
+                  "type": "string"
+                },
+                "locked": {
+                  "type": "boolean"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "Tag": {
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "items": {
+                    "$ref": "#/$defs/tag"
+                  }
+                },
+                "ShadowAttribute": {
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "items": {
+                    "$ref": "#/$defs/attribute"
+                  }
+                },
+                "Attribute": {
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "items": {
+                    "$ref": "#/$defs/attribute"
+                  }
+                },
+                "RelatedEvent": {
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "items": {
+                    "$ref": "#/$defs/modern_11"
+                  }
+                },
+                "Orgc": {
+                  "$ref": "#/$defs/org"
+                },
+                "distribution": {
+                  "type": "string"
+                },
+                "uuid": {
+                  "type": "string"
+                },
+                "published": {
+                  "type": "boolean"
+                },
+                "SharingGroup": {
+                  "$ref": "#/$defs/sharing_group"
+                },
+                "sharing_group_id": {
+                  "type": "string"
+                },
+                "info": {
+                  "type": "string"
+                },
+                "attribute_count": {
+                  "type": "string"
+                },
+                "publish_timestamp": {
+                  "type": "string"
+                },
+                "analysis": {
+                  "type": "string"
+                },
+                "date": {
+                  "type": "string"
+                },
+                "proposal_email_lock": {
+                  "type": "boolean"
+                },
+                "threat_level_id": {
+                  "type": "string"
+                },
+                "org_id": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^proposal_email_lock$": true,
+                "^disable_correlation$": true,
+                "^distribution$": true,
+                "^timestamp$": true,
+                "^Tag$": true,
+                "^info$": true,
+                "^ShadowAttribute$": true,
+                "^uuid$": true,
+                "^Galaxy$": true,
+                "^event_creator_email$": true,
+                "^threat_level_id$": true,
+                "^RelatedEvent$": true,
+                "^org_id$": true,
+                "^published$": true,
+                "^SharingGroup$": true,
+                "^date$": true,
+                "^attribute_count$": true,
+                "^Org$": true,
+                "^id$": true,
+                "^analysis$": true,
+                "^sharing_group_id$": true,
+                "^Attribute$": true,
+                "^locked$": true,
+                "^publish_timestamp$": true,
+                "^Orgc$": true,
+                "^orgc_id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "server": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "sharing_group_server": {
+      "$ref": "#/$defs/modern_12"
+    },
+    "event": {
+      "$ref": "#/$defs/modern_10"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^url$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "galaxy": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "sharing_group_id": {
+                  "type": "string"
+                },
+                "extend": {
+                  "type": "boolean"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "Organisation": {
+                  "$ref": "#/$defs/org"
+                },
+                "org_id": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^org_id$": true,
+                "^Organisation$": true,
+                "^id$": true,
+                "^extend$": true,
+                "^sharing_group_id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "org": {
+      "$ref": "#/$defs/modern_6"
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Event": {
+                  "$ref": "#/$defs/event"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Event$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "galaxy_cluster": {
+      "$ref": "#/$defs/modern_7"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "uuid": {
+                  "type": "string"
+                },
+                "version": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "GalaxyCluster": {
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "items": {
+                    "$ref": "#/$defs/galaxy_cluster"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^version$": true,
+                "^description$": true,
+                "^type$": true,
+                "^id$": true,
+                "^uuid$": true,
+                "^GalaxyCluster$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

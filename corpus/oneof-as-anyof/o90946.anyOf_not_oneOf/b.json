@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "subject": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/first"
+        },
+        {
+          "$ref": "#/$defs/second"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "first": {
+      "type": "object",
+      "properties": {
+        "discriminator": {
+          "const": "first"
+        },
+        "first": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "second": {
+      "type": "object",
+      "properties": {
+        "discriminator": {
+          "const": "second"
+        },
+        "second": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

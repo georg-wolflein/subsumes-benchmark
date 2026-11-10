@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "$$target": "kubeAuthAuthzEntry.json",
+              "title": "Kubernetes Authentication Authz Entry",
+              "description": "Kubernetes Authentication Authz Entry",
+              "properties": {
+                "rbac": {
+                  "description": "Kubernetes RBAC configuration.",
+                  "properties": {},
+                  "type": "object"
+                }
+              },
+              "required": [],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^rbac$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

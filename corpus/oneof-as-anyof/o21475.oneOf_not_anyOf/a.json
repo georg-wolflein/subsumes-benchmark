@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "dimensions": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "filters": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "id": {
+      "pattern": "^[a-z0-9:]+$",
+      "type": "string"
+    },
+    "maxResults": {
+      "type": "integer"
+    },
+    "metrics": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      ]
+    },
+    "sort": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "metrics"
+  ],
+  "title": "Google Analytics Content Collector Query",
+  "type": "object"
+}

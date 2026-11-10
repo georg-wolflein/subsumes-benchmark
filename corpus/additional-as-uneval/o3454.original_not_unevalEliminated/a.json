@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_2",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "name",
+                "version"
+              ],
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "author-name": {
+                  "type": "string"
+                },
+                "version": {
+                  "type": "string"
+                },
+                "author-link": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^version$": true,
+                "^author-link$": true,
+                "^description$": true,
+                "^name$": true,
+                "^author-name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Schema for IOx application descriptor - version 1.0",
+              "required": [
+                "manifest-version",
+                "info",
+                "app"
+              ],
+              "type": "object",
+              "properties": {
+                "info": {
+                  "$ref": "#/$defs/descriptorschema_1_0.AppInfo"
+                },
+                "app": {
+                  "oneOf": [
+                    {
+                      "required": [
+                        "apptype"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "apptype": {
+                          "enum": [
+                            "vm"
+                          ],
+                          "type": "string"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "manifest-version": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^info$": true,
+                "^app$": true,
+                "^manifest-version$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "descriptorschema_1_0.AppInfo": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "JSON Schema for defining Scenario Configuration",
+              "type": "array",
+              "items": {
+                "title": "Scenario Detail",
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The name of this scenario."
+                  },
+                  "weighting": {
+                    "type": "number",
+                    "description": "The weighting for this scenario."
+                  },
+                  "loop": {
+                    "type": "boolean",
+                    "description": "Should the user running this scenario loop or stop after one run?"
+                  },
+                  "throttleFrequencyInMinutes": {
+                    "type": "number",
+                    "description": "If looping, how frequently should the scenario be run? 0 if not throttled.",
+                    "minimum": 0.0
+                  }
+                },
+                "required": [
+                  "name",
+                  "weighting",
+                  "loop"
+                ]
+              }
+            },
+            {
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "A hash of keys that should be returned, to paths to the data from each item that should be returned.",
+              "example": {
+                "node_name": [
+                  "name"
+                ],
+                "apache_port": [
+                  "apache",
+                  "http_port"
+                ]
+              }
+            },
+            {
+              "additionalProperties": {
+                "description": "A path to the data that should be returned for this key, for each item. Each entry in the array represents a key that should be traversed in the results.",
+                "type": "array",
+                "items": {
+                  "description": "The next key to traverse (['a', 'b', 'c'] means look up { \"a\": { \"b\": { \"c\": ... } } }) and assign that value to the key.",
+                  "type": "string"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

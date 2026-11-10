@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Policy",
+              "description": "document containing permission statements",
+              "type": "object",
+              "properties": {
+                "statements": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_2"
+                  }
+                }
+              },
+              "required": [
+                "statements"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^statements$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "effect": {
+                  "type": "string",
+                  "pattern": "^allow|deny$"
+                },
+                "actions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[a-z]+:\\w+$"
+                  }
+                },
+                "resources": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^brn:(\\w+):(\\w+):(\\w*):(\\*|[\\w\\-]*\\*?)$"
+                  }
+                }
+              },
+              "required": [
+                "effect",
+                "actions",
+                "resources"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^effect$": true,
+                "^actions$": true,
+                "^resources$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

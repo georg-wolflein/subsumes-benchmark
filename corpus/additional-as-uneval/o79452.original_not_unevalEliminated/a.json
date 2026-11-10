@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "packages": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_2"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^packages$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "selected": {
+                  "type": "boolean"
+                },
+                "framework": {
+                  "type": "boolean"
+                },
+                "images": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "currentVersion": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "versions": {
+                  "$ref": "#/$defs/modern_4"
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[^\\s]+$"
+                  }
+                }
+              },
+              "required": [
+                "name",
+                "currentVersion",
+                "versions",
+                "description",
+                "framework",
+                "tags"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^selected$": true,
+                "^currentVersion$": true,
+                "^description$": true,
+                "^framework$": true,
+                "^images$": true,
+                "^name$": true,
+                "^tags$": true,
+                "^versions$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "icon-small": {
+                  "type": "string"
+                },
+                "icon-medium": {
+                  "type": "string"
+                },
+                "icon-large": {
+                  "type": "string"
+                },
+                "screenshots": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^icon-small$": true,
+                "^icon-medium$": true,
+                "^icon-large$": true,
+                "^screenshots$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                ".{1,}": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                ".{1,}": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

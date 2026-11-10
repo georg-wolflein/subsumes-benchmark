@@ -1,0 +1,132 @@
+{
+  "$id": "http://www.cornutum.org/tcases/generators-schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_4",
+  "$defs": {
+    "tupleGenerator": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Defines tuple combinations for a set of variables",
+              "type": "object",
+              "minProperties": 1,
+              "properties": {
+                "tuples": {
+                  "type": "integer",
+                  "minimum": 0.0
+                },
+                "include": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 1
+                },
+                "exclude": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 1
+                },
+                "once": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_3"
+                  },
+                  "minItems": 1
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^tuples$": true,
+                "^include$": true,
+                "^exclude$": true,
+                "^once$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "minProperties": 1
+            },
+            {
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "System Test Coverage Model",
+              "description": "Defines the test coverage generators for a system (version: ${project.version})",
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/tupleGenerator"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Defines a tuple coverage generator",
+              "type": "object",
+              "properties": {
+                "tuples": {
+                  "type": "integer",
+                  "minimum": 0.0
+                },
+                "seed": {
+                  "type": "integer"
+                },
+                "combiners": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/combiner"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^tuples$": true,
+                "^seed$": true,
+                "^combiners$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "combiner": {
+      "$ref": "#/$defs/modern_2"
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Error",
+  "type": "object",
+  "properties": {
+    "code": {
+      "$ref": "#/$defs/code"
+    },
+    "message": {
+      "$ref": "#/$defs/message"
+    },
+    "path": {
+      "$ref": "#/$defs/path"
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/part"
+      }
+    }
+  },
+  "required": [
+    "code",
+    "message"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "code": {
+      "title": "Machine readable code",
+      "description": "This will be in upper-case and underscore separated, aka ANGRY_SNAKE_CASE",
+      "type": "string"
+    },
+    "message": {
+      "title": "Human readable message",
+      "description": "Free text",
+      "type": "string"
+    },
+    "path": {
+      "title": "Path to the erroneous property",
+      "description": "XPath, e.g. /foo/bar",
+      "type": "string"
+    },
+    "part": {
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/code"
+        },
+        "message": {
+          "$ref": "#/$defs/message"
+        },
+        "path": {
+          "$ref": "#/$defs/path"
+        }
+      }
+    }
+  }
+}

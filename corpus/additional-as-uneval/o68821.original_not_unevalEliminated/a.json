@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_3",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/Item"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "new": {
+                  "description": "New value"
+                },
+                "old": {
+                  "description": "Old value"
+                }
+              },
+              "required": [
+                "new",
+                "old"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^new$": true,
+                "^old$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Change": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/Change"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Changes to state made by client",
+              "properties": {
+                "context": {
+                  "$ref": "#/$defs/modern_4"
+                },
+                "plugins": {
+                  "$ref": "#/$defs/modern_5"
+                }
+              },
+              "title": "Changes",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^context$": true,
+                "^plugins$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Item": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/Item"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

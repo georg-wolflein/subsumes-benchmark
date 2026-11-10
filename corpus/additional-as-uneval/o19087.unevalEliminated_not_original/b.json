@@ -1,0 +1,72 @@
+{
+  "$id": "http://example.com/user.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "A user account.",
+              "type": "object",
+              "properties": {
+                "first_name": {
+                  "type": "string",
+                  "description": "The first name of the user."
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email",
+                  "description": "The email of the user."
+                },
+                "id": {
+                  "type": "string",
+                  "pattern": "[0-9a-f]+$",
+                  "minLength": 32,
+                  "maxLength": 32,
+                  "description": "Unique identifier for this user.",
+                  "readOnly": true
+                },
+                "last_name": {
+                  "type": "string",
+                  "description": "The last name of the user."
+                },
+                "created_at": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "RFC3339 format when the user was created.",
+                  "readOnly": true
+                },
+                "updated_at": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "RFC3339 format when the user was last updated.",
+                  "readOnly": true
+                },
+                "deleted_at": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "RFC3339 format when the user was deleted.",
+                  "readOnly": true
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^deleted_at$": true,
+                "^updated_at$": true,
+                "^created_at$": true,
+                "^last_name$": true,
+                "^email$": true,
+                "^first_name$": true,
+                "^id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

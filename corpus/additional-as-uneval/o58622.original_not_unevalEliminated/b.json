@@ -1,0 +1,78 @@
+{
+  "$id": "https://example.com/restapi/HasReadOnlyEtc.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HasReadOnlyEtc",
+  "type": "object",
+  "properties": {
+    "TheDateAndTime_ReadOnly": {
+      "$ref": "#/$defs/MyDateTime"
+    },
+    "TheTimestamp_ReadOnly": {
+      "$ref": "#/$defs/MyUtcMillisec"
+    },
+    "TheDateAndTime_NotReadOnly": {
+      "$ref": "#/$defs/MyDateTime",
+      "readOnly": false
+    },
+    "TheTimestamp_NotReadOnly": {
+      "$ref": "#/$defs/MyUtcMillisec",
+      "readOnly": false
+    },
+    "StringValue_ReadOnly": {
+      "type": "string",
+      "readOnly": true
+    },
+    "IntegerValue_ReadOnly": {
+      "type": "integer",
+      "readOnly": true
+    },
+    "String_WriteOnly": {
+      "type": "string",
+      "writeOnly": true
+    },
+    "Integer_WriteOnly": {
+      "type": "integer",
+      "writeOnly": true
+    },
+    "NoAdditional": {
+      "type": "object",
+      "properties": {
+        "foo": {
+          "type": "string"
+        }
+      },
+      "readOnly": true,
+      "additionalProperties": false
+    },
+    "NoAdditionalPlusPatternProperties": {
+      "type": "object",
+      "properties": {
+        "foo": {
+          "type": "string"
+        }
+      },
+      "readOnly": true,
+      "patternProperties": {
+        "^S_": {
+          "type": "string"
+        },
+        "^I_": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "MyDateTime": {
+      "type": "string",
+      "format": "date-time",
+      "readOnly": true
+    },
+    "MyUtcMillisec": {
+      "type": "number",
+      "format": "utc-millisec",
+      "readOnly": true
+    }
+  }
+}

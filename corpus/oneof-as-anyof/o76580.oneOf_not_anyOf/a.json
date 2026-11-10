@@ -1,0 +1,360 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "virtualServer": {
+      "additionalProperties": false,
+      "properties": {
+        "backend": {
+          "$ref": "#/$defs/backendType"
+        },
+        "frontend": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/frontendIAppType"
+            },
+            {
+              "$ref": "#/$defs/frontendVSType"
+            }
+          ]
+        }
+      },
+      "required": [
+        "backend",
+        "frontend"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "virtualServer"
+  ],
+  "type": "object",
+  "$defs": {
+    "backendType": {
+      "additionalProperties": false,
+      "properties": {
+        "healthMonitors": {
+          "items": {
+            "$ref": "#/$defs/healthMonitorType"
+          },
+          "type": "array"
+        },
+        "serviceName": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "servicePort": {
+          "$ref": "#/$defs/portType"
+        }
+      },
+      "required": [
+        "serviceName",
+        "servicePort"
+      ],
+      "type": "object"
+    },
+    "frontendIAppType": {
+      "additionalProperties": false,
+      "properties": {
+        "iapp": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "iappOptions": {
+          "additionalProperties": false,
+          "patternProperties": {
+            "^[a-zA-Z0-9_-]+$": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "iappPoolMemberTable": {
+          "additionalProperties": false,
+          "properties": {
+            "columns": {
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/iappAddressType"
+                  },
+                  {
+                    "$ref": "#/$defs/iappPortType"
+                  },
+                  {
+                    "$ref": "#/$defs/iappValueType"
+                  }
+                ]
+              },
+              "type": "array"
+            },
+            "name": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "columns"
+          ],
+          "type": "object"
+        },
+        "iappTables": {
+          "additionalProperties": false,
+          "patternProperties": {
+            "^[a-zA-Z0-9_-]+$": {
+              "$ref": "#/$defs/iappTableType"
+            }
+          },
+          "type": "object"
+        },
+        "iappVariables": {
+          "additionalProperties": false,
+          "patternProperties": {
+            "^[a-zA-Z0-9_-]+$": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "partition": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "partition",
+        "iapp",
+        "iappOptions",
+        "iappVariables",
+        "iappPoolMemberTable"
+      ],
+      "type": "object"
+    },
+    "frontendVSType": {
+      "additionalProperties": false,
+      "properties": {
+        "balance": {
+          "enum": [
+            "dynamic-ratio-member",
+            "dynamic-ratio-node",
+            "fastest-app-response",
+            "fastest-node",
+            "least-connections-member",
+            "least-connections-node",
+            "least-sessions",
+            "observed-member",
+            "observed-node",
+            "predictive-member",
+            "predictive-node",
+            "ratio-least-connections-member",
+            "ratio-least-connections-node",
+            "ratio-member",
+            "ratio-node",
+            "round-robin",
+            "ratio-session",
+            "weighted-least-connections-member",
+            "weighted-least-connections-node"
+          ],
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "http",
+            "tcp",
+            "udp"
+          ],
+          "type": "string"
+        },
+        "partition": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "sslProfile": {
+          "$ref": "#/$defs/sslProfileType"
+        },
+        "virtualAddress": {
+          "$ref": "#/$defs/virtualAddressType"
+        }
+      },
+      "required": [
+        "partition"
+      ],
+      "type": "object"
+    },
+    "healthMonitorType": {
+      "additionalProperties": false,
+      "properties": {
+        "interval": {
+          "maximum": 86400,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "protocol": {
+          "enum": [
+            "http",
+            "tcp",
+            "udp"
+          ],
+          "type": "string"
+        },
+        "send": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "timeout": {
+          "maximum": 86400,
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "protocol"
+      ],
+      "type": "object"
+    },
+    "iappAddressType": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "IPAddress"
+          ],
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "kind"
+      ],
+      "type": "object"
+    },
+    "iappPortType": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "Port"
+          ],
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "kind"
+      ],
+      "type": "object"
+    },
+    "iappTableType": {
+      "additionalProperties": false,
+      "properties": {
+        "columns": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "rows": {
+          "items": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "columns",
+        "rows"
+      ],
+      "type": "object"
+    },
+    "iappValueType": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "value": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "value"
+      ],
+      "type": "object"
+    },
+    "portType": {
+      "maximum": 65535,
+      "minimum": 1,
+      "type": "integer"
+    },
+    "sslProfileType": {
+      "type": "object",
+      "anyOf": [
+        {
+          "properties": {
+            "f5ProfileNames": {
+              "items": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "f5ProfileNames"
+          ]
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "f5ProfileName": {
+              "minLength": 1,
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "virtualAddressType": {
+      "additionalProperties": false,
+      "properties": {
+        "bindAddr": {
+          "anyOf": [
+            {
+              "format": "bigipv4"
+            },
+            {
+              "format": "bigipv6"
+            }
+          ]
+        },
+        "port": {
+          "$ref": "#/$defs/portType"
+        }
+      },
+      "required": [
+        "port"
+      ],
+      "type": "object"
+    }
+  }
+}

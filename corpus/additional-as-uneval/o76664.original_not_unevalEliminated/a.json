@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "$anchor": "statementref",
+              "properties": {
+                "id": {
+                  "_format": "uuid",
+                  "type": "string"
+                },
+                "objectType": {
+                  "enum": [
+                    "StatementRef"
+                  ]
+                }
+              },
+              "required": [
+                "objectType",
+                "id"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^objectType$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

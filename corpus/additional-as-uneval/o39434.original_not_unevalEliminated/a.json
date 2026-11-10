@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_2",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "description": "Name of the user to grant the accessLevel to."
+                },
+                "accessLevel": {
+                  "type": "string",
+                  "enum": [
+                    "NONE",
+                    "READ",
+                    "WRITE",
+                    "ADMIN"
+                  ],
+                  "description": "Type of permission to grant access to"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^username$": true,
+                "^accessLevel$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "GetPermissionGrantWrapper",
+              "type": "object",
+              "properties": {
+                "permissions": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/PermissionGrant"
+                  },
+                  "description": "A list containing all the permissions."
+                }
+              },
+              "javaName": "GetPermissionGrantWrapper"
+            },
+            {
+              "patternProperties": {
+                "^permissions$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "PermissionGrant": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

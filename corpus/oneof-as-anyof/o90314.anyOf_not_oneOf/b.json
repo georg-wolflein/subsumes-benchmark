@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "StyleSymbolReference",
+  "type": "object",
+  "description": "The StyleSymbolReference is used to reference a symbol from a portal styleItem",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Identifies a symbol in the style by name."
+    },
+    "styleName": {
+      "type": "string",
+      "description": "A registered web style name, such as `EsriThematicTreesStyle`"
+    },
+    "styleUrl": {
+      "type": "string",
+      "description": "URL to a style definition."
+    },
+    "type": {
+      "type": "string",
+      "description": "The type of the symbol",
+      "enum": [
+        "styleSymbolReference"
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "esriDocumentation": {
+    "examples": [
+      {
+        "code": {
+          "symbol": {
+            "type": "styleSymbolReference",
+            "styleName": "EsriThematicTreesStyle",
+            "name": "Frangula"
+          }
+        }
+      }
+    ]
+  },
+  "anyOf": [
+    {
+      "required": [
+        "type",
+        "name",
+        "styleUrl"
+      ]
+    },
+    {
+      "required": [
+        "type",
+        "name",
+        "styleName"
+      ]
+    }
+  ]
+}

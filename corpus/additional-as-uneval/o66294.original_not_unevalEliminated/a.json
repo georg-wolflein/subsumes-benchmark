@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "copyright": [
+                "Copyright 2013 Red Hat, Inc. and/or its affiliates.",
+                "This file is part of lightblue.",
+                "This program is free software: you can redistribute it and/or modify",
+                "it under the terms of the GNU General Public License as published by",
+                "the Free Software Foundation, either version 3 of the License, or",
+                "(at your option) any later version.",
+                "This program is distributed in the hope that it will be useful,",
+                "but WITHOUT ANY WARRANTY; without even the implied warranty of",
+                "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the",
+                "GNU General Public License for more details.",
+                "You should have received a copy of the GNU General Public License",
+                "along with this program.  If not, see <http://www.gnu.org/licenses/>."
+              ],
+              "type": "object",
+              "description": "Structure of document that is submitted to the endpoint defined in a hook.",
+              "properties": {
+                "request": {
+                  "type": "object",
+                  "description": "The request"
+                },
+                "clientId": {
+                  "type": "string",
+                  "description": "Identifier (principal) for the client that made the request"
+                },
+                "before": {
+                  "type": "object",
+                  "description": "Data before the request is processed."
+                },
+                "response": {
+                  "type": "object",
+                  "description": "The response"
+                },
+                "after": {
+                  "type": "object",
+                  "description": "Data after the request is processed."
+                },
+                "date": {
+                  "type": "string",
+                  "description": "When was the request made, format=YYYYMMDD HHmmssSSSS in UTC"
+                }
+              },
+              "required": [
+                "date",
+                "clientId"
+              ],
+              "minProperties": 3
+            },
+            {
+              "patternProperties": {
+                "^response$": true,
+                "^date$": true,
+                "^request$": true,
+                "^after$": true,
+                "^before$": true,
+                "^clientId$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

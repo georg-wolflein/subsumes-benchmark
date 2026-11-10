@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "statusCode",
+    "reasonPhrase"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "statusCode": {
+      "type": "integer"
+    },
+    "reasonPhrase": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    },
+    "details": {},
+    "stackTrace": {
+      "$ref": "#/$defs/exception"
+    }
+  },
+  "$defs": {
+    "exception": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "at": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "suppressed": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/maybeCircularException"
+          }
+        },
+        "causedBy": {
+          "$ref": "#/$defs/maybeCircularException"
+        }
+      }
+    },
+    "circularReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "circularReference"
+      ],
+      "properties": {
+        "circularReference": {
+          "$ref": "#/$defs/exception"
+        }
+      }
+    },
+    "maybeCircularException": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/exception"
+        },
+        {
+          "$ref": "#/$defs/circularReference"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_2",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "An fstab entry",
+              "properties": {
+                "dump": {
+                  "minimum": 0.0,
+                  "type": "integer"
+                },
+                "fstype": {
+                  "type": "string"
+                },
+                "device": {
+                  "type": "string"
+                },
+                "options": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                },
+                "fsck": {
+                  "minimum": 0.0,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "device",
+                "fstype"
+              ],
+              "title": "mntent",
+              "type": "object"
+            },
+            {
+              "items": {
+                "anyOf": [
+                  false,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "JSON representation of /etc/fstab",
+              "patternProperties": {
+                "^/([^/]+(/[^/]+)*)?$": {
+                  "$ref": "#/$defs/mntent"
+                }
+              },
+              "properties": {
+                "swap": {
+                  "$ref": "#/$defs/mntent"
+                }
+              },
+              "required": [
+                "/",
+                "swap"
+              ],
+              "title": "/etc/fstab",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^/([^/]+(/[^/]+)*)?$": true,
+                "^swap$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "mntent": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

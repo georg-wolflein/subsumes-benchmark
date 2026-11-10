@@ -1,0 +1,52 @@
+{
+  "allOf": [
+    {
+      "$id": "https://test.json-schema.org/dynamic-resolution-ignores-anchors/root",
+      "$ref": "list",
+      "$defs": {
+        "foo": {
+          "$anchor": "items",
+          "type": "string"
+        },
+        "list": {
+          "$id": "list",
+          "type": "array",
+          "items": {
+            "$dynamicRef": "#items"
+          },
+          "$defs": {
+            "items": {
+              "$comment": "This is only needed to satisfy the bookending requirement",
+              "$dynamicAnchor": "items"
+            }
+          }
+        }
+      }
+    },
+    {
+      "$id": "https://test1.json-schema.org/dynamic-resolution-ignores-anchors/root",
+      "$defs": {
+        "foo": {
+          "$anchor": "items1",
+          "type": "string"
+        },
+        "list": {
+          "$id": "list1",
+          "type": "array",
+          "items": {
+            "$dynamicRef": "#items1"
+          },
+          "$defs": {
+            "items": {
+              "$comment": "This is only needed to satisfy the bookending requirement",
+              "$dynamicAnchor": "items1"
+            }
+          }
+        }
+      },
+      "not": {
+        "$ref": "list1"
+      }
+    }
+  ]
+}

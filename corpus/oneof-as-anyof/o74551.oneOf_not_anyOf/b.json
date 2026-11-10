@@ -1,0 +1,111 @@
+{
+  "$id": "https://guaix.ucm.es/megara/schemas/basestruct.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Schema for MEGARA structured results",
+  "description": "Describe MEGARA structured results",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/trace_map"
+    },
+    {
+      "$ref": "#/$defs/model_map"
+    },
+    {
+      "$ref": "#/$defs/wave_calib"
+    }
+  ],
+  "$defs": {
+    "trace_map": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/base_struct"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type_fqn": {
+              "type": "string",
+              "const": "megaradrp.products.tracemap.TraceMap"
+            }
+          }
+        }
+      ]
+    },
+    "model_map": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/base_struct"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type_fqn": {
+              "type": "string",
+              "const": "megaradrp.products.modelmap.ModelMap"
+            }
+          }
+        }
+      ]
+    },
+    "wave_calib": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/base_struct"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type_fqn": {
+              "type": "string",
+              "const": "megaradrp.products.wavecalibration.WavelengthCalibration"
+            }
+          }
+        }
+      ]
+    },
+    "base_struct": {
+      "type": "object",
+      "properties": {
+        "instrument": {
+          "type": "string"
+        },
+        "uuid": {
+          "$ref": "#/$defs/uuid"
+        },
+        "type": {
+          "type": "string"
+        },
+        "type_fqn": {
+          "type": "string"
+        },
+        "contents": {
+          "type": "array"
+        },
+        "quality_control": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "object"
+        },
+        "meta_info": {
+          "$ref": "#/$defs/meta_info"
+        }
+      },
+      "required": [
+        "instrument",
+        "type_fqn"
+      ]
+    },
+    "meta_info": {
+      "type": "object"
+    },
+    "uuid": {
+      "type": "string",
+      "pattern": "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+    },
+    "datetime": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,4})?$"
+    }
+  }
+}

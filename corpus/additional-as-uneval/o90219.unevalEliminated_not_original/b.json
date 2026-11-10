@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "inheritedDomain",
+              "type": "object",
+              "description": "This domain applies to domains on subtypes. It implies that the domain for a field at the subtype level is the same as the domain for the field at the layer level.",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The domain name."
+                },
+                "type": {
+                  "type": "string",
+                  "description": "String value representing the domain type.",
+                  "enum": [
+                    "inherited"
+                  ]
+                }
+              },
+              "required": [
+                "type"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

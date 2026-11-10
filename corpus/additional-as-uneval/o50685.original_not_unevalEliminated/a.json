@@ -1,0 +1,302 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "create": {
+                  "type": "boolean"
+                },
+                "read_one": {
+                  "type": "boolean"
+                },
+                "delete": {
+                  "type": "boolean"
+                },
+                "read_many": {
+                  "type": "boolean"
+                },
+                "update": {
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^read_one$": true,
+                "^create$": true,
+                "^read_many$": true,
+                "^delete$": true,
+                "^update$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "created_at": {
+                  "type": "boolean"
+                },
+                "updated_at": {
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^created_at$": true,
+                "^updated_at$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Resource Model Schema",
+              "description": "This is the schema for resource models for api-pls. For more, see https://github.com/jmeas/api-pls",
+              "type": "object",
+              "required": [
+                "name"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "attributes": {
+                  "type": "object",
+                  "patternProperties": {
+                    ".": {
+                      "oneOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "$ref": "#/$defs/modern_2"
+                        }
+                      ]
+                    }
+                  }
+                },
+                "relationships": {
+                  "type": "object",
+                  "patternProperties": {
+                    ".": {
+                      "oneOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "many-to-one",
+                            "one-to-many",
+                            "one-to-one",
+                            "many-to-many"
+                          ]
+                        },
+                        {
+                          "$ref": "#/$defs/modern_3"
+                        }
+                      ]
+                    }
+                  }
+                },
+                "meta": {
+                  "type": "object",
+                  "patternProperties": {
+                    ".": {
+                      "oneOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "$ref": "#/$defs/modern_4"
+                        }
+                      ]
+                    }
+                  }
+                },
+                "plural_form": {
+                  "type": "string"
+                },
+                "actions": {
+                  "$ref": "#/$defs/modern_5"
+                },
+                "built_in_meta": {
+                  "$ref": "#/$defs/modern_6"
+                },
+                "pagination": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/modern_7"
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^relationships$": true,
+                "^attributes$": true,
+                "^plural_form$": true,
+                "^actions$": true,
+                "^built_in_meta$": true,
+                "^pagination$": true,
+                "^name$": true,
+                "^meta$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "default_page_size": {
+                  "type": "integer",
+                  "minimum": 1.0
+                },
+                "default_page_number": {
+                  "type": "integer",
+                  "minimum": 0.0
+                },
+                "enabled": {
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^default_page_size$": true,
+                "^default_page_number$": true,
+                "^enabled$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "nullable": {
+                  "type": "boolean"
+                },
+                "default": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^nullable$": true,
+                "^default$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "resource": {
+                  "type": "string"
+                },
+                "cardinality": {
+                  "type": "string",
+                  "enum": [
+                    "many-to-one",
+                    "one-to-many",
+                    "one-to-one",
+                    "many-to-many"
+                  ]
+                },
+                "host": {
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^resource$": true,
+                "^cardinality$": true,
+                "^host$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "nullable": {
+                  "type": "boolean"
+                },
+                "default": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^nullable$": true,
+                "^default$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Schema for tests",
+  "type": "array",
+  "items": {
+    "$ref": "#/$defs/modern_2"
+  },
+  "$defs": {
+    "test": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "A single test",
+              "type": "object",
+              "required": [
+                "description",
+                "data",
+                "valid"
+              ],
+              "properties": {
+                "description": {
+                  "description": "The test description",
+                  "type": "string"
+                },
+                "data": {
+                  "description": "This is the instance to be validated against the schema in \"schema\"."
+                },
+                "id": {
+                  "description": "Uniquely identifies a single test",
+                  "type": "string",
+                  "format": "uri"
+                },
+                "comment": {
+                  "description": "Any additional comments about the test",
+                  "type": "string"
+                },
+                "valid": {
+                  "type": "boolean"
+                },
+                "output": {
+                  "type": "object",
+                  "required": [
+                    "basic",
+                    "detailed",
+                    "verbose"
+                  ],
+                  "properties": {
+                    "basic": {
+                      "$ref": "#/$defs/outputItem"
+                    },
+                    "detailed": {
+                      "$ref": "#/$defs/outputItem"
+                    },
+                    "verbose": {
+                      "$ref": "#/$defs/outputItem"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^output$": true,
+                "^id$": true,
+                "^comment$": true,
+                "^valid$": true,
+                "^data$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "description",
+                "schema",
+                "tests"
+              ],
+              "properties": {
+                "description": {
+                  "description": "The test set description",
+                  "type": "string"
+                },
+                "tests": {
+                  "description": "A set of related tests all using the same schema",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/test"
+                  },
+                  "minItems": 1
+                },
+                "id": {
+                  "description": "Uniquely identifies a set of tests",
+                  "type": "string",
+                  "format": "uri"
+                },
+                "schema": {
+                  "description": "This should be a valid schema. This should be a ref to a meta-schema if schema keywords need testing."
+                },
+                "comment": {
+                  "description": "Any additional comments about the test set",
+                  "type": "string"
+                }
+              },
+              "minItems": 1
+            },
+            {
+              "patternProperties": {
+                "^schema$": true,
+                "^description$": true,
+                "^id$": true,
+                "^comment$": true,
+                "^tests$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "outputItem": {
+      "type": "object",
+      "properties": {
+        "instanceLocation": {
+          "type": "string"
+        },
+        "annotations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/outputItem"
+          }
+        },
+        "valid": {
+          "type": "boolean"
+        },
+        "absoluteKeywordLocation": {
+          "type": "string",
+          "format": "uri"
+        },
+        "keywordLocation": {
+          "type": "string"
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/outputItem"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "all": {
+                  "default": [],
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/Java"
+                  }
+                },
+                "default": {
+                  "type": "integer",
+                  "minimum": 0.0,
+                  "default": 0
+                }
+              },
+              "required": [
+                "all",
+                "default"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^all$": true,
+                "^default$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Java": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "majorVersion": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "majorVersion",
+        "path",
+        "version"
+      ]
+    }
+  }
+}

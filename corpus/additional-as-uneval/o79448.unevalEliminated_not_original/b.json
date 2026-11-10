@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_2",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "uri": {
+                  "$ref": "#/$defs/httpUri"
+                }
+              },
+              "required": [
+                "name",
+                "uri"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^uri$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "repositories": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/pkgRepo"
+                  }
+                }
+              },
+              "required": [
+                "repositories"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^repositories$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "httpUri": {
+      "type": "string",
+      "allOf": [
+        {
+          "format": "uri"
+        },
+        {
+          "pattern": "^https?://"
+        }
+      ]
+    },
+    "pkgRepo": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

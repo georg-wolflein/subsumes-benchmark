@@ -1,0 +1,796 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_11",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 16,
+              "maxItems": 16
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "RandomPointLights": {
+      "type": "object",
+      "required": [
+        "NumberOfLights",
+        "AABB_min",
+        "AABB_max",
+        "RangeRange",
+        "AttenuationDistanceUNorm"
+      ],
+      "properties": {
+        "RangeRange": {
+          "description": "Interval in which to randomly generate the range of the light",
+          "$ref": "#/$defs/float2"
+        },
+        "AABB_max": {
+          "description": "The maximum range of the light movement/initial placement. Movement will bounce at these boundaries",
+          "$ref": "#/$defs/float3"
+        },
+        "NumberOfLights": {
+          "description": "The number of lights to generate",
+          "type": "number"
+        },
+        "AABB_min": {
+          "description": "The minimum range of the light movement/initial placement. Movement will bounce at these boundaries",
+          "$ref": "#/$defs/float3"
+        },
+        "LinearVelocityMinRange": {
+          "description": "The lower part of the interval in which to generate the light linear velocity [x, y, z]",
+          "$ref": "#/$defs/float3"
+        },
+        "LinearVelocityMaxRange": {
+          "description": "The upper part of the interval in which to generate the light linear velocity [x, y, z]",
+          "$ref": "#/$defs/float3"
+        }
+      }
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "The world transform matricies for one or more instances of the model",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/modern_8"
+              },
+              "minItems": 1
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "float3": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 16,
+              "maxItems": 16
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "Model-Plane": {
+      "type": "object",
+      "required": [
+        "Type",
+        "Width",
+        "Depth",
+        "Instances"
+      ],
+      "properties": {
+        "X-TextureTiling": {
+          "description": "How much to tile the texture coordinates in the U (X) direction. 1.0 means the texture will be stretched across the entire grid, 2.0 means the texture will be tiled twice, etc.",
+          "type": "number",
+          "minimum": 0.0
+        },
+        "Width": {
+          "description": "The width of the quad",
+          "type": "number",
+          "minimum": 0.0
+        },
+        "Material": {
+          "description": "The material for the plane",
+          "type": "string"
+        },
+        "Z-TextureTiling": {
+          "description": "How much to tile the texture coordinates in the V (Z) direction. 1.0 means the texture will be stretched across the entire grid, 2.0 means the texture will be tiled twice, etc.",
+          "type": "number",
+          "minimum": 0.0
+        },
+        "X-Subdivisions": {
+          "description": "The number of times to subdivide the quad in the X direction",
+          "type": "integer",
+          "minimum": 0.0
+        },
+        "Depth": {
+          "description": "The depth of the quad",
+          "type": "number",
+          "minimum": 0.0
+        },
+        "Type": {
+          "description": "A (potentially) subdivided quad in the X-Z plane",
+          "enum": [
+            "plane"
+          ]
+        },
+        "Z-Subdivisions": {
+          "description": "The number of times to subdivide the quad in the Z direction",
+          "type": "integer",
+          "minimum": 0.0
+        },
+        "Instances": {
+          "$ref": "#/$defs/modern_4"
+        }
+      }
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 16,
+              "maxItems": 16
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "SpecificSpotLight": {
+      "type": "object",
+      "required": [
+        "Diffuse",
+        "Specular",
+        "Position",
+        "Range",
+        "Direction",
+        "AttenuationDistanceUNorm",
+        "InnerConeAngle",
+        "OuterConeAngle"
+      ],
+      "properties": {
+        "AngularVelocity": {
+          "description": "The angular velocity of the light [radians/ms]",
+          "$ref": "#/$defs/float3"
+        },
+        "Position": {
+          "description": "The position of the light in world space",
+          "$ref": "#/$defs/float3"
+        },
+        "InnerConeAngle": {
+          "description": "The angle of the inner cone of light. The inner cone will have full light intensity",
+          "type": "number"
+        },
+        "AABB_max": {
+          "description": "The maximum range of the light movement. Movement will bounce at these boundaries",
+          "$ref": "#/$defs/float3"
+        },
+        "AABB_min": {
+          "description": "The minimum range of the light movement. Movement will bounce at these boundaries",
+          "$ref": "#/$defs/float3"
+        },
+        "LinearVelocity": {
+          "description": "The linear velocity of the light [world units/ms]",
+          "$ref": "#/$defs/float3"
+        },
+        "OuterConeAngle": {
+          "description": "The angle of the outer cone of light. The light intensity will smoothstep between the inner cone and the outer cone",
+          "type": "number"
+        },
+        "Color": {
+          "description": "The color of the light",
+          "$ref": "#/$defs/float3"
+        },
+        "Range": {
+          "description": "The range of the light",
+          "type": "number"
+        },
+        "Direction": {
+          "description": "The direction of the light",
+          "$ref": "#/$defs/float3"
+        }
+      }
+    },
+    "modern_13": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "",
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "$ref": "#/$defs/Model-File"
+                  },
+                  {
+                    "$ref": "#/$defs/Model-Plane"
+                  },
+                  {
+                    "$ref": "#/$defs/Model-Box"
+                  },
+                  {
+                    "$ref": "#/$defs/Model-Sphere"
+                  }
+                ]
+              },
+              "minItems": 1
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 3,
+              "maxItems": 3
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "material": {
+      "type": "object",
+      "required": [
+        "Name",
+        "HMATFilePath"
+      ],
+      "properties": {
+        "Name": {
+          "description": "The unique name of the material",
+          "type": "string"
+        },
+        "HMATFilePath": {
+          "description": "The file path to the *.hmat file for the material",
+          "type": "string"
+        },
+        "TextureDefinitions": {
+          "description": "The textures used in the shader. ORDER MATTERS!! They will be fed to the shader in the order that they are specified here",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "FilePath": {
+                "description": "The file path to the texture",
+                "type": "string"
+              },
+              "Sampler": {
+                "description": "The sampler to use with the texture",
+                "enum": [
+                  "linear_clamp",
+                  "linear_border",
+                  "linear_wrap",
+                  "point_clamp",
+                  "point_wrap",
+                  "anisotropic_wrap"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "SpecificPointLight": {
+      "type": "object",
+      "required": [
+        "Diffuse",
+        "Specular",
+        "Position",
+        "Range",
+        "AttenuationDistanceUNorm"
+      ],
+      "properties": {
+        "Position": {
+          "description": "The position of the light in world space",
+          "$ref": "#/$defs/float3"
+        },
+        "AABB_max": {
+          "description": "The maximum range of the light movement. Movement will bounce at these boundaries",
+          "$ref": "#/$defs/float3"
+        },
+        "AABB_min": {
+          "description": "The minimum range of the light movement. Movement will bounce at these boundaries",
+          "$ref": "#/$defs/float3"
+        },
+        "LinearVelocity": {
+          "description": "The linear velocity of the light [world units/ms]",
+          "$ref": "#/$defs/float3"
+        },
+        "Color": {
+          "description": "The color of the light",
+          "$ref": "#/$defs/float3"
+        },
+        "Range": {
+          "description": "The range of the light",
+          "type": "number"
+        }
+      }
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "The world transform matricies for one or more instances of the model",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/modern_5"
+              },
+              "minItems": 1
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "Model-File": {
+      "type": "object",
+      "required": [
+        "Type",
+        "FilePath",
+        "Instances"
+      ],
+      "properties": {
+        "Type": {
+          "description": "A model from a HMF file",
+          "enum": [
+            "file"
+          ]
+        },
+        "FilePath": {
+          "description": "The path to the HMF file",
+          "type": "string"
+        },
+        "Instances": {
+          "$ref": "#/$defs/modern_1"
+        }
+      }
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 16,
+              "maxItems": 16
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "RandomSpotLights": {
+      "type": "object",
+      "required": [
+        "NumberOfLights",
+        "AABB_min",
+        "AABB_max",
+        "RangeRange",
+        "AttenuationDistanceUNorm",
+        "OuterAngleRange",
+        "InnerAngleDifference"
+      ],
+      "properties": {
+        "RangeRange": {
+          "description": "Interval in which to randomly generate the range of the light",
+          "$ref": "#/$defs/float2"
+        },
+        "AABB_max": {
+          "description": "The maximum range of the light movement/initial placement. Movement will bounce at these boundaries",
+          "$ref": "#/$defs/float3"
+        },
+        "NumberOfLights": {
+          "description": "The number of lights to generate",
+          "type": "number"
+        },
+        "LinearVelocityMinRange": {
+          "description": "The lower part of the interval in which to generate the light linear velocity [x, y, z]",
+          "$ref": "#/$defs/float3"
+        },
+        "LinearVelocityMaxRange": {
+          "description": "The upper part of the interval in which to generate the light linear velocity [x, y, z]",
+          "$ref": "#/$defs/float3"
+        },
+        "AngularVelocityMaxRange": {
+          "description": "The upper part of the interval in which to generate the light angular velocity [x, y, z]",
+          "$ref": "#/$defs/float3"
+        },
+        "InnerAngleDifference": {
+          "description": "The inner cone angle will be the OuterAngle - InnerAngleDifference",
+          "type": "number"
+        },
+        "OuterAngleRange": {
+          "description": "Interval in which to randomly generate the outer cone angle",
+          "$ref": "#/$defs/float2"
+        },
+        "AABB_min": {
+          "description": "The minimum range of the light movement/initial placement. Movement will bounce at these boundaries",
+          "$ref": "#/$defs/float3"
+        },
+        "AngularVelocityMinRange": {
+          "description": "The lower part of the interval in which to generate the light angular velocity [x, y, z]",
+          "$ref": "#/$defs/float3"
+        }
+      }
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "The world transform matricies for one or more instances of the model",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/modern_2"
+              },
+              "minItems": 1
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_12": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "",
+              "type": "object",
+              "required": [
+                "Color",
+                "Direction"
+              ],
+              "properties": {
+                "Color": {
+                  "description": "",
+                  "$ref": "#/$defs/float3"
+                },
+                "Direction": {
+                  "description": "",
+                  "$ref": "#/$defs/float3"
+                },
+                "AngularVelocity": {
+                  "description": "",
+                  "$ref": "#/$defs/float3"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Color$": true,
+                "^Direction$": true,
+                "^AngularVelocity$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "float2": {
+      "$ref": "#/$defs/modern_6"
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "The world transform matricies for one or more instances of the model",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/modern_10"
+              },
+              "minItems": 1
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "Model-Sphere": {
+      "type": "object",
+      "required": [
+        "Type",
+        "SliceCount",
+        "StackCount",
+        "Instances"
+      ],
+      "properties": {
+        "Radius": {
+          "description": "The radius of the sphere",
+          "type": "number",
+          "minimum": 0.0
+        },
+        "SliceCount": {
+          "description": "The number of slices to divide the sphere into",
+          "type": "integer",
+          "minimum": 0.0
+        },
+        "Material": {
+          "description": "The material for the sphere",
+          "type": "string"
+        },
+        "StackCount": {
+          "description": "The number of stacks to divide the sphere into",
+          "type": "integer",
+          "minimum": 0.0
+        },
+        "Instances": {
+          "$ref": "#/$defs/modern_7"
+        },
+        "Type": {
+          "description": "A sphere",
+          "enum": [
+            "sphere"
+          ]
+        }
+      }
+    },
+    "Model-Box": {
+      "type": "object",
+      "required": [
+        "Type",
+        "Width",
+        "Height",
+        "Depth",
+        "Instances"
+      ],
+      "properties": {
+        "Width": {
+          "description": "The width of the box",
+          "type": "number",
+          "minimum": 0.0
+        },
+        "Material": {
+          "description": "The material for the box",
+          "type": "string"
+        },
+        "Instances": {
+          "$ref": "#/$defs/modern_9"
+        },
+        "Height": {
+          "description": "The height of the box",
+          "type": "number",
+          "minimum": 0.0
+        },
+        "Depth": {
+          "description": "The depth of the box",
+          "type": "number",
+          "minimum": 0.0
+        },
+        "Type": {
+          "description": "A box",
+          "enum": [
+            "box"
+          ]
+        }
+      }
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Scene Definition Schema",
+              "type": "object",
+              "required": [
+                "NearClip",
+                "FarClip",
+                "ModelInstanceThreshold"
+              ],
+              "properties": {
+                "NearClip": {
+                  "description": "The Z-distance to the near clip plane",
+                  "type": "number"
+                },
+                "PointLights": {
+                  "description": "",
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/$defs/SpecificPointLight"
+                      },
+                      {
+                        "$ref": "#/$defs/RandomPointLights"
+                      }
+                    ]
+                  }
+                },
+                "DirectionalLight": {
+                  "$ref": "#/$defs/modern_12"
+                },
+                "SceneScaleFactor": {
+                  "description": "The amount to scale the entire scene by",
+                  "type": "number"
+                },
+                "Models": {
+                  "$ref": "#/$defs/modern_13"
+                },
+                "FarClip": {
+                  "description": "The Z-distance to the far clip plane",
+                  "type": "number"
+                },
+                "ModelInstanceThreshold": {
+                  "description": "If the number of instances is less than or equal to this number, the model will just be drawn multiple times. However, if the number of instances is greater than this number, we will add to the instance buffer and use DrawIndexedInstanced",
+                  "type": "integer",
+                  "minimum": 1.0
+                },
+                "SpotLights": {
+                  "description": "",
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/$defs/SpecificSpotLight"
+                      },
+                      {
+                        "$ref": "#/$defs/RandomSpotLights"
+                      }
+                    ]
+                  }
+                },
+                "Materials": {
+                  "description": "",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/material"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^ModelInstanceThreshold$": true,
+                "^Models$": true,
+                "^FarClip$": true,
+                "^SpotLights$": true,
+                "^Materials$": true,
+                "^NearClip$": true,
+                "^SceneScaleFactor$": true,
+                "^DirectionalLight$": true,
+                "^PointLights$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "org.eclipse.persistence.testing.jaxb.annotations.xmlinversereference.Owner",
+  "type": "object",
+  "properties": {
+    "owner": {
+      "$ref": "#/$defs/modern_2"
+    }
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {}
+            },
+            {
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "adapted": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/Adapted"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^adapted$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Adapted": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

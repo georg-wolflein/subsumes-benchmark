@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "payload": true,
+                "key": {
+                  "type": "string"
+                },
+                "meta": true,
+                "flowVersion": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 255
+                },
+                "deviceId": {
+                  "type": "string",
+                  "pattern": "^[A-Fa-f\\d]{24}$"
+                }
+              },
+              "required": [
+                "key"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^flowVersion$": true,
+                "^payload$": true,
+                "^meta$": true,
+                "^deviceId$": true,
+                "^key$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

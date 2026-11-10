@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "allOf": [
+    {
+      "not": {
+        "patternProperties": {
+          "^(a|b)$": {
+            "not": {
+              "$ref": "#/$defs/eq1Left"
+            }
+          }
+        }
+      }
+    },
+    {
+      "not": {
+        "patternProperties": {
+          "^b$": {
+            "not": {
+              "$ref": "#/$defs/eq1B"
+            }
+          }
+        }
+      }
+    },
+    {
+      "anyOf": [
+        {
+          "not": {
+            "$ref": "#/$defs/eq1A"
+          }
+        },
+        {
+          "$ref": "#/$defs/eq1A"
+        }
+      ]
+    }
+  ],
+  "$defs": {
+    "eq1A": {
+      "type": "number",
+      "_minimum": 5,
+      "minimum": 10,
+      "_minimumWeak": 3
+    },
+    "eq1B": {
+      "type": "number",
+      "maximum": 100
+    },
+    "eq1Left": {
+      "allOf": [
+        {
+          "not": {
+            "patternProperties": {
+              "^(a|b)$": {
+                "not": {
+                  "$ref": "#/$defs/eq1A"
+                }
+              }
+            }
+          }
+        },
+        {
+          "not": {
+            "patternProperties": {
+              "^b$": {
+                "not": {
+                  "$ref": "#/$defs/eq1B"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "eq1Right": {
+      "type": "number"
+    }
+  }
+}

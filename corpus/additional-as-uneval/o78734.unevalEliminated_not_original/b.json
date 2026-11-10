@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "vera__events__c": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              },
+              "required": [
+                "vera__events__c"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^vera__events__c$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "_id": "/vera__events__c",
+              "properties": {
+                "vera__boats__c": {
+                  "_id": "/vera__events__c/vera__boats__c",
+                  "items": {
+                    "$ref": "#/$defs/modern_3"
+                  },
+                  "type": "array"
+                },
+                "vera__event_name__c": {
+                  "_id": "/vera__events__c/vera__event_name__c",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "vera__event_name__c"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^vera__boats__c$": true,
+                "^vera__event_name__c$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "_id": "/vera__events__c/vera__boats__c/0",
+              "properties": {
+                "name": {
+                  "_id": "/vera__events__c/vera__boats__c/0/name",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^name$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

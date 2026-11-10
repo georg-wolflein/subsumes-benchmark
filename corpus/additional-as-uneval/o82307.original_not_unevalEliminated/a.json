@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "ts_ymdh": {
+                  "type": "integer",
+                  "default": 0,
+                  "minimum": 0.0,
+                  "maximum": 4294967295.0,
+                  "pbj": {
+                    "type": "int",
+                    "rule": "single"
+                  }
+                },
+                "ts_ymd": {
+                  "type": "integer",
+                  "default": 0,
+                  "minimum": 0.0,
+                  "maximum": 4294967295.0,
+                  "pbj": {
+                    "type": "int",
+                    "rule": "single"
+                  }
+                },
+                "ts_ym": {
+                  "type": "integer",
+                  "default": 0,
+                  "minimum": 0.0,
+                  "maximum": 16777215.0,
+                  "pbj": {
+                    "type": "medium-int",
+                    "rule": "single"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^ts_ymdh$": true,
+                "^ts_ymd$": true,
+                "^ts_ym$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

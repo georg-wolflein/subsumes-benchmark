@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "MachineBoss expression schema",
+  "$ref": "#/$defs/expr",
+  "$defs": {
+    "expr": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "required": [
+            "expr"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "expr": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "log"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "log": {
+              "$ref": "#/$defs/expr"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "exp"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "exp": {
+              "$ref": "#/$defs/expr"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "geomsum"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "geomsum": {
+              "$ref": "#/$defs/expr"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "not"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "not": {
+              "$ref": "#/$defs/expr"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "*"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "*": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": {
+                "$ref": "#/$defs/expr"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "+"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "+": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": {
+                "$ref": "#/$defs/expr"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "/"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "/": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": {
+                "$ref": "#/$defs/expr"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "-"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "-": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": {
+                "$ref": "#/$defs/expr"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "pow"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "pow": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": {
+                "$ref": "#/$defs/expr"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "title": "User configuration",
+              "properties": {
+                "name": {
+                  "propertyOrder": 10,
+                  "title": "Name",
+                  "type": "string"
+                },
+                "password": {
+                  "propertyOrder": 20,
+                  "title": "Password",
+                  "type": "string"
+                },
+                "passwordHash": {
+                  "propertyOrder": 21,
+                  "title": "Password hash",
+                  "type": "string"
+                },
+                "roles": {
+                  "propertyOrder": 35,
+                  "title": "Roles, comma-separated",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^password$": true,
+                "^passwordHash$": true,
+                "^roles$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

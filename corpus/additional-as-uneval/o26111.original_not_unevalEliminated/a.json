@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "IdentityPoolId",
+                "AllowUnauthenticatedIdentities",
+                "IdentityPoolName"
+              ],
+              "properties": {
+                "IdentityPoolName": {
+                  "type": "string",
+                  "pattern": "[\\w ]+"
+                },
+                "AllowUnauthenticatedIdentities": {
+                  "type": "boolean"
+                },
+                "SupportedLoginProviders": {
+                  "type": "object",
+                  "properties": {
+                    "www.amazon.com": {
+                      "type": "string"
+                    },
+                    "api.twitter.com": {
+                      "type": "string"
+                    },
+                    "www.digits.com": {
+                      "type": "string"
+                    },
+                    "accounts.google.com": {
+                      "type": "string"
+                    },
+                    "graph.facebook.com": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "OpenIdConnectProviderARNs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "_uniqueItems": true
+                },
+                "IdentityPoolId": {
+                  "type": "string",
+                  "pattern": "[\\w-]+:[0-9a-f-]+"
+                },
+                "DeveloperProviderName": {
+                  "type": "string",
+                  "pattern": "[\\w._-]+"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^IdentityPoolId$": true,
+                "^AllowUnauthenticatedIdentities$": true,
+                "^OpenIdConnectProviderARNs$": true,
+                "^DeveloperProviderName$": true,
+                "^SupportedLoginProviders$": true,
+                "^IdentityPoolName$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

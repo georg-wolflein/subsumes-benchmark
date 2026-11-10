@@ -1,0 +1,76 @@
+{
+  "$id": "https://registry.hzdr.de/crp/picongpu/schema/picongpu.pypicongpu.species.operation.momentum.drift.Drift",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "initial velocity of particles",
+              "type": "object",
+              "required": [
+                "gamma",
+                "direction_normalized"
+              ],
+              "properties": {
+                "gamma": {
+                  "description": "scales direction_normalized",
+                  "type": "number",
+                  "minimum": 0.0
+                },
+                "direction_normalized": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^gamma$": true,
+                "^direction_normalized$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "drift direction, length of 1",
+              "type": "object",
+              "required": [
+                "x",
+                "y",
+                "z"
+              ],
+              "properties": {
+                "x": {
+                  "type": "number"
+                },
+                "y": {
+                  "type": "number"
+                },
+                "z": {
+                  "type": "number"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^x$": true,
+                "^y$": true,
+                "^z$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

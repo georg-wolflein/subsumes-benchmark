@@ -1,0 +1,1522 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_27",
+  "$defs": {
+    "modern_20": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "network": {
+                  "type": "string"
+                },
+                "dockerfile": {
+                  "type": "string"
+                },
+                "context": {
+                  "type": "string"
+                },
+                "cache_from": {
+                  "$ref": "#/$defs/list_of_strings"
+                },
+                "labels": {
+                  "$ref": "#/$defs/labels"
+                },
+                "args": {
+                  "$ref": "#/$defs/list_or_dict"
+                },
+                "target": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^target$": true,
+                "^args$": true,
+                "^labels$": true,
+                "^context$": true,
+                "^cache_from$": true,
+                "^dockerfile$": true,
+                "^network$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "string_or_list": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/$defs/list_of_strings"
+        }
+      ]
+    },
+    "modern_12": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                ".+": {
+                  "type": [
+                    "string",
+                    "number",
+                    "null"
+                  ]
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                ".+": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "parallelism": {
+                  "type": "integer"
+                },
+                "monitor": {
+                  "_format": "duration",
+                  "type": "string"
+                },
+                "delay": {
+                  "_format": "duration",
+                  "type": "string"
+                },
+                "max_failure_ratio": {
+                  "type": "number"
+                },
+                "order": {
+                  "enum": [
+                    "start-first",
+                    "stop-first"
+                  ],
+                  "type": "string"
+                },
+                "failure_action": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^parallelism$": true,
+                "^delay$": true,
+                "^max_failure_ratio$": true,
+                "^order$": true,
+                "^monitor$": true,
+                "^failure_action$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_24": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "test": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  ]
+                },
+                "retries": {
+                  "type": "number"
+                },
+                "interval": {
+                  "_format": "duration",
+                  "type": "string"
+                },
+                "disable": {
+                  "type": "boolean"
+                },
+                "timeout": {
+                  "_format": "duration",
+                  "type": "string"
+                },
+                "start_period": {
+                  "_format": "duration",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^start_period$": true,
+                "^timeout$": true,
+                "^disable$": true,
+                "^retries$": true,
+                "^interval$": true,
+                "^test$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "config": {
+                  "items": {
+                    "$ref": "#/$defs/modern_4"
+                  },
+                  "type": "array"
+                },
+                "driver": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^config$": true,
+                "^driver$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_22": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "cpus": {
+                  "type": "string"
+                },
+                "memory": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^cpus$": true,
+                "^memory$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_26": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "type": "string"
+                }
+              },
+              "type": [
+                "boolean",
+                "object"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "limits": {
+                  "$ref": "#/$defs/resource"
+                },
+                "reservations": {
+                  "$ref": "#/$defs/resource"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^limits$": true,
+                "^reservations$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "list_of_strings": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "_uniqueItems": true
+    },
+    "modern_14": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "networks": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/list_of_strings"
+                    },
+                    {
+                      "$ref": "#/$defs/modern_15"
+                    }
+                  ]
+                },
+                "image": {
+                  "type": "string"
+                },
+                "credential_spec": {
+                  "properties": {
+                    "file": {
+                      "type": "string"
+                    },
+                    "registry": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                },
+                "read_only": {
+                  "type": "boolean"
+                },
+                "volumes": {
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "$ref": "#/$defs/modern_17"
+                      }
+                    ],
+                    "_uniqueItems": true
+                  },
+                  "type": "array"
+                },
+                "configs": {
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "properties": {
+                          "source": {
+                            "type": "string"
+                          },
+                          "gid": {
+                            "type": "string"
+                          },
+                          "target": {
+                            "type": "string"
+                          },
+                          "uid": {
+                            "type": "string"
+                          },
+                          "mode": {
+                            "type": "number"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    ]
+                  },
+                  "type": "array"
+                },
+                "labels": {
+                  "$ref": "#/$defs/labels"
+                },
+                "userns_mode": {
+                  "type": "string"
+                },
+                "tty": {
+                  "type": "boolean"
+                },
+                "devices": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "_uniqueItems": true
+                },
+                "dns": {
+                  "$ref": "#/$defs/string_or_list"
+                },
+                "ulimits": {
+                  "patternProperties": {
+                    "^[a-z]+$": {
+                      "oneOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "$ref": "#/$defs/modern_18"
+                        }
+                      ]
+                    }
+                  },
+                  "type": "object"
+                },
+                "stop_signal": {
+                  "type": "string"
+                },
+                "sysctls": {
+                  "$ref": "#/$defs/list_or_dict"
+                },
+                "logging": {
+                  "$ref": "#/$defs/modern_19"
+                },
+                "shm_size": {
+                  "type": [
+                    "number",
+                    "string"
+                  ]
+                },
+                "hostname": {
+                  "type": "string"
+                },
+                "secrets": {
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "properties": {
+                          "source": {
+                            "type": "string"
+                          },
+                          "gid": {
+                            "type": "string"
+                          },
+                          "target": {
+                            "type": "string"
+                          },
+                          "uid": {
+                            "type": "string"
+                          },
+                          "mode": {
+                            "type": "number"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    ]
+                  },
+                  "type": "array"
+                },
+                "dns_search": {
+                  "$ref": "#/$defs/string_or_list"
+                },
+                "cgroup_parent": {
+                  "type": "string"
+                },
+                "env_file": {
+                  "$ref": "#/$defs/string_or_list"
+                },
+                "domainname": {
+                  "type": "string"
+                },
+                "build": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "$ref": "#/$defs/modern_20"
+                    }
+                  ]
+                },
+                "ports": {
+                  "items": {
+                    "oneOf": [
+                      {
+                        "format": "ports",
+                        "type": "number"
+                      },
+                      {
+                        "_format": "ports",
+                        "type": "string"
+                      },
+                      {
+                        "$ref": "#/$defs/modern_21"
+                      }
+                    ]
+                  },
+                  "type": "array",
+                  "_uniqueItems": true
+                },
+                "extra_hosts": {
+                  "$ref": "#/$defs/list_or_dict"
+                },
+                "cap_drop": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "_uniqueItems": true
+                },
+                "ipc": {
+                  "type": "string"
+                },
+                "depends_on": {
+                  "$ref": "#/$defs/list_of_strings"
+                },
+                "command": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  ]
+                },
+                "mac_address": {
+                  "type": "string"
+                },
+                "entrypoint": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  ]
+                },
+                "links": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "_uniqueItems": true
+                },
+                "pid": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "stdin_open": {
+                  "type": "boolean"
+                },
+                "container_name": {
+                  "type": "string"
+                },
+                "network_mode": {
+                  "type": "string"
+                },
+                "environment": {
+                  "$ref": "#/$defs/list_or_dict"
+                },
+                "expose": {
+                  "items": {
+                    "format": "expose",
+                    "type": [
+                      "string",
+                      "number"
+                    ]
+                  },
+                  "type": "array",
+                  "_uniqueItems": true
+                },
+                "security_opt": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "_uniqueItems": true
+                },
+                "deploy": {
+                  "$ref": "#/$defs/deployment"
+                },
+                "working_dir": {
+                  "type": "string"
+                },
+                "external_links": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "_uniqueItems": true
+                },
+                "stop_grace_period": {
+                  "_format": "duration",
+                  "type": "string"
+                },
+                "privileged": {
+                  "type": "boolean"
+                },
+                "restart": {
+                  "type": "string"
+                },
+                "healthcheck": {
+                  "$ref": "#/$defs/healthcheck"
+                },
+                "user": {
+                  "type": "string"
+                },
+                "cap_add": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "_uniqueItems": true
+                },
+                "tmpfs": {
+                  "$ref": "#/$defs/string_or_list"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^tty$": true,
+                "^pid$": true,
+                "^logging$": true,
+                "^labels$": true,
+                "^hostname$": true,
+                "^env_file$": true,
+                "^domainname$": true,
+                "^configs$": true,
+                "^deploy$": true,
+                "^build$": true,
+                "^networks$": true,
+                "^volumes$": true,
+                "^external_links$": true,
+                "^userns_mode$": true,
+                "^extra_hosts$": true,
+                "^ports$": true,
+                "^healthcheck$": true,
+                "^tmpfs$": true,
+                "^user$": true,
+                "^ipc$": true,
+                "^container_name$": true,
+                "^image$": true,
+                "^privileged$": true,
+                "^security_opt$": true,
+                "^mac_address$": true,
+                "^depends_on$": true,
+                "^working_dir$": true,
+                "^environment$": true,
+                "^cap_drop$": true,
+                "^dns_search$": true,
+                "^stdin_open$": true,
+                "^stop_signal$": true,
+                "^links$": true,
+                "^ulimits$": true,
+                "^entrypoint$": true,
+                "^network_mode$": true,
+                "^shm_size$": true,
+                "^dns$": true,
+                "^devices$": true,
+                "^cap_add$": true,
+                "^stop_grace_period$": true,
+                "^secrets$": true,
+                "^sysctls$": true,
+                "^credential_spec$": true,
+                "^command$": true,
+                "^cgroup_parent$": true,
+                "^restart$": true,
+                "^expose$": true,
+                "^read_only$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_21": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "mode": {
+                  "type": "string"
+                },
+                "protocol": {
+                  "type": "string"
+                },
+                "published": {
+                  "type": "integer"
+                },
+                "target": {
+                  "type": "integer"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^mode$": true,
+                "^protocol$": true,
+                "^published$": true,
+                "^target$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "type": "string"
+                }
+              },
+              "type": [
+                "boolean",
+                "object"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "secret": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "network": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "labels": {
+                  "$ref": "#/$defs/labels"
+                },
+                "restart_policy": {
+                  "$ref": "#/$defs/modern_7"
+                },
+                "replicas": {
+                  "type": "integer"
+                },
+                "update_config": {
+                  "$ref": "#/$defs/modern_8"
+                },
+                "placement": {
+                  "$ref": "#/$defs/modern_9"
+                },
+                "endpoint_mode": {
+                  "type": "string"
+                },
+                "resources": {
+                  "$ref": "#/$defs/modern_11"
+                },
+                "mode": {
+                  "type": "string"
+                }
+              },
+              "type": [
+                "object",
+                "null"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^endpoint_mode$": true,
+                "^labels$": true,
+                "^replicas$": true,
+                "^restart_policy$": true,
+                "^mode$": true,
+                "^placement$": true,
+                "^resources$": true,
+                "^update_config$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "spread": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^spread$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "deployment": {
+      "$ref": "#/$defs/modern_6"
+    },
+    "modern_16": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "aliases": {
+                  "$ref": "#/$defs/list_of_strings"
+                },
+                "ipv4_address": {
+                  "type": "string"
+                },
+                "ipv6_address": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^aliases$": true,
+                "^ipv4_address$": true,
+                "^ipv6_address$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_15": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                "^[a-zA-Z0-9._-]+$": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/modern_16"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^[a-zA-Z0-9._-]+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "list_or_dict": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/modern_12"
+        },
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "_uniqueItems": true
+        }
+      ]
+    },
+    "modern_27": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                "^x-": true
+              },
+              "properties": {
+                "services": {
+                  "$ref": "#/$defs/modern_28"
+                },
+                "networks": {
+                  "patternProperties": {
+                    "^[a-zA-Z0-9._-]+$": {
+                      "$ref": "#/$defs/network"
+                    }
+                  },
+                  "type": "object"
+                },
+                "secrets": {
+                  "$ref": "#/$defs/modern_29"
+                },
+                "volumes": {
+                  "$ref": "#/$defs/modern_30"
+                },
+                "version": {
+                  "type": "string"
+                },
+                "configs": {
+                  "$ref": "#/$defs/modern_31"
+                }
+              },
+              "required": [
+                "version"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^version$": true,
+                "^x-": true,
+                "^services$": true,
+                "^secrets$": true,
+                "^configs$": true,
+                "^networks$": true,
+                "^volumes$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "external": {
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    }
+                  },
+                  "type": [
+                    "boolean",
+                    "object"
+                  ]
+                },
+                "file": {
+                  "type": "string"
+                },
+                "labels": {
+                  "$ref": "#/$defs/labels"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^external$": true,
+                "^file$": true,
+                "^labels$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_31": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                "^[a-zA-Z0-9._-]+$": {
+                  "$ref": "#/$defs/config"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^[a-zA-Z0-9._-]+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "condition": {
+                  "type": "string"
+                },
+                "delay": {
+                  "_format": "duration",
+                  "type": "string"
+                },
+                "max_attempts": {
+                  "type": "integer"
+                },
+                "window": {
+                  "_format": "duration",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^condition$": true,
+                "^delay$": true,
+                "^max_attempts$": true,
+                "^window$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_23": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                ".+": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                ".+": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_17": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "source": {
+                  "type": "string"
+                },
+                "bind": {
+                  "properties": {
+                    "propagation": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                },
+                "target": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "volume": {
+                  "properties": {
+                    "nocopy": {
+                      "type": "boolean"
+                    }
+                  },
+                  "type": "object"
+                },
+                "read_only": {
+                  "type": "boolean"
+                },
+                "consistency": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^target$": true,
+                "^consistency$": true,
+                "^type$": true,
+                "^volume$": true,
+                "^bind$": true,
+                "^read_only$": true,
+                "^source$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "config": {
+      "$ref": "#/$defs/modern_13"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "attachable": {
+                  "type": "boolean"
+                },
+                "internal": {
+                  "type": "boolean"
+                },
+                "labels": {
+                  "$ref": "#/$defs/labels"
+                },
+                "driver_opts": {
+                  "patternProperties": {
+                    "^.+$": {
+                      "type": [
+                        "string",
+                        "number"
+                      ]
+                    }
+                  },
+                  "type": "object"
+                },
+                "ipam": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "driver": {
+                  "type": "string"
+                },
+                "external": {
+                  "$ref": "#/$defs/modern_5"
+                }
+              },
+              "type": [
+                "object",
+                "null"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^internal$": true,
+                "^labels$": true,
+                "^external$": true,
+                "^attachable$": true,
+                "^driver$": true,
+                "^ipam$": true,
+                "^driver_opts$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "service": {
+      "$ref": "#/$defs/modern_14"
+    },
+    "modern_28": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                "^[a-zA-Z0-9._-]+$": {
+                  "$ref": "#/$defs/service"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^[a-zA-Z0-9._-]+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "resource": {
+      "$ref": "#/$defs/modern_22"
+    },
+    "labels": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/modern_23"
+        },
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "_uniqueItems": true
+        }
+      ]
+    },
+    "modern_30": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                "^[a-zA-Z0-9._-]+$": {
+                  "$ref": "#/$defs/volume"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^[a-zA-Z0-9._-]+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "constraints": {
+      "service": {
+        "anyOf": [
+          {
+            "required": [
+              "build"
+            ]
+          },
+          {
+            "required": [
+              "image"
+            ]
+          }
+        ],
+        "id": "#/definitions4/constraints/service",
+        "properties": {
+          "build": {
+            "required": [
+              "context"
+            ]
+          }
+        }
+      }
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "constraints": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "preferences": {
+                  "items": {
+                    "$ref": "#/$defs/modern_10"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^constraints$": true,
+                "^preferences$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_29": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                "^[a-zA-Z0-9._-]+$": {
+                  "$ref": "#/$defs/secret"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^[a-zA-Z0-9._-]+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_18": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "hard": {
+                  "type": "integer"
+                },
+                "soft": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "soft",
+                "hard"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^hard$": true,
+                "^soft$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_13": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "external": {
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    }
+                  },
+                  "type": [
+                    "boolean",
+                    "object"
+                  ]
+                },
+                "file": {
+                  "type": "string"
+                },
+                "labels": {
+                  "$ref": "#/$defs/labels"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^external$": true,
+                "^file$": true,
+                "^labels$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "healthcheck": {
+      "$ref": "#/$defs/modern_24"
+    },
+    "volume": {
+      "$ref": "#/$defs/modern_25"
+    },
+    "modern_25": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "labels": {
+                  "$ref": "#/$defs/labels"
+                },
+                "driver_opts": {
+                  "patternProperties": {
+                    "^.+$": {
+                      "type": [
+                        "string",
+                        "number"
+                      ]
+                    }
+                  },
+                  "type": "object"
+                },
+                "driver": {
+                  "type": "string"
+                },
+                "external": {
+                  "$ref": "#/$defs/modern_26"
+                }
+              },
+              "type": [
+                "object",
+                "null"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^labels$": true,
+                "^external$": true,
+                "^name$": true,
+                "^driver$": true,
+                "^driver_opts$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_19": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "driver": {
+                  "type": "string"
+                },
+                "options": {
+                  "patternProperties": {
+                    "^.+$": {
+                      "type": [
+                        "string",
+                        "number",
+                        "null"
+                      ]
+                    }
+                  },
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^driver$": true,
+                "^options$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "subnet": {
+                  "_format": "subnet_ip_address",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^subnet$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

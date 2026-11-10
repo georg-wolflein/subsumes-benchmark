@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer"
+                },
+                "content": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "expiration_date": {
+                  "description": "string timestamp representing the start date of the booking",
+                  "type": "string"
+                },
+                "thread_id": {
+                  "type": "integer"
+                },
+                "publication_date": {
+                  "description": "string timestamp representing the start date of the booking",
+                  "type": "string"
+                },
+                "is_headline": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "title",
+                "thread_id"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^publication_date$": true,
+                "^thread_id$": true,
+                "^expiration_date$": true,
+                "^status$": true,
+                "^title$": true,
+                "^content$": true,
+                "^is_headline$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,321 @@
+{
+  "$id": "http://pinpoint.navercorp.com/type-provider.schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_6",
+  "$defs": {
+    "serviceTypes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/serviceType"
+      }
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "minProperties": 1
+                },
+                {
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "args",
+                            "none"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "type"
+                      ]
+                    },
+                    {
+                      "not": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "const": "exact"
+                          },
+                          "code": {
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "code"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "minProperties": 1
+                },
+                {
+                  "allOf": [
+                    {
+                      "not": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "args",
+                              "none"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "type"
+                        ]
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "const": "exact"
+                        },
+                        "code": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "code"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^code$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "minProperties": 1,
+              "properties": {
+                "recordStatistics": {
+                  "type": "boolean"
+                },
+                "queue": {
+                  "type": "boolean"
+                },
+                "alias": {
+                  "type": "boolean"
+                },
+                "includeDestinationId": {
+                  "type": "boolean"
+                },
+                "terminal": {
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^alias$": true,
+                "^recordStatistics$": true,
+                "^queue$": true,
+                "^includeDestinationId$": true,
+                "^terminal$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer"
+                },
+                "name": {
+                  "name": "string",
+                  "minLength": 1
+                },
+                "property": {
+                  "$ref": "#/$defs/modern_5"
+                }
+              },
+              "required": [
+                "code",
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^code$": true,
+                "^name$": true,
+                "^property$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "annotationKeys": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/annotationKey"
+      }
+    },
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "minProperties": 1,
+              "properties": {
+                "viewInRecordSet": {
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^viewInRecordSet$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "serviceType": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "JSON schema for pinpoint plugin type-provider.yml files",
+              "type": "object",
+              "minProperties": 1,
+              "anyOf": [
+                {
+                  "required": [
+                    "serviceTypes"
+                  ]
+                },
+                {
+                  "required": [
+                    "annotationKeys"
+                  ]
+                }
+              ],
+              "properties": {
+                "serviceTypes": {
+                  "$ref": "#/$defs/serviceTypes"
+                },
+                "annotationKeys": {
+                  "$ref": "#/$defs/annotationKeys"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^serviceTypes$": true,
+                "^annotationKeys$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "desc": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "code": {
+                  "type": "integer",
+                  "minimum": 1000.0,
+                  "maximum": 9999.0
+                },
+                "matcher": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "property": {
+                  "$ref": "#/$defs/modern_3"
+                }
+              },
+              "required": [
+                "code",
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^code$": true,
+                "^property$": true,
+                "^name$": true,
+                "^desc$": true,
+                "^matcher$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "annotationKey": {
+      "$ref": "#/$defs/modern_4"
+    }
+  }
+}

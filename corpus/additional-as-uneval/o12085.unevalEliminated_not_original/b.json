@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/modern_2"
+              },
+              "self": {
+                "format": "jsonschema",
+                "name": "contribution/items",
+                "vendor": "com.nordstrom",
+                "version": "1-0-0"
+              },
+              "type": "array"
+            },
+            {
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "photographer": {
+                  "type": "string"
+                },
+                "creator": {
+                  "type": "string"
+                },
+                "creatorScore": {
+                  "type": "number"
+                },
+                "productId": {
+                  "type": "string"
+                },
+                "lastEventId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "productId"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^productId$": true,
+                "^creator$": true,
+                "^photographer$": true,
+                "^lastEventId$": true,
+                "^creatorScore$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

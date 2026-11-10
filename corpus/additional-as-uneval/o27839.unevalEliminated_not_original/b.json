@@ -1,0 +1,198 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "errorMessage": {
+    "uniqueItemProperties": "should NOT contain objects with the same id"
+  },
+  "items": {
+    "$ref": "#/$defs/modern_3"
+  },
+  "type": "array",
+  "uniqueItemProperties": [
+    "id"
+  ],
+  "$defs": {
+    "RulesArray": {
+      "errorMessage": {
+        "uniqueItemProperties": "should NOT contain objects with the same ruleId"
+      },
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/TcpUdpRule"
+          },
+          {
+            "$ref": "#/$defs/IcmpRule"
+          }
+        ]
+      },
+      "type": "array",
+      "uniqueItemProperties": [
+        "ruleid"
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "icmpcode": {
+                  "maximum": 255.0,
+                  "minimum": -1.0,
+                  "type": "integer"
+                },
+                "cidr": {
+                  "type": "string"
+                },
+                "ruleid": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "icmptype": {
+                  "maximum": 255.0,
+                  "minimum": -1.0,
+                  "type": "integer"
+                },
+                "protocol": {
+                  "const": "icmp",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "ruleid",
+                "protocol",
+                "icmpcode",
+                "icmptype",
+                "cidr"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^icmptype$": true,
+                "^protocol$": true,
+                "^cidr$": true,
+                "^ruleid$": true,
+                "^icmpcode$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "TcpUdpRule": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "startport": {
+                  "$ref": "#/$defs/TcpUdpPort"
+                },
+                "cidr": {
+                  "type": "string"
+                },
+                "ruleid": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "endport": {
+                  "$ref": "#/$defs/TcpUdpPort"
+                },
+                "protocol": {
+                  "enum": [
+                    "tcp",
+                    "udp"
+                  ],
+                  "type": "string"
+                }
+              },
+              "required": [
+                "ruleid",
+                "protocol",
+                "startport",
+                "endport",
+                "cidr"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^startport$": true,
+                "^endport$": true,
+                "^protocol$": true,
+                "^cidr$": true,
+                "^ruleid$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "TcpUdpPort": {
+      "maximum": 65535.0,
+      "minimum": 0.0,
+      "type": "integer"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "preselected": {
+                  "type": "boolean"
+                },
+                "name": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "ingressrule": {
+                  "$ref": "#/$defs/RulesArray"
+                },
+                "egressrule": {
+                  "$ref": "#/$defs/RulesArray"
+                },
+                "id": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "description",
+                "preselected",
+                "ingressrule",
+                "egressrule"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^name$": true,
+                "^id$": true,
+                "^ingressrule$": true,
+                "^egressrule$": true,
+                "^preselected$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "IcmpRule": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "anyOf": [
+    {
+      "$ref": "#/$defs/_AdaptiveLock_"
+    }
+  ],
+  "$defs": {
+    "_AdaptiveLock_.propertyTypes": {
+      "properties": {
+        "lockId": {
+          "description": "This is the key for this lock in registry type flag and the objectId of its _AdaptiveLock_ runtime object.",
+          "title": "Lock Id",
+          "type": "string"
+        },
+        "description": {
+          "contentMediaType": "text/plain",
+          "description": "This is the description of this lock.",
+          "title": "Description",
+          "type": "string"
+        },
+        "debugFlagIndex": {
+          "description": "Index of the lock's debug flag.",
+          "title": "Debug Flag Index",
+          "type": "integer"
+        },
+        "brief": {
+          "description": "Brief predicate about this lock.",
+          "title": "Brief",
+          "type": "string"
+        },
+        "debugFlagId": {
+          "description": "Flag id of the lock's debug flag.",
+          "title": "Debug Flag Id",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/_AdaptiveLock_.propertyTypes"
+                }
+              ],
+              "description": "An adaptive flag.",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^brief$": true,
+                "^description$": true,
+                "^debugFlagIndex$": true,
+                "^debugFlagId$": true,
+                "^lockId$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "_AdaptiveLock_": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

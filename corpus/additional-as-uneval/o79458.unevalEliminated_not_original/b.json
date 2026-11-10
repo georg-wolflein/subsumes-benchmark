@@ -1,0 +1,276 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_8",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "x86-64": {
+                  "$ref": "#/$defs/cliInfo"
+                }
+              },
+              "required": [
+                "x86-64"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^x86-64$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "x86-64": {
+                  "$ref": "#/$defs/cliInfo"
+                }
+              },
+              "required": [
+                "x86-64"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^x86-64$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "url": {
+      "type": "string",
+      "allOf": [
+        {
+          "format": "uri"
+        },
+        {
+          "pattern": "^https?://"
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "algo": {
+                  "enum": [
+                    "sha256"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "algo",
+                "value"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^algo$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "x86-64": {
+                  "$ref": "#/$defs/cliInfo"
+                }
+              },
+              "required": [
+                "x86-64"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^x86-64$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "contentHash": {
+                  "items": {
+                    "$ref": "#/$defs/hash"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                },
+                "kind": {
+                  "enum": [
+                    "executable",
+                    "zip"
+                  ],
+                  "type": "string"
+                },
+                "url": {
+                  "$ref": "#/$defs/url"
+                }
+              },
+              "required": [
+                "url",
+                "kind",
+                "contentHash"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^contentHash$": true,
+                "^kind$": true,
+                "^url$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "hash": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "packageVersion": {
+                  "type": "string"
+                },
+                "postInstallNotes": {
+                  "type": "string"
+                },
+                "packageName": {
+                  "type": "string"
+                },
+                "cli": {
+                  "$ref": "#/$defs/cli"
+                },
+                "appId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "packageName",
+                "packageVersion",
+                "appId"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^packageName$": true,
+                "^appId$": true,
+                "^packageVersion$": true,
+                "^cli$": true,
+                "^postInstallNotes$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "binaries": {
+                  "$ref": "#/$defs/modern_4"
+                }
+              },
+              "required": [
+                "binaries"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^binaries$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "cli": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "cliInfo": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "minProperties": 1,
+              "properties": {
+                "darwin": {
+                  "$ref": "#/$defs/modern_5"
+                },
+                "linux": {
+                  "$ref": "#/$defs/modern_6"
+                },
+                "windows": {
+                  "$ref": "#/$defs/modern_7"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^darwin$": true,
+                "^linux$": true,
+                "^windows$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

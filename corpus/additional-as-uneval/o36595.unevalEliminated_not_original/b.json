@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "school_id": {
+                  "type": "string"
+                },
+                "color": {
+                  "type": "string"
+                },
+                "extendcolor": {
+                  "type": "boolean"
+                },
+                "slotprofile": {
+                  "type": "string"
+                },
+                "validation": {
+                  "description": "If true, bookings must be validated by moderators. Otherwise, they are automatically validated",
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "name",
+                "validation",
+                "school_id",
+                "color"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^color$": true,
+                "^validation$": true,
+                "^school_id$": true,
+                "^extendcolor$": true,
+                "^slotprofile$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

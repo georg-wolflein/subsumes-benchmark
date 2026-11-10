@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_2",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Id": {
+                  "type": "string"
+                },
+                "PacksAwarded": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "Id",
+                "PacksAwarded"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^Id$": true,
+                "^PacksAwarded$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": [
+                "object",
+                "null"
+              ],
+              "properties": {
+                "GameplayXP": {
+                  "type": "integer"
+                },
+                "CompletedSpartanRanks": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/CompletedSpartanRank"
+                  }
+                },
+                "ChallengesXP": {
+                  "type": "integer"
+                },
+                "UpdatedTotalXP": {
+                  "type": "integer"
+                },
+                "PreviousTotalXP": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "PreviousTotalXP",
+                "GameplayXP",
+                "ChallengesXP",
+                "UpdatedTotalXP",
+                "CompletedSpartanRanks"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^ChallengesXP$": true,
+                "^UpdatedTotalXP$": true,
+                "^GameplayXP$": true,
+                "^PreviousTotalXP$": true,
+                "^CompletedSpartanRanks$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "CompletedSpartanRank": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

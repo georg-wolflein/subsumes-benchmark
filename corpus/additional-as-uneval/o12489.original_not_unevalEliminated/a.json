@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Schema for metadata extracted from audio files",
+              "type": "object",
+              "properties": {
+                "author": {
+                  "type": "string"
+                },
+                "xmpDM:duration": {
+                  "type": "string"
+                },
+                "xmpDM:audioCompressor": {
+                  "type": "string"
+                },
+                "xmpDM:audioSampleRate": {
+                  "type": "string"
+                },
+                "xmpDM:audioSampleType": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "version": {
+                  "type": "string"
+                },
+                "xmpDM:audioChannelType": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^xmpDM:audioSampleType$": true,
+                "^version$": true,
+                "^author$": true,
+                "^xmpDM:audioCompressor$": true,
+                "^xmpDM:audioSampleRate$": true,
+                "^xmpDM:audioChannelType$": true,
+                "^title$": true,
+                "^xmpDM:duration$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

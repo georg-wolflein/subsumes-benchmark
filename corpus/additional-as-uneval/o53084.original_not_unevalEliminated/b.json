@@ -1,0 +1,213 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "default": {},
+  "properties": {
+    "$id": {
+      "format": "uri-reference",
+      "type": "string"
+    },
+    "$ref": {
+      "format": "uri-reference",
+      "type": "string"
+    },
+    "$schema": {
+      "format": "uri",
+      "type": "string"
+    },
+    "additionalItems": {
+      "$ref": "#"
+    },
+    "additionalProperties": {
+      "$ref": "#"
+    },
+    "allOf": {
+      "$ref": "#/$defs/schemaArray"
+    },
+    "anyOf": {
+      "$ref": "#/$defs/schemaArray"
+    },
+    "const": {},
+    "contains": {
+      "$ref": "#"
+    },
+    "default": {},
+    "definitions3": {
+      "additionalProperties": {
+        "$ref": "#"
+      },
+      "default": {},
+      "type": "object"
+    },
+    "dependencies": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "$ref": "#"
+          },
+          {
+            "$ref": "#/$defs/stringArray"
+          }
+        ]
+      },
+      "type": "object"
+    },
+    "description": {
+      "type": "string"
+    },
+    "enum": {
+      "minItems": 1,
+      "type": "array",
+      "_uniqueItems": true
+    },
+    "exclusiveMaximum": {
+      "type": "number"
+    },
+    "exclusiveMinimum": {
+      "type": "number"
+    },
+    "format": {
+      "type": "string"
+    },
+    "items": {
+      "anyOf": [
+        {
+          "$ref": "#"
+        },
+        {
+          "$ref": "#/$defs/schemaArray"
+        }
+      ],
+      "default": {}
+    },
+    "maxItems": {
+      "$ref": "#/$defs/nonNegativeInteger"
+    },
+    "maxLength": {
+      "$ref": "#/$defs/nonNegativeInteger"
+    },
+    "maxProperties": {
+      "$ref": "#/$defs/nonNegativeInteger"
+    },
+    "maximum": {
+      "type": "number"
+    },
+    "minItems": {
+      "$ref": "#/$defs/nonNegativeIntegerDefault0"
+    },
+    "minLength": {
+      "$ref": "#/$defs/nonNegativeIntegerDefault0"
+    },
+    "minProperties": {
+      "$ref": "#/$defs/nonNegativeIntegerDefault0"
+    },
+    "minimum": {
+      "type": "number"
+    },
+    "multipleOf": {
+      "exclusiveMinimum": 0,
+      "type": "number"
+    },
+    "my_keyword": {
+      "type": "boolean"
+    },
+    "not": {
+      "$ref": "#"
+    },
+    "oneOf": {
+      "$ref": "#/$defs/schemaArray"
+    },
+    "pattern": {
+      "format": "regex",
+      "type": "string"
+    },
+    "patternProperties": {
+      "additionalProperties": {
+        "$ref": "#"
+      },
+      "default": {},
+      "type": "object"
+    },
+    "properties": {
+      "additionalProperties": {
+        "$ref": "#"
+      },
+      "default": {},
+      "type": "object"
+    },
+    "propertyNames": {
+      "$ref": "#"
+    },
+    "required": {
+      "$ref": "#/$defs/stringArray"
+    },
+    "title": {
+      "type": "string"
+    },
+    "type": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/simpleTypes"
+        },
+        {
+          "items": {
+            "$ref": "#/$defs/simpleTypes"
+          },
+          "minItems": 1,
+          "type": "array",
+          "_uniqueItems": true
+        }
+      ]
+    },
+    "_uniqueItems": {
+      "default": false,
+      "type": "boolean"
+    }
+  },
+  "title": "Core schema meta-schema",
+  "type": [
+    "object",
+    "boolean"
+  ],
+  "$defs": {
+    "nonNegativeInteger": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "nonNegativeIntegerDefault0": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/nonNegativeInteger"
+        },
+        {
+          "default": 0
+        }
+      ]
+    },
+    "schemaArray": {
+      "items": {
+        "$ref": "#"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "simpleTypes": {
+      "enum": [
+        "array",
+        "boolean",
+        "integer",
+        "null",
+        "number",
+        "object",
+        "string"
+      ]
+    },
+    "stringArray": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "_uniqueItems": true
+    }
+  }
+}

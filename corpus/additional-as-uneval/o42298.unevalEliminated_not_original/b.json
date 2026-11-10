@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "[Lorg.eclipse.persistence.testing.jaxb.listofobjects.Employee;",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "employee-data": {
+        "$ref": "#/$defs/modern_1"
+      }
+    }
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "birthday": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "responsibilities": {
+                  "type": "object",
+                  "properties": {
+                    "responsibility": {
+                      "type": "array",
+                      "items": true
+                    }
+                  }
+                },
+                "firstName": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "integer"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^lastName$": true,
+                "^responsibilities$": true,
+                "^birthday$": true,
+                "^firstName$": true,
+                "^id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

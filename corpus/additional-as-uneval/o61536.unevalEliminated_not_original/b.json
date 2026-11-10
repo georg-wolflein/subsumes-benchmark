@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Event",
+              "description": "Festival event schema",
+              "type": "object",
+              "required": [
+                "uuid",
+                "title"
+              ],
+              "properties": {
+                "uuid": {
+                  "$ref": "#/$defs/uuid"
+                },
+                "owner": {
+                  "$ref": "#/$defs/uuid"
+                },
+                "title": {
+                  "type": "string",
+                  "maxLength": 255,
+                  "description": "event title"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^uuid$": true,
+                "^owner$": true,
+                "^title$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "uuid": {
+      "type": "string",
+      "pattern": "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+    }
+  }
+}

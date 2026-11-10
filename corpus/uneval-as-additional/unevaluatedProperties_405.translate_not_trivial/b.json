@@ -1,0 +1,355 @@
+{
+  "$id": "http://jetuml.org/docs/schema/3.0/state.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "JetUML File Format for State Diagrams",
+              "type": "object",
+              "required": [
+                "diagram",
+                "nodes",
+                "edges",
+                "version"
+              ],
+              "properties": {
+                "diagram": {
+                  "const": "StateDiagram"
+                },
+                "nodes": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "$ref": "#/$defs/modern_2"
+                  }
+                },
+                "edges": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "$ref": "#/$defs/modern_3"
+                  }
+                },
+                "version": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^diagram$": true,
+                "^nodes$": true,
+                "^edges$": true,
+                "^version$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "x",
+                "y",
+                "id",
+                "type"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "y": {
+                  "type": "integer"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "type": {
+                  "enum": [
+                    "PointNode",
+                    "StateNode",
+                    "InitialStateNode",
+                    "NoteNode",
+                    "FinalStateNode"
+                  ]
+                },
+                "x": {
+                  "type": "integer"
+                },
+                "children": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "allOf": [
+                {
+                  "anyOf": [
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "type": {
+                              "const": "PointNode"
+                            }
+                          }
+                        },
+                        {
+                          "required": []
+                        }
+                      ]
+                    },
+                    {
+                      "not": {
+                        "properties": {
+                          "type": {
+                            "const": "PointNode"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "anyOf": [
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "type": {
+                              "const": "StateNode"
+                            }
+                          }
+                        },
+                        {
+                          "required": [
+                            "name"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "not": {
+                        "properties": {
+                          "type": {
+                            "const": "StateNode"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "anyOf": [
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "type": {
+                              "const": "InitialStateNode"
+                            }
+                          }
+                        },
+                        {
+                          "required": []
+                        }
+                      ]
+                    },
+                    {
+                      "not": {
+                        "properties": {
+                          "type": {
+                            "const": "InitialStateNode"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "anyOf": [
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "type": {
+                              "const": "NoteNode"
+                            }
+                          }
+                        },
+                        {
+                          "required": [
+                            "name"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "not": {
+                        "properties": {
+                          "type": {
+                            "const": "NoteNode"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "anyOf": [
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "type": {
+                              "const": "FinalStateNode"
+                            }
+                          }
+                        },
+                        {
+                          "required": []
+                        }
+                      ]
+                    },
+                    {
+                      "not": {
+                        "properties": {
+                          "type": {
+                            "const": "FinalStateNode"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^children$": true,
+                "^x$": true,
+                "^name$": true,
+                "^type$": true,
+                "^id$": true,
+                "^y$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "start",
+                "end",
+                "type"
+              ],
+              "properties": {
+                "start": {
+                  "type": "integer"
+                },
+                "end": {
+                  "type": "integer"
+                },
+                "type": {
+                  "enum": [
+                    "StateTransitionEdge",
+                    "NoteEdge"
+                  ]
+                },
+                "middleLabel": {
+                  "type": "string"
+                }
+              },
+              "allOf": [
+                {
+                  "anyOf": [
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "type": {
+                              "const": "StateTransitionEdge"
+                            }
+                          }
+                        },
+                        {
+                          "required": [
+                            "middleLabel"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "not": {
+                        "properties": {
+                          "type": {
+                            "const": "StateTransitionEdge"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "anyOf": [
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "type": {
+                              "const": "NoteEdge"
+                            }
+                          }
+                        },
+                        {
+                          "required": []
+                        }
+                      ]
+                    },
+                    {
+                      "not": {
+                        "properties": {
+                          "type": {
+                            "const": "NoteEdge"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^start$": true,
+                "^end$": true,
+                "^type$": true,
+                "^middleLabel$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

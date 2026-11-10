@@ -1,0 +1,70 @@
+{
+  "anyOf": [
+    {
+      "$id": "https://test.json-schema.org/relative-dynamic-reference-without-bookend/root",
+      "$dynamicAnchor": "meta",
+      "type": "object",
+      "properties": {
+        "foo": {
+          "const": "pass"
+        }
+      },
+      "$ref": "extended",
+      "$defs": {
+        "extended": {
+          "$id": "extended",
+          "$anchor": "meta",
+          "type": "object",
+          "properties": {
+            "bar": {
+              "$ref": "bar"
+            }
+          }
+        },
+        "bar": {
+          "$id": "bar",
+          "type": "object",
+          "properties": {
+            "baz": {
+              "$dynamicRef": "extended#meta"
+            }
+          }
+        }
+      }
+    },
+    {
+      "$id": "https://test1.json-schema.org/relative-dynamic-reference-without-bookend/root",
+      "$dynamicAnchor": "meta1",
+      "type": "object",
+      "properties": {
+        "foo": {
+          "const": "pass"
+        }
+      },
+      "$defs": {
+        "extended": {
+          "$id": "extended1",
+          "$anchor": "meta1",
+          "type": "object",
+          "properties": {
+            "bar": {
+              "$ref": "bar1"
+            }
+          }
+        },
+        "bar": {
+          "$id": "bar1",
+          "type": "object",
+          "properties": {
+            "baz": {
+              "$dynamicRef": "extended1#meta1"
+            }
+          }
+        }
+      },
+      "not": {
+        "$ref": "extended1"
+      }
+    }
+  ]
+}

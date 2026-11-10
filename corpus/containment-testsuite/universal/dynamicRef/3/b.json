@@ -1,0 +1,32 @@
+{
+  "anyOf": [
+    {
+      "$id": "https://test.json-schema.org/ref-dynamicAnchor-same-schema/root",
+      "type": "array",
+      "items": {
+        "$ref": "#items"
+      },
+      "$defs": {
+        "foo": {
+          "$dynamicAnchor": "items",
+          "type": "string"
+        }
+      }
+    },
+    {
+      "$id": "https://test1.json-schema.org/ref-dynamicAnchor-same-schema/root",
+      "type": "array",
+      "$defs": {
+        "foo": {
+          "$dynamicAnchor": "items1",
+          "type": "string"
+        }
+      },
+      "not": {
+        "items": {
+          "$ref": "#items1"
+        }
+      }
+    }
+  ]
+}

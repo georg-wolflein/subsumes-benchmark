@@ -1,0 +1,234 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_5",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "browsers": {
+                  "$ref": "#/$defs/browsers"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^browsers$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "description": "Browser name, avoid using unnecessary English (e.g. prefer 'Chrome Android' over 'Chrome for Android').",
+                  "type": "string"
+                },
+                "pref_url": {
+                  "description": "URL of the page where feature flags can be changed (e.g. 'about:config' or 'chrome://flags').",
+                  "type": "string"
+                },
+                "releases": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              },
+              "required": [
+                "name",
+                "releases"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^pref_url$": true,
+                "^releases$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/release_statement"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "browsers": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "chrome_android": {
+                  "$ref": "#/$defs/browser_statement"
+                },
+                "opera": {
+                  "$ref": "#/$defs/browser_statement"
+                },
+                "uc_android": {
+                  "$ref": "#/$defs/browser_statement"
+                },
+                "firefox_android": {
+                  "$ref": "#/$defs/browser_statement"
+                },
+                "samsunginternet_android": {
+                  "$ref": "#/$defs/browser_statement"
+                },
+                "chrome": {
+                  "$ref": "#/$defs/browser_statement"
+                },
+                "safari": {
+                  "$ref": "#/$defs/browser_statement"
+                },
+                "edge": {
+                  "$ref": "#/$defs/browser_statement"
+                },
+                "webview_android": {
+                  "$ref": "#/$defs/browser_statement"
+                },
+                "nodejs": {
+                  "$ref": "#/$defs/browser_statement"
+                },
+                "safari_ios": {
+                  "$ref": "#/$defs/browser_statement"
+                },
+                "uc_chinese_android": {
+                  "$ref": "#/$defs/browser_statement"
+                },
+                "ie": {
+                  "$ref": "#/$defs/browser_statement"
+                },
+                "qq_android": {
+                  "$ref": "#/$defs/browser_statement"
+                },
+                "opera_android": {
+                  "$ref": "#/$defs/browser_statement"
+                },
+                "firefox": {
+                  "$ref": "#/$defs/browser_statement"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^uc_android$": true,
+                "^safari$": true,
+                "^qq_android$": true,
+                "^nodejs$": true,
+                "^ie$": true,
+                "^webview_android$": true,
+                "^chrome$": true,
+                "^uc_chinese_android$": true,
+                "^samsunginternet_android$": true,
+                "^chrome_android$": true,
+                "^opera$": true,
+                "^edge$": true,
+                "^opera_android$": true,
+                "^safari_ios$": true,
+                "^firefox_android$": true,
+                "^firefox$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "release_statement": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "browser_statement": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "engine_version": {
+                  "description": "Version of the engine corresponding to the browser version.",
+                  "type": "string"
+                },
+                "engine": {
+                  "description": "Name of the browser's underlying engine.",
+                  "enum": [
+                    "Blink",
+                    "EdgeHTML",
+                    "Gecko",
+                    "Presto",
+                    "Trident",
+                    "WebKit",
+                    "V8"
+                  ],
+                  "type": "string"
+                },
+                "release_notes": {
+                  "description": "A link to the release notes or changelog for a given release.",
+                  "format": "uri",
+                  "type": "string"
+                },
+                "release_date": {
+                  "description": "Release date",
+                  "format": "date",
+                  "type": "string"
+                },
+                "status": {
+                  "description": "The status of the given browser release (e.g. current, retired, beta, nightly).",
+                  "enum": [
+                    "retired",
+                    "current",
+                    "exclusive",
+                    "beta",
+                    "nightly",
+                    "esr",
+                    "planned"
+                  ],
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^engine_version$": true,
+                "^release_date$": true,
+                "^status$": true,
+                "^release_notes$": true,
+                "^engine$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

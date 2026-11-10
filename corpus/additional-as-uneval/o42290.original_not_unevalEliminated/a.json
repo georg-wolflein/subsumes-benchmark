@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "org.eclipse.persistence.testing.jaxb.inheritance.E",
+  "type": "object",
+  "properties": {
+    "a-element": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/E"
+        },
+        {
+          "$ref": "#/$defs/B"
+        },
+        {
+          "$ref": "#/$defs/A"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "E": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "ddd": {
+                  "type": "integer"
+                },
+                "eee": {
+                  "type": "integer"
+                },
+                "ccc": {
+                  "type": "integer"
+                },
+                "bbb": {
+                  "type": "integer"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "aaa": {
+                  "type": "integer"
+                },
+                "foo": {
+                  "type": "integer"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^ccc$": true,
+                "^type$": true,
+                "^bbb$": true,
+                "^foo$": true,
+                "^eee$": true,
+                "^ddd$": true,
+                "^aaa$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "A": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "aaa": {
+                  "type": "integer"
+                },
+                "bbb": {
+                  "type": "integer"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^aaa$": true,
+                "^bbb$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "B": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "aaa": {
+                  "type": "integer"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^aaa$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

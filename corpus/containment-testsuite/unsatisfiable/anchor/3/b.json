@@ -1,0 +1,36 @@
+{
+  "allOf": [
+    {
+      "$id": "http://localhost:1234/root",
+      "$ref": "http://localhost:1234/nested.json#foo",
+      "$defs": {
+        "A": {
+          "$id": "nested.json",
+          "$defs": {
+            "B": {
+              "$anchor": "foo",
+              "type": "integer"
+            }
+          }
+        }
+      }
+    },
+    {
+      "$id": "http://localhost:1234/root1",
+      "$defs": {
+        "A": {
+          "$id": "nested1.json",
+          "$defs": {
+            "B": {
+              "$anchor": "foo1",
+              "type": "integer"
+            }
+          }
+        }
+      },
+      "not": {
+        "$ref": "http://localhost:1234/nested1.json#foo1"
+      }
+    }
+  ]
+}

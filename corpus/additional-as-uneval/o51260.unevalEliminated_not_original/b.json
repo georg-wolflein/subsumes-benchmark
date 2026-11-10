@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_3",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "aws"
+                  ]
+                },
+                "options": {
+                  "$ref": "#/$defs/optionsAws"
+                },
+                "strategy": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/strategyString"
+                    },
+                    {
+                      "$ref": "#/$defs/strategyArray"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "type",
+                "options",
+                "strategy"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^options$": true,
+                "^strategy$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Bucket": {
+                  "type": "string"
+                },
+                "secretAccessKey": {
+                  "type": "string"
+                },
+                "accessKeyId": {
+                  "type": "string"
+                },
+                "sslEnabled": {
+                  "type": "boolean"
+                },
+                "region": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "accessKeyId",
+                "secretAccessKey",
+                "region",
+                "Bucket"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^Bucket$": true,
+                "^accessKeyId$": true,
+                "^region$": true,
+                "^sslEnabled$": true,
+                "^secretAccessKey$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "strategyArray": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/strategyString"
+      },
+      "_uniqueItems": true,
+      "minItems": 1
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "targets": {
+                  "$ref": "#/$defs/modern_4"
+                }
+              },
+              "required": [
+                "targets"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^targets$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "target": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "minItems": 1,
+              "_uniqueItems": true,
+              "items": {
+                "$ref": "#/$defs/target"
+              }
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  true
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "strategyString": {
+      "type": "string",
+      "enum": [
+        "clone",
+        "gzip",
+        "gzip-suffix"
+      ]
+    },
+    "optionsAws": {
+      "$ref": "#/$defs/modern_2"
+    }
+  }
+}

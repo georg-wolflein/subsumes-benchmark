@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "The chunk processor description.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "keyHashFields",
+    "keyHashName"
+  ],
+  "properties": {
+    "keyHashFields": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      },
+      "_uniqueItems": true
+    },
+    "keyHashName": {
+      "type": "string"
+    },
+    "contentHashFields": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      },
+      "_uniqueItems": true
+    },
+    "contentHashName": {
+      "type": "string"
+    },
+    "scopeHashFields": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      },
+      "_uniqueItems": true
+    },
+    "scopeHashName": {
+      "type": "string"
+    },
+    "multiRowFields": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "_uniqueItems": true
+    },
+    "checks": {
+      "double_rows_same": {
+        "$ref": "#/$defs/severity"
+      },
+      "double_rows_different": {
+        "$ref": "#/$defs/severity"
+      }
+    }
+  },
+  "$defs": {
+    "severity": {
+      "type": "string",
+      "enum": [
+        "abort_file",
+        "abort_scope",
+        "skip_record",
+        "skip_field"
+      ]
+    }
+  }
+}

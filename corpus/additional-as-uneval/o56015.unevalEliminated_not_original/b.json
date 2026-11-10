@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Fibaro Home Center Section JSON Schema",
+              "name": "section",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "Name for the section",
+                  "type": "string",
+                  "maxLength": 20
+                },
+                "modified": {
+                  "description": "Section modification timestamp",
+                  "type": "integer",
+                  "minimum": 0.0
+                },
+                "id": {
+                  "description": "Identifier for the section",
+                  "type": "integer",
+                  "minimum": 0.0
+                },
+                "sortOrder": {
+                  "description": "Sort order when displayed in GUI",
+                  "type": "integer",
+                  "minimum": 0.0
+                },
+                "created": {
+                  "description": "Section creation timestamp",
+                  "type": "integer",
+                  "minimum": 0.0
+                }
+              },
+              "required": [
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^sortOrder$": true,
+                "^name$": true,
+                "^id$": true,
+                "^created$": true,
+                "^modified$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

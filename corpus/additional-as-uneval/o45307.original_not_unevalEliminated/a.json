@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "url": {
+                  "pattern": "^https?://",
+                  "type": "string"
+                },
+                "ssh": {
+                  "pattern": "^.+@.+$",
+                  "type": "string"
+                },
+                "port": {
+                  "type": "number"
+                },
+                "exclude": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "writable": {
+                  "type": "boolean"
+                },
+                "vagrant": {
+                  "type": "string"
+                },
+                "readable": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "name",
+                "url",
+                "readable",
+                "writable"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^url$": true,
+                "^name$": true,
+                "^readable$": true,
+                "^vagrant$": true,
+                "^exclude$": true,
+                "^writable$": true,
+                "^port$": true,
+                "^ssh$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

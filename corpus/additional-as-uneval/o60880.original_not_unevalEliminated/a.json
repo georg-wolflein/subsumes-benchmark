@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "catalog",
+                "bundle",
+                "version",
+                "files"
+              ],
+              "properties": {
+                "format": {
+                  "type": "string",
+                  "pattern": "1"
+                },
+                "flavors": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "files": {
+                  "type": "object",
+                  "patternProperties": {
+                    ".+": {
+                      "$ref": "#/$defs/modern_2"
+                    }
+                  }
+                },
+                "version": {
+                  "type": "integer",
+                  "minimum": 1.0
+                },
+                "catalog": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "bundle": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^version$": true,
+                "^format$": true,
+                "^flavors$": true,
+                "^catalog$": true,
+                "^files$": true,
+                "^bundle$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "sha",
+                "formats"
+              ],
+              "properties": {
+                "sha": {
+                  "type": "string",
+                  "pattern": "[0-9a-f]{40}"
+                },
+                "formats": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "flavors": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^sha$": true,
+                "^formats$": true,
+                "^flavors$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "^(gz|raw)$": {
+                  "$ref": "#/$defs/modern_4"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^(gz|raw)$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "size": {
+                  "type": "integer",
+                  "minimum": 0.0
+                }
+              },
+              "required": [
+                "size"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^size$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

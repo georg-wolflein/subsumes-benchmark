@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "LAX Schema for metadata returned by DataSources.",
+  "properties": {
+    "$schema": {
+      "$ref": "#/$defs/uri"
+    },
+    "allow": {
+      "$ref": "#/$defs/uri"
+    },
+    "annotations": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "description": {
+      "type": "string"
+    },
+    "encoding": {
+      "type": "string"
+    },
+    "format": {
+      "$ref": "#/$defs/arrayOfString"
+    },
+    "language": {
+      "$ref": "#/$defs/arrayOfString"
+    },
+    "license": {
+      "$ref": "#/$defs/uri"
+    },
+    "name": {
+      "type": "string"
+    },
+    "size": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "vendor": {
+      "$ref": "#/$defs/uri"
+    },
+    "version": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "vendor",
+    "version",
+    "allow",
+    "license"
+  ],
+  "title": "DataSource Metadata",
+  "type": "object",
+  "$defs": {
+    "arrayOfString": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "uri": {
+      "_format": "uri",
+      "type": "string"
+    }
+  }
+}

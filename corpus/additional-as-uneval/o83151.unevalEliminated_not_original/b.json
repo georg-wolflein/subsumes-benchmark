@@ -1,0 +1,220 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "patternProperties": {
+    "^from": {
+      "$ref": "#/$defs/from"
+    }
+  },
+  "properties": {
+    "stopsignal": {
+      "type": "string"
+    },
+    "shell": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "run": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      ]
+    },
+    "volumes": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "_uniqueItems": true
+    },
+    "cmd": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      ]
+    },
+    "entrypoint": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      ]
+    },
+    "labels": {
+      "$ref": "#/$defs/labels"
+    },
+    "expose": {
+      "items": {
+        "format": "expose",
+        "type": [
+          "string",
+          "number"
+        ]
+      },
+      "type": "array",
+      "_uniqueItems": true
+    },
+    "args": {
+      "$ref": "#/$defs/list_or_dict"
+    },
+    "add": {
+      "oneOf": [
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "user": {
+      "type": "string"
+    },
+    "env": {
+      "$ref": "#/$defs/list_or_dict"
+    },
+    "#": {
+      "description": "File comment.",
+      "type": "string"
+    },
+    "comment": {
+      "type": "string"
+    },
+    "working_dir": {
+      "type": "string"
+    },
+    "copy": {
+      "oneOf": [
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    }
+  },
+  "required": [
+    "from"
+  ],
+  "type": "object",
+  "$defs": {
+    "list_or_dict": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/modern_2"
+        },
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "_uniqueItems": true
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                ".+": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                ".+": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                ".+": {
+                  "type": [
+                    "string",
+                    "number",
+                    "null"
+                  ]
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                ".+": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "labels": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/modern_1"
+        },
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "_uniqueItems": true
+        }
+      ]
+    },
+    "from": {
+      "properties": {
+        "alias": {
+          "type": "string"
+        },
+        "baseImage": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "baseImage"
+      ],
+      "type": "object"
+    }
+  }
+}

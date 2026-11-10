@@ -1,0 +1,773 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_5",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Module configuration",
+              "description": "Module configuration options",
+              "type": "object",
+              "properties": {
+                "parent": {
+                  "title": "Module parents configuration for parent redirects",
+                  "description": "Array of objects identifying redirect options for aggregate module",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/parentItem"
+                  }
+                },
+                "associationLabels": {
+                  "$ref": "#/$defs/modern_6"
+                },
+                "manyToMany": {
+                  "title": "Module many-to-many relationships",
+                  "description": "Configuration of many-to-many relationships",
+                  "type": "object",
+                  "default": {
+                    "modules": []
+                  },
+                  "properties": {
+                    "modules": {
+                      "title": "List of many-to-many modules",
+                      "description": "Array or comma-separated string with list of modules for many-to-many relationship",
+                      "type": "array",
+                      "default": [],
+                      "items": {
+                        "allOf": [
+                          {
+                            "$ref": "#/$defs/moduleName"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "modules"
+                  ]
+                },
+                "conversions": {
+                  "$ref": "#/$defs/modern_7"
+                },
+                "virtualFields": {
+                  "$ref": "#/$defs/modern_8"
+                },
+                "panels": {
+                  "$ref": "#/$defs/modern_9"
+                },
+                "notifications": {
+                  "title": "Notifications",
+                  "description": "Enable or disable email notifications for calendar events",
+                  "type": "object",
+                  "default": {
+                    "enable": false,
+                    "ignored_fields": []
+                  },
+                  "properties": {
+                    "enable": {
+                      "title": "Enable or disable email notifications for calendar events",
+                      "description": "If enabled, users will receive email notifications with vCal attachments",
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "ignored_fields": {
+                      "title": "Ignore notifications on modified fields",
+                      "description": "Array of fields, which if only these are modified, do not send notifications",
+                      "type": "array",
+                      "default": [],
+                      "items": {
+                        "anyOf": [
+                          {
+                            "$ref": "#/$defs/fieldName"
+                          },
+                          {
+                            "$ref": "#/$defs/virtualFieldName"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "enable",
+                    "ignored_fields"
+                  ]
+                },
+                "table": {
+                  "$ref": "#/$defs/modern_10"
+                },
+                "associations": {
+                  "title": "Module associations configuration",
+                  "description": "Defines some association behaviors",
+                  "type": "object",
+                  "default": {
+                    "hide_associations": []
+                  },
+                  "properties": {
+                    "hide_associations": {
+                      "title": "List of hidden associations",
+                      "description": "Array or comma-separated string with list of associations that should not be displayed",
+                      "default": [],
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "allOf": [
+                              {
+                                "type": "string"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                "conversion": {
+                  "properties": {
+                    "modules": {
+                      "title": "List of destination modules",
+                      "description": "Describes the list of modules to which current module records will convert",
+                      "allOf": [
+                        {
+                          "$ref": "#/$defs/moduleName"
+                        }
+                      ]
+                    },
+                    "field": {
+                      "title": "Field to update after conversion",
+                      "description": "Once the conversion is done, which field of the current module to update",
+                      "allOf": [
+                        {
+                          "$ref": "#/$defs/fieldName"
+                        }
+                      ]
+                    },
+                    "value": {
+                      "title": "Value to update with after conversion",
+                      "description": "Defines the value to use for updating the field after conversion",
+                      "allOf": [
+                        {
+                          "type": [
+                            "string",
+                            "number",
+                            "boolean",
+                            "null"
+                          ]
+                        }
+                      ]
+                    },
+                    "inherit": {
+                      "title": "Inherit related records",
+                      "description": "Records from which many-to-many modules should be linked to resulting records after conversion",
+                      "allOf": [
+                        {
+                          "$ref": "#/$defs/moduleName"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "modules"
+                  ]
+                }
+              },
+              "required": [
+                "table"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^associationLabels$": true,
+                "^associations$": true,
+                "^panels$": true,
+                "^manyToMany$": true,
+                "^conversions$": true,
+                "^table$": true,
+                "^notifications$": true,
+                "^parent$": true,
+                "^conversion$": true,
+                "^virtualFields$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Association labels",
+              "description": "Defines custom labels for association tabs",
+              "type": [
+                "array",
+                "object"
+              ],
+              "properties": {},
+              "default": []
+            },
+            {
+              "additionalProperties": {
+                "allOf": [
+                  {
+                    "type": [
+                      "string"
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Conversion module",
+              "description": "Single conversion module",
+              "type": "object",
+              "properties": {
+                "find": {
+                  "title": "Conversion find mapper",
+                  "description": "Mapper for fetching associated record during conversion",
+                  "type": "string"
+                },
+                "field": {
+                  "title": "Conversion module field",
+                  "description": "Conversion module field associated with source module",
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/fieldName"
+                    },
+                    {
+                      "enum": [
+                        "unknown"
+                      ]
+                    }
+                  ]
+                },
+                "after": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "form": {
+                  "title": "Conversion module form",
+                  "description": "Conversion module form, used for UI rendering",
+                  "type": "string"
+                },
+                "action": {
+                  "title": "Conversion action",
+                  "description": "Conversion module form, used for UI rendering",
+                  "type": "string",
+                  "enum": [
+                    "create",
+                    "createOrUpdate"
+                  ]
+                }
+              },
+              "required": [
+                "form",
+                "field",
+                "action"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^find$": true,
+                "^action$": true,
+                "^form$": true,
+                "^field$": true,
+                "^after$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "iconBad": {
+      "title": "Icon bad values",
+      "description": "Enumeration of bad values for icon",
+      "type": "string"
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Module conversion configuration",
+              "description": "Configure the conversion process",
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/conversionItem"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "moduleItem": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "virtualFieldName": {
+      "title": "Module field name",
+      "description": "A single module field name",
+      "type": "string"
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Module virtual fields configuration",
+              "description": "List of virtual fields and their mapping to real fields for SQL queries",
+              "type": [
+                "array",
+                "object"
+              ],
+              "properties": {},
+              "default": []
+            },
+            {
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "allOf": [
+                        {
+                          "$ref": "#/$defs/fieldName"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "fieldName": {
+      "title": "Module field name",
+      "description": "A single module field name",
+      "type": "string"
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Dynamic panels configuration",
+              "description": "Configure views dynamic panels (panel name, panel expression)",
+              "type": "object",
+              "properties": {}
+            },
+            {
+              "additionalProperties": {
+                "allOf": [
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Conversion item",
+              "description": "Single conversion item",
+              "type": "object",
+              "properties": {
+                "condition": {
+                  "title": "Conversion item condition",
+                  "description": "Conversion condition",
+                  "type": "boolean"
+                },
+                "modules": {
+                  "$ref": "#/$defs/modern_4"
+                },
+                "post": {
+                  "title": "Post-conversion configuration",
+                  "description": "Post-conversion configuration",
+                  "type": "object",
+                  "properties": {
+                    "field": {
+                      "title": "Field to update after conversion",
+                      "description": "Once the conversion is done, which field of the current module to update",
+                      "allOf": [
+                        {
+                          "$ref": "#/$defs/fieldName"
+                        }
+                      ]
+                    },
+                    "value": {
+                      "title": "Value to update with after conversion",
+                      "description": "Defines the value to use for updating the field after conversion",
+                      "allOf": [
+                        {
+                          "type": [
+                            "string",
+                            "number",
+                            "boolean",
+                            "null"
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ]
+                },
+                "inherit": {
+                  "title": "Inherit related records",
+                  "description": "Records from which many-to-many modules should be linked to resulting records after conversion",
+                  "type": "array",
+                  "items": {
+                    "allOf": [
+                      {
+                        "$ref": "#/$defs/moduleName"
+                      }
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "condition",
+                "modules",
+                "post"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^condition$": true,
+                "^modules$": true,
+                "^post$": true,
+                "^inherit$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "conversionItem": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "displayFieldBad": {
+      "title": "Display field bad values",
+      "description": "Enumeration of bad values for display_field",
+      "type": "string"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "List of destination modules",
+              "description": "Describes the list of modules to which current module records will convert"
+            },
+            {
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/moduleItem"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Module configuration parameters",
+              "description": "Basic module configuration parameters and flags",
+              "type": "object",
+              "properties": {
+                "typeahead_fields": {
+                  "title": "Type-ahead fields",
+                  "description": "Array or comma-separated string with list of fields to use for searching in type-ahead lookups",
+                  "default": [],
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "allOf": [
+                          {
+                            "$ref": "#/$defs/fieldName"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "permissions_parent_modules": {
+                  "title": "Parent modules",
+                  "description": "Array or comma-separated string with list of parent modules to use them in access control",
+                  "default": [],
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "allOf": [
+                          {
+                            "$ref": "#/$defs/moduleName"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "icon": {
+                  "title": "Module icon",
+                  "description": "Icon to use for the current module",
+                  "type": "string",
+                  "default": "cube",
+                  "not": {
+                    "$ref": "#/$defs/iconBad"
+                  }
+                },
+                "display_field": {
+                  "title": "Display field",
+                  "description": "Module display field to use in links to records of this module.",
+                  "default": "id",
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/fieldName"
+                    },
+                    {
+                      "$ref": "#/$defs/virtualFieldName"
+                    }
+                  ],
+                  "not": {
+                    "$ref": "#/$defs/displayFieldBad"
+                  }
+                },
+                "basic_search_fields": {
+                  "title": "Basic search fields",
+                  "description": "Array or comma-separated string with list of fields to use in the basic search",
+                  "default": [],
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "allOf": [
+                          {
+                            "$ref": "#/$defs/fieldName"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "type": {
+                  "title": "Module type",
+                  "description": "Type of module",
+                  "type": "string",
+                  "default": "module",
+                  "enum": [
+                    "module",
+                    "relation"
+                  ]
+                },
+                "translatable": {
+                  "title": "Translatable flag",
+                  "description": "Whether or not the module is translatable",
+                  "type": "boolean",
+                  "default": false
+                },
+                "trash": {
+                  "title": "Trash behavior",
+                  "description": "Whether or not the module has the trash behavior.",
+                  "type": "boolean"
+                },
+                "allow_reminders": {
+                  "title": "Allow reminders",
+                  "description": "Array or comma-separated string with list of modules for which reminders are allowed",
+                  "default": [],
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "allOf": [
+                          {
+                            "$ref": "#/$defs/moduleName"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "searchable": {
+                  "title": "Searchable",
+                  "description": "Whether or not the module is searchable.",
+                  "type": "boolean",
+                  "default": true
+                },
+                "alias": {
+                  "title": "Module alias",
+                  "description": "A different user-friendly name for the current module.",
+                  "type": "string"
+                },
+                "lookup_fields": {
+                  "title": "Lookup fields",
+                  "description": "Array or comma-separated string with list of fields to use in the URL for locating module record",
+                  "default": [],
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "allOf": [
+                          {
+                            "$ref": "#/$defs/fieldName"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "display_field"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^basic_search_fields$": true,
+                "^trash$": true,
+                "^translatable$": true,
+                "^typeahead_fields$": true,
+                "^permissions_parent_modules$": true,
+                "^searchable$": true,
+                "^alias$": true,
+                "^allow_reminders$": true,
+                "^lookup_fields$": true,
+                "^type$": true,
+                "^display_field$": true,
+                "^icon$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "parentItem": {
+      "title": "Parent Redirect definition",
+      "description": "Single Parent Redirect Definition",
+      "type": "object",
+      "properties": {
+        "module": {
+          "title": "Module name",
+          "description": "Name fo the parent module",
+          "$ref": "#/$defs/moduleName"
+        },
+        "relation": {
+          "title": "Relation field",
+          "description": "Field to use for parent relation",
+          "$ref": "#/$defs/fieldName"
+        },
+        "redirect": {
+          "title": "Redirect behavior configuration",
+          "description": "Definition of where to redirect upon creation/modification/deletion of module records",
+          "type": "string",
+          "enum": [
+            "self",
+            "parent"
+          ]
+        }
+      },
+      "required": [
+        "module"
+      ]
+    },
+    "moduleName": {
+      "title": "Module name",
+      "description": "A single module name",
+      "type": "string"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "After conversion configuration",
+              "description": "After conversion configuration",
+              "type": "object",
+              "properties": {
+                "link": {
+                  "title": "Link converted records",
+                  "description": "Records to be linked after conversion",
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "allOf": [
+                      {
+                        "$ref": "#/$defs/moduleName"
+                      }
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "link"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^link$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,188 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "allOf": [
+    {
+      "$ref": "#/$defs/Main"
+    }
+  ],
+  "type": "object",
+  "$defs": {
+    "Main": {
+      "properties": {
+        "ABI3": {
+          "$ref": "#/$defs/ABI3"
+        },
+        "Object": {
+          "$ref": "#/$defs/Object"
+        },
+        "Connections": {
+          "$ref": "#/$defs/Connections"
+        }
+      },
+      "type": "object"
+    },
+    "ABI3": {
+      "properties": {
+        "Template": {
+          "$ref": "#/$defs/Template"
+        },
+        "Metadata": {
+          "$ref": "#/$defs/Metadata"
+        }
+      },
+      "type": "object"
+    },
+    "Template": {
+      "properties": {
+        "Phase": {
+          "enum": [
+            "extract"
+          ]
+        },
+        "Pattern": {
+          "enum": [
+            "full"
+          ]
+        },
+        "Source": {
+          "enum": [
+            "viw",
+            "xsl",
+            "qry",
+            "csv"
+          ]
+        },
+        "Implementation": {
+          "enum": [
+            "single",
+            "loop",
+            "parallel"
+          ]
+        },
+        "Version": {
+          "enum": [
+            1
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "Metadata": {
+      "properties": {
+        "Version": {
+          "enum": [
+            1
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "Object": {
+      "properties": {
+        "SourceObject": {
+          "$ref": "#/$defs/SourceObject"
+        },
+        "DestinationTable": {
+          "$ref": "#/$defs/DestinationTable"
+        },
+        "PrimaryKeyColumns": {
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "SourceObject": {
+      "properties": {
+        "Schema": {
+          "type": "string"
+        },
+        "Name": {
+          "type": "string"
+        },
+        "FullName": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "DestinationTable": {
+      "type": "object",
+      "properties": {
+        "Schema": {
+          "type": "string"
+        },
+        "Name": {
+          "type": "string"
+        },
+        "FullName": {
+          "type": "string"
+        },
+        "CreatePrimaryKey": {
+          "type": "number"
+        },
+        "Columns": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/Column"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "Column": {
+      "type": "object",
+      "properties": {
+        "Name": {
+          "type": "string"
+        },
+        "DataType": {
+          "type": "string"
+        }
+      }
+    },
+    "Connections": {
+      "properties": {
+        "Metadata": {
+          "$ref": "#/$defs/Connection"
+        },
+        "Log": {
+          "$ref": "#/$defs/Connection"
+        },
+        "Staging": {
+          "$ref": "#/$defs/Connection"
+        },
+        "Configuration": {
+          "$ref": "#/$defs/Connection"
+        },
+        "Helpers": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/Connection"
+              }
+            ]
+          }
+        }
+      },
+      "type": "object"
+    },
+    "Connection": {
+      "properties": {
+        "Name": {
+          "type": "string"
+        },
+        "Database": {
+          "type": "string"
+        },
+        "ConnectionString": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  }
+}

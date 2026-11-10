@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_2",
+  "$defs": {
+    "menuItem": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Menu item",
+              "description": "Single menu item (hierarchical)",
+              "type": "object",
+              "properties": {
+                "url": {
+                  "title": "Menu item URL",
+                  "description": "Destination of the link",
+                  "type": "string",
+                  "minLength": 1
+                },
+                "icon": {
+                  "title": "Menu item icon",
+                  "description": "Icon image reference",
+                  "type": "string"
+                },
+                "label": {
+                  "title": "Menu item label",
+                  "description": "Human-friendly label",
+                  "type": "string"
+                },
+                "order": {
+                  "title": "Menu item order",
+                  "description": "Used to determine the position of the item in the menu",
+                  "type": "number"
+                },
+                "target": {
+                  "title": "Menu item open target",
+                  "description": "Open link in the same window or new one",
+                  "type": "string"
+                },
+                "children": {
+                  "title": "Sub-menu items",
+                  "description": "Direct children items of the current menu item",
+                  "type": "array",
+                  "items": {
+                    "allOf": [
+                      {
+                        "$ref": "#/$defs/menuItem"
+                      }
+                    ]
+                  }
+                },
+                "desc": {
+                  "title": "Menu item description",
+                  "description": "Human-friendly description",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "label",
+                "url"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^target$": true,
+                "^children$": true,
+                "^order$": true,
+                "^url$": true,
+                "^label$": true,
+                "^icon$": true,
+                "^desc$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Menus configuration",
+              "description": "Menus configuration",
+              "type": "object",
+              "properties": {
+                "main_menu": {
+                  "title": "Menu configurations",
+                  "description": "Configuration of each menu items",
+                  "type": "array",
+                  "items": {
+                    "allOf": [
+                      {
+                        "$ref": "#/$defs/menuItem"
+                      }
+                    ]
+                  }
+                },
+                "admin_menu": {
+                  "type": "array",
+                  "items": {
+                    "allOf": [
+                      {
+                        "$ref": "#/$defs/menuItem"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^main_menu$": true,
+                "^admin_menu$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

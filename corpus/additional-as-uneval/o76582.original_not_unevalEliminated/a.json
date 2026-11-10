@@ -1,0 +1,622 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_15",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "Port"
+                  ],
+                  "type": "string"
+                },
+                "name": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "kind"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^kind$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "IPAddress"
+                  ],
+                  "type": "string"
+                },
+                "name": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "kind"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^kind$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "healthMonitors": {
+                  "items": {
+                    "$ref": "#/$defs/healthMonitorType"
+                  },
+                  "type": "array"
+                },
+                "serviceName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "servicePort": {
+                  "$ref": "#/$defs/portType"
+                }
+              },
+              "required": [
+                "serviceName",
+                "servicePort"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^healthMonitors$": true,
+                "^serviceName$": true,
+                "^servicePort$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "virtualAddressType": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "bindAddr": {
+                  "anyOf": [
+                    {
+                      "format": "bigipv4"
+                    },
+                    {
+                      "format": "bigipv6"
+                    }
+                  ]
+                },
+                "port": {
+                  "$ref": "#/$defs/portType"
+                }
+              },
+              "required": [
+                "port"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^bindAddr$": true,
+                "^port$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_12": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                "^[a-zA-Z0-9_-]+$": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^[a-zA-Z0-9_-]+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "interval": {
+                  "maximum": 86400.0,
+                  "minimum": 1.0,
+                  "type": "integer"
+                },
+                "recv": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "timeout": {
+                  "maximum": 86400.0,
+                  "minimum": 1.0,
+                  "type": "integer"
+                },
+                "protocol": {
+                  "enum": [
+                    "http",
+                    "tcp",
+                    "udp"
+                  ],
+                  "type": "string"
+                },
+                "send": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "protocol"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^timeout$": true,
+                "^send$": true,
+                "^protocol$": true,
+                "^interval$": true,
+                "^recv$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "sslProfileType": {
+      "oneOf": [
+        {
+          "properties": {
+            "f5ProfileNames": {
+              "items": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "f5ProfileNames"
+          ]
+        },
+        {
+          "$ref": "#/$defs/modern_3"
+        }
+      ],
+      "type": "object"
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "virtualAddress": {
+                  "$ref": "#/$defs/virtualAddressType"
+                },
+                "sslProfile": {
+                  "$ref": "#/$defs/sslProfileType"
+                },
+                "partition": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "balance": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "mode": {
+                  "enum": [
+                    "http",
+                    "tcp",
+                    "udp"
+                  ],
+                  "type": "string"
+                }
+              },
+              "required": [
+                "partition"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^partition$": true,
+                "^mode$": true,
+                "^virtualAddress$": true,
+                "^balance$": true,
+                "^sslProfile$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "f5ProfileName": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^f5ProfileName$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "iappValueType": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                "^[a-zA-Z0-9_-]+$": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^[a-zA-Z0-9_-]+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "iappPortType": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "modern_14": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "columns": {
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/$defs/iappAddressType"
+                      },
+                      {
+                        "$ref": "#/$defs/iappPortType"
+                      },
+                      {
+                        "$ref": "#/$defs/iappValueType"
+                      }
+                    ]
+                  },
+                  "type": "array"
+                },
+                "name": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "columns"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^columns$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "portType": {
+      "maximum": 65535.0,
+      "minimum": 1.0,
+      "type": "integer"
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "iappVariables": {
+                  "$ref": "#/$defs/modern_11"
+                },
+                "iappOptions": {
+                  "$ref": "#/$defs/modern_12"
+                },
+                "partition": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "iappTables": {
+                  "$ref": "#/$defs/modern_13"
+                },
+                "iappPoolMemberTable": {
+                  "$ref": "#/$defs/modern_14"
+                },
+                "iapp": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "partition",
+                "iapp",
+                "iappOptions",
+                "iappVariables",
+                "iappPoolMemberTable"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^partition$": true,
+                "^iapp$": true,
+                "^iappTables$": true,
+                "^iappVariables$": true,
+                "^iappOptions$": true,
+                "^iappPoolMemberTable$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_16": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "backend": {
+                  "$ref": "#/$defs/backendType"
+                },
+                "frontend": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/frontendIAppType"
+                    },
+                    {
+                      "$ref": "#/$defs/frontendVSType"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "backend",
+                "frontend"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^backend$": true,
+                "^frontend$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_15": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "virtualServer": {
+                  "$ref": "#/$defs/modern_16"
+                }
+              },
+              "required": [
+                "virtualServer"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^virtualServer$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "columns": {
+                  "items": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                },
+                "rows": {
+                  "items": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "columns",
+                "rows"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^columns$": true,
+                "^rows$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "iappTableType": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "backendType": {
+      "$ref": "#/$defs/modern_7"
+    },
+    "healthMonitorType": {
+      "$ref": "#/$defs/modern_8"
+    },
+    "frontendVSType": {
+      "$ref": "#/$defs/modern_9"
+    },
+    "frontendIAppType": {
+      "$ref": "#/$defs/modern_10"
+    },
+    "modern_13": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                "^[a-zA-Z0-9_-]+$": {
+                  "$ref": "#/$defs/iappTableType"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^[a-zA-Z0-9_-]+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "iappAddressType": {
+      "$ref": "#/$defs/modern_6"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "value": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "value"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

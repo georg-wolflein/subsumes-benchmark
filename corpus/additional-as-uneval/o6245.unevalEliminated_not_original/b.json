@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/modern_2"
+    },
+    {
+      "$ref": "#/$defs/modern_3"
+    }
+  ],
+  "$defs": {
+    "bodyTemplate": {
+      "title": "Request Body",
+      "type": "string"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "title": "Name",
+                  "type": "string",
+                  "minLength": 1
+                },
+                "valueTemplate": {
+                  "title": "Value Template",
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "key",
+                "valueTemplate"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^key$": true,
+                "^valueTemplate$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "headerInfo": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/modern_1"
+      }
+    },
+    "_methodWithBody": {
+      "title": "HTTP Method",
+      "description": "GET, DELETE, POST, PATCH or PUT",
+      "enum": [
+        "POST",
+        "PATCH",
+        "PUT"
+      ]
+    },
+    "uriTemplate": {
+      "title": "URI Template",
+      "minLength": 1,
+      "type": "string",
+      "messages": {
+        "required": "URI Template is required"
+      }
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "method": {
+                  "$ref": "#/$defs/_methodNoBody"
+                },
+                "responsePath": {
+                  "$ref": "#/$defs/responsePath"
+                },
+                "uriTemplate": {
+                  "$ref": "#/$defs/uriTemplate"
+                },
+                "headerInfo": {
+                  "$ref": "#/$defs/headerInfo"
+                }
+              },
+              "required": [
+                "method",
+                "uriTemplate"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^method$": true,
+                "^responsePath$": true,
+                "^uriTemplate$": true,
+                "^headerInfo$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "responsePath": {
+      "title": "Response Path",
+      "description": "JSON path for where to store response",
+      "type": "string",
+      "minLength": 1
+    },
+    "_methodNoBody": {
+      "title": "HTTP Method",
+      "description": "GET, DELETE, POST, PATCH or PUT",
+      "enum": [
+        "GET",
+        "DELETE"
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "method": {
+                  "$ref": "#/$defs/_methodWithBody"
+                },
+                "bodyTemplate": {
+                  "$ref": "#/$defs/bodyTemplate"
+                },
+                "headerInfo": {
+                  "$ref": "#/$defs/headerInfo"
+                },
+                "uriTemplate": {
+                  "$ref": "#/$defs/uriTemplate"
+                },
+                "responsePath": {
+                  "$ref": "#/$defs/responsePath"
+                }
+              },
+              "required": [
+                "method",
+                "uriTemplate",
+                "bodyTemplate"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^method$": true,
+                "^responsePath$": true,
+                "^bodyTemplate$": true,
+                "^uriTemplate$": true,
+                "^headerInfo$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

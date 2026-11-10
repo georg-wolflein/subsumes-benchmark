@@ -1,0 +1,25 @@
+{
+  "$id": "https://test.json-schema.org/typical-dynamic-resolution/root",
+  "$defs": {
+    "foo": {
+      "$dynamicAnchor": "items",
+      "type": "string"
+    },
+    "list": {
+      "$id": "list",
+      "type": "array",
+      "items": {
+        "$dynamicRef": "#items"
+      },
+      "$defs": {
+        "items": {
+          "$comment": "This is only needed to satisfy the bookending requirement",
+          "$dynamicAnchor": "items"
+        }
+      }
+    }
+  },
+  "not": {
+    "$ref": "list"
+  }
+}

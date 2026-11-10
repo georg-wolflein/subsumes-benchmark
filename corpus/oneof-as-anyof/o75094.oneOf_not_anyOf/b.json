@@ -1,0 +1,64 @@
+{
+  "$id": "http://www.52north.org/schema/json/ExceptionReport",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "version",
+    "exceptions"
+  ],
+  "properties": {
+    "version": {
+      "type": "string"
+    },
+    "exceptions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/exception"
+      }
+    }
+  },
+  "$defs": {
+    "exception": {
+      "type": "object",
+      "required": [
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "enum": [
+            "InvalidParameterValue",
+            "InvalidUpdateSequence",
+            "MissingParameterValue",
+            "NoApplicableCode",
+            "OperationNotSupported",
+            "OptionNotSupported",
+            "VersionNegotiationFailed",
+            "InvalidRequest",
+            "RequestExtensionNotSupported",
+            "ResponseExceedsSizeLimit",
+            "InvalidPropertyOfferingCombination"
+          ]
+        },
+        "locator": {
+          "type": "string"
+        },
+        "text": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

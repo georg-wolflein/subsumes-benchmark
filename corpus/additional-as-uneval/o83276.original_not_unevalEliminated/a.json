@@ -1,0 +1,252 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_8",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string"
+                },
+                "info": {
+                  "type": "string"
+                },
+                "std_err": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "info",
+                "std_err",
+                "text"
+              ],
+              "title": "metric"
+            },
+            {
+              "patternProperties": {
+                "^text$": true,
+                "^info$": true,
+                "^std_err$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "minProperties": 1,
+              "title": "metrics"
+            },
+            {
+              "additionalProperties": {
+                "type": "object",
+                "$ref": "#/$defs/metric"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "Realms": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "title": "Realms",
+              "minProperties": 1
+            },
+            {
+              "additionalProperties": {
+                "type": "object",
+                "$ref": "#/$defs/realm"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "metrics": {
+                  "$ref": "#/$defs/metrics"
+                },
+                "dimensions": {
+                  "$ref": "#/$defs/dimensions"
+                },
+                "text": {
+                  "type": "string"
+                },
+                "category": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "category",
+                "dimensions",
+                "metrics",
+                "text"
+              ],
+              "title": "realm"
+            },
+            {
+              "patternProperties": {
+                "^metrics$": true,
+                "^dimensions$": true,
+                "^text$": true,
+                "^category$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "minProperties": 1,
+              "title": "Dimensions"
+            },
+            {
+              "additionalProperties": {
+                "type": "object",
+                "$ref": "#/$defs/dimension"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "GetDWDescriptors",
+              "type": "object",
+              "properties": {
+                "totalCount": {
+                  "type": "integer"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/Datum"
+                  }
+                }
+              },
+              "required": [
+                "data",
+                "totalCount"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^totalCount$": true,
+                "^data$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "dimension": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "realms": {
+                  "$ref": "#/$defs/Realms"
+                }
+              },
+              "required": [
+                "realms"
+              ],
+              "title": "Datum"
+            },
+            {
+              "patternProperties": {
+                "^realms$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Datum": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "metric": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "dimensions": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string"
+                },
+                "info": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "info",
+                "text"
+              ],
+              "title": "dimension"
+            },
+            {
+              "patternProperties": {
+                "^text$": true,
+                "^info$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "metrics": {
+      "$ref": "#/$defs/modern_6"
+    },
+    "realm": {
+      "$ref": "#/$defs/modern_7"
+    }
+  }
+}

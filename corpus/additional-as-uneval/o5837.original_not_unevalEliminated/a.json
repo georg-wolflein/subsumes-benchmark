@@ -1,0 +1,338 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_9",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "loader": {
+                  "enum": [
+                    "sitemap"
+                  ]
+                },
+                "options": {
+                  "$ref": "#/$defs/modern_6"
+                }
+              },
+              "required": [
+                "loader",
+                "options"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^loader$": true,
+                "^options$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "sitemap": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "sitemap"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^sitemap$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "concurrentRequests": {
+                  "type": "number"
+                },
+                "requestTimeout": {
+                  "type": "number"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^concurrentRequests$": true,
+                "^requestTimeout$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "loader": {
+                  "enum": [
+                    "file"
+                  ]
+                },
+                "options": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              },
+              "required": [
+                "loader",
+                "options"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^loader$": true,
+                "^options$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "replacer": {
+                  "enum": [
+                    "static"
+                  ]
+                },
+                "options": {
+                  "$ref": "#/$defs/modern_8"
+                }
+              },
+              "required": [
+                "replacer",
+                "options"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^replacer$": true,
+                "^options$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "path"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^path$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "replace": {
+                  "type": "string"
+                },
+                "with": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "replace",
+                "with"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^replace$": true,
+                "^with$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "CsvLoader": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "sireg test case",
+              "description": "A test case definition that is understood by https://github.com/FaKeller/sireg",
+              "type": "object",
+              "properties": {
+                "testSuite": {
+                  "type": "string"
+                },
+                "loaders": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/$defs/FileLoader"
+                      },
+                      {
+                        "$ref": "#/$defs/CsvLoader"
+                      },
+                      {
+                        "$ref": "#/$defs/SitemapLoader"
+                      }
+                    ]
+                  },
+                  "minItems": 1
+                },
+                "replacers": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/$defs/StaticReplacer"
+                      }
+                    ]
+                  },
+                  "minItems": 1
+                },
+                "settings": {
+                  "$ref": "#/$defs/modern_10"
+                }
+              },
+              "required": [
+                "testSuite"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^testSuite$": true,
+                "^loaders$": true,
+                "^replacers$": true,
+                "^settings$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "SitemapLoader": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "StaticReplacer": {
+      "$ref": "#/$defs/modern_7"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "path"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^path$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "loader": {
+                  "enum": [
+                    "csv"
+                  ]
+                },
+                "options": {
+                  "$ref": "#/$defs/modern_4"
+                }
+              },
+              "required": [
+                "loader",
+                "options"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^loader$": true,
+                "^options$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "FileLoader": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

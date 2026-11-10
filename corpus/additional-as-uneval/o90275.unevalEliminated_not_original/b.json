@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "popupElement attachments",
+              "type": "object",
+              "description": "Configures attachments in popup elements.",
+              "properties": {
+                "displayType": {
+                  "type": "string",
+                  "description": "A string value indicating how to display the attachment. If `list` is specified, attachments show as links.",
+                  "enum": [
+                    "list",
+                    "preview"
+                  ]
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "attachments"
+                  ]
+                }
+              },
+              "required": [
+                "type"
+              ],
+              "esriDocumentation": {
+                "examples": [
+                  {
+                    "title": "popupElement attachments",
+                    "code": {
+                      "popupElements": [
+                        {
+                          "type": "attachments",
+                          "displayType": "list"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "patternProperties": {
+                "^displayType$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,304 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_3",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Town gates",
+              "properties": {
+                "arch": {
+                  "description": "Static, top part of gates",
+                  "$ref": "#/$defs/point"
+                },
+                "gate": {
+                  "description": "Main section of gates",
+                  "$ref": "#/$defs/point"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^arch$": true,
+                "^gate$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Castle moat description",
+              "properties": {
+                "bank": {
+                  "description": "Small section with bank of the moat",
+                  "$ref": "#/$defs/point"
+                },
+                "moat": {
+                  "description": "Main section of the moat",
+                  "$ref": "#/$defs/point"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^bank$": true,
+                "^moat$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "point": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "x",
+                "y"
+              ],
+              "properties": {
+                "x": {
+                  "type": "number"
+                },
+                "y": {
+                  "type": "number"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^x$": true,
+                "^y$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Decription of towers",
+              "properties": {
+                "bottom": {
+                  "$ref": "#/$defs/tower",
+                  "description": "Bottom tower"
+                },
+                "keep": {
+                  "$ref": "#/$defs/tower",
+                  "description": "Central keep"
+                },
+                "top": {
+                  "$ref": "#/$defs/tower",
+                  "description": "Top tower"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^bottom$": true,
+                "^keep$": true,
+                "^top$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "battlement",
+                "creature",
+                "tower"
+              ],
+              "properties": {
+                "battlement": {
+                  "description": "Location of battlement, part of tower that covers shooter",
+                  "$ref": "#/$defs/point"
+                },
+                "creature": {
+                  "description": "Location of shooter in tower",
+                  "$ref": "#/$defs/point"
+                },
+                "tower": {
+                  "description": "Location of main segment of tower",
+                  "$ref": "#/$defs/point"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^battlement$": true,
+                "^creature$": true,
+                "^tower$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Destructible sections of the walls",
+              "properties": {
+                "bottomMid": {
+                  "description": "Second from bottom section located near gates",
+                  "$ref": "#/$defs/point"
+                },
+                "bottom": {
+                  "description": "Bottommost section located near bottom tower",
+                  "$ref": "#/$defs/point"
+                },
+                "upperMid": {
+                  "description": "Second from top section located near gates",
+                  "$ref": "#/$defs/point"
+                },
+                "upper": {
+                  "description": "Topmost section located near top tower",
+                  "$ref": "#/$defs/point"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^bottomMid$": true,
+                "^bottom$": true,
+                "^upperMid$": true,
+                "^upper$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "title": "VCMI siege screen format",
+              "description": "Format used to define town siege screen in VCMI",
+              "required": [
+                "gate",
+                "imagePrefix",
+                "moat",
+                "shooter",
+                "static",
+                "towers",
+                "walls"
+              ],
+              "properties": {
+                "static": {
+                  "$ref": "#/$defs/modern_4"
+                },
+                "gate": {
+                  "$ref": "#/$defs/modern_5"
+                },
+                "imagePrefix": {
+                  "type": "string",
+                  "description": "Prefix to all images related to siege screen"
+                },
+                "moat": {
+                  "$ref": "#/$defs/modern_6"
+                },
+                "shooter": {
+                  "type": "string",
+                  "description": "Identifier of creature that will be used as tower shooter"
+                },
+                "towers": {
+                  "$ref": "#/$defs/modern_7"
+                },
+                "walls": {
+                  "$ref": "#/$defs/modern_8"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^towers$": true,
+                "^gate$": true,
+                "^walls$": true,
+                "^moat$": true,
+                "^shooter$": true,
+                "^imagePrefix$": true,
+                "^static$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "tower": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Static sections of walls",
+              "properties": {
+                "background": {
+                  "description": "Very top section of the wall located above hero",
+                  "$ref": "#/$defs/point"
+                },
+                "bottom": {
+                  "description": "Bottom section located between destructible sections",
+                  "$ref": "#/$defs/point"
+                },
+                "top": {
+                  "description": "Top section located between destructible sections",
+                  "$ref": "#/$defs/point"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^background$": true,
+                "^bottom$": true,
+                "^top$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

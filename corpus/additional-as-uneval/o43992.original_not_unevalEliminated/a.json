@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "timestamp": {
+                  "_format": "date-time",
+                  "type": "string"
+                },
+                "connectorId": {
+                  "type": "integer"
+                },
+                "meterStart": {
+                  "type": "integer"
+                },
+                "idTag": {
+                  "maxLength": 20,
+                  "type": "string"
+                },
+                "reservationId": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "connectorId",
+                "idTag",
+                "meterStart",
+                "timestamp"
+              ],
+              "title": "StartTransactionRequest",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^meterStart$": true,
+                "^idTag$": true,
+                "^timestamp$": true,
+                "^reservationId$": true,
+                "^connectorId$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

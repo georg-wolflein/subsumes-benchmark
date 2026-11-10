@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "previousVersions": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "description": {
+      "$ref": "#/$defs/htmlStringLines"
+    },
+    "links": {
+      "type": "object",
+      "minProperties": 1,
+      "properties": {
+        "Website": {
+          "$ref": "#/$defs/urlString"
+        },
+        "Fixture library download": {
+          "$ref": "#/$defs/urlString"
+        },
+        "Fixture format documentation": {
+          "$ref": "#/$defs/urlString"
+        }
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/urlString"
+      }
+    },
+    "fixtureUsage": {
+      "$ref": "#/$defs/htmlStringLines"
+    },
+    "fileLocations": {
+      "type": "object",
+      "minProperties": 1,
+      "properties": {
+        "subDirectoriesAllowed": {
+          "type": "boolean"
+        },
+        "Windows": {
+          "$ref": "#/$defs/fileLocations"
+        },
+        "Mac OS": {
+          "$ref": "#/$defs/fileLocations"
+        },
+        "Linux": {
+          "$ref": "#/$defs/fileLocations"
+        }
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/fileLocations"
+      }
+    },
+    "additionalInfo": {
+      "$ref": "#/$defs/htmlStringLines"
+    },
+    "helpWanted": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "description",
+    "links"
+  ],
+  "patternProperties": {
+    "^\\$schema$": {
+      "const": "../../schemas/plugin.json"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "htmlStringLines": {
+      "description": "HTML string lines, will be joined by \\n.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "urlString": {
+      "type": "string",
+      "pattern": "^(ftp|http|https)://[^ \"]+$",
+      "_format": "uri"
+    },
+    "fileLocations": {
+      "type": "object",
+      "minProperties": 1,
+      "properties": {
+        "main": {
+          "type": "string"
+        },
+        "user": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

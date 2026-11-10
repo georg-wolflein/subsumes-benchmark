@@ -1,0 +1,230 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Widgets",
+  "type": "object",
+  "properties": {
+    "dashboardId": {
+      "type": "string",
+      "format": "mongoId"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "cloudstatus",
+        "elasticGraph",
+        "graph",
+        "openAlerts",
+        "rss",
+        "serviceStatus"
+      ]
+    },
+    "config": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/elasticGraph"
+        },
+        {
+          "$ref": "#/$defs/cloudstatus"
+        },
+        {
+          "$ref": "#/$defs/graph"
+        },
+        {
+          "$ref": "#/$defs/rss"
+        },
+        {
+          "$ref": "#/$defs/serviceStatus"
+        },
+        {
+          "$ref": "#/$defs/openAlerts"
+        }
+      ]
+    }
+  },
+  "required": [
+    "dashboardId",
+    "type",
+    "config"
+  ],
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "device",
+                    "serviceGroup",
+                    "deviceGroup",
+                    "service"
+                  ]
+                },
+                "isGroup": {
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^name$": true,
+                "^type$": true,
+                "^isGroup$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "serviceStatus": {
+      "type": "object",
+      "properties": {
+        "serviceId": {
+          "type": "string",
+          "format": "mongoId"
+        }
+      },
+      "required": [
+        "serviceId"
+      ]
+    },
+    "elasticGraph": {
+      "type": "object",
+      "properties": {
+        "searchFilter": {
+          "type": "string"
+        },
+        "sectionFilter": {
+          "type": "string"
+        },
+        "filter": {
+          "type": "object"
+        },
+        "tall": {
+          "type": "boolean"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "line",
+            "area"
+          ]
+        },
+        "seriesStates": {
+          "type": "object",
+          "properties": {
+            "series": {
+              "type": "object",
+              "properties": {
+                "^\\w+{24}: .+": {
+                  "type": "string",
+                  "enum": [
+                    "left",
+                    "right",
+                    "disabled"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "filter",
+        "type",
+        "searchFilter"
+      ]
+    },
+    "graph": {
+      "type": "object",
+      "properties": {
+        "filter": {
+          "type": "object"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "line",
+            "area"
+          ]
+        },
+        "tall": {
+          "type": "boolean"
+        },
+        "seriesStates": {
+          "type": "object",
+          "properties": {
+            "series": {
+              "type": "object",
+              "properties": {
+                "^\\w+{24}: .+": {
+                  "type": "string",
+                  "enum": [
+                    "left",
+                    "right",
+                    "disabled"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "filter",
+        "type"
+      ]
+    },
+    "cloudstatus": {
+      "type": "object",
+      "properties": {
+        "providerId": {
+          "type": "string",
+          "enum": [
+            "amazon",
+            "digitalOcean",
+            "google",
+            "joyent",
+            "linode",
+            "rackspace",
+            "salesforce",
+            "softlayer",
+            "windowsAzure"
+          ]
+        },
+        "feedUrl": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "providerId",
+        "feedUrl"
+      ]
+    },
+    "rss": {
+      "type": "object",
+      "properties": {
+        "feedUrl": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "feedUrl"
+      ]
+    },
+    "openAlerts": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "packageName": {
+      "type": "string"
+    },
+    "packageVersion": {
+      "type": "string"
+    },
+    "appId": {
+      "type": "string"
+    },
+    "postInstallNotes": {
+      "type": "string"
+    },
+    "cli": {
+      "$ref": "#/$defs/cli"
+    }
+  },
+  "required": [
+    "packageName",
+    "packageVersion",
+    "appId"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "url": {
+      "type": "string",
+      "allOf": [
+        {
+          "format": "uri"
+        },
+        {
+          "pattern": "^https?://"
+        }
+      ]
+    },
+    "hash": {
+      "additionalProperties": false,
+      "properties": {
+        "algo": {
+          "enum": [
+            "sha256"
+          ],
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "algo",
+        "value"
+      ],
+      "type": "object"
+    },
+    "cliInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "contentHash": {
+          "items": {
+            "$ref": "#/$defs/hash"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "kind": {
+          "enum": [
+            "executable",
+            "zip"
+          ],
+          "type": "string"
+        },
+        "url": {
+          "$ref": "#/$defs/url"
+        }
+      },
+      "required": [
+        "url",
+        "kind",
+        "contentHash"
+      ],
+      "type": "object"
+    },
+    "cli": {
+      "additionalProperties": false,
+      "properties": {
+        "binaries": {
+          "additionalProperties": false,
+          "minProperties": 1,
+          "properties": {
+            "darwin": {
+              "additionalProperties": false,
+              "properties": {
+                "x86-64": {
+                  "$ref": "#/$defs/cliInfo"
+                }
+              },
+              "required": [
+                "x86-64"
+              ],
+              "type": "object"
+            },
+            "linux": {
+              "additionalProperties": false,
+              "properties": {
+                "x86-64": {
+                  "$ref": "#/$defs/cliInfo"
+                }
+              },
+              "required": [
+                "x86-64"
+              ],
+              "type": "object"
+            },
+            "windows": {
+              "additionalProperties": false,
+              "properties": {
+                "x86-64": {
+                  "$ref": "#/$defs/cliInfo"
+                }
+              },
+              "required": [
+                "x86-64"
+              ],
+              "type": "object"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "binaries"
+      ],
+      "type": "object"
+    }
+  }
+}

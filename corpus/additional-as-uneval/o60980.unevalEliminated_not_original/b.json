@@ -1,0 +1,292 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_6",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Details of updated Github pull requests",
+              "properties": {
+                "year": {
+                  "$ref": "#/$defs/github_issue&prs_with_time_duration"
+                },
+                "month": {
+                  "$ref": "#/$defs/github_issue&prs_with_time_duration"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^year$": true,
+                "^month$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Result of Github worker",
+              "properties": {
+                "schema": {
+                  "$ref": "#/$defs/modern_7"
+                },
+                "_release": {
+                  "type": "string",
+                  "description": "Unique release id in form of \"ecosystem:package:version\""
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "success",
+                    "error",
+                    "unknown"
+                  ]
+                },
+                "details": {
+                  "$ref": "#/$defs/github_extracted_details"
+                },
+                "summary": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "status",
+                "details",
+                "summary"
+              ],
+              "title": "github_details-v1-0-4"
+            },
+            {
+              "patternProperties": {
+                "^schema$": true,
+                "^_release$": true,
+                "^details$": true,
+                "^status$": true,
+                "^summary$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Details of Github inspection",
+              "properties": {
+                "updated_issues": {
+                  "$ref": "#/$defs/github_issues_details"
+                },
+                "topics": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "updated_pull_requests": {
+                  "$ref": "#/$defs/github_pull_requests_details"
+                },
+                "forks_count": {
+                  "type": "integer"
+                },
+                "open_issues_count": {
+                  "type": "integer"
+                },
+                "stargazers_count": {
+                  "type": "integer"
+                },
+                "subscribers_count": {
+                  "type": "integer"
+                },
+                "contributors_count": {
+                  "type": "integer"
+                },
+                "last_year_commits": {
+                  "$ref": "#/$defs/github_last_year_commits_details"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^open_issues_count$": true,
+                "^subscribers_count$": true,
+                "^updated_pull_requests$": true,
+                "^stargazers_count$": true,
+                "^updated_issues$": true,
+                "^contributors_count$": true,
+                "^last_year_commits$": true,
+                "^topics$": true,
+                "^forks_count$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "github_extracted_details": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Details of Github issues + prs yearly or monthly or any given date-range",
+              "properties": {
+                "opened": {
+                  "type": "integer"
+                },
+                "closed": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "opened",
+                "closed"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^opened$": true,
+                "^closed$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "github_last_year_commits_details": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "github_issues_details": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Details of last year Github commits",
+              "properties": {
+                "sum": {
+                  "type": "integer"
+                },
+                "weekly": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "required": [
+                "sum",
+                "weekly"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^sum$": true,
+                "^weekly$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "github_pull_requests_details": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Details of updated Github issues",
+              "properties": {
+                "year": {
+                  "$ref": "#/$defs/github_issue&prs_with_time_duration"
+                },
+                "month": {
+                  "$ref": "#/$defs/github_issue&prs_with_time_duration"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^year$": true,
+                "^month$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "github_issue&prs_with_time_duration": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Name of the schema",
+                  "pattern": "^[a-zA-Z0-9_]+$"
+                },
+                "version": {
+                  "type": "string",
+                  "description": "Version of the schema",
+                  "pattern": "^[0-9]+-[0-9]+-[0-9]+$"
+                },
+                "url": {
+                  "type": "string",
+                  "description": "Full URL of the schema",
+                  "format": "uri"
+                }
+              },
+              "required": [
+                "name",
+                "version"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^version$": true,
+                "^url$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

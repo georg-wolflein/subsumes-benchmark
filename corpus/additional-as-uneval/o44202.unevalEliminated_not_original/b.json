@@ -1,0 +1,307 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "Files": {
+      "items": {
+        "$ref": "#/$defs/modern_1"
+      },
+      "type": "array"
+    },
+    "WorkProduct": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "WorkProductComponents": {
+      "items": {
+        "$ref": "#/$defs/modern_5"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "WorkProduct",
+    "WorkProductComponents",
+    "Files"
+  ],
+  "title": "WorkProductLoadManifestStagedFiles",
+  "type": "object",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "FileAssociativeIDs": {
+                  "items": {
+                    "pattern": "f-[0-9]+",
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "ResourceSecurityClassification": {
+                  "pattern": "srn:reference-data/ResourceSecurityClassification:RESTRICTED|CLASSIFIED|CONFIDENTIAL|MOST-CONFIDENTIAL:[0-9]*",
+                  "type": "string"
+                },
+                "Data": {
+                  "$ref": "#/$defs/modern_6"
+                },
+                "ResourceTypeID": {
+                  "pattern": "srn:type:work-product-component/[A-Za-z]+:[0-9]*",
+                  "type": "string"
+                },
+                "AssociativeID": {
+                  "pattern": "wpc-[0-9]+",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "ResourceTypeID",
+                "ResourceSecurityClassification",
+                "AssociativeID",
+                "FileAssociativeIDs",
+                "Data"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^Data$": true,
+                "^ResourceSecurityClassification$": true,
+                "^ResourceTypeID$": true,
+                "^FileAssociativeIDs$": true,
+                "^AssociativeID$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "ExtensionProperties": {
+                  "properties": {},
+                  "type": "object"
+                },
+                "GroupTypeProperties": {
+                  "properties": {},
+                  "type": "object"
+                },
+                "IndividualTypeProperties": {
+                  "properties": {
+                    "Description": {
+                      "type": "string"
+                    },
+                    "Name": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "Name",
+                    "Description"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "IndividualTypeProperties"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^ExtensionProperties$": true,
+                "^GroupTypeProperties$": true,
+                "^IndividualTypeProperties$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "AssociativeID": {
+                  "pattern": "f-[0-9]+",
+                  "type": "string"
+                },
+                "Data": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "ResourceSecurityClassification": {
+                  "pattern": "srn:reference-data/ResourceSecurityClassification:RESTRICTED|CLASSIFIED|CONFIDENTIAL|MOST-CONFIDENTIAL:[0-9]*",
+                  "type": "string"
+                },
+                "ResourceTypeID": {
+                  "pattern": "srn:type:file/[A-Za-z0-9-]+:[0-9]*",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "ResourceTypeID",
+                "ResourceSecurityClassification",
+                "Data",
+                "AssociativeID"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^AssociativeID$": true,
+                "^Data$": true,
+                "^ResourceSecurityClassification$": true,
+                "^ResourceTypeID$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "ExtensionProperties": {
+                  "properties": {},
+                  "type": "object"
+                },
+                "GroupTypeProperties": {
+                  "properties": {
+                    "PreLoadFilePath": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "PreLoadFilePath"
+                  ],
+                  "type": "object"
+                },
+                "IndividualTypeProperties": {
+                  "properties": {},
+                  "type": "object"
+                }
+              },
+              "required": [
+                "GroupTypeProperties"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^ExtensionProperties$": true,
+                "^GroupTypeProperties$": true,
+                "^IndividualTypeProperties$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "ComponentsAssociativeIDs": {
+                  "items": {
+                    "pattern": "wpc-[0-9]+",
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "Data": {
+                  "$ref": "#/$defs/modern_4"
+                },
+                "ResourceSecurityClassification": {
+                  "pattern": "srn:reference-data/ResourceSecurityClassification:RESTRICTED|CLASSIFIED|CONFIDENTIAL|MOST-CONFIDENTIAL:[0-9]*",
+                  "type": "string"
+                },
+                "ResourceTypeID": {
+                  "pattern": "srn:type:work-product/[A-Za-z]+:[0-9]*",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "ResourceTypeID",
+                "ResourceSecurityClassification",
+                "ComponentsAssociativeIDs",
+                "Data"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^ComponentsAssociativeIDs$": true,
+                "^Data$": true,
+                "^ResourceSecurityClassification$": true,
+                "^ResourceTypeID$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "ExtensionProperties": {
+                  "properties": {},
+                  "type": "object"
+                },
+                "GroupTypeProperties": {
+                  "properties": {},
+                  "type": "object"
+                },
+                "IndividualTypeProperties": {
+                  "properties": {
+                    "Description": {
+                      "type": "string"
+                    },
+                    "Name": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "Name",
+                    "Description"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "IndividualTypeProperties"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^ExtensionProperties$": true,
+                "^GroupTypeProperties$": true,
+                "^IndividualTypeProperties$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

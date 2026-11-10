@@ -1,0 +1,229 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "lastUpdated": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 32767
+    },
+    "createdByType": {
+      "type": "string",
+      "enum": [
+        "flow",
+        "user",
+        "apiToken"
+      ]
+    },
+    "experienceGroups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Fa-f\\d]{24}$"
+          }
+        }
+      }
+    },
+    "experienceEndpointId": {
+      "type": "string",
+      "pattern": "^[A-Fa-f\\d]{24}$"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Fa-f\\d]{24}$"
+    },
+    "lastUpdatedByType": {
+      "type": "string",
+      "enum": [
+        "flow",
+        "user",
+        "apiToken"
+      ]
+    },
+    "endpointTags": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "creationDate": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "unauthorizedReply": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/modern_2"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "lastUpdatedById": {
+      "type": "string",
+      "pattern": "^[A-Fa-f\\d]{24}$"
+    },
+    "access": {
+      "type": "string",
+      "enum": [
+        "public",
+        "authenticated",
+        "group"
+      ]
+    },
+    "method": {
+      "type": "string",
+      "enum": [
+        "delete",
+        "get",
+        "options",
+        "patch",
+        "post",
+        "put"
+      ]
+    },
+    "createdById": {
+      "type": "string",
+      "pattern": "^[A-Fa-f\\d]{24}$"
+    },
+    "applicationId": {
+      "type": "string",
+      "pattern": "^[A-Fa-f\\d]{24}$"
+    },
+    "enabled": {
+      "type": "boolean"
+    },
+    "route": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024
+    },
+    "staticReply": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/modern_3"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "^[0-9a-zA-Z_-]{1,255}$": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 255
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^[0-9a-zA-Z_-]{1,255}$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "string"
+                },
+                "statusCode": {
+                  "type": "number",
+                  "min": 100,
+                  "max": 599,
+                  "integer": true
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "page",
+                    "redirect"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "type"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^value$": true,
+                "^statusCode$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "string"
+                },
+                "statusCode": {
+                  "type": "number",
+                  "min": 100,
+                  "max": 599,
+                  "integer": true
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "page",
+                    "redirect"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "type"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^value$": true,
+                "^statusCode$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

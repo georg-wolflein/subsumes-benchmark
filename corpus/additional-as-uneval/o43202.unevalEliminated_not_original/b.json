@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "items": {
+    "$ref": "#/$defs/FlexibleStat"
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "contentId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "type",
+                "id",
+                "contentId"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^type$": true,
+                "^id$": true,
+                "^contentId$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "FlexibleStat": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

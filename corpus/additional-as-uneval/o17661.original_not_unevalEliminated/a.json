@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/MyObject",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "export": {
+                  "$ref": "#/$defs/MyExportString"
+                },
+                "private": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "export",
+                "private"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^export$": true,
+                "^private$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "MyExportString": {
+      "type": "string"
+    },
+    "MyObject": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

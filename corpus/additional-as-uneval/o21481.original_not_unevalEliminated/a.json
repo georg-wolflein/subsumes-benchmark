@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "maxResults": {
+                  "type": "integer"
+                },
+                "segment": {
+                  "type": "string"
+                },
+                "id": {
+                  "pattern": "^[a-z0-9:]+$",
+                  "type": "string"
+                },
+                "filters": {
+                  "oneOf": [
+                    {
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "dimensions": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "metrics": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "frequency": {
+                  "type": "string"
+                },
+                "sort": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "metrics"
+              ],
+              "title": "Google Analytics Collector Query",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^metrics$": true,
+                "^sort$": true,
+                "^segment$": true,
+                "^filters$": true,
+                "^frequency$": true,
+                "^id$": true,
+                "^maxResults$": true,
+                "^dimensions$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

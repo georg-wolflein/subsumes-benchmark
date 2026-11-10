@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "from": {
+      "$ref": "#/$defs/shape"
+    },
+    "id": {
+      "$ref": "#/$defs/guid"
+    },
+    "to": {
+      "$ref": "#/$defs/shape"
+    },
+    "type": {
+      "enum": [
+        "addition",
+        "removal",
+        "replacement",
+        "mutation"
+      ],
+      "type": "string"
+    },
+    "undoOf": {
+      "$ref": "#/$defs/guid"
+    }
+  },
+  "required": [
+    "id",
+    "type"
+  ],
+  "type": "object",
+  "$defs": {
+    "guid": {
+      "pattern": "^[a-f][a-f0-9]{31}$",
+      "type": "string"
+    },
+    "shape": {
+      "additionalProperties": false,
+      "properties": {
+        "attr": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "maxProperties": 100,
+          "type": "object"
+        },
+        "bbox": {
+          "properties": {
+            "height": {
+              "type": "number"
+            },
+            "width": {
+              "type": "number"
+            },
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "children": {
+          "items": {
+            "$ref": "#/$defs/shape"
+          },
+          "type": "array"
+        },
+        "name": {
+          "enum": [
+            "text",
+            "tspan",
+            "polygon",
+            "polyline",
+            "line",
+            "rect",
+            "ellipse",
+            "circle",
+            "path"
+          ],
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 1000,
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "attr"
+      ],
+      "type": "object"
+    }
+  }
+}

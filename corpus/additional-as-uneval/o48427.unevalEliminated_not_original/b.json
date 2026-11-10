@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_2",
+  "$defs": {
+    "translations": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "fr": {
+                  "type": "string"
+                },
+                "de": {
+                  "type": "string"
+                },
+                "tr": {
+                  "type": "string"
+                },
+                "en": {
+                  "type": "string"
+                },
+                "es": {
+                  "type": "string"
+                },
+                "jp": {
+                  "type": "string"
+                },
+                "pl": {
+                  "type": "string"
+                },
+                "it": {
+                  "type": "string"
+                },
+                "dk": {
+                  "type": "string"
+                },
+                "gr": {
+                  "type": "string"
+                },
+                "cz": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "en",
+                "de"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^jp$": true,
+                "^dk$": true,
+                "^tr$": true,
+                "^es$": true,
+                "^fr$": true,
+                "^gr$": true,
+                "^it$": true,
+                "^de$": true,
+                "^pl$": true,
+                "^en$": true,
+                "^cz$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "title": "Type",
+              "properties": {
+                "names": {
+                  "$ref": "#/$defs/translations"
+                },
+                "color": {
+                  "description": "Hex color",
+                  "type": "string",
+                  "pattern": "^#[A-Fa-f0-9]{6}$"
+                },
+                "effectivness": {
+                  "$ref": "#/$defs/modern_3"
+                }
+              },
+              "required": [
+                "names",
+                "effectivness",
+                "color"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^names$": true,
+                "^color$": true,
+                "^effectivness$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "Normal|Fighting|Flying|Poison|Ground|Rock|Bug|Ghost|Steel|Fire|Water|Grass|Electric|Psychic|Ice|Dragon|Dark|Fairy": {
+                  "type": "number",
+                  "minimum": 0.0,
+                  "maximum": 2.0
+                }
+              },
+              "required": [
+                "Normal",
+                "Fighting",
+                "Flying",
+                "Poison",
+                "Ground",
+                "Rock",
+                "Bug",
+                "Ghost",
+                "Steel",
+                "Fire",
+                "Water",
+                "Grass",
+                "Electric",
+                "Psychic",
+                "Ice",
+                "Dragon",
+                "Dark",
+                "Fairy"
+              ]
+            },
+            {
+              "patternProperties": {
+                "Normal|Fighting|Flying|Poison|Ground|Rock|Bug|Ghost|Steel|Fire|Water|Grass|Electric|Psychic|Ice|Dragon|Dark|Fairy": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

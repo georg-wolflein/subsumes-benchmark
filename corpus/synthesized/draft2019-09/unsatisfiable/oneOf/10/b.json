@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "allOf": [
+    {
+      "oneOf": [
+        {
+          "properties": {
+            "bar": true,
+            "baz": true
+          },
+          "required": [
+            "bar"
+          ]
+        },
+        {
+          "properties": {
+            "foo": true
+          },
+          "required": [
+            "foo"
+          ]
+        }
+      ]
+    },
+    {
+      "not": {
+        "oneOf": [
+          {
+            "properties": {
+              "bar": true,
+              "baz": true
+            },
+            "required": [
+              "bar"
+            ]
+          },
+          {
+            "properties": {
+              "foo": true
+            },
+            "required": [
+              "foo"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

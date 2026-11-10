@@ -1,0 +1,1228 @@
+{
+  "$id": "http://higan.me/schema/kanro.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Config of Kanro APP.",
+  "properties": {
+    "registry": {
+      "description": "The NPM registry what module manager will used.",
+      "type": "string"
+    },
+    "entryPoint": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/BaseNode"
+        },
+        {
+          "$ref": "#/$defs/Router"
+        },
+        {
+          "$ref": "#/$defs/MethodRouter"
+        },
+        {
+          "$ref": "#/$defs/FileRenderer"
+        },
+        {
+          "$ref": "#/$defs/HttpExceptionRenderer"
+        },
+        {
+          "$ref": "#/$defs/JsonRenderer"
+        }
+      ],
+      "description": "The http request entry point."
+    },
+    "exitPoint": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/BaseNode"
+        },
+        {
+          "$ref": "#/$defs/Router"
+        },
+        {
+          "$ref": "#/$defs/MethodRouter"
+        },
+        {
+          "$ref": "#/$defs/FileRenderer"
+        },
+        {
+          "$ref": "#/$defs/HttpExceptionRenderer"
+        },
+        {
+          "$ref": "#/$defs/JsonRenderer"
+        }
+      ],
+      "description": "The http response exit point."
+    },
+    "port": {
+      "description": "The port what Kanro HTTP server will listen.",
+      "type": "number"
+    },
+    "resource": {
+      "description": "The static resource dir of app.",
+      "type": "string"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/BaseNode"
+                  },
+                  {
+                    "$ref": "#/$defs/Router"
+                  },
+                  {
+                    "$ref": "#/$defs/MethodRouter"
+                  },
+                  {
+                    "$ref": "#/$defs/FileRenderer"
+                  },
+                  {
+                    "$ref": "#/$defs/HttpExceptionRenderer"
+                  },
+                  {
+                    "$ref": "#/$defs/JsonRenderer"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/BaseNode"
+                  },
+                  {
+                    "$ref": "#/$defs/Router"
+                  },
+                  {
+                    "$ref": "#/$defs/MethodRouter"
+                  },
+                  {
+                    "$ref": "#/$defs/FileRenderer"
+                  },
+                  {
+                    "$ref": "#/$defs/HttpExceptionRenderer"
+                  },
+                  {
+                    "$ref": "#/$defs/JsonRenderer"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/BaseNode"
+                  },
+                  {
+                    "$ref": "#/$defs/Router"
+                  },
+                  {
+                    "$ref": "#/$defs/MethodRouter"
+                  },
+                  {
+                    "$ref": "#/$defs/FileRenderer"
+                  },
+                  {
+                    "$ref": "#/$defs/HttpExceptionRenderer"
+                  },
+                  {
+                    "$ref": "#/$defs/JsonRenderer"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/BaseNode"
+                  },
+                  {
+                    "$ref": "#/$defs/Router"
+                  },
+                  {
+                    "$ref": "#/$defs/MethodRouter"
+                  },
+                  {
+                    "$ref": "#/$defs/FileRenderer"
+                  },
+                  {
+                    "$ref": "#/$defs/HttpExceptionRenderer"
+                  },
+                  {
+                    "$ref": "#/$defs/JsonRenderer"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "FileRenderer": {
+      "properties": {
+        "module": {
+          "properties": {
+            "name": {
+              "enum": [
+                "kanro"
+              ],
+              "type": "string"
+            },
+            "version": {
+              "enum": [
+                "*"
+              ],
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "name": {
+          "enum": [
+            "FileRenderer"
+          ],
+          "type": "string"
+        },
+        "exceptionHandlers": {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/BaseNode"
+              },
+              {
+                "$ref": "#/$defs/Router"
+              },
+              {
+                "$ref": "#/$defs/MethodRouter"
+              },
+              {
+                "$ref": "#/$defs/FileRenderer"
+              },
+              {
+                "$ref": "#/$defs/HttpExceptionRenderer"
+              },
+              {
+                "$ref": "#/$defs/JsonRenderer"
+              }
+            ]
+          },
+          "type": "array"
+        },
+        "fuses": {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/BaseNode"
+              },
+              {
+                "$ref": "#/$defs/Router"
+              },
+              {
+                "$ref": "#/$defs/MethodRouter"
+              },
+              {
+                "$ref": "#/$defs/FileRenderer"
+              },
+              {
+                "$ref": "#/$defs/HttpExceptionRenderer"
+              },
+              {
+                "$ref": "#/$defs/JsonRenderer"
+              }
+            ]
+          },
+          "type": "array"
+        },
+        "resource": {
+          "type": "string"
+        },
+        "next": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BaseNode"
+            },
+            {
+              "$ref": "#/$defs/Router"
+            },
+            {
+              "$ref": "#/$defs/MethodRouter"
+            },
+            {
+              "$ref": "#/$defs/FileRenderer"
+            },
+            {
+              "$ref": "#/$defs/HttpExceptionRenderer"
+            },
+            {
+              "$ref": "#/$defs/JsonRenderer"
+            },
+            {
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/BaseNode"
+                  },
+                  {
+                    "$ref": "#/$defs/Router"
+                  },
+                  {
+                    "$ref": "#/$defs/MethodRouter"
+                  },
+                  {
+                    "$ref": "#/$defs/FileRenderer"
+                  },
+                  {
+                    "$ref": "#/$defs/HttpExceptionRenderer"
+                  },
+                  {
+                    "$ref": "#/$defs/JsonRenderer"
+                  }
+                ]
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "dependencies": {
+          "$ref": "#/$defs/modern_1"
+        }
+      },
+      "type": "object"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/BaseNode"
+                  },
+                  {
+                    "$ref": "#/$defs/Router"
+                  },
+                  {
+                    "$ref": "#/$defs/MethodRouter"
+                  },
+                  {
+                    "$ref": "#/$defs/FileRenderer"
+                  },
+                  {
+                    "$ref": "#/$defs/HttpExceptionRenderer"
+                  },
+                  {
+                    "$ref": "#/$defs/JsonRenderer"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "HttpExceptionRenderer": {
+      "properties": {
+        "module": {
+          "properties": {
+            "name": {
+              "enum": [
+                "kanro"
+              ],
+              "type": "string"
+            },
+            "version": {
+              "enum": [
+                "*"
+              ],
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "name": {
+          "enum": [
+            "HttpExceptionRenderer"
+          ],
+          "type": "string"
+        },
+        "exceptionHandlers": {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/BaseNode"
+              },
+              {
+                "$ref": "#/$defs/Router"
+              },
+              {
+                "$ref": "#/$defs/MethodRouter"
+              },
+              {
+                "$ref": "#/$defs/FileRenderer"
+              },
+              {
+                "$ref": "#/$defs/HttpExceptionRenderer"
+              },
+              {
+                "$ref": "#/$defs/JsonRenderer"
+              }
+            ]
+          },
+          "type": "array"
+        },
+        "fuses": {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/BaseNode"
+              },
+              {
+                "$ref": "#/$defs/Router"
+              },
+              {
+                "$ref": "#/$defs/MethodRouter"
+              },
+              {
+                "$ref": "#/$defs/FileRenderer"
+              },
+              {
+                "$ref": "#/$defs/HttpExceptionRenderer"
+              },
+              {
+                "$ref": "#/$defs/JsonRenderer"
+              }
+            ]
+          },
+          "type": "array"
+        },
+        "resource": {
+          "type": "string"
+        },
+        "next": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BaseNode"
+            },
+            {
+              "$ref": "#/$defs/Router"
+            },
+            {
+              "$ref": "#/$defs/MethodRouter"
+            },
+            {
+              "$ref": "#/$defs/FileRenderer"
+            },
+            {
+              "$ref": "#/$defs/HttpExceptionRenderer"
+            },
+            {
+              "$ref": "#/$defs/JsonRenderer"
+            },
+            {
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/BaseNode"
+                  },
+                  {
+                    "$ref": "#/$defs/Router"
+                  },
+                  {
+                    "$ref": "#/$defs/MethodRouter"
+                  },
+                  {
+                    "$ref": "#/$defs/FileRenderer"
+                  },
+                  {
+                    "$ref": "#/$defs/HttpExceptionRenderer"
+                  },
+                  {
+                    "$ref": "#/$defs/JsonRenderer"
+                  }
+                ]
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "dependencies": {
+          "$ref": "#/$defs/modern_2"
+        }
+      },
+      "type": "object"
+    },
+    "Router": {
+      "properties": {
+        "module": {
+          "properties": {
+            "name": {
+              "enum": [
+                "kanro"
+              ],
+              "type": "string"
+            },
+            "version": {
+              "enum": [
+                "*"
+              ],
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "name": {
+          "enum": [
+            "Router"
+          ],
+          "type": "string"
+        },
+        "exceptionHandlers": {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/BaseNode"
+              },
+              {
+                "$ref": "#/$defs/Router"
+              },
+              {
+                "$ref": "#/$defs/MethodRouter"
+              },
+              {
+                "$ref": "#/$defs/FileRenderer"
+              },
+              {
+                "$ref": "#/$defs/HttpExceptionRenderer"
+              },
+              {
+                "$ref": "#/$defs/JsonRenderer"
+              }
+            ]
+          },
+          "type": "array"
+        },
+        "fuses": {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/BaseNode"
+              },
+              {
+                "$ref": "#/$defs/Router"
+              },
+              {
+                "$ref": "#/$defs/MethodRouter"
+              },
+              {
+                "$ref": "#/$defs/FileRenderer"
+              },
+              {
+                "$ref": "#/$defs/HttpExceptionRenderer"
+              },
+              {
+                "$ref": "#/$defs/JsonRenderer"
+              }
+            ]
+          },
+          "type": "array"
+        },
+        "next": {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/BaseNode"
+              },
+              {
+                "$ref": "#/$defs/Router"
+              },
+              {
+                "$ref": "#/$defs/MethodRouter"
+              },
+              {
+                "$ref": "#/$defs/FileRenderer"
+              },
+              {
+                "$ref": "#/$defs/HttpExceptionRenderer"
+              },
+              {
+                "$ref": "#/$defs/JsonRenderer"
+              }
+            ]
+          },
+          "type": "array"
+        },
+        "dependencies": {
+          "$ref": "#/$defs/modern_3"
+        }
+      },
+      "patternProperties": {
+        "^(/([\\S]*)?)$": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BaseNode"
+            },
+            {
+              "$ref": "#/$defs/Router"
+            },
+            {
+              "$ref": "#/$defs/MethodRouter"
+            },
+            {
+              "$ref": "#/$defs/FileRenderer"
+            },
+            {
+              "$ref": "#/$defs/HttpExceptionRenderer"
+            },
+            {
+              "$ref": "#/$defs/JsonRenderer"
+            }
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/BaseNode"
+                  },
+                  {
+                    "$ref": "#/$defs/Router"
+                  },
+                  {
+                    "$ref": "#/$defs/MethodRouter"
+                  },
+                  {
+                    "$ref": "#/$defs/FileRenderer"
+                  },
+                  {
+                    "$ref": "#/$defs/HttpExceptionRenderer"
+                  },
+                  {
+                    "$ref": "#/$defs/JsonRenderer"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "MethodRouter": {
+      "properties": {
+        "name": {
+          "enum": [
+            "MethodRouter"
+          ],
+          "type": "string"
+        },
+        "HEAD": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BaseNode"
+            },
+            {
+              "$ref": "#/$defs/Router"
+            },
+            {
+              "$ref": "#/$defs/MethodRouter"
+            },
+            {
+              "$ref": "#/$defs/FileRenderer"
+            },
+            {
+              "$ref": "#/$defs/HttpExceptionRenderer"
+            },
+            {
+              "$ref": "#/$defs/JsonRenderer"
+            }
+          ]
+        },
+        "OPTIONS": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BaseNode"
+            },
+            {
+              "$ref": "#/$defs/Router"
+            },
+            {
+              "$ref": "#/$defs/MethodRouter"
+            },
+            {
+              "$ref": "#/$defs/FileRenderer"
+            },
+            {
+              "$ref": "#/$defs/HttpExceptionRenderer"
+            },
+            {
+              "$ref": "#/$defs/JsonRenderer"
+            }
+          ]
+        },
+        "TRACE": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BaseNode"
+            },
+            {
+              "$ref": "#/$defs/Router"
+            },
+            {
+              "$ref": "#/$defs/MethodRouter"
+            },
+            {
+              "$ref": "#/$defs/FileRenderer"
+            },
+            {
+              "$ref": "#/$defs/HttpExceptionRenderer"
+            },
+            {
+              "$ref": "#/$defs/JsonRenderer"
+            }
+          ]
+        },
+        "fuses": {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/BaseNode"
+              },
+              {
+                "$ref": "#/$defs/Router"
+              },
+              {
+                "$ref": "#/$defs/MethodRouter"
+              },
+              {
+                "$ref": "#/$defs/FileRenderer"
+              },
+              {
+                "$ref": "#/$defs/HttpExceptionRenderer"
+              },
+              {
+                "$ref": "#/$defs/JsonRenderer"
+              }
+            ]
+          },
+          "type": "array"
+        },
+        "PUT": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BaseNode"
+            },
+            {
+              "$ref": "#/$defs/Router"
+            },
+            {
+              "$ref": "#/$defs/MethodRouter"
+            },
+            {
+              "$ref": "#/$defs/FileRenderer"
+            },
+            {
+              "$ref": "#/$defs/HttpExceptionRenderer"
+            },
+            {
+              "$ref": "#/$defs/JsonRenderer"
+            }
+          ]
+        },
+        "next": {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/BaseNode"
+              },
+              {
+                "$ref": "#/$defs/Router"
+              },
+              {
+                "$ref": "#/$defs/MethodRouter"
+              },
+              {
+                "$ref": "#/$defs/FileRenderer"
+              },
+              {
+                "$ref": "#/$defs/HttpExceptionRenderer"
+              },
+              {
+                "$ref": "#/$defs/JsonRenderer"
+              }
+            ]
+          },
+          "type": "array"
+        },
+        "GET": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BaseNode"
+            },
+            {
+              "$ref": "#/$defs/Router"
+            },
+            {
+              "$ref": "#/$defs/MethodRouter"
+            },
+            {
+              "$ref": "#/$defs/FileRenderer"
+            },
+            {
+              "$ref": "#/$defs/HttpExceptionRenderer"
+            },
+            {
+              "$ref": "#/$defs/JsonRenderer"
+            }
+          ]
+        },
+        "DELETE": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BaseNode"
+            },
+            {
+              "$ref": "#/$defs/Router"
+            },
+            {
+              "$ref": "#/$defs/MethodRouter"
+            },
+            {
+              "$ref": "#/$defs/FileRenderer"
+            },
+            {
+              "$ref": "#/$defs/HttpExceptionRenderer"
+            },
+            {
+              "$ref": "#/$defs/JsonRenderer"
+            }
+          ]
+        },
+        "PATCH": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BaseNode"
+            },
+            {
+              "$ref": "#/$defs/Router"
+            },
+            {
+              "$ref": "#/$defs/MethodRouter"
+            },
+            {
+              "$ref": "#/$defs/FileRenderer"
+            },
+            {
+              "$ref": "#/$defs/HttpExceptionRenderer"
+            },
+            {
+              "$ref": "#/$defs/JsonRenderer"
+            }
+          ]
+        },
+        "module": {
+          "properties": {
+            "name": {
+              "enum": [
+                "kanro"
+              ],
+              "type": "string"
+            },
+            "version": {
+              "enum": [
+                "*"
+              ],
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "exceptionHandlers": {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/BaseNode"
+              },
+              {
+                "$ref": "#/$defs/Router"
+              },
+              {
+                "$ref": "#/$defs/MethodRouter"
+              },
+              {
+                "$ref": "#/$defs/FileRenderer"
+              },
+              {
+                "$ref": "#/$defs/HttpExceptionRenderer"
+              },
+              {
+                "$ref": "#/$defs/JsonRenderer"
+              }
+            ]
+          },
+          "type": "array"
+        },
+        "CONNECT": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BaseNode"
+            },
+            {
+              "$ref": "#/$defs/Router"
+            },
+            {
+              "$ref": "#/$defs/MethodRouter"
+            },
+            {
+              "$ref": "#/$defs/FileRenderer"
+            },
+            {
+              "$ref": "#/$defs/HttpExceptionRenderer"
+            },
+            {
+              "$ref": "#/$defs/JsonRenderer"
+            }
+          ]
+        },
+        "dependencies": {
+          "$ref": "#/$defs/modern_4"
+        },
+        "POST": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BaseNode"
+            },
+            {
+              "$ref": "#/$defs/Router"
+            },
+            {
+              "$ref": "#/$defs/MethodRouter"
+            },
+            {
+              "$ref": "#/$defs/FileRenderer"
+            },
+            {
+              "$ref": "#/$defs/HttpExceptionRenderer"
+            },
+            {
+              "$ref": "#/$defs/JsonRenderer"
+            }
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "JsonRenderer": {
+      "properties": {
+        "module": {
+          "properties": {
+            "name": {
+              "enum": [
+                "kanro"
+              ],
+              "type": "string"
+            },
+            "version": {
+              "enum": [
+                "*"
+              ],
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "name": {
+          "enum": [
+            "JsonRenderer"
+          ],
+          "type": "string"
+        },
+        "exceptionHandlers": {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/BaseNode"
+              },
+              {
+                "$ref": "#/$defs/Router"
+              },
+              {
+                "$ref": "#/$defs/MethodRouter"
+              },
+              {
+                "$ref": "#/$defs/FileRenderer"
+              },
+              {
+                "$ref": "#/$defs/HttpExceptionRenderer"
+              },
+              {
+                "$ref": "#/$defs/JsonRenderer"
+              }
+            ]
+          },
+          "type": "array"
+        },
+        "response": true,
+        "fuses": {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/BaseNode"
+              },
+              {
+                "$ref": "#/$defs/Router"
+              },
+              {
+                "$ref": "#/$defs/MethodRouter"
+              },
+              {
+                "$ref": "#/$defs/FileRenderer"
+              },
+              {
+                "$ref": "#/$defs/HttpExceptionRenderer"
+              },
+              {
+                "$ref": "#/$defs/JsonRenderer"
+              }
+            ]
+          },
+          "type": "array"
+        },
+        "next": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BaseNode"
+            },
+            {
+              "$ref": "#/$defs/Router"
+            },
+            {
+              "$ref": "#/$defs/MethodRouter"
+            },
+            {
+              "$ref": "#/$defs/FileRenderer"
+            },
+            {
+              "$ref": "#/$defs/HttpExceptionRenderer"
+            },
+            {
+              "$ref": "#/$defs/JsonRenderer"
+            },
+            {
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/BaseNode"
+                  },
+                  {
+                    "$ref": "#/$defs/Router"
+                  },
+                  {
+                    "$ref": "#/$defs/MethodRouter"
+                  },
+                  {
+                    "$ref": "#/$defs/FileRenderer"
+                  },
+                  {
+                    "$ref": "#/$defs/HttpExceptionRenderer"
+                  },
+                  {
+                    "$ref": "#/$defs/JsonRenderer"
+                  }
+                ]
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "dependencies": {
+          "$ref": "#/$defs/modern_5"
+        }
+      },
+      "type": "object"
+    },
+    "Module": {
+      "description": "Information of a Kanro module.",
+      "properties": {
+        "name": {
+          "description": "Name of this Kanro module.",
+          "type": "string"
+        },
+        "version": {
+          "description": "Version of this Kanro module.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "BaseNode": {
+      "properties": {
+        "module": {
+          "$ref": "#/$defs/Module"
+        },
+        "name": {
+          "type": "string"
+        },
+        "exceptionHandlers": {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/BaseNode"
+              },
+              {
+                "$ref": "#/$defs/Router"
+              },
+              {
+                "$ref": "#/$defs/MethodRouter"
+              },
+              {
+                "$ref": "#/$defs/FileRenderer"
+              },
+              {
+                "$ref": "#/$defs/HttpExceptionRenderer"
+              },
+              {
+                "$ref": "#/$defs/JsonRenderer"
+              }
+            ]
+          },
+          "type": "array"
+        },
+        "fuses": {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/BaseNode"
+              },
+              {
+                "$ref": "#/$defs/Router"
+              },
+              {
+                "$ref": "#/$defs/MethodRouter"
+              },
+              {
+                "$ref": "#/$defs/FileRenderer"
+              },
+              {
+                "$ref": "#/$defs/HttpExceptionRenderer"
+              },
+              {
+                "$ref": "#/$defs/JsonRenderer"
+              }
+            ]
+          },
+          "type": "array"
+        },
+        "next": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BaseNode"
+            },
+            {
+              "$ref": "#/$defs/Router"
+            },
+            {
+              "$ref": "#/$defs/MethodRouter"
+            },
+            {
+              "$ref": "#/$defs/FileRenderer"
+            },
+            {
+              "$ref": "#/$defs/HttpExceptionRenderer"
+            },
+            {
+              "$ref": "#/$defs/JsonRenderer"
+            },
+            {
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/BaseNode"
+                  },
+                  {
+                    "$ref": "#/$defs/Router"
+                  },
+                  {
+                    "$ref": "#/$defs/MethodRouter"
+                  },
+                  {
+                    "$ref": "#/$defs/FileRenderer"
+                  },
+                  {
+                    "$ref": "#/$defs/HttpExceptionRenderer"
+                  },
+                  {
+                    "$ref": "#/$defs/JsonRenderer"
+                  }
+                ]
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "dependencies": {
+          "$ref": "#/$defs/modern_6"
+        }
+      },
+      "type": "object"
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "UMM-Sub",
+              "type": "object",
+              "properties": {
+                "CollectionConceptId": {
+                  "description": "The collection concept id of the granules subscribed.",
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 255
+                },
+                "Name": {
+                  "description": "The name of a subscription.",
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 80
+                },
+                "SubscriberId": {
+                  "description": "The userid of the subscriber.",
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 30
+                },
+                "Query": {
+                  "description": "The search query for the granules that matches the subscription.",
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 40000
+                },
+                "EmailAddress": {
+                  "description": "The email address of the subscriber.",
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 255
+                }
+              },
+              "required": [
+                "Name",
+                "SubscriberId",
+                "EmailAddress",
+                "CollectionConceptId",
+                "Query"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^Query$": true,
+                "^Name$": true,
+                "^EmailAddress$": true,
+                "^SubscriberId$": true,
+                "^CollectionConceptId$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

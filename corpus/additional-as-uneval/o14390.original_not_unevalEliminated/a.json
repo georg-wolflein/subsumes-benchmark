@@ -1,0 +1,715 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_13",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "assignee": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "estimatedTime": {
+                  "type": "string",
+                  "format": "duration"
+                },
+                "components": {
+                  "$ref": "#/$defs/stringArray"
+                },
+                "opened": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "dueTo": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "status": {
+                  "enum": [
+                    "OPEN",
+                    "IN_PROGRESS",
+                    "CLOSED"
+                  ]
+                },
+                "childIssues": {
+                  "$ref": "#/$defs/stringArray"
+                },
+                "creationDate": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "severity": {
+                  "enum": [
+                    "BLOCKER",
+                    "CRITICAL",
+                    "SEVERE",
+                    "LOW",
+                    "TRIVIAL"
+                  ]
+                },
+                "type": {
+                  "enum": [
+                    "BUG",
+                    "IMPROVEMENT",
+                    "TASK"
+                  ]
+                },
+                "blockedIssues": {
+                  "$ref": "#/$defs/stringArray"
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "priority": {
+                  "enum": [
+                    "VERY_HIGH",
+                    "HIGH",
+                    "MEDIUM",
+                    "LOW"
+                  ]
+                },
+                "reporter": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "closed": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "versions": {
+                  "$ref": "#/$defs/stringArray"
+                },
+                "tags": {
+                  "$ref": "#/$defs/stringArray"
+                },
+                "changes": {
+                  "$ref": "#/$defs/changeLog"
+                },
+                "commits": {
+                  "$ref": "#/$defs/stringArray"
+                },
+                "projectId": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "projectId",
+                "status",
+                "severity",
+                "priority",
+                "creationDate",
+                "opened",
+                "reporter",
+                "assignee",
+                "id",
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^dueTo$": true,
+                "^closed$": true,
+                "^estimatedTime$": true,
+                "^severity$": true,
+                "^status$": true,
+                "^type$": true,
+                "^assignee$": true,
+                "^id$": true,
+                "^projectId$": true,
+                "^components$": true,
+                "^opened$": true,
+                "^tags$": true,
+                "^childIssues$": true,
+                "^versions$": true,
+                "^blockedIssues$": true,
+                "^description$": true,
+                "^name$": true,
+                "^reporter$": true,
+                "^commits$": true,
+                "^creationDate$": true,
+                "^priority$": true,
+                "^changes$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "commit": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "entries": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/changeLogEntry"
+                  },
+                  "_uniqueItems": true
+                }
+              },
+              "required": [
+                "entries"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^entries$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "emails": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "minItems": 1,
+                  "_uniqueItems": true
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "emails"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^name$": true,
+                "^emails$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "stringArray": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "_uniqueItems": true
+    },
+    "version": {
+      "$ref": "#/$defs/modern_6"
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "property": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "oldValue": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "property",
+                "oldValue"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^property$": true,
+                "^oldValue$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "changeLog": {
+      "$ref": "#/$defs/modern_7"
+    },
+    "valueDeleted": {
+      "$ref": "#/$defs/modern_8"
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "version": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "version"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^version$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_13": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "collector": {
+                  "$ref": "#/$defs/collector"
+                },
+                "projectIssues": {
+                  "type": "object",
+                  "patternProperties": {
+                    "^[a-fA-F0-9]+$": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/$defs/issue"
+                      },
+                      "_uniqueItems": true
+                    }
+                  }
+                },
+                "commits": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/commit"
+                  },
+                  "_uniqueItems": true
+                },
+                "projectComponents": {
+                  "type": "object",
+                  "patternProperties": {
+                    "^[a-fA-F0-9]+$": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/$defs/component"
+                      },
+                      "_uniqueItems": true
+                    }
+                  }
+                },
+                "projectVersions": {
+                  "type": "object",
+                  "patternProperties": {
+                    "^[a-fA-F0-9]+$": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/$defs/version"
+                      },
+                      "_uniqueItems": true
+                    }
+                  }
+                },
+                "projects": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/project"
+                  },
+                  "_uniqueItems": true
+                },
+                "contributors": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/contributor"
+                  },
+                  "_uniqueItems": true
+                }
+              },
+              "required": [
+                "collector",
+                "contributors",
+                "commits",
+                "projects",
+                "projectComponents",
+                "projectVersions",
+                "projectIssues"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^projects$": true,
+                "^projectComponents$": true,
+                "^contributors$": true,
+                "^collector$": true,
+                "^projectVersions$": true,
+                "^projectIssues$": true,
+                "^commits$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "repository": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "branch": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "hash": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "id",
+                "repository",
+                "branch",
+                "hash"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^repository$": true,
+                "^branch$": true,
+                "^hash$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "projectId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "projectId",
+                "id",
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^projectId$": true,
+                "^id$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "versions": {
+                  "$ref": "#/$defs/stringArray"
+                },
+                "components": {
+                  "$ref": "#/$defs/stringArray"
+                },
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "issues": {
+                  "$ref": "#/$defs/stringArray"
+                },
+                "topIssues": {
+                  "$ref": "#/$defs/stringArray"
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "versions",
+                "components",
+                "topIssues",
+                "issues"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^issues$": true,
+                "^name$": true,
+                "^id$": true,
+                "^components$": true,
+                "^topIssues$": true,
+                "^versions$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "valueAdded": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "projectId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "projectId",
+                "id",
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^projectId$": true,
+                "^id$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "collector": {
+      "$ref": "#/$defs/modern_9"
+    },
+    "valueModified": {
+      "$ref": "#/$defs/modern_10"
+    },
+    "contributor": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "property": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "oldValue": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "newValue": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "property",
+                "oldValue",
+                "newValue"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^property$": true,
+                "^oldValue$": true,
+                "^newValue$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "property": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "newValue": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "property",
+                "newValue"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^property$": true,
+                "^newValue$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "project": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_12": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "author": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "timeStamp": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "oneOf": [
+                      {
+                        "$ref": "#/$defs/valueAdded"
+                      },
+                      {
+                        "$ref": "#/$defs/valueDeleted"
+                      },
+                      {
+                        "$ref": "#/$defs/valueModified"
+                      }
+                    ]
+                  },
+                  "_uniqueItems": true
+                }
+              },
+              "required": [
+                "author",
+                "timeStamp",
+                "items"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^author$": true,
+                "^timeStamp$": true,
+                "^items$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "issue": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "component": {
+      "$ref": "#/$defs/modern_11"
+    },
+    "changeLogEntry": {
+      "$ref": "#/$defs/modern_12"
+    }
+  }
+}

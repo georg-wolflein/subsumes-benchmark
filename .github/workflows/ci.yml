@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  FORCE_COLOR: 1
+
+jobs:
+  # Every static check shares one job: each is seconds of work behind the environment
+  # setup, and each step runs whenever the setup succeeded so one failure does not hide
+  # the others.
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        id: setup
+        with:
+          python-version: "3.13"
+          enable-cache: true
+      - name: Check that the lockfile is current
+        run: uv lock --check
+      - name: Install
+        run: uv sync --all-groups
+      - name: ruff check
+        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
+        run: uv run ruff check --output-format=github .
+      - name: ruff format
+        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
+        run: uv run ruff format --check .
+      - name: ty check
+        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
+        run: uv run ty check
+
+  # The quick tests: the build's transformations and the layout of the committed corpus.
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.13", "3.14"]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          python-version: ${{ matrix.python-version }}
+          enable-cache: true
+      - run: uv sync --all-groups
+      - run: uv run pytest
+
+  # The slow tests read every schema of the committed corpus: each is valid draft 2020-12,
+  # each reference resolves, and each label that validation can check holds. They need no
+  # upstream sources, so the submodules under sources/ stay unfetched.
+  corpus:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          python-version: "3.13"
+          enable-cache: true
+      - run: uv sync --all-groups
+      - run: uv run pytest -m slow

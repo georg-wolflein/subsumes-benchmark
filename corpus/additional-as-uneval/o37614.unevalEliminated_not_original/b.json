@@ -1,0 +1,107 @@
+{
+  "$id": "https://www.yacpdb.org/schemas/yacpdb-source.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_2",
+  "$defs": {
+    "source_type_type": {
+      "type": "string",
+      "pattern": "^(magazine|newspaper|award booklet|book|anthology|article|lecture|solving event|website|booklet)$",
+      "maxLength": 255
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "domain": {
+                  "type": "string",
+                  "pattern": "^database\\.wfcc\\.ch$"
+                },
+                "id": {
+                  "type": "integer",
+                  "minimum": 1.0
+                }
+              },
+              "required": [
+                "domain",
+                "id"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^domain$": true,
+                "^id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "foreignid_type": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "text_list": {
+      "type": "array",
+      "elements": {
+        "$ref": "#/$defs/text"
+      },
+      "minItems": 1,
+      "_uniqueItems": true
+    },
+    "text": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "string",
+          "minLength": 1
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "$ref": "#/$defs/text"
+                },
+                "type": {
+                  "$ref": "#/$defs/source_type_type"
+                },
+                "foreignids": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/foreignid_type"
+                  },
+                  "minItems": 1
+                },
+                "comments": {
+                  "$ref": "#/$defs/text_list"
+                }
+              },
+              "required": [
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^type$": true,
+                "^foreignids$": true,
+                "^comments$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

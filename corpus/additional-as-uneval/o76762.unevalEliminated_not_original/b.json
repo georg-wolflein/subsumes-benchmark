@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string"
+                },
+                "text": {
+                  "type": "string"
+                },
+                "likes": {
+                  "type": "integer",
+                  "minimum": 0.0
+                },
+                "id": {
+                  "type": "string"
+                },
+                "media": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "time": {
+                  "description": "UNIX time at which the post was made",
+                  "minimum": 0.0,
+                  "type": "integer"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "image",
+                    "video"
+                  ]
+                },
+                "comments": {
+                  "type": "integer",
+                  "minimum": 0.0
+                }
+              },
+              "required": [
+                "id",
+                "username",
+                "time",
+                "type",
+                "like",
+                "comment",
+                "text",
+                "media"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^username$": true,
+                "^media$": true,
+                "^type$": true,
+                "^comments$": true,
+                "^likes$": true,
+                "^text$": true,
+                "^id$": true,
+                "^time$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

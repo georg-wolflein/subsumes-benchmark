@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "type": "object"
+                },
+                {
+                  "allOf": [
+                    {
+                      "properties": {
+                        "foo": {
+                          "const": "then"
+                        }
+                      },
+                      "required": [
+                        "foo"
+                      ]
+                    },
+                    {
+                      "properties": {
+                        "bar": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "bar"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^foo$": true,
+                "^bar$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "type": "object"
+                },
+                {
+                  "allOf": [
+                    {
+                      "not": {
+                        "properties": {
+                          "foo": {
+                            "const": "then"
+                          }
+                        },
+                        "required": [
+                          "foo"
+                        ]
+                      }
+                    },
+                    {
+                      "properties": {
+                        "baz": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "baz"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^baz$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "type": "object"
+                },
+                {
+                  "allOf": [
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "foo": {
+                              "const": "then"
+                            }
+                          },
+                          "required": [
+                            "foo"
+                          ]
+                        },
+                        {
+                          "properties": {
+                            "bar": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "bar"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "not": {
+                            "properties": {
+                              "foo": {
+                                "const": "then"
+                              }
+                            },
+                            "required": [
+                              "foo"
+                            ]
+                          }
+                        },
+                        {
+                          "properties": {
+                            "baz": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "baz"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^foo$": true,
+                "^bar$": true,
+                "^baz$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

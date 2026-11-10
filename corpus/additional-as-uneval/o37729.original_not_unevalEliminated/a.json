@@ -1,0 +1,708 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "TODO",
+  "properties": {
+    "relative": {
+      "$ref": "#/$defs/connectedPerson"
+    },
+    "phoneNumber": {
+      "chance": {
+        "phone": {
+          "country": "uk"
+        }
+      },
+      "type": "string"
+    },
+    "calls": {
+      "items": {
+        "$ref": "#/$defs/call"
+      },
+      "type": "array"
+    },
+    "birthYear": {
+      "maximum": 2020.0,
+      "minimum": 1900.0,
+      "type": "number"
+    },
+    "changeLog": {
+      "$ref": "#/$defs/changeLog"
+    },
+    "case": {
+      "$ref": "#/$defs/case"
+    },
+    "otherNames": {
+      "faker": "name.firstName",
+      "minLength": 1,
+      "type": "string"
+    },
+    "healthWorker": {
+      "facilityName": {
+        "type": "string"
+      },
+      "isHealthWorker": {
+        "type": "boolean"
+      }
+    },
+    "isHeadOfHousehold": {
+      "type": "boolean"
+    },
+    "duplicates": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "doc_type": {
+      "pattern": "^person$",
+      "type": "string"
+    },
+    "modifiedDate": {
+      "_format": "date-time",
+      "type": "string"
+    },
+    "surname": {
+      "faker": "name.firstName",
+      "minLength": 1,
+      "type": "string"
+    },
+    "currentLocation": {
+      "type": "string"
+    },
+    "leader": {
+      "$ref": "#/$defs/connectedPerson"
+    },
+    "contact": {
+      "$ref": "#/$defs/contact"
+    },
+    "age": {
+      "properties": {
+        "category": {
+          "enum": [
+            "infant",
+            "child",
+            "adult"
+          ]
+        },
+        "months": {
+          "maximum": 11.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        "years": {
+          "maximum": 121.0,
+          "minimum": 0.0,
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "otherIds": {
+      "type": "object"
+    },
+    "version": {
+      "_format": "semver",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "alive",
+        "dead"
+      ]
+    },
+    "phoneOwner": {
+      "faker": "name.findName",
+      "type": "string"
+    },
+    "birthDay": {
+      "maximum": 31.0,
+      "minimum": 1.0,
+      "type": "number"
+    },
+    "duplicateOf": {
+      "type": "string"
+    },
+    "actions": {
+      "type": "array"
+    },
+    "address": {
+      "$ref": "#/$defs/address"
+    },
+    "occupation": {
+      "faker": "company.bs",
+      "type": "string"
+    },
+    "labResults": {
+      "items": {
+        "$ref": "#/$defs/labResult"
+      },
+      "type": "array"
+    },
+    "birthMonth": {
+      "maximum": 12.0,
+      "minimum": 1.0,
+      "type": "number"
+    },
+    "sources": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "comments": {
+      "items": {
+        "properties": {
+          "date": {
+            "_format": "date-time",
+            "type": "string"
+          },
+          "text": {
+            "chance": {
+              "sentence": {
+                "words": 10
+              }
+            },
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "createdDate": {
+      "_format": "date-time",
+      "type": "string"
+    },
+    "gender": {
+      "enum": [
+        "m",
+        "f"
+      ]
+    }
+  },
+  "required": [
+    "doc_type",
+    "version",
+    "createdDate"
+  ],
+  "title": "Person",
+  "type": "object",
+  "$defs": {
+    "labResult": {
+      "properties": {
+        "collectionType": {
+          "enum": [
+            "initial",
+            "repeat"
+          ]
+        },
+        "importedDate": {
+          "_format": "date-time",
+          "type": "string"
+        },
+        "addressOnset": {
+          "$ref": "#/$defs/address"
+        },
+        "result": {
+          "enum": [
+            "positive",
+            "negative",
+            "indeterminate"
+          ]
+        },
+        "initialSymptomOnsetDate": {
+          "_format": "date-time",
+          "type": "string"
+        },
+        "statusAtSampleCollection": {
+          "enum": [
+            "alive",
+            "dead"
+          ]
+        },
+        "collectedBy": {
+          "properties": {
+            "contact1": {
+              "type": "object"
+            },
+            "contact2": {
+              "type": "object"
+            },
+            "facilityName": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "labName": {
+          "type": "string"
+        },
+        "testedDate": {
+          "_format": "date-time",
+          "type": "string"
+        },
+        "cdcTest": {
+          "type": "string"
+        },
+        "ms2Control": {
+          "type": "string"
+        },
+        "caseId": {
+          "type": "string"
+        },
+        "sampledDate": {
+          "_format": "date-time",
+          "type": "string"
+        },
+        "minRequirementStatus": {
+          "enum": [
+            "accepted",
+            "pending",
+            "rejected"
+          ]
+        },
+        "sampleType": {
+          "type": "string"
+        },
+        "sampleId": {
+          "type": "string"
+        },
+        "ctValue": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "symptoms": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "connectedPerson": {
+      "properties": {
+        "name": {
+          "faker": "name.findName",
+          "type": "string"
+        },
+        "phone": {
+          "chance": {
+            "phone": {
+              "country": "uk"
+            }
+          },
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "headache": {
+                  "type": "boolean"
+                },
+                "difficulty_breathing": {
+                  "type": "boolean"
+                },
+                "rash": {
+                  "type": "boolean"
+                },
+                "abdominal_pains": {
+                  "type": "boolean"
+                },
+                "nausea_vomiting": {
+                  "type": "boolean"
+                },
+                "sore_throat": {
+                  "type": "boolean"
+                },
+                "temperature": {
+                  "type": "number"
+                },
+                "muscular_pain": {
+                  "type": "boolean"
+                },
+                "bruises": {
+                  "type": "boolean"
+                },
+                "diarrhea": {
+                  "type": "boolean"
+                },
+                "cough": {
+                  "type": "boolean"
+                },
+                "jaundice": {
+                  "type": "boolean"
+                },
+                "other": {
+                  "type": "string"
+                },
+                "thoracic_pain": {
+                  "type": "boolean"
+                },
+                "red_eyes": {
+                  "type": "boolean"
+                },
+                "articular_pain": {
+                  "type": "boolean"
+                },
+                "other_symptoms": {
+                  "type": "boolean"
+                },
+                "unexplained_bleedings": {
+                  "type": "boolean"
+                },
+                "neck_rigidity": {
+                  "type": "boolean"
+                },
+                "back_pain": {
+                  "type": "boolean"
+                },
+                "intense_fatigue": {
+                  "type": "boolean"
+                },
+                "hiccups": {
+                  "type": "boolean"
+                },
+                "difficulty_swallowing": {
+                  "type": "boolean"
+                },
+                "loss_of_appetite": {
+                  "type": "boolean"
+                },
+                "fever": {
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^back_pain$": true,
+                "^diarrhea$": true,
+                "^cough$": true,
+                "^bruises$": true,
+                "^muscular_pain$": true,
+                "^temperature$": true,
+                "^difficulty_breathing$": true,
+                "^thoracic_pain$": true,
+                "^headache$": true,
+                "^abdominal_pains$": true,
+                "^difficulty_swallowing$": true,
+                "^nausea_vomiting$": true,
+                "^jaundice$": true,
+                "^red_eyes$": true,
+                "^loss_of_appetite$": true,
+                "^unexplained_bleedings$": true,
+                "^rash$": true,
+                "^hiccups$": true,
+                "^other_symptoms$": true,
+                "^intense_fatigue$": true,
+                "^other$": true,
+                "^fever$": true,
+                "^sore_throat$": true,
+                "^neck_rigidity$": true,
+                "^articular_pain$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "city": {
+                  "faker": "address.city",
+                  "type": "string"
+                },
+                "adminDivision3": {
+                  "type": [
+                    "string",
+                    "number"
+                  ]
+                },
+                "adminDivision2": {
+                  "type": [
+                    "string",
+                    "number"
+                  ]
+                },
+                "ward": {
+                  "maximum": 999.0,
+                  "minimum": 0.0,
+                  "type": "integer"
+                },
+                "address": {
+                  "faker": "address.streetAddress",
+                  "type": "string"
+                },
+                "adminDivision1": {
+                  "type": [
+                    "string",
+                    "number"
+                  ]
+                },
+                "adminDivision4": {
+                  "type": [
+                    "string",
+                    "number"
+                  ]
+                },
+                "countryCode": {
+                  "description": "country code following ISO_3166-1_alpha-2 in lowercase",
+                  "pattern": "^(gn|ml|lr|mg|sl)$",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^ward$": true,
+                "^city$": true,
+                "^countryCode$": true,
+                "^adminDivision4$": true,
+                "^address$": true,
+                "^adminDivision2$": true,
+                "^adminDivision3$": true,
+                "^adminDivision1$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "contact": {
+      "properties": {
+        "followUps": {
+          "items": {
+            "properties": {
+              "symptoms": {
+                "$ref": "#/$defs/symptoms"
+              },
+              "interviewer": {
+                "$ref": "#/$defs/connectedPerson"
+              },
+              "status": {
+                "enum": [
+                  "incomplete",
+                  "complete"
+                ]
+              },
+              "comment": {
+                "type": "string"
+              },
+              "incompleteReason": {
+                "enum": [
+                  "food-distribution-incomplete",
+                  "no-food-distribution",
+                  "gone-to-work",
+                  "resistance",
+                  "travelling",
+                  "other"
+                ]
+              },
+              "dateOfVisit": {
+                "_format": "date-time",
+                "type": "string"
+              },
+              "geoInfo": {
+                "properties": {
+                  "coords": {
+                    "properties": {
+                      "latitude": {
+                        "type": "number"
+                      },
+                      "longitude": {
+                        "type": "number"
+                      }
+                    },
+                    "type": "object"
+                  }
+                },
+                "type": "object"
+              },
+              "isSymptomatic": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "sourceCases": {
+          "items": {
+            "properties": {
+              "exposures": {
+                "items": {
+                  "enum": [
+                    "slept-ate",
+                    "physical-contact",
+                    "touch-fluids",
+                    "objects",
+                    "breastfeeding",
+                    "funeral",
+                    "other"
+                  ]
+                },
+                "relationToCase": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "lastContactDate": {
+                "_format": "date-time",
+                "type": "string"
+              },
+              "personId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "personId"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "status": {
+          "enum": [
+            "unknown",
+            "active",
+            "complete",
+            "lost"
+          ]
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "type": "object"
+    },
+    "changeLog": {
+      "items": {
+        "properties": {
+          "rev": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "integer"
+          },
+          "user": {
+            "faker": "name.findName",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "address": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "case": {
+      "properties": {
+        "symptoms": {
+          "$ref": "#/$defs/symptoms"
+        },
+        "hadContactWith": {
+          "deadPerson": {
+            "type": "boolean"
+          },
+          "healthWorker": {
+            "type": "boolean"
+          },
+          "homeQuarantine": {
+            "type": "boolean"
+          },
+          "sickPerson": {
+            "type": "boolean"
+          }
+        },
+        "id": {
+          "type": "string"
+        },
+        "onsetDate": {
+          "_format": "date-time",
+          "type": "string"
+        },
+        "interviewer": {
+          "$ref": "#/$defs/connectedPerson"
+        },
+        "status": {
+          "enum": [
+            "unknown",
+            "suspect",
+            "probable",
+            "confirmed",
+            "not a case"
+          ]
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "type": "object"
+    },
+    "call": {
+      "properties": {
+        "name": {
+          "faker": "name.findName",
+          "type": "string"
+        },
+        "phoneNumber": {
+          "chance": {
+            "phone": {
+              "country": "uk"
+            }
+          },
+          "type": "string"
+        },
+        "callNature": {
+          "enum": [
+            "death",
+            "suspect",
+            "sick",
+            "health information",
+            "quarantine",
+            "security threat",
+            "prank call",
+            "other"
+          ]
+        },
+        "isFollowUp": {
+          "type": "boolean"
+        },
+        "address": {
+          "$ref": "#/$defs/address"
+        },
+        "otherPhoneNumber": {
+          "chance": {
+            "phone": {
+              "country": "uk"
+            }
+          },
+          "type": "string"
+        },
+        "createdBy": {
+          "faker": "name.findName",
+          "type": "string"
+        },
+        "callDetails": {
+          "type": "string"
+        },
+        "createdDate": {
+          "_format": "date-time",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  }
+}

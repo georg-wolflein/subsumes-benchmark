@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_4",
+  "$defs": {
+    "repository": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "Name of the repository",
+                  "maxLength": 100
+                },
+                "owner": {
+                  "$ref": "#/$defs/owner"
+                }
+              },
+              "required": [
+                "name",
+                "owner"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^owner$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "description": "Name of the repository owner",
+                  "maxLength": 100
+                }
+              },
+              "required": [
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "login": {
+                  "description": "Name of the repository owner",
+                  "maxLength": 100
+                }
+              },
+              "required": [
+                "login"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^login$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    },
+    "owner": {
+      "type": "object",
+      "anyOf": [
+        {
+          "$ref": "#/$defs/modern_2"
+        },
+        {
+          "$ref": "#/$defs/modern_3"
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "ref": {
+                  "description": "Github branch/tag",
+                  "type": "string",
+                  "maxLength": 255
+                },
+                "after": {
+                  "type": "string",
+                  "title": "Github push (after commit)",
+                  "maxLength": 250
+                },
+                "deleted": {
+                  "type": "boolean"
+                },
+                "repository": {
+                  "$ref": "#/$defs/repository"
+                }
+              },
+              "required": [
+                "repository"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^ref$": true,
+                "^after$": true,
+                "^deleted$": true,
+                "^repository$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

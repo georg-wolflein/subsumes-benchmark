@@ -1,0 +1,242 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "items": {
+    "additionalProperties": false,
+    "properties": {
+      "announcement": {
+        "$ref": "#/$defs/longTextMultilingual"
+      },
+      "contactPoint": {
+        "$ref": "#/$defs/shortTextMultilingual"
+      },
+      "dataDictionary": {
+        "$ref": "#/$defs/webLinkMultilingual"
+      },
+      "description": {
+        "$ref": "#/$defs/longTextMultilingual"
+      },
+      "group": {
+        "$ref": "#/$defs/groupCode"
+      },
+      "identifier": {
+        "maxLength": 70,
+        "minLength": 2,
+        "type": "string"
+      },
+      "licence": {
+        "$ref": "#/$defs/licenceCode"
+      },
+      "mbox": {
+        "$ref": "#/$defs/emailAddress"
+      },
+      "phone": {
+        "$ref": "#/$defs/phoneNumber"
+      },
+      "references": {
+        "items": {
+          "$ref": "#/$defs/webLinkMultilingual"
+        },
+        "type": "array"
+      },
+      "resources": {
+        "items": {
+          "additionalProperties": false,
+          "properties": {
+            "accessURL": {
+              "$ref": "#/$defs/webLink"
+            },
+            "format": {
+              "$ref": "#/$defs/codeText"
+            },
+            "isAPI": {
+              "enum": [
+                "Y",
+                "N"
+              ],
+              "type": "string"
+            },
+            "resourceDescription": {
+              "$ref": "#/$defs/longTextMultilingual"
+            },
+            "resourceTitle": {
+              "$ref": "#/$defs/shortTextMultilingual"
+            },
+            "schema": {
+              "$ref": "#/$defs/webLink"
+            },
+            "spatial": {
+              "type": "string"
+            },
+            "temporal": {
+              "additionalProperties": false,
+              "properties": {
+                "from": {
+                  "type": "string"
+                },
+                "to": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "from",
+                "to"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "accessURL",
+            "format",
+            "isAPI",
+            "resourceDescription",
+            "resourceTitle"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "sources": {
+        "items": {
+          "$ref": "#/$defs/webLinkMultilingual"
+        },
+        "type": "array"
+      },
+      "title": {
+        "$ref": "#/$defs/shortTextMultilingual"
+      },
+      "updateFrequency": {
+        "$ref": "#/$defs/shortTextMultilingual"
+      }
+    },
+    "required": [
+      "description",
+      "group",
+      "identifier",
+      "mbox",
+      "resources",
+      "title",
+      "updateFrequency"
+    ],
+    "type": "object"
+  },
+  "type": "array",
+  "$defs": {
+    "codeText": {
+      "maxLength": 100,
+      "minLength": 1,
+      "type": "string"
+    },
+    "emailAddress": {
+      "format": "email",
+      "maxLength": 254,
+      "type": "string"
+    },
+    "groupCode": {
+      "enum": [
+        "accessibility",
+        "air-quality-health-index",
+        "buildings",
+        "charitable-fund-raising-activities",
+        "food-and-environmental-hygiene",
+        "geospatial-data",
+        "image-resources",
+        "law-and-order",
+        "marine",
+        "news-and-information",
+        "population-census-statistics",
+        "property-market-statistics",
+        "public-transport",
+        "real-time-traffic-data",
+        "water-quality",
+        "weather-data"
+      ],
+      "type": "string"
+    },
+    "licenceCode": {
+      "enum": [
+        "Data.One"
+      ],
+      "type": "string"
+    },
+    "longText": {
+      "maxLength": 30000,
+      "minLength": 1,
+      "type": "string"
+    },
+    "longTextMultilingual": {
+      "additionalProperties": false,
+      "properties": {
+        "en": {
+          "$ref": "#/$defs/longText"
+        },
+        "zh-Hans": {
+          "$ref": "#/$defs/longText"
+        },
+        "zh-Hant": {
+          "$ref": "#/$defs/longText"
+        }
+      },
+      "required": [
+        "en",
+        "zh-Hant",
+        "zh-Hans"
+      ],
+      "type": "object"
+    },
+    "phoneNumber": {
+      "maxLength": 100,
+      "minLength": 1,
+      "type": "string"
+    },
+    "shortText": {
+      "maxLength": 1000,
+      "minLength": 1,
+      "type": "string"
+    },
+    "shortTextMultilingual": {
+      "additionalProperties": false,
+      "properties": {
+        "en": {
+          "$ref": "#/$defs/shortText"
+        },
+        "zh-Hans": {
+          "$ref": "#/$defs/shortText"
+        },
+        "zh-Hant": {
+          "$ref": "#/$defs/shortText"
+        }
+      },
+      "required": [
+        "en",
+        "zh-Hant",
+        "zh-Hans"
+      ],
+      "type": "object"
+    },
+    "webLink": {
+      "format": "uri",
+      "maxLength": 2000,
+      "type": "string"
+    },
+    "webLinkMultilingual": {
+      "additionalProperties": false,
+      "properties": {
+        "en": {
+          "$ref": "#/$defs/webLink"
+        },
+        "zh-Hans": {
+          "$ref": "#/$defs/webLink"
+        },
+        "zh-Hant": {
+          "$ref": "#/$defs/webLink"
+        }
+      },
+      "required": [
+        "en",
+        "zh-Hant",
+        "zh-Hans"
+      ],
+      "type": "object"
+    }
+  }
+}

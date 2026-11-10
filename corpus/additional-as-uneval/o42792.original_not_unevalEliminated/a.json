@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "from_ref": {
+                  "type": "string",
+                  "pattern": "^[\\w\\/\\.:-]+$"
+                },
+                "to_ref": {
+                  "type": "string",
+                  "pattern": "^[\\w\\/\\.:-]+$"
+                },
+                "multiplicity": {
+                  "type": "string",
+                  "default": "multi",
+                  "enum": [
+                    "unknown",
+                    "multi",
+                    "simple",
+                    "many2one",
+                    "one2many",
+                    "one2one"
+                  ]
+                },
+                "created_at": {
+                  "type": "string",
+                  "pattern": "^[1-9]{1}[0-9]{12,15}$"
+                }
+              },
+              "required": [
+                "from_ref",
+                "to_ref"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^from_ref$": true,
+                "^to_ref$": true,
+                "^multiplicity$": true,
+                "^created_at$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

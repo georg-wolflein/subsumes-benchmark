@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "oneOf": [
+    {
+      "properties": {
+        "valuePath": {
+          "$ref": "#/$defs/valuePath"
+        },
+        "changeType": {
+          "$ref": "#/$defs/_changeTypeOthers"
+        },
+        "changeThreshold": {
+          "$ref": "#/$defs/changeThreshold"
+        },
+        "prevValuePath": {
+          "$ref": "#/$defs/prevValuePath"
+        }
+      },
+      "required": [
+        "valuePath",
+        "changeType",
+        "changeThreshold"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "properties": {
+        "valuePath": {
+          "$ref": "#/$defs/valuePath"
+        },
+        "changeType": {
+          "$ref": "#/$defs/_changeTypeAny"
+        },
+        "prevValuePath": {
+          "$ref": "#/$defs/prevValuePath"
+        }
+      },
+      "required": [
+        "valuePath",
+        "changeType"
+      ],
+      "additionalProperties": false
+    }
+  ],
+  "$defs": {
+    "valuePath": {
+      "title": "Value Path",
+      "description": "JSON Path of where to find value to check in payload",
+      "type": "string",
+      "minLength": 1
+    },
+    "_changeTypeOthers": {
+      "title": "Change Type",
+      "enum": [
+        "percent",
+        "percentInc",
+        "percentDec",
+        "value",
+        "valueInc",
+        "valueDec"
+      ]
+    },
+    "_changeTypeAny": {
+      "title": "Change Type",
+      "enum": [
+        "any"
+      ]
+    },
+    "changeThreshold": {
+      "title": "Change Threshold",
+      "description": "Amount of change required",
+      "type": "number"
+    },
+    "prevValuePath": {
+      "title": "Previous Value Path",
+      "description": "JSON path of where to put the previous triggering value and time",
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

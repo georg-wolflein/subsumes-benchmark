@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Namespace Value Resource",
+              "description": "A single namespace value within a BEL Namespace.",
+              "type": "object",
+              "required": [
+                "namespace_value"
+              ],
+              "properties": {
+                "namespace_value": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^namespace_value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "type",
+                "identifier",
+                "name",
+                "title",
+                "species"
+              ],
+              "properties": {
+                "species": {
+                  "type": [
+                    "null",
+                    "string"
+                  ]
+                },
+                "name": {
+                  "type": "string"
+                },
+                "identifier": {
+                  "type": "string"
+                },
+                "match_text": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": [
+                    "null",
+                    "string"
+                  ]
+                },
+                "type": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^species$": true,
+                "^identifier$": true,
+                "^name$": true,
+                "^type$": true,
+                "^match_text$": true,
+                "^title$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

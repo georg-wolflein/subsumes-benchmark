@@ -1,0 +1,203 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/modern_1"
+    },
+    {
+      "$ref": "#/$defs/modern_3"
+    }
+  ],
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "$date": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "$date"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^$date$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Device Connected",
+              "description": "Schema for marking a device as connected",
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "connected"
+                  ]
+                },
+                "connectedAt": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "$ref": "#/$defs/modern_2"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "status"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^status$": true,
+                "^connectedAt$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "$date": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "$date"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^$date$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Device Disconnected",
+              "description": "Schema for marking a device as disconnected",
+              "type": "object",
+              "properties": {
+                "messagesFromClient": {
+                  "type": "number"
+                },
+                "connectedAt": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "$ref": "#/$defs/modern_4"
+                    }
+                  ]
+                },
+                "disconnectReason": {
+                  "type": "string",
+                  "maxLength": 1024
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "disconnected"
+                  ]
+                },
+                "messagesToClient": {
+                  "type": "number"
+                },
+                "disconnectedAt": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "$ref": "#/$defs/modern_5"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "status"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^disconnectReason$": true,
+                "^disconnectedAt$": true,
+                "^connectedAt$": true,
+                "^status$": true,
+                "^messagesToClient$": true,
+                "^messagesFromClient$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "$date": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "$date"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^$date$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

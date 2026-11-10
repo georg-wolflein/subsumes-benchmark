@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "person": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              },
+              "required": [
+                "person"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^person$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "is_available": {
+                  "type": "boolean"
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email"
+                },
+                "notifications_email_enabled": {
+                  "type": "boolean"
+                },
+                "notifications_app_enabled": {
+                  "type": "boolean"
+                },
+                "notifications_chat_enabled": {
+                  "type": "boolean"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "phone_number": {
+                  "type": "string"
+                },
+                "notifications_enabled": {
+                  "type": "boolean"
+                },
+                "is_visible": {
+                  "type": "boolean"
+                },
+                "notifications_sms_enabled": {
+                  "type": "boolean"
+                },
+                "id": {
+                  "type": "integer"
+                }
+              },
+              "minProperties": 1
+            },
+            {
+              "patternProperties": {
+                "^notifications_enabled$": true,
+                "^is_visible$": true,
+                "^is_available$": true,
+                "^notifications_app_enabled$": true,
+                "^name$": true,
+                "^id$": true,
+                "^title$": true,
+                "^notifications_sms_enabled$": true,
+                "^notifications_email_enabled$": true,
+                "^email$": true,
+                "^notifications_chat_enabled$": true,
+                "^phone_number$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

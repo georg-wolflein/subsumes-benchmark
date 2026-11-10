@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "kdf": {
+      "enum": [
+        "pbkdf2"
+      ],
+      "type": "string"
+    },
+    "kdfparams": {
+      "$ref": "#/$defs/modern_1"
+    }
+  },
+  "required": [
+    "kdf",
+    "kdfparams"
+  ],
+  "type": "object",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "c": {
+                  "minimum": 1.0,
+                  "type": "integer"
+                },
+                "dklen": {
+                  "minimum": 1.0,
+                  "type": "integer"
+                },
+                "prf": {
+                  "enum": [
+                    "hmac-sha256"
+                  ],
+                  "type": "string"
+                },
+                "salt": {
+                  "pattern": "^(([0-9]|[a-f]){2}){0,32}$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "c",
+                "dklen",
+                "prf",
+                "salt"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^c$": true,
+                "^dklen$": true,
+                "^prf$": true,
+                "^salt$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

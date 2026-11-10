@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "basicAuthPassword": {
+                  "type": "string",
+                  "maxLength": 255
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 255
+                },
+                "verificationType": {
+                  "type": "string",
+                  "enum": [
+                    "facebook",
+                    "fitbit",
+                    "none",
+                    "twilio",
+                    "alexa"
+                  ]
+                },
+                "verificationCode": {
+                  "type": "string",
+                  "maxLength": 32767
+                },
+                "responseCode": {
+                  "type": "integer",
+                  "minimum": 100.0,
+                  "maximum": 599.0
+                },
+                "waitForReply": {
+                  "type": "boolean"
+                },
+                "basicAuthUsername": {
+                  "type": "string",
+                  "maxLength": 255
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^waitForReply$": true,
+                "^verificationCode$": true,
+                "^verificationType$": true,
+                "^basicAuthUsername$": true,
+                "^name$": true,
+                "^responseCode$": true,
+                "^basicAuthPassword$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

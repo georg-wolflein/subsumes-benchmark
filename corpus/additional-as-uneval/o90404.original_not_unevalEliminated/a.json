@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "$$target": "kubeNodeTaint.json",
+              "title": "Taint Configuration",
+              "description": "Configuration for taint for use in K2.",
+              "properties": {
+                "key": {
+                  "description": "Taint key which must match toleration",
+                  "pattern": "^([A-Za-z0-9][A-Za-z0-9-._]*)?$",
+                  "minLength": 0,
+                  "maxLength": 253,
+                  "type": "string"
+                },
+                "value": {
+                  "description": "Taint value",
+                  "pattern": "^([A-Za-z0-9][A-Za-z0-9-._]*)?$",
+                  "minLength": 0,
+                  "maxLength": 63,
+                  "type": "string"
+                },
+                "effect": {
+                  "description": "NoSchedule, PreferNoSchedule or NoExecute to restrict access to node",
+                  "enum": [
+                    "NoSchedule",
+                    "PreferNoSchedule",
+                    "NoExecute"
+                  ],
+                  "type": "string"
+                }
+              },
+              "required": [
+                "key",
+                "value",
+                "effect"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^key$": true,
+                "^value$": true,
+                "^effect$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

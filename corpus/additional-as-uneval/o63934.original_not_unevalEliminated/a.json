@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "s3_rrs": {
+                  "description": "Activate reduced redundancy or not in S3 storage",
+                  "type": "boolean"
+                },
+                "output_type": {
+                  "description": "Type of the file to output VIDEO, THUMB, AUDIO, DOC, IMG",
+                  "enum": [
+                    "VIDEO",
+                    "THUMB",
+                    "AUDIO",
+                    "IMG",
+                    "DOC"
+                  ],
+                  "type": "string"
+                },
+                "s3_encrypt": {
+                  "description": "Activate backend storage encryption",
+                  "type": "boolean"
+                },
+                "output_file": {
+                  "description": "Filename where to upload the resulting file",
+                  "maxLength": 1024,
+                  "minLength": 1,
+                  "pattern": "^[\\w /-]+\\.[0-9a-zA-Z]+$",
+                  "type": "string"
+                },
+                "output_bucket": {
+                  "description": "S3 bucket and path where the output file will be uploaded",
+                  "maxLength": 63,
+                  "minLength": 3,
+                  "pattern": "^[0-9a-zA-Z\\.\\-_]+$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "output_type",
+                "output_bucket",
+                "output_file"
+              ],
+              "title": "CT transcode output specification",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^output_bucket$": true,
+                "^output_file$": true,
+                "^s3_rrs$": true,
+                "^s3_encrypt$": true,
+                "^output_type$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

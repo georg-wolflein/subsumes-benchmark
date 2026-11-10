@@ -1,0 +1,1403 @@
+{
+  "$id": "http://info.meshcentral.com/download/meshcentral-config-schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "MeshCentral configuration file schema",
+  "type": "object",
+  "properties": {
+    "smtp": {
+      "title": "Email server",
+      "description": "Connects MeshCentral to a email server, allows MeshCentral to send email messages for 2FA or user notification.",
+      "type": "object",
+      "properties": {
+        "tlscertcheck": {
+          "type": "boolean"
+        },
+        "tlsstrict": {
+          "type": "boolean"
+        },
+        "host": {
+          "type": "string",
+          "format": "hostname"
+        },
+        "tls": {
+          "type": "boolean"
+        },
+        "port": {
+          "type": "integer",
+          "minimum": 1.0,
+          "maximum": 65535.0
+        },
+        "from": {
+          "type": "string",
+          "format": "email"
+        }
+      },
+      "required": [
+        "host",
+        "port",
+        "from",
+        "tls"
+      ]
+    },
+    "domaindefaults": {
+      "$ref": "#/properties/domains/items"
+    },
+    "sms": {
+      "title": "SMS provider",
+      "description": "Connects MeshCentral to a SMS text messaging provider, allows MeshCentral to send SMS messages for 2FA or user notification.",
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "provider": {
+              "type": "string",
+              "enum": [
+                "twilio"
+              ]
+            },
+            "sid": {
+              "type": "string"
+            },
+            "auth": {
+              "type": "string"
+            },
+            "from": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "provider",
+            "sid",
+            "auth",
+            "from"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "provider": {
+              "type": "string",
+              "enum": [
+                "plivo"
+              ]
+            },
+            "id": {
+              "type": "string"
+            },
+            "token": {
+              "type": "string"
+            },
+            "from": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "provider",
+            "id",
+            "token",
+            "from"
+          ]
+        }
+      ]
+    },
+    "domains": {
+      "type": "object",
+      "items": {
+        "type": "object",
+        "properties": {
+          "agentInviteCodes": {
+            "type": "boolean",
+            "default": false
+          },
+          "welcomePicture": {
+            "type": "string"
+          },
+          "consentMessages": {
+            "$ref": "#/$defs/modern_1"
+          },
+          "passwordRequirements": {
+            "type": "object",
+            "properties": {
+              "force2factor": {
+                "type": "boolean"
+              },
+              "nonalpha": {
+                "type": "integer"
+              },
+              "min": {
+                "type": "integer"
+              },
+              "lower": {
+                "type": "integer"
+              },
+              "upper": {
+                "type": "integer"
+              },
+              "skip2factor": {
+                "type": "string"
+              },
+              "max": {
+                "type": "integer"
+              },
+              "reset": {
+                "type": "integer"
+              },
+              "numeric": {
+                "type": "integer"
+              }
+            }
+          },
+          "userAllowedIP": {
+            "type": "string"
+          },
+          "titlePicture": {
+            "type": "string"
+          },
+          "customUI": {
+            "type": "object"
+          },
+          "title": {
+            "type": "string"
+          },
+          "urlSwitching": {
+            "type": "boolean"
+          },
+          "newAccounts": {
+            "type": "boolean"
+          },
+          "geoLocation": {
+            "type": "boolean",
+            "default": false
+          },
+          "notificationMessages": {
+            "$ref": "#/$defs/modern_2"
+          },
+          "title2": {
+            "type": "string"
+          },
+          "agentAllowedIP": {
+            "type": "string"
+          },
+          "novnc": {
+            "type": "boolean",
+            "default": true
+          },
+          "agentConfig": {
+            "type": "array",
+            "_uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "amtAcmActivation": {
+            "$ref": "#/$defs/modern_3"
+          },
+          "welcomeText": {
+            "type": "string"
+          },
+          "sessionRecording": {
+            "$ref": "#/$defs/modern_6"
+          },
+          "newAccountsUserGroups": {
+            "type": "array",
+            "_uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "certUrl": {
+            "type": "string",
+            "format": "uri"
+          },
+          "authStrategies": {
+            "$ref": "#/$defs/modern_7"
+          },
+          "userSessionIdleTimeout": {
+            "type": "integer"
+          },
+          "userQuota": {
+            "type": "integer"
+          },
+          "desktopPrivacyBarText": {
+            "type": "string"
+          },
+          "agentNoProxy": {
+            "type": "boolean",
+            "default": false
+          },
+          "yubikey": {
+            "$ref": "#/$defs/modern_9"
+          },
+          "userBlockedIP": {
+            "type": "string"
+          },
+          "userConsentFlags": {
+            "type": "integer"
+          },
+          "userNameIsEmail": {
+            "type": "boolean",
+            "default": false,
+            "description": "When enabled, the username of each account is also the email address of the account."
+          },
+          "hide": {
+            "type": "integer"
+          },
+          "agentBlockedIP": {
+            "type": "string"
+          },
+          "minify": {
+            "type": "boolean",
+            "default": false,
+            "description": "When enabled, the server will send reduced sided web pages."
+          },
+          "newAccountsRights": {
+            "type": "array",
+            "_uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "meshQuota": {
+            "type": "integer"
+          },
+          "redirects": {
+            "$ref": "#/$defs/modern_10"
+          },
+          "httpHeaders": {
+            "$ref": "#/$defs/modern_11"
+          },
+          "mstsc": {
+            "type": "boolean",
+            "default": false
+          },
+          "limits": {
+            "$ref": "#/$defs/modern_12"
+          },
+          "newAccountEmailDomains": {
+            "type": "array",
+            "_uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "footer": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "letsEncrypt": {
+      "$ref": "#/$defs/modern_13"
+    },
+    "peers": {
+      "$ref": "#/$defs/modern_14"
+    },
+    "settings": {
+      "type": "object",
+      "properties": {
+        "dbEncryptKey": {
+          "type": "string"
+        },
+        "clickOnce": {
+          "type": "boolean",
+          "default": true,
+          "description": "By default Microsoft ClickOnce support is enabled allowing connection routing from the web site on IE browser and browsers with ClickOnce add-in."
+        },
+        "autoBackup": {
+          "type": "object",
+          "properties": {
+            "backupIntervalHours": {
+              "type": "integer"
+            },
+            "keepLastDaysBackup": {
+              "type": "integer"
+            },
+            "zipPassword": {
+              "type": "string"
+            },
+            "backupPath": {
+              "type": "string"
+            }
+          }
+        },
+        "agentAliasPort": {
+          "type": "integer",
+          "minimum": 1.0,
+          "maximum": 65535.0,
+          "description": "When set, indicates the actual publically visible agent-only port. If not set, the AgentPort value is used."
+        },
+        "authLog": {
+          "type": "string"
+        },
+        "portBind": {
+          "type": "string",
+          "description": "When set, bind the HTTPS main port to a specific network address."
+        },
+        "manageAllDeviceGroups": {
+          "type": "array",
+          "_uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "browserPing": {
+          "type": "integer",
+          "minimum": 1.0,
+          "description": "When specified, sends data to the browser at x seconds interval and expects a response from the browser."
+        },
+        "agentAllowedIP": {
+          "type": [
+            "string",
+            "array"
+          ]
+        },
+        "tlsOffload": {
+          "type": [
+            "string",
+            "boolean"
+          ],
+          "default": false
+        },
+        "mpsAliasPort": {
+          "type": "integer",
+          "minimum": 1.0,
+          "maximum": 65535.0
+        },
+        "plugins": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "enabled"
+          ]
+        },
+        "allowLoginToken": {
+          "type": "boolean",
+          "default": false
+        },
+        "manageCrossDomain": {
+          "type": "array",
+          "_uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "syslog": {
+          "type": "string"
+        },
+        "mongoDbName": {
+          "type": "string"
+        },
+        "sessionSameSite": {
+          "type": "string"
+        },
+        "redirAliasPort": {
+          "type": "integer",
+          "minimum": 1.0,
+          "maximum": 65535.0
+        },
+        "mpsAliasHost": {
+          "type": "string"
+        },
+        "cert": {
+          "type": "string"
+        },
+        "cookieEncoding": {
+          "type": "string",
+          "enum": [
+            "hex",
+            "base64"
+          ],
+          "default": "base64",
+          "description": "Encoding format of cookies in the HTTP headers, this is typically Base64 but some reverse proxies will require HEX."
+        },
+        "agentPort": {
+          "type": "integer",
+          "minimum": 1.0,
+          "maximum": 65535.0,
+          "description": "When set, enabled a new HTTPS server port that only accepts agent connections."
+        },
+        "agentPing": {
+          "type": "integer",
+          "minimum": 1.0,
+          "description": "When specified, sends data to the agent at x seconds interval and expects a response from the agent."
+        },
+        "mongoDbChangeStream": {
+          "type": "boolean"
+        },
+        "meshErrorLogPath": {
+          "type": "string"
+        },
+        "no2FactorAuth": {
+          "type": "boolean"
+        },
+        "maxInvalidLogin": {
+          "$ref": "#/$defs/modern_16"
+        },
+        "agentPong": {
+          "type": "integer",
+          "minimum": 1.0,
+          "description": "When specified, sends data to the agent at x seconds interval."
+        },
+        "compression": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enables GZIP compression for web requests."
+        },
+        "localDiscovery": {
+          "$ref": "#/$defs/modern_17"
+        },
+        "sessionTime": {
+          "type": "integer"
+        },
+        "browserPong": {
+          "type": "integer",
+          "minimum": 1.0,
+          "description": "When specified, sends data to the browser at x seconds interval."
+        },
+        "trustedProxy": {
+          "type": "string"
+        },
+        "npmPath": {
+          "type": "string"
+        },
+        "agentPortTls": {
+          "type": "boolean",
+          "default": true,
+          "description": "Indicates if the agent-only port must perform TLS, this should be set to false if TLS is performed in front of this server."
+        },
+        "LANonly": {
+          "type": "boolean",
+          "default": false
+        },
+        "userBlockedIP": {
+          "type": [
+            "string",
+            "array"
+          ]
+        },
+        "redirPort": {
+          "type": "integer",
+          "minimum": 1.0,
+          "maximum": 65535.0
+        },
+        "npmProxy": {
+          "type": "string",
+          "format": "uri"
+        },
+        "port": {
+          "type": "integer",
+          "minimum": 1.0,
+          "maximum": 65535.0
+        },
+        "agentBlockedIP": {
+          "type": [
+            "string",
+            "array"
+          ]
+        },
+        "mpsPortBind": {
+          "type": "string"
+        },
+        "userAllowedIP": {
+          "type": [
+            "string",
+            "array"
+          ]
+        },
+        "exactPorts": {
+          "type": "boolean",
+          "default": false
+        },
+        "wscompression": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enables websocket per-message deflate compression."
+        },
+        "mpsTlsOffload": {
+          "type": "boolean",
+          "default": false
+        },
+        "agentPortBind": {
+          "type": "string",
+          "description": "When set, binds the agent port to a specific network interface."
+        },
+        "nice404": {
+          "type": "boolean",
+          "default": true,
+          "description": "By default, a nice looking 404 error page is displayed when needed. Set this to false to disable it."
+        },
+        "agentCoreDump": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatically activates and transfers any agent crash dump files to the server in meshcentral-data/coredumps."
+        },
+        "redirPortBind": {
+          "type": "string",
+          "description": "When set, bind the HTTP redirection port to a specific network address."
+        },
+        "desktopMultiplex": {
+          "type": "boolean",
+          "default": false
+        },
+        "mpsPort": {
+          "type": "integer",
+          "minimum": 1.0,
+          "maximum": 65535.0
+        },
+        "mongoDb": {
+          "type": "string"
+        },
+        "agentAliasDNS": {
+          "type": "string",
+          "format": "hostname",
+          "description": "When set, specified the DNS name used by agents to connect to the agent-only port."
+        },
+        "syslogjson": {
+          "type": "string"
+        },
+        "syslogauth": {
+          "type": "string"
+        },
+        "allowHighQualityDesktop": {
+          "type": "boolean",
+          "default": true
+        },
+        "selfUpdate": {
+          "type": "boolean",
+          "default": false,
+          "description": "When true, this server will attempt to self-update everyday after midnight."
+        },
+        "redirects": {
+          "type": "object"
+        },
+        "webRTC": {
+          "type": "boolean",
+          "default": false,
+          "description": "When enabled, allows use of WebRTC to allow direct network traffic between the agent and browser."
+        },
+        "allowFraming": {
+          "type": "boolean",
+          "default": false
+        },
+        "dbRecordsEncryptKey": {
+          "type": "string"
+        },
+        "WANonly": {
+          "type": "boolean",
+          "default": false
+        },
+        "webrtcConfig": {
+          "type": "object",
+          "properties": {
+            "iceServers": {
+              "type": "array",
+              "_uniqueItems": true,
+              "items": {
+                "type": "object",
+                "properties": {
+                  "urls": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "urls"
+                ]
+              }
+            }
+          },
+          "required": [
+            "iceServers"
+          ]
+        },
+        "dbExpire": {
+          "type": "object",
+          "properties": {
+            "events": {
+              "type": "integer"
+            },
+            "powerevents": {
+              "type": "integer"
+            },
+            "statsevents": {
+              "type": "integer"
+            }
+          }
+        },
+        "aliasPort": {
+          "type": "integer",
+          "minimum": 1.0,
+          "maximum": 65535.0
+        },
+        "mongoDumpPath": {
+          "type": "string"
+        },
+        "log": {
+          "type": "string"
+        },
+        "dbRecordsDecryptKey": {
+          "type": "string"
+        },
+        "sessionKey": {
+          "type": "string"
+        },
+        "agentIdleTimeout": {
+          "type": "integer",
+          "minimum": 1.0
+        },
+        "cookieIpCheck": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "required": [
+    "settings",
+    "domains"
+  ],
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "certfiles": {
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "keyfile": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "certfiles",
+                "keyfile"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^certfiles$": true,
+                "^keyfile$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "protocols": {
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "items": {
+                    "type": "integer"
+                  }
+                },
+                "maxRecordingSizeMegabytes": {
+                  "type": "integer"
+                },
+                "maxRecordings": {
+                  "type": "integer"
+                },
+                "filepath": {
+                  "type": "string"
+                },
+                "index": {
+                  "type": "boolean",
+                  "default": false
+                }
+              },
+              "required": [
+                "protocols"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^filepath$": true,
+                "^maxRecordingSizeMegabytes$": true,
+                "^index$": true,
+                "^protocols$": true,
+                "^maxRecordings$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Title": {
+                  "type": "string"
+                },
+                "Desktop": {
+                  "type": "string"
+                },
+                "Terminal": {
+                  "type": "string"
+                },
+                "Files": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Title$": true,
+                "^Desktop$": true,
+                "^Terminal$": true,
+                "^Files$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "github": {
+                  "type": "object",
+                  "properties": {
+                    "newAccounts": {
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "callbackurl": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "newAccountsUserGroups": {
+                      "type": "array",
+                      "_uniqueItems": true,
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "clientsecret": {
+                      "type": "string"
+                    },
+                    "clientid": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "clientid",
+                    "clientsecret"
+                  ]
+                },
+                "jumpcloud": {
+                  "type": "object",
+                  "properties": {
+                    "newAccounts": {
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "callbackurl": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "cert": {
+                      "type": "string"
+                    },
+                    "idpurl": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "newAccountsUserGroups": {
+                      "type": "array",
+                      "_uniqueItems": true,
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "entityid": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "entityid",
+                    "idpurl",
+                    "cert"
+                  ]
+                },
+                "azure": {
+                  "type": "object",
+                  "properties": {
+                    "newAccounts": {
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "callbackurl": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "newAccountsUserGroups": {
+                      "type": "array",
+                      "_uniqueItems": true,
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "tenantid": {
+                      "type": "string"
+                    },
+                    "clientsecret": {
+                      "type": "string"
+                    },
+                    "clientid": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "clientid",
+                    "clientsecret",
+                    "tenantid"
+                  ]
+                },
+                "google": {
+                  "type": "object",
+                  "properties": {
+                    "newAccounts": {
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "callbackurl": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "newAccountsUserGroups": {
+                      "type": "array",
+                      "_uniqueItems": true,
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "clientsecret": {
+                      "type": "string"
+                    },
+                    "clientid": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "clientid",
+                    "clientsecret"
+                  ]
+                },
+                "saml": {
+                  "type": "object",
+                  "properties": {
+                    "newAccounts": {
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "callbackurl": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "cert": {
+                      "type": "string"
+                    },
+                    "idpurl": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "newAccountsRights": {
+                      "type": "array",
+                      "_uniqueItems": true,
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "disableRequestedAuthnContext": {
+                      "type": "boolean"
+                    },
+                    "newAccountsUserGroups": {
+                      "type": "array",
+                      "_uniqueItems": true,
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "entityid": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "entityid",
+                    "idpurl",
+                    "cert"
+                  ]
+                },
+                "reddit": {
+                  "type": "object",
+                  "properties": {
+                    "newAccounts": {
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "callbackurl": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "newAccountsUserGroups": {
+                      "type": "array",
+                      "_uniqueItems": true,
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "clientsecret": {
+                      "type": "string"
+                    },
+                    "clientid": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "clientid",
+                    "clientsecret"
+                  ]
+                },
+                "twitter": {
+                  "$ref": "#/$defs/modern_8"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^azure$": true,
+                "^github$": true,
+                "^twitter$": true,
+                "^reddit$": true,
+                "^saml$": true,
+                "^google$": true,
+                "^jumpcloud$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_12": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "MaxDevices": {
+                  "type": "integer"
+                },
+                "MaxUserAccounts": {
+                  "type": "integer"
+                },
+                "MaxSingleUserSessions": {
+                  "type": "integer"
+                },
+                "MaxAgentSessions": {
+                  "type": "integer"
+                },
+                "MaxUserSessions": {
+                  "type": "integer"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^MaxSingleUserSessions$": true,
+                "^MaxUserAccounts$": true,
+                "^MaxAgentSessions$": true,
+                "^MaxUserSessions$": true,
+                "^MaxDevices$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "newAccounts": {
+                  "type": "boolean",
+                  "default": false
+                },
+                "callbackurl": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "newAccountsUserGroups": {
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "clientsecret": {
+                  "type": "string"
+                },
+                "clientid": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "clientid",
+                "clientsecret"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^newAccountsUserGroups$": true,
+                "^clientid$": true,
+                "^clientsecret$": true,
+                "^callbackurl$": true,
+                "^newAccounts$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "secret": {
+                  "type": "string"
+                },
+                "proxy": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              },
+              "required": [
+                "id",
+                "secret"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^secret$": true,
+                "^proxy$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_13": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Built-in Let's Encrypt support",
+              "description": "If your server has a proper DNS name and it public facing on the Internet with a public facing HTTP server on port 80, you can get a free TLS certificate.",
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "format": "email",
+                  "description": "Email address of the administrator of this server. Make sure this is a valid email address otherwise the certificate request will fail."
+                },
+                "names": {
+                  "type": "string"
+                },
+                "production": {
+                  "type": "boolean",
+                  "default": false,
+                  "description": "By default a test certificate will be obtained from Let's Encrypt. Always start by getting a test certificate and make sure that works before setting this to true and obtaining a production certificaite. Making too many bad requests for a production certificate will get you banned for a long period of time."
+                }
+              },
+              "required": [
+                "email",
+                "names"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^email$": true,
+                "^names$": true,
+                "^production$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "log": {
+                  "type": "string"
+                },
+                "certs": {
+                  "$ref": "#/$defs/modern_4"
+                }
+              },
+              "required": [
+                "certs"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^log$": true,
+                "^certs$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_14": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Server peering",
+              "description": "Setup peer server for load-balancing between many servers.",
+              "type": "object",
+              "minProperties": 1,
+              "propertyNames": {
+                "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+              },
+              "properties": {
+                "serverId": {
+                  "type": "string"
+                },
+                "servers": {
+                  "$ref": "#/$defs/modern_15"
+                }
+              },
+              "required": [
+                "serverId",
+                "servers"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^serverId$": true,
+                "^servers$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/modern_5"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_16": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "time": {
+                  "type": "integer"
+                },
+                "count": {
+                  "type": "integer"
+                },
+                "coolofftime": {
+                  "type": "integer"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^time$": true,
+                "^count$": true,
+                "^coolofftime$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_15": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                },
+                "required": [
+                  "url"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_17": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "When this server is in LAN mode, you may discover this server using a multicast discovery tool. When discovery happens, the name and info fields are sent back to the discovery tool.",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "info": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "info"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^info$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Title": {
+                  "type": "string"
+                },
+                "Desktop": {
+                  "type": "string"
+                },
+                "Terminal": {
+                  "type": "string"
+                },
+                "Files": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Title$": true,
+                "^Desktop$": true,
+                "^Terminal$": true,
+                "^Files$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

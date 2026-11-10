@@ -1,0 +1,244 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_5",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Result of Dependency Snapshot worker",
+              "properties": {
+                "schema": {
+                  "$ref": "#/$defs/modern_6"
+                },
+                "_release": {
+                  "type": "string",
+                  "description": "Unique release id in form of \"ecosystem:package:version\""
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "success",
+                    "error"
+                  ]
+                },
+                "details": {
+                  "$ref": "#/$defs/dependency_snapshot_detail"
+                },
+                "summary": {
+                  "$ref": "#/$defs/dependency_snapshot_summary"
+                }
+              },
+              "required": [
+                "status",
+                "details",
+                "summary"
+              ],
+              "title": "dependency_snapshot-v1-0-0"
+            },
+            {
+              "patternProperties": {
+                "^schema$": true,
+                "^_release$": true,
+                "^details$": true,
+                "^status$": true,
+                "^summary$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Counts of various types of dependencies",
+              "properties": {
+                "runtime": {
+                  "type": "integer"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^runtime$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Dependency Object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "declaration": {
+                  "type": "string"
+                },
+                "resolved_at": {
+                  "type": "string"
+                },
+                "version": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "ecosystem": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "ecosystem",
+                "name",
+                "version",
+                "declaration",
+                "resolved_at"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^version$": true,
+                "^declaration$": true,
+                "^ecosystem$": true,
+                "^resolved_at$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "dependency_snapshot_detail": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Details of Dependency Snapshot run on a component",
+              "properties": {
+                "runtime": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/dependency_object"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^runtime$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "dependency_snapshot_summary": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "dependencies_counts": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Summary of Dependency Snapshot run on a component",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "dependency_counts": {
+                  "$ref": "#/$defs/dependencies_counts"
+                }
+              },
+              "required": [
+                "errors",
+                "dependency_counts"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^errors$": true,
+                "^dependency_counts$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "dependency_object": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Name of the schema",
+                  "pattern": "^[a-zA-Z0-9_]+$"
+                },
+                "version": {
+                  "type": "string",
+                  "description": "Version of the schema",
+                  "pattern": "^[0-9]+-[0-9]+-[0-9]+$"
+                },
+                "url": {
+                  "type": "string",
+                  "description": "Full URL of the schema",
+                  "format": "uri"
+                }
+              },
+              "required": [
+                "name",
+                "version"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^version$": true,
+                "^url$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

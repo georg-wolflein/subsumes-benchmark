@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "items": {
+    "$ref": "#/$defs/Playlist"
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "contentId": {
+                  "type": "string"
+                },
+                "imageUrl": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "gameMode": {
+                  "type": "string"
+                },
+                "isRanked": {
+                  "type": "boolean"
+                },
+                "isActive": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "name",
+                "description",
+                "isRanked",
+                "imageUrl",
+                "gameMode",
+                "isActive",
+                "id",
+                "contentId"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^isRanked$": true,
+                "^name$": true,
+                "^id$": true,
+                "^isActive$": true,
+                "^contentId$": true,
+                "^gameMode$": true,
+                "^imageUrl$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Playlist": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

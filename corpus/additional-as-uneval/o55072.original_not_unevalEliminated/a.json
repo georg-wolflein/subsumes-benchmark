@@ -1,0 +1,291 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_4",
+  "$defs": {
+    "parties": {
+      "title": "counterparties",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "_uniqueItems": true
+    },
+    "tags": {
+      "title": "project metadata tags",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "_uniqueItems": true
+    },
+    "entry": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "adjustment": {
+      "title": "time entry manual adjustment",
+      "type": "number",
+      "multipleOf": 0.25
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "project approval",
+              "properties": {
+                "by": {
+                  "$ref": "#/$defs/person"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "method": {
+                  "enum": [
+                    "e-mail",
+                    "GitHub",
+                    "conversation"
+                  ]
+                }
+              },
+              "required": [
+                "by",
+                "date",
+                "method"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^by$": true,
+                "^date$": true,
+                "^method$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "contacts": {
+      "title": "project contacts",
+      "description": "client personnel involved in the project",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/person"
+      },
+      "minItems": 1,
+      "_uniqueItems": true
+    },
+    "service": {
+      "title": "list of service entries",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/entry"
+      }
+    },
+    "approval": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "completed": {
+      "title": "date of completion",
+      "type": "string",
+      "format": "date-time"
+    },
+    "client": {
+      "title": "client name",
+      "type": "string",
+      "minLength": 1
+    },
+    "person": {
+      "title": "name of a person",
+      "type": "string",
+      "minLength": 1
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "adjustment": {
+                  "$ref": "#/$defs/adjustment"
+                },
+                "end": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "start": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "start",
+                "end"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^adjustment$": true,
+                "^end$": true,
+                "^start$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "legal project billing record",
+              "type": "object",
+              "properties": {
+                "parties": {
+                  "$ref": "#/$defs/parties"
+                },
+                "project": {
+                  "$ref": "#/$defs/project"
+                },
+                "tags": {
+                  "$ref": "#/$defs/tags"
+                },
+                "contacts": {
+                  "$ref": "#/$defs/contacts"
+                },
+                "service": {
+                  "$ref": "#/$defs/service"
+                },
+                "approval": {
+                  "$ref": "#/$defs/approval"
+                },
+                "completed": {
+                  "$ref": "#/$defs/completed"
+                },
+                "client": {
+                  "$ref": "#/$defs/client"
+                },
+                "notes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "limit": {
+                  "properties": {
+                    "type": {
+                      "enum": [
+                        "cap",
+                        "estimate"
+                      ]
+                    },
+                    "amount": {
+                      "type": "integer",
+                      "minimum": 0.0
+                    }
+                  }
+                }
+              },
+              "required": [
+                "client",
+                "contacts",
+                "project",
+                "service"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^notes$": true,
+                "^completed$": true,
+                "^approval$": true,
+                "^parties$": true,
+                "^tags$": true,
+                "^client$": true,
+                "^contacts$": true,
+                "^limit$": true,
+                "^project$": true,
+                "^service$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "narrative": {
+      "title": "narrative",
+      "description": "list of tasks performed",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "_uniqueItems": true
+    },
+    "span": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/modern_3"
+      }
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "total time entry",
+              "description": "entry of total time served",
+              "type": "object",
+              "properties": {
+                "narrative": {
+                  "$ref": "#/$defs/narrative"
+                },
+                "adjustment": {
+                  "$ref": "#/$defs/adjustment"
+                },
+                "spans": {
+                  "$ref": "#/$defs/span"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "time": {
+                  "type": "number",
+                  "multipleOf": 0.25,
+                  "minimum": 0.25
+                }
+              },
+              "required": [
+                "narrative"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^adjustment$": true,
+                "^date$": true,
+                "^narrative$": true,
+                "^time$": true,
+                "^spans$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "project": {
+      "title": "project title",
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

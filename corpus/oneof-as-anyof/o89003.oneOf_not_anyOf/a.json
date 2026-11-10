@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "JSON Patch",
+  "description": "A JSON Schema describing a JSON Patch",
+  "notes": [
+    "Only required members are accounted for, other members are ignored"
+  ],
+  "type": "array",
+  "items": {
+    "description": "one JSON Patch operation",
+    "allOf": [
+      {
+        "description": "Members common to all operations",
+        "type": "object",
+        "required": [
+          "op",
+          "path"
+        ],
+        "properties": {
+          "path": {
+            "$ref": "#/$defs/jsonPointer"
+          }
+        }
+      },
+      {
+        "$ref": "#/$defs/oneOperation"
+      }
+    ]
+  },
+  "$defs": {
+    "jsonPointer": {
+      "type": "string",
+      "pattern": "^(/[^/~]*(~[01][^/~]*)*)*$"
+    },
+    "add": {
+      "description": "add operation. Value can be any JSON value.",
+      "properties": {
+        "op": {
+          "enum": [
+            "add"
+          ]
+        }
+      },
+      "required": [
+        "value"
+      ]
+    },
+    "remove": {
+      "description": "remove operation. Only a path is specified.",
+      "properties": {
+        "op": {
+          "enum": [
+            "remove"
+          ]
+        }
+      }
+    },
+    "replace": {
+      "description": "replace operation. Value can be any JSON value.",
+      "properties": {
+        "op": {
+          "enum": [
+            "replace"
+          ]
+        }
+      },
+      "required": [
+        "value"
+      ]
+    },
+    "move": {
+      "description": "move operation. \"from\" is a JSON Pointer.",
+      "properties": {
+        "op": {
+          "enum": [
+            "move"
+          ]
+        },
+        "from": {
+          "$ref": "#/$defs/jsonPointer"
+        }
+      },
+      "required": [
+        "from"
+      ]
+    },
+    "copy": {
+      "description": "copy operation. \"from\" is a JSON Pointer.",
+      "properties": {
+        "op": {
+          "enum": [
+            "copy"
+          ]
+        },
+        "from": {
+          "$ref": "#/$defs/jsonPointer"
+        }
+      },
+      "required": [
+        "from"
+      ]
+    },
+    "test": {
+      "description": "test operation. Value can be any JSON value.",
+      "properties": {
+        "op": {
+          "enum": [
+            "test"
+          ]
+        }
+      },
+      "required": [
+        "value"
+      ]
+    },
+    "oneOperation": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/add"
+        },
+        {
+          "$ref": "#/$defs/remove"
+        },
+        {
+          "$ref": "#/$defs/replace"
+        },
+        {
+          "$ref": "#/$defs/move"
+        },
+        {
+          "$ref": "#/$defs/copy"
+        },
+        {
+          "$ref": "#/$defs/test"
+        }
+      ]
+    }
+  }
+}

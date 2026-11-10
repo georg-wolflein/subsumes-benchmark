@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_3",
+  "$defs": {
+    "field": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "fields": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/field"
+                  }
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "fields"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^name$": true,
+                "^fields$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "display": {
+                  "type": "string"
+                },
+                "documentation": {
+                  "type": "string"
+                },
+                "anonymize": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "name",
+                "display",
+                "documentation"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^display$": true,
+                "^documentation$": true,
+                "^anonymize$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Response from GET rest/warehouse/export/realms",
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/realm"
+                  }
+                },
+                "total": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "success",
+                "data"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^success$": true,
+                "^data$": true,
+                "^total$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "realm": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

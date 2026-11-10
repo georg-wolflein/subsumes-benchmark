@@ -1,0 +1,80 @@
+{
+  "$id": "https://opendesk.cc/schemata/base/option.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Winnow Option",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "scopes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "oneOf": [
+          {
+            "pattern": "customer"
+          },
+          {
+            "pattern": "maker"
+          },
+          {
+            "pattern": "operator"
+          },
+          {
+            "pattern": "admin"
+          },
+          {
+            "pattern": "designer"
+          }
+        ]
+      }
+    },
+    "type": {
+      "type": "string"
+    },
+    "images": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/modern_1"
+      }
+    }
+  },
+  "required": [
+    "type"
+  ],
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "asset": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "asset"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^asset$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

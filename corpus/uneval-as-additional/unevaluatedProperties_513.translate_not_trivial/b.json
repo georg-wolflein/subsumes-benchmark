@@ -1,0 +1,385 @@
+{
+  "$id": "https://github.com/w3c/yml2vocab/lib/schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "This schema depends on JSON Schema draft-2019-09 version",
+  "title": "Schema for the vocabulary definition using YAML",
+  "description": "See https://w3c.github.io/yml2vocab for a human readable version of the format.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "prefix": {
+      "title": "Prefix settings",
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Vocab"
+          }
+        },
+        {
+          "$ref": "#/$defs/Vocab"
+        }
+      ]
+    },
+    "ontology": {
+      "title": "Ontology properties' settings",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Ontology"
+      }
+    },
+    "vocab": {
+      "title": "Vocabulary setting",
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Vocab"
+          }
+        },
+        {
+          "$ref": "#/$defs/Vocab"
+        }
+      ]
+    },
+    "individual": {
+      "title": "Definitions of individuals",
+      "$comment": "The use of 'unevaluatedProperties' is the schema 2019 idiom to disallow additional properties.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/modern_1"
+      }
+    },
+    "datatype": {
+      "title": "Definition of datatypes",
+      "$comment": "The use of 'unevaluatedProperties' is the schema 2019 idiom to disallow additional properties.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/modern_2"
+      }
+    },
+    "class": {
+      "title": "Class definitions3",
+      "$comment": "The use of 'unevaluatedProperties' is the schema 2019 idiom to disallow additional properties.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/modern_3"
+      }
+    },
+    "property": {
+      "title": "Property definitions3",
+      "$comment": "The use of 'unevaluatedProperties' is the schema 2019 idiom to disallow additional properties.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/modern_4"
+      }
+    }
+  },
+  "required": [
+    "vocab",
+    "ontology"
+  ],
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "allOf": [
+                {
+                  "$ref": "#/$defs/CommonTerm"
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^deprecated$": true,
+                "^id$": true,
+                "^comment$": true,
+                "^defined_by$": true,
+                "^example$": true,
+                "^see_also$": true,
+                "^upper_value$": true,
+                "^status$": true,
+                "^label$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "SeeAlso": {
+      "description": "'seeAlso' blocks may be arrays or single objects, hence this utility schema",
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OneSeeAlso"
+          }
+        },
+        {
+          "$ref": "#/$defs/OneSeeAlso"
+        }
+      ]
+    },
+    "OneSeeAlso": {
+      "$comment": "The AJV implementation does not seem to understand the format='uri' constraint, although that should be used here...",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "label",
+        "url"
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "allOf": [
+                {
+                  "$ref": "#/$defs/CommonTerm"
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^deprecated$": true,
+                "^id$": true,
+                "^comment$": true,
+                "^defined_by$": true,
+                "^example$": true,
+                "^see_also$": true,
+                "^upper_value$": true,
+                "^status$": true,
+                "^label$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "CommonTerm": {
+      "title": "Common root for classes, properties, and individuals.",
+      "type": "object",
+      "properties": {
+        "defined_by": {
+          "type": "string",
+          "format": "uri"
+        },
+        "label": {
+          "type": "string"
+        },
+        "deprecated": {
+          "type": "boolean"
+        },
+        "see_also": {
+          "$ref": "#/$defs/SeeAlso"
+        },
+        "upper_value": {
+          "$ref": "#/$defs/StringOrArrayOfStrings"
+        },
+        "id": {
+          "type": "string"
+        },
+        "example": {
+          "$ref": "#/$defs/ExampleUnion"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "stable",
+            "reserved",
+            "deprecated"
+          ]
+        },
+        "comment": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "anyOf": [
+        {
+          "required": [
+            "comment"
+          ]
+        },
+        {
+          "required": [
+            "defined_by"
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "allOf": [
+                {
+                  "$ref": "#/$defs/CommonTerm"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "domain": {
+                      "$ref": "#/$defs/StringOrArrayOfStrings"
+                    },
+                    "range": {
+                      "$ref": "#/$defs/StringOrArrayOfStrings"
+                    },
+                    "dataset": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^deprecated$": true,
+                "^domain$": true,
+                "^id$": true,
+                "^comment$": true,
+                "^defined_by$": true,
+                "^range$": true,
+                "^example$": true,
+                "^see_also$": true,
+                "^upper_value$": true,
+                "^dataset$": true,
+                "^status$": true,
+                "^label$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Vocab": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "value"
+      ]
+    },
+    "Ontology": {
+      "title": "Ontology properties",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "property": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "property",
+        "value"
+      ]
+    },
+    "ExampleUnion": {
+      "description": "Examples may be arrays or single objects, hence this utility schema",
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ExampleElement"
+          }
+        },
+        {
+          "$ref": "#/$defs/ExampleElement"
+        }
+      ]
+    },
+    "ExampleElement": {
+      "title": "A single example block, with an optional label",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "json": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "json"
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "allOf": [
+                {
+                  "$ref": "#/$defs/CommonTerm"
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^deprecated$": true,
+                "^id$": true,
+                "^comment$": true,
+                "^defined_by$": true,
+                "^example$": true,
+                "^see_also$": true,
+                "^upper_value$": true,
+                "^status$": true,
+                "^label$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "StringOrArrayOfStrings": {
+      "description": "Most of the string values may be arrays or single strings, hence this utility schema",
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ]
+    }
+  }
+}

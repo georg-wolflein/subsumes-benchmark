@@ -1,0 +1,229 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_4",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Name of the schema",
+                  "pattern": "^[a-zA-Z0-9_]+$"
+                },
+                "version": {
+                  "type": "string",
+                  "description": "Version of the schema",
+                  "pattern": "^[0-9]+-[0-9]+-[0-9]+$"
+                },
+                "url": {
+                  "type": "string",
+                  "description": "Full URL of the schema",
+                  "format": "uri"
+                }
+              },
+              "required": [
+                "name",
+                "version"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^version$": true,
+                "^url$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "cryptocheck_summary": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "samples_lines": {
+                  "type": "number"
+                },
+                "crypto": {
+                  "type": "string"
+                },
+                "matchtype": {
+                  "type": "string",
+                  "enum": [
+                    "content",
+                    "filename"
+                  ]
+                },
+                "matched_lines": {
+                  "type": "number"
+                },
+                "sample_file": {
+                  "type": "string"
+                },
+                "file": {
+                  "type": "string"
+                },
+                "matchpercent": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "crypto",
+                "file",
+                "matchtype"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^matchtype$": true,
+                "^file$": true,
+                "^crypto$": true,
+                "^samples_lines$": true,
+                "^matchpercent$": true,
+                "^matched_lines$": true,
+                "^sample_file$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "count": {
+                  "type": "number"
+                },
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "count",
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^count$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "cryptoalgo_record": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "content": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/cryptoalgo_record"
+                  }
+                },
+                "filename": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/cryptoalgo_record"
+                  }
+                }
+              },
+              "required": [
+                "content",
+                "filename"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^content$": true,
+                "^filename$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "cryptoalgo_detail": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Result of OSCryptoChecker worker",
+              "properties": {
+                "schema": {
+                  "$ref": "#/$defs/modern_5"
+                },
+                "_release": {
+                  "type": "string",
+                  "description": "Unique release id in form of \"ecosystem:package:version\""
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "success",
+                    "error"
+                  ]
+                },
+                "details": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/cryptoalgo_detail"
+                  }
+                },
+                "summary": {
+                  "$ref": "#/$defs/cryptocheck_summary"
+                }
+              },
+              "required": [
+                "status",
+                "details",
+                "summary"
+              ],
+              "title": "crypto_algorithms_result-v1-0-0"
+            },
+            {
+              "patternProperties": {
+                "^schema$": true,
+                "^_release$": true,
+                "^details$": true,
+                "^status$": true,
+                "^summary$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "items": {
+    "$ref": "#/$defs/modern_1"
+  },
+  "title": "11/CEP command response schema",
+  "type": "array",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "id": {
+                  "description": "ID of the command.",
+                  "type": "integer"
+                },
+                "payload": {
+                  "description": "The command payload to be interpreted by the endpoint."
+                }
+              },
+              "required": [
+                "id"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^payload$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

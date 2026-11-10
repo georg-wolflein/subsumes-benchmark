@@ -1,0 +1,317 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Possible commands to run to start a session",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "Name of the command",
+                  "type": "string"
+                },
+                "params": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_6"
+                  }
+                },
+                "config": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/$defs/modern_7"
+                  }
+                },
+                "command": {
+                  "description": "Shell command to run on the cluster",
+                  "type": "string"
+                },
+                "help": {
+                  "description": "Help string for the command",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "command"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^config$": true,
+                "^params$": true,
+                "^name$": true,
+                "^help$": true,
+                "^command$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Possible parameters in the command",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "Name of the parameter",
+                  "type": "string"
+                },
+                "choices": {
+                  "description": "Possible values the parameter can take",
+                  "type": "array"
+                },
+                "help": {
+                  "description": "Help string for the parameter",
+                  "type": "string"
+                },
+                "default": true,
+                "type": {
+                  "description": "Required type for the parameter",
+                  "type": "string",
+                  "enum": [
+                    "int",
+                    "float",
+                    "str"
+                  ]
+                }
+              },
+              "required": [
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^default$": true,
+                "^help$": true,
+                "^choices$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "The name of the project",
+                  "type": "string"
+                },
+                "documentation": {
+                  "description": "Link to the documentation of this project",
+                  "type": "string"
+                },
+                "output_files": true,
+                "cluster": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "environment": {
+                  "$ref": "#/$defs/modern_4"
+                },
+                "repo": {
+                  "description": "The URL of the repo this project is part of",
+                  "type": "string"
+                },
+                "commands": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_5"
+                  }
+                },
+                "description": {
+                  "description": "A short description of the project",
+                  "type": "string"
+                },
+                "tags": {
+                  "description": "Relevant tags for this project",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "name",
+                "cluster"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^environment$": true,
+                "^output_files$": true,
+                "^name$": true,
+                "^cluster$": true,
+                "^tags$": true,
+                "^repo$": true,
+                "^commands$": true,
+                "^documentation$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Configuration options for the command",
+              "type": "object",
+              "properties": {
+                "tmux": {
+                  "description": "If true, the command will be run inside of tmux",
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^tmux$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "config": {
+                  "type": "string",
+                  "description": "Path to a .yaml cluster configuration file (relative to the project root)"
+                },
+                "params": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_3"
+                  }
+                }
+              },
+              "required": [
+                "config"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^config$": true,
+                "^params$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "choices": {
+                  "type": "array"
+                },
+                "help": {
+                  "type": "string"
+                },
+                "default": true,
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "int",
+                    "float",
+                    "str"
+                  ]
+                }
+              },
+              "required": [
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^default$": true,
+                "^help$": true,
+                "^choices$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "The environment that needs to be set up to run the project",
+              "type": "object",
+              "properties": {
+                "dockerimage": {
+                  "description": "URL to a docker image that can be pulled to run the project in",
+                  "type": "string"
+                },
+                "dockerfile": {
+                  "description": "Path to a Dockerfile to set up an image the project can run in (relative to the project root)",
+                  "type": "string"
+                },
+                "requirements": {
+                  "description": "Path to a Python requirements.txt file to set up project dependencies (relative to the project root)",
+                  "type": "string"
+                },
+                "shell": {
+                  "description": "A sequence of shell commands to run to set up the project environment",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^dockerimage$": true,
+                "^dockerfile$": true,
+                "^requirements$": true,
+                "^shell$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

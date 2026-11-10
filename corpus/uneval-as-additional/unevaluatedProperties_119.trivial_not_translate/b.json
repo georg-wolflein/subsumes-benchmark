@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "protocol": {
+      "enum": [
+        "buidltxn"
+      ]
+    },
+    "version": {
+      "enum": [
+        "0.1.0"
+      ]
+    },
+    "builder": {
+      "type": "string",
+      "pattern": "^0x[a-fA-F0-9]{40}$"
+    },
+    "fragment": {
+      "type": "object",
+      "properties": {
+        "inputs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "internalType": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "outputs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "internalType": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "stateMutability": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "function"
+          ]
+        },
+        "constant": {
+          "type": "boolean"
+        },
+        "payable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "inputs",
+        "name",
+        "outputs",
+        "stateMutability",
+        "type"
+      ],
+      "nullable": true,
+      "additionalProperties": false
+    },
+    "transaction": {
+      "type": "object",
+      "properties": {
+        "from": {
+          "type": "string",
+          "pattern": "^0x[a-fA-F0-9]{40}$",
+          "nullable": true
+        },
+        "to": {
+          "type": "string",
+          "pattern": "^0x[a-fA-F0-9]{40}$"
+        },
+        "data": {
+          "type": "string",
+          "pattern": "^0x[a-fA-F0-9]+$"
+        }
+      },
+      "required": [
+        "to",
+        "data"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "protocol",
+    "version",
+    "builder",
+    "transaction"
+  ],
+  "additionalProperties": false
+}

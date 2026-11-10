@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "client",
+              "type": "object",
+              "required": [
+                "client_name",
+                "client_uri",
+                "logo_uri",
+                "policy_uri",
+                "redirect_uris"
+              ],
+              "properties": {
+                "logo_uri": {
+                  "type": "string"
+                },
+                "policy_uri": {
+                  "type": "string"
+                },
+                "client_name": {
+                  "type": "string"
+                },
+                "tos_uri": {
+                  "type": "string"
+                },
+                "redirect_uris": {
+                  "type": "array"
+                },
+                "client_uri": {
+                  "type": "string"
+                },
+                "client_id": {
+                  "type": "string"
+                },
+                "contacts": {
+                  "type": "array"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^logo_uri$": true,
+                "^contacts$": true,
+                "^redirect_uris$": true,
+                "^policy_uri$": true,
+                "^client_name$": true,
+                "^client_uri$": true,
+                "^tos_uri$": true,
+                "^client_id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

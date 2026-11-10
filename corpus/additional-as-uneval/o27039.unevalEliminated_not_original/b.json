@@ -1,0 +1,783 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "schema for an Service Case question list",
+  "items": {
+    "$ref": "#/$defs/ServiceField"
+  },
+  "minItems": 1,
+  "_uniqueItems": true,
+  "type": "array",
+  "$defs": {
+    "hasChoiceValueList": {
+      "type": "object",
+      "properties": {
+        "hasChoiceValue": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ChoiceValue"
+            },
+            {
+              "$ref": "#/$defs/ListOfChoiceValues"
+            }
+          ]
+        },
+        "label": {
+          "$ref": "#/$defs/label"
+        },
+        "iri": {
+          "$ref": "#/$defs/iri"
+        },
+        "type": {
+          "enum": [
+            "ChoiceValueList"
+          ]
+        }
+      },
+      "required": [
+        "iri",
+        "label",
+        "hasChoiceValue",
+        "type"
+      ]
+    },
+    "ListOfActivityAssignmentObject": {
+      "items": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/$defs/ActivityAssignmentObject"
+          }
+        ]
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "ServiceNote": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "hasAssignmentRule": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "$ref": "#/$defs/label"
+        },
+        "type": {
+          "enum": [
+            "AssignActivityToUserRule",
+            "CaseActivityAssignmentRule"
+          ]
+        },
+        "iri": {
+          "$ref": "#/$defs/iri"
+        },
+        "hasUsername": {
+          "$ref": "#/$defs/username"
+        }
+      }
+    },
+    "hasStatus": {
+      "type": "object",
+      "properties": {
+        "hasLegacyCode": {
+          "$ref": "#/$defs/hasLegacyCode"
+        },
+        "isAlwaysPublic": {
+          "$ref": "#/$defs/ynQuestion"
+        },
+        "label": {
+          "$ref": "#/$defs/label"
+        },
+        "iri": {
+          "$ref": "#/$defs/iri"
+        },
+        "hasOrderBy": {
+          "$ref": "#/$defs/hasOrderBy"
+        },
+        "type": {
+          "enum": [
+            "Status"
+          ]
+        },
+        "hasAllowableStatuses": {
+          "$ref": "#/$defs/hasAllowableStatuses"
+        }
+      }
+    },
+    "ServiceFieldList": {
+      "items": {
+        "$ref": "#/$defs/ServiceField"
+      },
+      "minItems": 1,
+      "_uniqueItems": true,
+      "type": "array"
+    },
+    "hasAllowableModules": {
+      "pattern": "^,?(((SREINTAK|SRERESAC|SREMASS|SRSNGLWO|SRSUMMRY|WEBINTAK|SRSUMMRY|MD-WCS|MD-WCSL),?)*)+$",
+      "type": "string"
+    },
+    "booleanValue": {
+      "enum": [
+        "true",
+        "false"
+      ]
+    },
+    "isDisabled": {
+      "enum": [
+        "true",
+        "false"
+      ]
+    },
+    "hasServiceFieldAlert": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/hasServiceFieldAlertList"
+        },
+        {
+          "$ref": "#/$defs/ServiceFieldAlert"
+        }
+      ]
+    },
+    "floatNumber": {
+      "pattern": "^[-+]?[0-9]*.?[0-9]+$",
+      "type": "string"
+    },
+    "hasAllowableStatuses": {
+      "pattern": "^,?(((C-CLOSED|O-OPEN|O-PENDING),?)*)+$",
+      "type": "string"
+    },
+    "ServiceField": {
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/ServiceNote"
+        },
+        {
+          "$ref": "#/$defs/ServiceQuestion"
+        }
+      ]
+    },
+    "hasLegacyCode": {
+      "type": "string"
+    },
+    "hasStandardizeStreetFormat": {
+      "enum": [
+        "true",
+        "false"
+      ]
+    },
+    "username": {
+      "type": "string"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "hasLegacyCode": {
+                  "$ref": "#/$defs/hasLegacyCode"
+                },
+                "hasChoiceValueList": {
+                  "$ref": "#/$defs/hasChoiceValueList"
+                },
+                "hasDataType": {
+                  "$ref": "#/$defs/hasDataType"
+                },
+                "label": {
+                  "$ref": "#/$defs/label"
+                },
+                "iri": {
+                  "$ref": "#/$defs/iri"
+                },
+                "hasDataSource": {
+                  "$ref": "#/$defs/hasDataSource"
+                },
+                "hasAllowableModules": {
+                  "$ref": "#/$defs/hasAllowableModules"
+                },
+                "hasOrderBy": {
+                  "$ref": "#/$defs/hasOrderBy"
+                },
+                "hasBusinessCodes": {
+                  "$ref": "#/$defs/hasBusinessCodes"
+                },
+                "type": {
+                  "enum": [
+                    "ServiceNote"
+                  ]
+                },
+                "isDisabled": {
+                  "$ref": "#/$defs/isDisabled"
+                }
+              },
+              "required": [
+                "iri",
+                "label",
+                "hasDataType",
+                "hasOrderBy",
+                "type"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^hasBusinessCodes$": true,
+                "^hasDataSource$": true,
+                "^hasLegacyCode$": true,
+                "^type$": true,
+                "^isDisabled$": true,
+                "^hasAllowableModules$": true,
+                "^hasOrderBy$": true,
+                "^iri$": true,
+                "^hasDataType$": true,
+                "^hasChoiceValueList$": true,
+                "^label$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "hasDataType": {
+      "enum": [
+        "TIME",
+        "CHAR",
+        "DATE",
+        "NUMBER",
+        "CHARLIST",
+        "CHARMULT",
+        "CHAROPT",
+        "PHONENUM"
+      ]
+    },
+    "ChoiceValue": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "label": {
+      "type": "string"
+    },
+    "ListOfLegacyEventObject": {
+      "items": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/$defs/LegacyEventObject"
+          }
+        ]
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "iri": {
+      "type": "string"
+    },
+    "LegacyEventObject": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "$ref": "#/$defs/label"
+        },
+        "iri": {
+          "$ref": "#/$defs/iri"
+        },
+        "hasStatus": {
+          "$ref": "#/$defs/hasStatus"
+        },
+        "hasActivity": {
+          "$ref": "#/$defs/Activity"
+        },
+        "hasServiceField": {
+          "$ref": "#/$defs/ServiceFieldList"
+        },
+        "type": {
+          "enum": [
+            "ServiceFieldAlert",
+            "ClearServiceField",
+            "MarkServiceFieldRequired",
+            "MarkServiceFieldDisabled",
+            "ActivityAssignment",
+            "StatusChange"
+          ]
+        }
+      }
+    },
+    "ListOfChoiceValues": {
+      "items": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/$defs/ChoiceValue"
+          }
+        ]
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "hasLegacyCode": {
+                  "$ref": "#/$defs/hasLegacyCode"
+                },
+                "label": {
+                  "$ref": "#/$defs/label"
+                },
+                "iri": {
+                  "$ref": "#/$defs/iri"
+                },
+                "hasOrderBy": {
+                  "$ref": "#/$defs/hasOrderBy"
+                },
+                "isDisabled": {
+                  "$ref": "#/$defs/isDisabled"
+                },
+                "hasLegacyEvent": {
+                  "$ref": "#/$defs/hasLegacyEvent"
+                },
+                "type": {
+                  "enum": [
+                    "ChoiceValue"
+                  ]
+                }
+              },
+              "required": [
+                "iri",
+                "label",
+                "type"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^hasLegacyCode$": true,
+                "^label$": true,
+                "^type$": true,
+                "^isDisabled$": true,
+                "^hasLegacyEvent$": true,
+                "^hasOrderBy$": true,
+                "^iri$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "hasDataSource": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "$ref": "#/$defs/label"
+        },
+        "providedBy": {
+          "$ref": "#/$defs/providedBy"
+        },
+        "type": {
+          "enum": [
+            "EventBasedDataSource"
+          ]
+        },
+        "hasPropertyName": {
+          "$ref": "#/$defs/label"
+        },
+        "iri": {
+          "$ref": "#/$defs/iri"
+        }
+      },
+      "required": [
+        "iri",
+        "label",
+        "providedBy",
+        "hasPropertyName",
+        "type"
+      ]
+    },
+    "ListOfOutcomeObject": {
+      "items": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/$defs/OutcomeObject"
+          }
+        ]
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "hasActivityAssignment": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/ActivityAssignmentObject"
+        },
+        {
+          "$ref": "#/$defs/ListOfActivityAssignmentObject"
+        }
+      ]
+    },
+    "Activity": {
+      "type": "object",
+      "properties": {
+        "hasLegacyCode": {
+          "$ref": "#/$defs/hasLegacyCode"
+        },
+        "hasAssignmentRule": {
+          "$ref": "#/$defs/hasAssignmentRule"
+        },
+        "label": {
+          "$ref": "#/$defs/label"
+        },
+        "isAutoCreate": {
+          "$ref": "#/$defs/ynQuestion"
+        },
+        "hasBusinessCodes": {
+          "$ref": "#/$defs/hasBusinessCodes"
+        },
+        "type": {
+          "enum": [
+            "Activity"
+          ]
+        },
+        "hasDefaultOutcome": {
+          "$ref": "#/$defs/Outcome"
+        },
+        "iri": {
+          "$ref": "#/$defs/iri"
+        },
+        "hasSuspenseDays": {
+          "$ref": "#/$defs/floatNumber"
+        },
+        "hasActivityAssignment": {
+          "$ref": "#/$defs/hasActivityAssignment"
+        },
+        "hasOrderBy": {
+          "$ref": "#/$defs/hasOrderBy"
+        },
+        "hasAllowableOutcome": {
+          "$ref": "#/$defs/Outcome"
+        },
+        "isAutoAssign": {
+          "$ref": "#/$defs/booleanValue"
+        },
+        "hasOccurDays": {
+          "$ref": "#/$defs/floatNumber"
+        }
+      }
+    },
+    "hasDefaultIntakeMethod": {
+      "type": "object",
+      "properties": {
+        "hasLegacyCode": {
+          "$ref": "#/$defs/hasLegacyCode"
+        },
+        "isAlwaysPublic": {
+          "$ref": "#/$defs/ynQuestion"
+        },
+        "label": {
+          "$ref": "#/$defs/label"
+        },
+        "iri": {
+          "$ref": "#/$defs/iri"
+        },
+        "hasOrderBy": {
+          "$ref": "#/$defs/hasOrderBy"
+        },
+        "type": {
+          "enum": [
+            "IntakeMethod"
+          ]
+        }
+      },
+      "required": [
+        "iri",
+        "label",
+        "hasLegacyCode",
+        "type"
+      ]
+    },
+    "ynQuestion": {
+      "enum": [
+        "Y",
+        "N"
+      ]
+    },
+    "OutcomeObject": {
+      "type": "object",
+      "properties": {
+        "hasLegacyCode": {
+          "$ref": "#/$defs/hasLegacyCode"
+        },
+        "label": {
+          "$ref": "#/$defs/label"
+        },
+        "iri": {
+          "$ref": "#/$defs/iri"
+        },
+        "hasLegacyEvent": {
+          "$ref": "#/$defs/hasLegacyEvent"
+        },
+        "type": {
+          "enum": [
+            "Outcome"
+          ]
+        }
+      }
+    },
+    "ActivityAssignmentObject": {
+      "type": "object",
+      "properties": {
+        "hasOutcome": {
+          "$ref": "#/$defs/Outcome"
+        },
+        "label": {
+          "$ref": "#/$defs/label"
+        },
+        "iri": {
+          "$ref": "#/$defs/iri"
+        },
+        "hasActivity": {
+          "$ref": "#/$defs/Activity"
+        },
+        "hasAnswerObject": {
+          "$ref": "#/$defs/hasAnswerObject"
+        },
+        "hasLegacyEvent": {
+          "$ref": "#/$defs/hasLegacyEvent"
+        },
+        "type": {
+          "enum": [
+            "Activity Trigger",
+            "QuestionTrigger"
+          ]
+        }
+      }
+    },
+    "ServiceFieldAlert": {
+      "properties": {
+        "label": {
+          "$ref": "#/$defs/label"
+        },
+        "iri": {
+          "$ref": "#/$defs/iri"
+        },
+        "hasAnswerObject": {
+          "$ref": "#/$defs/hasAnswerObject"
+        },
+        "hasLegacyEvent": {
+          "$ref": "#/$defs/hasLegacyEvent"
+        },
+        "type": {
+          "enum": [
+            "QuestionTrigger"
+          ]
+        }
+      },
+      "required": [
+        "iri",
+        "label",
+        "hasLegacyEvent",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ServiceQuestion": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "hasLegacyInterface": {
+      "items": {
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "hasOrderBy": {
+      "pattern": "^[-+]?[0-9]*.?[0-9]+$",
+      "type": "string"
+    },
+    "hasServiceFieldAlertList": {
+      "items": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/$defs/ServiceFieldAlert"
+          }
+        ]
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "hasAnswerObject": {
+      "type": "object",
+      "properties": {
+        "hasLegacyCode": {
+          "$ref": "#/$defs/hasLegacyCode"
+        },
+        "label": {
+          "$ref": "#/$defs/label"
+        },
+        "iri": {
+          "$ref": "#/$defs/iri"
+        },
+        "hasLegacyEvent": {
+          "$ref": "#/$defs/hasLegacyEvent"
+        },
+        "type": {
+          "enum": [
+            "ChoiceValue"
+          ]
+        }
+      },
+      "required": [
+        "iri",
+        "label",
+        "hasLegacyCode",
+        "type"
+      ]
+    },
+    "providedBy": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "$ref": "#/$defs/label"
+        },
+        "type": {
+          "enum": [
+            "ClientSideEventType"
+          ]
+        },
+        "iri": {
+          "$ref": "#/$defs/iri"
+        }
+      },
+      "required": [
+        "iri",
+        "label",
+        "type"
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "hasLegacyCode": {
+                  "$ref": "#/$defs/hasLegacyCode"
+                },
+                "hasChoiceValueList": {
+                  "$ref": "#/$defs/hasChoiceValueList"
+                },
+                "label": {
+                  "$ref": "#/$defs/label"
+                },
+                "iri": {
+                  "$ref": "#/$defs/iri"
+                },
+                "hasActivityAssignment": {
+                  "$ref": "#/$defs/hasActivityAssignment"
+                },
+                "hasDefaultIntakeMethod": {
+                  "$ref": "#/$defs/hasDefaultIntakeMethod"
+                },
+                "hasAllowableModules": {
+                  "$ref": "#/$defs/hasAllowableModules"
+                },
+                "hasOrderBy": {
+                  "$ref": "#/$defs/hasOrderBy"
+                },
+                "hasBusinessCodes": {
+                  "$ref": "#/$defs/hasBusinessCodes"
+                },
+                "isDisabled": {
+                  "$ref": "#/$defs/isDisabled"
+                },
+                "hasServiceFieldAlert": {
+                  "$ref": "#/$defs/hasServiceFieldAlert"
+                },
+                "hasStandardizeStreetFormat": {
+                  "$ref": "#/$defs/hasStandardizeStreetFormat"
+                },
+                "hasDataType": {
+                  "$ref": "#/$defs/hasDataType"
+                },
+                "hasLegacyEvent": {
+                  "$ref": "#/$defs/hasLegacyEvent"
+                },
+                "type": {
+                  "enum": [
+                    "ServiceQuestion"
+                  ]
+                }
+              },
+              "required": [
+                "iri",
+                "label",
+                "hasDataType",
+                "hasOrderBy",
+                "type"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^hasBusinessCodes$": true,
+                "^hasDefaultIntakeMethod$": true,
+                "^hasActivityAssignment$": true,
+                "^hasLegacyCode$": true,
+                "^hasStandardizeStreetFormat$": true,
+                "^type$": true,
+                "^hasOrderBy$": true,
+                "^iri$": true,
+                "^hasDataType$": true,
+                "^hasChoiceValueList$": true,
+                "^label$": true,
+                "^isDisabled$": true,
+                "^hasServiceFieldAlert$": true,
+                "^hasLegacyEvent$": true,
+                "^hasAllowableModules$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "hasBusinessCodes": {
+      "pattern": "^,?(((NOUPDATE|REQINTAK|FQ_ALERT|SUCCESSR|WEBQREQD|5DAYWORK|INSSPEC|DUPSTAFF|REQRESAC|REQMASS),?)*)+$",
+      "type": "string"
+    },
+    "hasChoiceValue": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/ChoiceValue"
+        },
+        {
+          "$ref": "#/$defs/ListOfChoiceValues"
+        }
+      ]
+    },
+    "hasLegacyEvent": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/LegacyEventObject"
+        },
+        {
+          "$ref": "#/$defs/ListOfLegacyEventObject"
+        }
+      ]
+    },
+    "Outcome": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/OutcomeObject"
+        },
+        {
+          "$ref": "#/$defs/ListOfOutcomeObject"
+        }
+      ]
+    }
+  }
+}

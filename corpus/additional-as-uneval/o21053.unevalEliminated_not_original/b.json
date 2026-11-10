@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Brief clarification question schema",
+              "type": "object",
+              "properties": {
+                "question": {
+                  "minLength": 1,
+                  "maxLength": 5000,
+                  "pattern": "^$|(^(?:\\S+\\s+){0,99}\\S+$)",
+                  "type": "string"
+                },
+                "answer": {
+                  "minLength": 1,
+                  "maxLength": 5000,
+                  "pattern": "^$|(^(?:\\S+\\s+){0,99}\\S+$)",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "question",
+                "answer"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^question$": true,
+                "^answer$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

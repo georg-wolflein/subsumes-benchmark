@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Retrive attributes of arukas.",
+              "properties": {
+                "token": {
+                  "description": "Can be set through ARUKAS_JSON_API_TOKEN env.",
+                  "type": "string"
+                },
+                "attr": {
+                  "description": "Attribute name to fetch, only support host now.",
+                  "enum": [
+                    "host"
+                  ],
+                  "type": "string"
+                },
+                "$schema": {
+                  "type": "string"
+                },
+                "$tool": {
+                  "const": "arukas",
+                  "description": "Must be set to arukas",
+                  "type": "string"
+                },
+                "secret": {
+                  "description": "Can be set through ARUKAS_JSON_API_SECRET env.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "$tool",
+                "attr"
+              ],
+              "title": "arukas Config",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^$schema$": true,
+                "^secret$": true,
+                "^attr$": true,
+                "^$tool$": true,
+                "^token$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

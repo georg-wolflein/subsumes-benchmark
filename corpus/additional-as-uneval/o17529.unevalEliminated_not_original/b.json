@@ -1,0 +1,852 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Doctrine ORM Entity JSON schema for Xcore Generator",
+              "type": "object",
+              "properties": {
+                "nullable": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "All properties are nullable by default."
+                },
+                "name": {
+                  "$ref": "#/$defs/entity-name"
+                },
+                "set": {
+                  "type": "boolean"
+                },
+                "properties": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "get": {
+                  "type": "boolean"
+                },
+                "namespace": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^nullable$": true,
+                "^namespace$": true,
+                "^name$": true,
+                "^get$": true,
+                "^set$": true,
+                "^properties$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/modern_3"
+              }
+            },
+            {
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "property-name": {
+      "type": "string",
+      "description": "Property name",
+      "minLength": 1
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "nullable": {
+                  "type": "boolean",
+                  "default": true
+                },
+                "name": {
+                  "$ref": "#/$defs/property-name"
+                },
+                "manyToOne": {
+                  "type": "object",
+                  "properties": {
+                    "targetEntity": {
+                      "type": "string"
+                    },
+                    "inversedBy": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "targetEntity"
+                  ]
+                },
+                "columnName": {
+                  "type": "string"
+                },
+                "asserts": {
+                  "type": "array",
+                  "_uniqueItems": true,
+                  "minItems": 1,
+                  "items": {
+                    "oneOf": [
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "NotBlank"
+                            ]
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "Blank"
+                            ]
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "NotNull"
+                            ]
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "IsNull"
+                            ]
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "IsTrue"
+                            ]
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "IsFalse"
+                            ]
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "Type"
+                            ]
+                          },
+                          "type": {
+                            "enum": [
+                              "array",
+                              "bool",
+                              "callable",
+                              "float",
+                              "double",
+                              "int",
+                              "integer",
+                              "long",
+                              "null",
+                              "numeric",
+                              "object",
+                              "real",
+                              "resource",
+                              "scalar",
+                              "string",
+                              "alnum",
+                              "alpha",
+                              "cntrl",
+                              "digit",
+                              "graph",
+                              "lower",
+                              "print",
+                              "punct",
+                              "space",
+                              "upper",
+                              "xdigit"
+                            ]
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type"
+                        ]
+                      },
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "Email"
+                            ]
+                          },
+                          "strict": {
+                            "type": "boolean",
+                            "default": true
+                          },
+                          "checkMX": {
+                            "type": "boolean",
+                            "default": true
+                          },
+                          "checkHost": {
+                            "type": "boolean",
+                            "default": true
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "Length"
+                            ]
+                          },
+                          "exactMessage": {
+                            "type": "string"
+                          },
+                          "min": {
+                            "type": "integer"
+                          },
+                          "max": {
+                            "type": "integer"
+                          },
+                          "charset": {
+                            "type": "integer",
+                            "default": "UTF-8"
+                          },
+                          "minMessage": {
+                            "type": "string"
+                          },
+                          "maxMessage": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "Url"
+                            ]
+                          },
+                          "protocols": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "checkDNS": {
+                            "type": "boolean",
+                            "default": true
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "Regex"
+                            ]
+                          },
+                          "pattern": {
+                            "type": "string"
+                          },
+                          "htmlPattern": {
+                            "type": [
+                              "string",
+                              "boolean"
+                            ]
+                          },
+                          "match": {
+                            "type": "boolean",
+                            "default": true
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "Ip"
+                            ]
+                          },
+                          "version": {
+                            "enum": [
+                              "4",
+                              "6",
+                              "all",
+                              "4_no_priv",
+                              "6_no_priv",
+                              "all_no_priv",
+                              "4_no_res",
+                              "6_no_res",
+                              "all_no_res",
+                              "4_public",
+                              "6_public",
+                              "all_public"
+                            ]
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "Uuid"
+                            ]
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "Range"
+                            ]
+                          },
+                          "invalidMessage": {
+                            "type": "string"
+                          },
+                          "min": {
+                            "type": [
+                              "integer",
+                              "string"
+                            ]
+                          },
+                          "max": {
+                            "type": [
+                              "integer",
+                              "string"
+                            ]
+                          },
+                          "minMessage": {
+                            "type": "string"
+                          },
+                          "maxMessage": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "EqualTo"
+                            ]
+                          },
+                          "value": {
+                            "type": [
+                              "integer",
+                              "number",
+                              "null",
+                              "string",
+                              "boolean"
+                            ]
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "NotEqualTo"
+                            ]
+                          },
+                          "value": {
+                            "type": [
+                              "integer",
+                              "number",
+                              "null",
+                              "string",
+                              "boolean"
+                            ]
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "IdenticalTo"
+                            ]
+                          },
+                          "value": {
+                            "type": [
+                              "integer",
+                              "number",
+                              "null",
+                              "string",
+                              "boolean"
+                            ]
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "NotIdenticalTo"
+                            ]
+                          },
+                          "value": {
+                            "type": [
+                              "integer",
+                              "number",
+                              "null",
+                              "string",
+                              "boolean"
+                            ]
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "LessThan"
+                            ]
+                          },
+                          "value": {
+                            "type": [
+                              "integer",
+                              "number",
+                              "null",
+                              "string",
+                              "boolean"
+                            ]
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "LessThanOrEqual"
+                            ]
+                          },
+                          "value": {
+                            "type": [
+                              "integer",
+                              "number",
+                              "null",
+                              "string",
+                              "boolean"
+                            ]
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "GreaterThan"
+                            ]
+                          },
+                          "value": {
+                            "type": [
+                              "integer",
+                              "number",
+                              "null",
+                              "string",
+                              "boolean"
+                            ]
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "GreaterThanOrEqual"
+                            ]
+                          },
+                          "value": {
+                            "type": [
+                              "integer",
+                              "number",
+                              "null",
+                              "string",
+                              "boolean"
+                            ]
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "Date"
+                            ]
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "DateTime"
+                            ]
+                          },
+                          "format": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "Time"
+                            ]
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "Language"
+                            ]
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "Locale"
+                            ]
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "Country"
+                            ]
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "Currency"
+                            ]
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "Luhn"
+                            ]
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "Iban"
+                            ]
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "assert": {
+                            "enum": [
+                              "Bic"
+                            ]
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    ],
+                    "required": [
+                      "assert"
+                    ]
+                  }
+                },
+                "id": {
+                  "type": "boolean",
+                  "default": true
+                },
+                "joinColumn": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "referencedColumnName": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "oneToOne": {
+                  "type": "object",
+                  "properties": {
+                    "targetEntity": {
+                      "type": "string"
+                    },
+                    "mappedBy": {
+                      "type": "string"
+                    },
+                    "inversedBy": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "targetEntity"
+                  ]
+                },
+                "length": {
+                  "type": "integer",
+                  "minimum": 1.0
+                },
+                "get": {
+                  "enum": [
+                    true,
+                    false,
+                    "has",
+                    "is"
+                  ],
+                  "description": "Whether is getter enabled/getter type"
+                },
+                "type": {
+                  "enum": [
+                    "string",
+                    "integer",
+                    "smallint",
+                    "bigint",
+                    "boolean",
+                    "decimal",
+                    "date",
+                    "time",
+                    "datetime",
+                    "datetimez",
+                    "text",
+                    "object",
+                    "array",
+                    "simple_array",
+                    "json_array",
+                    "float",
+                    "guid",
+                    "blob"
+                  ]
+                },
+                "set": {
+                  "type": "boolean"
+                },
+                "sequenceGenerator": {
+                  "type": "object",
+                  "properties": {
+                    "sequenceName": {
+                      "type": "string"
+                    },
+                    "initialValue": {
+                      "type": "integer"
+                    },
+                    "allocationSize": {
+                      "type": "integer"
+                    }
+                  }
+                },
+                "oneToMany": {
+                  "type": "object",
+                  "properties": {
+                    "targetEntity": {
+                      "type": "string"
+                    },
+                    "mappedBy": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "manyToMany": {
+                  "type": "object",
+                  "properties": {
+                    "targetEntity": {
+                      "type": "string"
+                    },
+                    "inversedBy": {
+                      "type": "string"
+                    },
+                    "mappedBy": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "generatedValue": {
+                  "enum": [
+                    "AUTO",
+                    "SEQUENCE",
+                    "IDENTITY",
+                    "UUID",
+                    "TABLE",
+                    "NONE",
+                    "CUSTOM"
+                  ],
+                  "default": "AUTO"
+                }
+              },
+              "required": [
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^columnName$": true,
+                "^nullable$": true,
+                "^joinColumn$": true,
+                "^type$": true,
+                "^sequenceGenerator$": true,
+                "^id$": true,
+                "^oneToMany$": true,
+                "^asserts$": true,
+                "^set$": true,
+                "^generatedValue$": true,
+                "^length$": true,
+                "^manyToMany$": true,
+                "^oneToOne$": true,
+                "^name$": true,
+                "^get$": true,
+                "^manyToOne$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "entity-name": {
+      "type": "string",
+      "description": "Entity name without namespace",
+      "minLength": 1
+    }
+  }
+}

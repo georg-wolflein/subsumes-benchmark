@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "dependentRequired": {
+                "favoriteTopic": [
+                  "tags"
+                ]
+              },
+              "properties": {
+                "tags": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "firstName": {
+                  "type": "string"
+                },
+                "email": {
+                  "pattern": "^[\\w|-|.]+@[\\w]+\\.[A-Za-z]{2,4}$",
+                  "type": "string"
+                },
+                "favoriteTopic": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "email",
+                "firstName",
+                "lastName"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^favoriteTopic$": true,
+                "^lastName$": true,
+                "^firstName$": true,
+                "^tags$": true,
+                "^email$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

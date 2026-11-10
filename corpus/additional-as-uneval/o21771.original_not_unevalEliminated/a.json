@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_2",
+  "$defs": {
+    "poll_answer": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": " Poll",
+              "type": "object",
+              "description": "Poll object for normal or trivia polls",
+              "properties": {
+                "image": {
+                  "$ref": "#/$defs/image"
+                },
+                "uuid": {
+                  "type": "string"
+                },
+                "answers": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/poll_answer"
+                  }
+                },
+                "@poll_type": {
+                  "type": "string",
+                  "enum": [
+                    "poll",
+                    "trivia"
+                  ]
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "@type": {
+                  "type": "string",
+                  "enum": [
+                    "poll"
+                  ]
+                },
+                "title": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "@type",
+                "id",
+                "uuid",
+                "@poll_type",
+                "title",
+                "answers"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^image$": true,
+                "^@type$": true,
+                "^id$": true,
+                "^title$": true,
+                "^@poll_type$": true,
+                "^answers$": true,
+                "^uuid$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Poll answer object for both trivia and normal polls",
+              "properties": {
+                "un_enum": {
+                  "enum": [
+                    "apo",
+                    "apolo",
+                    "apolinares"
+                  ]
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "uuid": {
+                  "type": "string"
+                },
+                "correct": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "id",
+                "uuid",
+                "title"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^un_enum$": true,
+                "^id$": true,
+                "^uuid$": true,
+                "^correct$": true,
+                "^title$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "image": {
+      "type": "object",
+      "properties": {
+        "cloudinary_id": {
+          "type": "string"
+        },
+        "caption": {
+          "type": "string"
+        },
+        "@type": {
+          "type": "string",
+          "enum": [
+            "image"
+          ]
+        },
+        "width": {
+          "type": "integer"
+        },
+        "height": {
+          "type": "integer"
+        },
+        "original_format": {
+          "type": "string",
+          "enum": [
+            "jpg",
+            "gif",
+            "png",
+            "jpeg"
+          ]
+        }
+      },
+      "required": [
+        "@type",
+        "cloudinary_id"
+      ]
+    }
+  }
+}

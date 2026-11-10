@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Attendee JSON Schema to translate ORM Entity to ObjectType instance",
+  "type": "object",
+  "properties": {
+    "display_name": {
+      "$ref": "#/$defs/field"
+    },
+    "contact_details": {
+      "$ref": "#/$defs/field"
+    },
+    "source": {
+      "$ref": "#/$defs/field"
+    },
+    "source_id": {
+      "$ref": "#/$defs/field"
+    }
+  },
+  "required": [
+    "source",
+    "source_id"
+  ],
+  "$defs": {
+    "field": {
+      "type": "object",
+      "oneOf": [
+        {
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "callback"
+              ]
+            },
+            "value": {
+              "type": "string"
+            },
+            "options": {
+              "type": "object"
+            }
+          }
+        },
+        {
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "field",
+                "value"
+              ]
+            },
+            "value": {
+              "type": [
+                "string",
+                "null",
+                "boolean",
+                "number"
+              ]
+            },
+            "options": {
+              "type": "object"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

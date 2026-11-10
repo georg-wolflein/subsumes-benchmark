@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "_elements"
+  ],
+  "properties": {
+    "_attributes": {
+      "type": "object",
+      "required": [
+        "extracted",
+        "has_metadata"
+      ],
+      "properties": {
+        "extracted": {
+          "type": "boolean"
+        },
+        "has_metadata": {
+          "type": "boolean"
+        }
+      }
+    },
+    "_elements": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/file"
+          },
+          {
+            "$ref": "#/$defs/file_remote_dir"
+          }
+        ]
+      }
+    }
+  },
+  "$defs": {
+    "file_common": {
+      "type": "object",
+      "required": [
+        "name",
+        "type"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "file": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/file_common"
+        },
+        {
+          "properties": {
+            "user": {
+              "type": "string",
+              "minLength": 1
+            },
+            "group": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "anyOf": [
+            {
+              "$ref": "#/$defs/file_file"
+            },
+            {
+              "$ref": "#/$defs/file_dir"
+            },
+            {
+              "$ref": "#/$defs/file_link"
+            }
+          ]
+        }
+      ]
+    },
+    "file_file": {
+      "properties": {
+        "type": {
+          "enum": [
+            "file"
+          ]
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mode": {
+          "type": "string",
+          "pattern": "^[0-7]{3,4}$"
+        }
+      }
+    },
+    "file_dir": {
+      "properties": {
+        "type": {
+          "enum": [
+            "dir"
+          ]
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mode": {
+          "type": "string",
+          "pattern": "^[0-4]?[0-7]{3}$"
+        },
+        "files": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "file_link": {
+      "properties": {
+        "type": {
+          "enum": [
+            "link"
+          ]
+        }
+      }
+    },
+    "file_remote_dir": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/file_common"
+        },
+        {
+          "properties": {
+            "type": {
+              "enum": [
+                "remote_dir"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

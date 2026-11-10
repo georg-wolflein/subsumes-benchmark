@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "DataTransferRequest",
+              "type": "object",
+              "properties": {
+                "vendorId": {
+                  "type": "string",
+                  "maxLength": 255
+                },
+                "messageId": {
+                  "type": "string",
+                  "maxLength": 50
+                },
+                "data": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "vendorId"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^vendorId$": true,
+                "^messageId$": true,
+                "^data$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,81 @@
+# The collections of the corpus and the upstream sources they are built from.
+#
+# A source is a submodule under sources/; its repository URL and commit are read from git.
+# A collection is one dataset of a source: `path` is where it lives inside the source, and
+# `labels` says where its answers come from:
+#
+#   by-construction    the pair was built so that the answer is known
+#   witness-generator  the upstream authors' complete but timeout-bound tool, so an
+#                      unlabelled case means that it gave up
+#   upstream-tests     the expectations of the jsonsubschema tool's own tests
+
+[sources.containment-testsuite]
+license = "MIT"
+license-file = "LICENSE.txt"
+
+[sources.inclusion-artifact]
+license = "GPL-3.0"
+license-file = "LICENSE"
+
+[collections.containment-testsuite]
+source = "containment-testsuite"
+path = "tests/draft2020-12"
+labels = "by-construction"
+use-case = "tool-checking"
+description = "The Passau containment test suite: pairs generated from the official JSON Schema Test Suite for draft 2020-12."
+
+[collections.synthesized]
+source = "inclusion-artifact"
+path = "src/test/resources/inclusion/test_suite_containment"
+labels = "by-construction"
+use-case = "tool-checking"
+description = "The same generator applied to drafts 4, 6 and 2019-09, converted to draft 2020-12. Largely a near-duplicate of containment-testsuite."
+
+[collections.handwritten-sc]
+source = "inclusion-artifact"
+path = "src/test/resources/inclusion/trickyschemas"
+labels = "by-construction"
+use-case = "tool-checking"
+description = "Hand-written hard cases."
+
+[collections.rb-testset]
+source = "inclusion-artifact"
+path = "src/test/resources/inclusion/issta"
+labels = "upstream-tests"
+use-case = "tool-checking"
+description = "The tests of the jsonsubschema tool, written for draft 4, with external references."
+
+[collections.mergeallof]
+source = "inclusion-artifact"
+path = "src/test/resources/inclusion/allOf_containment"
+labels = "witness-generator"
+use-case = "tool-checking"
+description = "Schemas against the output of a rewriter that merges their allOf."
+
+[collections.schemastore-versions]
+source = "inclusion-artifact"
+path = "src/test/resources/inclusion/schemastore_containment"
+labels = "witness-generator"
+use-case = "schema-evolution"
+description = "Successive versions of real schemas from SchemaStore."
+
+[collections.oneof-as-anyof]
+source = "inclusion-artifact"
+path = "src/test/resources/inclusion/oneOf_as_anyOf_containment"
+labels = "witness-generator"
+use-case = "schema-analysis"
+description = "Real schemas against themselves with oneOf replaced by anyOf: is oneOf used where anyOf would be equivalent?"
+
+[collections.uneval-as-additional]
+source = "inclusion-artifact"
+path = "src/test/resources/inclusion/uneval_eliminated_as_additional_containment"
+labels = "witness-generator"
+use-case = "schema-analysis"
+description = "Schemas using unevaluatedProperties or unevaluatedItems against a translation to additionalProperties and items."
+
+[collections.additional-as-uneval]
+source = "inclusion-artifact"
+path = "src/test/resources/inclusion/additional_as_uneval_eliminated_containment"
+labels = "witness-generator"
+use-case = "schema-analysis"
+description = "Real schemas against themselves with additionalProperties and items rewritten through unevaluatedProperties and unevaluatedItems."

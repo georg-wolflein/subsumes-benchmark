@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "yarnTimestamp": {
+                  "default": "",
+                  "type": "string"
+                },
+                "loaderTimestamp": {
+                  "default": "",
+                  "type": "string"
+                },
+                "yarns": {
+                  "default": [],
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/FabricArtifactVersion"
+                  }
+                },
+                "loaders": {
+                  "default": [],
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/FabricArtifactVersion"
+                  }
+                }
+              },
+              "required": [
+                "loaderTimestamp",
+                "loaders",
+                "yarnTimestamp",
+                "yarns"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^yarnTimestamp$": true,
+                "^loaderTimestamp$": true,
+                "^yarns$": true,
+                "^loaders$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "FabricArtifactVersion": {
+      "type": "object",
+      "properties": {
+        "separator": {
+          "type": "string"
+        },
+        "stable": {
+          "type": "boolean"
+        },
+        "gameVersion": {
+          "type": "string"
+        },
+        "build": {
+          "type": "number"
+        },
+        "maven": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "maven",
+        "stable",
+        "version"
+      ]
+    }
+  }
+}

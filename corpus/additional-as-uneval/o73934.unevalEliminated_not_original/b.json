@@ -1,0 +1,282 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "JSON schema for ASP.NET project.json files",
+  "type": "object",
+  "properties": {
+    "compilationOptions": {
+      "$ref": "#/$defs/compilationOptions"
+    },
+    "description": {
+      "description": "The description of the application",
+      "type": "string"
+    },
+    "frameworks": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "authors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "_uniqueItems": true
+      }
+    },
+    "resources": {
+      "description": "Glob pattern to indicate all the files that need to be compiled as resources.",
+      "type": [
+        "string",
+        "array"
+      ],
+      "items": {
+        "type": "string"
+      },
+      "default": "Compiler\\Resources\\**\\*.cs"
+    },
+    "exclude": {
+      "description": "Glob pattern to indicate all the code files to be excluded from compilation. (data type: string or array with glob pattern(s)).",
+      "type": [
+        "string",
+        "array"
+      ],
+      "items": {
+        "type": "string"
+      },
+      "default": [
+        "bin/**/*.*",
+        "obj/**/*.*"
+      ]
+    },
+    "configurations": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "scripts": {
+      "description": "Scripts to execute during the various stages.",
+      "type": "object",
+      "properties": {
+        "prebuild": {
+          "$ref": "#/$defs/script"
+        },
+        "prepare": {
+          "$ref": "#/$defs/script"
+        },
+        "prepack": {
+          "$ref": "#/$defs/script"
+        },
+        "postrestore": {
+          "$ref": "#/$defs/script"
+        },
+        "postbuild": {
+          "$ref": "#/$defs/script"
+        },
+        "postpack": {
+          "$ref": "#/$defs/script"
+        },
+        "prerestore": {
+          "$ref": "#/$defs/script"
+        }
+      }
+    },
+    "commands": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "dependencies": {
+      "$ref": "#/$defs/dependencies"
+    },
+    "shared": {
+      "description": "Glob pattern to specify the code files to share with dependent projects. Example: [ \"Folder1\\*.cs\", \"Folder2\\*.cs\" ]",
+      "type": [
+        "string",
+        "array"
+      ],
+      "items": {
+        "type": "string"
+      },
+      "default": "Compiler\\Shared\\**\\*.cs"
+    },
+    "webroot": {
+      "description": "Specifying the webroot property in the project.json file specifies the web server root (aka public folder). In visual studio, this folder will be used to root IIS. Static files should be put in here.",
+      "type": "string"
+    },
+    "code": {
+      "description": "Glob pattern to specify all the code files that needs to be compiled. (data type: string or array with glob pattern(s)). Example: [ \"Folder1\\*.cs\", \"Folder2\\*.cs\" ]",
+      "type": [
+        "string",
+        "array"
+      ],
+      "items": {
+        "type": "string"
+      },
+      "default": "**\\*.cs"
+    },
+    "packExclude": {
+      "description": "List of files to exclude from publish output (kpm pack).",
+      "type": [
+        "string",
+        "array"
+      ],
+      "items": {
+        "type": "string"
+      },
+      "default": ""
+    },
+    "preprocess": {
+      "description": "Glob pattern to indicate all the code files to be preprocessed. (data type: string with glob pattern).",
+      "type": "string",
+      "default": "Compiler\\Preprocess\\**\\*.cs"
+    },
+    "version": {
+      "description": "The version of the application. Example: 1.2.0.0",
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "compilationOptions": {
+      "type": "object",
+      "properties": {
+        "optimize": {
+          "type": "boolean",
+          "default": false
+        },
+        "allowUnsafe": {
+          "type": "boolean",
+          "default": false
+        },
+        "warningsAsErrors": {
+          "type": "boolean",
+          "default": false
+        },
+        "define": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "_uniqueItems": true
+          }
+        },
+        "languageVersion": {
+          "type": "string",
+          "enum": [
+            "csharp1",
+            "csharp2",
+            "csharp3",
+            "csharp4",
+            "csharp5",
+            "csharp6",
+            "experimental"
+          ]
+        }
+      }
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": [
+                  "string",
+                  "object"
+                ],
+                "properties": {
+                  "version": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "default",
+                      "build"
+                    ],
+                    "default": "default"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/configType"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "configType": {
+      "type": "object",
+      "properties": {
+        "dependencies": {
+          "$ref": "#/$defs/dependencies"
+        },
+        "compilationOptions": {
+          "$ref": "#/$defs/compilationOptions"
+        },
+        "frameworkAssemblies": {
+          "$ref": "#/$defs/dependencies"
+        }
+      }
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Specify separate configuration options",
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "compilationOptions": {
+                    "$ref": "#/$defs/compilationOptions"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "script": {
+      "description": "A command line script or scripts.\r\rAvailable variables:\r%project:Directory% - The project directory\r%project:Name% - The project name\r%project:Version% - The project version",
+      "type": [
+        "string",
+        "array"
+      ],
+      "items": {
+        "type": "string"
+      }
+    },
+    "dependencies": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

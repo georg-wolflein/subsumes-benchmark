@@ -1,0 +1,42 @@
+{
+  "allOf": [
+    {
+      "type": "object",
+      "properties": {
+        "foo": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "properties": {
+            "bar": {
+              "type": "string"
+            }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    {
+      "not": {
+        "type": "object",
+        "properties": {
+          "foo": {
+            "type": "string"
+          }
+        },
+        "allOf": [
+          {
+            "properties": {
+              "bar": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "unevaluatedProperties": false
+      }
+    }
+  ]
+}

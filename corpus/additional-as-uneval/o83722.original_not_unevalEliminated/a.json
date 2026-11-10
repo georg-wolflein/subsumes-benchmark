@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Organization",
+  "description": "Unit hierarchy and board members",
+  "type": "object",
+  "properties": {
+    "units": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/modern_1"
+      }
+    },
+    "board": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/modern_2"
+      }
+    }
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "unitId": {
+                  "type": "integer",
+                  "minimum": 1.0,
+                  "maximum": 9999.0
+                },
+                "unitOf": {
+                  "type": "integer",
+                  "minimum": 0.0,
+                  "maximum": 9999.0
+                },
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "unitId",
+                "unitOf",
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^unitId$": true,
+                "^unitOf$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "independent": {
+                  "type": "boolean"
+                },
+                "chair": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "name",
+                "independent",
+                "chair"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^independent$": true,
+                "^chair$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "schema for a AcceptEventAction",
+              "required": [
+                "class",
+                "option",
+                "entity",
+                "type",
+                "uuid"
+              ],
+              "type": "object",
+              "properties": {
+                "uuid": {
+                  "type": "string"
+                },
+                "option": {
+                  "required": [
+                    "event_uuid"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "event_uuid": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "entity": {
+                  "type": "string"
+                },
+                "class": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^entity$": true,
+                "^class$": true,
+                "^uuid$": true,
+                "^type$": true,
+                "^option$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

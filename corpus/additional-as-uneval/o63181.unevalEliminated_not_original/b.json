@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Resolution Rule",
+              "description": "validation of resolution rules",
+              "type": "object",
+              "properties": {
+                "replace": {
+                  "type": "array"
+                },
+                "align": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_2"
+                  },
+                  "_uniqueItems": true
+                },
+                "reject": {
+                  "type": "array"
+                },
+                "substitute": {
+                  "type": "array"
+                },
+                "deny": {
+                  "type": "array"
+                },
+                "exclude": {
+                  "type": "array"
+                }
+              },
+              "required": [
+                "align",
+                "deny",
+                "exclude",
+                "reject",
+                "replace",
+                "substitute"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^replace$": true,
+                "^reject$": true,
+                "^deny$": true,
+                "^exclude$": true,
+                "^substitute$": true,
+                "^align$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "author": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "excludes": {
+                  "type": "array"
+                },
+                "match": {
+                  "type": "string"
+                },
+                "ruleSet": {
+                  "type": "string"
+                },
+                "date": {
+                  "type": "string"
+                },
+                "includes": {
+                  "type": "array"
+                },
+                "group": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "includes",
+                "excludes",
+                "reason",
+                "author",
+                "date",
+                "group"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^group$": true,
+                "^includes$": true,
+                "^ruleSet$": true,
+                "^author$": true,
+                "^date$": true,
+                "^name$": true,
+                "^match$": true,
+                "^excludes$": true,
+                "^reason$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

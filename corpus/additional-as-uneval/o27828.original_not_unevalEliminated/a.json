@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "errorMessage": {
+    "uniqueItemProperties": "should NOT contain objects with the same zoneId"
+  },
+  "items": {
+    "$ref": "#/$defs/modern_1"
+  },
+  "type": "array",
+  "uniqueItemProperties": [
+    "zoneId"
+  ],
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "offeringId": {
+                  "type": "string"
+                },
+                "zoneId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "zoneId",
+                "offeringId"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^offeringId$": true,
+                "^zoneId$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

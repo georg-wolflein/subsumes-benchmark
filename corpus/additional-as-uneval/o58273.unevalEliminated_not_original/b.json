@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "attestationCert": {
+                  "_id": "attestationCert",
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "publicKey": {
+                  "_id": "publicKey",
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "publicKey",
+                "attestationCert"
+              ],
+              "title": "u2f.properties",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^attestationCert$": true,
+                "^publicKey$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

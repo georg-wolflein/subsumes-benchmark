@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "items": {
+    "$ref": "#/$defs/modern_1"
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "description",
+                "schema",
+                "tests"
+              ],
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "schema": true,
+                "tests": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_2"
+                  },
+                  "minItems": 1
+                }
+              },
+              "minItems": 1
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^schema$": true,
+                "^tests$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "description",
+                "data",
+                "valid"
+              ],
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "data": true,
+                "valid": {
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^data$": true,
+                "^valid$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

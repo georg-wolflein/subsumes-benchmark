@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "filter": {
+      "$ref": "#/$defs/bool"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "field": {
+      "type": "string"
+    },
+    "value": {
+      "type": [
+        "string",
+        "number",
+        "boolean",
+        "array",
+        "object"
+      ]
+    },
+    "range": {
+      "type": "array"
+    },
+    "filter_type": {
+      "type": "string",
+      "enum": [
+        "bool",
+        "match",
+        "in",
+        "exist",
+        "compare"
+      ]
+    },
+    "filters_allowed": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/basic_filter"
+        },
+        {
+          "$ref": "#/$defs/exist"
+        },
+        {
+          "$ref": "#/$defs/bool"
+        },
+        {
+          "$ref": "#/$defs/compare"
+        }
+      ]
+    },
+    "basic_filter": {
+      "type": "object",
+      "properties": {
+        "filter_type": {
+          "$ref": "#/$defs/filter_type"
+        },
+        "field": {
+          "$ref": "#/$defs/field"
+        },
+        "value": {
+          "$ref": "#/$defs/value"
+        },
+        "range": {
+          "$ref": "#/$defs/range"
+        }
+      },
+      "additionalProperties": false,
+      "anyOf": [
+        {
+          "required": [
+            "field",
+            "value",
+            "filter_type"
+          ]
+        },
+        {
+          "required": [
+            "field",
+            "range",
+            "filter_type"
+          ]
+        }
+      ]
+    },
+    "exist": {
+      "type": "object",
+      "properties": {
+        "filter_type": {
+          "$ref": "#/$defs/filter_type"
+        },
+        "field": {
+          "$ref": "#/$defs/field"
+        }
+      },
+      "required": [
+        "field",
+        "filter_type"
+      ],
+      "additionalProperties": false
+    },
+    "compare": {
+      "type": "object",
+      "properties": {
+        "filter_type": {
+          "$ref": "#/$defs/filter_type"
+        },
+        "field1": {
+          "$ref": "#/$defs/field"
+        },
+        "field2": {
+          "$ref": "#/$defs/field"
+        },
+        "constant": {
+          "$ref": "#/$defs/constant"
+        },
+        "comparison_operator": {
+          "$ref": "#/$defs/comparison_operator"
+        }
+      },
+      "additionalProperties": false,
+      "anyOf": [
+        {
+          "required": [
+            "field1",
+            "field2",
+            "comparison_operator",
+            "filter_type"
+          ]
+        },
+        {
+          "required": [
+            "field1",
+            "constant",
+            "comparison_operator",
+            "filter_type"
+          ]
+        }
+      ]
+    },
+    "constant": {
+      "type": [
+        "string",
+        "number"
+      ]
+    },
+    "comparison_operator": {
+      "type": "string",
+      "enum": [
+        "lt",
+        "gt",
+        "lte",
+        "gte",
+        "eq"
+      ]
+    },
+    "bool": {
+      "type": "object",
+      "properties": {
+        "filter_type": {
+          "$ref": "#/$defs/filter_type"
+        },
+        "must": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/filters_allowed"
+          }
+        },
+        "must_not": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/filters_allowed"
+          }
+        },
+        "should": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/filters_allowed"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

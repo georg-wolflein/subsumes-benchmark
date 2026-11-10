@@ -1,0 +1,197 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_2",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "minProperties": 1
+            },
+            {
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "urlString": {
+      "type": "string",
+      "pattern": "^(ftp|http|https)://[^ \"]+$",
+      "_format": "uri"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "minProperties": 1,
+              "properties": {
+                "main": {
+                  "type": "string"
+                },
+                "user": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^main$": true,
+                "^user$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "htmlStringLines": {
+      "description": "HTML string lines, will be joined by \\n.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "$ref": "#/$defs/htmlStringLines"
+                },
+                "fixtureUsage": {
+                  "$ref": "#/$defs/htmlStringLines"
+                },
+                "fileLocations": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "links": {
+                  "$ref": "#/$defs/modern_4"
+                },
+                "helpWanted": {
+                  "type": "string"
+                },
+                "additionalInfo": {
+                  "$ref": "#/$defs/htmlStringLines"
+                },
+                "previousVersions": {
+                  "$ref": "#/$defs/modern_5"
+                }
+              },
+              "required": [
+                "name",
+                "description",
+                "links"
+              ],
+              "patternProperties": {
+                "^\\$schema$": {
+                  "const": "../../schemas/plugin.json"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^\\$schema$": true,
+                "^description$": true,
+                "^additionalInfo$": true,
+                "^fixtureUsage$": true,
+                "^fileLocations$": true,
+                "^links$": true,
+                "^name$": true,
+                "^previousVersions$": true,
+                "^helpWanted$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "fileLocations": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "minProperties": 1,
+              "properties": {
+                "subDirectoriesAllowed": {
+                  "type": "boolean"
+                },
+                "Windows": {
+                  "$ref": "#/$defs/fileLocations"
+                },
+                "Mac OS": {
+                  "$ref": "#/$defs/fileLocations"
+                },
+                "Linux": {
+                  "$ref": "#/$defs/fileLocations"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^subDirectoriesAllowed$": true,
+                "^Windows$": true,
+                "^Mac OS$": true,
+                "^Linux$": true
+              },
+              "additionalProperties": {
+                "$ref": "#/$defs/fileLocations"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "minProperties": 1,
+              "properties": {
+                "Website": {
+                  "$ref": "#/$defs/urlString"
+                },
+                "Fixture library download": {
+                  "$ref": "#/$defs/urlString"
+                },
+                "Fixture format documentation": {
+                  "$ref": "#/$defs/urlString"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^Website$": true,
+                "^Fixture library download$": true,
+                "^Fixture format documentation$": true
+              },
+              "additionalProperties": {
+                "$ref": "#/$defs/urlString"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

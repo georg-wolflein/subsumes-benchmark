@@ -1,0 +1,468 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "camera": {
+      "properties": {
+        "position": {
+          "$ref": "#/$defs/vector"
+        },
+        "direction": {
+          "$ref": "#/$defs/vector"
+        },
+        "up": {
+          "$ref": "#/$defs/vector"
+        }
+      },
+      "additionalProperties": false
+    },
+    "objects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/$defs/sphere"
+          },
+          {
+            "$ref": "#/$defs/torus"
+          },
+          {
+            "$ref": "#/$defs/cone"
+          },
+          {
+            "$ref": "#/$defs/cylinder"
+          },
+          {
+            "$ref": "#/$defs/plane"
+          },
+          {
+            "$ref": "#/$defs/polygon"
+          }
+        ]
+      },
+      "_uniqueItems": true
+    },
+    "lights": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/$defs/directionLight"
+          },
+          {
+            "$ref": "#/$defs/pointLight"
+          }
+        ]
+      },
+      "_uniqueItems": true
+    },
+    "ambientColour": {
+      "$ref": "#/$defs/colour"
+    },
+    "backgroundColour": {
+      "$ref": "#/$defs/colour"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "objects"
+  ],
+  "$defs": {
+    "vector": {
+      "type": [
+        "array",
+        "object"
+      ],
+      "properties": {
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "z": {
+          "type": "number"
+        }
+      },
+      "minItems": 0,
+      "maxItems": 3,
+      "additionalProperties": false
+    },
+    "colour": {
+      "type": [
+        "array",
+        "object"
+      ],
+      "properties": {
+        "r": {
+          "type": "number"
+        },
+        "g": {
+          "type": "number"
+        },
+        "b": {
+          "type": "number"
+        },
+        "a": {
+          "type": "number"
+        }
+      },
+      "minItems": 0,
+      "maxItems": 4,
+      "additionalProperties": false
+    },
+    "material": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/solidMaterial"
+        },
+        {
+          "$ref": "#/$defs/textureMaterial"
+        },
+        {
+          "$ref": "#/$defs/stripedMaterial"
+        }
+      ]
+    },
+    "solidMaterial": {
+      "properties": {
+        "type": {
+          "enum": [
+            "solid"
+          ]
+        },
+        "colour": {
+          "$ref": "#/$defs/colour"
+        },
+        "reflectivity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "refractivity": {
+          "minimum": -1,
+          "maximum": 1
+        },
+        "specularity": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "colour"
+      ]
+    },
+    "textureMaterial": {
+      "properties": {
+        "type": {
+          "enum": [
+            "texture"
+          ]
+        },
+        "path": {
+          "type": "string"
+        },
+        "scaling": {
+          "$ref": "#/$defs/vector"
+        },
+        "reflectivity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "refractivity": {
+          "minimum": -1,
+          "maximum": 1
+        },
+        "specularity": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "path"
+      ]
+    },
+    "stripedMaterial": {
+      "properties": {
+        "type": {
+          "enum": [
+            "pattern-stripe"
+          ]
+        },
+        "direction": {
+          "enum": [
+            "horizontal",
+            "vertical"
+          ]
+        },
+        "multiplier": {
+          "type": "number"
+        },
+        "colour1": {
+          "$ref": "#/$defs/colour"
+        },
+        "colour2": {
+          "$ref": "#/$defs/colour"
+        },
+        "reflectivity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "refractivity": {
+          "minimum": -1,
+          "maximum": 1
+        },
+        "specularity": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "direction",
+        "multiplier",
+        "colour1",
+        "colour2"
+      ]
+    },
+    "sphere": {
+      "properties": {
+        "type": {
+          "enum": [
+            "sphere"
+          ]
+        },
+        "position": {
+          "$ref": "#/$defs/vector"
+        },
+        "radius": {
+          "type": "number",
+          "minimum": 0
+        },
+        "material": {
+          "$ref": "#/$defs/material"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "position",
+        "radius",
+        "material"
+      ]
+    },
+    "torus": {
+      "properties": {
+        "type": {
+          "enum": [
+            "torus"
+          ]
+        },
+        "position": {
+          "$ref": "#/$defs/vector"
+        },
+        "majorRadius": {
+          "type": "number",
+          "minimum": 0
+        },
+        "minorRadius": {
+          "type": "number",
+          "minimum": 0
+        },
+        "material": {
+          "$ref": "#/$defs/material"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "position",
+        "majorRadius",
+        "minorRadius",
+        "material"
+      ]
+    },
+    "cone": {
+      "properties": {
+        "type": {
+          "enum": [
+            "cone"
+          ]
+        },
+        "position": {
+          "$ref": "#/$defs/vector"
+        },
+        "radius": {
+          "type": "number",
+          "minimum": 0
+        },
+        "height": {
+          "type": "number",
+          "minimum": 0
+        },
+        "material": {
+          "$ref": "#/$defs/material"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "position",
+        "radius",
+        "height",
+        "material"
+      ]
+    },
+    "cylinder": {
+      "properties": {
+        "type": {
+          "enum": [
+            "cylinder"
+          ]
+        },
+        "position": {
+          "$ref": "#/$defs/vector"
+        },
+        "radius": {
+          "type": "number",
+          "minimum": 0
+        },
+        "height": {
+          "type": "number",
+          "minimum": 0
+        },
+        "material": {
+          "$ref": "#/$defs/material"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "position",
+        "radius",
+        "height",
+        "material"
+      ]
+    },
+    "plane": {
+      "properties": {
+        "type": {
+          "enum": [
+            "plane"
+          ]
+        },
+        "position": {
+          "$ref": "#/$defs/vector"
+        },
+        "normal": {
+          "$ref": "#/$defs/vector"
+        },
+        "material": {
+          "$ref": "#/$defs/material"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "position",
+        "normal",
+        "material"
+      ]
+    },
+    "polygon": {
+      "properties": {
+        "type": {
+          "enum": [
+            "polygon"
+          ]
+        },
+        "points": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/vector"
+          },
+          "minItems": 3,
+          "maxItems": 4,
+          "_uniqueItems": true
+        },
+        "texCoords": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/vector"
+          },
+          "minItems": 3,
+          "maxItems": 4
+        },
+        "material": {
+          "$ref": "#/$defs/material"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "points",
+        "material"
+      ]
+    },
+    "directionLight": {
+      "properties": {
+        "type": {
+          "enum": [
+            "direction"
+          ]
+        },
+        "direction": {
+          "$ref": "#/$defs/vector"
+        },
+        "colour": {
+          "$ref": "#/$defs/colour"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "direction",
+        "colour"
+      ]
+    },
+    "pointLight": {
+      "properties": {
+        "type": {
+          "enum": [
+            "point"
+          ]
+        },
+        "position": {
+          "$ref": "#/$defs/vector"
+        },
+        "colour": {
+          "$ref": "#/$defs/colour"
+        },
+        "attenuation-constant": {
+          "type": "number"
+        },
+        "attenuation-linear": {
+          "type": "number"
+        },
+        "attenuation-quadratic": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "position",
+        "colour",
+        "attenuation-constant",
+        "attenuation-linear",
+        "attenuation-quadratic"
+      ]
+    }
+  }
+}

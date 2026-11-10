@@ -1,0 +1,184 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Completion Resource",
+              "description": "A completion of a BEL expression.",
+              "type": "object",
+              "required": [
+                "completion"
+              ],
+              "properties": {
+                "completion": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^completion$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "type",
+                "label",
+                "value",
+                "highlight",
+                "actions"
+              ],
+              "properties": {
+                "highlight": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "object",
+                      "required": [
+                        "start_position",
+                        "end_position",
+                        "range_type"
+                      ],
+                      "properties": {
+                        "start_position": {
+                          "type": "integer"
+                        },
+                        "end_position": {
+                          "type": "integer"
+                        },
+                        "range_type": {
+                          "enum": [
+                            "exclusive",
+                            "inclusive"
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                },
+                "label": {
+                  "type": "string"
+                },
+                "actions": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "required": [
+                          "delete"
+                        ],
+                        "properties": {
+                          "delete": {
+                            "type": "object",
+                            "required": [
+                              "start_position",
+                              "end_position",
+                              "range_type"
+                            ],
+                            "properties": {
+                              "start_position": {
+                                "type": "integer"
+                              },
+                              "end_position": {
+                                "type": "integer"
+                              },
+                              "range_type": {
+                                "enum": [
+                                  "exclusive",
+                                  "inclusive"
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "type": "object",
+                        "required": [
+                          "insert"
+                        ],
+                        "properties": {
+                          "insert": {
+                            "type": "object",
+                            "required": [
+                              "position",
+                              "value"
+                            ],
+                            "properties": {
+                              "position": {
+                                "type": "integer"
+                              },
+                              "value": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "type": "object",
+                        "required": [
+                          "move_cursor"
+                        ],
+                        "properties": {
+                          "move_cursor": {
+                            "type": "object",
+                            "required": [
+                              "position"
+                            ],
+                            "properties": {
+                              "position": {
+                                "type": "integer"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                "type": {
+                  "enum": [
+                    "function",
+                    "namespace_prefix",
+                    "namespace_value"
+                  ]
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^highlight$": true,
+                "^label$": true,
+                "^value$": true,
+                "^type$": true,
+                "^actions$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

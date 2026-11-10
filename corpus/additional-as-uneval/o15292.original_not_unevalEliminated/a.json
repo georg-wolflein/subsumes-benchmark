@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/T",
+  "$defs": {
+    "FSData": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "driver": {
+                  "type": "string"
+                },
+                "location": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "driver",
+                "location"
+              ],
+              "title": "FSData",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^driver$": true,
+                "^location$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Value": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "chunk_id": {
+                  "_format": "uuid",
+                  "type": "string"
+                },
+                "data": {
+                  "$ref": "#/$defs/Data"
+                },
+                "output_chunk_id": {
+                  "_format": "uuid",
+                  "type": "string"
+                },
+                "state": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "chunk_id",
+                "data",
+                "output_chunk_id",
+                "state"
+              ],
+              "title": "T",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^chunk_id$": true,
+                "^data$": true,
+                "^output_chunk_id$": true,
+                "^state$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Data": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "fs_data": {
+                  "$ref": "#/$defs/FSData"
+                }
+              },
+              "required": [
+                "fs_data"
+              ],
+              "title": "Value",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^fs_data$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "value": {
+                  "$ref": "#/$defs/Value"
+                }
+              },
+              "required": [
+                "type",
+                "value"
+              ],
+              "title": "Data",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^type$": true,
+                "^value$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "T": {
+      "$ref": "#/$defs/modern_3"
+    }
+  }
+}

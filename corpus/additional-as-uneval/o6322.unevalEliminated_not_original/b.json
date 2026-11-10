@@ -1,0 +1,295 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_6",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "labelColumn": {
+                  "maxLength": 128,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "labelColumnDelimiter": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "enabled",
+                "labelColumn"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^enabled$": true,
+                "^labelColumn$": true,
+                "^labelColumnDelimiter$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "maxLength": 1024,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "custom": {
+                  "$ref": "#/$defs/custom"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "accessControl": {
+                  "$ref": "#/$defs/sourceAccessControl"
+                },
+                "projectId": {
+                  "type": "string"
+                },
+                "datasetId": {
+                  "maxLength": 1024,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "createdBy": {
+                  "type": "string"
+                },
+                "source": {
+                  "$ref": "#/$defs/source"
+                },
+                "authorizedViewId": {
+                  "type": "string"
+                },
+                "rowId": {
+                  "type": "string"
+                },
+                "expiration": {
+                  "$ref": "#/$defs/expiration"
+                }
+              },
+              "required": [
+                "projectId",
+                "name",
+                "description",
+                "datasetId"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^expiration$": true,
+                "^description$": true,
+                "^authorizedViewId$": true,
+                "^accessControl$": true,
+                "^name$": true,
+                "^datasetId$": true,
+                "^projectId$": true,
+                "^custom$": true,
+                "^rowId$": true,
+                "^createdBy$": true,
+                "^source$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "source": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "custom": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "publicAccess": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "visibleColumns": {
+                  "items": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "_uniqueItems": true
+                },
+                "publicAccess": {
+                  "$ref": "#/$defs/publicAccess"
+                },
+                "hiddenColumns": {
+                  "items": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "_uniqueItems": true
+                },
+                "datasetId": {
+                  "maxLength": 1024,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "tableId": {
+                  "maxLength": 1024,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "queryFilter": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "datasetId",
+                "tableId"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^publicAccess$": true,
+                "^datasetId$": true,
+                "^tableId$": true,
+                "^visibleColumns$": true,
+                "^hiddenColumns$": true,
+                "^queryFilter$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "authorizeFromDatasetIds": {
+                  "items": {
+                    "maxLength": 1024,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "_uniqueItems": true
+                },
+                "query": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "query"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^authorizeFromDatasetIds$": true,
+                "^query$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "limit": {
+                  "minimum": 1.0,
+                  "type": "integer"
+                },
+                "queryFilter": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "enabled",
+                "queryFilter"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^enabled$": true,
+                "^limit$": true,
+                "^queryFilter$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "delete": {
+                  "type": "boolean"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "time": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "enabled",
+                "time"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^delete$": true,
+                "^enabled$": true,
+                "^time$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "expiration": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "sourceAccessControl": {
+      "$ref": "#/$defs/modern_5"
+    }
+  }
+}

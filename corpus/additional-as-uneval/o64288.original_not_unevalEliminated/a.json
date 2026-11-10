@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "notification content",
+              "description": "notification content",
+              "type": "object",
+              "properties": {
+                "from": {
+                  "type": "string"
+                },
+                "to": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "priority": {
+                  "type": "integer",
+                  "minimum": 0.0,
+                  "maximum": 10.0
+                }
+              },
+              "required": [
+                "to",
+                "message",
+                "priority"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^from$": true,
+                "^to$": true,
+                "^message$": true,
+                "^priority$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "implicit flow response",
+              "properties": {
+                "id_token": {
+                  "description": "The OpenID Connect ID token.",
+                  "type": "string"
+                },
+                "access_token": {
+                  "description": "The OAuth 2.0 access token. Required for the UserInfo endpoint and other authorised protected resources.",
+                  "type": "string"
+                },
+                "state": {
+                  "description": "The state value, if one was passed with the request. Clients must validate the value before proceeding.",
+                  "type": "string"
+                },
+                "expires_in": {
+                  "description": "Expiration time of the access token in seconds since the response was generated.",
+                  "type": "number"
+                },
+                "token_type": {
+                  "description": "The OAuth 2.0 token type, set to bearer.",
+                  "enum": [
+                    "bearer"
+                  ],
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code"
+              ],
+              "title": "OAuth implicit flow",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^state$": true,
+                "^id_token$": true,
+                "^access_token$": true,
+                "^token_type$": true,
+                "^expires_in$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

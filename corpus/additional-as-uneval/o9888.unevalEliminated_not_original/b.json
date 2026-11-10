@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "userTags": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "tokenCutoff": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "lastName": {
+                  "type": "string",
+                  "maxLength": 1024
+                },
+                "firstName": {
+                  "type": "string",
+                  "maxLength": 1024
+                },
+                "password": {
+                  "type": "string",
+                  "minLength": 8,
+                  "maxLength": 2048
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email",
+                  "maxLength": 1024
+                },
+                "experienceGroupIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[A-Fa-f\\d]{24}$"
+                  },
+                  "maxItems": 1000
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^tokenCutoff$": true,
+                "^lastName$": true,
+                "^experienceGroupIds$": true,
+                "^password$": true,
+                "^firstName$": true,
+                "^userTags$": true,
+                "^email$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "^[0-9a-zA-Z_-]{1,255}$": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 255
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^[0-9a-zA-Z_-]{1,255}$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

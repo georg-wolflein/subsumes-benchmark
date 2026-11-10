@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "ParentId",
+                "PathPart",
+                "RestApiId"
+              ],
+              "properties": {
+                "ParentId": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9]+$"
+                },
+                "PathPart": {
+                  "type": "string",
+                  "pattern": "^(\\{[a-z]+\\})|([a-z]+)$"
+                },
+                "RestApiId": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9]{10}$"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^ParentId$": true,
+                "^PathPart$": true,
+                "^RestApiId$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

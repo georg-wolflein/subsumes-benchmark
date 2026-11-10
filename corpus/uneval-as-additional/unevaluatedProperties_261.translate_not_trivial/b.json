@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "server": {
+      "description": "The server information of the API deployment.",
+      "type": "object",
+      "properties": {
+        "runtimeUri": {
+          "description": "Base runtime URIs for this deployment.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 200
+        }
+      },
+      "required": [
+        "runtimeUri"
+      ]
+    },
+    "description": {
+      "description": "The description of the deployment.",
+      "type": "string",
+      "maxLength": 1000
+    },
+    "definitionId": {
+      "description": "The service-scoped resource ID of the API definition.",
+      "type": "string"
+    },
+    "customProperties": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "environmentId": {
+      "description": "The service-scoped resource ID of the deployment environment.",
+      "type": "string"
+    },
+    "title": {
+      "description": "The name of the deployment.",
+      "type": "string",
+      "maxLength": 50
+    },
+    "recommended": {
+      "description": "Indicates if this is currently recommended deployment.",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "title",
+    "environmentId",
+    "definitionId",
+    "server"
+  ],
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {},
+              "required": []
+            },
+            {
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

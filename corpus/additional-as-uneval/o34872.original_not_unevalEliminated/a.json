@@ -1,0 +1,365 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "items": {
+    "$ref": "#/$defs/modern_4"
+  },
+  "type": "array",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "format": {
+                  "$ref": "#/$defs/codeText"
+                },
+                "spatial": {
+                  "type": "string"
+                },
+                "resourceTitle": {
+                  "$ref": "#/$defs/shortTextMultilingual"
+                },
+                "resourceDescription": {
+                  "$ref": "#/$defs/longTextMultilingual"
+                },
+                "accessURL": {
+                  "$ref": "#/$defs/webLink"
+                },
+                "isAPI": {
+                  "enum": [
+                    "Y",
+                    "N"
+                  ],
+                  "type": "string"
+                },
+                "schema": {
+                  "$ref": "#/$defs/webLink"
+                },
+                "temporal": {
+                  "$ref": "#/$defs/modern_6"
+                }
+              },
+              "required": [
+                "accessURL",
+                "format",
+                "isAPI",
+                "resourceDescription",
+                "resourceTitle"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^resourceDescription$": true,
+                "^temporal$": true,
+                "^format$": true,
+                "^accessURL$": true,
+                "^resourceTitle$": true,
+                "^spatial$": true,
+                "^schema$": true,
+                "^isAPI$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "phoneNumber": {
+      "maxLength": 100,
+      "minLength": 1,
+      "type": "string"
+    },
+    "emailAddress": {
+      "format": "email",
+      "maxLength": 254,
+      "type": "string"
+    },
+    "webLink": {
+      "format": "uri",
+      "maxLength": 2000,
+      "type": "string"
+    },
+    "groupCode": {
+      "enum": [
+        "accessibility",
+        "air-quality-health-index",
+        "buildings",
+        "charitable-fund-raising-activities",
+        "food-and-environmental-hygiene",
+        "geospatial-data",
+        "image-resources",
+        "law-and-order",
+        "marine",
+        "news-and-information",
+        "population-census-statistics",
+        "property-market-statistics",
+        "public-transport",
+        "real-time-traffic-data",
+        "water-quality",
+        "weather-data"
+      ],
+      "type": "string"
+    },
+    "licenceCode": {
+      "enum": [
+        "Data.One"
+      ],
+      "type": "string"
+    },
+    "longText": {
+      "maxLength": 30000,
+      "minLength": 1,
+      "type": "string"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "en": {
+                  "$ref": "#/$defs/longText"
+                },
+                "zh-Hans": {
+                  "$ref": "#/$defs/longText"
+                },
+                "zh-Hant": {
+                  "$ref": "#/$defs/longText"
+                }
+              },
+              "required": [
+                "en",
+                "zh-Hant",
+                "zh-Hans"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^en$": true,
+                "^zh-Hans$": true,
+                "^zh-Hant$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "webLinkMultilingual": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "updateFrequency": {
+                  "$ref": "#/$defs/shortTextMultilingual"
+                },
+                "description": {
+                  "$ref": "#/$defs/longTextMultilingual"
+                },
+                "licence": {
+                  "$ref": "#/$defs/licenceCode"
+                },
+                "dataDictionary": {
+                  "$ref": "#/$defs/webLinkMultilingual"
+                },
+                "resources": {
+                  "items": {
+                    "$ref": "#/$defs/modern_5"
+                  },
+                  "type": "array"
+                },
+                "title": {
+                  "$ref": "#/$defs/shortTextMultilingual"
+                },
+                "sources": {
+                  "items": {
+                    "$ref": "#/$defs/webLinkMultilingual"
+                  },
+                  "type": "array"
+                },
+                "group": {
+                  "$ref": "#/$defs/groupCode"
+                },
+                "announcement": {
+                  "$ref": "#/$defs/longTextMultilingual"
+                },
+                "phone": {
+                  "$ref": "#/$defs/phoneNumber"
+                },
+                "mbox": {
+                  "$ref": "#/$defs/emailAddress"
+                },
+                "identifier": {
+                  "maxLength": 70,
+                  "minLength": 2,
+                  "type": "string"
+                },
+                "references": {
+                  "items": {
+                    "$ref": "#/$defs/webLinkMultilingual"
+                  },
+                  "type": "array"
+                },
+                "contactPoint": {
+                  "$ref": "#/$defs/shortTextMultilingual"
+                }
+              },
+              "required": [
+                "description",
+                "group",
+                "identifier",
+                "mbox",
+                "resources",
+                "title",
+                "updateFrequency"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^group$": true,
+                "^references$": true,
+                "^description$": true,
+                "^identifier$": true,
+                "^resources$": true,
+                "^contactPoint$": true,
+                "^title$": true,
+                "^announcement$": true,
+                "^phone$": true,
+                "^mbox$": true,
+                "^licence$": true,
+                "^sources$": true,
+                "^updateFrequency$": true,
+                "^dataDictionary$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "shortText": {
+      "maxLength": 1000,
+      "minLength": 1,
+      "type": "string"
+    },
+    "longTextMultilingual": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "from": {
+                  "type": "string"
+                },
+                "to": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "from",
+                "to"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^from$": true,
+                "^to$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "en": {
+                  "$ref": "#/$defs/shortText"
+                },
+                "zh-Hans": {
+                  "$ref": "#/$defs/shortText"
+                },
+                "zh-Hant": {
+                  "$ref": "#/$defs/shortText"
+                }
+              },
+              "required": [
+                "en",
+                "zh-Hant",
+                "zh-Hans"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^en$": true,
+                "^zh-Hans$": true,
+                "^zh-Hant$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "codeText": {
+      "maxLength": 100,
+      "minLength": 1,
+      "type": "string"
+    },
+    "shortTextMultilingual": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "en": {
+                  "$ref": "#/$defs/webLink"
+                },
+                "zh-Hans": {
+                  "$ref": "#/$defs/webLink"
+                },
+                "zh-Hant": {
+                  "$ref": "#/$defs/webLink"
+                }
+              },
+              "required": [
+                "en",
+                "zh-Hant",
+                "zh-Hans"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^en$": true,
+                "^zh-Hans$": true,
+                "^zh-Hant$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

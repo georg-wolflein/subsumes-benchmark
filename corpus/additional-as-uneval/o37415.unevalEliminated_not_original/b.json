@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_4",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "path": {
+                  "type": "string"
+                },
+                "asPostfix": {
+                  "type": "boolean"
+                },
+                "baseProperties": {
+                  "$ref": "#/$defs/property"
+                },
+                "subTypes": {
+                  "$ref": "#/$defs/subType"
+                }
+              },
+              "required": [
+                "name",
+                "path",
+                "asPostfix"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^baseProperties$": true,
+                "^path$": true,
+                "^subTypes$": true,
+                "^name$": true,
+                "^asPostfix$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "superType": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "properties": {
+                  "$ref": "#/$defs/property"
+                }
+              },
+              "required": [
+                "name",
+                "superType",
+                "properties"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^superType$": true,
+                "^properties$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "hierarchy": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "property": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "subType": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "$schema": {
+                  "type": "string"
+                },
+                "hierarchies": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/hierarchy"
+                  }
+                }
+              },
+              "required": [
+                "$schema",
+                "hierarchies"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^$schema$": true,
+                "^hierarchies$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

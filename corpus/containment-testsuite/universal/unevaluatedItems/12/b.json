@@ -1,0 +1,44 @@
+{
+  "anyOf": [
+    {
+      "type": "array",
+      "prefixItems": [
+        {
+          "const": "foo"
+        }
+      ],
+      "not": {
+        "not": {
+          "prefixItems": [
+            true,
+            {
+              "const": "bar"
+            }
+          ]
+        }
+      },
+      "unevaluatedItems": false
+    },
+    {
+      "not": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "const": "foo"
+          }
+        ],
+        "not": {
+          "not": {
+            "prefixItems": [
+              true,
+              {
+                "const": "bar"
+              }
+            ]
+          }
+        },
+        "unevaluatedItems": false
+      }
+    }
+  ]
+}

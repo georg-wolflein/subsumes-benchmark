@@ -1,0 +1,115 @@
+{
+  "$id": "http://kddart.org",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "DATA": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/modern_1"
+          }
+        ]
+      },
+      "minItems": 1
+    }
+  },
+  "required": [
+    "DATA"
+  ],
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "LastMeasuredDate": {
+                  "type": "string"
+                },
+                "SpecimenId": {
+                  "type": "integer"
+                },
+                "ItemSourceId": {
+                  "type": "integer"
+                },
+                "StorageId": {
+                  "type": "integer"
+                },
+                "Amount": {
+                  "type": "number"
+                },
+                "TrialUnitSpecimenId": {
+                  "type": "integer"
+                },
+                "ItemId": {
+                  "type": "integer"
+                },
+                "ScaleId": {
+                  "type": "integer"
+                },
+                "LastUpdateTimeStamp": {
+                  "type": "string"
+                },
+                "LastMeasuredUserId": {
+                  "type": "string"
+                },
+                "ItemOperation": {
+                  "type": "string"
+                },
+                "ContainerTypeId": {
+                  "type": "integer"
+                },
+                "ItemTypeId": {
+                  "type": "integer"
+                },
+                "ItemStateId": {
+                  "type": "integer"
+                },
+                "UnitId": {
+                  "type": "integer"
+                },
+                "ItemNote": {
+                  "type": "string"
+                },
+                "ItemBarcode": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "ItemId",
+                "SpecimenId",
+                "ItemTypeId",
+                "LastUpdateTimeStamp"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^ContainerTypeId$": true,
+                "^ScaleId$": true,
+                "^ItemSourceId$": true,
+                "^ItemOperation$": true,
+                "^ItemNote$": true,
+                "^LastMeasuredUserId$": true,
+                "^UnitId$": true,
+                "^ItemBarcode$": true,
+                "^StorageId$": true,
+                "^SpecimenId$": true,
+                "^ItemId$": true,
+                "^Amount$": true,
+                "^ItemTypeId$": true,
+                "^ItemStateId$": true,
+                "^LastUpdateTimeStamp$": true,
+                "^TrialUnitSpecimenId$": true,
+                "^LastMeasuredDate$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

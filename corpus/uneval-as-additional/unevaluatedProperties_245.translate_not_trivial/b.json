@@ -1,0 +1,71 @@
+{
+  "$id": "https://registry.hzdr.de/crp/picongpu/schema/picongpu.pypicongpu.output.auto.Auto",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "enable as many output plugins as feasable with only the period specified",
+              "type": "object",
+              "required": [
+                "period",
+                "png_axis"
+              ],
+              "properties": {
+                "period": {
+                  "description": "number of time steps: at each multiple output is generated",
+                  "type": "integer",
+                  "minimum": 1.0
+                },
+                "png_axis": {
+                  "description": "axis pairs (i.e. planes) for which to generate png output",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_2"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^period$": true,
+                "^png_axis$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "axis"
+              ],
+              "properties": {
+                "axis": {
+                  "description": "actually a plane of two axis, but name follows PIConGPU",
+                  "type": "string",
+                  "pattern": "^(x|y|z)(x|y|z)$"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^axis$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

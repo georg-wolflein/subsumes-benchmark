@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "multiString": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/nonEmptyString"
+          },
+          "_uniqueItems": true
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "$ref": "#/$defs/nonEmptyString"
+                },
+                "require": {
+                  "$ref": "#/$defs/multiString"
+                },
+                "downloadURL": {
+                  "$ref": "#/$defs/nonEmptyString"
+                },
+                "noframes": {
+                  "type": "boolean",
+                  "default": false
+                },
+                "icon": {
+                  "$ref": "#/$defs/nonEmptyString"
+                },
+                "match": {
+                  "$ref": "#/$defs/multiString"
+                },
+                "version": {
+                  "$ref": "#/$defs/nonEmptyString"
+                },
+                "grant": {
+                  "anyOf": [
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "enum": [
+                          "unsafeWindow",
+                          "GM_getValue",
+                          "GM_setValue",
+                          "GM_listValues",
+                          "GM_deleteValue",
+                          "GM_getResourceText",
+                          "GM_getResourceURL",
+                          "GM_addStyle",
+                          "GM_log",
+                          "GM_openInTab",
+                          "GM_registerMenuCommand",
+                          "GM_setClipboard",
+                          "GM_xmlhttpRequest"
+                        ]
+                      },
+                      "_uniqueItems": true
+                    },
+                    {
+                      "type": "string",
+                      "enum": [
+                        "none"
+                      ]
+                    }
+                  ],
+                  "default": "none"
+                },
+                "include": {
+                  "$ref": "#/$defs/multiString"
+                },
+                "exclude": {
+                  "$ref": "#/$defs/multiString"
+                },
+                "namespace": {
+                  "$ref": "#/$defs/nonEmptyString"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "run-at": {
+                  "type": "string",
+                  "enum": [
+                    "document-end",
+                    "document-start",
+                    "document-idle"
+                  ],
+                  "default": "document-end"
+                },
+                "resource": {
+                  "$ref": "#/$defs/multiString"
+                },
+                "updateURL": {
+                  "$ref": "#/$defs/nonEmptyString"
+                }
+              },
+              "required": [
+                "name",
+                "namespace",
+                "version"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^resource$": true,
+                "^version$": true,
+                "^description$": true,
+                "^require$": true,
+                "^noframes$": true,
+                "^name$": true,
+                "^match$": true,
+                "^include$": true,
+                "^namespace$": true,
+                "^run-at$": true,
+                "^exclude$": true,
+                "^updateURL$": true,
+                "^icon$": true,
+                "^downloadURL$": true,
+                "^grant$": true
+              },
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/multiString"
+                  },
+                  {
+                    "type": "boolean"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

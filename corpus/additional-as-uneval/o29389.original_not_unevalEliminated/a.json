@@ -1,0 +1,564 @@
+{
+  "$id": "https://antha.com/layout-schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "JSON Schema for deck layout description",
+  "type": "object",
+  "required": [
+    "before",
+    "after",
+    "new_ids",
+    "version"
+  ],
+  "properties": {
+    "version": {
+      "description": "the version of this schema for validation",
+      "const": "1.0"
+    },
+    "before": {
+      "$ref": "#/$defs/deckSummary"
+    },
+    "after": {
+      "$ref": "#/$defs/deckSummary"
+    },
+    "new_ids": {
+      "$ref": "#/$defs/modern_12"
+    }
+  },
+  "$defs": {
+    "plate": {
+      "description": "Represent a plate on the deck",
+      "allOf": [
+        {
+          "$ref": "#/$defs/item"
+        },
+        {
+          "properties": {
+            "kind": {
+              "description": "used to verify the type",
+              "const": "plate"
+            },
+            "residual_volume": {
+              "description": "volume which cannot be removed from the wells of a plate",
+              "$ref": "#/$defs/measurement"
+            },
+            "contents": {
+              "$ref": "#/$defs/modern_5"
+            }
+          },
+          "required": [
+            "kind",
+            "residual_volume"
+          ]
+        }
+      ]
+    },
+    "modern_10": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "A measurement, typically of a Volume",
+              "type": "object",
+              "required": [
+                "value",
+                "unit"
+              ],
+              "properties": {
+                "value": {
+                  "description": "The value of the measurement",
+                  "type": "number"
+                },
+                "unit": {
+                  "description": "The units in which the measurement is expressed",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^value$": true,
+                "^unit$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "deckSummary": {
+      "type": "object",
+      "description": "Describes the layout of a liquidhandling deck at a given point in time",
+      "required": [
+        "positions"
+      ],
+      "properties": {
+        "positions": {
+          "$ref": "#/$defs/modern_7"
+        }
+      }
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Describe a liquid in a plate well",
+              "type": "object",
+              "required": [
+                "name",
+                "total_volume"
+              ],
+              "properties": {
+                "name": {
+                  "description": "The display name of the liquid",
+                  "type": "string"
+                },
+                "total_volume": {
+                  "description": "The total volume present of the liquid",
+                  "$ref": "#/$defs/measurement"
+                },
+                "components": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^total_volume$": true,
+                "^components$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "coordinates2": {
+      "$ref": "#/$defs/modern_8"
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Keys are the names of positions on the deck of the liquidhandling deck"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/deckPosition"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "The sub-components which make up this liquid",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/modern_3"
+              }
+            },
+            {
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_12": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "maps from the object IDs in 'before' to 'after'"
+            },
+            {
+              "additionalProperties": {
+                "type": "string",
+                "description": "An ID in 'after'"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "deckPosition": {
+      "$ref": "#/$defs/modern_9"
+    },
+    "modern_9": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "a position on the liquidhandling deck",
+              "required": [
+                "position",
+                "size"
+              ],
+              "properties": {
+                "position": {
+                  "$ref": "#/$defs/coordinates3"
+                },
+                "size": {
+                  "$ref": "#/$defs/coordinates2"
+                },
+                "item": {
+                  "type": "object",
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/plate"
+                    },
+                    {
+                      "$ref": "#/$defs/tipbox"
+                    },
+                    {
+                      "$ref": "#/$defs/tipwaste"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^position$": true,
+                "^size$": true,
+                "^item$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "tipwaste": {
+      "description": "Represent a tipwaste on the deck",
+      "allOf": [
+        {
+          "$ref": "#/$defs/item"
+        },
+        {
+          "properties": {
+            "kind": {
+              "description": "used to verify the type",
+              "const": "tipwaste"
+            },
+            "discarded_tips": {
+              "type": "number",
+              "description": "The number of discarded tips in the waste",
+              "multipleOf": 1.0,
+              "minimum": 0.0
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "A sub component",
+              "type": "object",
+              "required": [
+                "name",
+                "concentration",
+                "unit"
+              ],
+              "properties": {
+                "name": {
+                  "description": "the display name of the sub-component",
+                  "type": "string"
+                },
+                "concentration": {
+                  "description": "the concentration of the sub-component",
+                  "type": "number",
+                  "minimum": 0.0
+                },
+                "unit": {
+                  "description": "the units in which the concentration is expressed",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^concentration$": true,
+                "^unit$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_11": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Three dimensional coordinates",
+              "required": [
+                "x_mm",
+                "y_mm"
+              ],
+              "properties": {
+                "x_mm": {
+                  "type": "number",
+                  "description": "x coordinate in mm"
+                },
+                "y_mm": {
+                  "type": "number",
+                  "description": "y coordinate in mm"
+                },
+                "z_mm": {
+                  "type": "number",
+                  "description": "z coordinate in mm"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^x_mm$": true,
+                "^y_mm$": true,
+                "^z_mm$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "coordinates3": {
+      "$ref": "#/$defs/modern_11"
+    },
+    "liquid": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "patternProperties": {
+                "^[0-9]+$": {
+                  "$ref": "#/$defs/modern_6"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^[0-9]+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "tipbox": {
+      "description": "Represent a tipbox on the deck",
+      "allOf": [
+        {
+          "$ref": "#/$defs/item"
+        },
+        {
+          "properties": {
+            "kind": {
+              "description": "used to verify the type",
+              "const": "tipbox"
+            },
+            "missing_tips": {
+              "description": "Lists the positions at which tips are not present",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/modern_4"
+              }
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        }
+      ]
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "a column of wells",
+              "type": "object",
+              "patternProperties": {
+                "^[0-9]+$": {
+                  "description": "the contents of the well at the given position in the column",
+                  "$ref": "#/$defs/liquid"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^[0-9]+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "measurement": {
+      "$ref": "#/$defs/modern_10"
+    },
+    "modern_8": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Two dimensional coordinates",
+              "required": [
+                "x_mm",
+                "y_mm"
+              ],
+              "properties": {
+                "x_mm": {
+                  "type": "number",
+                  "description": "x coordinate in mm"
+                },
+                "y_mm": {
+                  "type": "number",
+                  "description": "y coordinate in mm"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^x_mm$": true,
+                "^y_mm$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "item": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "type",
+        "manufacturer",
+        "description",
+        "rows",
+        "columns",
+        "dimensions",
+        "well_dimensions",
+        "well_start",
+        "well_type"
+      ],
+      "properties": {
+        "well_dimensions": {
+          "description": "The size of the wells or tips in this object",
+          "$ref": "#/$defs/coordinates3"
+        },
+        "description": {
+          "type": "string",
+          "description": "A handy description of this object"
+        },
+        "well_start": {
+          "description": "The position of the center of the upper left-most well or tip in this object",
+          "$ref": "#/$defs/coordinates3"
+        },
+        "id": {
+          "type": "string",
+          "description": "The unique ID of the object"
+        },
+        "columns": {
+          "type": "number",
+          "description": "The number of columns of wells or tips in this object",
+          "multipleOf": 1.0,
+          "minimum": 0.0
+        },
+        "dimensions": {
+          "description": "The size of this object",
+          "$ref": "#/$defs/coordinates3"
+        },
+        "rows": {
+          "type": "number",
+          "description": "The number of rows of wells or tips in this object",
+          "multipleOf": 1.0,
+          "minimum": 0.0
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of this particular object"
+        },
+        "well_type": {
+          "description": "The type, or rather the shape, of the wells in this plate",
+          "type": "string",
+          "enum": [
+            "cylinder",
+            "cuboid"
+          ]
+        },
+        "manufacturer": {
+          "type": "string",
+          "description": "The name of the manufacturer of this object"
+        },
+        "type": {
+          "type": "string",
+          "description": "The type name of this object, e.g. 'pcrplate'"
+        }
+      }
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Well coordinates of the missing tip",
+              "type": "object",
+              "required": [
+                "row",
+                "col"
+              ],
+              "properties": {
+                "row": {
+                  "type": "number",
+                  "multipleOf": 1.0,
+                  "minimum": 0.0
+                },
+                "col": {
+                  "type": "number",
+                  "multipleOf": 1.0,
+                  "minimum": 0.0
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^row$": true,
+                "^col$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

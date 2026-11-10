@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Schema for metadata extracted from video files",
+              "type": "object",
+              "properties": {
+                "tiff:ImageLength": {
+                  "type": "string"
+                },
+                "tiff:ImageWidth": {
+                  "type": "string"
+                },
+                "xmpDM:duration": {
+                  "type": "string"
+                },
+                "xmpDM:audioSampleRate": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^tiff:ImageLength$": true,
+                "^tiff:ImageWidth$": true,
+                "^xmpDM:duration$": true,
+                "^xmpDM:audioSampleRate$": true
+              },
+              "additionalProperties": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

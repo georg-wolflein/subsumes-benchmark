@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "target": {
+      "anyOf": [
+        {
+          "_format": "uri",
+          "type": "string"
+        },
+        {
+          "$ref": "#/$defs/modern_1"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    }
+  },
+  "required": [
+    "target"
+  ],
+  "title": "Verify annotation has 1 or more targets",
+  "type": "object",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object"
+                  }
+                ]
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "anyOf": [
+                  true,
+                  true
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

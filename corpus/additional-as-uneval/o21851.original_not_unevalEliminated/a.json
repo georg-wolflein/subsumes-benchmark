@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "AuthorizationType",
+                "HttpMethod",
+                "ResourceId",
+                "RestApiId"
+              ],
+              "properties": {
+                "ResourceId": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9]+$"
+                },
+                "RequestModels": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "RequestParameters": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "RestApiId": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9]{10}$"
+                },
+                "ApiKeyRequired": {
+                  "type": "string",
+                  "enum": [
+                    "true",
+                    "false"
+                  ]
+                },
+                "HttpMethod": {
+                  "type": "string",
+                  "enum": [
+                    "DELETE",
+                    "GET",
+                    "HEAD",
+                    "OPTIONS",
+                    "PATCH",
+                    "POST",
+                    "PUT"
+                  ]
+                },
+                "AuthorizationType": {
+                  "type": "string",
+                  "enum": [
+                    "AWS_IAM",
+                    "NONE"
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^RequestModels$": true,
+                "^ApiKeyRequired$": true,
+                "^RequestParameters$": true,
+                "^ResourceId$": true,
+                "^HttpMethod$": true,
+                "^RestApiId$": true,
+                "^AuthorizationType$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {},
+              "patternProperties": {
+                ".+": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                ".+": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {},
+              "patternProperties": {
+                "^method\\.request\\.(querystring|header|path)\\..+$": {
+                  "type": "string",
+                  "enum": [
+                    "true",
+                    "false"
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^method\\.request\\.(querystring|header|path)\\..+$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "anyOf": [
+    {
+      "type": "object",
+      "properties": {
+        "foo": {
+          "type": "string"
+        }
+      },
+      "dependentSchemas": {
+        "foo": {
+          "properties": {
+            "bar": {
+              "const": "bar"
+            }
+          },
+          "required": [
+            "bar"
+          ]
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    {
+      "not": {
+        "type": "object",
+        "properties": {
+          "foo": {
+            "type": "string"
+          }
+        },
+        "dependentSchemas": {
+          "foo": {
+            "properties": {
+              "bar": {
+                "const": "bar"
+              }
+            },
+            "required": [
+              "bar"
+            ]
+          }
+        },
+        "unevaluatedProperties": false
+      }
+    }
+  ]
+}

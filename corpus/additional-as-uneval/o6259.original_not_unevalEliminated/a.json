@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "config": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "outputIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "key": {
+                  "title": "Device Tag Pair",
+                  "type": "string",
+                  "messages": {
+                    "required": "Device Tag pair is required"
+                  }
+                },
+                "meta": {
+                  "type": "object"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "deviceTag"
+                  ]
+                }
+              },
+              "required": [
+                "key",
+                "type"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^outputIds$": true,
+                "^config$": true,
+                "^meta$": true,
+                "^type$": true,
+                "^key$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

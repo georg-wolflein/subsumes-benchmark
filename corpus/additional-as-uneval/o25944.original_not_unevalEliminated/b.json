@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "list": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/MySubObject"
+      }
+    },
+    "sub1": {
+      "$ref": "#/$defs/MySubObject"
+    },
+    "sub2": {
+      "$ref": "#/$defs/MySubObject",
+      "description": "Property-level description",
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "list",
+    "sub1",
+    "sub2"
+  ],
+  "$defs": {
+    "MySubObject": {
+      "description": "Type-level description",
+      "additionalProperties": true,
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "value"
+      ]
+    }
+  }
+}

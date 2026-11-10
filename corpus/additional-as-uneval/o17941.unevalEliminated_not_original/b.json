@@ -1,0 +1,276 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_6",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "install": {
+                  "items": {
+                    "$ref": "#/$defs/install_item"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "install"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^install$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "email": {
+      "_format": "email",
+      "type": "string"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "en": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "en"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^en$": true
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "description": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "boolean_string": {
+      "enum": [
+        "true",
+        "false"
+      ],
+      "type": "string"
+    },
+    "uri": {
+      "_format": "uri",
+      "type": "string"
+    },
+    "maintainer": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "email": {
+                  "$ref": "#/$defs/email"
+                },
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "email"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^email$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "install_item_type": {
+      "enum": [
+        "domain",
+        "user",
+        "app",
+        "password",
+        "path"
+      ],
+      "type": "string"
+    },
+    "multi_instance": {
+      "$ref": "#/$defs/boolean_string"
+    },
+    "install_item": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "pattern": {
+                  "type": "string"
+                },
+                "choices": {
+                  "$ref": "#/$defs/install_item_choice"
+                },
+                "optional": {
+                  "$ref": "#/$defs/boolean_string"
+                },
+                "default": {
+                  "type": "string"
+                },
+                "example": {
+                  "type": "string"
+                },
+                "ask": {
+                  "$ref": "#/$defs/install_item_ask"
+                },
+                "type": {
+                  "$ref": "#/$defs/install_item_type"
+                }
+              },
+              "required": [
+                "name",
+                "ask"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^optional$": true,
+                "^type$": true,
+                "^pattern$": true,
+                "^default$": true,
+                "^example$": true,
+                "^ask$": true,
+                "^choices$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "install_item_choice": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "url": {
+                  "$ref": "#/$defs/uri"
+                },
+                "description": {
+                  "$ref": "#/$defs/description"
+                },
+                "maintainer": {
+                  "$ref": "#/$defs/maintainer"
+                },
+                "multi_instance": {
+                  "$ref": "#/$defs/multi_instance"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "arguments": {
+                  "$ref": "#/$defs/arguments"
+                }
+              },
+              "required": [
+                "name",
+                "id",
+                "description",
+                "maintainer",
+                "multi_instance",
+                "arguments"
+              ],
+              "title": "Yunohost application manifest schema",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^multi_instance$": true,
+                "^description$": true,
+                "^arguments$": true,
+                "^url$": true,
+                "^name$": true,
+                "^id$": true,
+                "^maintainer$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "install_item_ask": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "arguments": {
+      "$ref": "#/$defs/modern_5"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "en": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "en"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^en$": true
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

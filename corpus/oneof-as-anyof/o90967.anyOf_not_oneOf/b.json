@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "client_address": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/office_address"
+        },
+        {
+          "$ref": "#/$defs/home_address"
+        }
+      ]
+    },
+    "parts": {
+      "additionalProperties": false,
+      "anyOf": [
+        {
+          "$ref": "#/$defs/partOne"
+        },
+        {
+          "$ref": "#/$defs/partTwo"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "address": {
+      "type": "object",
+      "properties": {
+        "street_address": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "street_address",
+        "city",
+        "state"
+      ]
+    },
+    "office_address": {
+      "properties": {
+        "type": {
+          "enum": [
+            "business"
+          ]
+        },
+        "building": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "building"
+      ],
+      "additionalProperties": false
+    },
+    "home_address": {
+      "properties": {
+        "type": {
+          "enum": [
+            "home"
+          ]
+        },
+        "street_address": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "street_address",
+        "city",
+        "state"
+      ],
+      "additionalProperties": false
+    },
+    "partOne": {
+      "properties": {
+        "one": {
+          "type": "string"
+        }
+      }
+    },
+    "partTwo": {
+      "properties": {
+        "two": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

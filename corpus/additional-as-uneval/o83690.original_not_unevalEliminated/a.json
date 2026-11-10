@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Contacts",
+              "description": "Contacts: name, freeform contact methods",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                }
+              },
+              "minProperties": 1,
+              "maxProperties": 5,
+              "required": [
+                "name"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true
+              },
+              "additionalProperties": {
+                "type": "string",
+                "pattern": "^([0-9]{3}) [0-9]{3}-[0-9]{4}$"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

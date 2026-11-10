@@ -1,0 +1,222 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "JWhere Catalog",
+  "description": "JWhere disk catalog",
+  "type": "object",
+  "properties": {
+    "schema": {
+      "enum": [
+        "http://schemas.io7m.com/jwhere"
+      ]
+    },
+    "schema-version": {
+      "type": "string"
+    },
+    "catalog": {
+      "$ref": "#/$defs/catalog"
+    }
+  },
+  "required": [
+    "schema",
+    "schema-version",
+    "catalog"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "catalog": {
+      "description": "The root type of catalog data.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "catalog"
+          ]
+        },
+        "catalog-disks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/disk"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "catalog-disks"
+      ],
+      "additionalProperties": false
+    },
+    "disk": {
+      "description": "A single catalogued disk",
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "disk"
+          ]
+        },
+        "disk-name": {
+          "type": "string"
+        },
+        "disk-size": {
+          "type": "integer"
+        },
+        "disk-id": {
+          "type": "integer"
+        },
+        "disk-filesystem-type": {
+          "type": "string"
+        },
+        "disk-filesystem-root": {
+          "$ref": "#/$defs/directory"
+        }
+      },
+      "required": [
+        "type",
+        "disk-name",
+        "disk-size",
+        "disk-id",
+        "disk-filesystem-type",
+        "disk-filesystem-root"
+      ],
+      "additionalProperties": false
+    },
+    "file": {
+      "description": "A file",
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "file"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "size": {
+          "type": "integer"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "group": {
+          "type": "string"
+        },
+        "access-time": {
+          "type": "string"
+        },
+        "modification-time": {
+          "type": "string"
+        },
+        "creation-time": {
+          "type": "string"
+        },
+        "inode": {
+          "type": "integer"
+        },
+        "permissions": {
+          "type": "string"
+        },
+        "hash": {
+          "$ref": "#/$defs/hash"
+        }
+      },
+      "required": [
+        "type",
+        "name",
+        "size",
+        "owner",
+        "group",
+        "access-time",
+        "modification-time",
+        "creation-time",
+        "inode",
+        "permissions"
+      ],
+      "additionalProperties": false
+    },
+    "hash": {
+      "description": "A hash value",
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "hash"
+          ]
+        },
+        "algorithm": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "algorithm",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "directory": {
+      "description": "A directory",
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "directory"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "group": {
+          "type": "string"
+        },
+        "access-time": {
+          "type": "string"
+        },
+        "modification-time": {
+          "type": "string"
+        },
+        "creation-time": {
+          "type": "string"
+        },
+        "inode": {
+          "type": "integer"
+        },
+        "permissions": {
+          "type": "string"
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/directory"
+              },
+              {
+                "$ref": "#/$defs/file"
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "type",
+        "name",
+        "owner",
+        "group",
+        "access-time",
+        "modification-time",
+        "creation-time",
+        "inode",
+        "permissions",
+        "entries"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

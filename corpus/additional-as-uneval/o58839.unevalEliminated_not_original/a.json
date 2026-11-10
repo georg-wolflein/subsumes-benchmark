@@ -1,0 +1,125 @@
+{
+  "$id": "https://github.com/marmeladema/Peggy/tree/master/peggy/grammar.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Peggy PEG Grammar Schema",
+  "type": "object",
+  "patternProperties": {
+    "^[a-zA-Z0-8_]+$": {
+      "$ref": "#/$defs/node"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "node": {
+      "type": "object",
+      "properties": {
+        "ast": {
+          "type": "string",
+          "enum": [
+            "BUILD",
+            "SKIP",
+            "VOID",
+            "PRUNE"
+          ]
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "RULE",
+            "CALL",
+            "SEQUENCE",
+            "CHOICE",
+            "RANGE",
+            "WILDCARD",
+            "STRING",
+            "STRINGI"
+          ]
+        },
+        "min": {
+          "type": "integer"
+        },
+        "max": {
+          "type": "integer"
+        }
+      },
+      "anyOf": [
+        {
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "RULE"
+              ]
+            },
+            "data": {
+              "$ref": "#/$defs/node"
+            }
+          }
+        },
+        {
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "CALL",
+                "STRING",
+                "STRINGI"
+              ]
+            },
+            "data": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "RANGE"
+              ]
+            },
+            "data": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "SEQUENCE",
+                "CHOICE"
+              ]
+            },
+            "data": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/node"
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "WILDCARD"
+              ]
+            }
+          }
+        }
+      ],
+      "required": [
+        "ast",
+        "type"
+      ]
+    }
+  }
+}

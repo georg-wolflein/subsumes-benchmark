@@ -1,0 +1,333 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "feature": {
+      "type": "object",
+      "description": "A physical feature of the deck",
+      "required": [
+        "footprint"
+      ],
+      "properties": {
+        "footprint": {
+          "$ref": "#/$defs/pathDValue"
+        },
+        "correspondingLocation": {
+          "type": "string",
+          "format": "uri-reference",
+          "description": "A path to a location entry that corresponds with this feature"
+        }
+      }
+    },
+    "pathDValue": {
+      "type": "string",
+      "description": "A valid d-attribute value for an svg path. Note: uses physical coordinate system which has origin at the bottom, front, left of the robot's workspace."
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "Deck specifications, where x,y,z (0,0,0) is at front the bottom left corner.",
+              "type": "object",
+              "required": [
+                "otId",
+                "schemaVersion",
+                "cornerOffsetFromOrigin",
+                "dimensions",
+                "metadata",
+                "robot",
+                "locations",
+                "layers"
+              ],
+              "properties": {
+                "locations": {
+                  "type": "object",
+                  "required": [
+                    "orderedSlots",
+                    "calibrationPoints"
+                  ],
+                  "properties": {
+                    "orderedSlots": {
+                      "type": "array",
+                      "description": "Ordered slots available for placing labware",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "position",
+                          "boundingBox",
+                          "displayName",
+                          "compatibleModuleTypes"
+                        ],
+                        "properties": {
+                          "displayName": {
+                            "description": "An optional human-readable nickname for this slot Eg \"Slot 1\" or \"Fixed Trash\"",
+                            "type": "string"
+                          },
+                          "matingSurfaceUnitVector": {
+                            "$ref": "#/$defs/unitVector",
+                            "description": "An optional diagonal direction of force, defined by spring location, which governs the mating surface of objects placed in slot."
+                          },
+                          "boundingBox": {
+                            "$ref": "#/$defs/boundingBox"
+                          },
+                          "id": {
+                            "description": "Unique identifier for slot",
+                            "type": "string"
+                          },
+                          "compatibleModuleTypes": {
+                            "description": "An array of module types that can be placed in this slot.",
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "enum": [
+                                "magneticModuleType",
+                                "temperatureModuleType",
+                                "thermocyclerModuleType"
+                              ]
+                            }
+                          },
+                          "position": {
+                            "$ref": "#/$defs/xyzArray"
+                          }
+                        }
+                      }
+                    },
+                    "calibrationPoints": {
+                      "type": "array",
+                      "description": "Key points for deck calibration",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "position",
+                          "displayName"
+                        ],
+                        "properties": {
+                          "id": {
+                            "description": "Unique identifier for calibration point",
+                            "type": "string"
+                          },
+                          "position": {
+                            "$ref": "#/$defs/xyzArray"
+                          },
+                          "displayName": {
+                            "description": "An optional human-readable nickname for this point Eg \"Slot 3 Cross\" or \"Slot 1 Dot\"",
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "fixtures": {
+                      "type": "array",
+                      "description": "Fixed position objects on the deck.",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "displayName"
+                        ],
+                        "properties": {
+                          "displayName": {
+                            "description": "An optional human-readable nickname for this fixture Eg \"Tall Fixed Trash\" or \"Short Fixed Trash\"",
+                            "type": "string"
+                          },
+                          "labware": {
+                            "description": "Valid labware loadName for fixed object",
+                            "type": "string"
+                          },
+                          "boundingBox": {
+                            "$ref": "#/$defs/boundingBox"
+                          },
+                          "id": {
+                            "description": "Unique identifier for fixed object",
+                            "type": "string"
+                          },
+                          "position": {
+                            "$ref": "#/$defs/xyzArray"
+                          },
+                          "slot": {
+                            "description": "Slot location of the fixed object",
+                            "type": "string"
+                          }
+                        },
+                        "oneOf": [
+                          {
+                            "anyOf": [
+                              {
+                                "required": [
+                                  "labware",
+                                  "slot"
+                                ]
+                              },
+                              {
+                                "required": [
+                                  "labware",
+                                  "position"
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "anyOf": [
+                              {
+                                "required": [
+                                  "boundingBox",
+                                  "slot"
+                                ]
+                              },
+                              {
+                                "required": [
+                                  "boundingBox",
+                                  "position"
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "layers": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "cornerOffsetFromOrigin": {
+                  "$ref": "#/$defs/xyzArray",
+                  "description": "Position of left-front-bottom corner of entire deck to robot coordinate system origin"
+                },
+                "otId": {
+                  "description": "Unique internal ID generated using UUID",
+                  "type": "string"
+                },
+                "schemaVersion": {
+                  "description": "Schema version of a deck is a single integer",
+                  "enum": [
+                    2
+                  ]
+                },
+                "robot": {
+                  "type": "object",
+                  "required": [
+                    "model"
+                  ],
+                  "properties": {
+                    "model": {
+                      "description": "Model of the robot (currently only OT-2 Standard is supported)",
+                      "type": "string",
+                      "enum": [
+                        "OT-2 Standard"
+                      ]
+                    }
+                  }
+                },
+                "dimensions": {
+                  "$ref": "#/$defs/xyzArray",
+                  "description": "Outer dimensions of a deck bounding box"
+                },
+                "metadata": {
+                  "description": "Optional metadata about the Deck",
+                  "type": "object",
+                  "properties": {
+                    "displayName": {
+                      "description": "A short, human-readable name for the deck",
+                      "type": "string"
+                    },
+                    "tags": {
+                      "description": "Tags to be used in searching for this deck",
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^metadata$": true,
+                "^locations$": true,
+                "^schemaVersion$": true,
+                "^robot$": true,
+                "^layers$": true,
+                "^cornerOffsetFromOrigin$": true,
+                "^otId$": true,
+                "^dimensions$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "boundingBox": {
+      "type": "object",
+      "description": "The active area (both pipettes can reach) of a fixture on the deck",
+      "required": [
+        "xDimension",
+        "yDimension",
+        "zDimension"
+      ],
+      "properties": {
+        "xDimension": {
+          "$ref": "#/$defs/positiveNumber"
+        },
+        "yDimension": {
+          "$ref": "#/$defs/positiveNumber"
+        },
+        "zDimension": {
+          "$ref": "#/$defs/positiveNumber"
+        }
+      }
+    },
+    "xyzArray": {
+      "type": "array",
+      "description": "Array of 3 numbers, [x, y, z]",
+      "items": {
+        "type": "number"
+      },
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "unitVector": {
+      "type": "array",
+      "description": "Array of 3 unit directions, [x, y, z]",
+      "items": {
+        "type": "number",
+        "enum": [
+          1,
+          -1
+        ]
+      },
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Layered feature groups of the deck."
+            },
+            {
+              "additionalProperties": {
+                "type": "array",
+                "description": "Individual features within a layer",
+                "items": {
+                  "$ref": "#/$defs/feature"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "positiveNumber": {
+      "type": "number",
+      "minimum": 0.0
+    }
+  }
+}

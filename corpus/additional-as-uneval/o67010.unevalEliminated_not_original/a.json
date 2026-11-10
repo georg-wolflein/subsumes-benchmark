@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "patternProperties": {
+    "^fritzbox(\\..*)?$": {
+      "$ref": "#/$defs/login"
+    },
+    "^influx(\\..*)?$": {
+      "$ref": "#/$defs/login"
+    },
+    "^tr064(\\..*)?$": {
+      "$ref": "#/$defs/login"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "login": {
+      "additionalProperties": false,
+      "properties": {
+        "pass": {
+          "type": "string"
+        },
+        "selfsigned": {
+          "enum": [
+            "true",
+            "false"
+          ],
+          "type": "string"
+        },
+        "uri": {
+          "format": "uri",
+          "type": "string"
+        },
+        "user": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "uri",
+        "user",
+        "pass"
+      ],
+      "type": "object"
+    }
+  }
+}

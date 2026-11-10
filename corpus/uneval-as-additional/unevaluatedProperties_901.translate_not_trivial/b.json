@@ -1,0 +1,1311 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "series": {
+        "title": "Task Series",
+        "description": "List of task series",
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "$ref": "#/$defs/modern_1"
+        }
+      },
+      "items": {
+        "title": "Image Item(s)",
+        "description": "Image data item(s). (Old format)",
+        "type": [
+          "array",
+          "string"
+        ],
+        "minLength": 1,
+        "minItems": 1,
+        "items": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "currentStageName": {
+        "title": "Current Stage Name",
+        "description": "Current stage name",
+        "type": "string",
+        "minLength": 1
+      },
+      "consensus": {
+        "title": "Consensus",
+        "description": "Indicator if current task is a consensus task",
+        "type": "boolean"
+      },
+      "classification": {
+        "title": "Study Classification",
+        "description": "Study classification",
+        "type": "object",
+        "properties": {
+          "category": {
+            "$ref": "#/$defs/category"
+          },
+          "attributes": {
+            "$ref": "#/$defs/attributes"
+          }
+        },
+        "additionalProperties": false
+      },
+      "preAssign": {
+        "title": "Task pre-assignment map",
+        "description": "Map of stage name and user id(s)/email(s) for task pre-assignment",
+        "type": "object"
+      },
+      "taskId": {
+        "title": "Task ID",
+        "description": "Unique task ID",
+        "type": "string",
+        "format": "uuid"
+      },
+      "name": {
+        "title": "Task Name",
+        "description": "Unique task name",
+        "type": "string",
+        "minLength": 1
+      },
+      "updatedAt": {
+        "title": "Updated At",
+        "description": "Date and time when the task was updated",
+        "type": "string",
+        "format": "date-time"
+      },
+      "priority": {
+        "title": "Priority",
+        "description": "Task Priority",
+        "type": "number",
+        "minimum": 0.0,
+        "maximum": 1.0
+      },
+      "consensusScore": {
+        "title": "Consensus Score",
+        "description": "Consensus score",
+        "type": "number"
+      },
+      "consensusTasks": {
+        "title": "Consensus Tasks",
+        "description": "Consensus tasks",
+        "type": "array",
+        "items": {
+          "title": "Consensus Task",
+          "description": "Consensus task",
+          "type": "object"
+        }
+      },
+      "labels": {
+        "title": "Labels",
+        "description": "Task Labels. (Used for old format)",
+        "type": "array",
+        "items": {
+          "title": "Label",
+          "description": "Label Object",
+          "type": "object"
+        }
+      },
+      "segmentMap": {
+        "title": "Segmentation Map",
+        "description": "Mapping between segmentId and category",
+        "type": "object",
+        "patternProperties": {
+          "^[0-9]+$": {
+            "type": [
+              "string",
+              "array",
+              "object"
+            ],
+            "minLength": 1,
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "properties": {
+              "category": {
+                "$ref": "#/$defs/category"
+              },
+              "attributes": {
+                "$ref": "#/$defs/attributes"
+              },
+              "mask": {
+                "title": "Segmentation file path",
+                "description": "Segmentation file path",
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      },
+      "createdAt": {
+        "title": "Created At",
+        "description": "Date and time when the task was created",
+        "type": "string",
+        "format": "date-time"
+      },
+      "createdBy": {
+        "title": "Created By",
+        "description": "User who created the task",
+        "type": "string",
+        "format": "email"
+      },
+      "updatedBy": {
+        "title": "Updated By",
+        "description": "User who updated the task",
+        "type": "string",
+        "format": "email"
+      },
+      "metaData": {
+        "title": "Task MetaData",
+        "description": "Task level meta data",
+        "type": "object"
+      },
+      "segmentations": {
+        "title": "Segmentation(s)",
+        "description": "NIfTI Segmentation(s). (Used for old format)",
+        "type": [
+          "array",
+          "string"
+        ],
+        "minLength": 1,
+        "minItems": 1,
+        "items": {
+          "type": [
+            "array",
+            "string"
+          ],
+          "minLength": 1,
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "minItems": 1
+  },
+  "$defs": {
+    "point2d": {
+      "title": "2D Point",
+      "type": "object",
+      "properties": {
+        "xNorm": {
+          "title": "X",
+          "description": "Point x normalized coordinate",
+          "type": "number"
+        },
+        "yNorm": {
+          "title": "Y",
+          "description": "Point y normalized coordinate",
+          "type": "number"
+        }
+      },
+      "required": [
+        "xNorm",
+        "yNorm"
+      ],
+      "additionalProperties": false
+    },
+    "stats": {
+      "title": "Measurement Stats",
+      "description": "Label measurement stats",
+      "type": "object",
+      "properties": {
+        "area": {
+          "title": "Area",
+          "description": "Region area",
+          "type": "number"
+        },
+        "maximum": {
+          "title": "Maximum",
+          "description": "Maximum value",
+          "type": "number"
+        },
+        "volume": {
+          "title": "Volume",
+          "description": "Region volume",
+          "type": "number"
+        },
+        "average": {
+          "title": "Average",
+          "description": "Average value",
+          "type": "number"
+        },
+        "minimum": {
+          "title": "Minimum",
+          "description": "Minimum value",
+          "type": "number"
+        }
+      },
+      "required": [
+        "average",
+        "minimum",
+        "maximum"
+      ],
+      "additionalProperties": false
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "title": "Image Item(s)",
+                      "description": "Image data item(s)",
+                      "type": [
+                        "array",
+                        "string"
+                      ],
+                      "pattern": "\\.(nii|nrrd|mp4|avi)\\b",
+                      "minLength": 1,
+                      "minItems": 1,
+                      "maxItems": 1,
+                      "items": {
+                        "type": "string",
+                        "pattern": "\\.(nii|nrrd|mp4|avi)\\b",
+                        "minLength": 1
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "title": "Image Item(s)",
+                      "description": "Image data item(s)",
+                      "type": [
+                        "array",
+                        "string"
+                      ],
+                      "pattern": "^((?!(\\.(nii|nrrd|mp4|avi)\\b)).)*$",
+                      "minLength": 1,
+                      "minItems": 1,
+                      "items": {
+                        "type": "string",
+                        "pattern": "^((?!(\\.(nii|nrrd|mp4|avi)\\b)).)*$",
+                        "minLength": 1
+                      }
+                    }
+                  }
+                }
+              ],
+              "properties": {
+                "instanceClassifications": {
+                  "title": "Instance Classifications",
+                  "description": "Instance classifications",
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "fileIndex": {
+                        "title": "File index",
+                        "description": "File or instance index",
+                        "type": "number"
+                      },
+                      "fileName": {
+                        "title": "File name",
+                        "description": "File or instance name",
+                        "type": "string"
+                      },
+                      "values": {
+                        "title": "Values",
+                        "description": "Label values",
+                        "patternProperties": {
+                          "^.{1,512}$": {
+                            "type": "boolean"
+                          }
+                        },
+                        "additionalProperties": false
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                      "fileIndex",
+                      "values"
+                    ]
+                  }
+                },
+                "name": {
+                  "title": "Series Name",
+                  "description": "Unique series name",
+                  "type": "string",
+                  "minLength": 1
+                },
+                "numFrames": {
+                  "title": "Number of Frames/Slices",
+                  "description": "Number of frames or slices in the series",
+                  "type": "integer",
+                  "minimum": 1.0
+                },
+                "binaryMask": {
+                  "title": "Binary Mask",
+                  "description": "Indicator if segmentation files are binary masks",
+                  "type": "boolean"
+                },
+                "cuboids": {
+                  "title": "Cuboid",
+                  "description": "Cuboid labels",
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "stats": {
+                        "$ref": "#/$defs/stats"
+                      },
+                      "point1": {
+                        "title": "First Point",
+                        "$ref": "#/$defs/voxelPoint"
+                      },
+                      "point2": {
+                        "title": "Second Point",
+                        "$ref": "#/$defs/voxelPoint"
+                      },
+                      "attributes": {
+                        "$ref": "#/$defs/attributes"
+                      },
+                      "absolutePoint1": {
+                        "title": "First Point (absolute)",
+                        "$ref": "#/$defs/worldPoint"
+                      },
+                      "category": {
+                        "$ref": "#/$defs/category"
+                      },
+                      "absolutePoint2": {
+                        "title": "Second Point (absolute)",
+                        "$ref": "#/$defs/worldPoint"
+                      }
+                    },
+                    "required": [
+                      "point1",
+                      "point2",
+                      "absolutePoint1",
+                      "absolutePoint2",
+                      "category"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "ellipses": {
+                  "title": "Ellipse",
+                  "description": "Ellipse labels",
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "stats": {
+                        "$ref": "#/$defs/stats"
+                      },
+                      "yRadiusNorm": {
+                        "title": "Y Radius",
+                        "description": "Ellipse Y radius normalized",
+                        "type": "number",
+                        "minimum": 0.0
+                      },
+                      "attributes": {
+                        "$ref": "#/$defs/attributes"
+                      },
+                      "pointCenter": {
+                        "$ref": "#/$defs/point2d"
+                      },
+                      "video": {
+                        "$ref": "#/$defs/video"
+                      },
+                      "category": {
+                        "$ref": "#/$defs/category"
+                      },
+                      "xRadiusNorm": {
+                        "title": "X Radius",
+                        "description": "Ellipse x radius normalized",
+                        "type": "number",
+                        "minimum": 0.0
+                      },
+                      "rotationRad": {
+                        "title": "Rotation",
+                        "description": "Ellipse rotation in radians",
+                        "type": "number",
+                        "minimum": 0.0
+                      }
+                    },
+                    "required": [
+                      "pointCenter",
+                      "xRadiusNorm",
+                      "yRadiusNorm",
+                      "rotationRad",
+                      "category"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "classifications": {
+                  "title": "Series Classifications",
+                  "description": "Series classifications",
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "category": {
+                        "$ref": "#/$defs/category"
+                      },
+                      "attributes": {
+                        "$ref": "#/$defs/attributes"
+                      },
+                      "video": {
+                        "$ref": "#/$defs/video"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "boundingBoxes": {
+                  "title": "2D Bounding Box",
+                  "description": "2D Bounding box labels",
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "hNorm": {
+                        "title": "Height",
+                        "description": "Bounding box normalized height",
+                        "type": "number",
+                        "minimum": 0.0
+                      },
+                      "stats": {
+                        "$ref": "#/$defs/stats"
+                      },
+                      "pointTopLeft": {
+                        "$ref": "#/$defs/point2d"
+                      },
+                      "attributes": {
+                        "$ref": "#/$defs/attributes"
+                      },
+                      "video": {
+                        "$ref": "#/$defs/video"
+                      },
+                      "category": {
+                        "$ref": "#/$defs/category"
+                      },
+                      "wNorm": {
+                        "title": "Width",
+                        "description": "Bounding box normalized width",
+                        "type": "number",
+                        "minimum": 0.0
+                      }
+                    },
+                    "required": [
+                      "pointTopLeft",
+                      "wNorm",
+                      "hNorm",
+                      "category"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "segmentMap": {
+                  "title": "Segmentation Map",
+                  "description": "Mapping between segmentId and category",
+                  "type": "object",
+                  "patternProperties": {
+                    "^[0-9]+$": {
+                      "type": [
+                        "number",
+                        "string",
+                        "array",
+                        "object"
+                      ],
+                      "minimum": 0.0,
+                      "minLength": 1,
+                      "minItems": 1,
+                      "items": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "properties": {
+                        "category": {
+                          "$ref": "#/$defs/category"
+                        },
+                        "attributes": {
+                          "$ref": "#/$defs/attributes"
+                        },
+                        "mask": {
+                          "title": "Segmentation file path",
+                          "description": "Segmentation file path",
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "dimensions": {
+                  "title": "Dimensions",
+                  "description": "Dimensions of the image",
+                  "type": "array",
+                  "minItems": 3,
+                  "maxItems": 3,
+                  "items": {
+                    "type": "integer",
+                    "minimum": 1.0
+                  }
+                },
+                "landmarks": {
+                  "title": "2D Landmarks",
+                  "description": "2D Landmark labels",
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "point": {
+                        "$ref": "#/$defs/point2d"
+                      },
+                      "category": {
+                        "$ref": "#/$defs/category"
+                      },
+                      "attributes": {
+                        "$ref": "#/$defs/attributes"
+                      },
+                      "video": {
+                        "$ref": "#/$defs/video"
+                      }
+                    },
+                    "required": [
+                      "point",
+                      "category"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "polygons": {
+                  "title": "Polygon",
+                  "description": "Polygon labels",
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "stats": {
+                        "$ref": "#/$defs/stats"
+                      },
+                      "attributes": {
+                        "$ref": "#/$defs/attributes"
+                      },
+                      "points": {
+                        "title": "Points",
+                        "description": "Polygon points",
+                        "type": "array",
+                        "minItems": 3,
+                        "items": {
+                          "$ref": "#/$defs/point2d"
+                        }
+                      },
+                      "video": {
+                        "$ref": "#/$defs/video"
+                      },
+                      "category": {
+                        "$ref": "#/$defs/category"
+                      }
+                    },
+                    "required": [
+                      "points",
+                      "category"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "measurements": {
+                  "title": "Measurements",
+                  "description": "Measurement labels",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_2"
+                  }
+                },
+                "pngMask": {
+                  "title": "PNG Mask",
+                  "description": "Indicator if segmentations are in png masks",
+                  "type": "boolean"
+                },
+                "landmarks3d": {
+                  "title": "3D Landmarks",
+                  "description": "3D Landmark labels",
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "point": {
+                        "$ref": "#/$defs/voxelPoint"
+                      },
+                      "category": {
+                        "$ref": "#/$defs/category"
+                      },
+                      "attributes": {
+                        "$ref": "#/$defs/attributes"
+                      }
+                    },
+                    "required": [
+                      "point",
+                      "category"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "polylines": {
+                  "title": "Polylines",
+                  "description": "Polyline labels",
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "points": {
+                        "title": "Points",
+                        "description": "Polyline points",
+                        "type": "array",
+                        "minItems": 2,
+                        "items": {
+                          "$ref": "#/$defs/point2d"
+                        }
+                      },
+                      "category": {
+                        "$ref": "#/$defs/category"
+                      },
+                      "attributes": {
+                        "$ref": "#/$defs/attributes"
+                      },
+                      "video": {
+                        "$ref": "#/$defs/video"
+                      }
+                    },
+                    "required": [
+                      "points",
+                      "category"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "boundingBoxes3d": {
+                  "title": "3D Bounding Box",
+                  "description": "3D Bounding box labels",
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "stats": {
+                        "$ref": "#/$defs/stats"
+                      },
+                      "attributes": {
+                        "$ref": "#/$defs/attributes"
+                      },
+                      "category": {
+                        "$ref": "#/$defs/category"
+                      },
+                      "depth": {
+                        "title": "Depth",
+                        "description": "Bounding box depth",
+                        "type": "number",
+                        "minimum": 0.0
+                      },
+                      "width": {
+                        "title": "Width",
+                        "description": "Bounding box width",
+                        "type": "number",
+                        "minimum": 0.0
+                      },
+                      "height": {
+                        "title": "Height",
+                        "description": "Bounding box height",
+                        "type": "number",
+                        "minimum": 0.0
+                      },
+                      "pointTopLeft": {
+                        "$ref": "#/$defs/voxelPoint"
+                      }
+                    },
+                    "required": [
+                      "pointTopLeft",
+                      "width",
+                      "height",
+                      "depth",
+                      "category"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "metaData": {
+                  "title": "Series MetaData",
+                  "description": "Series level meta data",
+                  "type": "object"
+                },
+                "segmentations": {
+                  "title": "Segmentation(s)",
+                  "description": "NIfTI Segmentation(s)",
+                  "type": [
+                    "array",
+                    "string"
+                  ],
+                  "minLength": 1,
+                  "minItems": 1,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "semanticMask": {
+                  "title": "Semantic Mask",
+                  "description": "Indicator if segmentations are semantic",
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "items"
+              ],
+              "dependentRequired": {
+                "segmentations": [
+                  "segmentMap"
+                ],
+                "segmentMap": [
+                  "segmentations"
+                ]
+              }
+            },
+            {
+              "patternProperties": {
+                "^instanceClassifications$": true,
+                "^classifications$": true,
+                "^segmentations$": true,
+                "^polygons$": true,
+                "^semanticMask$": true,
+                "^items$": true,
+                "^binaryMask$": true,
+                "^measurements$": true,
+                "^boundingBoxes3d$": true,
+                "^landmarks3d$": true,
+                "^name$": true,
+                "^polylines$": true,
+                "^cuboids$": true,
+                "^numFrames$": true,
+                "^landmarks$": true,
+                "^pngMask$": true,
+                "^segmentMap$": true,
+                "^metaData$": true,
+                "^dimensions$": true,
+                "^ellipses$": true,
+                "^boundingBoxes$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "normal": {
+      "title": "Normal",
+      "description": "Normal vector",
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "number"
+      }
+    },
+    "worldPoint": {
+      "title": "World Point",
+      "type": "object",
+      "properties": {
+        "x": {
+          "title": "X",
+          "description": "Point x coordinate",
+          "type": "number"
+        },
+        "y": {
+          "title": "Y",
+          "description": "Point y coordinate",
+          "type": "number"
+        },
+        "z": {
+          "title": "Z",
+          "description": "Point z coordinate",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x",
+        "y",
+        "z"
+      ],
+      "additionalProperties": false
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "type": "object"
+                },
+                {
+                  "properties": {
+                    "type": {
+                      "title": "Measurement Type",
+                      "description": "Measurement type",
+                      "type": "string",
+                      "enum": [
+                        "length",
+                        "angle"
+                      ]
+                    },
+                    "category": {
+                      "$ref": "#/$defs/category"
+                    },
+                    "attributes": {
+                      "$ref": "#/$defs/attributes"
+                    }
+                  }
+                },
+                {
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "point2": {
+                          "title": "Second Point",
+                          "$ref": "#/$defs/voxelPoint"
+                        },
+                        "absolutePoint1": {
+                          "title": "First Point (absolute)",
+                          "$ref": "#/$defs/worldPoint"
+                        },
+                        "length": {
+                          "title": "Length",
+                          "description": "Length of the line",
+                          "type": "number",
+                          "minimum": 0.0
+                        },
+                        "type": {
+                          "title": "Measurement Type",
+                          "description": "Measurement type",
+                          "type": "string",
+                          "const": "length"
+                        },
+                        "absolutePoint2": {
+                          "title": "Second Point (absolute)",
+                          "$ref": "#/$defs/worldPoint"
+                        },
+                        "point1": {
+                          "title": "First Point",
+                          "$ref": "#/$defs/voxelPoint"
+                        },
+                        "normal": {
+                          "$ref": "#/$defs/normal"
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "point1",
+                        "point2",
+                        "absolutePoint1",
+                        "absolutePoint2",
+                        "normal",
+                        "length"
+                      ]
+                    },
+                    {
+                      "not": {
+                        "type": "object",
+                        "properties": {
+                          "vertex": {
+                            "title": "Vertex",
+                            "$ref": "#/$defs/voxelPoint"
+                          },
+                          "point2": {
+                            "title": "Second Point",
+                            "$ref": "#/$defs/voxelPoint"
+                          },
+                          "absolutePoint1": {
+                            "title": "First Point (absolute)",
+                            "$ref": "#/$defs/worldPoint"
+                          },
+                          "absoluteVertex": {
+                            "title": "Vertex (absolute)",
+                            "$ref": "#/$defs/worldPoint"
+                          },
+                          "type": {
+                            "title": "Measurement Type",
+                            "description": "Measurement type",
+                            "type": "string",
+                            "const": "angle"
+                          },
+                          "absolutePoint2": {
+                            "title": "Second Point (absolute)",
+                            "$ref": "#/$defs/worldPoint"
+                          },
+                          "angle": {
+                            "title": "Angle",
+                            "description": "Angle formed by two lines",
+                            "type": "number"
+                          },
+                          "point1": {
+                            "title": "First Point",
+                            "$ref": "#/$defs/voxelPoint"
+                          },
+                          "normal": {
+                            "$ref": "#/$defs/normal"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "point1",
+                          "vertex",
+                          "point2",
+                          "absolutePoint1",
+                          "absoluteVertex",
+                          "absolutePoint2",
+                          "normal",
+                          "angle"
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "required": [
+                    "type",
+                    "category"
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^attributes$": true,
+                "^length$": true,
+                "^category$": true,
+                "^point1$": true,
+                "^absolutePoint2$": true,
+                "^normal$": true,
+                "^absolutePoint1$": true,
+                "^point2$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "type": "object"
+                },
+                {
+                  "properties": {
+                    "type": {
+                      "title": "Measurement Type",
+                      "description": "Measurement type",
+                      "type": "string",
+                      "enum": [
+                        "length",
+                        "angle"
+                      ]
+                    },
+                    "category": {
+                      "$ref": "#/$defs/category"
+                    },
+                    "attributes": {
+                      "$ref": "#/$defs/attributes"
+                    }
+                  }
+                },
+                {
+                  "allOf": [
+                    {
+                      "not": {
+                        "type": "object",
+                        "properties": {
+                          "point2": {
+                            "title": "Second Point",
+                            "$ref": "#/$defs/voxelPoint"
+                          },
+                          "absolutePoint1": {
+                            "title": "First Point (absolute)",
+                            "$ref": "#/$defs/worldPoint"
+                          },
+                          "length": {
+                            "title": "Length",
+                            "description": "Length of the line",
+                            "type": "number",
+                            "minimum": 0.0
+                          },
+                          "type": {
+                            "title": "Measurement Type",
+                            "description": "Measurement type",
+                            "type": "string",
+                            "const": "length"
+                          },
+                          "absolutePoint2": {
+                            "title": "Second Point (absolute)",
+                            "$ref": "#/$defs/worldPoint"
+                          },
+                          "point1": {
+                            "title": "First Point",
+                            "$ref": "#/$defs/voxelPoint"
+                          },
+                          "normal": {
+                            "$ref": "#/$defs/normal"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "point1",
+                          "point2",
+                          "absolutePoint1",
+                          "absolutePoint2",
+                          "normal",
+                          "length"
+                        ]
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "vertex": {
+                          "title": "Vertex",
+                          "$ref": "#/$defs/voxelPoint"
+                        },
+                        "point2": {
+                          "title": "Second Point",
+                          "$ref": "#/$defs/voxelPoint"
+                        },
+                        "absolutePoint1": {
+                          "title": "First Point (absolute)",
+                          "$ref": "#/$defs/worldPoint"
+                        },
+                        "absoluteVertex": {
+                          "title": "Vertex (absolute)",
+                          "$ref": "#/$defs/worldPoint"
+                        },
+                        "type": {
+                          "title": "Measurement Type",
+                          "description": "Measurement type",
+                          "type": "string",
+                          "const": "angle"
+                        },
+                        "absolutePoint2": {
+                          "title": "Second Point (absolute)",
+                          "$ref": "#/$defs/worldPoint"
+                        },
+                        "angle": {
+                          "title": "Angle",
+                          "description": "Angle formed by two lines",
+                          "type": "number"
+                        },
+                        "point1": {
+                          "title": "First Point",
+                          "$ref": "#/$defs/voxelPoint"
+                        },
+                        "normal": {
+                          "$ref": "#/$defs/normal"
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "point1",
+                        "vertex",
+                        "point2",
+                        "absolutePoint1",
+                        "absoluteVertex",
+                        "absolutePoint2",
+                        "normal",
+                        "angle"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "required": [
+                    "type",
+                    "category"
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^vertex$": true,
+                "^absoluteVertex$": true,
+                "^attributes$": true,
+                "^category$": true,
+                "^point1$": true,
+                "^absolutePoint2$": true,
+                "^normal$": true,
+                "^absolutePoint1$": true,
+                "^angle$": true,
+                "^point2$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "attributes": {
+      "title": "Attributes",
+      "description": "Label Attributes",
+      "type": [
+        "array",
+        "object"
+      ],
+      "minItems": 1,
+      "items": {
+        "title": "Attribute",
+        "description": "Label Attribute",
+        "type": "object",
+        "properties": {
+          "attrId": {
+            "title": "Attribute ID",
+            "description": "Attribute ID",
+            "type": "number"
+          },
+          "optionId": {
+            "title": "Option ID",
+            "description": "Option ID",
+            "type": [
+              "number",
+              "array"
+            ],
+            "minItems": 1,
+            "items": {
+              "type": "number"
+            }
+          },
+          "name": {
+            "title": "Name",
+            "description": "Attribute name",
+            "type": "string",
+            "minLength": 1
+          },
+          "value": {
+            "title": "Value",
+            "description": "Attribute value",
+            "type": [
+              "string",
+              "boolean",
+              "array"
+            ],
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "patternProperties": {
+        "^.{1,512}$": {
+          "type": [
+            "string",
+            "boolean",
+            "array"
+          ],
+          "minLength": 1,
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "video": {
+      "title": "Video MetaData",
+      "type": "object",
+      "properties": {
+        "frameIndex": {
+          "title": "Frame Index",
+          "description": "Video frame index",
+          "type": "number",
+          "minimum": 0.0
+        },
+        "trackId": {
+          "title": "Track Id",
+          "description": "Label track id",
+          "type": "string"
+        },
+        "keyFrame": {
+          "title": "Key Frame",
+          "description": "true if this is a key frame",
+          "type": "boolean"
+        },
+        "endTrack": {
+          "title": "End Track",
+          "description": "true if this is the last key frame of the current track",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "frameIndex",
+        "trackId",
+        "keyFrame",
+        "endTrack"
+      ],
+      "additionalProperties": false
+    },
+    "category": {
+      "title": "Category",
+      "description": "Label category",
+      "type": [
+        "array",
+        "string",
+        "number"
+      ],
+      "minimum": 0.0,
+      "minLength": 1,
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "voxelPoint": {
+      "title": "Voxel Point",
+      "type": "object",
+      "properties": {
+        "i": {
+          "title": "Row",
+          "description": "Point row number",
+          "type": "number"
+        },
+        "j": {
+          "title": "Column",
+          "description": "Point column number",
+          "type": "number"
+        },
+        "k": {
+          "title": "Slice",
+          "description": "Point slice number",
+          "type": "number"
+        }
+      },
+      "required": [
+        "i",
+        "j",
+        "k"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "LISAManagerReferenceNumber": {
+                  "$ref": "#/$defs/LISAManagerReferenceNumberType"
+                },
+                "LISAProviderName": {
+                  "type": "string"
+                },
+                "_links": {
+                  "type": "object"
+                }
+              },
+              "required": [
+                "LISAManagerReferenceNumber",
+                "LISAProviderName"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^LISAManagerReferenceNumber$": true,
+                "^LISAProviderName$": true,
+                "^_links$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "LISAManagerReferenceNumberType": {
+      "pattern": "^Z\\d{6}$",
+      "type": "string"
+    }
+  }
+}

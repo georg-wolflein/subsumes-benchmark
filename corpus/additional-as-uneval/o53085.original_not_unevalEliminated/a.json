@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "basic schema from z-schema benchmark (https://github.com/zaggino/z-schema)",
+  "items": {
+    "$ref": "#/$defs/modern_1"
+  },
+  "title": "Product set",
+  "type": "array",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "tags": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 1,
+                  "type": "array",
+                  "_uniqueItems": true
+                },
+                "price": {
+                  "exclusiveMinimum": 0.0,
+                  "type": "number"
+                },
+                "id": {
+                  "description": "The unique identifier for a product",
+                  "type": "number"
+                },
+                "dimensions": {
+                  "properties": {
+                    "height": {
+                      "type": "number"
+                    },
+                    "length": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "length",
+                    "width",
+                    "height"
+                  ],
+                  "type": "object"
+                },
+                "warehouseLocation": {
+                  "description": "Coordinates of the warehouse with the product"
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "price"
+              ],
+              "title": "Product",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^warehouseLocation$": true,
+                "^name$": true,
+                "^id$": true,
+                "^price$": true,
+                "^tags$": true,
+                "^dimensions$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

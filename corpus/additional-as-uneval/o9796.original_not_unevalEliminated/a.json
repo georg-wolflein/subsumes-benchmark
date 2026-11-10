@@ -1,0 +1,216 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "resource": {
+                  "type": "string",
+                  "maxLength": 1024
+                },
+                "action": {
+                  "type": "string",
+                  "maxLength": 1024
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^resource$": true,
+                "^action$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "actor": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_2"
+                  }
+                },
+                "secondaryTarget": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_3"
+                  }
+                },
+                "primaryTarget": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_4"
+                  }
+                },
+                "responseCode": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 100.0,
+                    "maximum": 599.0
+                  }
+                },
+                "request": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/modern_5"
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^primaryTarget$": true,
+                "^actor$": true,
+                "^request$": true,
+                "^responseCode$": true,
+                "^secondaryTarget$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[A-Fa-f\\d]{24}$"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "Application",
+                    "Device",
+                    "Flow",
+                    "User",
+                    "ApiToken"
+                  ]
+                },
+                "name": {
+                  "type": "string",
+                  "maxLength": 1024
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^type$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[A-Fa-f\\d]{24}$"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "ApiToken",
+                    "ApplicationKey",
+                    "DataTable",
+                    "Device",
+                    "DeviceRecipe",
+                    "Event",
+                    "ExperienceDomain",
+                    "ExperienceEndpoint",
+                    "ExperienceGroup",
+                    "ExperienceSlug",
+                    "ExperienceUser",
+                    "ExperienceVersion",
+                    "ExperienceView",
+                    "File",
+                    "Flow",
+                    "Integration",
+                    "Webhook"
+                  ]
+                },
+                "name": {
+                  "type": "string",
+                  "maxLength": 1024
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^type$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[A-Fa-f\\d]{24}$"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "Application",
+                    "Dashboard",
+                    "OrgInvite"
+                  ]
+                },
+                "name": {
+                  "type": "string",
+                  "maxLength": 1024
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^id$": true,
+                "^type$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

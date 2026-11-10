@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "title": "Playbook syntax definition",
+  "description": "Playbooks are documents which describe the exact set of steps required to successfully start and finish a given software release. When the Release Engine begins a deployment, the actions it takes come directly from playbooks. For more information: http://release-engine.readthedocs.org/en/latest/playbooks.html",
+  "properties": {
+    "execution": {
+      "$ref": "#/$defs/execution"
+    },
+    "group": {
+      "$ref": "#/$defs/group"
+    },
+    "name": {
+      "$ref": "#/$defs/name"
+    }
+  },
+  "required": [
+    "execution",
+    "name",
+    "group"
+  ],
+  "$defs": {
+    "group": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "hosts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/step_types"
+      }
+    },
+    "step_types": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/step_string"
+        },
+        {
+          "$ref": "#/$defs/step_object"
+        }
+      ]
+    },
+    "step_string": {
+      "type": "string",
+      "pattern": "^[\\w]+:{1}[A-Z][\\w]+$"
+    },
+    "step_object": {
+      "type": "object",
+      "patternProperties": {
+        "^[\\w]+:{1}[A-Z][\\w]+$": {
+          "type": "object",
+          "properties": {
+            "notify": {
+              "$ref": "#/$defs/notify"
+            }
+          },
+          "minProperties": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "dynamic": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minItems": 1
+      }
+    },
+    "notify": {
+      "type": "object",
+      "properties": {
+        "started": {
+          "$ref": "#/$defs/notify_endpoints"
+        },
+        "completed": {
+          "$ref": "#/$defs/notify_endpoints"
+        },
+        "failed": {
+          "$ref": "#/$defs/notify_endpoints"
+        }
+      },
+      "additionalProperties": false
+    },
+    "notify_endpoints": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "execution": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "hosts",
+          "steps",
+          "description"
+        ],
+        "properties": {
+          "hosts": {
+            "$ref": "#/$defs/hosts"
+          },
+          "steps": {
+            "$ref": "#/$defs/steps"
+          },
+          "preflight": {
+            "$ref": "#/$defs/steps"
+          },
+          "description": {
+            "$ref": "#/$defs/description"
+          }
+        }
+      }
+    }
+  }
+}

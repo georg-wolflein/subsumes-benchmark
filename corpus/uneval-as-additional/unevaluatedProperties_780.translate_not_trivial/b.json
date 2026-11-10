@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "anyOf": [
+    {
+      "$ref": "#/$defs/_AdaptiveRequestHandlerType_"
+    }
+  ],
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/_AdaptiveRequestHandlerType_.propertyTypes"
+                }
+              ],
+              "description": "A registry type request_handler_factory entry.",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^description$": true,
+                "^requestHandlerType$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "_AdaptiveRequestHandlerType_": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "_AdaptiveRequestHandlerType_.propertyTypes": {
+      "properties": {
+        "description": {
+          "contentMediaType": "text/plain",
+          "description": "Description of request handler type.",
+          "title": "Description",
+          "type": "string"
+        },
+        "requestHandlerType": {
+          "description": "Type of request handler.",
+          "title": "Request Handler Type",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  }
+}

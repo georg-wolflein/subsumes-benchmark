@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "items": {
+    "$ref": "#/$defs/modern_2"
+  },
+  "type": "array",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "en": {
+                  "type": "string"
+                },
+                "ru": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "ru",
+                "en"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^en$": true,
+                "^ru$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "computeOfferings": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "description": {
+                  "$ref": "#/$defs/Translations"
+                },
+                "id": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "name": {
+                  "$ref": "#/$defs/Translations"
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "description",
+                "computeOfferings"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^computeOfferings$": true,
+                "^description$": true,
+                "^id$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Translations": {
+      "$ref": "#/$defs/modern_1"
+    }
+  }
+}

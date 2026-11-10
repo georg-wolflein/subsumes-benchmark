@@ -1,0 +1,38 @@
+{
+  "$id": "https://www.yacpdb.org/schemas/yacpdb-tourney.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "name": {
+      "$ref": "#/$defs/text"
+    },
+    "comments": {
+      "$ref": "#/$defs/text_list"
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "text": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "string",
+          "minLength": 1
+        }
+      ]
+    },
+    "text_list": {
+      "type": "array",
+      "elements": {
+        "$ref": "#/$defs/text"
+      },
+      "minItems": 1,
+      "_uniqueItems": true
+    }
+  }
+}

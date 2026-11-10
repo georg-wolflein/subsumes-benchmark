@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "schema for an organisation customer",
+              "properties": {
+                "customer_id": {
+                  "_format": "uuid",
+                  "type": "string"
+                },
+                "id": {
+                  "_format": "uuid",
+                  "type": "string"
+                },
+                "organisation_id": {
+                  "_format": "uuid",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "organisation_id",
+                "customer_id"
+              ],
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^customer_id$": true,
+                "^id$": true,
+                "^organisation_id$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

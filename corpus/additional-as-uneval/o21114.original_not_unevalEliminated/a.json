@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "locations": {
+                  "items": {
+                    "enum": [
+                      "Scotland",
+                      "North East England",
+                      "North West England",
+                      "Yorkshire and the Humber",
+                      "East Midlands",
+                      "West Midlands",
+                      "East of England",
+                      "Wales",
+                      "London",
+                      "South East England",
+                      "South West England",
+                      "Northern Ireland",
+                      "International (outside the UK)"
+                    ]
+                  },
+                  "maxItems": 13,
+                  "minItems": 1,
+                  "type": "array",
+                  "_uniqueItems": true
+                },
+                "recruitFromList": {
+                  "type": "boolean"
+                },
+                "manageIncentives": {
+                  "type": "boolean"
+                },
+                "anonymousRecruitment": {
+                  "type": "boolean"
+                },
+                "recruitMethods": {
+                  "items": {
+                    "enum": [
+                      "Entirely offline",
+                      "Initial recruitment offline, but then contact them online",
+                      "Entirely online"
+                    ]
+                  },
+                  "maxItems": 3,
+                  "minItems": 1,
+                  "type": "array",
+                  "_uniqueItems": true
+                }
+              },
+              "required": [
+                "anonymousRecruitment",
+                "locations",
+                "manageIncentives",
+                "recruitFromList",
+                "recruitMethods"
+              ],
+              "title": "Digital Outcomes and Specialists 4 User research participants Service Schema",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^locations$": true,
+                "^recruitFromList$": true,
+                "^recruitMethods$": true,
+                "^manageIncentives$": true,
+                "^anonymousRecruitment$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

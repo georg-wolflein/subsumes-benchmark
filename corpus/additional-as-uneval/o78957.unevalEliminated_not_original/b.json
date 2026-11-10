@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "default": {},
+  "properties": {
+    "description": {
+      "type": "string"
+    },
+    "patternProperties": {
+      "^x_": {}
+    },
+    "version": {
+      "description": "The version of current schema object",
+      "type": "string"
+    },
+    "id": {
+      "description": "It is best practice to include an `id` property as an unique identifier for each schema.",
+      "type": "string"
+    },
+    "properties": {
+      "$ref": "#/$defs/propertyDefinition"
+    },
+    "default": true,
+    "metadata": {
+      "_format": "json-pointer",
+      "type": "string"
+    },
+    "$schema": {
+      "_format": "uri",
+      "description": "The version of the schema specification, for example, `https://github.com/dotnet/docfx/v1.0/schema#",
+      "type": "string"
+    },
+    "title": {
+      "description": "The title of current schema, `LandingPage`, for example. In DocFX, this value can be used to determine what kind of documents apply to this schema, If not specified, file name of this schema is used.",
+      "type": "string"
+    },
+    "type": {
+      "description": "The type of the root document model MUST be `object`",
+      "enum": [
+        "object"
+      ],
+      "type": "string"
+    }
+  },
+  "required": [
+    "$schema",
+    "version"
+  ],
+  "title": "DocFX document schema meta-schema",
+  "type": "object",
+  "$defs": {
+    "propertyObject": {
+      "patternProperties": {
+        "^x_": true
+      },
+      "properties": {
+        "reference": {
+          "description": "Defines whether current property is a reference to the actual value of the property",
+          "enum": [
+            "none",
+            "file"
+          ],
+          "type": "string"
+        },
+        "mergeType": {
+          "description": "Defines how to merge the property",
+          "enum": [
+            "key",
+            "merge",
+            "replace",
+            "ignore"
+          ],
+          "type": "string"
+        },
+        "items": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/propertyObject"
+            },
+            {
+              "$ref": "#/$defs/schemaArray"
+            }
+          ],
+          "default": {}
+        },
+        "default": true,
+        "xrefProperties": {
+          "description": "Defines the properties of current object when it is cross referenced by others. Each item is the name of the property in the instance.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "_uniqueItems": true
+        },
+        "description": {
+          "type": "string"
+        },
+        "tags": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "contentType": {
+          "description": "Defines the content type of the property",
+          "enum": [
+            "default",
+            "uid",
+            "xref",
+            "href",
+            "file",
+            "markdown"
+          ],
+          "type": "string"
+        },
+        "properties": {
+          "$ref": "#/$defs/propertyDefinition"
+        },
+        "title": {
+          "pattern": "^[^.]*$",
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/simpleTypes"
+        }
+      },
+      "type": "object"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "default": {},
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/propertyObject"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "propertyDefinition": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "simpleTypes": {
+      "enum": [
+        "array",
+        "boolean",
+        "integer",
+        "null",
+        "number",
+        "object",
+        "string"
+      ]
+    },
+    "schemaArray": {
+      "items": {
+        "$ref": "#/$defs/propertyObject"
+      },
+      "minItems": 1,
+      "type": "array"
+    }
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "filterType": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "enum": [
+                        "all",
+                        "whitelist",
+                        "blacklist"
+                      ]
+                    },
+                    {
+                      "type": "string",
+                      "enum": [
+                        "none"
+                      ]
+                    }
+                  ]
+                },
+                "description": {
+                  "type": "string",
+                  "maxLength": 32767
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "active",
+                    "inactive"
+                  ]
+                },
+                "subTopics": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1024
+                  }
+                },
+                "pubTopics": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1024
+                  }
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^filterType$": true,
+                "^subTopics$": true,
+                "^description$": true,
+                "^status$": true,
+                "^pubTopics$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

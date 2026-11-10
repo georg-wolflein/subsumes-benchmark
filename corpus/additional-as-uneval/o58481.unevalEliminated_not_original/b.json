@@ -1,0 +1,282 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Dial step",
+  "type": "object",
+  "properties": {
+    "method": {
+      "enum": [
+        "GET",
+        "POST"
+      ]
+    },
+    "dialNouns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/$defs/numberNoun"
+          },
+          {
+            "$ref": "#/$defs/clientNoun"
+          },
+          {
+            "$ref": "#/$defs/conferenceNoun"
+          },
+          {
+            "$ref": "#/$defs/sipuriNoun"
+          }
+        ]
+      }
+    },
+    "label": {
+      "type": "string"
+    },
+    "timeout": {
+      "type": "integer"
+    },
+    "callerId": {
+      "type": "string"
+    },
+    "record": {
+      "type": "boolean"
+    },
+    "name": {
+      "type": "string"
+    },
+    "nextModule": {
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "dial"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "iface": {
+      "type": "object"
+    },
+    "timeLimit": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "name",
+    "kind",
+    "label",
+    "title",
+    "dialNouns"
+  ],
+  "$defs": {
+    "numberNoun": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "beforeConnectModule": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sendDigits": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "dialType": {
+                  "enum": [
+                    "number"
+                  ]
+                },
+                "iface": {
+                  "type": "object"
+                },
+                "destination": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "dialType",
+                "destination"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^destination$": true,
+                "^iface$": true,
+                "^beforeConnectModule$": true,
+                "^dialType$": true,
+                "^sendDigits$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "clientNoun": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "beep": {
+                  "type": "boolean"
+                },
+                "waitModule": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "maxParticipants": {
+                  "type": "integer"
+                },
+                "dialType": {
+                  "enum": [
+                    "conference"
+                  ]
+                },
+                "startConferenceOnEnter": {
+                  "type": "boolean"
+                },
+                "waitMethod": {
+                  "enum": [
+                    "GET",
+                    "POST"
+                  ]
+                },
+                "nextModule": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "waitUrl": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "iface": {
+                  "type": "object"
+                },
+                "endConferenceOnExit": {
+                  "type": "boolean"
+                },
+                "destination": {
+                  "type": "string"
+                },
+                "muted": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "dialType",
+                "destination"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^destination$": true,
+                "^nextModule$": true,
+                "^iface$": true,
+                "^endConferenceOnExit$": true,
+                "^waitMethod$": true,
+                "^waitModule$": true,
+                "^beep$": true,
+                "^muted$": true,
+                "^waitUrl$": true,
+                "^startConferenceOnEnter$": true,
+                "^dialType$": true,
+                "^maxParticipants$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "dialType": {
+                  "enum": [
+                    "client"
+                  ]
+                },
+                "destination": {
+                  "type": "string"
+                },
+                "iface": {
+                  "type": "object"
+                }
+              },
+              "required": [
+                "dialType",
+                "destination"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^dialType$": true,
+                "^destination$": true,
+                "^iface$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "conferenceNoun": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "sipuriNoun": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "dialType": {
+                  "enum": [
+                    "sipuri"
+                  ]
+                },
+                "destination": {
+                  "type": "string"
+                },
+                "iface": {
+                  "type": "object"
+                }
+              },
+              "required": [
+                "dialType",
+                "destination"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^dialType$": true,
+                "^destination$": true,
+                "^iface$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

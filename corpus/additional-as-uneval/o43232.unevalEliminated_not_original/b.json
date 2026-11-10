@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_3",
+  "$defs": {
+    "StatCount": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Id": {
+                  "type": "string"
+                },
+                "Count": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "Id",
+                "Count"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^Id$": true,
+                "^Count$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Id": {
+                  "type": "string"
+                },
+                "Timelapse": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "Id",
+                "Timelapse"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^Id$": true,
+                "^Timelapse$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "Timelapse": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "MedalStatCounts": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/StatCount"
+                  }
+                },
+                "ImpulseStatCounts": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/StatCount"
+                  }
+                },
+                "MedalTimelapses": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/Timelapse"
+                  }
+                },
+                "ImpulseTimelapses": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/Timelapse"
+                  }
+                }
+              },
+              "required": [
+                "MedalStatCounts",
+                "ImpulseStatCounts",
+                "MedalTimelapses",
+                "ImpulseTimelapses"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^MedalStatCounts$": true,
+                "^ImpulseStatCounts$": true,
+                "^MedalTimelapses$": true,
+                "^ImpulseTimelapses$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

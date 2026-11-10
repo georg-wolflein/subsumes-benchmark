@@ -1,0 +1,231 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "anyOf": [
+    {
+      "$ref": "#/$defs/modern_1"
+    },
+    {
+      "$ref": "#/$defs/modern_2"
+    },
+    {
+      "$ref": "#/$defs/modern_3"
+    },
+    {
+      "$ref": "#/$defs/modern_4"
+    }
+  ],
+  "$defs": {
+    "_gpsCenter": {
+      "title": "Point B GPS Formatted String",
+      "type": "string",
+      "minLength": 1
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "gpsCheck": {
+                  "$ref": "#/$defs/_gpsCheck"
+                },
+                "gpsCenter": {
+                  "$ref": "#/$defs/_gpsCenter"
+                },
+                "radius": {
+                  "$ref": "#/$defs/radius"
+                },
+                "resultPath": {
+                  "$ref": "#/$defs/resultPath"
+                }
+              },
+              "required": [
+                "radius",
+                "gpsCheck",
+                "gpsCenter"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^gpsCheck$": true,
+                "^gpsCenter$": true,
+                "^radius$": true,
+                "^resultPath$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "_lonCheck": {
+      "title": "Point A Longitude / Template",
+      "type": "string",
+      "minLength": 1
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "lonCenter": {
+                  "$ref": "#/$defs/_lonCenter"
+                },
+                "resultPath": {
+                  "$ref": "#/$defs/resultPath"
+                },
+                "radius": {
+                  "$ref": "#/$defs/radius"
+                },
+                "latCenter": {
+                  "$ref": "#/$defs/_latCenter"
+                },
+                "gpsCheck": {
+                  "$ref": "#/$defs/_gpsCheck"
+                }
+              },
+              "required": [
+                "radius",
+                "gpsCheck",
+                "latCenter",
+                "lonCenter"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^radius$": true,
+                "^gpsCheck$": true,
+                "^resultPath$": true,
+                "^lonCenter$": true,
+                "^latCenter$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "resultPath": {
+      "title": "Result Path",
+      "description": "JSON Path for where to put the distance between the two coordinates",
+      "type": "string"
+    },
+    "radius": {
+      "title": "Radius (meters) / Template",
+      "type": "string"
+    },
+    "_gpsCheck": {
+      "title": "Point A GPS Formatted String",
+      "type": "string",
+      "minLength": 1
+    },
+    "_latCheck": {
+      "title": "Point A Latitude / Template",
+      "type": "string",
+      "minLength": 1
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "lonCheck": {
+                  "$ref": "#/$defs/_lonCheck"
+                },
+                "gpsCenter": {
+                  "$ref": "#/$defs/_gpsCenter"
+                },
+                "resultPath": {
+                  "$ref": "#/$defs/resultPath"
+                },
+                "radius": {
+                  "$ref": "#/$defs/radius"
+                },
+                "latCheck": {
+                  "$ref": "#/$defs/_latCheck"
+                }
+              },
+              "required": [
+                "radius",
+                "latCheck",
+                "lonCheck",
+                "gpsCenter"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^radius$": true,
+                "^gpsCenter$": true,
+                "^resultPath$": true,
+                "^latCheck$": true,
+                "^lonCheck$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "properties": {
+                "lonCheck": {
+                  "$ref": "#/$defs/_lonCheck"
+                },
+                "lonCenter": {
+                  "$ref": "#/$defs/_lonCenter"
+                },
+                "resultPath": {
+                  "$ref": "#/$defs/resultPath"
+                },
+                "radius": {
+                  "$ref": "#/$defs/radius"
+                },
+                "latCheck": {
+                  "$ref": "#/$defs/_latCheck"
+                },
+                "latCenter": {
+                  "$ref": "#/$defs/_latCenter"
+                }
+              },
+              "required": [
+                "radius",
+                "latCheck",
+                "lonCheck",
+                "latCenter",
+                "lonCenter"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^radius$": true,
+                "^resultPath$": true,
+                "^latCheck$": true,
+                "^lonCenter$": true,
+                "^lonCheck$": true,
+                "^latCenter$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "_lonCenter": {
+      "title": "Point B Longitude / Template",
+      "type": "string",
+      "minLength": 1
+    },
+    "_latCenter": {
+      "title": "Point B Latitude / Template",
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

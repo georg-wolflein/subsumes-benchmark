@@ -1,0 +1,148 @@
+{
+  "$id": "https://spec.openapis.org/oas/3.1/meta/base",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$vocabulary": {
+    "https://spec.openapis.org/oas/3.1/vocab/base": true
+  },
+  "$dynamicAnchor": "meta",
+  "title": "OAS Base vocabulary",
+  "type": [
+    "object",
+    "boolean"
+  ],
+  "properties": {
+    "example": true,
+    "discriminator": {
+      "$ref": "#/$defs/discriminator"
+    },
+    "externalDocs": {
+      "$ref": "#/$defs/external-docs"
+    },
+    "xml": {
+      "$ref": "#/$defs/xml"
+    }
+  },
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/extensible",
+              "type": "object",
+              "properties": {
+                "propertyName": {
+                  "type": "string"
+                },
+                "mapping": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "propertyName"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^x-": true,
+                "^propertyName$": true,
+                "^mapping$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "external-docs": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "xml": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "extensible": {
+      "patternProperties": {
+        "^x-": true
+      }
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/extensible",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "prefix": {
+                  "type": "string"
+                },
+                "wrapped": {
+                  "type": "boolean"
+                },
+                "attribute": {
+                  "type": "boolean"
+                },
+                "namespace": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^x-": true,
+                "^attribute$": true,
+                "^name$": true,
+                "^namespace$": true,
+                "^wrapped$": true,
+                "^prefix$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "discriminator": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/extensible",
+              "type": "object",
+              "properties": {
+                "url": {
+                  "type": "string",
+                  "format": "uri-reference"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "url"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^x-": true,
+                "^url$": true,
+                "^description$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

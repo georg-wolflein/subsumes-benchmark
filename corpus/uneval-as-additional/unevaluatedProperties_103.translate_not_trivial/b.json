@@ -1,0 +1,362 @@
+{
+  "$id": "http://jetuml.org/docs/schema/3.0/object.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "JetUML File Format for Object Diagrams",
+              "type": "object",
+              "required": [
+                "diagram",
+                "nodes",
+                "edges",
+                "version"
+              ],
+              "properties": {
+                "diagram": {
+                  "const": "ObjectDiagram"
+                },
+                "nodes": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "$ref": "#/$defs/modern_2"
+                  }
+                },
+                "edges": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "$ref": "#/$defs/modern_3"
+                  }
+                },
+                "version": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^diagram$": true,
+                "^nodes$": true,
+                "^edges$": true,
+                "^version$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "x",
+                "y",
+                "id",
+                "type"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "y": {
+                  "type": "integer"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "type": {
+                  "enum": [
+                    "ObjectNode",
+                    "PointNode",
+                    "FieldNode",
+                    "NoteNode"
+                  ]
+                },
+                "value": {
+                  "type": "string"
+                },
+                "x": {
+                  "type": "integer"
+                },
+                "children": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "allOf": [
+                {
+                  "anyOf": [
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "type": {
+                              "const": "ObjectNode"
+                            }
+                          }
+                        },
+                        {
+                          "required": [
+                            "name"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "not": {
+                        "properties": {
+                          "type": {
+                            "const": "ObjectNode"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "anyOf": [
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "type": {
+                              "const": "PointNode"
+                            }
+                          }
+                        },
+                        {
+                          "required": []
+                        }
+                      ]
+                    },
+                    {
+                      "not": {
+                        "properties": {
+                          "type": {
+                            "const": "PointNode"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "anyOf": [
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "type": {
+                              "const": "FieldNode"
+                            }
+                          }
+                        },
+                        {
+                          "required": [
+                            "name",
+                            "value"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "not": {
+                        "properties": {
+                          "type": {
+                            "const": "FieldNode"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "anyOf": [
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "type": {
+                              "const": "NoteNode"
+                            }
+                          }
+                        },
+                        {
+                          "required": [
+                            "name"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "not": {
+                        "properties": {
+                          "type": {
+                            "const": "NoteNode"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^children$": true,
+                "^x$": true,
+                "^name$": true,
+                "^type$": true,
+                "^id$": true,
+                "^value$": true,
+                "^y$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": [
+                "start",
+                "end",
+                "type"
+              ],
+              "properties": {
+                "start": {
+                  "type": "integer"
+                },
+                "end": {
+                  "type": "integer"
+                },
+                "type": {
+                  "enum": [
+                    "ObjectReferenceEdge",
+                    "NoteEdge",
+                    "ObjectCollaborationEdge"
+                  ]
+                },
+                "middleLabel": {
+                  "type": "string"
+                }
+              },
+              "allOf": [
+                {
+                  "anyOf": [
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "type": {
+                              "const": "ObjectReferenceEdge"
+                            }
+                          }
+                        },
+                        {
+                          "required": []
+                        }
+                      ]
+                    },
+                    {
+                      "not": {
+                        "properties": {
+                          "type": {
+                            "const": "ObjectReferenceEdge"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "anyOf": [
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "type": {
+                              "const": "NoteEdge"
+                            }
+                          }
+                        },
+                        {
+                          "required": []
+                        }
+                      ]
+                    },
+                    {
+                      "not": {
+                        "properties": {
+                          "type": {
+                            "const": "NoteEdge"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "anyOf": [
+                    {
+                      "allOf": [
+                        {
+                          "properties": {
+                            "type": {
+                              "const": "ObjectCollaborationEdge"
+                            }
+                          }
+                        },
+                        {
+                          "required": [
+                            "middleLabel"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "not": {
+                        "properties": {
+                          "type": {
+                            "const": "ObjectCollaborationEdge"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "patternProperties": {
+                "^start$": true,
+                "^end$": true,
+                "^type$": true,
+                "^middleLabel$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

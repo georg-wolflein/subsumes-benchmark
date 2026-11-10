@@ -1,0 +1,250 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_5",
+  "$defs": {
+    "modern_5": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Memote Experimental Tests Configuration Schema",
+              "description": "Validate an experimental data configuration file that defines additional memote tests.",
+              "type": "object",
+              "properties": {
+                "growth": {
+                  "$ref": "#/$defs/experiments"
+                },
+                "essentiality": {
+                  "$ref": "#/$defs/experiments"
+                },
+                "medium": {
+                  "$ref": "#/$defs/modern_6"
+                },
+                "version": {
+                  "type": "string",
+                  "enum": [
+                    "0.1"
+                  ]
+                },
+                "minimal_growth_rate": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "version"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^version$": true,
+                "^essentiality$": true,
+                "^growth$": true,
+                "^medium$": true,
+                "^minimal_growth_rate$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "experiments": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^path$": true,
+                "^experiments$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "stringSet": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "_uniqueItems": true
+    },
+    "modern_7": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/medium"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "medium": {
+      "$ref": "#/$defs/modern_3"
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": [
+                "object",
+                "null"
+              ],
+              "properties": {
+                "filename": {
+                  "$ref": "#/$defs/fileName"
+                },
+                "label": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^filename$": true,
+                "^label$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "experiments": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_6": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "definitions4": {
+                  "$ref": "#/$defs/modern_7"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^path$": true,
+                "^definitions4$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "fileName": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^.+\\.(csv|tsv|xls|xlsx|ods)$"
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/experiment"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "experiment": {
+      "$ref": "#/$defs/modern_4"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": [
+                "object",
+                "null"
+              ],
+              "properties": {
+                "label": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "medium": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "objective": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "filename": {
+                  "$ref": "#/$defs/fileName"
+                },
+                "constraints": {
+                  "$ref": "#/$defs/stringSet"
+                }
+              }
+            },
+            {
+              "patternProperties": {
+                "^objective$": true,
+                "^medium$": true,
+                "^label$": true,
+                "^filename$": true,
+                "^constraints$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

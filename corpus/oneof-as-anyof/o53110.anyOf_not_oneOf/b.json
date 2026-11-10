@@ -1,0 +1,115 @@
+{
+  "$id": "http://jsongraphformat.info/v2.0/json-graph-schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "JSON Graph Schema",
+  "anyOf": [
+    {
+      "additionalProperties": false,
+      "properties": {
+        "graph": {
+          "$ref": "#/$defs/graph"
+        }
+      },
+      "required": [
+        "graph"
+      ],
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "graphs": {
+          "items": {
+            "$ref": "#/$defs/graph"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    }
+  ],
+  "$defs": {
+    "graph": {
+      "additionalProperties": false,
+      "properties": {
+        "directed": {
+          "default": true,
+          "type": [
+            "boolean"
+          ]
+        },
+        "edges": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "directed": {
+                "default": true,
+                "type": [
+                  "boolean"
+                ]
+              },
+              "id": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "metadata": {
+                "type": [
+                  "object"
+                ]
+              },
+              "relation": {
+                "type": "string"
+              },
+              "source": {
+                "type": "string"
+              },
+              "target": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "source",
+              "target"
+            ],
+            "type": "object"
+          },
+          "type": [
+            "array"
+          ]
+        },
+        "id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "metadata": {
+          "type": [
+            "object"
+          ]
+        },
+        "nodes": {
+          "additionalProperties": {
+            "additionalProperties": false,
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "metadata": {
+                "type": "object"
+              }
+            },
+            "type": "object"
+          },
+          "type": "object"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  }
+}

@@ -1,0 +1,200 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_3",
+  "$defs": {
+    "linguist_details": {
+      "$ref": "#/$defs/modern_1"
+    },
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Details of Linguist run on one file",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "output": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/linguist_output"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "type": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "path",
+                "output",
+                "type"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^path$": true,
+                "^output$": true,
+                "^type$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Linguist output for one file",
+              "properties": {
+                "mime": {
+                  "type": "string"
+                },
+                "language": {
+                  "type": "string"
+                },
+                "sloc": {
+                  "type": "integer"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "lines": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "lines",
+                "sloc",
+                "type",
+                "language",
+                "mime"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^mime$": true,
+                "^type$": true,
+                "^lines$": true,
+                "^language$": true,
+                "^sloc$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_3": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Result of Linguist worker",
+              "properties": {
+                "schema": {
+                  "$ref": "#/$defs/modern_4"
+                },
+                "_release": {
+                  "type": "string",
+                  "description": "Unique release id in form of \"ecosystem:package:version\""
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "success",
+                    "error"
+                  ]
+                },
+                "details": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/linguist_details"
+                  }
+                },
+                "summary": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "status",
+                "details",
+                "summary"
+              ],
+              "title": "languages-v1-0-0"
+            },
+            {
+              "patternProperties": {
+                "^schema$": true,
+                "^_release$": true,
+                "^details$": true,
+                "^status$": true,
+                "^summary$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "linguist_output": {
+      "$ref": "#/$defs/modern_2"
+    },
+    "modern_4": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Name of the schema",
+                  "pattern": "^[a-zA-Z0-9_]+$"
+                },
+                "version": {
+                  "type": "string",
+                  "description": "Version of the schema",
+                  "pattern": "^[0-9]+-[0-9]+-[0-9]+$"
+                },
+                "url": {
+                  "type": "string",
+                  "description": "Full URL of the schema",
+                  "format": "uri"
+                }
+              },
+              "required": [
+                "name",
+                "version"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^name$": true,
+                "^version$": true,
+                "^url$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

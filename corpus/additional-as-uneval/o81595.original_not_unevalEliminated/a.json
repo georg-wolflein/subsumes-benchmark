@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "speaker": {
+                  "$ref": "#/$defs/modern_2"
+                }
+              },
+              "required": [
+                "speaker"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^speaker$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "modern_2": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "firstName": {
+                  "type": "string"
+                },
+                "rating": {
+                  "type": "number"
+                },
+                "postedSlides": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "firstName",
+                "lastName",
+                "email",
+                "postedSlides",
+                "rating",
+                "tags"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^lastName$": true,
+                "^firstName$": true,
+                "^postedSlides$": true,
+                "^rating$": true,
+                "^tags$": true,
+                "^email$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

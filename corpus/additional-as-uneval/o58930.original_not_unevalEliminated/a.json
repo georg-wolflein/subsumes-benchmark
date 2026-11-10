@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "description": "The JSON schema that matches a tag result.",
+              "properties": {
+                "artist": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "url": {
+                  "_format": "uri",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "artist",
+                "url"
+              ],
+              "title": "tag-result",
+              "type": "object"
+            },
+            {
+              "patternProperties": {
+                "^artist$": true,
+                "^name$": true,
+                "^url$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/modern_1",
+  "$defs": {
+    "modern_1": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "title": "Schemas for workflow section in main config file",
+              "type": "object",
+              "properties": {
+                "defaultTaskStartToCloseTimeout": {
+                  "description": "Max time from start to close for a task",
+                  "type": "integer",
+                  "minimum": 1.0,
+                  "maximum": 31536000.0
+                },
+                "name": {
+                  "description": "Workflow name",
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 64
+                },
+                "description": {
+                  "description": "Workflow description",
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                },
+                "domain": {
+                  "description": "SWF domain",
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 64,
+                  "pattern": "^[\\w\\.\\- ]+$"
+                },
+                "version": {
+                  "description": "Workflow version",
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 32,
+                  "pattern": "^[\\w\\.\\- ]+$"
+                },
+                "defaultExecutionStartToCloseTimeout": {
+                  "description": "Max time from start to close for a workflow",
+                  "type": "integer",
+                  "minimum": 1.0,
+                  "maximum": 31536000.0
+                },
+                "decisionTaskList": {
+                  "description": "Workflow decision tasklist",
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 64,
+                  "pattern": "^[\\w\\.\\- ]+$"
+                },
+                "defaultChildPolicy": {
+                  "description": "How to terminated children if workflow is terminated",
+                  "type": "string",
+                  "enum": [
+                    "TERMINATE",
+                    "REQUEST_CANCEL",
+                    "ABANDON"
+                  ]
+                }
+              },
+              "required": [
+                "domain",
+                "decisionTaskList",
+                "name",
+                "version",
+                "description",
+                "defaultExecutionStartToCloseTimeout",
+                "defaultTaskStartToCloseTimeout",
+                "defaultChildPolicy"
+              ]
+            },
+            {
+              "patternProperties": {
+                "^version$": true,
+                "^description$": true,
+                "^defaultExecutionStartToCloseTimeout$": true,
+                "^defaultChildPolicy$": true,
+                "^domain$": true,
+                "^defaultTaskStartToCloseTimeout$": true,
+                "^decisionTaskList$": true,
+                "^name$": true
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

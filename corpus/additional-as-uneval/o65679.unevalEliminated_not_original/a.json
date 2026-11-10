@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "openrtb-v2_1-schema-bid_response",
+  "description": "json schema for an openrtb v2.1 bid response (http://www.iab.net/media/file/OpenRTB-API-Specification-Version-2-1-FINAL.pdf)",
+  "type": "object",
+  "required": [
+    "id",
+    "seatbid"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "seatbid": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/seatbid"
+      }
+    },
+    "bidid": {
+      "type": "string"
+    },
+    "cur": {
+      "$ref": "#/$defs/currency"
+    },
+    "customdata": {
+      "type": "string"
+    },
+    "ext": {
+      "type": "object"
+    }
+  },
+  "$defs": {
+    "seatbid": {
+      "type": "object",
+      "required": [
+        "bid"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "bid": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/bid"
+          }
+        },
+        "seat": {
+          "type": "string"
+        },
+        "group": {
+          "$ref": "#/$defs/boolean_int"
+        },
+        "ext": {
+          "type": "object"
+        }
+      }
+    },
+    "bid": {
+      "type": "object",
+      "required": [
+        "id",
+        "impid",
+        "price"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "impid": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number",
+          "minimum": 0
+        },
+        "adid": {
+          "type": "string"
+        },
+        "nurl": {
+          "type": "string"
+        },
+        "adm": {
+          "type": "string"
+        },
+        "adomain": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "iurl": {
+          "type": "string"
+        },
+        "cid": {
+          "type": "string"
+        },
+        "crid": {
+          "type": "string"
+        },
+        "attr": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/creative_attribute"
+          }
+        },
+        "ext": {
+          "type": "object"
+        }
+      }
+    },
+    "creative_attribute": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 16
+    },
+    "boolean_int": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "currency": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 3,
+      "pattern": "[a-zA-Z]{3}"
+    }
+  }
+}

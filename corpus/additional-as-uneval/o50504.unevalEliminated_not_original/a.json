@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Schema for describing files within the filesystem.",
+  "type": "object",
+  "required": [
+    "name"
+  ],
+  "properties": {
+    "depth": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "stats": {
+      "$ref": "#/$defs/stats"
+    },
+    "name": {
+      "$ref": "#/$defs/name"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "stats": {
+      "size": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "mode": {
+        "type": "integer"
+      },
+      "write": {
+        "type": "boolean"
+      },
+      "_uid": {
+        "type": "integer"
+      },
+      "_gid": {
+        "type": "integer"
+      }
+    },
+    "name": {
+      "oldname": {
+        "type": "string"
+      },
+      "moniker": {
+        "type": "string"
+      }
+    }
+  }
+}
