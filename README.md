@@ -137,7 +137,7 @@ Both upstream sources list the narrower schema first, so `b.json` is upstream's 
 | `collections.toml` | The collections and the upstream dataset each is built from |
 | `overrides.toml` | Every departure from an upstream label, with the reason |
 | `sources/` | The upstream repositories as submodules, fetched only to rebuild |
-| `src/subsumes_benchmark/` | The build (`unfuse`, `convert`, `build`) and `archive`, which packs a release |
+| `src/subsumes_benchmark/` | The build: `unfuse`, `convert`, `build` |
 | `tests/` | The layout of the corpus, the validity of its schemas, the labels that can be checked |
 
 ## Rebuilding the corpus
@@ -168,7 +168,7 @@ uv version --bump minor   # or major or patch; commit the change to main
 make release              # tags that commit v<version> and pushes the tag
 ```
 
-The `Release` workflow then runs every check on the tagged commit, builds the archive and publishes the release. `make archive` builds the archive locally, as `dist/corpus.tar.zst`. Not every commit on `main` is released.
+The `Release` workflow then runs every check on the tagged commit, builds the archive and publishes the release. Not every commit on `main` is released.
 
 ## Credits and licences
 
