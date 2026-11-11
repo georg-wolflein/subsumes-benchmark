@@ -4,11 +4,13 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from subsumes_benchmark.build import case_name
+from subsumes_benchmark.build import Case, ConfigError, case_name, load_exclusions, without_excluded
 from subsumes_benchmark.convert import DRAFT_2020_12, ConversionError, Converter
 from subsumes_benchmark.unfuse import unfuse
 
 if TYPE_CHECKING:
+    from pathlib import Path
+
     from subsumes_benchmark import Json
 
 
@@ -113,3 +115,33 @@ def test_synthesized_file_names_become_paths() -> None:
         == "draft4/valid/boolean_schema/3"
     )
     assert case_name("agripparc-1.2_v2_not_v1") == "agripparc-1.2_v2_not_v1"
+
+
+def test_excluded_cases_are_left_out_and_must_exist() -> None:
+    cases = [
+        Case(id=case_id, a=True, b=True, a_subsumes_b=True, b_subsumes_a=None, upstream="x.json")
+        for case_id in ("one/a", "one/b")
+    ]
+    assert [case.id for case in without_excluded(cases, {"one/a": "broken"})] == ["one/b"]
+    assert without_excluded(cases, {}) == cases
+    with pytest.raises(ConfigError):
+        without_excluded(cases, {"one/c": "broken"})
+
+
+def test_exclusions_are_read_with_their_reason(tmp_path: Path) -> None:
+    file = tmp_path / "overrides.toml"
+    file.write_text(
+        '[[exclude]]\nreason = "broken"\ncases = ["one/a", "one/b"]\n'
+        '[[override]]\nnote = "corrected"\ncases = ["one/c"]\n',
+        encoding="utf-8",
+    )
+    assert load_exclusions(file) == {"one/a": "broken", "one/b": "broken"}
+
+    file.write_text(
+        '[[exclude]]\nreason = "broken"\ncases = ["one/a", "one/a"]\n', encoding="utf-8"
+    )
+    with pytest.raises(ConfigError):
+        load_exclusions(file)
+    file.write_text('[[exclude]]\nnote = "broken"\ncases = ["one/a"]\n', encoding="utf-8")
+    with pytest.raises(ConfigError):
+        load_exclusions(file)

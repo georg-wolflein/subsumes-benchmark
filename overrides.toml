@@ -1,9 +1,15 @@
-# Where the corpus departs from an upstream label, and why.
+# Where the corpus departs from upstream, and why.
+#
+# Each [[exclude]] lists upstream cases that the corpus leaves out, with the reason. A case is
+# left out when one of its schemas is not valid draft 2020-12 or does not resolve: such a pair
+# has no answer.
 #
 # Each [[override]] lists cases and the labels they get in place of upstream's. `a_subsumes_b`
 # and `b_subsumes_a` are true or false; a label that is left out is one the corpus does not
 # claim. The note says what is wrong with upstream's label and is copied into the case.json
-# of every case listed. A case may be listed only once.
+# of every case listed.
+#
+# A case may be listed only once.
 #
 # The labels hold for draft 2020-12 with format asserted and patterns read in the dialect of
 # the Rust regex crate. `make test-corpus` checks every label that can be checked by
@@ -11,25 +17,25 @@
 
 
 # ----------------------------------------------------------------------------
-# Schemas that are not valid draft 2020-12, or that do not resolve
+# Left out: schemas that are not valid draft 2020-12, or that do not resolve
 # ----------------------------------------------------------------------------
 
-[[override]]
-note = "The schemas are not valid draft 2020-12: they contain an empty oneOf."
+[[exclude]]
+reason = "The schemas are not valid draft 2020-12: they contain an empty oneOf."
 cases = [
   "additional-as-uneval/o47922.original_not_unevalEliminated",
   "additional-as-uneval/o47922.unevalEliminated_not_original",
 ]
 
-[[override]]
-note = "The schemas are not valid draft 2020-12: a type array lists \"array\" twice."
+[[exclude]]
+reason = "The schemas are not valid draft 2020-12: a type array lists \"array\" twice."
 cases = [
   "additional-as-uneval/o83092.original_not_unevalEliminated",
   "additional-as-uneval/o83092.unevalEliminated_not_original",
 ]
 
-[[override]]
-note = "The schemas do not resolve: upstream's generator renamed an embedded $id when it duplicated the schema, so a relative $ref points nowhere."
+[[exclude]]
+reason = "The schemas do not resolve: upstream's generator renamed an embedded $id when it duplicated the schema, so a relative $ref points nowhere."
 cases = [
   "containment-testsuite/universal/ref/16",
   "containment-testsuite/universal/ref/17",

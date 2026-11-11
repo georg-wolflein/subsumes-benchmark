@@ -1,7 +1,6 @@
 """Every schema of the corpus is valid draft 2020-12 and every reference in it resolves.
 
-The exceptions are upstream's own defects, which ``overrides.toml`` lists: those cases claim
-nothing.
+Upstream cases that are not are left out of the corpus; ``overrides.toml`` lists them.
 """
 
 from typing import TYPE_CHECKING
@@ -88,8 +87,7 @@ def test_schemas_are_valid_and_resolve(collection: str) -> None:
             for side, schema in (("a", case.a), ("b", case.b))
             for problem in problems_of(schema, f"urn:subsumes-benchmark:{case.id}:{side}")
         ]
-        # A defect is acceptable only where overrides.toml withdraws the label because of it.
-        if problems and not (case.note is not None and case.claims_nothing):
+        if problems:
             found[case.id] = problems
     assert found == {}
 
