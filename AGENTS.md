@@ -1,17 +1,19 @@
-This project holds a benchmark corpus for JSON Schema inclusion (does schema A accept every instance valid under schema B?) under `corpus/`, and the Python code that builds it from the upstream sources.
+This project is a benchmark corpus for JSON Schema inclusion checking (does schema A subsume schema B?) for draft 2020-12, plus the Python code that builds it.
 
 ## Tooling
 
-Everything runs through `uv`. `make ci` runs what CI runs on every change: `ruff check`, `ruff format --check`, `ty check`, `pytest`. `make test-corpus` runs the slow tests, which read every schema of the corpus and take about three minutes; CI runs them as a separate job. `make format` fixes what ruff can fix. Configuration lives in `pyproject.toml`; CI is `.github/workflows/ci.yml`.
+Everything runs through `uv`. `make ci` runs what CI runs on a pull request: `ruff check`, `ruff format --check`, `ty check`, `pytest`. `make format` fixes what ruff can fix. Configuration lives in `pyproject.toml`; CI is `.github/workflows/ci.yml` (tests on Python 3.13 and 3.14, plus a `corpus` job that runs the slow tests over every schema of the corpus; `make test-corpus` runs them locally in a few minutes).
 
 ## Rules
 
+- The built package must never contain benchmark data.
+- Commit messages and pull request titles follow the Conventional Commits format.
+- Pull requests are squash-merged, so the PR title becomes the commit message on `main`.
 - `corpus/` is generated; never edit it by hand. Change `collections.toml`, `overrides.toml` or the code under `src/`, then run `make corpus` (after `make sources`, once) and commit the result.
 - A label that departs from upstream's needs an entry in `overrides.toml` with the reason. Nothing else may change a label.
 - The labels hold for draft 2020-12 with `format` asserted and patterns read in the dialect of the Rust `regex` crate. Do not assume ECMA-262 patterns, and do not use Python's `re` to decide what a pattern matches; `tests/validation.py` has the matcher.
 - `a.json` is the schema that should accept everything and `b.json` the one whose instances must be accepted. Keep that orientation in every name: `a_subsumes_b`, `subsumes(a, b)`.
 - The build uses the standard library only. What only the tests need goes in the `dev` dependency group.
-- Commit messages follow the Conventional Commits format.
 
 ## Coding Conventions
 
