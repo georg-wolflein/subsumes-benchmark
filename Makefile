@@ -1,4 +1,4 @@
-.PHONY: ci lint format format-check typecheck test test-corpus sources corpus
+.PHONY: ci lint format format-check typecheck test test-corpus sources corpus archive release
 
 ci: lint format-check typecheck test  ## what CI runs on every change, without the slow corpus tests
 
@@ -27,3 +27,12 @@ sources:  ## fetch the upstream sources; they are opt-in submodules and only nee
 
 corpus:  ## rebuild corpus/ from the upstream sources
 	uv run python -m subsumes_benchmark
+
+archive:  ## pack corpus/ into dist/corpus.tar.zst, the file a release carries
+	uv run python -m subsumes_benchmark.archive
+
+release:  ## tag what is on main with the version in pyproject.toml and push the tag; CI publishes the release
+	git fetch --quiet origin main
+	test "$$(git rev-parse HEAD)" = "$$(git rev-parse origin/main)"
+	git tag "v$$(uv version --short)"
+	git push origin "v$$(uv version --short)"

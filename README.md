@@ -51,6 +51,23 @@ Run every case whose `a_subsumes_b` is not `null`, and `b_subsumes_a` likewise w
 
 Some schemas reference other documents. [`corpus/resources.json`](corpus/resources.json) maps each URL to its document; register all of them before checking. The URLs are `http://localhost:1234/...` for the test suite's remotes and `https://raw.githubusercontent.com/...` for the documents that `rb-testset` uses.
 
+## Releases
+
+A release is a tag `v<version>` that carries one file, `corpus.tar.zst`: the `corpus/` folder as a tar archive compressed with Zstandard, about 4 MB.
+
+```bash
+curl -fsSLO https://github.com/georg-wolflein/subsumes-benchmark/releases/download/v0.1.0/corpus.tar.zst
+zstd -dc corpus.tar.zst | tar -xf -   # unpacks into corpus/
+```
+
+The release notes give the SHA-256 of the file. The version says what a change means for someone who measures a checker:
+
+- **Major**: A reader has to change, because the layout, the fields of `case.json`, the form of the case ids or the semantics of the labels changed.
+- **Minor**: Results are no longer comparable, because cases were added or removed, or a label or a schema changed.
+- **Patch**: Anything else, such as notes, descriptions, documentation and code.
+
+Results measured on two versions are comparable exactly when their major and minor numbers match. Before 1.0.0, a minor version may also bring what a major version would.
+
 ## Collections
 
 | Collection | Cases | A subsumes B: true / false / unknown | Labels from | Content |
@@ -120,7 +137,7 @@ Both upstream sources list the narrower schema first, so `b.json` is upstream's 
 | `collections.toml` | The collections and the upstream dataset each is built from |
 | `overrides.toml` | Every departure from an upstream label, with the reason |
 | `sources/` | The upstream repositories as submodules, fetched only to rebuild |
-| `src/subsumes_benchmark/` | The build: `unfuse`, `convert`, `build` |
+| `src/subsumes_benchmark/` | The build (`unfuse`, `convert`, `build`) and `archive`, which packs a release |
 | `tests/` | The layout of the corpus, the validity of its schemas, the labels that can be checked |
 
 ## Rebuilding the corpus
@@ -143,6 +160,15 @@ make format        # apply ruff's fixes and formatting
 ```
 
 CI runs both on every push and pull request. The slow tests check that every schema is valid draft 2020-12, that every reference resolves, and that every label that validation can check holds.
+
+To publish a release:
+
+```bash
+uv version --bump minor   # or major or patch; commit the change to main
+make release              # tags that commit v<version> and pushes the tag
+```
+
+The `Release` workflow then runs every check on the tagged commit, builds the archive and publishes the release. `make archive` builds the archive locally, as `dist/corpus.tar.zst`. Not every commit on `main` is released.
 
 ## Credits and licences
 
