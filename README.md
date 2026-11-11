@@ -161,11 +161,13 @@ make format        # apply ruff's fixes and formatting
 
 CI runs both on every push and pull request. The slow tests check that every schema is valid draft 2020-12, that every reference resolves, and that every label that validation can check holds.
 
+`main` only takes pull requests. A pull request needs these checks and a title in the [Conventional Commits](https://www.conventionalcommits.org) format, and it is squash-merged.
+
 To publish a release:
 
 ```bash
-uv version --bump minor   # or major or patch; commit the change to main
-make release              # tags that commit v<version> and pushes the tag
+uv version --bump minor   # or major or patch; merge the change through a pull request
+make release              # on the merged main: tags it v<version> and pushes the tag
 ```
 
 The `Release` workflow then runs every check on the tagged commit, builds the archive and publishes the release. Not every commit on `main` is released.

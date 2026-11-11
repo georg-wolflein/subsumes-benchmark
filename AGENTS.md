@@ -2,11 +2,12 @@ This project is a benchmark corpus for JSON Schema inclusion checking (does sche
 
 ## Tooling
 
-Everything runs through `uv`. `make ci` runs what CI runs on a pull request: `ruff check`, `ruff format --check`, `ty check`, `pytest`. `make format` fixes what ruff can fix. Configuration lives in `pyproject.toml`; CI is `.github/workflows/ci.yml` (tests on Python 3.14, plus a `corpus` job that runs the slow tests over every schema of the corpus; `make test-corpus` runs them locally in a few minutes). `.github/workflows/release.yml` publishes a release when `make release` pushes a `v<version>` tag.
+Everything runs through `uv`. `make ci` runs what CI runs on a pull request: `ruff check`, `ruff format --check`, `ty check`, `pytest`. `make format` fixes what ruff can fix. Configuration lives in `pyproject.toml`; CI is `.github/workflows/ci.yml` (tests on Python 3.14, plus a `corpus` job that runs the slow tests over every schema of the corpus; `make test-corpus` runs them locally in a few minutes). `.github/workflows/release.yml` publishes a release when `make release` pushes a `v<version>` tag. `.github/workflows/pr-title.yml` checks the title of every pull request.
 
 ## Rules
 
 - The built package must never contain benchmark data.
+- Every change reaches `main` through a pull request; a ruleset rejects a direct push.
 - Commit messages and pull request titles follow the Conventional Commits format.
 - Pull requests are squash-merged, so the PR title becomes the commit message on `main`.
 - `corpus/` is generated; never edit it by hand. Change `collections.toml`, `overrides.toml` or the code under `src/`, then run `make corpus` (after `make sources`, once) and commit the result.
