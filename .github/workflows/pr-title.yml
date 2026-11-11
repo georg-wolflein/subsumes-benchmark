@@ -1,0 +1,24 @@
+name: PR title
+
+# A pull request is squash-merged with its title as the commit message, so the title is what
+# ends up on main. It has to follow Conventional Commits: https://www.conventionalcommits.org
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+permissions: {}
+
+jobs:
+  pr-title:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check that the title follows Conventional Commits
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          printf 'Title: %s\n' "$TITLE"
+          pattern='^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\([^()]+\))?!?: [^ ].*$'
+          if ! printf '%s\n' "$TITLE" | grep --quiet --extended-regexp "$pattern"; then
+            echo '::error::The title must be "<type>: <summary>" or "<type>(<scope>): <summary>", where <type> is one of build, chore, ci, docs, feat, fix, perf, refactor, revert, style, test.'
+            exit 1
+          fi
