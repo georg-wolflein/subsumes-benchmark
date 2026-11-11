@@ -4,8 +4,6 @@ The exceptions are upstream's own defects, which ``overrides.toml`` lists: those
 nothing.
 """
 
-from __future__ import annotations
-
 from typing import TYPE_CHECKING
 
 import pytest

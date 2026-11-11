@@ -22,7 +22,7 @@ jobs:
       - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
         id: setup
         with:
-          python-version: "3.13"
+          python-version: "3.14"
           enable-cache: true
       - name: Check that the lockfile is current
         run: uv lock --check
@@ -41,15 +41,11 @@ jobs:
   # The quick tests: the build's transformations and the layout of the committed corpus.
   tests:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.13", "3.14"]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: "3.14"
           enable-cache: true
       - run: uv sync --all-groups
       - run: uv run pytest
@@ -63,7 +59,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
         with:
-          python-version: "3.13"
+          python-version: "3.14"
           enable-cache: true
       - run: uv sync --all-groups
       - run: uv run pytest -m slow

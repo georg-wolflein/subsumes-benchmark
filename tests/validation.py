@@ -10,8 +10,6 @@ a trailing newline, for one.
 leap seconds and e-mail addresses, so the tests that validate skip the schemas that use it.
 """
 
-from __future__ import annotations
-
 from functools import cache
 from typing import TYPE_CHECKING, Protocol
 

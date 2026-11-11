@@ -1,7 +1,5 @@
 """Converting a schema written for an older draft to draft 2020-12."""
 
-from __future__ import annotations
-
 import re
 from typing import TYPE_CHECKING
 from urllib.parse import unquote, urldefrag, urljoin

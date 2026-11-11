@@ -1,7 +1,5 @@
 r"""The validator the tests use reads patterns in the Rust regex dialect."""
 
-from __future__ import annotations
-
 from typing import TYPE_CHECKING
 
 from validation import is_valid, pattern_error, search

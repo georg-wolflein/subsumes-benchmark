@@ -21,8 +21,6 @@ lists the cases whose label departs from upstream's. Run from the repository roo
     make corpus
 """
 
-from __future__ import annotations
-
 import argparse
 import hashlib
 import json
@@ -443,7 +441,7 @@ def build(out: Path, collections_file: Path, overrides_file: Path) -> None:
     for name, path in licenses.items():
         target = out / "licenses" / f"{name}.txt"
         target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(path, target)
+        path.copy(target)
 
     print(f"\n{'collection':24s} {'cases':>6s} {'true':>6s} {'false':>6s} {'null':>6s}")
     by_id = {case.id: case for case in final}

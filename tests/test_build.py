@@ -1,7 +1,5 @@
 """The two transformations of the build: splitting a fused test and converting to 2020-12."""
 
-from __future__ import annotations
-
 from typing import TYPE_CHECKING
 
 import pytest

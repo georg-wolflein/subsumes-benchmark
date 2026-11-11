@@ -5,8 +5,6 @@ them is valid under ``a.json``. That checks the label without an inclusion check
 patterns matched in the Rust regex dialect.
 """
 
-from __future__ import annotations
-
 from typing import TYPE_CHECKING
 
 import pytest

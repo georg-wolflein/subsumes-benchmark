@@ -1,7 +1,5 @@
 """Reading the committed corpus, for the tests."""
 
-from __future__ import annotations
-
 import json
 from dataclasses import dataclass
 from functools import cache

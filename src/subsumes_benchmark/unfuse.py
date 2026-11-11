@@ -9,8 +9,6 @@ definition so that none is unreachable. This is the inverse of
 ``SchemaProcessorLib.combineSchemas`` in the artifact's Scala source.
 """
 
-from __future__ import annotations
-
 import re
 from typing import TYPE_CHECKING
 
