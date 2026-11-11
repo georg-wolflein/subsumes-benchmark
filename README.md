@@ -161,8 +161,6 @@ make format        # apply ruff's fixes and formatting
 
 CI runs both on every push and pull request. The slow tests check that every schema is valid draft 2020-12, that every reference resolves, and that every label that validation can check holds.
 
-`main` only takes pull requests. A pull request needs these checks and a title in the [Conventional Commits](https://www.conventionalcommits.org) format, and it is squash-merged.
-
 To publish a release:
 
 ```bash
