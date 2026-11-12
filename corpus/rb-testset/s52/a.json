@@ -184,5 +184,414 @@
     "additional_properties": {
       "$ref": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_additional_properties.json#"
     }
+  },
+  "$defs": {
+    "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_additional_properties.json": {
+      "$id": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_additional_properties.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Has additional properties",
+      "description": "A grab-bag object for non-validatable data.",
+      "type": "object",
+      "additionalProperties": {}
+    },
+    "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_alignment.json": {
+      "$id": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_alignment.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Alignment",
+      "type": "string",
+      "description": "A property used to determine horizontal positioning of a content element relative to the elements that immediately follow it in the element sequence.",
+      "enum": [
+        "left",
+        "right",
+        "center"
+      ]
+    },
+    "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_channel.json": {
+      "$id": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_channel.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Channel trait",
+      "description": "An optional list of output types for which this element should be visible",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_id.json": {
+      "$id": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_id.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Globally Unique ID trait",
+      "description": "A globally unique identifier of the content in the ANS repository.",
+      "type": "string"
+    },
+    "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_slug.json": {
+      "$id": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_slug.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Slug",
+      "description": "A short reference name for internal editorial use",
+      "type": "string"
+    },
+    "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_subtype.json": {
+      "$id": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_subtype.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Subtype trait",
+      "type": "string",
+      "description": "A more granular type than story, gallery, etc. (E.g., column, blog_post)"
+    },
+    "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_version.json": {
+      "$id": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_version.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Describes the ANS version of this object",
+      "description": "The version of ANS that this object was serialized as, in major.minor.patch format.  For top-level content objects, this is a required trait.",
+      "type": "string",
+      "enum": [
+        "0.7.1"
+      ]
+    },
+    "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_website.json": {
+      "$id": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_website.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Website",
+      "description": "The _id of the website on which this document exists. This field is only available in Content API. If different from canonical_website, then this document was originally sourced from the canonical_website. Generated at fetch time by Content API.",
+      "type": "string"
+    },
+    "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/utils/auxiliary.json": {
+      "$id": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/utils/auxiliary.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Auxiliary",
+      "description": "Models a auxiliary used in targeting a piece of content.",
+      "type": "object",
+      "required": [
+        "_id",
+        "uid"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "_id": {
+          "type": "string",
+          "description": "The unique identifier for this auxiliary."
+        },
+        "name": {
+          "type": "string",
+          "description": "The general name for this auxiliary."
+        },
+        "uid": {
+          "type": "string",
+          "description": "A short identifier for this auxiliary. Usually used in cases where a long form id cannot work."
+        }
+      }
+    },
+    "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/utils/keyword.json": {
+      "$id": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/utils/keyword.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Keyword",
+      "description": "Models a keyword used in describing a piece of content.",
+      "type": "object",
+      "required": [
+        "keyword",
+        "score"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "keyword": {
+          "type": "string",
+          "description": "The keyword used to describe a piece of content"
+        },
+        "score": {
+          "type": "number",
+          "description": "An arbitrary weighting to give the keyword"
+        },
+        "tag": {
+          "type": "string",
+          "description": "The Part of Speech tag for this keyword."
+        },
+        "frequency": {
+          "type": "integer",
+          "description": "An optional count of the frequency of the keyword as it appears in the content it describes"
+        }
+      }
+    },
+    "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/utils/named_entity.json": {
+      "$id": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/utils/named_entity.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Named Entity",
+      "description": "Models a named entity (i.e. name of a person, place, or organization) used in a piece of content.",
+      "type": "object",
+      "required": [
+        "_id",
+        "name",
+        "type"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "_id": {
+          "type": "string",
+          "description": "A unique identifier for the concept of the named entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The actual string of text that was identified as a named entity."
+        },
+        "type": {
+          "type": "string",
+          "description": "A description of what the named entity is. E.g. 'organization', 'person', or 'location'."
+        },
+        "score": {
+          "type": "number",
+          "decription": "An optional relevancy for this named entitiy."
+        }
+      }
+    },
+    "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/utils/reference.json": {
+      "$id": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/utils/reference.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Representation of a normalized element",
+      "description": "This represents a reference to external content that should be denormalized",
+      "additionalProperties": false,
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "reference"
+          ]
+        },
+        "additional_properties": {
+          "$ref": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_additional_properties.json#"
+        },
+        "_id": {
+          "$ref": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_id.json#"
+        },
+        "subtype": {
+          "$ref": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_subtype.json#"
+        },
+        "channels": {
+          "$ref": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_channel.json#"
+        },
+        "alignment": {
+          "$ref": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_alignment.json#"
+        },
+        "referent": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "description": "The ANS type that the provider should return.",
+              "type": "string"
+            },
+            "service": {
+              "description": "The type of interaction the provider expects. E.g., 'oembed'",
+              "type": "string"
+            },
+            "id": {
+              "description": "The id passed to the provider to retrieve an ANS document",
+              "type": "string"
+            },
+            "provider": {
+              "description": "A URL that can resolve the id into an ANS element",
+              "type": "string"
+            },
+            "website": {
+              "description": "The website which the referenced id belongs to. Currently supported only for sections.",
+              "type": "string"
+            },
+            "referent_properties": {
+              "additionalProperties": {},
+              "description": "An object for key-value pairs that should override the values of keys with the same name in the denormalized object",
+              "type": "object"
+            }
+          },
+          "dependentSchemas": {
+            "website": {
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "section"
+                  ]
+                }
+              }
+            }
+          },
+          "required": [
+            "id"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "referent"
+      ]
+    },
+    "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/utils/section.json": {
+      "$id": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/utils/section.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Section",
+      "description": "A hierarchical section in a taxonomy. In the Arc ecosystem, these are stored in the arc-site-service.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "section"
+          ]
+        },
+        "_id": {
+          "$ref": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_id.json#"
+        },
+        "_website": {
+          "$ref": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_website.json#"
+        },
+        "version": {
+          "$ref": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_version.json#"
+        },
+        "additional_properties": {
+          "$ref": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_additional_properties.json#"
+        },
+        "name": {
+          "description": "The name of this site",
+          "type": "string"
+        },
+        "description": {
+          "description": "A short description or tagline about this site",
+          "type": "string"
+        },
+        "path": {
+          "description": "The url path to this site",
+          "type": "string"
+        },
+        "parent_id": {
+          "description": "The id of this section's parent section in the default hierarchy, if any.",
+          "type": "string"
+        },
+        "parent": {
+          "description": "The id of this section's parent section in various commonly-used hierarchies, where available.",
+          "type": "object",
+          "properties": {
+            "default": {
+              "type": "string"
+            }
+          }
+        },
+        "primary": {
+          "description": "Is this the primary site?",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "type",
+        "version",
+        "name"
+      ]
+    },
+    "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/utils/site.json": {
+      "$id": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/utils/site.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Site",
+      "description": "A hierarchical section or 'site' in a taxonomy. In the Arc ecosystem, these are stored in the arc-site-service.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "site"
+          ]
+        },
+        "_id": {
+          "$ref": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_id.json#"
+        },
+        "version": {
+          "$ref": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_version.json#"
+        },
+        "additional_properties": {
+          "$ref": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_additional_properties.json#"
+        },
+        "name": {
+          "description": "The name of this site",
+          "type": "string"
+        },
+        "description": {
+          "description": "A short description or tagline about this site",
+          "type": "string"
+        },
+        "path": {
+          "description": "The url path to this site",
+          "type": "string"
+        },
+        "parent_id": {
+          "description": "The id of this section's parent site, if any",
+          "type": "string"
+        },
+        "primary": {
+          "description": "Is this the primary site?",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "type",
+        "version",
+        "name"
+      ]
+    },
+    "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/utils/tag.json": {
+      "$id": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/utils/tag.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Tag",
+      "description": "Models a keyword used in describing a piece of content.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "_id": {
+          "$ref": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_id.json#"
+        },
+        "text": {
+          "type": "string",
+          "description": "The text of the tag as displayed to users."
+        },
+        "description": {
+          "type": "string",
+          "description": "A more detailed description of the tag."
+        },
+        "additional_properties": {
+          "$ref": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_additional_properties.json#"
+        },
+        "slug": {
+          "$ref": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/traits/trait_slug.json#"
+        }
+      },
+      "required": [
+        "text"
+      ]
+    },
+    "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/utils/topic.json": {
+      "$id": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.7.1/utils/topic.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Topic",
+      "description": "Models a topic used in describing a piece of content.",
+      "type": "object",
+      "required": [
+        "_id",
+        "score",
+        "uid"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "_id": {
+          "type": "string",
+          "description": "The unique identifier for this topic."
+        },
+        "name": {
+          "type": "string",
+          "description": "The general name for this topic."
+        },
+        "score": {
+          "type": "number",
+          "description": "An arbitrary weighting to give the topic"
+        },
+        "uid": {
+          "type": "string",
+          "description": "A short identifier for this topic. Usually used in cases where a long form id cannot work."
+        }
+      }
+    }
   }
 }

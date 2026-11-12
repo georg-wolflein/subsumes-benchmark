@@ -16,9 +16,8 @@ from typing import TYPE_CHECKING, Protocol
 from jsonschema import Draft202012Validator
 from jsonschema.exceptions import ValidationError
 from jsonschema.validators import extend
+from jsonschema_specifications import REGISTRY as METASCHEMAS
 from pydantic_core import SchemaError, SchemaValidator, core_schema
-
-from reading import registry
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -172,8 +171,8 @@ _Validator = extend(
 
 
 def validator(schema: Json) -> Validator:
-    """A validator for the schema, with the corpus's external documents registered."""
-    return _Validator(schema, registry=registry())
+    """A validator for the schema. Nothing is fetched: a schema of the corpus needs no document."""
+    return _Validator(schema, registry=METASCHEMAS)
 
 
 def is_valid(instance: Json, schema: Json) -> bool:

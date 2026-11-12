@@ -12,5 +12,133 @@
     {
       "$ref": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.10.0/story_elements/text.json#"
     }
-  ]
+  ],
+  "$defs": {
+    "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.10.0/story_elements/list.json": {
+      "$id": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.10.0/story_elements/list.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "A list.",
+      "description": " list of text items or other lists",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "list"
+          ]
+        },
+        "_id": {
+          "$ref": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.10.0/traits/trait_id.json#"
+        },
+        "subtype": {
+          "$ref": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.10.0/traits/trait_subtype.json#"
+        },
+        "channels": {
+          "$ref": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.10.0/traits/trait_channel.json#"
+        },
+        "alignment": {
+          "$ref": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.10.0/traits/trait_alignment.json#"
+        },
+        "additional_properties": {
+          "$ref": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.10.0/traits/trait_additional_properties.json#"
+        },
+        "list_type": {
+          "type": "string",
+          "description": "The type of list to render as (ordered, unordered, etc)"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.10.0/story_elements/list_element.json#"
+          },
+          "description": "The items in this list."
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.10.0/story_elements/text.json": {
+      "$id": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.10.0/story_elements/text.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "description": "A textual content element",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "text"
+          ]
+        },
+        "_id": {
+          "$ref": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.10.0/traits/trait_id.json#"
+        },
+        "subtype": {
+          "$ref": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.10.0/traits/trait_subtype.json#"
+        },
+        "channels": {
+          "$ref": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.10.0/traits/trait_channel.json#"
+        },
+        "alignment": {
+          "$ref": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.10.0/traits/trait_alignment.json#"
+        },
+        "additional_properties": {
+          "$ref": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.10.0/traits/trait_additional_properties.json#"
+        },
+        "content": {
+          "description": "The text of the paragraph.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "content"
+      ]
+    },
+    "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.10.0/traits/trait_additional_properties.json": {
+      "$id": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.10.0/traits/trait_additional_properties.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Has additional properties",
+      "description": "A grab-bag object for non-validatable data.",
+      "type": "object",
+      "additionalProperties": {}
+    },
+    "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.10.0/traits/trait_alignment.json": {
+      "$id": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.10.0/traits/trait_alignment.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Alignment",
+      "type": "string",
+      "description": "A property used to determine horizontal positioning of a content element relative to the elements that immediately follow it in the element sequence.",
+      "enum": [
+        "left",
+        "right",
+        "center"
+      ]
+    },
+    "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.10.0/traits/trait_channel.json": {
+      "$id": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.10.0/traits/trait_channel.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Channel trait",
+      "description": "An optional list of output types for which this element should be visible",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.10.0/traits/trait_id.json": {
+      "$id": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.10.0/traits/trait_id.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Globally Unique ID trait",
+      "description": "A globally unique identifier of the content in the ANS repository.",
+      "type": "string"
+    },
+    "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.10.0/traits/trait_subtype.json": {
+      "$id": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.10.0/traits/trait_subtype.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Subtype or Template",
+      "type": "string",
+      "description": "A user-defined categorization method to supplement type. In Arc, this field is reserved for organization-defined purposes, such as selecting the PageBuilder template that should be used to render a document."
+    }
+  }
 }

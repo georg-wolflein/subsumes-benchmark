@@ -4,7 +4,14 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from subsumes_benchmark.build import Case, ConfigError, case_name, load_exclusions, without_excluded
+from subsumes_benchmark.build import (
+    Case,
+    ConfigError,
+    bundled,
+    case_name,
+    load_exclusions,
+    without_excluded,
+)
 from subsumes_benchmark.convert import DRAFT_2020_12, ConversionError, Converter
 from subsumes_benchmark.unfuse import unfuse
 
@@ -188,3 +195,68 @@ def test_unfuse_follows_references_under_names_that_read_like_keywords() -> None
         {"properties": {"const": {"$ref": "#/properties/q"}, "q": {}}},
         set(),
     )
+
+
+DOCUMENTS: dict[str, Json] = {
+    "https://example.com/name.json": {"$id": "https://example.com/name.json", "type": "string"},
+    "https://example.com/person.json": {
+        "$id": "https://example.com/person.json",
+        "properties": {
+            "name": {"$ref": "name.json"},
+            "friend": {"$ref": "team.json#/$defs/member"},
+        },
+    },
+    "https://example.com/team.json": {
+        "$id": "https://example.com/team.json",
+        "$defs": {"member": {"$ref": "person.json"}},
+    },
+    "https://example.com/unused.json": {"$id": "https://example.com/unused.json"},
+}
+
+
+def test_a_schema_carries_every_document_it_reaches() -> None:
+    schema: Json = {
+        "$id": "https://example.com/root.json",
+        "items": {"$ref": "person.json"},
+        "$defs": {"local": {"type": "null"}},
+    }
+    assert bundled(schema, DOCUMENTS) == {
+        "$id": "https://example.com/root.json",
+        "items": {"$ref": "person.json"},
+        "$defs": {
+            "local": {"type": "null"},
+            "https://example.com/name.json": DOCUMENTS["https://example.com/name.json"],
+            "https://example.com/person.json": DOCUMENTS["https://example.com/person.json"],
+            "https://example.com/team.json": DOCUMENTS["https://example.com/team.json"],
+        },
+    }
+    # The schema given is not changed.
+    assert schema["$defs"] == {"local": {"type": "null"}}
+
+
+def test_a_schema_that_references_no_document_stays_as_it_is() -> None:
+    schemas: list[Json] = [
+        True,
+        {"$ref": "#/$defs/a", "$defs": {"a": {}}},
+        {"$ref": "https://other.example/x"},
+    ]
+    for schema in schemas:
+        assert bundled(schema, DOCUMENTS) is schema
+
+
+def test_the_url_of_the_schema_itself_is_the_schema() -> None:
+    # Two versions of a document are compared under one URL, and a document that both reach
+    # refers back to that URL. The reference is to the version at hand, which is not embedded.
+    schema: Json = {
+        "$id": "https://example.com/person.json",
+        "properties": {"friend": {"$ref": "team.json#/$defs/member"}},
+    }
+    assert bundled(schema, DOCUMENTS) == schema | {
+        "$defs": {"https://example.com/team.json": DOCUMENTS["https://example.com/team.json"]}
+    }
+
+
+def test_a_document_must_carry_its_url() -> None:
+    documents: dict[str, Json] = {"https://example.com/a.json": {"type": "string"}}
+    with pytest.raises(ConversionError):
+        bundled({"$ref": "https://example.com/a.json"}, documents)

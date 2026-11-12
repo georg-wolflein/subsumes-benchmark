@@ -1,16 +1,19 @@
 """Every schema of the corpus is valid draft 2020-12 and every reference in it resolves.
 
-Upstream cases that are not are left out of the corpus; ``overrides.toml`` lists them.
+A reference resolves inside its schema or to a metaschema of the draft: no schema needs another
+document. Upstream cases that are not valid are left out of the corpus; ``overrides.toml`` lists
+them.
 """
 
 from typing import TYPE_CHECKING
 
 import pytest
 from jsonschema import Draft202012Validator
+from jsonschema_specifications import REGISTRY as METASCHEMAS
 from referencing import Resource
 from referencing.jsonschema import DRAFT202012
 
-from reading import cases, nested, registry, resources
+from reading import cases, nested
 
 if TYPE_CHECKING:
     from referencing._core import Resolver
@@ -70,7 +73,7 @@ def problems_of(schema: Json, uri: str) -> list[str]:
     identifier = schema.get("$id")
     base = identifier if isinstance(identifier, str) else uri
     resource = Resource.from_contents(schema, default_specification=DRAFT202012)
-    resolver = registry().with_resource(base, resource).resolver(base_uri=base)
+    resolver = METASCHEMAS.with_resource(base, resource).resolver(base_uri=base)
     return problems + unresolved(schema, resolver, set())
 
 
@@ -89,9 +92,3 @@ def test_schemas_are_valid_and_resolve(collection: str) -> None:
         if problems:
             found[case.id] = problems
     assert found == {}
-
-
-@pytest.mark.slow
-def test_external_documents_are_valid_and_resolve() -> None:
-    found = {url: problems_of(document, url) for url, document in resources().items()}
-    assert {url: problems for url, problems in found.items() if problems} == {}
