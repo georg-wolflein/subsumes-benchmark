@@ -2,7 +2,7 @@
 
 A benchmark corpus for JSON Schema inclusion: **does schema A accept every instance valid under schema B?**
 
-It holds 14,614 pairs of draft 2020-12 schemas, most of them with a known answer. They come from the two public benchmarks for this problem, converted to draft 2020-12 where they were not already, and are stored as one folder per case. The corpus is what [`subsumes`](https://github.com/georg-wolflein/subsumes) is measured against, but nothing in it depends on that library.
+It holds 14,606 pairs of draft 2020-12 schemas, most of them with a known answer. They come from the two public benchmarks for this problem, converted to draft 2020-12 where they were not already, and are stored as one folder per case. The corpus is what [`subsumes`](https://github.com/georg-wolflein/subsumes) is measured against, but nothing in it depends on that library.
 
 ## A case
 
@@ -72,7 +72,7 @@ Results measured on two versions are comparable exactly when their major and min
 
 | Collection | Cases | A subsumes B: true / false / unknown | Labels from | Content |
 | --- | --- | --- | --- | --- |
-| `containment-testsuite` | 3,343 | 1,870 / 1,374 / 99 | construction | The Passau containment test suite for draft 2020-12 |
+| `containment-testsuite` | 3,339 | 1,870 / 1,374 / 95 | construction | The Passau containment test suite for draft 2020-12 |
 | `synthesized` | 1,331 | 881 / 450 / 0 | construction | The same generator for drafts 4, 6 and 2019-09, converted |
 | `handwritten-sc` | 282 | 160 / 122 / 0 | construction | Hand-written hard cases |
 | `rb-testset` | 300 | 107 / 189 / 4 | upstream tests | The tests of the jsonsubschema tool, with external references |
@@ -80,7 +80,7 @@ Results measured on two versions are comparable exactly when their major and min
 | `schemastore-versions` | 1,056 | 0 / 153 / 903 | witness generator | Successive versions of real schemas |
 | `oneof-as-anyof` | 1,822 | 0 / 146 / 1,676 | witness generator | Is `oneOf` used where `anyOf` would be equivalent? |
 | `uneval-as-additional` | 608 | 0 / 179 / 429 | witness generator | `unevaluated*` against a translation to `additional*` |
-| `additional-as-uneval` | 5,698 | 5,413 / 139 / 146 | witness generator | `additional*` against a rewriting through `unevaluated*` |
+| `additional-as-uneval` | 5,694 | 5,413 / 139 / 142 | witness generator | `additional*` against a rewriting through `unevaluated*` |
 
 Each collection folder has a `collection.json` with its description, the source repository and commit, the licence, and where its labels come from:
 
@@ -101,11 +101,12 @@ The path of a case in `containment-testsuite` is `<category>/<keyword>/<number>`
 
 ## Departures from upstream
 
-[`overrides.toml`](overrides.toml) lists every case whose labels differ from upstream's, with the reason, which is copied into the case's `note`. There are 171 such cases:
+The corpus leaves out eight upstream cases, because a schema in them is not valid draft 2020-12 or a reference in it does not resolve. Every schema that is in the corpus is therefore valid, and every reference in it resolves. [`overrides.toml`](overrides.toml) lists the eight with the reason.
+
+The same file lists every case whose labels differ from upstream's, with the reason, which is copied into the case's `note`. There are 163 such cases:
 
 | Reason | Cases | What the corpus does |
 | --- | --- | --- |
-| A schema is not valid draft 2020-12, or a reference in it does not resolve | 8 | Claims nothing |
 | A pattern is not valid in the Rust regex dialect | 50 | Claims nothing |
 | Upstream's label does not hold | 32 | Corrects 4, claims nothing for 28 |
 | Upstream's label holds only if `format` is an annotation | 63 | Claims nothing |
@@ -135,7 +136,7 @@ Both upstream sources list the narrower schema first, so `b.json` is upstream's 
 | --- | --- |
 | `corpus/` | The corpus: generated, committed, never edited by hand |
 | `collections.toml` | The collections and the upstream dataset each is built from |
-| `overrides.toml` | Every departure from an upstream label, with the reason |
+| `overrides.toml` | Every departure from upstream, with the reason: the cases left out and the labels changed |
 | `sources/` | The upstream repositories as submodules, fetched only to rebuild |
 | `src/subsumes_benchmark/` | The build: `unfuse`, `convert`, `build` |
 | `tests/` | The layout of the corpus, the validity of its schemas, the labels that can be checked |

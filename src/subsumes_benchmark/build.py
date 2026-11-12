@@ -15,7 +15,8 @@ every instance valid under ``b.json``. Both upstream sources list the narrower s
 so ``b.json`` is upstream's first schema and ``a.json`` its second.
 
 ``collections.toml`` names the collections and where each comes from; ``overrides.toml``
-lists the cases whose label departs from upstream's. Run from the repository root::
+lists the cases that are left out and the cases whose label departs from upstream's. Run from
+the repository root::
 
     make sources   # once: check out the upstream submodules
     make corpus
@@ -226,6 +227,20 @@ def load_overrides(path: Path) -> dict[str, Override]:
     return overrides
 
 
+def load_exclusions(path: Path) -> dict[str, str]:
+    """The reason of every case ``overrides.toml`` leaves out, by case id."""
+    exclusions: dict[str, str] = {}
+    for entry in tomllib.loads(path.read_text(encoding="utf-8")).get("exclude", []):
+        unknown = entry.keys() - {"reason", "cases"}
+        if unknown:
+            raise ConfigError(f"{path}: unknown keys {sorted(unknown)}")
+        for case_id in entry["cases"]:
+            if case_id in exclusions:
+                raise ConfigError(f"{path}: {case_id} is listed twice")
+            exclusions[case_id] = entry["reason"]
+    return exclusions
+
+
 # --------------------------------------------------------------------------- the containment suite
 
 
@@ -378,6 +393,13 @@ def write_case(out: Path, case: Case) -> None:
     write_json(folder / "case.json", case.metadata)
 
 
+def without_excluded(cases: Sequence[Case], exclusions: Mapping[str, str]) -> list[Case]:
+    """The cases that ``overrides.toml`` does not leave out."""
+    if missing := sorted(exclusions.keys() - {case.id for case in cases}):
+        raise ConfigError(f"overrides.toml excludes cases that do not exist: {missing}")
+    return [case for case in cases if case.id not in exclusions]
+
+
 def overridden(cases: Sequence[Case], overrides: Mapping[str, Override]) -> list[Case]:
     """The cases with the labels and notes of their overrides."""
     ids = Counter(case.id for case in cases)
@@ -401,6 +423,9 @@ def overridden(cases: Sequence[Case], overrides: Mapping[str, Override]) -> list
 def build(out: Path, collections_file: Path, overrides_file: Path) -> None:
     collections = load_collections(collections_file)
     overrides = load_overrides(overrides_file)
+    exclusions = load_exclusions(overrides_file)
+    if both := sorted(overrides.keys() & exclusions.keys()):
+        raise ConfigError(f"{overrides_file}: excluded and overridden at once: {both}")
     sources = {c.source.name: c.source for c in collections}
     artifact = [c for c in collections if c.source.name == "inclusion-artifact"]
 
@@ -422,7 +447,8 @@ def build(out: Path, collections_file: Path, overrides_file: Path) -> None:
                 )
             case other:
                 raise ConfigError(f"no reader for source {other}")
-    final = overridden([case for group in cases.values() for case in group], overrides)
+    upstream = [case for group in cases.values() for case in group]
+    final = overridden(without_excluded(upstream, exclusions), overrides)
 
     if out.exists():
         shutil.rmtree(out)
@@ -446,9 +472,13 @@ def build(out: Path, collections_file: Path, overrides_file: Path) -> None:
     print(f"\n{'collection':24s} {'cases':>6s} {'true':>6s} {'false':>6s} {'null':>6s}")
     by_id = {case.id: case for case in final}
     for name, group in cases.items():
-        labels = Counter(by_id[case.id].a_subsumes_b for case in group)
-        print(f"{name:24s} {len(group):6d} {labels[True]:6d} {labels[False]:6d} {labels[None]:6d}")
-    print(f"\n{len(resources)} external documents, {len(overrides)} overridden cases")
+        kept = [by_id[case.id] for case in group if case.id in by_id]
+        labels = Counter(case.a_subsumes_b for case in kept)
+        print(f"{name:24s} {len(kept):6d} {labels[True]:6d} {labels[False]:6d} {labels[None]:6d}")
+    print(
+        f"\n{len(resources)} external documents, {len(overrides)} overridden cases, "
+        f"{len(exclusions)} excluded cases"
+    )
     print("\nwhat each side of the inclusion artifact declared as its dialect:")
     for dialect, n in dialects.most_common():
         print(f"  {n:6d}  {dialect}")
