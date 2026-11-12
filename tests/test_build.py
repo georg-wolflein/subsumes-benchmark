@@ -145,3 +145,46 @@ def test_exclusions_are_read_with_their_reason(tmp_path: Path) -> None:
     file.write_text('[[exclude]]\nnote = "broken"\ncases = ["one/a"]\n', encoding="utf-8")
     with pytest.raises(ConfigError):
         load_exclusions(file)
+
+
+def test_a_name_in_a_map_of_schemas_is_not_taken_for_a_keyword() -> None:
+    # `default`, `enum` and `const` are names here, so what they hold are schemas. The
+    # keyword `default` at the top holds data, which stays as it is.
+    assert convert(
+        {
+            "definitions": {"const": {"$ref": "#/definitions/x"}, "x": {"type": "string"}},
+            "properties": {
+                "default": {"$ref": "#/definitions/x"},
+                "enum": {"items": [{"$ref": "#/definitions/const"}]},
+            },
+            "default": {"$ref": "#/definitions/x"},
+        }
+    ) == {
+        "$schema": DRAFT_2020_12,
+        "$defs": {"const": {"$ref": "#/$defs/x"}, "x": {"type": "string"}},
+        "properties": {
+            "default": {"$ref": "#/$defs/x"},
+            "enum": {"prefixItems": [{"$ref": "#/$defs/const"}]},
+        },
+        "default": {"$ref": "#/definitions/x"},
+    }
+
+
+def test_unfuse_follows_references_under_names_that_read_like_keywords() -> None:
+    fused: Json = {
+        "allOf": [
+            {"properties": {"default": {"$ref": "#/definitions1/enum"}, "q": {}}},
+            {"not": {"properties": {"const": {"$ref": "#/allOf/1/not/properties/q"}, "q": {}}}},
+        ],
+        "definitions1": {"enum": {"$ref": "#/definitions2/x"}},
+        "definitions2": {"x": {"type": "object"}},
+    }
+    assert unfuse(fused) == (
+        {
+            "properties": {"default": {"$ref": "#/definitions1/enum"}, "q": {}},
+            "definitions1": {"enum": {"$ref": "#/definitions2/x"}},
+            "definitions2": {"x": {"type": "object"}},
+        },
+        {"properties": {"const": {"$ref": "#/properties/q"}, "q": {}}},
+        set(),
+    )

@@ -12,7 +12,7 @@ from referencing import Registry, Resource
 from referencing.jsonschema import DRAFT202012
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
+    from collections.abc import Iterator, Sequence
 
     from subsumes_benchmark import Json
 
@@ -39,6 +39,21 @@ SCHEMAS = frozenset(
     }
 )
 NOT_SCHEMAS = frozenset({"enum", "const", "default", "examples"})
+
+
+def nested(node: dict[str, Json]) -> Iterator[Json]:
+    """The values of a schema object that can hold schemas, and so references.
+
+    The value of a data keyword is left out. Under a keyword that maps names to schemas the
+    schemas themselves are given: a property called ``default`` is a schema, not data.
+    """
+    for key, value in node.items():
+        if key in NOT_SCHEMAS:
+            continue
+        if key in SCHEMA_MAPS | {"definitions"} and isinstance(value, dict):
+            yield from value.values()
+        else:
+            yield value
 
 
 def read(path: Path) -> Json:
@@ -140,9 +155,8 @@ def _external_refs(node: Json, base: str, found: set[str]) -> None:
             ref = node.get(keyword)
             if isinstance(ref, str) and not ref.startswith("#"):
                 found.add(urldefrag(urljoin(base, ref) if base else ref)[0])
-        for key, value in node.items():
-            if key not in NOT_SCHEMAS:
-                _external_refs(value, base, found)
+        for value in nested(node):
+            _external_refs(value, base, found)
 
 
 def referenced_documents(schema: Json) -> set[str]:

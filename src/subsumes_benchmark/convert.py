@@ -5,6 +5,8 @@ from typing import TYPE_CHECKING
 from urllib.parse import unquote, urldefrag, urljoin
 
 if TYPE_CHECKING:
+    from collections.abc import Callable, Iterator
+
     from subsumes_benchmark import Json
 
 DRAFT_2020_12 = "https://json-schema.org/draft/2020-12/schema"
@@ -32,6 +34,9 @@ SCHEMA_KEYWORDS = frozenset(
 VERBATIM_KEYWORDS = frozenset({"enum", "const", "default", "examples"})
 # The inclusion artifact hoists the definitions of a fused pair under these names.
 HOISTED_GROUPS = ("definitions1", "definitions2", "definitions3", "definitions4")
+# Keywords whose value maps names to schemas. A key in such a map is a name, whatever it
+# reads: a property called ``default`` is a schema, not a default value.
+NAMED_SCHEMA_KEYWORDS = SCHEMA_MAP_KEYWORDS | {*HOISTED_GROUPS, "dependencies"}
 ANCHOR_RE = re.compile(r"^[A-Za-z_][-A-Za-z0-9._]*$")
 ABSOLUTE_URI_RE = re.compile(r"^[A-Za-z][A-Za-z0-9+.-]*:")
 
@@ -66,6 +71,40 @@ def map_pointer(pointer: Pointer, pmap: PointerMap) -> Pointer:
         if prefix in pmap:
             return pmap[prefix] + pointer[length:]
     return pointer
+
+
+def nested(node: dict[str, Json]) -> Iterator[Json]:
+    """The values of a schema object that can hold schemas, and so references.
+
+    The value of a data keyword such as ``const`` is left out. Under a keyword that maps names
+    to schemas the schemas themselves are given, so that no name is taken for a keyword.
+    """
+    for key, value in node.items():
+        if key in VERBATIM_KEYWORDS:
+            continue
+        if key in NAMED_SCHEMA_KEYWORDS and isinstance(value, dict):
+            yield from value.values()
+        else:
+            yield value
+
+
+def map_refs(node: Json, rewrite: Callable[[str], str]) -> Json:
+    """A copy of a schema in which every ``$ref`` went through ``rewrite``."""
+    if isinstance(node, list):
+        return [map_refs(item, rewrite) for item in node]
+    if not isinstance(node, dict):
+        return node
+    out: dict[str, Json] = {}
+    for key, value in node.items():
+        if key == "$ref" and isinstance(value, str):
+            out[key] = rewrite(value)
+        elif key in NAMED_SCHEMA_KEYWORDS and isinstance(value, dict):
+            out[key] = {name: map_refs(item, rewrite) for name, item in value.items()}
+        elif key in VERBATIM_KEYWORDS:
+            out[key] = value
+        else:
+            out[key] = map_refs(value, rewrite)
+    return out
 
 
 def dialect_of(schema: Json) -> str:
@@ -269,28 +308,22 @@ class Converter:
 
     def rewrite_refs(self, node: Json, resource_maps: dict[str, PointerMap]) -> Json:
         """Pass two: rewrite every pointer reference, local or into a converted resource."""
-        if isinstance(node, list):
-            return [self.rewrite_refs(item, resource_maps) for item in node]
-        if not isinstance(node, dict):
-            return node
-        out: dict[str, Json] = {}
-        for key, value in node.items():
-            if key == "$ref" and isinstance(value, str):
-                url, fragment = urldefrag(value)
-                pmap = self.pmap if not url else resource_maps.get(url)
-                if pmap is not None and (fragment == "" or fragment.startswith("/")):
-                    try:
-                        pointer = parse_pointer(fragment)
-                    except ValueError:
-                        pointer = None
-                    if pointer is not None:
-                        mapped = map_pointer(pointer, pmap)
-                        if mapped != pointer:
-                            self.notes.add("pointer reference rewritten to the converted path")
-                        fragment = format_pointer(mapped)
-                if url or fragment != "" or value.startswith("#"):
-                    value = url + "#" + fragment
-            elif key not in VERBATIM_KEYWORDS:
-                value = self.rewrite_refs(value, resource_maps)
-            out[key] = value
-        return out
+
+        def rewrite(value: str) -> str:
+            url, fragment = urldefrag(value)
+            pmap = self.pmap if not url else resource_maps.get(url)
+            if pmap is not None and (fragment == "" or fragment.startswith("/")):
+                try:
+                    pointer = parse_pointer(fragment)
+                except ValueError:
+                    pointer = None
+                if pointer is not None:
+                    mapped = map_pointer(pointer, pmap)
+                    if mapped != pointer:
+                        self.notes.add("pointer reference rewritten to the converted path")
+                    fragment = format_pointer(mapped)
+            if url or fragment != "" or value.startswith("#"):
+                return url + "#" + fragment
+            return value
+
+        return map_refs(node, rewrite)
