@@ -12,7 +12,7 @@ definition so that none is unreachable. This is the inverse of
 import re
 from typing import TYPE_CHECKING
 
-from subsumes_benchmark.convert import HOISTED_GROUPS, VERBATIM_KEYWORDS, ConversionError
+from subsumes_benchmark.convert import HOISTED_GROUPS, ConversionError, map_refs, nested
 
 if TYPE_CHECKING:
     from subsumes_benchmark import Json
@@ -29,9 +29,8 @@ def collect_refs(node: Json, out: list[str]) -> None:
         ref = node.get("$ref")
         if isinstance(ref, str):
             out.append(ref)
-        for key, value in node.items():
-            if key not in VERBATIM_KEYWORDS:
-                collect_refs(value, out)
+        for value in nested(node):
+            collect_refs(value, out)
 
 
 def strip_fused_path(node: Json, own: str) -> Json:
@@ -40,21 +39,20 @@ def strip_fused_path(node: Json, own: str) -> Json:
     The artifact prefixes every non-definition pointer of a side with the side's path in
     the fused document, so stripping that prefix once restores the original pointer.
     """
-    if isinstance(node, list):
-        return [strip_fused_path(item, own) for item in node]
-    if not isinstance(node, dict):
-        return node
-    out: dict[str, Json] = {}
-    for key, value in node.items():
-        if key == "$ref" and isinstance(value, str):
-            if value == own:
-                value = "#"
-            elif value.startswith(own + "/"):
-                value = "#" + value[len(own) :]
-        elif key not in VERBATIM_KEYWORDS:
-            value = strip_fused_path(value, own)
-        out[key] = value
-    return out
+
+    def strip(ref: str) -> str:
+        if ref == own:
+            return "#"
+        if ref.startswith(own + "/"):
+            return "#" + ref[len(own) :]
+        return ref
+
+    return map_refs(node, strip)
+
+
+def definitions(group: Json) -> list[Json]:
+    """The schemas of a hoisted group, which maps their names to them."""
+    return list(group.values()) if isinstance(group, dict) else [group]
 
 
 def groups_reachable(body: Json, groups: dict[str, Json]) -> list[str]:
@@ -68,7 +66,7 @@ def groups_reachable(body: Json, groups: dict[str, Json]) -> list[str]:
             match = re.match(r"^#/(definitions[1-4]?)(/|$)", ref)
             if match and match.group(1) in groups and match.group(1) not in needed:
                 needed.append(match.group(1))
-                pending.append(groups[match.group(1)])
+                pending.append(definitions(groups[match.group(1)]))
     return sorted(needed)
 
 
@@ -115,7 +113,12 @@ def unfuse(doc: Json) -> tuple[Json, Json, set[str]]:
         if not isinstance(body, dict):
             return body
         for name in groups_reachable(body, groups):
-            body[name] = strip_fused_path(groups[name], own)
+            group = groups[name]
+            body[name] = (
+                {key: strip_fused_path(item, own) for key, item in group.items()}
+                if isinstance(group, dict)
+                else group
+            )
         return body
 
     return side(s1, "#/allOf/0"), side(s2, "#/allOf/1/not"), notes

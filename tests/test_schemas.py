@@ -10,7 +10,7 @@ from jsonschema import Draft202012Validator
 from referencing import Resource
 from referencing.jsonschema import DRAFT202012
 
-from reading import NOT_SCHEMAS, cases, registry, resources
+from reading import cases, nested, registry, resources
 
 if TYPE_CHECKING:
     from referencing._core import Resolver
@@ -54,9 +54,8 @@ def unresolved(node: Json, resolver: Resolver[Json], seen: set[int]) -> list[str
                 resolver.lookup(ref)
             except Exception as exc:
                 problems.append(f"unresolved {keyword} {ref}: {type(exc).__name__}")
-    for key, value in node.items():
-        if key not in NOT_SCHEMAS:
-            problems += unresolved(value, resolver, seen)
+    for value in nested(node):
+        problems += unresolved(value, resolver, seen)
     return problems
 
 

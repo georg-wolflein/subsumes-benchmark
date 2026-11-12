@@ -37,10 +37,10 @@ from urllib.parse import urldefrag, urljoin
 
 from subsumes_benchmark.convert import (
     DRAFT_2020_12,
-    VERBATIM_KEYWORDS,
     ConversionError,
     Converter,
     dialect_of,
+    nested,
 )
 from subsumes_benchmark.unfuse import unfuse
 
@@ -292,9 +292,8 @@ def external_refs(node: Json, base: str, out: set[str]) -> None:
         ref = node.get("$ref")
         if isinstance(ref, str) and not ref.startswith("#"):
             out.add(urldefrag(urljoin(base, ref) if base else ref)[0])
-        for key, value in node.items():
-            if key not in VERBATIM_KEYWORDS:
-                external_refs(value, base, out)
+        for value in nested(node):
+            external_refs(value, base, out)
 
 
 def read_external_documents(
