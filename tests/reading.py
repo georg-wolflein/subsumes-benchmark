@@ -5,11 +5,6 @@ from dataclasses import dataclass
 from functools import cache
 from pathlib import Path
 from typing import TYPE_CHECKING
-from urllib.parse import urldefrag, urljoin
-
-from jsonschema_specifications import REGISTRY as METASCHEMAS
-from referencing import Registry, Resource
-from referencing.jsonschema import DRAFT202012
 
 if TYPE_CHECKING:
     from collections.abc import Iterator, Sequence
@@ -123,54 +118,6 @@ def case(case_id: str) -> Case:
 @cache
 def _cases_by_id() -> dict[str, Case]:
     return {case.id: case for case in cases()}
-
-
-@cache
-def resources() -> dict[str, Json]:
-    """The external documents the cases reference, by URL."""
-    documents = read(CORPUS / "resources.json")
-    assert isinstance(documents, dict)
-    return documents
-
-
-@cache
-def registry() -> Registry:
-    """The metaschemas and the external documents, for resolving references."""
-    registry: Registry = METASCHEMAS
-    for url, contents in resources().items():
-        resource = Resource.from_contents(contents, default_specification=DRAFT202012)
-        registry = registry.with_resource(url, resource)
-    return registry.crawl()
-
-
-def _external_refs(node: Json, base: str, found: set[str]) -> None:
-    if isinstance(node, list):
-        for item in node:
-            _external_refs(item, base, found)
-    elif isinstance(node, dict):
-        identifier = node.get("$id")
-        if isinstance(identifier, str):
-            base = urljoin(base, identifier) if base else identifier
-        for keyword in ("$ref", "$dynamicRef"):
-            ref = node.get(keyword)
-            if isinstance(ref, str) and not ref.startswith("#"):
-                found.add(urldefrag(urljoin(base, ref) if base else ref)[0])
-        for value in nested(node):
-            _external_refs(value, base, found)
-
-
-def referenced_documents(schema: Json) -> set[str]:
-    """The URLs of the external documents a schema reaches through its references."""
-    reached: set[str] = set()
-    pending: set[str] = set()
-    _external_refs(schema, "", pending)
-    while pending:
-        url = pending.pop()
-        if url in reached or url not in resources():
-            continue
-        reached.add(url)
-        _external_refs(resources()[url], url, pending)
-    return reached
 
 
 def subschemas(schema: Json) -> list[dict[str, Json]]:

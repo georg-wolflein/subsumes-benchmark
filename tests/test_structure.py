@@ -25,7 +25,7 @@ def test_every_case_has_both_schemas() -> None:
 def test_every_file_belongs_to_a_case_or_is_a_shared_file() -> None:
     folders = {case.folder for case in cases()}
     shared = (
-        {CORPUS / "case.schema.json", CORPUS / "resources.json"}
+        {CORPUS / "case.schema.json"}
         | {CORPUS / name / "collection.json" for name in COLLECTIONS}
         | {CORPUS / "licenses" / name for name in LICENSES}
     )

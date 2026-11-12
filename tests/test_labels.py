@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from reading import case, cases, constants, patterns, referenced_documents, resources, uses_format
+from reading import case, cases, constants, patterns, uses_format
 from validation import is_valid, pattern_error
 
 if TYPE_CHECKING:
@@ -56,16 +56,11 @@ def test_label_holds_where_b_lists_its_instances() -> None:
 
 @pytest.mark.slow
 def test_labelled_case_has_only_patterns_of_the_rust_regex_dialect() -> None:
-    rejected_documents = {
-        url for url, document in resources().items() if any(map(pattern_error, patterns(document)))
-    }
     wrong = []
     for found in cases():
         if found.claims_nothing:
             continue
-        a, b = found.a, found.b
-        used = patterns(a) | patterns(b)
-        reached = referenced_documents(a) | referenced_documents(b)
-        if any(map(pattern_error, used)) or reached & rejected_documents:
+        # The documents a schema references are embedded in it, so these are all its patterns.
+        if any(map(pattern_error, patterns(found.a) | patterns(found.b))):
             wrong.append(found.id)
     assert wrong == []

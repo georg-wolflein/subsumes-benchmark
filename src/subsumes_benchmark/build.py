@@ -12,7 +12,8 @@ Two public benchmarks for JSON Schema inclusion are read at the commits their su
 Every case becomes one folder ``corpus/<collection>/.../<name>/`` holding ``a.json``,
 ``b.json`` and ``case.json``. The question a case asks is always whether ``a.json`` accepts
 every instance valid under ``b.json``. Both upstream sources list the narrower schema first,
-so ``b.json`` is upstream's first schema and ``a.json`` its second.
+so ``b.json`` is upstream's first schema and ``a.json`` its second. A schema that references
+other documents carries them embedded (``bundled``), so every schema stands on its own.
 
 ``collections.toml`` names the collections and where each comes from; ``overrides.toml``
 lists the cases that are left out and the cases whose label departs from upstream's. Run from
@@ -265,17 +266,6 @@ def read_containment_testsuite(collection: Collection) -> Iterator[Case]:
             )
 
 
-def read_remotes(source: Source) -> dict[str, Json]:
-    """The documents the suite's ``$ref`` cases load, under the URLs the cases use."""
-    remotes = source.root / "JSON-Schema-Test-Suite" / "remotes"
-    return {
-        "http://localhost:1234/" + path.relative_to(remotes).as_posix(): json.loads(
-            path.read_text(encoding="utf-8")
-        )
-        for path in sorted(remotes.rglob("*.json"))
-    }
-
-
 # --------------------------------------------------------------------------- the inclusion artifact
 
 
@@ -336,6 +326,39 @@ def read_external_documents(
         for url, (converter, schema) in converted.items()
     }
     return documents, pointer_maps
+
+
+def bundled(schema: Json, documents: Mapping[str, Json]) -> Json:
+    """The schema with every document it references embedded, so that it needs nothing else.
+
+    This is the bundling of the specification (JSON Schema Core, section 9.3): a document goes
+    under ``$defs`` by its URL and has that URL as its ``$id``, so no reference changes.
+    """
+    # A reference to the URL of the schema itself, from anywhere, is a reference to the schema.
+    own = schema.get("$id") if isinstance(schema, dict) else None
+    reached: set[str] = set()
+    pending: set[str] = set()
+    external_refs(schema, "", pending)
+    while pending:
+        url = pending.pop()
+        if url in reached or url == own or url not in documents:
+            continue
+        reached.add(url)
+        external_refs(documents[url], url, pending)
+    if not reached:
+        return schema
+    assert isinstance(schema, dict)
+    definitions = schema.get("$defs", {})
+    assert isinstance(definitions, dict)
+    embedded: dict[str, Json] = {}
+    for url in sorted(reached):
+        document = documents[url]
+        if not isinstance(document, dict) or document.get("$id") != url:
+            raise ConversionError(f"{url} does not identify itself, so it cannot be embedded")
+        if url in definitions:
+            raise ConversionError(f"{url} is in the schema already")
+        embedded[url] = document
+    return schema | {"$defs": definitions | embedded}
 
 
 def case_name(stem: str) -> str:
@@ -428,9 +451,7 @@ def build(out: Path, collections_file: Path, overrides_file: Path) -> None:
     sources = {c.source.name: c.source for c in collections}
     artifact = [c for c in collections if c.source.name == "inclusion-artifact"]
 
-    resources = read_remotes(sources["containment-testsuite"])
     documents, pointer_maps = read_external_documents(sources["inclusion-artifact"], artifact)
-    resources |= documents
 
     notes: Counter[str] = Counter()
     dialects: Counter[str] = Counter()
@@ -447,7 +468,15 @@ def build(out: Path, collections_file: Path, overrides_file: Path) -> None:
             case other:
                 raise ConfigError(f"no reader for source {other}")
     upstream = [case for group in cases.values() for case in group]
-    final = overridden(without_excluded(upstream, exclusions), overrides)
+    selected = overridden(without_excluded(upstream, exclusions), overrides)
+    final = [
+        replace(case, a=bundled(case.a, documents), b=bundled(case.b, documents))
+        for case in selected
+    ]
+    bundles = sum(
+        (after.a is not before.a) + (after.b is not before.b)
+        for before, after in zip(selected, final, strict=True)
+    )
 
     if out.exists():
         shutil.rmtree(out)
@@ -456,7 +485,6 @@ def build(out: Path, collections_file: Path, overrides_file: Path) -> None:
         write_case(out, case)
     for collection in collections:
         write_json(out / collection.name / "collection.json", collection.manifest)
-    write_json(out / "resources.json", dict(sorted(resources.items())))
     write_json(out / "case.schema.json", CASE_SCHEMA)
     licenses = {name: source.license_file for name, source in sources.items()} | {
         "json-schema-test-suite": sources["containment-testsuite"].root
@@ -475,8 +503,8 @@ def build(out: Path, collections_file: Path, overrides_file: Path) -> None:
         labels = Counter(case.a_subsumes_b for case in kept)
         print(f"{name:24s} {len(kept):6d} {labels[True]:6d} {labels[False]:6d} {labels[None]:6d}")
     print(
-        f"\n{len(resources)} external documents, {len(overrides)} overridden cases, "
-        f"{len(exclusions)} excluded cases"
+        f"\n{len(documents)} external documents embedded in the {bundles} schemas that "
+        f"reference them, {len(overrides)} overridden cases, {len(exclusions)} excluded cases"
     )
     print("\nwhat each side of the inclusion artifact declared as its dialect:")
     for dialect, n in dialects.most_common():

@@ -33,5 +33,102 @@
     "headlines",
     "revision",
     "last_updated_date"
-  ]
+  ],
+  "$defs": {
+    "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.9.0/traits/trait_additional_properties.json": {
+      "$id": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.9.0/traits/trait_additional_properties.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Has additional properties",
+      "description": "A grab-bag object for non-validatable data.",
+      "type": "object",
+      "additionalProperties": {}
+    },
+    "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.9.0/traits/trait_canonical_url.json": {
+      "$id": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.9.0/traits/trait_canonical_url.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Canonical URL",
+      "description": "The relative URL to this document on the website specified by the `canonical_website` field. In the Arc ecosystem, this will be populated by the content api from the arc-canonical-url service if present based on the canonical_website. In conjunction with canonical_website, it can be used to determine the SEO canonical url or open graph url. In a multi-site context, this field may be different from the website_url field.",
+      "type": "string"
+    },
+    "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.9.0/traits/trait_headlines.json": {
+      "$id": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.9.0/traits/trait_headlines.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Headlines",
+      "description": "The headline(s) or title for this content.  The 'basic' key is required.",
+      "type": "object",
+      "$ref": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.9.0/utils/dictionary.json#"
+    },
+    "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.9.0/traits/trait_id.json": {
+      "$id": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.9.0/traits/trait_id.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Globally Unique ID trait",
+      "description": "A globally unique identifier of the content in the ANS repository.",
+      "type": "string"
+    },
+    "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.9.0/traits/trait_last_updated_date.json": {
+      "$id": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.9.0/traits/trait_last_updated_date.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Last Updated Date",
+      "description": "When the content was last updated (RFC3339-formatted).",
+      "type": "string",
+      "format": "date-time"
+    },
+    "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.9.0/traits/trait_revision.json": {
+      "$id": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.9.0/traits/trait_revision.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Revision",
+      "description": "Trait that applies revision information to a document. In the Arc ecosystem, many of these fields are populated in stories by the Story API.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "revision_id": {
+          "description": "The unique id of this revision.",
+          "type": "string"
+        },
+        "parent_id": {
+          "description": "The unique id of the revision that this revisions was branched from, or preceded it on the current branch.",
+          "type": "string"
+        },
+        "branch": {
+          "description": "The name of the branch this revision was created on.",
+          "type": "string"
+        },
+        "editions": {
+          "description": "A list of identifiers of editions that point to this revision.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "user_id": {
+          "type": "string",
+          "description": "The unique user id of the person who created this revision."
+        },
+        "published": {
+          "type": "boolean",
+          "description": "Whether or not this revision's parent story is published, in any form or place"
+        },
+        "additional_properties": {
+          "$ref": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.9.0/traits/trait_additional_properties.json#"
+        }
+      }
+    },
+    "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.9.0/utils/dictionary.json": {
+      "$id": "https://raw.githubusercontent.com/washingtonpost/ans-schema/master/src/main/resources/schema/ans/0.9.0/utils/dictionary.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "properties": {
+        "basic": {
+          "type": "string"
+        }
+      },
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "basic"
+      ]
+    }
+  }
 }
