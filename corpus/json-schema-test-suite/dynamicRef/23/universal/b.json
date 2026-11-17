@@ -1,0 +1,56 @@
+{
+  "anyOf": [
+    {
+      "$ref": "https://test.json-schema.org/dynamic-ref-avoids-root-of-each-schema/base"
+    },
+    {
+      "not": {
+        "$ref": "https://test.json-schema.org/dynamic-ref-avoids-root-of-each-schema/base"
+      }
+    }
+  ],
+  "$defs": {
+    "https://test.json-schema.org/dynamic-ref-avoids-root-of-each-schema/base": {
+      "$id": "https://test.json-schema.org/dynamic-ref-avoids-root-of-each-schema/base",
+      "$ref": "first#/$defs/stuff",
+      "$defs": {
+        "first": {
+          "$id": "first",
+          "$defs": {
+            "stuff": {
+              "$ref": "second#/$defs/stuff"
+            },
+            "length": {
+              "$comment": "unused, because there is no $dynamicAnchor here",
+              "maxLength": 1
+            }
+          }
+        },
+        "second": {
+          "$id": "second",
+          "$defs": {
+            "stuff": {
+              "$ref": "third#/$defs/stuff"
+            },
+            "length": {
+              "$dynamicAnchor": "length",
+              "maxLength": 2
+            }
+          }
+        },
+        "third": {
+          "$id": "third",
+          "$defs": {
+            "stuff": {
+              "$dynamicRef": "#length"
+            },
+            "length": {
+              "$dynamicAnchor": "length",
+              "maxLength": 3
+            }
+          }
+        }
+      }
+    }
+  }
+}

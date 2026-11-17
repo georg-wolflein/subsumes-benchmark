@@ -1,0 +1,31 @@
+{
+  "allOf": [
+    {
+      "$ref": "https://example.com/ref-and-id3/base.json"
+    },
+    {
+      "not": {
+        "$ref": "https://example.com/ref-and-id3/base.json"
+      }
+    }
+  ],
+  "$defs": {
+    "https://example.com/ref-and-id3/base.json": {
+      "$id": "https://example.com/ref-and-id3/base.json",
+      "$comment": "$id must be evaluated before $ref to get the proper $ref destination",
+      "$ref": "nested/foo.json",
+      "$defs": {
+        "foo": {
+          "$comment": "canonical uri: https://example.com/ref-and-id3/nested/foo.json",
+          "$id": "nested/foo.json",
+          "$ref": "./bar.json"
+        },
+        "bar": {
+          "$comment": "canonical uri: https://example.com/ref-and-id3/nested/bar.json",
+          "$id": "nested/bar.json",
+          "type": "number"
+        }
+      }
+    }
+  }
+}

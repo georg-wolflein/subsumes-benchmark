@@ -1,0 +1,30 @@
+{
+  "not": {
+    "$ref": "http://localhost:1234/strict-tree.json"
+  },
+  "$defs": {
+    "http://localhost:1234/strict-tree.json": {
+      "$id": "http://localhost:1234/strict-tree.json",
+      "$dynamicAnchor": "node",
+      "$ref": "tree.json",
+      "unevaluatedProperties": false,
+      "$defs": {
+        "http://localhost:1234/tree.json": {
+          "$id": "http://localhost:1234/tree.json",
+          "description": "tree schema, extensible",
+          "$dynamicAnchor": "node",
+          "type": "object",
+          "properties": {
+            "data": true,
+            "children": {
+              "type": "array",
+              "items": {
+                "$dynamicRef": "#node"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

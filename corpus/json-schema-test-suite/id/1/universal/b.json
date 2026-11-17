@@ -1,0 +1,36 @@
+{
+  "anyOf": [
+    {
+      "$ref": "http://localhost:1234/scope_change_defs1.json"
+    },
+    {
+      "not": {
+        "$ref": "http://localhost:1234/scope_change_defs1.json"
+      }
+    }
+  ],
+  "$defs": {
+    "http://localhost:1234/scope_change_defs1.json": {
+      "$id": "http://localhost:1234/scope_change_defs1.json",
+      "type": "object",
+      "properties": {
+        "list": {
+          "$ref": "baseUriChangeFolder/"
+        }
+      },
+      "$defs": {
+        "baz": {
+          "$id": "baseUriChangeFolder/",
+          "type": "array",
+          "items": {
+            "$ref": "folderInteger.json"
+          }
+        },
+        "http://localhost:1234/baseUriChangeFolder/folderInteger.json": {
+          "$id": "http://localhost:1234/baseUriChangeFolder/folderInteger.json",
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

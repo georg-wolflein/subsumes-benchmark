@@ -22,8 +22,7 @@ test-corpus:  ## the slow tests: every schema is valid, every reference resolves
 	uv run pytest -m slow
 
 sources:  ## fetch the upstream sources; they are opt-in submodules and only needed to rebuild
-	git submodule update --init --checkout sources/containment-testsuite sources/inclusion-artifact
-	git -C sources/containment-testsuite submodule update --init JSON-Schema-Test-Suite
+	git submodule update --init --checkout sources/json-schema-test-suite sources/inclusion-artifact
 
 corpus:  ## rebuild corpus/ from the upstream sources
 	uv run python -m subsumes_benchmark

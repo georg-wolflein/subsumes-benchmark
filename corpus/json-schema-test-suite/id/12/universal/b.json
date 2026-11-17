@@ -1,0 +1,28 @@
+{
+  "anyOf": [
+    {
+      "$ref": "urn:uuid:deadbeef-1234-00ff-ff00-4321feebdaed"
+    },
+    {
+      "not": {
+        "$ref": "urn:uuid:deadbeef-1234-00ff-ff00-4321feebdaed"
+      }
+    }
+  ],
+  "$defs": {
+    "urn:uuid:deadbeef-1234-00ff-ff00-4321feebdaed": {
+      "$id": "urn:uuid:deadbeef-1234-00ff-ff00-4321feebdaed",
+      "$comment": "URIs do not have to have HTTP(s) schemes",
+      "properties": {
+        "foo": {
+          "$ref": "#/$defs/bar"
+        }
+      },
+      "$defs": {
+        "bar": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

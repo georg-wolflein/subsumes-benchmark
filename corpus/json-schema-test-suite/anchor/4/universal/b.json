@@ -1,0 +1,28 @@
+{
+  "anyOf": [
+    {
+      "$ref": "https://example.com/schema-with-anchor"
+    },
+    {
+      "not": {
+        "$ref": "https://example.com/schema-with-anchor"
+      }
+    }
+  ],
+  "$defs": {
+    "https://example.com/schema-with-anchor": {
+      "$id": "https://example.com/schema-with-anchor",
+      "allOf": [
+        {
+          "$ref": "https://example.com/schema-with-anchor#foo"
+        }
+      ],
+      "$defs": {
+        "A": {
+          "$anchor": "foo",
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

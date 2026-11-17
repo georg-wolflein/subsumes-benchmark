@@ -1,0 +1,25 @@
+{
+  "not": {
+    "$ref": "https://subsumes-benchmark.example/schema"
+  },
+  "$defs": {
+    "https://subsumes-benchmark.example/schema": {
+      "$id": "https://subsumes-benchmark.example/schema",
+      "$ref": "http://localhost:1234/detached-dynamicref.json#/$defs/foo",
+      "$defs": {
+        "http://localhost:1234/detached-dynamicref.json": {
+          "$id": "http://localhost:1234/detached-dynamicref.json",
+          "$defs": {
+            "foo": {
+              "$dynamicRef": "#detached"
+            },
+            "detached": {
+              "$dynamicAnchor": "detached",
+              "type": "integer"
+            }
+          }
+        }
+      }
+    }
+  }
+}

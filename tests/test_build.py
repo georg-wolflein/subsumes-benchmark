@@ -135,6 +135,25 @@ def test_excluded_cases_are_left_out_and_must_exist() -> None:
         without_excluded(cases, {"one/c": "broken"})
 
 
+def test_a_folder_excludes_every_case_below_it() -> None:
+    cases = [
+        Case(id=case_id, a=True, b=True, a_subsumes_b=True, b_subsumes_a=None, upstream="x.json")
+        for case_id in ("one/a/valid/0", "one/a/reflexive", "one/ab/reflexive", "two/a/reflexive")
+    ]
+    assert [case.id for case in without_excluded(cases, {"one/a/*": "broken"})] == [
+        "one/ab/reflexive",
+        "two/a/reflexive",
+    ]
+    assert [case.id for case in without_excluded(cases, {"one/*": "broken"})] == ["two/a/reflexive"]
+    with pytest.raises(ConfigError):
+        without_excluded(cases, {"three/*": "broken"})
+    # A folder is not a prefix of a name, and a case is no folder.
+    with pytest.raises(ConfigError):
+        without_excluded(cases, {"one/a/refl/*": "broken"})
+    with pytest.raises(ConfigError):
+        without_excluded(cases, {"one/a/reflexive/*": "broken"})
+
+
 def test_exclusions_are_read_with_their_reason(tmp_path: Path) -> None:
     file = tmp_path / "overrides.toml"
     file.write_text(

@@ -1,0 +1,34 @@
+{
+  "anyOf": [
+    {
+      "$ref": "http://localhost:1234/foobar"
+    },
+    {
+      "not": {
+        "$ref": "http://localhost:1234/foobar"
+      }
+    }
+  ],
+  "$defs": {
+    "http://localhost:1234/foobar": {
+      "$id": "http://localhost:1234/foobar",
+      "$defs": {
+        "A": {
+          "$id": "child1",
+          "allOf": [
+            {
+              "$id": "child2",
+              "$anchor": "my_anchor",
+              "type": "number"
+            },
+            {
+              "$anchor": "my_anchor",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "$ref": "child1#my_anchor"
+    }
+  }
+}

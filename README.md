@@ -2,7 +2,7 @@
 
 A benchmark corpus for JSON Schema inclusion: **does schema A accept every instance valid under schema B?**
 
-It holds 14,606 pairs of draft 2020-12 schemas, most of them with a known answer. They come from the two public benchmarks for this problem, converted to draft 2020-12 where they were not already, and are stored as one folder per case. The corpus is what [`subsumes`](https://github.com/georg-wolflein/subsumes) is measured against, but nothing in it depends on that library.
+It holds 17,023 pairs of draft 2020-12 schemas, most of them with a known answer. A third are built from the official JSON Schema Test Suite, whose instances make the answer known by construction. The others come from the benchmark published with the Refutational Normalization inclusion checker, converted to draft 2020-12. Each pair is stored as one folder. The corpus is what [`subsumes`](https://github.com/georg-wolflein/subsumes) is measured against, but nothing in it depends on that library.
 
 ## A case
 
@@ -26,8 +26,8 @@ Every case asks the same question: does `a.json` accept every instance valid und
 ```
 
 - **`a_subsumes_b`**: `true` when `a.json` accepts every instance valid under `b.json`, `false` when some instance of `b.json` is not valid under `a.json`, `null` when the corpus claims nothing.
-- **`b_subsumes_a`**: The same question in the other direction. Only some cases of the containment test suite answer it.
-- **`upstream`**: The file the case comes from, as a path inside the source repository that the collection's `collection.json` names. The test suite's cases add the case id after a `#`.
+- **`b_subsumes_a`**: The same question in the other direction. Only some cases built from the test suite answer it.
+- **`upstream`**: The file the case comes from, as a path inside the source repository that the collection's `collection.json` names. A case built from the test suite adds a JSON pointer to the test case or the test after a `#`.
 - **`note`**: Present only when the labels depart from upstream's, and says why.
 
 [`corpus/case.schema.json`](corpus/case.schema.json) is the schema of `case.json`.
@@ -41,6 +41,8 @@ A label holds under these semantics:
 - **Patterns are read in the dialect of the Rust [`regex`](https://docs.rs/regex/latest/regex/#syntax) crate**, which is what [Pydantic](https://docs.pydantic.dev/) validates `pattern` with by default. This is not ECMA-262: `\d`, `\w` and `\s` are Unicode-aware, and look-around and backreferences do not exist.
 
 Where an upstream label does not hold under these semantics, the corpus corrects it or withdraws it; see [Departures from upstream](#departures-from-upstream).
+
+Numbers are written as doubles. A question that hinges on digits a double does not hold is not in the corpus.
 
 ## Scoring a checker
 
@@ -72,8 +74,8 @@ Results measured on two versions are comparable exactly when their major and min
 
 | Collection | Cases | A subsumes B: true / false / unknown | Labels from | Content |
 | --- | --- | --- | --- | --- |
-| `containment-testsuite` | 3,339 | 1,870 / 1,374 / 95 | construction | The Passau containment test suite for draft 2020-12 |
-| `synthesized` | 1,331 | 881 / 450 / 0 | construction | The same generator for drafts 4, 6 and 2019-09, converted |
+| `json-schema-test-suite` | 5,756 | 3,577 / 2,165 / 14 | construction | Pairs built from the official test suite for draft 2020-12 |
+| `synthesized` | 1,331 | 881 / 450 / 0 | construction | Such pairs for drafts 4, 6 and 2019-09, built by others and converted |
 | `handwritten-sc` | 282 | 160 / 122 / 0 | construction | Hand-written hard cases |
 | `rb-testset` | 300 | 107 / 189 / 4 | upstream tests | The tests of the jsonsubschema tool, some with the documents they reference embedded |
 | `mergeallof` | 174 | 165 / 9 / 0 | witness generator | Schemas against a rewriting that merges their `allOf` |
@@ -88,38 +90,58 @@ Each collection folder has a `collection.json` with its description, the source 
 - **`witness-generator`**: The answer is that of the upstream authors' tool, which is complete but bound by a timeout. An unknown label means that it gave up.
 - **`upstream-tests`**: The expectations of the jsonsubschema tool's own tests.
 
-The path of a case in `containment-testsuite` is `<category>/<keyword>/<number>`, with `optional/` before the keyword for the cases the official suite marks optional. `synthesized` has the draft in front: `draft4/valid/minimum/3`. The category says how the pair was built from a schema S of the official JSON Schema Test Suite:
+### Pairs built from the test suite
 
-- **`valid`**: B is a `const` of one of the suite's instances and A is S.
-- **`nonvalid`**: The same instance against `not S`.
-- **`unions`**: B is an `anyOf` of several instances and A is S.
+A test case of the [official JSON Schema Test Suite](https://github.com/json-schema-org/JSON-Schema-Test-Suite) is a schema S with instances that are valid under it or not. The build turns each of the 450 test cases that hold for draft 2020-12 into pairs of six kinds:
+
+- **`valid`**: S against the `const` of one instance. S subsumes it exactly when the instance is valid.
+- **`nonvalid`**: `not S` against the same `const`. The answer is the opposite.
+- **`unions`**: S against an `anyOf` of the `const` of every valid instance, when there are several.
 - **`reflexive`**: S against itself.
-- **`universal`**: `anyOf: [S, not S]` against `true`.
-- **`unsatisfiable`**: `allOf: [S, not S]` against `false`.
+- **`universal`**: `true` against `anyOf: [S, not S]`.
+- **`unsatisfiable`**: `false` against `allOf: [S, not S]`.
 
-`synthesized` is largely a near-duplicate of `containment-testsuite`, so a report should not add the two up.
+The last three answer both directions. The kinds are those of the [containment test suite](https://github.com/sdbs-uni-p/json-schema-containment-testsuite) of Attouche et al., which built such pairs from the suite as it was in 2021.
+
+The path of a case names the suite's file, the position of the test case in it, the kind, and for `valid` and `nonvalid` the position of the test: `minimum/0/valid/2` is built from the third test of the first test case of `minimum.json`, and `optional/bignum/3/reflexive` from the fourth test case of `optional/bignum.json`. Positions count from zero, like the JSON pointer in `upstream`.
+
+Where S stands inside another schema, it is a copy of S if S neither names a location nor refers to one. Any other S stands under `$defs` once, as a schema resource with an `$id`, and is referenced by that `$id`. It keeps the `$id` it has, or gets `https://subsumes-benchmark.example/schema`.
+
+A test case is not used when it is for other drafts, when it belongs to a proposal, or when it expects `format` to be an annotation. A pair that repeats both schemas of another one is built once, which leaves out 182 pairs.
+
+`synthesized` holds the pairs that the containment test suite built for drafts 4, 6 and 2019-09. Its paths have the draft in front and the kind before the keyword: `draft4/valid/minimum/3`. It is largely a near-duplicate of `json-schema-test-suite`, so a report should not add the two up.
 
 ## Departures from upstream
 
-The corpus leaves out eight upstream cases, because a schema in them is not valid draft 2020-12 or a reference in it does not resolve. Every schema that is in the corpus is therefore valid, and every reference in it resolves. [`overrides.toml`](overrides.toml) lists the eight with the reason.
+The corpus leaves out four cases of the inclusion artifact and 21 test cases of the test suite. [`overrides.toml`](overrides.toml) lists them with the reason:
 
-The same file lists every case whose labels differ from upstream's, with the reason, which is copied into the case's `note`. There are 163 such cases:
+| Reason | Left out |
+| --- | --- |
+| A schema is not valid draft 2020-12 | 4 cases of `additional-as-uneval` |
+| The schema declares another dialect, or references a schema of an older draft | 6 test cases |
+| The schema references a document by a URL other than the document's `$id`, which a schema that stands on its own cannot express | 2 test cases |
+| The expected results are not those of draft 2020-12 with `format` asserted: `dependencies` still working, an unknown format | 8 test cases |
+| The test case tells numbers apart by digits that a double does not hold | 5 test cases |
+
+Every schema that is in the corpus is therefore valid, and every reference in it resolves.
+
+The same file lists every case whose labels differ from upstream's, with the reason, which is copied into the case's `note`. For a case built from the test suite, upstream's label is what the suite's expected result gives. There are 85 such cases:
 
 | Reason | Cases | What the corpus does |
 | --- | --- | --- |
-| A pattern is not valid in the Rust regex dialect | 50 | Claims nothing |
-| Upstream's label does not hold | 32 | Corrects 4, claims nothing for 28 |
-| Upstream's label holds only if `format` is an annotation | 63 | Claims nothing |
-| Upstream's label depends on the regex dialect | 18 | Corrects all 18 |
+| A pattern is not valid in the Rust regex dialect | 52 | Claims nothing |
+| Upstream's label does not hold | 2 | Claims nothing |
+| Upstream's label holds only if `format` is an annotation | 6 | Claims nothing |
+| Upstream's label depends on the regex dialect | 25 | Corrects all 25 |
 
 Two limits remain:
 
-- **Patterns.** 6,048 labelled cases use patterns. In 291 of them `b.json` only lists its instances, so the label can be checked by validating those instances against `a.json`; the tests do that with Rust regex matching, for these and for 2,080 such cases without patterns. The other 5,757 labels come from upstream tools that read patterns in their own dialect. They are kept as they are until a checker disagrees and the dialect turns out to be the reason.
+- **Patterns.** 6,226 labelled cases use patterns. In 431 of them `b.json` only lists its instances, so the label can be checked by validating those instances against `a.json`; the tests do that with Rust regex matching, for these and for 3,001 such cases without patterns. Another 114 compare a schema of the test suite with itself or its negation, which holds in any dialect. The other 5,681 labels come from upstream tools that read patterns in their own dialect. They are kept as they are until a checker disagrees and the dialect turns out to be the reason.
 - **Formats.** Upstream's witness generator asserts only a few formats. A label of a `witness-generator` collection that hinges on a format may therefore not hold with every format asserted; six such cases are known and listed.
 
 ## How the sources are converted
 
-The containment test suite is taken as it is. The inclusion artifact stores each test as one fused document, `{"allOf": [S1, {"not": S2}]}`, with both sides' definitions hoisted to the top level, every other pointer prefixed with its path in the fused document, and the answer given by the directory (`sat`, `unsat` or `unknown`). The build undoes each step and then converts each side to draft 2020-12:
+The pairs of `json-schema-test-suite` are built as [described above](#pairs-built-from-the-test-suite). The suite gives the documents that a schema references next to it, by URL; they are embedded like those of the artifact. The inclusion artifact stores each test as one fused document, `{"allOf": [S1, {"not": S2}]}`, with both sides' definitions hoisted to the top level, every other pointer prefixed with its path in the fused document, and the answer given by the directory (`sat`, `unsat` or `unknown`). The build undoes each step and then converts each side to draft 2020-12:
 
 - `definitions` and the hoisted groups become one `$defs`.
 - Array-form `items` becomes `prefixItems`, and `additionalItems` becomes `items`.
@@ -129,7 +151,7 @@ The containment test suite is taken as it is. The inclusion artifact stores each
 - A document that a schema references is embedded in it under `$defs`, named by its URL and with that URL as its `$id`, together with the documents that it references in turn. No reference changes. A reference to the URL of the schema itself stays a reference to the schema.
 - Unknown keywords and `format` are kept as written.
 
-Both upstream sources list the narrower schema first, so `b.json` is upstream's first schema and `a.json` its second. In `agripparc-1.2_v2_not_v1`, `b.json` is version 2 and `a.json` is version 1.
+The artifact lists the narrower schema first, so `b.json` is its first schema and `a.json` its second. In `agripparc-1.2_v2_not_v1`, `b.json` is version 2 and `a.json` is version 1.
 
 ## Repository layout
 
@@ -139,7 +161,7 @@ Both upstream sources list the narrower schema first, so `b.json` is upstream's 
 | `collections.toml` | The collections and the upstream dataset each is built from |
 | `overrides.toml` | Every departure from upstream, with the reason: the cases left out and the labels changed |
 | `sources/` | The upstream repositories as submodules, fetched only to rebuild |
-| `src/subsumes_benchmark/` | The build: `unfuse`, `convert`, `build` |
+| `src/subsumes_benchmark/` | The build: `testsuite`, `unfuse`, `convert`, `build` |
 | `tests/` | The layout of the corpus, the validity of its schemas, the labels that can be checked |
 
 ## Rebuilding the corpus
@@ -176,6 +198,6 @@ The `Release` workflow then runs every check on the tagged commit, builds the ar
 
 The code in this repository is MIT licensed. The corpus keeps the licences of its sources, which each `collection.json` names; the licence texts are in [`corpus/licenses/`](corpus/licenses).
 
-`containment-testsuite` comes from [sdbs-uni-p/json-schema-containment-testsuite](https://github.com/sdbs-uni-p/json-schema-containment-testsuite) (MIT, Stefanie Scherzinger, University of Passau), described in Lyes Attouche, Mohamed-Amine Baazizi, Dario Colazzo, Yunchen Ding, Michael Fruth, Giorgio Ghelli, Carlo Sartiani and Stefanie Scherzinger, *A Test Suite for JSON Schema Containment*, ER 2021 Demos and Posters, CEUR Workshop Proceedings 2958. Its schemas come from [json-schema-org/JSON-Schema-Test-Suite](https://github.com/json-schema-org/JSON-Schema-Test-Suite) (MIT, Julian Berman).
+`json-schema-test-suite` is built from [json-schema-org/JSON-Schema-Test-Suite](https://github.com/json-schema-org/JSON-Schema-Test-Suite) (MIT, Julian Berman). The kinds of pairs are those of [sdbs-uni-p/json-schema-containment-testsuite](https://github.com/sdbs-uni-p/json-schema-containment-testsuite) (Stefanie Scherzinger, University of Passau), described in Lyes Attouche, Mohamed-Amine Baazizi, Dario Colazzo, Yunchen Ding, Michael Fruth, Giorgio Ghelli, Carlo Sartiani and Stefanie Scherzinger, *A Test Suite for JSON Schema Containment*, ER 2021 Demos and Posters, CEUR Workshop Proceedings 2958. Until version 0.4.0 the corpus took that suite's draft 2020-12 pairs as they were.
 
 The eight other collections come from the artifact of Mohamed-Amine Baazizi, Nour El Houda Ben Ali, Dario Colazzo, Giorgio Ghelli, Stefan Klessinger, Carlo Sartiani and Stefanie Scherzinger, *JSON Schema Inclusion through Refutational Normalization: Reconciling Efficiency and Completeness* ([arXiv:2603.25306](https://arxiv.org/abs/2603.25306), 2026), at [gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema](https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema), GPL-3.0. Five of them were assembled for *Witness Generation for JSON Schema* (Lyes Attouche, Mohamed-Amine Baazizi, Dario Colazzo, Giorgio Ghelli, Carlo Sartiani and Stefanie Scherzinger, PVLDB 15(13), 2022; reproduction package [sdbs-uni-p/JSONSchemaWitnessGeneration](https://github.com/sdbs-uni-p/JSONSchemaWitnessGeneration)) and *Witness Generation for Classical JSON Schema* (same authors, ACM TODS 51(4), 2026). The schemas inside come from [IBM/jsonsubschema](https://github.com/IBM/jsonsubschema)'s tests (Apache-2.0; Andrew Habib, Avraham Shinnar, Martin Hirzel and Michael Pradel, *Finding Data Compatibility Bugs with JSON Subschema Checking*, ISSTA 2021), from [SchemaStore](https://github.com/SchemaStore/schemastore) (Apache-2.0), from the official JSON Schema Test Suite (MIT), from schemas found on GitHub, and from the authors' own hand-written cases. The documents that `rb-testset` references (Snowplow Iglu Central and Washington Post ANS schemas) come from the artifact's cache and are embedded in the schemas that reference them.
