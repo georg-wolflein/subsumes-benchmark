@@ -2,7 +2,7 @@ This project is a benchmark corpus for JSON Schema inclusion checking (does sche
 
 ## Tooling
 
-Everything runs through `uv`. `make ci` runs what CI runs on a pull request: `ruff check`, `ruff format --check`, `ty check`, `pytest`. `make format` fixes what ruff can fix. Configuration lives in `pyproject.toml`; CI is `.github/workflows/ci.yml` (tests on Python 3.14, plus a `corpus` job that runs the slow tests over every schema of the corpus; `make test-corpus` runs them locally in a few minutes). `.github/workflows/release.yml` publishes a release when `make release` pushes a `v<version>` tag. `.github/workflows/pr-title.yml` checks the title of every pull request.
+Everything runs through `uv`. `make ci` runs what CI runs on a pull request: `ruff check`, `ruff format --check`, `ty check`, `pytest`. `make format` fixes what ruff can fix. Configuration lives in `pyproject.toml`; CI is `.github/workflows/ci.yml` (tests on Python 3.14, plus a `corpus` job that runs the slow tests over every schema of the corpus; `make test-corpus` runs them locally in a few minutes). `.github/workflows/release.yml` publishes a release when `make release` pushes a `v<version>` tag. `.github/workflows/pr-title.yml` checks the title of every pull request. `.github/workflows/comparison.yml` runs the checkers under `checkers/` over the corpus: over every task after a release or when started by hand, and over a sample on a pull request that carries the `comparison` label.
 
 ## Rules
 
@@ -15,7 +15,10 @@ Everything runs through `uv`. `make ci` runs what CI runs on a pull request: `ru
 - Every schema in the corpus is valid draft 2020-12 and every reference in it resolves. An upstream case that is not is left out through an `[[exclude]]` entry in `overrides.toml`, with the reason. So is a test case of the official test suite whose expected results are not those of draft 2020-12 with `format` asserted.
 - The labels hold for draft 2020-12 with `format` asserted and patterns read in the dialect of the Rust `regex` crate. Do not assume ECMA-262 patterns, and do not use Python's `re` to decide what a pattern matches; `tests/validation.py` has the matcher.
 - `a.json` is the schema that should accept everything and `b.json` the one whose instances must be accepted. Keep that orientation in every name: `a_subsumes_b`, `subsumes(a, b)`.
-- The build uses the standard library only. What only the tests need goes in the `dev` dependency group.
+- The build uses the standard library only, and so does running a checker (`subsumes_benchmark.compare`). What only the tests need goes in the `dev` dependency group, and what only the report needs in the `report` group.
+- `comparison/` and the part of the README between the `comparison` markers are written by the `Comparison` workflow; never edit them by hand.
+- A checker is used from a package index at a pinned version wherever it is published to one. The `version` in its `checker.toml` is the version its folder pins.
+- `checkers/rwg/` is GPL-3.0, because it is compiled together with RWG. Nothing outside that folder may link to RWG.
 
 ## Coding Conventions
 

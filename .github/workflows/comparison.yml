@@ -1,0 +1,176 @@
+name: Comparison
+
+# Runs every checker under checkers/ over the corpus and reports on them.
+#
+# - By hand, and by the release workflow after it published a release: over every task.
+#   A pull request with the report is opened where the COMPARISON_APP_ID variable and the
+#   COMPARISON_APP_PRIVATE_KEY secret name a GitHub App that may do so.
+# - On a pull request that carries the `comparison` label: over a sample of 300 tasks, to
+#   see that every adapter still builds and answers. Nothing is published.
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: Run only this many tasks, a random sample. Empty runs every task.
+        type: string
+        default: ""
+  pull_request:
+    types: [labeled, opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: comparison-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  FORCE_COLOR: 1
+
+jobs:
+  # One job per checker, each alone on its machine, so that no checker's time depends on
+  # what another one is doing.
+  run:
+    if: github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'comparison')
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix:
+        checker: [confluent, jsoncompat, jsoncompat-python, jsonsubschema, rwg]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # the tags, for what the report says the corpus is
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          python-version: "3.14"
+          enable-cache: true
+      - name: Fetch the sources of RWG
+        if: matrix.checker == 'rwg'
+        run: git submodule update --init --checkout sources/inclusion-artifact
+      - uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
+        if: matrix.checker == 'confluent' || matrix.checker == 'rwg'
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: ${{ matrix.checker == 'rwg' && 'sbt' || 'maven' }}
+          cache-dependency-path: checkers/${{ matrix.checker }}/${{ matrix.checker == 'rwg' && 'build.sbt' || 'pom.xml' }}
+      - uses: sbt/setup-sbt@67d461eba2c4753196c230e02da850757ba4775e # v1.5.14
+        if: matrix.checker == 'rwg'
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        if: matrix.checker == 'jsoncompat'
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            checkers/jsoncompat/target
+          key: cargo-${{ runner.os }}-${{ hashFiles('checkers/jsoncompat/Cargo.lock') }}
+      - run: uv sync
+      - name: Run the checker
+        env:
+          LIMIT: ${{ github.event_name == 'pull_request' && '300' || inputs.limit }}
+        run: uv run python -m subsumes_benchmark.compare run "${{ matrix.checker }}" --out results ${LIMIT:+--limit "$LIMIT"}
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: ${{ !cancelled() }}
+        with:
+          name: results-${{ matrix.checker }}
+          path: results/${{ matrix.checker }}
+          if-no-files-found: error
+
+  # The report on the runs: a summary of this workflow run and an artifact, and for a
+  # release a file of the release.
+  report:
+    needs: run
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # to add the results to a release
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          python-version: "3.14"
+          enable-cache: true
+      - run: uv sync --group report
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: results-*
+          path: results
+      - name: Write the report
+        run: |
+          uv run python -m subsumes_benchmark.compare report results --out comparison
+          cat comparison/report.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: comparison
+          path: |
+            comparison
+            results
+      - name: Add the results to the release
+        if: github.ref_type == 'tag' && inputs.limit == ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tar --sort=name --mtime=@0 --owner=0 --group=0 --numeric-owner -cf - comparison results \
+            | zstd -19 -T0 -o comparison.tar.zst
+          gh release upload "$GITHUB_REF_NAME" comparison.tar.zst --clobber
+
+  # A pull request that puts the report into the repository, where the README shows it. It
+  # is opened by a GitHub App: a pull request opened with this workflow's own token would
+  # not start the checks that a merge requires.
+  publish:
+    needs: report
+    if: github.event_name == 'workflow_dispatch' && inputs.limit == '' && vars.COMPARISON_APP_ID != ''
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        id: app
+        with:
+          app-id: ${{ vars.COMPARISON_APP_ID }}
+          private-key: ${{ secrets.COMPARISON_APP_PRIVATE_KEY }}
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          fetch-depth: 0
+          token: ${{ steps.app.outputs.token }}
+      - name: Check that main still has the corpus that was measured
+        # The report is written here again, next to main's README, and reads the corpus for
+        # what each case uses. A run on a commit whose corpus main has left behind is not
+        # published; its report is in the artifact.
+        run: |
+          git fetch --quiet origin "$GITHUB_SHA"
+          test "$(git rev-parse "$GITHUB_SHA:corpus")" = "$(git rev-parse HEAD:corpus)"
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          python-version: "3.14"
+          enable-cache: true
+      - run: uv sync --group report
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: results-*
+          path: ${{ runner.temp }}/results
+      - name: Write the report and show it in the README
+        run: uv run python -m subsumes_benchmark.compare report "$RUNNER_TEMP/results" --out comparison --readme README.md
+      - name: Open or update the pull request
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+          SLUG: ${{ steps.app.outputs.app-slug }}
+        run: |
+          if git diff --quiet -- comparison README.md && test -z "$(git status --porcelain -- comparison)"; then
+            echo "The report did not change." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          corpus="$(jq -r .corpus "$(ls "$RUNNER_TEMP"/results/*/run.json | head -n 1)")"
+          title="docs: update the checker comparison for $corpus"
+          git config user.name "$SLUG[bot]"
+          git config user.email "$(gh api "/users/$SLUG[bot]" --jq .id)+$SLUG[bot]@users.noreply.github.com"
+          git switch --force-create comparison/report
+          git add comparison README.md
+          git commit --quiet --message "$title"
+          git push --force origin comparison/report
+          body="The report of [this run]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID) over corpus \`$corpus\`. The raw results are an artifact of the run."
+          if test -n "$(gh pr list --head comparison/report --state open --json number --jq '.[].number')"; then
+            gh pr edit comparison/report --title "$title" --body "$body"
+          else
+            gh pr create --base main --head comparison/report --title "$title" --body "$body"
+          fi
