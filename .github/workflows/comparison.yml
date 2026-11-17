@@ -15,13 +15,16 @@ on:
         type: string
         default: ""
   pull_request:
-    types: [labeled, opened, synchronize, reopened]
+    # Not `opened`: a pull request that is opened with the label is `labeled` as well.
+    types: [labeled, synchronize, reopened]
 
 permissions:
   contents: read
 
+# A new push replaces the run of the push before it. Another label than `comparison` starts
+# nothing, and is kept in a group of its own so that it does not cancel a run either.
 concurrency:
-  group: comparison-${{ github.event.pull_request.number || github.ref }}
+  group: comparison-${{ github.event.pull_request.number || github.ref }}-${{ github.event.action == 'labeled' && github.event.label.name != 'comparison' && 'other-label' || 'run' }}
   cancel-in-progress: true
 
 env:
@@ -31,7 +34,10 @@ jobs:
   # One job per checker, each alone on its machine, so that no checker's time depends on
   # what another one is doing.
   run:
-    if: github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'comparison')
+    if: >-
+      github.event_name != 'pull_request'
+      || (contains(github.event.pull_request.labels.*.name, 'comparison')
+          && (github.event.action != 'labeled' || github.event.label.name == 'comparison'))
     runs-on: ubuntu-latest
     timeout-minutes: 300
     strategy:
