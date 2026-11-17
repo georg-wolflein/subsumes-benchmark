@@ -484,7 +484,7 @@ def markdown(entries: Sequence[Entry], with_format: frozenset[str], all_tasks: i
         "asked.\n"
         "- **Labels.** Most labels of five collections come from the witness generator that "
         "RWG succeeds, so they favour RWG by construction.\n"
-        "- **Duplicates.** `synthesized` largely repeats `containment-testsuite`, so the two "
+        "- **Duplicates.** `synthesized` largely repeats `json-schema-test-suite`, so the two "
         "should not be read as independent evidence.",
     ]
     return "\n\n".join(parts) + "\n"
