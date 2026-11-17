@@ -2,7 +2,7 @@ This project is a benchmark corpus for JSON Schema inclusion checking (does sche
 
 ## Tooling
 
-Everything runs through `uv`. `make ci` runs what CI runs on a pull request: `ruff check`, `ruff format --check`, `ty check`, `pytest`. `make format` fixes what ruff can fix. Configuration lives in `pyproject.toml`; CI is `.github/workflows/ci.yml` (tests on Python 3.14, plus a `corpus` job that runs the slow tests over every schema of the corpus; `make test-corpus` runs them locally in a few minutes). `.github/workflows/release.yml` publishes a release when `make release` pushes a `v<version>` tag. `.github/workflows/pr-title.yml` checks the title of every pull request. `.github/workflows/comparison.yml` runs the checkers under `checkers/` over the corpus: over every task after a release or when started by hand, and over a sample on a pull request that carries the `comparison` label.
+Everything runs through `uv`. `make ci` runs what CI runs on a pull request: `ruff check`, `ruff format --check`, `ty check`, `pytest`. `make format` fixes what ruff can fix. Configuration lives in `pyproject.toml`; CI is `.github/workflows/ci.yml` (tests on Python 3.14, plus a `corpus` job that runs the slow tests over every schema of the corpus; `make test-corpus` runs them locally in a few minutes). `.github/workflows/release.yml` runs release-please, configured in `release-please-config.json`: it keeps a release pull request open, and publishes the release when that pull request is merged. `.github/workflows/pr-title.yml` checks the title of every pull request. `.github/workflows/comparison.yml` runs the checkers under `checkers/` over the corpus: over every task after a release or when started by hand, and over a sample on a pull request that carries the `comparison` label.
 
 ## Rules
 
@@ -10,6 +10,8 @@ Everything runs through `uv`. `make ci` runs what CI runs on a pull request: `ru
 - Every change reaches `main` through a pull request; a ruleset rejects a direct push.
 - Commit messages and pull request titles follow the Conventional Commits format.
 - Pull requests are squash-merged, so the PR title becomes the commit message on `main`.
+- The titles decide the next version, so the type says what a change does to the corpus: `!` when a reader has to change, `feat` when a label, a schema or the set of cases changes, even to correct a mistake, and `fix` for anything else worth a release. The README's section on development has the table.
+- The release pull request raises the version. Never change the version in `pyproject.toml`, `uv.lock` or `.release-please-manifest.json` by hand.
 - `corpus/` is generated; never edit it by hand. Change `collections.toml`, `overrides.toml` or the code under `src/`, then run `make corpus` (after `make sources`, once) and commit the result.
 - A label that departs from upstream's needs an entry in `overrides.toml` with the reason. Nothing else may change a label. For a case built from the official test suite, upstream's label is what the suite's expected result gives.
 - Every schema in the corpus is valid draft 2020-12 and every reference in it resolves. An upstream case that is not is left out through an `[[exclude]]` entry in `overrides.toml`, with the reason. So is a test case of the official test suite whose expected results are not those of draft 2020-12 with `format` asserted.

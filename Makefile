@@ -1,4 +1,4 @@
-.PHONY: ci lint format format-check typecheck test test-corpus sources corpus compare report release
+.PHONY: ci lint format format-check typecheck test test-corpus sources corpus compare report
 
 ci: lint format-check typecheck test  ## what CI runs on every change, without the slow corpus tests
 
@@ -32,9 +32,3 @@ compare:  ## run every checker under checkers/ over the corpus into results/; ho
 
 report:  ## write the report on the runs in results/ to comparison/
 	uv run --group report python -m subsumes_benchmark.compare report results
-
-release:  ## tag what is on main with the version in pyproject.toml and push the tag; CI publishes the release
-	git fetch --quiet origin main
-	test "$$(git rev-parse HEAD)" = "$$(git rev-parse origin/main)"
-	git tag "v$$(uv version --short)"
-	git push origin "v$$(uv version --short)"
