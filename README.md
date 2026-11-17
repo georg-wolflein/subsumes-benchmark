@@ -233,7 +233,7 @@ make format        # apply ruff's fixes and formatting
 
 CI runs both on every push and pull request. The slow tests check that every schema is valid draft 2020-12, that every reference resolves, that every case lists the features of its schemas, and that every label that validation can check holds.
 
-Releases are made by [release-please](https://github.com/googleapis/release-please). It keeps one pull request open, `chore(main): release <version>`, that raises the version in `pyproject.toml` and `uv.lock` and lists what the release holds. Merging that pull request publishes the release: the `Release` workflow tags the merged commit `v<version>`, builds the archive and attaches it. Not every commit on `main` is released; the pull request waits and takes in what is merged meanwhile.
+Releases are made by [release-please](https://github.com/googleapis/release-please). It keeps one pull request open, `chore(main): release <version>`, that raises the version in `pyproject.toml` and `uv.lock` and lists what the release holds. Merging that pull request publishes the release: the `Release` workflow tags the merged commit `v<version>`, builds the archive and attaches it. Not every commit on `main` is released; the pull request waits and takes in what is merged meanwhile. The slow tests do not run on it, because it changes the version and nothing in the corpus.
 
 The titles of the pull requests merged since the last release decide the version. So the type in a title follows what the change does to the corpus, by the versioning [above](#releases), and not why it was made:
 
