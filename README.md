@@ -233,14 +233,17 @@ make format        # apply ruff's fixes and formatting
 
 CI runs both on every push and pull request. The slow tests check that every schema is valid draft 2020-12, that every reference resolves, that every case lists the features of its schemas, and that every label that validation can check holds.
 
-To publish a release:
+Releases are made by [release-please](https://github.com/googleapis/release-please). It keeps one pull request open, `chore(main): release <version>`, that raises the version in `pyproject.toml` and `uv.lock` and lists what the release holds. Merging that pull request publishes the release: the `Release` workflow tags the merged commit `v<version>`, builds the archive and attaches it. Not every commit on `main` is released; the pull request waits and takes in what is merged meanwhile.
 
-```bash
-uv version --bump minor   # or major or patch; merge the change through a pull request
-make release              # on the merged main: tags it v<version> and pushes the tag
-```
+The titles of the pull requests merged since the last release decide the version. So the type in a title follows what the change does to the corpus, by the versioning [above](#releases), and not why it was made:
 
-The `Release` workflow then runs every check on the tagged commit, builds the archive and publishes the release. Not every commit on `main` is released.
+| Title | Version | For |
+| --- | --- | --- |
+| `feat!:`, or another type with `!` | Major, or minor before 1.0.0 | A change that a reader has to follow |
+| `feat:` | Minor | A change to a label, a schema or the set of cases, also where it corrects a mistake |
+| `fix:`, `perf:`, `revert:` | Patch | Anything else that is worth a release |
+
+A pull request of another type, such as `docs`, `ci` or `chore`, opens no release pull request; it goes out with the next release. A pull request is squash-merged with its description as the body of the commit, and release-please reads that too: a last line `Release-As: 1.0.0` in a description sets the next version outright.
 
 ## Credits and licences
 
