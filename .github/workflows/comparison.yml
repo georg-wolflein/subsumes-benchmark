@@ -3,8 +3,8 @@ name: Comparison
 # Runs every checker under checkers/ over the corpus and reports on them.
 #
 # - By hand, and by the release workflow after it published a release: over every task.
-#   A pull request with the report is opened where the COMPARISON_APP_CLIENT_ID variable and the
-#   COMPARISON_APP_PRIVATE_KEY secret name a GitHub App that may do so.
+#   A pull request with the report is opened where the PR_BOT_CLIENT_ID variable and the
+#   PR_BOT_PRIVATE_KEY secret name a GitHub App that may do so.
 # - On a pull request that carries the `comparison` label: over a sample of 300 tasks, to
 #   see that every adapter still builds and answers. Nothing is published.
 on:
@@ -126,14 +126,14 @@ jobs:
   # not start the checks that a merge requires.
   publish:
     needs: report
-    if: github.event_name == 'workflow_dispatch' && inputs.limit == '' && vars.COMPARISON_APP_CLIENT_ID != ''
+    if: github.event_name == 'workflow_dispatch' && inputs.limit == '' && vars.PR_BOT_CLIENT_ID != ''
     runs-on: ubuntu-latest
     steps:
       - uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         id: app
         with:
-          client-id: ${{ vars.COMPARISON_APP_CLIENT_ID }}
-          private-key: ${{ secrets.COMPARISON_APP_PRIVATE_KEY }}
+          client-id: ${{ vars.PR_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.PR_BOT_PRIVATE_KEY }}
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: main
