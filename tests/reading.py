@@ -63,6 +63,7 @@ class Case:
     b_subsumes_a: bool | None
     upstream: str
     note: str | None
+    features: Sequence[str]
 
     @property
     def a(self) -> Json:
@@ -96,8 +97,10 @@ def cases() -> Sequence[Case]:
         metadata = read(path)
         assert isinstance(metadata, dict)
         upstream, note = metadata["upstream"], metadata.get("note")
+        used = metadata["features"]
         assert isinstance(upstream, str)
         assert note is None or isinstance(note, str)
+        assert isinstance(used, list)
         found.append(
             Case(
                 id=path.parent.relative_to(CORPUS).as_posix(),
@@ -106,6 +109,7 @@ def cases() -> Sequence[Case]:
                 b_subsumes_a=_label(metadata["b_subsumes_a"]),
                 upstream=upstream,
                 note=note,
+                features=[str(feature) for feature in used],
             )
         )
     return found

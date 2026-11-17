@@ -7,6 +7,7 @@
   "required": [
     "a_subsumes_b",
     "b_subsumes_a",
+    "features",
     "upstream"
   ],
   "additionalProperties": false,
@@ -24,6 +25,57 @@
         "null"
       ],
       "description": "The same question in the other direction."
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "$dynamicRef",
+          "$ref",
+          "additionalProperties",
+          "allOf",
+          "anyOf",
+          "const",
+          "contains",
+          "dependentRequired",
+          "dependentSchemas",
+          "else",
+          "enum",
+          "exclusiveMaximum",
+          "exclusiveMinimum",
+          "format",
+          "if",
+          "items",
+          "maxContains",
+          "maxItems",
+          "maxLength",
+          "maxProperties",
+          "maximum",
+          "metaschema",
+          "minContains",
+          "minItems",
+          "minLength",
+          "minProperties",
+          "minimum",
+          "multipleOf",
+          "not",
+          "oneOf",
+          "pattern",
+          "patternProperties",
+          "prefixItems",
+          "properties",
+          "propertyNames",
+          "recursion",
+          "required",
+          "then",
+          "type",
+          "unevaluatedItems",
+          "unevaluatedProperties",
+          "uniqueItems"
+        ]
+      },
+      "uniqueItems": true,
+      "description": "What the two schemas use, in the order of this list: every keyword that validation can reach and that decides what a schema accepts, 'recursion' when a schema is reached again from itself through a reference, and 'metaschema' when a reference leads to a meta-schema of the draft, whose own keywords are not listed."
     },
     "upstream": {
       "type": "string",

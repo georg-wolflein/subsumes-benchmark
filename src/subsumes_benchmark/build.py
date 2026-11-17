@@ -10,10 +10,11 @@ Two sources are read at the commits their submodules pin:
    schemas (``unfuse``) and converted to draft 2020-12 (``convert``).
 
 Every case becomes one folder ``corpus/<collection>/.../<name>/`` holding ``a.json``,
-``b.json`` and ``case.json``. The question a case asks is always whether ``a.json`` accepts
-every instance valid under ``b.json``. The artifact lists the narrower schema first, so
-``b.json`` is its first schema and ``a.json`` its second. A schema that references other
-documents carries them embedded (``bundled``), so every schema stands on its own.
+``b.json`` and ``case.json``, which holds the labels and what the two schemas use
+(``features``). The question a case asks is always whether ``a.json`` accepts every instance
+valid under ``b.json``. The artifact lists the narrower schema first, so ``b.json`` is its
+first schema and ``a.json`` its second. A schema that references other documents carries them
+embedded (``bundled``), so every schema stands on its own.
 
 ``collections.toml`` names the collections and where each comes from; ``overrides.toml``
 lists the cases that are left out and the cases whose label departs from upstream's. Run from
@@ -44,6 +45,7 @@ from subsumes_benchmark.convert import (
     dialect_of,
     nested,
 )
+from subsumes_benchmark.features import FEATURES, features
 from subsumes_benchmark.testsuite import SuiteCase, pairs
 from subsumes_benchmark.unfuse import unfuse
 
@@ -79,7 +81,7 @@ CASE_SCHEMA: dict[str, Json] = {
         "and patterns read in the dialect of the Rust regex crate."
     ),
     "type": "object",
-    "required": ["a_subsumes_b", "b_subsumes_a", "upstream"],
+    "required": ["a_subsumes_b", "b_subsumes_a", "features", "upstream"],
     "additionalProperties": False,
     "properties": {
         "a_subsumes_b": {
@@ -92,6 +94,18 @@ CASE_SCHEMA: dict[str, Json] = {
         "b_subsumes_a": {
             "type": ["boolean", "null"],
             "description": "The same question in the other direction.",
+        },
+        "features": {
+            "type": "array",
+            "items": {"enum": list(FEATURES)},
+            "uniqueItems": True,
+            "description": (
+                "What the two schemas use, in the order of this list: every keyword that "
+                "validation can reach and that decides what a schema accepts, 'recursion' "
+                "when a schema is reached again from itself through a reference, and "
+                "'metaschema' when a reference leads to a meta-schema of the draft, whose "
+                "own keywords are not listed."
+            ),
         },
         "upstream": {
             "type": "string",
@@ -194,6 +208,7 @@ class Case:
         out: dict[str, Json] = {
             "a_subsumes_b": self.a_subsumes_b,
             "b_subsumes_a": self.b_subsumes_a,
+            "features": list(features(self.a, self.b)),
             "upstream": self.upstream,
         }
         if self.note is not None:
