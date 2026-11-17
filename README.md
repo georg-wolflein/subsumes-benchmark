@@ -149,7 +149,7 @@ A **task** is one question of the corpus: every case asks whether A subsumes B, 
 
 A checker that reads an older draft gets every schema rewritten to that draft; where the draft cannot express a schema, the checker is not asked. [`checkers/`](checkers/README.md) has one folder per checker and describes how a checker is plugged in.
 
-The `Comparison` workflow runs every checker over every task after each release, and whenever it is started by hand. It then opens a pull request that updates `comparison/` and the part of this page above. A pull request that carries the `comparison` label gets a run over a sample of 300 tasks, which shows that every checker still builds and answers. To run one checker locally, with its toolchain installed:
+The `Comparison` workflow runs every checker over every task after each release, and whenever it is started by hand. It then opens a pull request that updates `comparison/` and the part of this page above. Started by hand with a limit, it runs a sample of that many tasks and publishes nothing, which shows that every checker still builds and answers. To run one checker locally, with its toolchain installed:
 
 ```bash
 uv run python -m subsumes_benchmark.compare run jsoncompat --limit 300   # writes results/jsoncompat/
