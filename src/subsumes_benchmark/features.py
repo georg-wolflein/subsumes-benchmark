@@ -1,17 +1,15 @@
 """What the two schemas of a case use: the ``features`` of its ``case.json``.
 
-A feature is a keyword of draft 2020-12 that decides what a schema accepts, or one of two
-things that are not keywords:
-
-- ``recursion``: a schema is reached again from itself, through a reference.
-- ``metaschema``: a reference leads to a meta-schema of draft 2020-12, which is not part of
-  the schema. What the meta-schema uses is not listed.
+A feature is a keyword of draft 2020-12 that decides what a schema accepts, or
+``recursion``, which is not a keyword: a schema is reached again from itself, through a
+reference.
 
 A keyword counts where validation can reach it: in the schema itself, in a subschema of a
 schema that counts, and in the target of a reference in one. A definition that nothing
 references does not count, nor does anything under a keyword that draft 2020-12 does not
-know. The list says what is written in the schemas, not what the answer depends on: saying
-that would take an inclusion checker.
+know. A reference to a meta-schema of draft 2020-12 that is not part of the schema is not
+followed. The list says what is written in the schemas, not what the answer depends on:
+saying that would take an inclusion checker.
 """
 
 from typing import TYPE_CHECKING, Literal, get_args
@@ -46,7 +44,6 @@ type Feature = Literal[
     "maxLength",
     "maxProperties",
     "maximum",
-    "metaschema",
     "minContains",
     "minItems",
     "minLength",
@@ -71,7 +68,7 @@ type Feature = Literal[
 
 # In the order a list of features is written in: that of the code points.
 FEATURES: Sequence[Feature] = get_args(Feature.__value__)
-NOT_KEYWORDS: frozenset[Feature] = frozenset({"metaschema", "recursion"})
+NOT_KEYWORDS: frozenset[Feature] = frozenset({"recursion"})
 _KEYWORDS: Mapping[str, Feature] = {name: name for name in FEATURES if name not in NOT_KEYWORDS}
 
 # The keywords that apply subschemas, by the shape of their value.
@@ -204,29 +201,24 @@ class References:
             url = self.bases.get(id(node), url)
         return node, url
 
-    def targets(self, node: dict[str, Json], base: str) -> tuple[Sequence[_Located], bool]:
-        """Where the references of one schema object lead.
+    def targets(self, node: dict[str, Json], base: str) -> Sequence[_Located]:
+        """The schema objects that the references of one schema object lead to.
 
         A ``$dynamicRef`` to a dynamic anchor may lead to every dynamic anchor of that name
-        in the document, whichever the evaluation picks.
-
-        Returns:
-            The schema objects, and whether a reference leads to a meta-schema.
+        in the document, whichever the evaluation picks. A reference to a meta-schema of
+        draft 2020-12 leads to nothing here.
         """
         found: list[_Located] = []
-        metaschema = False
         for keyword in ("$ref", "$dynamicRef"):
             reference = node.get(keyword)
             if not isinstance(reference, str):
                 continue
             resolved = self.resolve(reference, base)
-            if resolved is None:
-                metaschema = True
-            elif isinstance(resolved[0], dict):
+            if resolved is not None and isinstance(resolved[0], dict):
                 found.append((resolved[0], resolved[1]))
             if keyword == "$dynamicRef":
                 found += self.dynamic_anchors.get(unquote(urldefrag(reference).fragment), [])
-        return found, metaschema
+        return found
 
 
 def _features_of(schema: Json) -> set[Feature]:
@@ -240,10 +232,7 @@ def _features_of(schema: Json) -> set[Feature]:
         for child in _subschemas(node, unapplied=False):
             if isinstance(child, dict):
                 yield child, references.bases.get(id(child), base)
-        targets, metaschema = references.targets(node, base)
-        if metaschema:
-            found.add("metaschema")
-        yield from targets
+        yield from references.targets(node, base)
 
     # A depth-first walk without recursion, since a schema may nest deeper than Python
     # recurses. ``finished`` is false for the schemas on the path from the root.

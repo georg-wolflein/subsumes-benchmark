@@ -101,10 +101,8 @@ CASE_SCHEMA: dict[str, Json] = {
             "uniqueItems": True,
             "description": (
                 "What the two schemas use, in the order of this list: every keyword that "
-                "validation can reach and that decides what a schema accepts, 'recursion' "
-                "when a schema is reached again from itself through a reference, and "
-                "'metaschema' when a reference leads to a meta-schema of the draft, whose "
-                "own keywords are not listed."
+                "validation can reach and that decides what a schema accepts, and "
+                "'recursion' when a schema is reached again from itself through a reference."
             ),
         },
         "upstream": {

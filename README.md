@@ -36,13 +36,12 @@ Every case asks the same question: does `a.json` accept every instance valid und
 
 ## Features
 
-`features` lists what `a.json` and `b.json` use between them. An entry is a keyword of draft 2020-12 or one of two things that are not keywords:
+`features` lists what `a.json` and `b.json` use between them. An entry is a keyword of draft 2020-12 or `recursion`, which is not a keyword:
 
 | Entry | Cases | Meaning |
 | --- | --- | --- |
 | A keyword, such as `format` or `unevaluatedProperties` | | The keyword occurs where validation can reach it. |
 | `recursion` | 1,021 | A schema is reached again from itself through a reference. |
-| `metaschema` | 0 | A reference leads to a meta-schema of draft 2020-12 that is not embedded in the schema. What the meta-schema uses is then not listed; it is itself recursive. The corpus allows such a reference, and no case has one at present. |
 
 - **Which keywords.** The 40 that decide what a schema accepts: those of the applicator, unevaluated and validation vocabularies, `format`, `$ref` and `$dynamicRef`. [`corpus/case.schema.json`](corpus/case.schema.json) lists every entry. Left out are the keywords that only name or describe (`$schema`, `$id`, `$anchor`, `$dynamicAnchor`, `$defs`, `$comment`, `title`, `default` and the like), the `content*` keywords, which draft 2020-12 does not assert, and every keyword it does not know.
 - **Where a keyword counts.** In the schema itself, in a subschema of a schema that counts, and in the target of a reference in one. A definition that nothing references does not count, and neither does a property that is merely called `format`.

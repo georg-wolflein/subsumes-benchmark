@@ -117,7 +117,7 @@ def test_a_dynamic_reference_leads_to_every_dynamic_anchor_of_its_name() -> None
 
 def test_a_reference_to_a_metaschema_is_not_followed() -> None:
     schema: Json = {"$ref": "https://json-schema.org/draft/2020-12/schema"}
-    assert features(schema) == ["$ref", "metaschema"]
+    assert features(schema) == ["$ref"]
 
 
 def test_the_features_of_a_case_are_those_of_both_schemas() -> None:
