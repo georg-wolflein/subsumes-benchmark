@@ -1,0 +1,50 @@
+# /// script
+# requires-python = "==3.14.*"
+# dependencies = ["jsoncompat==0.6.0"]
+# ///
+"""The adapter for jsoncompat's Python package: answers the runner's requests, one JSON line each.
+
+"A accepts every instance of B" is jsoncompat's serializer role with A as the old schema and
+B as the new one: every value the new schema produces must be accepted by the old. The package
+wraps the Rust library, so the answers are those of ``checkers/jsoncompat`` and the time adds
+what the binding costs.
+"""
+
+import json
+import sys
+import time
+from pathlib import Path
+
+from jsoncompat import SchemaOptions, analyze_compat
+
+# The corpus's labels hold with ``format`` asserted.
+OPTIONS: SchemaOptions = {"assert_formats": True}
+
+
+def check(a: str, b: str) -> tuple[str, str | None]:
+    try:
+        result = analyze_compat(a, b, "serializer", options=OPTIONS)
+    except Exception as exc:
+        return "error", f"{type(exc).__name__}: {exc}"[:300]
+    if result["status"] == "compatible":
+        return "yes", None
+    if result["status"] == "incompatible":
+        return "no", result["counterexample_json"][:300]
+    return "unknown", result["reason"][:300]
+
+
+def main() -> None:
+    print(json.dumps({"ready": True}), flush=True)
+    for line in sys.stdin:
+        request = json.loads(line)
+        a = Path(request["a"]).read_text(encoding="utf-8")
+        b = Path(request["b"]).read_text(encoding="utf-8")
+        # The clock runs from the schemas as text to the answer. The call cannot be
+        # interrupted from Python, so the runner enforces the timeout.
+        start = time.perf_counter()
+        answer, detail = check(a, b)
+        seconds = time.perf_counter() - start
+        print(json.dumps({"answer": answer, "seconds": seconds, "detail": detail}), flush=True)
+
+
+main()

@@ -19,3 +19,18 @@ updates:
     groups:
       github-actions:
         patterns: ["*"]
+  # The checkers that the comparison pins. The label makes the Comparison workflow run a
+  # sample on the pull request, so a version that breaks an adapter shows there. The
+  # adapters written in Python pin theirs inside adapter.py, which is updated by hand.
+  - package-ecosystem: cargo
+    directory: /checkers/jsoncompat
+    schedule:
+      interval: weekly
+      day: monday
+    labels: ["dependencies", "comparison"]
+  - package-ecosystem: maven
+    directory: /checkers/confluent
+    schedule:
+      interval: weekly
+      day: monday
+    labels: ["dependencies", "comparison"]
