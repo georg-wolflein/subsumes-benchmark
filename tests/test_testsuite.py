@@ -211,7 +211,15 @@ SUITE: Json = {
 
 
 def suite(root: Path) -> Collection:
-    source = Source("suite", root, "https://example.com/suite.git", "0" * 40, "MIT", root / "L")
+    source = Source(
+        name="suite",
+        root=root,
+        repository="https://example.com/suite.git",
+        forge="github",
+        commit="0" * 40,
+        license="MIT",
+        license_file=root / "L",
+    )
     return Collection("suite", source, "tests", "by-construction", "tool-checking", "Examples.")
 
 
@@ -231,11 +239,10 @@ def test_the_test_cases_for_draft_2020_12_are_read(tmp_path: Path) -> None:
         "suite/optional/example/3/universal",
         "suite/optional/example/3/unsatisfiable",
     ]
-    assert found["suite/optional/example/0/reflexive"].upstream == (
-        "tests/optional/example.json#/tests/0"
-    )
+    file = f"https://example.com/suite/blob/{'0' * 40}/tests/optional/example.json"
+    assert found["suite/optional/example/0/reflexive"].upstream == f"{file}#/tests/0"
     valid = found["suite/optional/example/3/valid/0"]
-    assert valid.upstream == "tests/optional/example.json#/tests/3/tests/0"
+    assert valid.upstream == f"{file}#/tests/3/tests/0"
     assert (valid.b, valid.a_subsumes_b, valid.b_subsumes_a) == ({"const": "x"}, False, None)
     # The external schema is embedded under its URL, which is its $id.
     document: Json = {"$id": "http://localhost:1234/integer.json", "type": "integer"}

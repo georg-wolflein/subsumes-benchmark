@@ -22,14 +22,14 @@ Every case asks the same question: does `a.json` accept every instance valid und
   "a_subsumes_b": false,
   "b_subsumes_a": null,
   "features": ["additionalProperties", "enum", "properties", "type"],
-  "upstream": "src/test/resources/inclusion/schemastore_containment/sat/agripparc-1.2_v2_not_v1.json"
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/schemastore_containment/sat/agripparc-1.2_v2_not_v1.json"
 }
 ```
 
 - **`a_subsumes_b`**: `true` when `a.json` accepts every instance valid under `b.json`, `false` when some instance of `b.json` is not valid under `a.json`, `null` when the corpus claims nothing.
 - **`b_subsumes_a`**: The same question in the other direction. Only some cases built from the test suite answer it.
 - **`features`**: What the two schemas use, so that cases can be selected and results broken down by it; see [Features](#features).
-- **`upstream`**: The file the case comes from, as a path inside the source repository that the collection's `collection.json` names. A case built from the test suite adds a JSON pointer to the test case or the test after a `#`.
+- **`upstream`**: A permanent link to the file the case comes from, in the source repository at the commit that the collection's `collection.json` names. A case built from the test suite adds a JSON pointer to the test case or the test after a `#`.
 - **`note`**: Present only when the labels depart from upstream's, and says why.
 
 [`corpus/case.schema.json`](corpus/case.schema.json) is the schema of `case.json`.
