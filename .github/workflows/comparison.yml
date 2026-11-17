@@ -1,12 +1,11 @@
 name: Comparison
 
-# Runs every checker under checkers/ over the corpus and reports on them.
+# Runs every checker under checkers/ over the corpus and reports on them. It is started by
+# hand, and by the release workflow after it published a release.
 #
-# - By hand, and by the release workflow after it published a release: over every task.
-#   A pull request with the report is opened where the PR_BOT_CLIENT_ID variable and the
-#   PR_BOT_PRIVATE_KEY secret name a GitHub App that may do so.
-# - On a pull request that carries the `comparison` label: over a sample of 300 tasks, to
-#   see that every adapter still builds and answers. Nothing is published.
+# A run over every task opens a pull request with the report, where the PR_BOT_CLIENT_ID
+# variable and the PR_BOT_PRIVATE_KEY secret name a GitHub App that may do so. A run with
+# a limit publishes nothing: it shows that every adapter still builds and answers.
 on:
   workflow_dispatch:
     inputs:
@@ -14,17 +13,13 @@ on:
         description: Run only this many tasks, a random sample. Empty runs every task.
         type: string
         default: ""
-  pull_request:
-    # Not `opened`: a pull request that is opened with the label is `labeled` as well.
-    types: [labeled, synchronize, reopened]
 
 permissions:
   contents: read
 
-# A new push replaces the run of the push before it. Another label than `comparison` starts
-# nothing, and is kept in a group of its own so that it does not cancel a run either.
+# A new run on a branch or tag replaces the run before it.
 concurrency:
-  group: comparison-${{ github.event.pull_request.number || github.ref }}-${{ github.event.action == 'labeled' && github.event.label.name != 'comparison' && 'other-label' || 'run' }}
+  group: comparison-${{ github.ref }}
   cancel-in-progress: true
 
 env:
@@ -34,10 +29,6 @@ jobs:
   # One job per checker, each alone on its machine, so that no checker's time depends on
   # what another one is doing.
   run:
-    if: >-
-      github.event_name != 'pull_request'
-      || (contains(github.event.pull_request.labels.*.name, 'comparison')
-          && (github.event.action != 'labeled' || github.event.label.name == 'comparison'))
     runs-on: ubuntu-latest
     timeout-minutes: 300
     strategy:
@@ -75,7 +66,7 @@ jobs:
       - run: uv sync
       - name: Run the checker
         env:
-          LIMIT: ${{ github.event_name == 'pull_request' && '300' || inputs.limit }}
+          LIMIT: ${{ inputs.limit }}
         run: uv run python -m subsumes_benchmark.compare run "${{ matrix.checker }}" --out results ${LIMIT:+--limit "$LIMIT"}
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: ${{ !cancelled() }}
@@ -126,7 +117,7 @@ jobs:
   # not start the checks that a merge requires.
   publish:
     needs: report
-    if: github.event_name == 'workflow_dispatch' && inputs.limit == '' && vars.PR_BOT_CLIENT_ID != ''
+    if: inputs.limit == '' && vars.PR_BOT_CLIENT_ID != ''
     runs-on: ubuntu-latest
     steps:
       - uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0

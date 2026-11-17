@@ -69,4 +69,4 @@ Rules for an adapter:
 1. Create the folder with `checker.toml` and the adapter. Pin the checker's version, and commit a lock file where the toolchain has one.
 2. Try it on a sample: `uv run python -m subsumes_benchmark.compare run <folder> --limit 300`.
 3. Add the folder to the matrix in `.github/workflows/comparison.yml`, with the toolchain it needs, and to the table above.
-4. Open the pull request with the `comparison` label, which runs the sample for every checker.
+4. Push the branch and run the sample for every checker on it: `gh workflow run comparison.yml --ref <branch> -f limit=300`.
