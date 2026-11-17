@@ -35,8 +35,8 @@ from collections import Counter
 from dataclasses import dataclass, replace
 from decimal import Decimal
 from pathlib import Path
-from typing import TYPE_CHECKING, Literal, Self
-from urllib.parse import urldefrag, urljoin
+from typing import TYPE_CHECKING, Literal, Self, assert_never
+from urllib.parse import quote, urldefrag, urljoin
 
 from subsumes_benchmark.convert import (
     DRAFT_2020_12,
@@ -58,6 +58,9 @@ if TYPE_CHECKING:
 SOURCES = Path("sources")
 
 type LabelOrigin = Literal["by-construction", "witness-generator", "upstream-tests"]
+
+# Where a source is hosted, which decides how the address of one of its files is written.
+type Forge = Literal["github", "gitlab"]
 
 # The directory of a fused test is the artifact's answer to "is S1 included in S2?".
 VERDICT_DIRS: Mapping[str, bool | None] = {"sat": False, "unsat": True, "unknown": None}
@@ -107,10 +110,11 @@ CASE_SCHEMA: dict[str, Json] = {
         },
         "upstream": {
             "type": "string",
+            "format": "uri",
             "description": (
-                "The file this case comes from, as a path inside the source repository that "
-                "collection.json names; the test suite's cases add a JSON pointer to the test "
-                "case or the test after a '#'."
+                "A permanent link to the file this case comes from, in the source repository "
+                "at the commit that collection.json names; the test suite's cases add a JSON "
+                "pointer to the test case or the test after a '#'."
             ),
         },
         "note": {
@@ -136,6 +140,7 @@ class Source:
     name: str
     root: Path
     repository: str
+    forge: Forge
     commit: str
     license: str
     license_file: Path
@@ -145,14 +150,32 @@ class Source:
         root = SOURCES / name
         if not (root / spec["license-file"]).exists():
             raise ConfigError(f"{root} is not checked out; run `make sources`")
+        match spec["forge"]:
+            case "github" | "gitlab" as forge:
+                pass
+            case other:
+                raise ConfigError(f"source {name}: unknown forge {other}")
         return cls(
             name=name,
             root=root,
             repository=git("config", "-f", ".gitmodules", "--get", f"submodule.{root}.url"),
+            forge=forge,
             commit=git("-C", str(root), "rev-parse", "HEAD"),
             license=spec["license"],
             license_file=root / spec["license-file"],
         )
+
+    def permalink(self, path: Path) -> str:
+        """The address of a file of this source at the commit the corpus is built from."""
+        match self.forge:
+            case "github":
+                blob = "blob"
+            case "gitlab":
+                blob = "-/blob"
+            case _:
+                assert_never(self.forge)
+        file = quote(path.relative_to(self.root).as_posix())
+        return f"{self.repository.removesuffix('.git')}/{blob}/{self.commit}/{file}"
 
 
 @dataclass(frozen=True)
@@ -391,7 +414,7 @@ def read_inclusion(
                 b=sides[0],
                 a_subsumes_b=included,
                 b_subsumes_a=None,
-                upstream=path.relative_to(collection.source.root).as_posix(),
+                upstream=collection.source.permalink(path),
             )
 
 
@@ -445,14 +468,13 @@ def read_test_suite(collection: Collection, exclusions: Mapping[str, str]) -> It
         name = path.relative_to(tests_dir).with_suffix("").as_posix()
         if name.startswith("proposals/"):
             continue
-        rel = path.relative_to(collection.source.root).as_posix()
         document = json.loads(path.read_text(encoding="utf-8"), parse_float=Decimal)
         for index, exact in enumerate(document["tests"]):
             lost: set[str] = set()
             test_case = SuiteCase.create(as_doubles(exact, lost))
             if not test_case.holds_for_the_corpus:
                 continue
-            upstream = f"{rel}#/tests/{index}"
+            upstream = f"{collection.source.permalink(path)}#/tests/{index}"
             folder = f"{collection.name}/{name}/{index}"
             if lost and exclusion_of(f"{folder}/reflexive", exclusions) is None:
                 raise ConversionError(f"{upstream}: a double does not hold {sorted(lost)}")

@@ -49,6 +49,24 @@ def test_every_case_matches_the_case_schema() -> None:
     assert {case_id: errors for case_id, errors in invalid.items() if errors} == {}
 
 
+def test_every_upstream_is_a_permalink_into_the_dataset_of_its_collection() -> None:
+    blob = {"github": "blob", "gitlab": "-/blob"}
+    datasets = {}
+    for name, spec in COLLECTIONS.items():
+        manifest = read(CORPUS / name / "collection.json")
+        assert isinstance(manifest, dict)
+        source = manifest["source"]
+        assert isinstance(source, dict)
+        repository, commit, path = source["repository"], source["commit"], source["path"]
+        assert isinstance(repository, str)
+        forge = CONFIG["sources"][spec["source"]]["forge"]
+        datasets[name] = f"{repository.removesuffix('.git')}/{blob[forge]}/{commit}/{path}/"
+    elsewhere = [
+        case.id for case in cases() if not case.upstream.startswith(datasets[case.collection])
+    ]
+    assert elsewhere == []
+
+
 def test_every_collection_has_its_manifest() -> None:
     assert {path.name for path in CORPUS.iterdir() if path.is_dir()} == {*COLLECTIONS, "licenses"}
     assert {case.collection for case in cases()} == set(COLLECTIONS)

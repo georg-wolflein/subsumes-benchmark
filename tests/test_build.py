@@ -1,5 +1,6 @@
 """The two transformations of the build: splitting a fused test and converting to 2020-12."""
 
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 import pytest
@@ -7,6 +8,8 @@ import pytest
 from subsumes_benchmark.build import (
     Case,
     ConfigError,
+    Forge,
+    Source,
     bundled,
     case_name,
     load_exclusions,
@@ -16,8 +19,6 @@ from subsumes_benchmark.convert import DRAFT_2020_12, ConversionError, Converter
 from subsumes_benchmark.unfuse import unfuse
 
 if TYPE_CHECKING:
-    from pathlib import Path
-
     from subsumes_benchmark import Json
 
 
@@ -122,6 +123,27 @@ def test_synthesized_file_names_become_paths() -> None:
         == "draft4/valid/boolean_schema/3"
     )
     assert case_name("agripparc-1.2_v2_not_v1") == "agripparc-1.2_v2_not_v1"
+
+
+@pytest.mark.parametrize(
+    ("forge", "link"),
+    [
+        ("github", "https://example.com/group/suite/blob/abc123/tests/a%20b/c.json"),
+        ("gitlab", "https://example.com/group/suite/-/blob/abc123/tests/a%20b/c.json"),
+    ],
+)
+def test_a_permalink_names_the_commit_in_the_way_of_the_forge(forge: Forge, link: str) -> None:
+    root = Path("sources/suite")
+    source = Source(
+        name="suite",
+        root=root,
+        repository="https://example.com/group/suite.git",
+        forge=forge,
+        commit="abc123",
+        license="MIT",
+        license_file=root / "LICENSE",
+    )
+    assert source.permalink(root / "tests" / "a b" / "c.json") == link
 
 
 def test_excluded_cases_are_left_out_and_must_exist() -> None:
