@@ -34,7 +34,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        checker: [confluent, jsoncompat, jsoncompat-python, jsonsubschema, rwg]
+        checker: [confluent, jsoncompat, jsoncompat-python, jsonsubschema, rwg, subsumes]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -56,13 +56,13 @@ jobs:
       - uses: sbt/setup-sbt@67d461eba2c4753196c230e02da850757ba4775e # v1.5.14
         if: matrix.checker == 'rwg'
       - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        if: matrix.checker == 'jsoncompat'
+        if: matrix.checker == 'jsoncompat' || matrix.checker == 'subsumes'
         with:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
-            checkers/jsoncompat/target
-          key: cargo-${{ runner.os }}-${{ hashFiles('checkers/jsoncompat/Cargo.lock') }}
+            checkers/${{ matrix.checker }}/target
+          key: cargo-${{ matrix.checker }}-${{ runner.os }}-${{ hashFiles(format('checkers/{0}/Cargo.lock', matrix.checker)) }}
       - run: uv sync
       - name: Run the checker
         env:
