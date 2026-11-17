@@ -41,3 +41,16 @@ jobs:
         run: |
           gh release create "$GITHUB_REF_NAME" corpus.tar.zst --verify-tag --generate-notes \
             --notes "SHA-256 of \`corpus.tar.zst\`: \`$(sha256sum corpus.tar.zst | cut -d ' ' -f 1)\`"
+
+  # The comparison of checkers on the released corpus. It is started as a run of its own,
+  # hours long, so that the release neither waits for it nor fails with it.
+  comparison:
+    needs: release
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - name: Start the comparison on the tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run comparison.yml --repo "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME"

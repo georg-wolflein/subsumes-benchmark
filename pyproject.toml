@@ -77,7 +77,8 @@ redundant-cast = "ignore"
 root = ["src", "tests"]
 
 [tool.ty.src]
-exclude = ["corpus", "sources"]
+# An adapter under checkers/ runs in an environment of its own.
+exclude = ["corpus", "sources", "checkers"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -93,4 +94,7 @@ dev = [
     "referencing>=0.37.0",
     "ruff>=0.17.4",
     "ty>=0.0.100",
+]
+report = [
+    "matplotlib>=3.10",
 ]

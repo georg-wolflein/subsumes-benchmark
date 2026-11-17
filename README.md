@@ -129,6 +129,34 @@ A test case is not used when it is for other drafts, when it belongs to a propos
 
 `synthesized` holds the pairs that the containment test suite built for drafts 4, 6 and 2019-09. Its paths have the draft in front and the kind before the keyword: `draft4/valid/minimum/3`. It is largely a near-duplicate of `json-schema-test-suite`, so a report should not add the two up.
 
+## Comparing checkers
+
+The repository also measures open-source inclusion checkers on the corpus: how many tasks each one solves, how often it is wrong, and how long it takes.
+
+<!-- comparison:start -->
+
+No comparison has been published yet. The first report appears here after the next release.
+
+<!-- comparison:end -->
+
+A **task** is one question of the corpus: every case asks whether A subsumes B, and the other direction too where it has a label for it. A task is **solved** when the checker answered yes or no and no label contradicts the answer. Every checker runs alone on its machine, as one long-running process that is warmed up first, and the time of a task is measured inside that process from the two schemas as text to the answer.
+
+| Checker | Used through | Reads |
+| --- | --- | --- |
+| [Confluent Schema Registry](https://github.com/confluentinc/schema-registry) | `kafka-json-schema-provider` from Confluent's Maven repository | draft 2020-12 |
+| [jsoncompat](https://github.com/ostrowr/jsoncompat) | the crate from crates.io, and the package from PyPI | draft 2020-12 |
+| [jsonsubschema](https://github.com/IBM/jsonsubschema) | the package from PyPI | draft-04 |
+| [RWG](https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema) | its sources, which are not published as a package | draft-07 |
+
+A checker that reads an older draft gets every schema rewritten to that draft; where the draft cannot express a schema, the checker is not asked. [`checkers/`](checkers/README.md) has one folder per checker and describes how a checker is plugged in.
+
+The `Comparison` workflow runs every checker over every task after each release, and whenever it is started by hand. It then opens a pull request that updates `comparison/` and the part of this page above. A pull request that carries the `comparison` label gets a run over a sample of 300 tasks, which shows that every checker still builds and answers. To run one checker locally, with its toolchain installed:
+
+```bash
+uv run python -m subsumes_benchmark.compare run jsoncompat --limit 300   # writes results/jsoncompat/
+uv run --group report python -m subsumes_benchmark.compare report results --out /tmp/comparison
+```
+
 ## Departures from upstream
 
 The corpus leaves out four cases of the inclusion artifact and 21 test cases of the test suite. [`overrides.toml`](overrides.toml) lists them with the reason:
@@ -180,6 +208,9 @@ The artifact lists the narrower schema first, so `b.json` is its first schema an
 | `overrides.toml` | Every departure from upstream, with the reason: the cases left out and the labels changed |
 | `sources/` | The upstream repositories as submodules, fetched only to rebuild |
 | `src/subsumes_benchmark/` | The build: `testsuite`, `unfuse`, `convert`, `features`, `build` |
+| `src/subsumes_benchmark/compare/` | The comparison: running a checker over the tasks, and the report |
+| `checkers/` | One folder per checker of the comparison, with the adapter that makes it answer |
+| `comparison/` | The latest published report, written by the `Comparison` workflow |
 | `tests/` | The layout of the corpus, the validity of its schemas, the features of its cases, the labels that can be checked |
 
 ## Rebuilding the corpus
@@ -214,7 +245,7 @@ The `Release` workflow then runs every check on the tagged commit, builds the ar
 
 ## Credits and licences
 
-The code in this repository is MIT licensed. The corpus keeps the licences of its sources, which each `collection.json` names; the licence texts are in [`corpus/licenses/`](corpus/licenses).
+The code in this repository is MIT licensed, except [`checkers/rwg/`](checkers/rwg), which is compiled together with RWG and is GPL-3.0 like it. The corpus keeps the licences of its sources, which each `collection.json` names; the licence texts are in [`corpus/licenses/`](corpus/licenses).
 
 `json-schema-test-suite` is built from [json-schema-org/JSON-Schema-Test-Suite](https://github.com/json-schema-org/JSON-Schema-Test-Suite) (MIT, Julian Berman). The kinds of pairs are those of [sdbs-uni-p/json-schema-containment-testsuite](https://github.com/sdbs-uni-p/json-schema-containment-testsuite) (Stefanie Scherzinger, University of Passau), described in Lyes Attouche, Mohamed-Amine Baazizi, Dario Colazzo, Yunchen Ding, Michael Fruth, Giorgio Ghelli, Carlo Sartiani and Stefanie Scherzinger, *A Test Suite for JSON Schema Containment*, ER 2021 Demos and Posters, CEUR Workshop Proceedings 2958. Until version 0.4.0 the corpus took that suite's draft 2020-12 pairs as they were.
 
