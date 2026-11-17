@@ -38,7 +38,9 @@ jobs:
           token: ${{ steps.app.outputs.token }}
 
   # The release stays a draft until its archive is attached, so that a release that can be
-  # seen always has one. The checks ran on the release pull request before it was merged.
+  # seen always has one. Nothing is checked here: the release pull request changes the
+  # version only, and the corpus it releases was checked on main and on every pull request
+  # that changed it.
   publish:
     needs: release-please
     if: needs.release-please.outputs.release_created == 'true'

@@ -53,7 +53,11 @@ jobs:
   # The slow tests read every schema of the committed corpus: each is valid draft 2020-12,
   # each reference resolves, and each label that validation can check holds. They need no
   # upstream sources, so the submodules under sources/ stay unfetched.
+  #
+  # They do not run on the release pull request, which changes the version and nothing in
+  # the corpus. A job that is skipped counts as passed where the ruleset requires it.
   corpus:
+    if: github.head_ref != 'release-please--branches--main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
