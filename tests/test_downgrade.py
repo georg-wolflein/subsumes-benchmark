@@ -89,6 +89,17 @@ def test_draft_04_has_no_boolean_schema_and_no_const() -> None:
     }
 
 
+def test_a_count_is_written_as_an_integer() -> None:
+    schema: Json = {"maxItems": 2.0, "minLength": 1.0, "maximum": 2.0}
+    assert downgrade(schema, "draft-04") == {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "maxItems": 2,
+        "minLength": 1,
+        "maximum": 2.0,
+    }
+    assert repr(downgrade(schema, "draft-07")).count("2.0") == 1
+
+
 def test_an_enum_of_draft_04_lists_each_value_once_and_at_least_one() -> None:
     schema: Json = {"enum": [1, 1.0, True, "1", [1], [1.0], {"a": 1, "b": 2}, {"b": 2, "a": 1}]}
     assert downgrade(schema, "draft-04") == {

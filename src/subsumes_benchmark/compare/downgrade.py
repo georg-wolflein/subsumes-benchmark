@@ -81,6 +81,10 @@ INDEXED_SCHEMAS = frozenset(
         "contentSchema",
     }
 )
+# Keywords whose value is a number of things.
+COUNTS = frozenset(
+    {"maxLength", "minLength", "maxItems", "minItems", "maxProperties", "minProperties"}
+)
 # Keywords that are rewritten together with the keywords they work with.
 GROUPED = frozenset(
     {"dependentRequired", "dependentSchemas", "contains", "minContains", "maxContains"}
@@ -279,6 +283,8 @@ class _Downgrade:
                     out[key] = distinct
                 else:
                     extra.append({"not": {}})
+            elif key in COUNTS and isinstance(value, float) and value.is_integer():
+                out[key] = int(value)  # ``2.0`` is an integer only from draft-06 on
             elif key in VERBATIM:
                 out[key] = value
             # Everything else is an annotation, an identifier or an unknown keyword.
