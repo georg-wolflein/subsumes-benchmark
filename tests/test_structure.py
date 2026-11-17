@@ -5,12 +5,12 @@ import tomllib
 from jsonschema import Draft202012Validator
 
 from reading import CORPUS, ROOT, cases, read
-from subsumes_benchmark.build import CASE_SCHEMA, load_exclusions, load_overrides
+from subsumes_benchmark.build import CASE_SCHEMA, exclusion_of, load_exclusions, load_overrides
 
 CASE_FILES = {"a.json", "b.json", "case.json"}
 CONFIG = tomllib.loads((ROOT / "collections.toml").read_text(encoding="utf-8"))
 COLLECTIONS = CONFIG["collections"]
-LICENSES = {f"{name}.txt" for name in (*CONFIG["sources"], "json-schema-test-suite")}
+LICENSES = {f"{name}.txt" for name in CONFIG["sources"]}
 
 
 def test_every_case_has_both_schemas() -> None:
@@ -88,4 +88,4 @@ def test_every_override_is_applied() -> None:
 
 def test_no_excluded_case_is_in_the_corpus() -> None:
     exclusions = load_exclusions(ROOT / "overrides.toml")
-    assert sorted(exclusions.keys() & {case.id for case in cases()}) == []
+    assert [case.id for case in cases() if exclusion_of(case.id, exclusions) is not None] == []

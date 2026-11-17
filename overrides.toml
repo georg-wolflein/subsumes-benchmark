@@ -1,8 +1,10 @@
 # Where the corpus departs from upstream, and why.
 #
 # Each [[exclude]] lists upstream cases that the corpus leaves out, with the reason. A case is
-# left out when one of its schemas is not valid draft 2020-12 or does not resolve: such a pair
-# has no answer.
+# left out when one of its schemas is not valid draft 2020-12 or does not resolve, or when a
+# test case of the test suite does not say what draft 2020-12 requires of a schema that stands
+# on its own: such a pair has no answer. An entry is a case id, or a folder followed by `/*`
+# for every case below it. For the test suite a folder is one test case, or one file.
 #
 # Each [[override]] lists cases and the labels they get in place of upstream's. `a_subsumes_b`
 # and `b_subsumes_a` are true or false; a label that is left out is one the corpus does not
@@ -33,14 +35,49 @@ cases = [
   "additional-as-uneval/o83092.original_not_unevalEliminated",
   "additional-as-uneval/o83092.unevalEliminated_not_original",
 ]
+[[exclude]]
+reason = "The schema declares another dialect than draft 2020-12 as its $schema."
+cases = [
+  "json-schema-test-suite/optional/format-assertion/0/*",
+  "json-schema-test-suite/optional/format-assertion/1/*",
+  "json-schema-test-suite/vocabulary/2/*",
+  "json-schema-test-suite/vocabulary/3/*",
+]
 
 [[exclude]]
-reason = "The schemas do not resolve: upstream's generator renamed an embedded $id when it duplicated the schema, so a relative $ref points nowhere."
+reason = "The schema references a schema of an older draft, and the test expects that schema to be read as its own draft."
 cases = [
-  "containment-testsuite/universal/ref/16",
-  "containment-testsuite/universal/ref/17",
-  "containment-testsuite/unsatisfiable/ref/16",
-  "containment-testsuite/unsatisfiable/ref/17",
+  "json-schema-test-suite/optional/cross-draft/2/*",
+  "json-schema-test-suite/optional/cross-draft/3/*",
+]
+
+[[exclude]]
+reason = "The schema does not resolve when it stands on its own: it references a document by a URL other than the $id that the document gives itself, and an embedded document is known by its $id only."
+cases = [
+  "json-schema-test-suite/id/22/*",
+  "json-schema-test-suite/id/23/*",
+]
+
+[[exclude]]
+reason = "The expected results hold only where dependencies still works. Draft 2020-12 replaced it by dependentRequired and dependentSchemas, so under draft 2020-12 it is an unknown keyword that asserts nothing."
+cases = [
+  "json-schema-test-suite/optional/dependencies-compatibility/*",
+]
+
+[[exclude]]
+reason = "With format asserted, draft 2020-12 does not say what an unknown format accepts, and an implementation may refuse the schema. The expected results are those of format as an annotation."
+cases = [
+  "json-schema-test-suite/format-unknown/0/*",
+]
+
+[[exclude]]
+reason = "The test case tells numbers apart by digits that a double does not hold, and the corpus writes numbers as doubles."
+cases = [
+  "json-schema-test-suite/optional/bignum/5/*",
+  "json-schema-test-suite/optional/bignum/8/*",
+  "json-schema-test-suite/optional/bignum/9/*",
+  "json-schema-test-suite/optional/bignum/10/*",
+  "json-schema-test-suite/optional/bignum/12/*",
 ]
 
 
@@ -125,23 +162,25 @@ cases = [
 [[override]]
 note = "The Rust regex crate rejects the pattern ^\\cC$ (unrecognized escape sequence), so the schemas have no meaning in its dialect."
 cases = [
-  "containment-testsuite/nonvalid/optional/ecmascript-regex/3",
-  "containment-testsuite/reflexive/optional/ecmascript-regex/3",
-  "containment-testsuite/universal/optional/ecmascript-regex/3",
-  "containment-testsuite/unsatisfiable/optional/ecmascript-regex/3",
-  "containment-testsuite/valid/optional/ecmascript-regex/5",
-  "containment-testsuite/valid/optional/ecmascript-regex/6",
+  "json-schema-test-suite/optional/ecmascript-regex/2/nonvalid/0",
+  "json-schema-test-suite/optional/ecmascript-regex/2/nonvalid/1",
+  "json-schema-test-suite/optional/ecmascript-regex/2/reflexive",
+  "json-schema-test-suite/optional/ecmascript-regex/2/universal",
+  "json-schema-test-suite/optional/ecmascript-regex/2/unsatisfiable",
+  "json-schema-test-suite/optional/ecmascript-regex/2/valid/0",
+  "json-schema-test-suite/optional/ecmascript-regex/2/valid/1",
 ]
 
 [[override]]
 note = "The Rust regex crate rejects the pattern ^\\cc$ (unrecognized escape sequence), so the schemas have no meaning in its dialect."
 cases = [
-  "containment-testsuite/nonvalid/optional/ecmascript-regex/4",
-  "containment-testsuite/reflexive/optional/ecmascript-regex/4",
-  "containment-testsuite/universal/optional/ecmascript-regex/4",
-  "containment-testsuite/unsatisfiable/optional/ecmascript-regex/4",
-  "containment-testsuite/valid/optional/ecmascript-regex/7",
-  "containment-testsuite/valid/optional/ecmascript-regex/8",
+  "json-schema-test-suite/optional/ecmascript-regex/3/nonvalid/0",
+  "json-schema-test-suite/optional/ecmascript-regex/3/nonvalid/1",
+  "json-schema-test-suite/optional/ecmascript-regex/3/reflexive",
+  "json-schema-test-suite/optional/ecmascript-regex/3/universal",
+  "json-schema-test-suite/optional/ecmascript-regex/3/unsatisfiable",
+  "json-schema-test-suite/optional/ecmascript-regex/3/valid/0",
+  "json-schema-test-suite/optional/ecmascript-regex/3/valid/1",
 ]
 
 [[override]]
@@ -170,175 +209,9 @@ cases = [
   "additional-as-uneval/o90912.unevalEliminated_not_original",
 ]
 
-[[override]]
-note = "Upstream's label does not hold. Its generator negates a copy of the schema, and here the copy is not negated at all, so the instance it should reject is valid under it."
-a_subsumes_b = true
-cases = [
-  "containment-testsuite/nonvalid/dynamicRef/1",
-  "containment-testsuite/nonvalid/dynamicRef/2",
-]
-
-[[override]]
-note = "Upstream's label does not hold. Its generator negates a copy of the schema, and here the copy negates only $ref; type and properties stay beside not, so the instance it should reject is valid under it."
-a_subsumes_b = true
-cases = [
-  "containment-testsuite/nonvalid/dynamicRef/9",
-]
-
-[[override]]
-note = "Upstream's label does not hold. Its generator negates a copy of the schema, and here the copy negates only properties of a recursive schema, and the $ref back to the root reaches the negated copy, so the instance is valid under it after all."
-a_subsumes_b = true
-cases = [
-  "containment-testsuite/nonvalid/ref/14",
-]
-
-[[override]]
-note = "Upstream's label does not hold. Its generator negates a copy of the schema, and here the copy's renamed $anchor also changed an enum value."
-cases = [
-  "containment-testsuite/universal/anchor/4",
-  "containment-testsuite/unsatisfiable/anchor/4",
-]
-
-[[override]]
-note = "Upstream's label does not hold. Its generator negates a copy of the schema, and here the copy is not negated at all."
-cases = [
-  "containment-testsuite/universal/dynamicRef/1",
-  "containment-testsuite/universal/dynamicRef/2",
-  "containment-testsuite/unsatisfiable/dynamicRef/1",
-  "containment-testsuite/unsatisfiable/dynamicRef/2",
-]
-
-[[override]]
-note = "Upstream's label does not hold. Its generator negates a copy of the schema, and here the copy negates only items; type stays beside not."
-cases = [
-  "containment-testsuite/universal/dynamicRef/3",
-  "containment-testsuite/unsatisfiable/dynamicRef/3",
-]
-
-[[override]]
-note = "Upstream's label does not hold. Its generator negates a copy of the schema, and here the copy negates only $ref; type and properties stay beside not."
-cases = [
-  "containment-testsuite/universal/dynamicRef/10",
-  "containment-testsuite/universal/dynamicRef/9",
-  "containment-testsuite/unsatisfiable/dynamicRef/10",
-  "containment-testsuite/unsatisfiable/dynamicRef/9",
-]
-
-[[override]]
-note = "Upstream's label does not hold. Its generator negates a copy of the schema, and here the copy's renamed $id also changed an enum value."
-cases = [
-  "containment-testsuite/universal/id/2",
-  "containment-testsuite/unsatisfiable/id/2",
-]
-
-[[override]]
-note = "Upstream's label does not hold. Its generator negates a copy of the schema, and here the copy negates only prefixItems; type and items stay beside not."
-cases = [
-  "containment-testsuite/universal/items/4",
-  "containment-testsuite/unsatisfiable/items/4",
-]
-
-[[override]]
-note = "Upstream's label does not hold. Its generator negates a copy of the schema, and here the copy negates only properties; type and required stay beside not."
-cases = [
-  "containment-testsuite/universal/ref/12",
-  "containment-testsuite/unsatisfiable/ref/12",
-]
-
-[[override]]
-note = "Upstream's label does not hold. Its generator negates a copy of the schema, and here the copy negates only $ref; properties stays beside not."
-cases = [
-  "containment-testsuite/universal/ref/14",
-  "containment-testsuite/unsatisfiable/ref/14",
-]
-
-[[override]]
-note = "Upstream's label does not hold. Its generator negates a copy of the schema, and here the copy's rewritten $ref pointer also changed an enum value."
-cases = [
-  "containment-testsuite/universal/ref/15",
-  "containment-testsuite/unsatisfiable/ref/15",
-]
-
-[[override]]
-note = "Upstream's label does not hold. Its generator negates a copy of the schema, and here the copy negates only $ref; type, prefixItems and unevaluatedItems stay beside not."
-cases = [
-  "containment-testsuite/universal/unevaluatedItems/15",
-  "containment-testsuite/unsatisfiable/unevaluatedItems/15",
-]
-
-[[override]]
-note = "Upstream's label does not hold. Its generator negates a copy of the schema, and here the copy negates only $ref; type, properties and unevaluatedProperties stay beside not."
-cases = [
-  "containment-testsuite/universal/unevaluatedProperties/19",
-  "containment-testsuite/unsatisfiable/unevaluatedProperties/19",
-]
-
-
 # ----------------------------------------------------------------------------
 # Labels that hold only if format is an annotation
 # ----------------------------------------------------------------------------
-
-[[override]]
-note = "Upstream treats format as an annotation here, so it counts every string as valid. With format asserted, the answer depends on whether the string conforms to the format."
-cases = [
-  "containment-testsuite/nonvalid/format/105",
-  "containment-testsuite/nonvalid/format/112",
-  "containment-testsuite/nonvalid/format/119",
-  "containment-testsuite/nonvalid/format/126",
-  "containment-testsuite/nonvalid/format/133",
-  "containment-testsuite/nonvalid/format/14",
-  "containment-testsuite/nonvalid/format/21",
-  "containment-testsuite/nonvalid/format/28",
-  "containment-testsuite/nonvalid/format/35",
-  "containment-testsuite/nonvalid/format/42",
-  "containment-testsuite/nonvalid/format/49",
-  "containment-testsuite/nonvalid/format/56",
-  "containment-testsuite/nonvalid/format/63",
-  "containment-testsuite/nonvalid/format/7",
-  "containment-testsuite/nonvalid/format/70",
-  "containment-testsuite/nonvalid/format/77",
-  "containment-testsuite/nonvalid/format/84",
-  "containment-testsuite/nonvalid/format/91",
-  "containment-testsuite/nonvalid/format/98",
-  "containment-testsuite/unions/format/1",
-  "containment-testsuite/unions/format/10",
-  "containment-testsuite/unions/format/11",
-  "containment-testsuite/unions/format/12",
-  "containment-testsuite/unions/format/13",
-  "containment-testsuite/unions/format/14",
-  "containment-testsuite/unions/format/15",
-  "containment-testsuite/unions/format/16",
-  "containment-testsuite/unions/format/17",
-  "containment-testsuite/unions/format/18",
-  "containment-testsuite/unions/format/19",
-  "containment-testsuite/unions/format/2",
-  "containment-testsuite/unions/format/3",
-  "containment-testsuite/unions/format/4",
-  "containment-testsuite/unions/format/5",
-  "containment-testsuite/unions/format/6",
-  "containment-testsuite/unions/format/7",
-  "containment-testsuite/unions/format/8",
-  "containment-testsuite/unions/format/9",
-  "containment-testsuite/valid/format/105",
-  "containment-testsuite/valid/format/112",
-  "containment-testsuite/valid/format/119",
-  "containment-testsuite/valid/format/126",
-  "containment-testsuite/valid/format/133",
-  "containment-testsuite/valid/format/14",
-  "containment-testsuite/valid/format/21",
-  "containment-testsuite/valid/format/28",
-  "containment-testsuite/valid/format/35",
-  "containment-testsuite/valid/format/42",
-  "containment-testsuite/valid/format/49",
-  "containment-testsuite/valid/format/56",
-  "containment-testsuite/valid/format/63",
-  "containment-testsuite/valid/format/7",
-  "containment-testsuite/valid/format/70",
-  "containment-testsuite/valid/format/77",
-  "containment-testsuite/valid/format/84",
-  "containment-testsuite/valid/format/91",
-  "containment-testsuite/valid/format/98",
-]
 
 [[override]]
 note = "Upstream's label holds only if format is an annotation: a date-time and a date pattern are disjoint."
@@ -395,51 +268,70 @@ cases = [
 ]
 
 [[override]]
-note = "Upstream's label follows ECMA-262, where \\d matches only the ASCII digits. In the Rust regex dialect \\d matches every Unicode decimal digit, and U+07C0 (NKO DIGIT ZERO) is one."
+note = "The test suite's expected result follows ECMA-262, where \\d matches only the ASCII digits. In the Rust regex dialect \\d matches every Unicode decimal digit, and U+07C0 (NKO DIGIT ZERO) is one."
 a_subsumes_b = false
 cases = [
-  "containment-testsuite/unions/optional/ecmascript-regex/1",
-  "containment-testsuite/valid/optional/ecmascript-regex/13",
-  "containment-testsuite/valid/optional/ecmascript-regex/14",
+  "json-schema-test-suite/optional/ecmascript-regex/4/nonvalid/1",
+  "json-schema-test-suite/optional/ecmascript-regex/5/valid/1",
 ]
 
 [[override]]
-note = "Upstream's label follows ECMA-262, where \\d matches only the ASCII digits. In the Rust regex dialect \\d matches every Unicode decimal digit, and U+07C0 (NKO DIGIT ZERO) is one."
+note = "The test suite's expected result follows ECMA-262, where \\d matches only the ASCII digits. In the Rust regex dialect \\d matches every Unicode decimal digit, and U+07C0 (NKO DIGIT ZERO) is one."
 a_subsumes_b = true
 cases = [
-  "containment-testsuite/nonvalid/optional/ecmascript-regex/6",
-  "containment-testsuite/nonvalid/optional/ecmascript-regex/7",
-  "containment-testsuite/valid/optional/ecmascript-regex/10",
-  "containment-testsuite/valid/optional/ecmascript-regex/11",
+  "json-schema-test-suite/optional/ecmascript-regex/4/valid/1",
+  "json-schema-test-suite/optional/ecmascript-regex/5/nonvalid/1",
 ]
 
 [[override]]
-note = "Upstream's label follows ECMA-262, where \\s matches U+FEFF (ZERO WIDTH NO-BREAK SPACE). In the Rust regex dialect \\s matches the characters with the Unicode property White_Space, which U+FEFF does not have."
+note = "The test suite's expected result follows ECMA-262, where \\d matches only the ASCII digits. In the Rust regex dialect \\d matches every Unicode decimal digit, and U+09EA and U+09E8 (BENGALI DIGIT FOUR and BENGALI DIGIT TWO) are two."
 a_subsumes_b = false
 cases = [
-  "containment-testsuite/unions/optional/ecmascript-regex/2",
-  "containment-testsuite/valid/optional/ecmascript-regex/24",
+  "json-schema-test-suite/optional/ecmascript-regex/13/nonvalid/2",
+  "json-schema-test-suite/optional/ecmascript-regex/18/nonvalid/2",
 ]
 
 [[override]]
-note = "Upstream's label follows ECMA-262, where \\s matches U+FEFF (ZERO WIDTH NO-BREAK SPACE). In the Rust regex dialect \\s matches the characters with the Unicode property White_Space, which U+FEFF does not have."
+note = "The test suite's expected result follows ECMA-262, where \\d matches only the ASCII digits. In the Rust regex dialect \\d matches every Unicode decimal digit, and U+09EA and U+09E8 (BENGALI DIGIT FOUR and BENGALI DIGIT TWO) are two."
 a_subsumes_b = true
 cases = [
-  "containment-testsuite/nonvalid/optional/ecmascript-regex/15",
-  "containment-testsuite/valid/optional/ecmascript-regex/35",
+  "json-schema-test-suite/optional/ecmascript-regex/13/valid/2",
+  "json-schema-test-suite/optional/ecmascript-regex/18/valid/2",
 ]
 
 [[override]]
-note = "Upstream's label follows ECMA-262, where \\w matches only ASCII letters, ASCII digits and the underscore. In the Rust regex dialect \\w matches every Unicode word character, and U+00E9 (LATIN SMALL LETTER E WITH ACUTE) is one."
+note = "The test suite's expected result follows ECMA-262, where \\s matches U+FEFF (ZERO WIDTH NO-BREAK SPACE). In the Rust regex dialect \\s matches the characters with the Unicode property White_Space, which U+FEFF does not have."
 a_subsumes_b = false
 cases = [
-  "containment-testsuite/valid/optional/ecmascript-regex/18",
+  "json-schema-test-suite/optional/ecmascript-regex/8/unions",
+  "json-schema-test-suite/optional/ecmascript-regex/8/valid/5",
+  "json-schema-test-suite/optional/ecmascript-regex/9/nonvalid/5",
 ]
 
 [[override]]
-note = "Upstream's label follows ECMA-262, where \\w matches only ASCII letters, ASCII digits and the underscore. In the Rust regex dialect \\w matches every Unicode word character, and U+00E9 (LATIN SMALL LETTER E WITH ACUTE) is one."
+note = "The test suite's expected result follows ECMA-262, where \\s matches U+FEFF (ZERO WIDTH NO-BREAK SPACE). In the Rust regex dialect \\s matches the characters with the Unicode property White_Space, which U+FEFF does not have."
 a_subsumes_b = true
 cases = [
-  "containment-testsuite/nonvalid/optional/ecmascript-regex/9",
-  "containment-testsuite/valid/optional/ecmascript-regex/16",
+  "json-schema-test-suite/optional/ecmascript-regex/8/nonvalid/5",
+  "json-schema-test-suite/optional/ecmascript-regex/9/valid/5",
+]
+
+[[override]]
+note = "The test suite's expected result follows ECMA-262, where \\w matches only ASCII letters, ASCII digits and the underscore. In the Rust regex dialect \\w matches every Unicode word character, and U+00E9 (LATIN SMALL LETTER E WITH ACUTE) is one."
+a_subsumes_b = false
+cases = [
+  "json-schema-test-suite/optional/ecmascript-regex/6/nonvalid/1",
+  "json-schema-test-suite/optional/ecmascript-regex/7/valid/1",
+  "json-schema-test-suite/optional/ecmascript-regex/11/nonvalid/1",
+  "json-schema-test-suite/optional/ecmascript-regex/16/nonvalid/1",
+]
+
+[[override]]
+note = "The test suite's expected result follows ECMA-262, where \\w matches only ASCII letters, ASCII digits and the underscore. In the Rust regex dialect \\w matches every Unicode word character, and U+00E9 (LATIN SMALL LETTER E WITH ACUTE) is one."
+a_subsumes_b = true
+cases = [
+  "json-schema-test-suite/optional/ecmascript-regex/6/valid/1",
+  "json-schema-test-suite/optional/ecmascript-regex/7/nonvalid/1",
+  "json-schema-test-suite/optional/ecmascript-regex/11/valid/1",
+  "json-schema-test-suite/optional/ecmascript-regex/16/valid/1",
 ]

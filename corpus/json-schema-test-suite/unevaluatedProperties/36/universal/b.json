@@ -1,0 +1,58 @@
+{
+  "anyOf": [
+    {
+      "$ref": "https://subsumes-benchmark.example/schema"
+    },
+    {
+      "not": {
+        "$ref": "https://subsumes-benchmark.example/schema"
+      }
+    }
+  ],
+  "$defs": {
+    "https://subsumes-benchmark.example/schema": {
+      "$id": "https://subsumes-benchmark.example/schema",
+      "$defs": {
+        "one": {
+          "properties": {
+            "a": true
+          }
+        },
+        "two": {
+          "required": [
+            "x"
+          ],
+          "properties": {
+            "x": true
+          }
+        }
+      },
+      "allOf": [
+        {
+          "$ref": "#/$defs/one"
+        },
+        {
+          "properties": {
+            "b": true
+          }
+        },
+        {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/two"
+            },
+            {
+              "required": [
+                "y"
+              ],
+              "properties": {
+                "y": true
+              }
+            }
+          ]
+        }
+      ],
+      "unevaluatedProperties": false
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "anyOf": [
+    {
+      "$ref": "https://subsumes-benchmark.example/schema"
+    },
+    {
+      "not": {
+        "$ref": "https://subsumes-benchmark.example/schema"
+      }
+    }
+  ],
+  "$defs": {
+    "https://subsumes-benchmark.example/schema": {
+      "$id": "https://subsumes-benchmark.example/schema",
+      "properties": {
+        "foo": {
+          "unknown-keyword": {
+            "type": "integer"
+          }
+        },
+        "bar": {
+          "$ref": "#/properties/foo/unknown-keyword"
+        }
+      }
+    }
+  }
+}

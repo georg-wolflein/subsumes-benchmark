@@ -1,0 +1,34 @@
+{
+  "anyOf": [
+    {
+      "$ref": "https://subsumes-benchmark.example/schema"
+    },
+    {
+      "not": {
+        "$ref": "https://subsumes-benchmark.example/schema"
+      }
+    }
+  ],
+  "$defs": {
+    "https://subsumes-benchmark.example/schema": {
+      "$id": "https://subsumes-benchmark.example/schema",
+      "type": "object",
+      "$ref": "#/$defs/bar",
+      "properties": {
+        "foo": {
+          "type": "string"
+        }
+      },
+      "unevaluatedProperties": false,
+      "$defs": {
+        "bar": {
+          "properties": {
+            "bar": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "not": {
+    "$ref": "http://localhost:1234/root"
+  },
+  "$defs": {
+    "http://localhost:1234/root": {
+      "$id": "http://localhost:1234/root",
+      "$ref": "http://localhost:1234/nested.json#foo",
+      "$defs": {
+        "A": {
+          "$id": "nested.json",
+          "$defs": {
+            "B": {
+              "$anchor": "foo",
+              "type": "integer"
+            }
+          }
+        }
+      }
+    }
+  }
+}

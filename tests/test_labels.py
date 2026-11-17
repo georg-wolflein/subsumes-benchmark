@@ -5,15 +5,18 @@ them is valid under ``a.json``. That checks the label without an inclusion check
 patterns matched in the Rust regex dialect.
 """
 
+import json
 from typing import TYPE_CHECKING
 
 import pytest
 
-from reading import case, cases, constants, patterns, uses_format
+from reading import Case, case, cases, constants, patterns, read, uses_format
 from validation import is_valid, pattern_error
 
 if TYPE_CHECKING:
     from subsumes_benchmark import Json
+
+CATEGORIES = frozenset({"valid", "nonvalid", "unions", "reflexive", "universal", "unsatisfiable"})
 
 # Instances valid under b.json and not under a.json, for the labels that overrides.toml
 # corrects to false in cases where b.json does not list its instances.
@@ -64,3 +67,55 @@ def test_labelled_case_has_only_patterns_of_the_rust_regex_dialect() -> None:
         if any(map(pattern_error, patterns(found.a) | patterns(found.b))):
             wrong.append(found.id)
     assert wrong == []
+
+
+def suite_cases() -> dict[str, dict[str, Case]]:
+    """The cases built from the test suite, by test case of the suite and then by kind."""
+    groups: dict[str, dict[str, Case]] = {}
+    for found in cases():
+        if found.collection != "json-schema-test-suite":
+            continue
+        parts = found.id.split("/")
+        at = next(i for i, part in enumerate(parts) if part in CATEGORIES)
+        groups.setdefault("/".join(parts[:at]), {})["/".join(parts[at:])] = found
+    return groups
+
+
+@pytest.mark.slow
+def test_the_test_suite_asks_no_question_twice() -> None:
+    seen: dict[str, str] = {}
+    twice = []
+    for group in suite_cases().values():
+        for found in group.values():
+            key = json.dumps([found.a, found.b], sort_keys=True)
+            if key in seen:
+                twice.append((seen[key], found.id))
+            seen[key] = found.id
+    assert twice == []
+
+
+@pytest.mark.slow
+def test_a_schema_with_its_negation_accepts_everything_or_nothing() -> None:
+    # ``universal`` and ``unsatisfiable`` hold whatever the schema is, as long as the negated
+    # schema inside them is the same schema. The instances of the test case tell.
+    wrong = []
+    checked = 0
+    for group in suite_cases().values():
+        instances = [
+            constant["const"]
+            for kind, found in group.items()
+            if kind.startswith("valid/")
+            and isinstance(constant := read(found.folder / "b.json"), dict)
+        ]
+        for kind, expected in (("universal", True), ("unsatisfiable", False)):
+            found = group.get(kind)
+            if found is None or found.claims_nothing:
+                continue
+            b = found.b
+            if uses_format(b):
+                continue
+            checked += len(instances)
+            if any(is_valid(instance, b) != expected for instance in instances):
+                wrong.append(found.id)
+    assert wrong == []
+    assert checked > 2000

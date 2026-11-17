@@ -1,0 +1,33 @@
+{
+  "not": {
+    "$ref": "http://localhost:1234/scope_change_defs2.json"
+  },
+  "$defs": {
+    "http://localhost:1234/scope_change_defs2.json": {
+      "$id": "http://localhost:1234/scope_change_defs2.json",
+      "type": "object",
+      "properties": {
+        "list": {
+          "$ref": "baseUriChangeFolderInSubschema/#/$defs/bar"
+        }
+      },
+      "$defs": {
+        "baz": {
+          "$id": "baseUriChangeFolderInSubschema/",
+          "$defs": {
+            "bar": {
+              "type": "array",
+              "items": {
+                "$ref": "folderInteger.json"
+              }
+            }
+          }
+        },
+        "http://localhost:1234/baseUriChangeFolderInSubschema/folderInteger.json": {
+          "$id": "http://localhost:1234/baseUriChangeFolderInSubschema/folderInteger.json",
+          "type": "integer"
+        }
+      }
+    }
+  }
+}
