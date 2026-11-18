@@ -4,6 +4,8 @@ import json
 from dataclasses import asdict, dataclass
 from typing import TYPE_CHECKING, Literal, get_args
 
+from subsumes_benchmark.compare.witness import Witness
+
 if TYPE_CHECKING:
     from collections.abc import Sequence
     from pathlib import Path
@@ -35,6 +37,11 @@ class Result:
     ``seconds`` is what the checker took as its adapter measured it, from the schemas as text
     to the answer, and ``wall_seconds`` what the runner waited. Both are ``None`` where the
     checker was not asked, and ``seconds`` also where it did not come back.
+
+    ``detail`` is a short text for a person. ``reason`` is what kind of reason the checker had
+    to decline, where its adapter names one, and is what a report counts such tasks by.
+    ``witness`` is the counterexample that the checker gave with a no, where it gave one, with
+    what a validator made of it.
     """
 
     case: str
@@ -44,25 +51,12 @@ class Result:
     seconds: float | None
     wall_seconds: float | None
     detail: str | None = None
+    reason: str | None = None
+    witness: Witness | None = None
 
     @property
     def collection(self) -> str:
         return self.case.partition("/")[0]
-
-    @property
-    def answered(self) -> bool:
-        return self.answer in ("yes", "no")
-
-    @property
-    def wrong(self) -> bool:
-        """Whether the answer contradicts the corpus; declining never does."""
-        return (
-            self.answered and self.expected is not None and self.expected != (self.answer == "yes")
-        )
-
-    @property
-    def correct(self) -> bool:
-        return self.answered and self.expected is not None and not self.wrong
 
 
 @dataclass(frozen=True)
@@ -107,6 +101,12 @@ def result_line(result: Result) -> str:
     return json.dumps(asdict(result), ensure_ascii=False) + "\n"
 
 
+def _result(line: str) -> Result:
+    fields = json.loads(line)
+    witness = fields.pop("witness", None)
+    return Result(**fields, witness=None if witness is None else Witness(**witness))
+
+
 def read_results(folder: Path) -> Sequence[Result]:
     with (folder / RESULTS_FILE).open(encoding="utf-8") as lines:
-        return [Result(**json.loads(line)) for line in lines if line.strip()]
+        return [_result(line) for line in lines if line.strip()]

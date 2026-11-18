@@ -1,5 +1,7 @@
 """The comparison of checkers: the tasks, what a report counts, and the folders under ``checkers/``."""
 
+import json
+import sys
 from typing import TYPE_CHECKING
 
 import pytest
@@ -7,8 +9,15 @@ import pytest
 from reading import CORPUS, ROOT, case, cases, read
 from subsumes_benchmark.compare.checkers import Checker
 from subsumes_benchmark.compare.report import README_END, README_START, report, update_readme
-from subsumes_benchmark.compare.results import Answer, Result, Run, result_line, write_run
-from subsumes_benchmark.compare.run import prepare
+from subsumes_benchmark.compare.results import (
+    Answer,
+    Result,
+    Run,
+    read_results,
+    result_line,
+    write_run,
+)
+from subsumes_benchmark.compare.run import prepare, run
 from subsumes_benchmark.compare.summary import (
     Entry,
     ReportError,
@@ -17,10 +26,14 @@ from subsumes_benchmark.compare.summary import (
     read_entries,
 )
 from subsumes_benchmark.compare.tasks import read_tasks, select
+from subsumes_benchmark.compare.witness import Confirmation, Witness, confirm
+from subsumes_benchmark.generated.case import CaseSpec
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
     from pathlib import Path
+
+    from subsumes_benchmark import Json
 
 CHECKERS = sorted(path.parent for path in (ROOT / "checkers").glob("*/checker.json"))
 
@@ -57,6 +70,19 @@ def write(folder: Path, run: Run, results: Sequence[Result]) -> None:
     (folder / "results.jsonl").write_text("".join(map(result_line, results)), encoding="utf-8")
 
 
+def a_case(a: Json, b: Json, a_subsumes_b: bool | None = None) -> dict[str, Json]:
+    """A case as its file has it, with nothing known about the other direction."""
+    return {
+        "$schema": "../case.schema.json",
+        "a_subsumes_b": a_subsumes_b,
+        "b_subsumes_a": None,
+        "features": [],
+        "upstream": "https://example.com",
+        "a": a,
+        "b": b,
+    }
+
+
 # --------------------------------------------------------------------------- the tasks
 
 
@@ -83,6 +109,108 @@ def test_a_sample_is_the_same_for_every_checker() -> None:
     assert len({task.collection for task in select(tasks, limit=300)}) > 5
 
 
+# --------------------------------------------------------------------------- the counterexamples
+
+
+@pytest.mark.parametrize(
+    ("a", "b", "instance", "confirmation"),
+    [
+        ({"type": "string"}, {"type": ["string", "null"]}, None, "confirmed"),
+        ({"type": "string"}, {"type": ["string", "null"]}, 1, "not_an_instance"),
+        ({"type": "string"}, {"type": ["string", "null"]}, "x", "accepted"),
+        # `format` is asserted, and a pattern is one of ECMA-262, whose \d is an ASCII digit.
+        ({"format": "ipv4"}, {"type": "string"}, "1.2.3", "confirmed"),
+        ({"pattern": "^\\d$"}, {"maxLength": 1}, "\u0661", "confirmed"),
+        # A pattern of ECMA-262 that the validator does not take.
+        ({"pattern": "^[^\\0]+$"}, True, "x", "unchecked"),
+        # A whole number that 64 bits do not hold is the double nearest to it, on both sides.
+        ({"type": "string"}, {"const": 10**52 + 1}, 1e52, "confirmed"),
+        ({"type": "string"}, {"const": 2**64 - 1}, 1.8446744073709552e19, "not_an_instance"),
+        ({"type": "string"}, True, float("inf"), "unchecked"),
+    ],
+)
+def test_a_validator_says_whether_a_counterexample_is_one(
+    a: Json, b: Json, instance: Json, confirmation: Confirmation
+) -> None:
+    case = CaseSpec.model_validate(a_case(a, b))
+    assert confirm(case, "a_subsumes_b", instance).confirmation == confirmation
+    # Asked the other way, the two schemas swap.
+    other = CaseSpec.model_validate(a_case(b, a))
+    assert confirm(other, "b_subsumes_a", instance).confirmation == confirmation
+
+
+def test_a_counterexample_that_was_not_checked_says_why() -> None:
+    case = CaseSpec.model_validate(a_case({"pattern": "^[^\\0]+$"}, True))
+    witness = confirm(case, "a_subsumes_b", "x")
+    assert witness.instance == "x"
+    assert witness.note is not None
+    assert witness.note.startswith("the validator does not take a schema: ")
+    assert not witness.refuted
+
+
+# An adapter that says no with the `const` of B for a counterexample, where B has one, declines
+# where A has a `format`, and says yes to everything else.
+ADAPTER = """
+import json, sys
+print(json.dumps({"ready": True}), flush=True)
+for line in sys.stdin:
+    request = json.loads(line)
+    a, b = (json.load(open(request[name])) for name in ("a", "b"))
+    if isinstance(b, dict) and "const" in b:
+        reply = {"answer": "no", "counterexample": b["const"], "reason": "not kept"}
+    elif isinstance(a, dict) and "format" in a:
+        reply = {"answer": "unknown", "reason": "format", "detail": "format is not supported"}
+    else:
+        reply = {"answer": "yes", "counterexample": 1}
+    print(json.dumps({"seconds": 0.001, **reply}), flush=True)
+"""
+
+
+def test_a_run_keeps_the_reason_and_asks_about_the_counterexample(tmp_path: Path) -> None:
+    folder = tmp_path / "checkers" / "fake"
+    folder.mkdir(parents=True)
+    (folder / "adapter.py").write_text(ADAPTER, encoding="utf-8")
+    described: dict[str, Json] = {
+        "$schema": "../../schemas/checker.schema.json",
+        "label": "Fake",
+        "version": "1",
+        "homepage": "https://example.com",
+        "dialect": "2020-12",
+        "build": ["true"],
+        "run": [sys.executable, "adapter.py"],
+    }
+    (folder / "checker.json").write_text(json.dumps(described), encoding="utf-8")
+    corpus = tmp_path / "corpus"
+    written = {
+        "null": a_case({"type": "string"}, {"const": None}, a_subsumes_b=False),
+        "none": a_case({"type": "null"}, {"const": None}, a_subsumes_b=True),
+        "format": a_case({"format": "hostname"}, {"type": "string"}),
+    }
+    (corpus / "c").mkdir(parents=True)
+    (corpus / "c" / "collection.json").write_text("{}", encoding="utf-8")
+    for name, content in written.items():
+        (corpus / "c" / f"{name}.json").write_text(json.dumps(content), encoding="utf-8")
+
+    out = tmp_path / "results" / "fake"
+    run(Checker.load(folder), read_tasks(corpus), out, corpus=corpus, timeout=10, warmup=0, seed=0, jobs=1)  # fmt: skip
+
+    results = {(r.case, r.direction): r for r in read_results(out)}
+    assert len(results) == 6
+    # `null` is a counterexample like any other, and is told from none by the key.
+    found = results["c/null", "a_subsumes_b"]
+    assert (found.answer, found.witness, found.reason) == ("no", Witness(None, "confirmed"), None)
+    assert outcome(found) == "correct"
+    # A no with a counterexample that is none is wrong, whatever the label says.
+    found = results["c/none", "a_subsumes_b"]
+    assert found.witness == Witness(None, "accepted")
+    assert outcome(found) == "wrong_no"
+    # A reason belongs to an unknown and a counterexample to a no, and to nothing else.
+    found = results["c/format", "a_subsumes_b"]
+    assert (found.answer, found.reason, found.witness) == ("unknown", "format", None)
+    found = results["c/format", "b_subsumes_a"]
+    assert (found.answer, found.reason, found.witness) == ("yes", None, None)
+
+
 # --------------------------------------------------------------------------- what a report counts
 
 
@@ -104,6 +232,19 @@ def test_a_sample_is_the_same_for_every_checker() -> None:
 )
 def test_how_a_task_counts(answer: Answer, expected: bool | None, counted: str) -> None:
     assert outcome(a_result("c/1", answer, expected)) == counted
+
+
+@pytest.mark.parametrize("expected", [True, False, None])
+def test_a_no_counts_by_its_counterexample_before_its_label(expected: bool | None) -> None:
+    def no(confirmation: Confirmation) -> Result:
+        witness = Witness(1, confirmation)
+        return Result("c/1", "a_subsumes_b", expected, "no", 0.001, 0.001, witness=witness)
+
+    without = outcome(a_result("c/1", "no", expected))
+    assert outcome(no("not_an_instance")) == "wrong_no"
+    assert outcome(no("accepted")) == "wrong_no"
+    assert outcome(no("confirmed")) == without
+    assert outcome(no("unchecked")) == without
 
 
 def test_only_a_task_with_a_label_is_solved_and_the_shares_are_of_those() -> None:
@@ -169,7 +310,15 @@ def test_a_report_is_written_and_shown_in_the_readme(tmp_path: Path) -> None:
     results = [
         a_result(case.id, "yes", case.a_subsumes_b, 0.002),
         a_result(with_format.id, "no", with_format.a_subsumes_b, 0.5),
-        Result(without_label.id, "b_subsumes_a", None, "no", 0.001, 0.001),
+        Result(
+            without_label.id,
+            "b_subsumes_a",
+            None,
+            "no",
+            0.001,
+            0.001,
+            witness=Witness(1, "accepted"),
+        ),
     ]
     write(tmp_path / "results" / "one", a_run("one", variant="Rust"), results)
     write(tmp_path / "results" / "two", a_run("two", variant="Python"), results[::-1])
@@ -183,6 +332,8 @@ def test_a_report_is_written_and_shown_in_the_readme(tmp_path: Path) -> None:
     assert "of which 2 have a label" in text
     assert "The 1 tasks without a label." in text
     assert "The 1 whose schemas use `format`" in text
+    # Said no, with a counterexample, and what the validator made of it.
+    assert "| One (Rust) | 2 | 1 | 0 | 0 | 1 | 0 |" in text
     assert "One (Rust) and One (Python) gave the same answer on 3 of 3 tasks." in text
     for name in ("chart-light.svg", "chart-dark.svg"):
         assert (tmp_path / "comparison" / name).read_text(encoding="utf-8").startswith("<?xml")

@@ -9,7 +9,10 @@ name = "adapter"
 path = "src/main.rs"
 
 [dependencies]
-serde_json = "1"
+# With `float_roundtrip` a number is read as the double nearest to it, however many digits it
+# has. Without it serde_json may be off by one in the last place, and the counterexample to
+# a schema with such a number is then no instance of it.
+serde_json = { version = "1", features = ["float_roundtrip"] }
 subsumes = "=0.4.0"
 
 [profile.release]

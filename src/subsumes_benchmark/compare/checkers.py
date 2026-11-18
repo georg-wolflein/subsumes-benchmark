@@ -23,6 +23,7 @@ from subsumes_benchmark.generated.checker import CheckerSpec, Dialect
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
+    from subsumes_benchmark import Json
     from subsumes_benchmark.compare.results import Answer
 
 DIALECTS: Sequence[Dialect] = get_args(Dialect.__value__)
@@ -62,13 +63,26 @@ class Checker(CheckerSpec):
 
 
 @dataclass(frozen=True)
+class Counterexample:
+    """The instance that a checker gave with a no. It may be ``null``, which is an instance."""
+
+    instance: Json
+
+
+@dataclass(frozen=True)
 class Reply:
-    """What came back for one request."""
+    """What came back for one request.
+
+    ``reason`` is what kind of reason a checker had to decline, and ``counterexample`` what it
+    gave with a no; each is ``None`` where the adapter said nothing of the kind.
+    """
 
     answer: Answer
     seconds: float | None
     wall_seconds: float
     detail: str | None = None
+    reason: str | None = None
+    counterexample: Counterexample | None = None
 
 
 class _TimedOutError(Exception):
@@ -117,6 +131,9 @@ class Worker:
                 raise ValueError(answer)
             if seconds is not None:
                 seconds = float(seconds)
+            reason = reply.get("reason")
+            if not (reason is None or isinstance(reason, str)):
+                raise TypeError(reason)
         except ValueError, KeyError, TypeError:
             # The adapter and the runner no longer agree on where a reply ends.
             self._kill()
@@ -124,7 +141,17 @@ class Worker:
         answer = cast("AdapterAnswer", answer)
         if answer == "timeout" or (seconds is not None and seconds > timeout):
             return Reply("timeout", None, wall)
-        return Reply(answer, seconds, wall, None if detail is None else str(detail)[:500])
+        return Reply(
+            answer,
+            seconds,
+            wall,
+            None if detail is None else str(detail)[:500],
+            reason if answer == "unknown" else None,
+            # The key and not its value says whether there is one: ``null`` is an instance.
+            Counterexample(reply["counterexample"])
+            if answer == "no" and "counterexample" in reply
+            else None,
+        )
 
     def close(self) -> None:
         self._kill()

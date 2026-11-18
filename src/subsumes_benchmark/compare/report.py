@@ -22,6 +22,7 @@ from subsumes_benchmark.compare.summary import (
     agreements,
     cases_using,
     has_label,
+    outcome,
     read_entries,
 )
 from subsumes_benchmark.compare.tasks import read_tasks
@@ -34,6 +35,7 @@ if TYPE_CHECKING:
     from matplotlib.axes import Axes
 
     from subsumes_benchmark.compare.results import Result
+    from subsumes_benchmark.compare.witness import Confirmation
 
 REPORT_FILE = "report.md"
 CHART_FILES = {"light": "chart-light.svg", "dark": "chart-dark.svg"}
@@ -370,11 +372,12 @@ def _unlabelled_table(entries: Sequence[Entry]) -> str:
     for entry in entries:
         results = entry.unlabelled()
         counts = entry.counts(lambda r: not has_label(r))
+        answered = [r.answer for r in results if outcome(r) == "unlabelled"]
         rows.append(
             [
                 entry.name,
                 share(counts["unlabelled"], len(results)),
-                *(count(sum(1 for r in results if r.answer == answer)) for answer in ("yes", "no")),
+                *(count(answered.count(answer)) for answer in ("yes", "no")),
                 *(count(counts[kind]) for kind in UNLABELLED[1:]),
             ]
         )
@@ -415,6 +418,28 @@ def _collection_table(entries: Sequence[Entry]) -> str:
         for name in by_entry[0]
     ]
     return table(["Collection", "With a label", *(entry.name for entry in entries)], rows)
+
+
+def _witness_table(entries: Sequence[Entry]) -> str:
+    """How many counterexamples each checker gave, and what the validator made of them."""
+    kinds: Mapping[Confirmation, str] = {
+        "confirmed": "Confirmed",
+        "not_an_instance": "No instance of B",
+        "accepted": "Accepted by A",
+        "unchecked": "Not checked",
+    }
+    rows = []
+    for entry in entries:
+        witnesses = [r.witness for r in entry.results if r.witness is not None]
+        rows.append(
+            [
+                entry.name,
+                count(sum(1 for r in entry.results if r.answer == "no")),
+                count(len(witnesses)),
+                *(count(sum(1 for w in witnesses if w.confirmation == kind)) for kind in kinds),
+            ]
+        )
+    return table(["Checker", "Said no", "With a counterexample", *kinds.values()], rows)
 
 
 def _silence_table(entries: Sequence[Entry]) -> str:
@@ -485,14 +510,16 @@ def markdown(entries: Sequence[Entry], with_format: frozenset[str], all_tasks: i
         f"The {count(len(labelled))} tasks with a label:",
         _outcome_table(entries, None),
         "- **Correct**: the answer is the label.\n"
-        "- **Wrong no**: the checker said no where the label says that A subsumes B.\n"
+        "- **Wrong no**: the checker said no where the label says that A subsumes B, or gave "
+        "a counterexample with its no that is none; see [below](#counterexamples).\n"
         "- **Wrong yes**: the checker said yes where the label says that it does not.\n"
         "- **No answer**: the checker declined, failed, or cannot read the schemas.\n"
         "- **Timed out**: no answer within the time.",
         "### Without a label",
         f"The {count(len(tasks) - len(labelled))} tasks without a label. An answer to one can be "
         "held against nothing, so it is counted and not scored: a checker that always answers "
-        "has answered them all.",
+        "has answered them all. What can be held against something is a counterexample, and a no "
+        "with one that is none is a wrong no here too.",
         _unlabelled_table(entries),
         "### With and without `format`",
         "The labels hold with `format` asserted. A checker that treats `format` as an "
@@ -512,6 +539,18 @@ def markdown(entries: Sequence[Entry], with_format: frozenset[str], all_tasks: i
         "## Collections",
         "The share of each collection's tasks with a label that a checker solved.",
         _collection_table(entries),
+        "## Counterexamples",
+        "A checker may give a counterexample with a no: an instance that is valid under B and "
+        "invalid under A. A validator is asked about each one, "
+        "[jsonschema-rs](https://github.com/Stranger6667/jsonschema) for draft 2020-12 with "
+        "`format` asserted, and about the schemas as the corpus has them, whatever draft the "
+        "checker reads. A no with a counterexample that is none counts as a wrong no, with a "
+        "label or without.",
+        _witness_table(entries),
+        "- **Confirmed**: B accepts the counterexample and A rejects it.\n"
+        "- **No instance of B**: B rejects it, so A did not have to accept it.\n"
+        "- **Accepted by A**: A accepts it, so it tells the two schemas apart in nothing.\n"
+        "- **Not checked**: the validator does not take one of the two schemas.",
         "## Where no answer came",
         "Among all tasks, with a label and without:",
         _silence_table(entries),

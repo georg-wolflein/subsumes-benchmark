@@ -17,6 +17,7 @@ from typing import TYPE_CHECKING, assert_never
 from subsumes_benchmark.compare.checkers import Checker, Dialect, Reply, Worker
 from subsumes_benchmark.compare.downgrade import UnsupportedError, downgrade
 from subsumes_benchmark.compare.results import RESULTS_FILE, Result, Run, result_line, write_run
+from subsumes_benchmark.compare.witness import confirm
 from subsumes_benchmark.generated.case import CaseSpec
 
 if TYPE_CHECKING:
@@ -149,6 +150,14 @@ def run(
                         except queue.Empty:
                             return
                         reply = ask(worker, task, Path(scratch), timeout)
+                        # The validator is asked after the checker has answered, so that
+                        # it is in no time that is measured.
+                        given = reply.counterexample
+                        witness = (
+                            None
+                            if given is None
+                            else confirm(CaseSpec.read(task.file), task.direction, given.instance)
+                        )
                         done.put(
                             Result(
                                 case=task.case,
@@ -158,6 +167,8 @@ def run(
                                 seconds=reply.seconds,
                                 wall_seconds=reply.wall_seconds or None,
                                 detail=reply.detail,
+                                reason=reply.reason,
+                                witness=witness,
                             )
                         )
                 finally:

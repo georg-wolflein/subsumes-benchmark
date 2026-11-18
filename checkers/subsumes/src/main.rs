@@ -7,17 +7,44 @@ use std::io::{self, BufRead, Write};
 use std::time::Instant;
 
 use serde_json::{Value, json};
-use subsumes::{Checker, Verdict};
+use subsumes::{Checker, Reason, Verdict};
 
-/// The answer and what there is to say about it.
-fn check(a: &str, b: &str, checker: &Checker) -> Result<(&'static str, Option<String>), String> {
+/// The reply without its time.
+fn check(a: &str, b: &str, checker: &Checker) -> Result<Value, String> {
     let parse = |text: &str| serde_json::from_str::<Value>(text).map_err(|e| e.to_string());
     let (a, b) = (parse(a)?, parse(b)?);
-    match checker.subsumes(&a, &b).map_err(|e| e.to_string())? {
-        Verdict::Yes => Ok(("yes", None)),
-        Verdict::No { counterexample } => Ok(("no", Some(counterexample.to_string()))),
+    Ok(match checker.subsumes(&a, &b).map_err(|e| e.to_string())? {
+        Verdict::Yes => json!({"answer": "yes"}),
+        Verdict::No { counterexample } => json!({
+            "answer": "no",
+            "detail": counterexample.to_string(),
+            "counterexample": counterexample,
+        }),
         // A check that spends its work budget ends here too, and the reason says so.
-        Verdict::Unknown { reason } => Ok(("unknown", Some(reason.to_string()))),
+        Verdict::Unknown { reason } => json!({
+            "answer": "unknown",
+            "detail": reason.to_string(),
+            "reason": kind(&reason),
+        }),
+    })
+}
+
+/// What a report counts the declined tasks by: the keyword that is not supported, or what
+/// else ended the check.
+fn kind(reason: &Reason) -> String {
+    match reason {
+        Reason::Budget => "budget".to_owned(),
+        Reason::Unrepresentable => "unrepresentable instance".to_owned(),
+        // The location is a URI reference whose fragment is a JSON Pointer, and the last
+        // token of the pointer names the keyword.
+        Reason::Unsupported { location, .. } => {
+            let pointer = location.split_once('#').map_or("", |(_, pointer)| pointer);
+            match pointer.rsplit_once('/') {
+                Some((_, token)) => token.replace("~1", "/").replace("~0", "~"),
+                None => "whole schema".to_owned(),
+            }
+        }
+        _ => "other".to_owned(),
     }
 }
 
@@ -37,10 +64,9 @@ fn answer(request: &str, checker: &Checker) -> Value {
     let start = Instant::now();
     let outcome = check(&a, &b, checker);
     let seconds = start.elapsed().as_secs_f64();
-    match outcome {
-        Ok((answer, detail)) => json!({"answer": answer, "seconds": seconds, "detail": detail}),
-        Err(detail) => json!({"answer": "error", "seconds": seconds, "detail": detail}),
-    }
+    let mut reply = outcome.unwrap_or_else(|detail| json!({"answer": "error", "detail": detail}));
+    reply["seconds"] = json!(seconds);
+    reply
 }
 
 fn main() -> io::Result<()> {

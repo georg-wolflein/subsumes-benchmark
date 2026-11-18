@@ -19,7 +19,8 @@ type Outcome = Literal["correct", "unlabelled", "wrong_no", "wrong_yes", "no_ans
 - ``correct``: the checker answered what the corpus says. The task is solved.
 - ``unlabelled``: the checker answered and the corpus claims nothing, so the answer can be
   held against nothing.
-- ``wrong_no``: the checker said no where A subsumes B.
+- ``wrong_no``: the checker said no where A subsumes B, or gave a counterexample with its no
+  that is none. The second needs no label.
 - ``wrong_yes``: the checker said yes where A does not subsume B.
 - ``no_answer``: the checker declined, failed, or cannot read the schemas.
 - ``timeout``: the checker did not answer in time.
@@ -28,7 +29,7 @@ type Outcome = Literal["correct", "unlabelled", "wrong_no", "wrong_yes", "no_ans
 OUTCOMES: Sequence[Outcome] = get_args(Outcome.__value__)
 # How a task with a label can count, and how one without.
 LABELLED: Sequence[Outcome] = ("correct", "wrong_no", "wrong_yes", "no_answer", "timeout")
-UNLABELLED: Sequence[Outcome] = ("unlabelled", "no_answer", "timeout")
+UNLABELLED: Sequence[Outcome] = ("unlabelled", "wrong_no", "no_answer", "timeout")
 OUTCOME_NAMES: Mapping[Outcome, str] = {
     "correct": "Correct",
     "unlabelled": "Answered",
@@ -51,6 +52,8 @@ def has_label(result: Result) -> bool:
 def outcome(result: Result) -> Outcome:
     match result.answer:
         case "yes" | "no":
+            if result.witness is not None and result.witness.refuted:
+                return "wrong_no"
             if result.expected is None:
                 return "unlabelled"
             if result.expected == (result.answer == "yes"):

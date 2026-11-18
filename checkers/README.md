@@ -71,6 +71,15 @@ The runner writes the two schemas of the task to these files before it asks, so 
 - **`answer`**: `yes` when A accepts every instance of B, `no` when it does not, `unknown` when the checker ran and declined, `error` when it failed or rejected a schema, `timeout` when it stopped itself after the time allowed.
 - **`seconds`**: what the checker took, measured by the adapter from the two schemas as text to the answer. Parsing the text is part of it; reading the files is not.
 - **`detail`**: optional, a short text for a person: a counterexample, the reason for declining, the error.
+- **`reason`**: optional, with an `unknown`: what kind of reason the checker had, in a word or two that are the same for every task declined for it, such as the keyword it does not support. A report counts the declined tasks by it; `detail` has the reason in full.
+- **`counterexample`**: optional, with a `no`: an instance that is valid under `b` and invalid under `a`, as JSON. The runner asks a validator whether it is one, and a `no` with a counterexample that is none counts as a wrong answer. Leave the key out where the checker gives none, since `null` is an instance.
+
+```json
+{"answer": "no", "seconds": 0.00042, "detail": "\"x\"", "counterexample": "x"}
+{"answer": "unknown", "seconds": 0.00042, "detail": "#/uniqueItems in schema A is not supported", "reason": "uniqueItems"}
+```
+
+The validator is [jsonschema-rs](https://github.com/Stranger6667/jsonschema) for draft 2020-12 with `format` asserted. It is asked about the two schemas of the case as the corpus has them, also where the checker reads an older draft and got them rewritten.
 
 Rules for an adapter:
 
