@@ -1,0 +1,197 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "format",
+    "oneOf",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o90313.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "styleOrigin",
+                "type": "object",
+                "description": "The origin of the style from which the symbol was originally referenced. A reference to the style origin can be either by styleName or by styleUrl (but not both). It may be used to understand where a symbol was originally sourced from, but does not affect actual appearance or rendering of the symbol.",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Identifies a symbol in the style by name."
+                  },
+                  "styleName": {
+                    "type": "string",
+                    "description": "A registered web style name, such as `EsriThematicShapesStyle`"
+                  },
+                  "styleUrl": {
+                    "description": "URL to a style definition.",
+                    "oneOf": [
+                      {
+                        "type": "string",
+                        "format": "uri",
+                        "description": "An absolute URL"
+                      },
+                      {
+                        "type": "string",
+                        "description": "A relative path starting with ./",
+                        "pattern": "^\\./.+$"
+                      }
+                    ]
+                  }
+                },
+                "oneOf": [
+                  {
+                    "required": [
+                      "name",
+                      "styleName"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "name",
+                      "styleUrl"
+                    ]
+                  }
+                ],
+                "esriDocumentation": {
+                  "examples": [
+                    {
+                      "title": "styleOrigin",
+                      "schema": "pointSymbol3D_schema.json",
+                      "code": {
+                        "symbol": {
+                          "styleOrigin": {
+                            "styleName": "EsriThematicTreesStyle",
+                            "name": "Frangula"
+                          },
+                          "type": "PointSymbol3D",
+                          "symbolLayers": [
+                            {
+                              "type": "Object",
+                              "resource": {
+                                "href": "http://static.arcgis.com/arcgis/styleItems/ThematicTrees/web/resource/FrangulaAlnus.json"
+                              },
+                              "height": 100,
+                              "material": {
+                                "color": [
+                                  255,
+                                  0,
+                                  0
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "patternProperties": {
+                  "^name$": true,
+                  "^styleName$": true,
+                  "^styleUrl$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "styleOrigin",
+    "type": "object",
+    "description": "The origin of the style from which the symbol was originally referenced. A reference to the style origin can be either by styleName or by styleUrl (but not both). It may be used to understand where a symbol was originally sourced from, but does not affect actual appearance or rendering of the symbol.",
+    "properties": {
+      "name": {
+        "type": "string",
+        "description": "Identifies a symbol in the style by name."
+      },
+      "styleName": {
+        "type": "string",
+        "description": "A registered web style name, such as `EsriThematicShapesStyle`"
+      },
+      "styleUrl": {
+        "description": "URL to a style definition.",
+        "oneOf": [
+          {
+            "type": "string",
+            "format": "uri",
+            "description": "An absolute URL"
+          },
+          {
+            "type": "string",
+            "description": "A relative path starting with ./",
+            "pattern": "^\\./.+$"
+          }
+        ]
+      }
+    },
+    "oneOf": [
+      {
+        "required": [
+          "name",
+          "styleName"
+        ]
+      },
+      {
+        "required": [
+          "name",
+          "styleUrl"
+        ]
+      }
+    ],
+    "additionalProperties": false,
+    "esriDocumentation": {
+      "examples": [
+        {
+          "title": "styleOrigin",
+          "schema": "pointSymbol3D_schema.json",
+          "code": {
+            "symbol": {
+              "styleOrigin": {
+                "styleName": "EsriThematicTreesStyle",
+                "name": "Frangula"
+              },
+              "type": "PointSymbol3D",
+              "symbolLayers": [
+                {
+                  "type": "Object",
+                  "resource": {
+                    "href": "http://static.arcgis.com/arcgis/styleItems/ThematicTrees/web/resource/FrangulaAlnus.json"
+                  },
+                  "height": 100,
+                  "material": {
+                    "color": [
+                      255,
+                      0,
+                      0
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

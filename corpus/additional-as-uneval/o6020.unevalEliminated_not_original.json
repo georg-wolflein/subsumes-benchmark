@@ -1,0 +1,282 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "items",
+    "maxLength",
+    "maxProperties",
+    "oneOf",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "recursion",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o6020.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+      "from": {
+        "$ref": "#/$defs/shape"
+      },
+      "id": {
+        "$ref": "#/$defs/guid"
+      },
+      "to": {
+        "$ref": "#/$defs/shape"
+      },
+      "type": {
+        "enum": [
+          "addition",
+          "removal",
+          "replacement",
+          "mutation"
+        ],
+        "type": "string"
+      },
+      "undoOf": {
+        "$ref": "#/$defs/guid"
+      }
+    },
+    "required": [
+      "id",
+      "type"
+    ],
+    "type": "object",
+    "$defs": {
+      "guid": {
+        "pattern": "^[a-f][a-f0-9]{31}$",
+        "type": "string"
+      },
+      "shape": {
+        "additionalProperties": false,
+        "properties": {
+          "attr": {
+            "additionalProperties": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "maxProperties": 100,
+            "type": "object"
+          },
+          "bbox": {
+            "properties": {
+              "height": {
+                "type": "number"
+              },
+              "width": {
+                "type": "number"
+              },
+              "x": {
+                "type": "number"
+              },
+              "y": {
+                "type": "number"
+              }
+            },
+            "type": "object"
+          },
+          "children": {
+            "items": {
+              "$ref": "#/$defs/shape"
+            },
+            "type": "array"
+          },
+          "name": {
+            "enum": [
+              "text",
+              "tspan",
+              "polygon",
+              "polyline",
+              "line",
+              "rect",
+              "ellipse",
+              "circle",
+              "path"
+            ],
+            "type": "string"
+          },
+          "text": {
+            "maxLength": 1000,
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "attr"
+        ],
+        "type": "object"
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_3",
+    "$defs": {
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "maxProperties": 100,
+                "type": "object"
+              },
+              {
+                "additionalProperties": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "modern_3": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "undoOf": {
+                    "$ref": "#/$defs/guid"
+                  },
+                  "to": {
+                    "$ref": "#/$defs/shape"
+                  },
+                  "id": {
+                    "$ref": "#/$defs/guid"
+                  },
+                  "from": {
+                    "$ref": "#/$defs/shape"
+                  },
+                  "type": {
+                    "enum": [
+                      "addition",
+                      "removal",
+                      "replacement",
+                      "mutation"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "type"
+                ],
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^to$": true,
+                  "^undoOf$": true,
+                  "^type$": true,
+                  "^id$": true,
+                  "^from$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "shape": {
+        "$ref": "#/$defs/modern_1"
+      },
+      "guid": {
+        "pattern": "^[a-f][a-f0-9]{31}$",
+        "type": "string"
+      },
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "children": {
+                    "items": {
+                      "$ref": "#/$defs/shape"
+                    },
+                    "type": "array"
+                  },
+                  "name": {
+                    "enum": [
+                      "text",
+                      "tspan",
+                      "polygon",
+                      "polyline",
+                      "line",
+                      "rect",
+                      "ellipse",
+                      "circle",
+                      "path"
+                    ],
+                    "type": "string"
+                  },
+                  "bbox": {
+                    "properties": {
+                      "height": {
+                        "type": "number"
+                      },
+                      "width": {
+                        "type": "number"
+                      },
+                      "x": {
+                        "type": "number"
+                      },
+                      "y": {
+                        "type": "number"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "text": {
+                    "maxLength": 1000,
+                    "type": "string"
+                  },
+                  "attr": {
+                    "$ref": "#/$defs/modern_2"
+                  }
+                },
+                "required": [
+                  "name",
+                  "attr"
+                ],
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^children$": true,
+                  "^name$": true,
+                  "^text$": true,
+                  "^attr$": true,
+                  "^bbox$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

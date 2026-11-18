@@ -1,0 +1,141 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "maxLength",
+    "minLength",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o65960.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Amount",
+    "description": "PayPal amount json schema",
+    "type": "object",
+    "properties": {
+      "currency": {
+        "description": "3-letter currency code. PayPal does not support all currencies.",
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 3
+      },
+      "total": {
+        "description": "Total amount charged from the payer to the payee. In case of a refund, this is the refunded amount to the original payer from the payee. 10 characters max with support for 2 decimal places.",
+        "type": "string",
+        "maxLength": 10
+      },
+      "details": {
+        "type": "object",
+        "properties": {
+          "shipping": {
+            "type": "string",
+            "maxLength": 10
+          },
+          "subtotal": {
+            "type": "string",
+            "maxLength": 10
+          },
+          "tax": {
+            "type": "string",
+            "maxLength": 10
+          },
+          "handling_fee": {
+            "type": "string"
+          },
+          "insurance": {
+            "type": "string"
+          },
+          "shipping_discount": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "required": [
+      "currency",
+      "total"
+    ]
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Amount",
+    "description": "PayPal amount json schema",
+    "type": "object",
+    "properties": {
+      "currency": {
+        "description": "3-letter currency code. PayPal does not support all currencies.",
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 3
+      },
+      "total": {
+        "description": "Total amount charged from the payer to the payee. In case of a refund, this is the refunded amount to the original payer from the payee. 10 characters max with support for 2 decimal places.",
+        "type": "string",
+        "maxLength": 10
+      },
+      "details": {
+        "$ref": "#/$defs/modern_1"
+      }
+    },
+    "required": [
+      "currency",
+      "total"
+    ],
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "insurance": {
+                    "type": "string"
+                  },
+                  "tax": {
+                    "type": "string",
+                    "maxLength": 10
+                  },
+                  "handling_fee": {
+                    "type": "string"
+                  },
+                  "subtotal": {
+                    "type": "string",
+                    "maxLength": 10
+                  },
+                  "shipping_discount": {
+                    "type": "string"
+                  },
+                  "shipping": {
+                    "type": "string",
+                    "maxLength": 10
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^subtotal$": true,
+                  "^tax$": true,
+                  "^shipping_discount$": true,
+                  "^shipping$": true,
+                  "^insurance$": true,
+                  "^handling_fee$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

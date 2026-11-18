@@ -1,0 +1,310 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "dependentSchemas",
+    "enum",
+    "items",
+    "minItems",
+    "not",
+    "oneOf",
+    "properties",
+    "recursion",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/sat/o11667.anyOf_not_oneOf.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "Data type fields (section 4.3.3)",
+    "type": "object",
+    "oneOf": [
+      {
+        "required": [
+          "type"
+        ]
+      },
+      {
+        "required": [
+          "$ref"
+        ]
+      }
+    ],
+    "properties": {
+      "type": {
+        "type": "string"
+      },
+      "$ref": {
+        "type": "string"
+      },
+      "format": {
+        "type": "string"
+      },
+      "defaultValue": {
+        "not": {
+          "type": [
+            "array",
+            "object",
+            "null"
+          ]
+        }
+      },
+      "enum": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "_uniqueItems": true,
+        "minItems": 1
+      },
+      "minimum": {
+        "type": "string"
+      },
+      "maximum": {
+        "type": "string"
+      },
+      "items": {
+        "$ref": "#/$defs/itemsObject"
+      },
+      "_uniqueItems": {
+        "type": "boolean"
+      }
+    },
+    "dependentSchemas": {
+      "format": {
+        "oneOf": [
+          {
+            "properties": {
+              "type": {
+                "enum": [
+                  "integer"
+                ]
+              },
+              "format": {
+                "enum": [
+                  "int32",
+                  "int64"
+                ]
+              }
+            }
+          },
+          {
+            "properties": {
+              "type": {
+                "enum": [
+                  "number"
+                ]
+              },
+              "format": {
+                "enum": [
+                  "float",
+                  "double"
+                ]
+              }
+            }
+          },
+          {
+            "properties": {
+              "type": {
+                "enum": [
+                  "string"
+                ]
+              },
+              "format": {
+                "enum": [
+                  "byte",
+                  "date",
+                  "date-time"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "$defs": {
+      "itemsObject": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": [
+              "$ref"
+            ],
+            "properties": {
+              "$ref": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          {
+            "allOf": [
+              {
+                "$ref": "#"
+              },
+              {
+                "required": [
+                  "type"
+                ],
+                "properties": {
+                  "type": {},
+                  "format": {}
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "Data type fields (section 4.3.3)",
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": "string"
+      },
+      "$ref": {
+        "type": "string"
+      },
+      "format": {
+        "type": "string"
+      },
+      "defaultValue": {
+        "not": {
+          "type": [
+            "array",
+            "object",
+            "null"
+          ]
+        }
+      },
+      "enum": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "_uniqueItems": true,
+        "minItems": 1
+      },
+      "minimum": {
+        "type": "string"
+      },
+      "maximum": {
+        "type": "string"
+      },
+      "items": {
+        "$ref": "#/$defs/itemsObject"
+      },
+      "_uniqueItems": {
+        "type": "boolean"
+      }
+    },
+    "dependentSchemas": {
+      "format": {
+        "anyOf": [
+          {
+            "properties": {
+              "type": {
+                "enum": [
+                  "integer"
+                ]
+              },
+              "format": {
+                "enum": [
+                  "int32",
+                  "int64"
+                ]
+              }
+            }
+          },
+          {
+            "properties": {
+              "type": {
+                "enum": [
+                  "number"
+                ]
+              },
+              "format": {
+                "enum": [
+                  "float",
+                  "double"
+                ]
+              }
+            }
+          },
+          {
+            "properties": {
+              "type": {
+                "enum": [
+                  "string"
+                ]
+              },
+              "format": {
+                "enum": [
+                  "byte",
+                  "date",
+                  "date-time"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "anyOf": [
+      {
+        "required": [
+          "type"
+        ]
+      },
+      {
+        "required": [
+          "$ref"
+        ]
+      }
+    ],
+    "$defs": {
+      "itemsObject": {
+        "anyOf": [
+          {
+            "type": "object",
+            "required": [
+              "$ref"
+            ],
+            "properties": {
+              "$ref": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          {
+            "allOf": [
+              {
+                "$ref": "#"
+              },
+              {
+                "required": [
+                  "type"
+                ],
+                "properties": {
+                  "type": {},
+                  "format": {}
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "maximum",
+    "oneOf",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o81530.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "email": {
+                    "pattern": "^[\\w|-|.]+@[\\w]+\\.[A-Za-z]{2,4}$",
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "rating": {
+                    "oneOf": [
+                      {
+                        "maximum": 2.0
+                      },
+                      {
+                        "maximum": 5.0
+                      }
+                    ],
+                    "type": "number"
+                  },
+                  "postedSlides": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "email",
+                  "firstName",
+                  "lastName",
+                  "postedSlides",
+                  "rating"
+                ],
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^lastName$": true,
+                  "^firstName$": true,
+                  "^postedSlides$": true,
+                  "^rating$": true,
+                  "^email$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+      "email": {
+        "pattern": "^[\\w|-|.]+@[\\w]+\\.[A-Za-z]{2,4}$",
+        "type": "string"
+      },
+      "firstName": {
+        "type": "string"
+      },
+      "lastName": {
+        "type": "string"
+      },
+      "postedSlides": {
+        "type": "boolean"
+      },
+      "rating": {
+        "oneOf": [
+          {
+            "maximum": 2
+          },
+          {
+            "maximum": 5
+          }
+        ],
+        "type": "number"
+      }
+    },
+    "required": [
+      "email",
+      "firstName",
+      "lastName",
+      "postedSlides",
+      "rating"
+    ],
+    "type": "object"
+  }
+}

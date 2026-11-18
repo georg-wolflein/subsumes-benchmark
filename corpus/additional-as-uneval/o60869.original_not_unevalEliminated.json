@@ -1,0 +1,86 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o60869.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "avalon-core:representation-1.0",
+                "description": "The inverse of an instance",
+                "type": "object",
+                "required": [
+                  "schema",
+                  "format",
+                  "path"
+                ],
+                "properties": {
+                  "schema": {
+                    "type": "string"
+                  },
+                  "format": {
+                    "description": "File extension, including '.'",
+                    "type": "string"
+                  },
+                  "path": {
+                    "description": "Unformatted path to version.",
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^schema$": true,
+                  "^format$": true,
+                  "^path$": true
+                },
+                "additionalProperties": true
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "avalon-core:representation-1.0",
+    "description": "The inverse of an instance",
+    "type": "object",
+    "additionalProperties": true,
+    "required": [
+      "schema",
+      "format",
+      "path"
+    ],
+    "properties": {
+      "schema": {
+        "type": "string"
+      },
+      "format": {
+        "description": "File extension, including '.'",
+        "type": "string"
+      },
+      "path": {
+        "description": "Unformatted path to version.",
+        "type": "string"
+      }
+    }
+  }
+}

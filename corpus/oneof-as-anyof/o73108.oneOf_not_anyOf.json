@@ -1,0 +1,211 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o73108.oneOf_not_anyOf.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "request": {
+      "type": "object",
+      "properties": {
+        "action_logs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "node_aid": {
+                "type": "string"
+              },
+              "external_id": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "node_aid",
+              "external_id"
+            ]
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "response": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "ok"
+              ]
+            },
+            "message": {
+              "type": "string"
+            },
+            "exec_time": {
+              "type": "number"
+            },
+            "action_logs": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "node_aid": {
+                    "type": "string"
+                  },
+                  "external_id": {
+                    "type": "integer"
+                  },
+                  "status": {
+                    "enum": [
+                      "added",
+                      "existed",
+                      "failed"
+                    ]
+                  }
+                },
+                "required": [
+                  "node_aid",
+                  "external_id",
+                  "status"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "status",
+            "action_logs"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "error"
+              ]
+            },
+            "exec_time": {
+              "type": "number"
+            },
+            "message": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "status",
+            "message"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "request": {
+      "type": "object",
+      "properties": {
+        "action_logs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "node_aid": {
+                "type": "string"
+              },
+              "external_id": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "node_aid",
+              "external_id"
+            ]
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "response": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "ok"
+              ]
+            },
+            "message": {
+              "type": "string"
+            },
+            "exec_time": {
+              "type": "number"
+            },
+            "action_logs": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "node_aid": {
+                    "type": "string"
+                  },
+                  "external_id": {
+                    "type": "integer"
+                  },
+                  "status": {
+                    "enum": [
+                      "added",
+                      "existed",
+                      "failed"
+                    ]
+                  }
+                },
+                "required": [
+                  "node_aid",
+                  "external_id",
+                  "status"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "status",
+            "action_logs"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "error"
+              ]
+            },
+            "exec_time": {
+              "type": "number"
+            },
+            "message": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "status",
+            "message"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  }
+}

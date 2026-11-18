@@ -1,0 +1,67 @@
+{
+  "$schema": "../../../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "not",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/test_suite_containment/unsat/draft4_unsatisfiable_infinite_loop_detection_id1_subschema1_not_2.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "not": {}
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "allOf": [
+      {
+        "allOf": [
+          {
+            "properties": {
+              "foo": {
+                "$ref": "#/allOf/0/$defs/int"
+              }
+            }
+          },
+          {
+            "additionalProperties": {
+              "$ref": "#/allOf/0/$defs/int"
+            }
+          }
+        ],
+        "$defs": {
+          "int": {
+            "type": "integer"
+          }
+        }
+      },
+      {
+        "$defs": {
+          "int": {
+            "type": "integer"
+          }
+        },
+        "not": {
+          "allOf": [
+            {
+              "properties": {
+                "foo": {
+                  "$ref": "#/allOf/1/$defs/int"
+                }
+              }
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/allOf/1/$defs/int"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

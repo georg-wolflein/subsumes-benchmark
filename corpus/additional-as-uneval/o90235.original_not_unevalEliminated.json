@@ -1,0 +1,145 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "maxItems",
+    "minItems",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o90235.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "Map Range Information",
+                "description": "Map range information",
+                "properties": {
+                  "activeRangeName": {
+                    "type": "string",
+                    "description": "Active range ID that slider/picker acts upon."
+                  },
+                  "currentRangeExtent": {
+                    "type": "array",
+                    "description": "Current range for the active range.",
+                    "items": {
+                      "type": "number"
+                    },
+                    "minItems": 2,
+                    "maxItems": 2
+                  },
+                  "fullRangeExtent": {
+                    "type": "array",
+                    "description": "Full range extent for the active range to be presented in the UI.",
+                    "items": {
+                      "type": "number"
+                    },
+                    "minItems": 2,
+                    "maxItems": 2
+                  }
+                },
+                "required": [
+                  "activeRangeName"
+                ],
+                "esriDocumentation": {
+                  "examples": [
+                    {
+                      "title": "mapRangeInfo",
+                      "code": {
+                        "mapRangeInfo": {
+                          "activeRangeName": "floors",
+                          "currentRangeExtent": [
+                            -2,
+                            10
+                          ],
+                          "fullRangeExtent": [
+                            -2,
+                            100
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "patternProperties": {
+                  "^activeRangeName$": true,
+                  "^currentRangeExtent$": true,
+                  "^fullRangeExtent$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Map Range Information",
+    "description": "Map range information",
+    "properties": {
+      "activeRangeName": {
+        "type": "string",
+        "description": "Active range ID that slider/picker acts upon."
+      },
+      "currentRangeExtent": {
+        "type": "array",
+        "description": "Current range for the active range.",
+        "items": {
+          "type": "number"
+        },
+        "minItems": 2,
+        "maxItems": 2
+      },
+      "fullRangeExtent": {
+        "type": "array",
+        "description": "Full range extent for the active range to be presented in the UI.",
+        "items": {
+          "type": "number"
+        },
+        "minItems": 2,
+        "maxItems": 2
+      }
+    },
+    "required": [
+      "activeRangeName"
+    ],
+    "additionalProperties": false,
+    "esriDocumentation": {
+      "examples": [
+        {
+          "title": "mapRangeInfo",
+          "code": {
+            "mapRangeInfo": {
+              "activeRangeName": "floors",
+              "currentRangeExtent": [
+                -2,
+                10
+              ],
+              "fullRangeExtent": [
+                -2,
+                100
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

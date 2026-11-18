@@ -1,0 +1,196 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "allOf",
+    "anyOf",
+    "const",
+    "contains",
+    "if",
+    "items",
+    "not",
+    "then"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/uneval_eliminated_as_additional_containment/sat/unevaluatedItems_50_items.translate_not_trivial.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "if": {
+      "contains": {
+        "const": "a"
+      }
+    },
+    "then": {
+      "if": {
+        "contains": {
+          "const": "b"
+        }
+      },
+      "then": {
+        "if": {
+          "contains": {
+            "const": "c"
+          }
+        }
+      }
+    },
+    "items": false
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "allOf": [
+                  {
+                    "contains": {
+                      "const": "a"
+                    }
+                  },
+                  {
+                    "allOf": [
+                      {
+                        "contains": {
+                          "const": "b"
+                        }
+                      },
+                      {
+                        "contains": {
+                          "const": "c"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "items": {
+                  "anyOf": [
+                    {
+                      "anyOf": [
+                        {
+                          "const": "a"
+                        },
+                        {
+                          "anyOf": [
+                            {
+                              "const": "b"
+                            },
+                            {
+                              "const": "c"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    false
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "allOf": [
+              {
+                "allOf": [
+                  {
+                    "contains": {
+                      "const": "a"
+                    }
+                  },
+                  {
+                    "allOf": [
+                      {
+                        "contains": {
+                          "const": "b"
+                        }
+                      },
+                      {
+                        "not": {
+                          "contains": {
+                            "const": "c"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "items": {
+                  "anyOf": [
+                    {
+                      "anyOf": [
+                        {
+                          "const": "a"
+                        },
+                        {
+                          "const": "b"
+                        }
+                      ]
+                    },
+                    false
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "allOf": [
+              {
+                "allOf": [
+                  {
+                    "contains": {
+                      "const": "a"
+                    }
+                  },
+                  {
+                    "not": {
+                      "contains": {
+                        "const": "b"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "items": {
+                  "anyOf": [
+                    {
+                      "const": "a"
+                    },
+                    false
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "allOf": [
+              {
+                "not": {
+                  "contains": {
+                    "const": "a"
+                  }
+                }
+              },
+              {
+                "items": {
+                  "anyOf": [
+                    false,
+                    false
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

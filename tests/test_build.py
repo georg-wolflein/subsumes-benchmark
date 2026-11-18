@@ -146,6 +146,30 @@ def test_a_permalink_names_the_commit_in_the_way_of_the_forge(forge: Forge, link
     assert source.permalink(root / "tests" / "a b" / "c.json") == link
 
 
+def test_a_case_names_its_schema_and_says_what_is_known_before_the_schemas() -> None:
+    case = Case(
+        id="one/two/three",
+        a=True,
+        b={"type": "string"},
+        a_subsumes_b=True,
+        b_subsumes_a=None,
+        upstream="x.json",
+    )
+    document = case.document
+    assert isinstance(document, dict)
+    assert list(document) == [
+        "$schema",
+        "a_subsumes_b",
+        "b_subsumes_a",
+        "features",
+        "upstream",
+        "a",
+        "b",
+    ]
+    assert document["$schema"] == "../../case.schema.json"
+    assert (document["a"], document["b"], document["features"]) == (True, case.b, ["type"])
+
+
 def test_excluded_cases_are_left_out_and_must_exist() -> None:
     cases = [
         Case(id=case_id, a=True, b=True, a_subsumes_b=True, b_subsumes_a=None, upstream="x.json")

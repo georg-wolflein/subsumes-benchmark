@@ -1,0 +1,317 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "items",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o44911.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "log file entry for ingestion by tsd aggregator",
+    "properties": {
+      "context": {
+        "properties": {},
+        "type": "object"
+      },
+      "data": {
+        "$ref": "#/$defs/data"
+      },
+      "id": {
+        "type": "string"
+      },
+      "level": {
+        "pattern": "^info$",
+        "type": "string"
+      },
+      "name": {
+        "pattern": "^aint.metrics$",
+        "type": "string"
+      },
+      "time": {
+        "_format": "date-time",
+        "type": "string"
+      }
+    },
+    "required": [
+      "time",
+      "name",
+      "level",
+      "data"
+    ],
+    "title": "Query Log",
+    "type": "object",
+    "$defs": {
+      "data": {
+        "properties": {
+          "annotations": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "properties": {
+              "finalTimestamp": {
+                "_format": "date-time",
+                "type": "string"
+              },
+              "initTimestamp": {
+                "_format": "date-time",
+                "type": "string"
+              }
+            },
+            "required": [
+              "initTimestamp",
+              "finalTimestamp"
+            ],
+            "type": "object"
+          },
+          "counters": {
+            "$ref": "#/$defs/metricsList"
+          },
+          "gauges": {
+            "$ref": "#/$defs/metricsList"
+          },
+          "timers": {
+            "$ref": "#/$defs/metricsList"
+          },
+          "version": {
+            "pattern": "^2e$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "annotations",
+          "version"
+        ],
+        "type": "object"
+      },
+      "dataElement": {
+        "properties": {
+          "values": {
+            "items": {
+              "$ref": "#/$defs/sampleObject"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "values"
+        ],
+        "type": "object"
+      },
+      "metricsList": {
+        "additionalProperties": {
+          "$ref": "#/$defs/dataElement"
+        },
+        "type": "object"
+      },
+      "sampleObject": {
+        "properties": {
+          "unit": {
+            "enum": [
+              "nanosecond",
+              "microsecond",
+              "millisecond",
+              "second",
+              "minute",
+              "hour",
+              "day",
+              "week",
+              "bit",
+              "byte",
+              "kilobit",
+              "kilobyte",
+              "megabit",
+              "megabyte",
+              "gigabit",
+              "gigabyte",
+              "terabyte",
+              "petabyte"
+            ],
+            "type": "string"
+          },
+          "value": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "value"
+        ],
+        "type": "object"
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "log file entry for ingestion by tsd aggregator",
+    "properties": {
+      "name": {
+        "pattern": "^aint.metrics$",
+        "type": "string"
+      },
+      "id": {
+        "type": "string"
+      },
+      "time": {
+        "_format": "date-time",
+        "type": "string"
+      },
+      "level": {
+        "pattern": "^info$",
+        "type": "string"
+      },
+      "context": {
+        "properties": {},
+        "type": "object"
+      },
+      "data": {
+        "$ref": "#/$defs/data"
+      }
+    },
+    "required": [
+      "time",
+      "name",
+      "level",
+      "data"
+    ],
+    "title": "Query Log",
+    "type": "object",
+    "$defs": {
+      "sampleObject": {
+        "properties": {
+          "unit": {
+            "enum": [
+              "nanosecond",
+              "microsecond",
+              "millisecond",
+              "second",
+              "minute",
+              "hour",
+              "day",
+              "week",
+              "bit",
+              "byte",
+              "kilobit",
+              "kilobyte",
+              "megabit",
+              "megabyte",
+              "gigabit",
+              "gigabyte",
+              "terabyte",
+              "petabyte"
+            ],
+            "type": "string"
+          },
+          "value": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "value"
+        ],
+        "type": "object"
+      },
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "finalTimestamp": {
+                    "_format": "date-time",
+                    "type": "string"
+                  },
+                  "initTimestamp": {
+                    "_format": "date-time",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "initTimestamp",
+                  "finalTimestamp"
+                ],
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^finalTimestamp$": true,
+                  "^initTimestamp$": true
+                },
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "data": {
+        "properties": {
+          "gauges": {
+            "$ref": "#/$defs/metricsList"
+          },
+          "counters": {
+            "$ref": "#/$defs/metricsList"
+          },
+          "annotations": {
+            "$ref": "#/$defs/modern_1"
+          },
+          "timers": {
+            "$ref": "#/$defs/metricsList"
+          },
+          "version": {
+            "pattern": "^2e$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "annotations",
+          "version"
+        ],
+        "type": "object"
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object"
+              },
+              {
+                "additionalProperties": {
+                  "$ref": "#/$defs/dataElement"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "metricsList": {
+        "$ref": "#/$defs/modern_2"
+      },
+      "dataElement": {
+        "properties": {
+          "values": {
+            "items": {
+              "$ref": "#/$defs/sampleObject"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "values"
+        ],
+        "type": "object"
+      }
+    }
+  }
+}

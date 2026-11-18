@@ -1,0 +1,56 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "additionalProperties",
+    "anyOf",
+    "maxLength",
+    "pattern",
+    "patternProperties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/trickyschemas/unsat/obj.21.strong.sub.sup.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "additionalProperties": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "a|b|c"
+        },
+        {
+          "type": "string",
+          "pattern": "zz"
+        },
+        {
+          "type": "string",
+          "pattern": "^WWW",
+          "maxLength": 2
+        }
+      ]
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "patternProperties": {
+      "^a": {
+        "type": "string",
+        "_pattern": "a|b|c",
+        "pattern": "c|aa",
+        "_patternWeak": "a|b?|c"
+      },
+      "^b": {
+        "type": "string",
+        "pattern": "zz"
+      }
+    },
+    "additionalProperties": {
+      "type": "string",
+      "pattern": "^WWW",
+      "maxLength": 2
+    }
+  }
+}

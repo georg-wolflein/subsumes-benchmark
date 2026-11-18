@@ -1,0 +1,98 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "const",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o39085.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+      "$schema": {
+        "type": "string"
+      },
+      "$tool": {
+        "const": "svg-patterns",
+        "description": "Must be set to svg-patterns.",
+        "type": "string"
+      },
+      "dist": {
+        "description": "The output file path (relative to the pwd), support .ts .js .json.",
+        "type": "string"
+      },
+      "url": {
+        "default": "https://gitcdn.xyz/repo/progers/Patterns-Gallery/master/index.html",
+        "description": "Target of raw Patterns-Gallery html page.",
+        "type": "string"
+      }
+    },
+    "required": [
+      "$tool",
+      "dist",
+      "url"
+    ],
+    "title": "svg-patterns Config",
+    "type": "object"
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "$schema": {
+                    "type": "string"
+                  },
+                  "$tool": {
+                    "const": "svg-patterns",
+                    "description": "Must be set to svg-patterns.",
+                    "type": "string"
+                  },
+                  "dist": {
+                    "description": "The output file path (relative to the pwd), support .ts .js .json.",
+                    "type": "string"
+                  },
+                  "url": {
+                    "default": "https://gitcdn.xyz/repo/progers/Patterns-Gallery/master/index.html",
+                    "description": "Target of raw Patterns-Gallery html page.",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "$tool",
+                  "dist",
+                  "url"
+                ],
+                "title": "svg-patterns Config",
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^$schema$": true,
+                  "^$tool$": true,
+                  "^dist$": true,
+                  "^url$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

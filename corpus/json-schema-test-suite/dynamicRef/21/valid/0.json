@@ -1,0 +1,59 @@
+{
+  "$schema": "../../../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$dynamicRef",
+    "$ref",
+    "const",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/dynamicRef.json#/tests/21/tests/0",
+  "a": {
+    "$id": "https://test.json-schema.org/dynamic-ref-skips-intermediate-resource/main",
+    "type": "object",
+    "properties": {
+      "bar-item": {
+        "$ref": "item"
+      }
+    },
+    "$defs": {
+      "bar": {
+        "$id": "bar",
+        "type": "array",
+        "items": {
+          "$ref": "item"
+        },
+        "$defs": {
+          "item": {
+            "$id": "item",
+            "type": "object",
+            "properties": {
+              "content": {
+                "$dynamicRef": "#content"
+              }
+            },
+            "$defs": {
+              "defaultContent": {
+                "$dynamicAnchor": "content",
+                "type": "integer"
+              }
+            }
+          },
+          "content": {
+            "$dynamicAnchor": "content",
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "b": {
+    "const": {
+      "bar-item": {
+        "content": 42
+      }
+    }
+  }
+}

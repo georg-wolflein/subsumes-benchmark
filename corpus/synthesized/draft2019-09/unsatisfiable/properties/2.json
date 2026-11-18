@@ -1,0 +1,62 @@
+{
+  "$schema": "../../../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "additionalProperties",
+    "allOf",
+    "maxItems",
+    "minItems",
+    "not",
+    "patternProperties",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/test_suite_containment/unsat/draft2019_09_unsatisfiable_properties_id2_subschema1_not_2.json",
+  "a": false,
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "allOf": [
+      {
+        "additionalProperties": {
+          "type": "integer"
+        },
+        "patternProperties": {
+          "f.o": {
+            "minItems": 2
+          }
+        },
+        "properties": {
+          "bar": {
+            "type": "array"
+          },
+          "foo": {
+            "maxItems": 3,
+            "type": "array"
+          }
+        }
+      },
+      {
+        "not": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "patternProperties": {
+            "f.o": {
+              "minItems": 2
+            }
+          },
+          "properties": {
+            "bar": {
+              "type": "array"
+            },
+            "foo": {
+              "maxItems": 3,
+              "type": "array"
+            }
+          }
+        }
+      }
+    ]
+  }
+}

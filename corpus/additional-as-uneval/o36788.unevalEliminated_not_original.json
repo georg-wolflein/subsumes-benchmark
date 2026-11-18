@@ -1,0 +1,120 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "items",
+    "oneOf",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o36788.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Select2 Auto-complete Data Schema",
+    "description": "",
+    "type": "array",
+    "items": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "restype": {
+              "type": "string"
+            },
+            "router": {
+              "type": "string"
+            },
+            "category": {
+              "type": "string",
+              "enum": [
+                "File",
+                "Notes",
+                "Development",
+                "Personal"
+              ]
+            }
+          },
+          "required": [
+            "label"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Select2 Auto-complete Data Schema",
+    "description": "",
+    "type": "array",
+    "items": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/$defs/modern_1"
+        }
+      ]
+    },
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "restype": {
+                    "type": "string"
+                  },
+                  "router": {
+                    "type": "string"
+                  },
+                  "category": {
+                    "type": "string",
+                    "enum": [
+                      "File",
+                      "Notes",
+                      "Development",
+                      "Personal"
+                    ]
+                  }
+                },
+                "required": [
+                  "label"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^label$": true,
+                  "^restype$": true,
+                  "^router$": true,
+                  "^category$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

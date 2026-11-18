@@ -1,0 +1,374 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "items",
+    "patternProperties",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o73950.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "cycles": {
+        "$ref": "#/$defs/CyclesType"
+      },
+      "version": {
+        "type": "string"
+      }
+    },
+    "$defs": {
+      "CyclesType": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "cycle": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/CycleType"
+            }
+          },
+          "period": {
+            "type": "integer"
+          },
+          "numsys": {
+            "type": "integer"
+          }
+        }
+      },
+      "CycleType": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "greens": {
+            "$ref": "#/$defs/Greens"
+          },
+          "id": {
+            "type": "string"
+          },
+          "num": {
+            "type": "integer"
+          },
+          "cyc": {
+            "type": "integer"
+          },
+          "valid": {
+            "type": "integer"
+          },
+          "err": {
+            "type": "integer"
+          },
+          "trans": {
+            "type": "integer"
+          },
+          "offcor": {
+            "type": "integer"
+          },
+          "now": {
+            "type": "integer"
+          },
+          "std": {
+            "type": "integer"
+          },
+          "geo": {
+            "type": "integer"
+          },
+          "node": {
+            "type": "integer"
+          },
+          "send": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "FAIL"
+            ]
+          },
+          "errno": {
+            "type": "integer"
+          },
+          "sys": {
+            "type": "string"
+          }
+        }
+      },
+      "Greens": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "green": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/GreenType"
+            }
+          }
+        }
+      },
+      "GreenType": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "grn": {
+            "type": "integer"
+          },
+          "ped": {
+            "type": "integer"
+          },
+          "tim": {
+            "type": "integer"
+          },
+          "gap": {
+            "type": "integer"
+          },
+          "max": {
+            "type": "integer"
+          },
+          "fo": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_5",
+    "$defs": {
+      "modern_5": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "cycles": {
+                    "$ref": "#/$defs/CyclesType"
+                  },
+                  "version": {
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^cycles$": true,
+                  "^version$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "Greens": {
+        "$ref": "#/$defs/modern_3"
+      },
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "cycle": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/CycleType"
+                    }
+                  },
+                  "period": {
+                    "type": "integer"
+                  },
+                  "numsys": {
+                    "type": "integer"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^cycle$": true,
+                  "^period$": true,
+                  "^numsys$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "CyclesType": {
+        "$ref": "#/$defs/modern_1"
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "errno": {
+                    "type": "integer"
+                  },
+                  "greens": {
+                    "$ref": "#/$defs/Greens"
+                  },
+                  "geo": {
+                    "type": "integer"
+                  },
+                  "std": {
+                    "type": "integer"
+                  },
+                  "sys": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "valid": {
+                    "type": "integer"
+                  },
+                  "send": {
+                    "type": "string",
+                    "enum": [
+                      "OK",
+                      "FAIL"
+                    ]
+                  },
+                  "trans": {
+                    "type": "integer"
+                  },
+                  "offcor": {
+                    "type": "integer"
+                  },
+                  "num": {
+                    "type": "integer"
+                  },
+                  "now": {
+                    "type": "integer"
+                  },
+                  "err": {
+                    "type": "integer"
+                  },
+                  "cyc": {
+                    "type": "integer"
+                  },
+                  "node": {
+                    "type": "integer"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^err$": true,
+                  "^num$": true,
+                  "^offcor$": true,
+                  "^cyc$": true,
+                  "^send$": true,
+                  "^node$": true,
+                  "^trans$": true,
+                  "^geo$": true,
+                  "^sys$": true,
+                  "^errno$": true,
+                  "^id$": true,
+                  "^now$": true,
+                  "^valid$": true,
+                  "^std$": true,
+                  "^greens$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "CycleType": {
+        "$ref": "#/$defs/modern_2"
+      },
+      "modern_3": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "green": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/GreenType"
+                    }
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^green$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "GreenType": {
+        "$ref": "#/$defs/modern_4"
+      },
+      "modern_4": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "tim": {
+                    "type": "integer"
+                  },
+                  "ped": {
+                    "type": "integer"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "max": {
+                    "type": "integer"
+                  },
+                  "gap": {
+                    "type": "integer"
+                  },
+                  "fo": {
+                    "type": "integer"
+                  },
+                  "grn": {
+                    "type": "integer"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^ped$": true,
+                  "^max$": true,
+                  "^gap$": true,
+                  "^id$": true,
+                  "^tim$": true,
+                  "^fo$": true,
+                  "^grn$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "maxLength",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o90407.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "$$target": "loadBalancerConfig.json",
+                "title": "Load balancer configuration",
+                "description": "Load balancer configuration for Kubernetes API servers",
+                "properties": {
+                  "name": {
+                    "description": "Name of the load balancer configuration.",
+                    "type": "string",
+                    "maxLength": 32
+                  },
+                  "type": {
+                    "description": "Type of load balancer.",
+                    "enum": [
+                      "cloud",
+                      "flipbit"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type"
+                ],
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^name$": true,
+                  "^type$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$id": "http://judkins.house/apis/k2/v1/loadBalancerConfig.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$$target": "loadBalancerConfig.json",
+    "title": "Load balancer configuration",
+    "description": "Load balancer configuration for Kubernetes API servers",
+    "properties": {
+      "name": {
+        "description": "Name of the load balancer configuration.",
+        "type": "string",
+        "maxLength": 32
+      },
+      "type": {
+        "description": "Type of load balancer.",
+        "enum": [
+          "cloud",
+          "flipbit"
+        ],
+        "type": "string"
+      }
+    },
+    "required": [
+      "type"
+    ],
+    "additionalProperties": false,
+    "type": "object"
+  }
+}

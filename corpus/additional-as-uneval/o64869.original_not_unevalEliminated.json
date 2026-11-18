@@ -1,0 +1,86 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o64869.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "ng-packagr Target",
+                "description": "ng-packagr target options for Build Architect. Use to build library projects.",
+                "type": "object",
+                "properties": {
+                  "project": {
+                    "type": "string",
+                    "description": "The file path for the ng-packagr configuration file, relative to the current workspace."
+                  },
+                  "tsConfig": {
+                    "type": "string",
+                    "description": "The full path for the TypeScript configuration file, relative to the current workspace."
+                  },
+                  "watch": {
+                    "type": "boolean",
+                    "description": "Run build when files change.",
+                    "default": false
+                  }
+                },
+                "required": [
+                  "project"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^project$": true,
+                  "^tsConfig$": true,
+                  "^watch$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "ng-packagr Target",
+    "description": "ng-packagr target options for Build Architect. Use to build library projects.",
+    "type": "object",
+    "properties": {
+      "project": {
+        "type": "string",
+        "description": "The file path for the ng-packagr configuration file, relative to the current workspace."
+      },
+      "tsConfig": {
+        "type": "string",
+        "description": "The full path for the TypeScript configuration file, relative to the current workspace."
+      },
+      "watch": {
+        "type": "boolean",
+        "description": "Run build when files change.",
+        "default": false
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "project"
+    ]
+  }
+}

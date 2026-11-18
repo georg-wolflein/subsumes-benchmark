@@ -1,0 +1,179 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o90289.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Raster Data Elevation Layer",
+    "type": "object",
+    "description": "RasterDataElevationLayer is a single-band raster layer used for rendering elevation.",
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "A unique identifying string for the layer"
+      },
+      "layerType": {
+        "type": "string",
+        "description": "String indicating the layer type",
+        "enum": [
+          "RasterDataElevationLayer"
+        ]
+      },
+      "listMode": {
+        "type": "string",
+        "description": "To show or hide the elevation layer in the layer list",
+        "enum": [
+          "hide",
+          "show"
+        ]
+      },
+      "path": {
+        "type": "string",
+        "description": "For offline data, a path to an ArcGIS Runtime supported raster data file. A URI format is used, starting with file: followed by a file system path. A relative path must be from the file which defines the layer. For example `file:../commondata/raster_data/beijing.tif`",
+        "pattern": "^file:.+$"
+      },
+      "title": {
+        "type": "string",
+        "description": "A user-friendly string title for the layer that can be used in a table of contents. If this is not included, a title is derived from the service."
+      },
+      "visibility": {
+        "type": "boolean",
+        "description": "Boolean property determining whether the layer is initially visible in the web scene.",
+        "default": true
+      }
+    },
+    "required": [
+      "id",
+      "layerType",
+      "path",
+      "title"
+    ],
+    "additionalProperties": false,
+    "esriDocumentation": {
+      "examples": [
+        {
+          "title": "Raster Data Elevation Layer",
+          "schema": "ground_schema.json",
+          "code": {
+            "ground": {
+              "layers": [
+                {
+                  "id": "local_dem",
+                  "title": "Local DEM",
+                  "path": "file:../commondata/DEM.tif",
+                  "visibility": true,
+                  "layerType": "RasterDataElevationLayer"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "Raster Data Elevation Layer",
+                "type": "object",
+                "description": "RasterDataElevationLayer is a single-band raster layer used for rendering elevation.",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "description": "For offline data, a path to an ArcGIS Runtime supported raster data file. A URI format is used, starting with file: followed by a file system path. A relative path must be from the file which defines the layer. For example `file:../commondata/raster_data/beijing.tif`",
+                    "pattern": "^file:.+$"
+                  },
+                  "layerType": {
+                    "type": "string",
+                    "description": "String indicating the layer type",
+                    "enum": [
+                      "RasterDataElevationLayer"
+                    ]
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "A user-friendly string title for the layer that can be used in a table of contents. If this is not included, a title is derived from the service."
+                  },
+                  "visibility": {
+                    "type": "boolean",
+                    "description": "Boolean property determining whether the layer is initially visible in the web scene.",
+                    "default": true
+                  },
+                  "listMode": {
+                    "type": "string",
+                    "description": "To show or hide the elevation layer in the layer list",
+                    "enum": [
+                      "hide",
+                      "show"
+                    ]
+                  },
+                  "id": {
+                    "type": "string",
+                    "description": "A unique identifying string for the layer"
+                  }
+                },
+                "required": [
+                  "id",
+                  "layerType",
+                  "path",
+                  "title"
+                ],
+                "esriDocumentation": {
+                  "examples": [
+                    {
+                      "title": "Raster Data Elevation Layer",
+                      "schema": "ground_schema.json",
+                      "code": {
+                        "ground": {
+                          "layers": [
+                            {
+                              "id": "local_dem",
+                              "title": "Local DEM",
+                              "path": "file:../commondata/DEM.tif",
+                              "visibility": true,
+                              "layerType": "RasterDataElevationLayer"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "patternProperties": {
+                  "^listMode$": true,
+                  "^path$": true,
+                  "^title$": true,
+                  "^visibility$": true,
+                  "^layerType$": true,
+                  "^id$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

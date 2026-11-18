@@ -1,0 +1,164 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "additionalProperties",
+    "anyOf",
+    "items",
+    "oneOf",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o60861.oneOf_not_anyOf.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "avalon-core:application-1.0",
+    "description": "An application definition.",
+    "type": "object",
+    "additionalProperties": true,
+    "required": [
+      "schema",
+      "label",
+      "application_dir",
+      "executable"
+    ],
+    "properties": {
+      "schema": {
+        "description": "Schema identifier for payload",
+        "type": "string"
+      },
+      "label": {
+        "description": "Nice name of application.",
+        "type": "string"
+      },
+      "application_dir": {
+        "description": "Name of directory used for application resources.",
+        "type": "string"
+      },
+      "executable": {
+        "description": "Name of callable executable, this is called to launch the application",
+        "type": "string"
+      },
+      "description": {
+        "description": "Description of application.",
+        "type": "string"
+      },
+      "environment": {
+        "description": "Key/value pairs for environment variables related to this application. Supports lists for paths, such as PYTHONPATH.",
+        "type": "object",
+        "items": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      },
+      "default_dirs": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "copy": {
+        "type": "object",
+        "patternProperties": {
+          "^.*$": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "avalon-core:application-1.0",
+    "description": "An application definition.",
+    "type": "object",
+    "additionalProperties": true,
+    "required": [
+      "schema",
+      "label",
+      "application_dir",
+      "executable"
+    ],
+    "properties": {
+      "schema": {
+        "description": "Schema identifier for payload",
+        "type": "string"
+      },
+      "label": {
+        "description": "Nice name of application.",
+        "type": "string"
+      },
+      "application_dir": {
+        "description": "Name of directory used for application resources.",
+        "type": "string"
+      },
+      "executable": {
+        "description": "Name of callable executable, this is called to launch the application",
+        "type": "string"
+      },
+      "description": {
+        "description": "Description of application.",
+        "type": "string"
+      },
+      "environment": {
+        "description": "Key/value pairs for environment variables related to this application. Supports lists for paths, such as PYTHONPATH.",
+        "type": "object",
+        "items": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      },
+      "default_dirs": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "copy": {
+        "type": "object",
+        "patternProperties": {
+          "^.*$": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

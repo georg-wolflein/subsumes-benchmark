@@ -1,0 +1,108 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o12215.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "title": {
+        "type": "string"
+      },
+      "content": {
+        "type": "string"
+      },
+      "status": {
+        "type": "integer"
+      },
+      "publication_date": {
+        "description": "string timestamp representing the start date of the booking",
+        "type": "string"
+      },
+      "expiration_date": {
+        "description": "string timestamp representing the start date of the booking",
+        "type": "string"
+      },
+      "is_headline": {
+        "type": "boolean"
+      },
+      "thread_id": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "title",
+      "thread_id"
+    ]
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "integer"
+                  },
+                  "content": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "expiration_date": {
+                    "description": "string timestamp representing the start date of the booking",
+                    "type": "string"
+                  },
+                  "thread_id": {
+                    "type": "integer"
+                  },
+                  "publication_date": {
+                    "description": "string timestamp representing the start date of the booking",
+                    "type": "string"
+                  },
+                  "is_headline": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "title",
+                  "thread_id"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^publication_date$": true,
+                  "^thread_id$": true,
+                  "^expiration_date$": true,
+                  "^status$": true,
+                  "^title$": true,
+                  "^content$": true,
+                  "^is_headline$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

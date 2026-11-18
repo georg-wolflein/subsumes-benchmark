@@ -1,0 +1,165 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "anyOf",
+    "const",
+    "items",
+    "oneOf",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o27840.oneOf_not_anyOf.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "anyOf": [
+      {
+        "$ref": "#/$defs/FilterOfferingEnabled"
+      },
+      {
+        "$ref": "#/$defs/FilterOfferingDisabled"
+      }
+    ],
+    "$defs": {
+      "ComputeOfferings": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "DiskOfferings": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "FilterOfferingDisabled": {
+        "additionalProperties": false,
+        "properties": {
+          "filterOfferings": {
+            "const": false
+          },
+          "zones": {
+            "additionalProperties": {
+              "$ref": "#/$defs/OfferingsForZone"
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "filterOfferings"
+        ],
+        "type": "object"
+      },
+      "FilterOfferingEnabled": {
+        "additionalProperties": false,
+        "properties": {
+          "filterOfferings": {
+            "const": true
+          },
+          "zones": {
+            "additionalProperties": {
+              "$ref": "#/$defs/OfferingsForZone"
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "filterOfferings",
+          "zones"
+        ],
+        "type": "object"
+      },
+      "OfferingsForZone": {
+        "additionalProperties": false,
+        "properties": {
+          "computeOfferings": {
+            "$ref": "#/$defs/ComputeOfferings"
+          },
+          "diskOfferings": {
+            "$ref": "#/$defs/DiskOfferings"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "oneOf": [
+      {
+        "$ref": "#/$defs/FilterOfferingEnabled"
+      },
+      {
+        "$ref": "#/$defs/FilterOfferingDisabled"
+      }
+    ],
+    "$defs": {
+      "ComputeOfferings": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "DiskOfferings": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "FilterOfferingDisabled": {
+        "additionalProperties": false,
+        "properties": {
+          "filterOfferings": {
+            "const": false
+          },
+          "zones": {
+            "additionalProperties": {
+              "$ref": "#/$defs/OfferingsForZone"
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "filterOfferings"
+        ],
+        "type": "object"
+      },
+      "FilterOfferingEnabled": {
+        "additionalProperties": false,
+        "properties": {
+          "filterOfferings": {
+            "const": true
+          },
+          "zones": {
+            "additionalProperties": {
+              "$ref": "#/$defs/OfferingsForZone"
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "filterOfferings",
+          "zones"
+        ],
+        "type": "object"
+      },
+      "OfferingsForZone": {
+        "additionalProperties": false,
+        "properties": {
+          "computeOfferings": {
+            "$ref": "#/$defs/ComputeOfferings"
+          },
+          "diskOfferings": {
+            "$ref": "#/$defs/DiskOfferings"
+          }
+        },
+        "type": "object"
+      }
+    }
+  }
+}

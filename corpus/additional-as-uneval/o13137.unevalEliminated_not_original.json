@@ -1,0 +1,260 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "minLength",
+    "oneOf",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o13137.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "CSV migration",
+    "description": "CSV migration configuration",
+    "type": "object",
+    "properties": {},
+    "additionalProperties": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/migrationField"
+        }
+      ]
+    },
+    "required": [
+      "id",
+      "created",
+      "modified"
+    ],
+    "$defs": {
+      "checkRequiredFalseAndUniqueFalse": {
+        "properties": {
+          "required": {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          },
+          "unique": {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          }
+        }
+      },
+      "checkRequiredFalseAndUniqueAny": {
+        "properties": {
+          "required": {
+            "type": "boolean",
+            "enum": [
+              true
+            ]
+          },
+          "unique": {
+            "type": "boolean",
+            "enum": [
+              true,
+              false
+            ]
+          }
+        }
+      },
+      "migrationField": {
+        "title": "Migration field",
+        "description": "Representation of a single field from migrations.csv",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Field name",
+            "description": "Database field name",
+            "type": "string",
+            "minLength": 1
+          },
+          "type": {
+            "title": "Field type",
+            "description": "Database field type (think: field handlers)",
+            "type": "string",
+            "minLength": 1
+          },
+          "required": {
+            "title": "Required flag",
+            "description": "Defines whether or not the field is required",
+            "type": "boolean",
+            "default": false
+          },
+          "non-searchable": {
+            "title": "Searchable flag",
+            "description": "Defines whether or not the field is searchable",
+            "type": "boolean",
+            "default": false
+          },
+          "unique": {
+            "title": "Unique flag",
+            "description": "Defines whether or not the field is contains unique value",
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "type"
+        ],
+        "oneOf": [
+          {
+            "$ref": "#/$defs/checkRequiredFalseAndUniqueFalse"
+          },
+          {
+            "$ref": "#/$defs/checkRequiredFalseAndUniqueAny"
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_2",
+    "$defs": {
+      "checkRequiredFalseAndUniqueFalse": {
+        "properties": {
+          "required": {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          },
+          "unique": {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          }
+        }
+      },
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "Migration field",
+                "description": "Representation of a single field from migrations.csv",
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "title": "Field name",
+                    "description": "Database field name",
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "non-searchable": {
+                    "title": "Searchable flag",
+                    "description": "Defines whether or not the field is searchable",
+                    "type": "boolean",
+                    "default": false
+                  },
+                  "unique": {
+                    "title": "Unique flag",
+                    "description": "Defines whether or not the field is contains unique value",
+                    "type": "boolean",
+                    "default": false
+                  },
+                  "type": {
+                    "title": "Field type",
+                    "description": "Database field type (think: field handlers)",
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "required": {
+                    "title": "Required flag",
+                    "description": "Defines whether or not the field is required",
+                    "type": "boolean",
+                    "default": false
+                  }
+                },
+                "required": [
+                  "name",
+                  "type"
+                ],
+                "oneOf": [
+                  {
+                    "$ref": "#/$defs/checkRequiredFalseAndUniqueFalse"
+                  },
+                  {
+                    "$ref": "#/$defs/checkRequiredFalseAndUniqueAny"
+                  }
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^required$": true,
+                  "^name$": true,
+                  "^type$": true,
+                  "^unique$": true,
+                  "^non-searchable$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "CSV migration",
+                "description": "CSV migration configuration",
+                "type": "object",
+                "properties": {},
+                "required": [
+                  "id",
+                  "created",
+                  "modified"
+                ]
+              },
+              {
+                "additionalProperties": {
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/migrationField"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "checkRequiredFalseAndUniqueAny": {
+        "properties": {
+          "required": {
+            "type": "boolean",
+            "enum": [
+              true
+            ]
+          },
+          "unique": {
+            "type": "boolean",
+            "enum": [
+              true,
+              false
+            ]
+          }
+        }
+      },
+      "migrationField": {
+        "$ref": "#/$defs/modern_1"
+      }
+    }
+  }
+}

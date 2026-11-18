@@ -1,0 +1,170 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o21848.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "CacheClusterEnabled": {
+                    "enum": [
+                      "true",
+                      "false"
+                    ],
+                    "type": "string"
+                  },
+                  "StageName": {
+                    "pattern": "^\\w+$",
+                    "type": "string"
+                  },
+                  "StageDescription": {
+                    "type": "string"
+                  },
+                  "Description": {
+                    "type": "string"
+                  },
+                  "Variables": {
+                    "$ref": "#/$defs/modern_2"
+                  },
+                  "RestApiId": {
+                    "pattern": "^[a-z0-9]{10}$",
+                    "type": "string"
+                  },
+                  "CacheClusterSize": {
+                    "enum": [
+                      "0.5",
+                      "1.6",
+                      "6.1",
+                      "13.5",
+                      "28.4",
+                      "58.2",
+                      "118",
+                      "237"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "RestApiId",
+                  "StageName"
+                ],
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^Description$": true,
+                  "^Variables$": true,
+                  "^StageName$": true,
+                  "^RestApiId$": true,
+                  "^CacheClusterSize$": true,
+                  "^CacheClusterEnabled$": true,
+                  "^StageDescription$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "patternProperties": {
+                  "^\\w+$": {
+                    "pattern": "^[\\^\\-._:/?&=,\\w]+$",
+                    "type": "string"
+                  }
+                },
+                "properties": {},
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^\\w+$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+      "CacheClusterEnabled": {
+        "enum": [
+          "true",
+          "false"
+        ],
+        "type": "string"
+      },
+      "CacheClusterSize": {
+        "enum": [
+          "0.5",
+          "1.6",
+          "6.1",
+          "13.5",
+          "28.4",
+          "58.2",
+          "118",
+          "237"
+        ],
+        "type": "string"
+      },
+      "Description": {
+        "type": "string"
+      },
+      "RestApiId": {
+        "pattern": "^[a-z0-9]{10}$",
+        "type": "string"
+      },
+      "StageDescription": {
+        "type": "string"
+      },
+      "StageName": {
+        "pattern": "^\\w+$",
+        "type": "string"
+      },
+      "Variables": {
+        "additionalProperties": false,
+        "patternProperties": {
+          "^\\w+$": {
+            "pattern": "^[\\^\\-._:/?&=,\\w]+$",
+            "type": "string"
+          }
+        },
+        "properties": {},
+        "type": "object"
+      }
+    },
+    "required": [
+      "RestApiId",
+      "StageName"
+    ],
+    "type": "object"
+  }
+}

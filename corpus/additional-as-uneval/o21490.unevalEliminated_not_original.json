@@ -1,0 +1,97 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "patternProperties",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o21490.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+      "additionalFields": {
+        "type": "object"
+      },
+      "chunk-size": {
+        "type": "number"
+      },
+      "empty-data-set": {
+        "type": "boolean"
+      },
+      "idMapping": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "mappings": {
+        "type": "object"
+      },
+      "row_type_name": {
+        "type": "string"
+      }
+    },
+    "title": "Webtrends Keymetrics Collector Options",
+    "type": "object"
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "mappings": {
+                    "type": "object"
+                  },
+                  "idMapping": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "empty-data-set": {
+                    "type": "boolean"
+                  },
+                  "row_type_name": {
+                    "type": "string"
+                  },
+                  "additionalFields": {
+                    "type": "object"
+                  },
+                  "chunk-size": {
+                    "type": "number"
+                  }
+                },
+                "title": "Webtrends Keymetrics Collector Options",
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^chunk-size$": true,
+                  "^mappings$": true,
+                  "^idMapping$": true,
+                  "^empty-data-set$": true,
+                  "^row_type_name$": true,
+                  "^additionalFields$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

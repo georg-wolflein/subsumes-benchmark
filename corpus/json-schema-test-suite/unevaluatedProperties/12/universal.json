@@ -1,0 +1,85 @@
+{
+  "$schema": "../../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "anyOf",
+    "const",
+    "not",
+    "oneOf",
+    "properties",
+    "required",
+    "type",
+    "unevaluatedProperties"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/unevaluatedProperties.json#/tests/12",
+  "a": true,
+  "b": {
+    "anyOf": [
+      {
+        "type": "object",
+        "properties": {
+          "foo": {
+            "type": "string"
+          }
+        },
+        "oneOf": [
+          {
+            "properties": {
+              "bar": {
+                "const": "bar"
+              }
+            },
+            "required": [
+              "bar"
+            ]
+          },
+          {
+            "properties": {
+              "baz": {
+                "const": "baz"
+              }
+            },
+            "required": [
+              "baz"
+            ]
+          }
+        ],
+        "unevaluatedProperties": false
+      },
+      {
+        "not": {
+          "type": "object",
+          "properties": {
+            "foo": {
+              "type": "string"
+            }
+          },
+          "oneOf": [
+            {
+              "properties": {
+                "bar": {
+                  "const": "bar"
+                }
+              },
+              "required": [
+                "bar"
+              ]
+            },
+            {
+              "properties": {
+                "baz": {
+                  "const": "baz"
+                }
+              },
+              "required": [
+                "baz"
+              ]
+            }
+          ],
+          "unevaluatedProperties": false
+        }
+      }
+    ]
+  }
+}

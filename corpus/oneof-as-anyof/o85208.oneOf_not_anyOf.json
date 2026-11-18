@@ -1,0 +1,185 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "anyOf",
+    "items",
+    "oneOf",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o85208.oneOf_not_anyOf.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "A MWF sequence indicator component's schema definition.",
+    "properties": {
+      "content": {
+        "properties": {
+          "items": {
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/indicator"
+                },
+                {
+                  "$ref": "#/$defs/activeIndicator"
+                }
+              ]
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      }
+    },
+    "required": [
+      "content"
+    ],
+    "title": "Sequence indicator",
+    "type": "object",
+    "$defs": {
+      "activeIndicator": {
+        "properties": {
+          "config": {
+            "properties": {
+              "checked": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "checked"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "config"
+        ],
+        "type": "object",
+        "anyOf": [
+          {
+            "$ref": "#/$defs/indicator"
+          }
+        ]
+      },
+      "indicator": {
+        "properties": {
+          "content": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "label",
+              "title",
+              "id"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "content"
+        ],
+        "type": "object"
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "A MWF sequence indicator component's schema definition.",
+    "properties": {
+      "content": {
+        "properties": {
+          "items": {
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/indicator"
+                },
+                {
+                  "$ref": "#/$defs/activeIndicator"
+                }
+              ]
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      }
+    },
+    "required": [
+      "content"
+    ],
+    "title": "Sequence indicator",
+    "type": "object",
+    "$defs": {
+      "activeIndicator": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/indicator"
+          }
+        ],
+        "properties": {
+          "config": {
+            "properties": {
+              "checked": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "checked"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "config"
+        ],
+        "type": "object"
+      },
+      "indicator": {
+        "properties": {
+          "content": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "label",
+              "title",
+              "id"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "content"
+        ],
+        "type": "object"
+      }
+    }
+  }
+}

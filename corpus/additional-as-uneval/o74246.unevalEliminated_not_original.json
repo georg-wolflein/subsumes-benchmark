@@ -1,0 +1,153 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o74246.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "created": {},
+      "modified": {},
+      "type": {
+        "type": "string"
+      },
+      "mimetype": {
+        "type": "string"
+      },
+      "size": {
+        "type": "integer"
+      },
+      "hash": {
+        "type": "string"
+      },
+      "modality": {
+        "type": "string"
+      },
+      "measurements": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array",
+        "_uniqueItems": true
+      },
+      "tags": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array",
+        "_uniqueItems": true
+      },
+      "info": {
+        "type": "object"
+      }
+    },
+    "required": [
+      "name",
+      "created",
+      "modified",
+      "size",
+      "hash"
+    ],
+    "key_fields": [
+      "name"
+    ],
+    "additionalProperties": false
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "mimetype": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "size": {
+                    "type": "integer"
+                  },
+                  "tags": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array",
+                    "_uniqueItems": true
+                  },
+                  "measurements": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array",
+                    "_uniqueItems": true
+                  },
+                  "info": {
+                    "type": "object"
+                  },
+                  "modified": true,
+                  "hash": {
+                    "type": "string"
+                  },
+                  "modality": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "created": true
+                },
+                "required": [
+                  "name",
+                  "created",
+                  "modified",
+                  "size",
+                  "hash"
+                ],
+                "key_fields": [
+                  "name"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^info$": true,
+                  "^measurements$": true,
+                  "^name$": true,
+                  "^type$": true,
+                  "^hash$": true,
+                  "^mimetype$": true,
+                  "^size$": true,
+                  "^created$": true,
+                  "^modified$": true,
+                  "^modality$": true,
+                  "^tags$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

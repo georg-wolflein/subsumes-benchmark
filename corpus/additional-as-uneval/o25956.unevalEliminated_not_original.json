@@ -1,0 +1,117 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o25956.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "map1": {
+        "$ref": "#/$defs/MyMap1"
+      },
+      "map2": {
+        "$ref": "#/$defs/MyMap2"
+      }
+    },
+    "required": [
+      "map1",
+      "map2"
+    ],
+    "$defs": {
+      "MyMap1": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/$defs/MyType"
+        }
+      },
+      "MyType": {
+        "type": "object",
+        "properties": {}
+      },
+      "MyMap2": {
+        "description": "The additionalProperties annotation should be ignored",
+        "additionalProperties": {
+          "type": [
+            "string",
+            "number"
+          ]
+        },
+        "type": "object"
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "map1": {
+        "$ref": "#/$defs/MyMap1"
+      },
+      "map2": {
+        "$ref": "#/$defs/MyMap2"
+      }
+    },
+    "required": [
+      "map1",
+      "map2"
+    ],
+    "$defs": {
+      "MyType": {
+        "type": "object",
+        "properties": {}
+      },
+      "MyMap2": {
+        "$ref": "#/$defs/modern_2"
+      },
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object"
+              },
+              {
+                "additionalProperties": {
+                  "$ref": "#/$defs/MyType"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "description": "The additionalProperties annotation should be ignored",
+                "type": "object"
+              },
+              {
+                "additionalProperties": {
+                  "type": [
+                    "string",
+                    "number"
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "MyMap1": {
+        "$ref": "#/$defs/modern_1"
+      }
+    }
+  }
+}

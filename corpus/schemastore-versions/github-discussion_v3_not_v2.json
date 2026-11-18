@@ -1,0 +1,157 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "additionalProperties",
+    "enum",
+    "items",
+    "oneOf",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/schemastore_containment/unknown/github-discussion_v3_not_v2.json",
+  "a": {
+    "$id": "https://json.schemastore.org/github-discussion.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$comment": "https://docs.github.com/en/discussions/managing-discussions-for-your-community/syntax-for-discussion-category-forms",
+    "additionalProperties": false,
+    "properties": {
+      "title": {
+        "description": "A default title that will be pre-populated in the discussion submission form.",
+        "type": "string"
+      },
+      "labels": {
+        "description": "Labels that will automatically be added to discussions created with this template.",
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "body": {
+        "description": "Definition of the input types in the discussion form",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "markdown",
+                "textarea",
+                "input",
+                "dropdown",
+                "checkboxes"
+              ]
+            },
+            "attributes": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "placeholder": {
+                  "type": "string"
+                }
+              }
+            },
+            "validations": {
+              "type": "object",
+              "properties": {
+                "required": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "required": [
+      "body"
+    ],
+    "type": "object"
+  },
+  "b": {
+    "$id": "https://json.schemastore.org/github-discussion.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$comment": "https://docs.github.com/en/discussions/managing-discussions-for-your-community/syntax-for-discussion-category-forms",
+    "additionalProperties": false,
+    "properties": {
+      "title": {
+        "description": "A default title that will be pre-populated in the discussion submission form.",
+        "type": "string"
+      },
+      "labels": {
+        "description": "Labels that will automatically be added to discussions created with this template.",
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "body": {
+        "description": "Definition of the input types in the discussion form",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "markdown",
+                "textarea",
+                "input",
+                "dropdown",
+                "checkboxes"
+              ]
+            },
+            "attributes": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "placeholder": {
+                  "type": "string"
+                }
+              }
+            },
+            "validations": {
+              "type": "object",
+              "properties": {
+                "required": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "required": [
+      "body"
+    ],
+    "type": "object"
+  }
+}

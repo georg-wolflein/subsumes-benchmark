@@ -1,0 +1,33 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": null,
+  "features": [
+    "allOf",
+    "pattern",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/trickyschemas/unsat/bool.7.strong.sub.eq2.json",
+  "note": "Upstream's label holds only if . matches a line terminator. In ECMA-262 . matches none, so \"aaa\\nbb\" is valid under b and not under a.",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "string",
+    "pattern": "aa.*bb|bb.*aa"
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "allOf": [
+      {
+        "type": "string"
+      },
+      {
+        "_pattern": "aa",
+        "pattern": "aaa",
+        "_patternWeak": "a"
+      },
+      {
+        "pattern": "bb"
+      }
+    ]
+  }
+}

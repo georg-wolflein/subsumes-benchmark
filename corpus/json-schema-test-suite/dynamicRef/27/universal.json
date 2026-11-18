@@ -1,0 +1,52 @@
+{
+  "$schema": "../../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$dynamicRef",
+    "$ref",
+    "anyOf",
+    "items",
+    "not",
+    "type"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/dynamicRef.json#/tests/27",
+  "a": true,
+  "b": {
+    "anyOf": [
+      {
+        "$ref": "https://test.json-schema.org/dynamic-resolution-without-bookend/root"
+      },
+      {
+        "not": {
+          "$ref": "https://test.json-schema.org/dynamic-resolution-without-bookend/root"
+        }
+      }
+    ],
+    "$defs": {
+      "https://test.json-schema.org/dynamic-resolution-without-bookend/root": {
+        "$id": "https://test.json-schema.org/dynamic-resolution-without-bookend/root",
+        "$ref": "list",
+        "$defs": {
+          "foo": {
+            "$dynamicAnchor": "items",
+            "type": "string"
+          },
+          "list": {
+            "$id": "list",
+            "type": "array",
+            "items": {
+              "$dynamicRef": "#items"
+            },
+            "$defs": {
+              "items": {
+                "$comment": "This is only needed to give the reference somewhere to resolve to when it behaves like $ref",
+                "$anchor": "items"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

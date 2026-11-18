@@ -1,0 +1,165 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "items",
+    "maxLength",
+    "minLength",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o5026.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "required": [
+                  "_id",
+                  "name",
+                  "metadata",
+                  "schema"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 63
+                  },
+                  "_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 36
+                  },
+                  "schema": {
+                    "type": "string",
+                    "enum": [
+                      "http://elasticbox.net/schemas/namespace"
+                    ]
+                  },
+                  "metadata": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 63
+                      },
+                      "creationTimestamp": {
+                        "type": "number"
+                      },
+                      "resourceVersion": {
+                        "type": "number"
+                      },
+                      "uid": {
+                        "type": "string"
+                      },
+                      "deletionTimestamp": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  "members": {
+                    "type": "array",
+                    "default": [],
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 256
+                    }
+                  }
+                },
+                "type:": "object"
+              },
+              {
+                "patternProperties": {
+                  "^metadata$": true,
+                  "^schema$": true,
+                  "^name$": true,
+                  "^_id$": true,
+                  "^members$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$id": "http://elasticbox.net/schemas/namespace",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "required": [
+      "_id",
+      "name",
+      "metadata",
+      "schema"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "_id": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 36
+      },
+      "metadata": {
+        "type": "object",
+        "properties": {
+          "creationTimestamp": {
+            "type": "number"
+          },
+          "deletionTimestamp": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 63
+          },
+          "resourceVersion": {
+            "type": "number"
+          },
+          "uid": {
+            "type": "string"
+          }
+        }
+      },
+      "name": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 63
+      },
+      "schema": {
+        "type": "string",
+        "enum": [
+          "http://elasticbox.net/schemas/namespace"
+        ]
+      },
+      "members": {
+        "type": "array",
+        "default": [],
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      }
+    },
+    "type:": "object"
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/uneval_eliminated_as_additional_containment/unknown/unevaluatedProperties_664.translate_not_trivial.json",
+  "a": {
+    "$id": "https://registry.hzdr.de/crp/picongpu/schema/picongpu.pypicongpu.species.util.element.Element",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "a chemical element from the periodic table of elements",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "symbol",
+      "picongpu_name"
+    ],
+    "properties": {
+      "symbol": {
+        "description": "symbol from the periodic table of elements, case sensitive",
+        "type": "string",
+        "pattern": "^[A-Z][a-z]?$"
+      },
+      "picongpu_name": {
+        "description": "name as used in PIConGPU lookup tables",
+        "type": "string",
+        "pattern": "^[A-Za-z0-9_]*$"
+      }
+    }
+  },
+  "b": {
+    "$id": "https://registry.hzdr.de/crp/picongpu/schema/picongpu.pypicongpu.species.util.element.Element",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "description": "a chemical element from the periodic table of elements",
+                "type": "object",
+                "required": [
+                  "symbol",
+                  "picongpu_name"
+                ],
+                "properties": {
+                  "symbol": {
+                    "description": "symbol from the periodic table of elements, case sensitive",
+                    "type": "string",
+                    "pattern": "^[A-Z][a-z]?$"
+                  },
+                  "picongpu_name": {
+                    "description": "name as used in PIConGPU lookup tables",
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9_]*$"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^symbol$": true,
+                  "^picongpu_name$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

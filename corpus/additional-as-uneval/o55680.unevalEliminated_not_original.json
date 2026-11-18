@@ -1,0 +1,138 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "format",
+    "maxLength",
+    "minLength",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o55680.unevalEliminated_not_original.json",
+  "a": {
+    "$id": "https://koriym.github.io/Polidog.Todo/todo.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Todo",
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "The unique identifier for a todo."
+      },
+      "title": {
+        "type": "string",
+        "description": "The title of the todo",
+        "minLength": 1,
+        "maxLength": 255
+      },
+      "status": {
+        "type": "string",
+        "description": "2 if task has been completed",
+        "enum": [
+          "1",
+          "2"
+        ]
+      },
+      "status_name": {
+        "description": "The name of the status",
+        "type": "string",
+        "maxLength": 255
+      },
+      "created": {
+        "description": "The date and time that the todo was created",
+        "type": "string",
+        "format": "datetime"
+      },
+      "updated": {
+        "description": "The date and time that the todo was last modified",
+        "type": "string",
+        "format": "datetime"
+      }
+    },
+    "required": [
+      "title",
+      "status",
+      "created",
+      "updated"
+    ],
+    "additionalProperties": false
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "Todo",
+                "type": "object",
+                "properties": {
+                  "status_name": {
+                    "description": "The name of the status",
+                    "type": "string",
+                    "maxLength": 255
+                  },
+                  "id": {
+                    "type": "string",
+                    "description": "The unique identifier for a todo."
+                  },
+                  "updated": {
+                    "description": "The date and time that the todo was last modified",
+                    "type": "string",
+                    "format": "datetime"
+                  },
+                  "status": {
+                    "type": "string",
+                    "description": "2 if task has been completed",
+                    "enum": [
+                      "1",
+                      "2"
+                    ]
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "The title of the todo",
+                    "minLength": 1,
+                    "maxLength": 255
+                  },
+                  "created": {
+                    "description": "The date and time that the todo was created",
+                    "type": "string",
+                    "format": "datetime"
+                  }
+                },
+                "required": [
+                  "title",
+                  "status",
+                  "created",
+                  "updated"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^status_name$": true,
+                  "^updated$": true,
+                  "^status$": true,
+                  "^id$": true,
+                  "^title$": true,
+                  "^created$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

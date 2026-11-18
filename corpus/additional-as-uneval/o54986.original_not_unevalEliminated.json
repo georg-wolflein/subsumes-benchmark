@@ -1,0 +1,133 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "minItems",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o54986.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "POST /birds [request]",
+                "description": "Add a new bird to the library",
+                "type": "object",
+                "required": [
+                  "id",
+                  "name",
+                  "family",
+                  "continents",
+                  "added",
+                  "visible"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "English bird name"
+                  },
+                  "visible": {
+                    "type": "boolean",
+                    "description": "Determines if the bird should be visible in lists"
+                  },
+                  "continents": {
+                    "type": "array",
+                    "description": "Continents the bird exist on",
+                    "minItems": 1,
+                    "items": {
+                      "type": "string"
+                    },
+                    "_uniqueItems": true
+                  },
+                  "family": {
+                    "type": "string",
+                    "description": "Latin bird family name"
+                  },
+                  "added": {
+                    "type": "string",
+                    "description": "Date the bird was added to the registry. Format YYYY-MM-DD"
+                  },
+                  "id": {
+                    "type": "string",
+                    "description": "Object id from the database"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^added$": true,
+                  "^id$": true,
+                  "^continents$": true,
+                  "^visible$": true,
+                  "^name$": true,
+                  "^family$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "POST /birds [request]",
+    "description": "Add a new bird to the library",
+    "type": "object",
+    "required": [
+      "id",
+      "name",
+      "family",
+      "continents",
+      "added",
+      "visible"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Object id from the database"
+      },
+      "name": {
+        "type": "string",
+        "description": "English bird name"
+      },
+      "family": {
+        "type": "string",
+        "description": "Latin bird family name"
+      },
+      "continents": {
+        "type": "array",
+        "description": "Continents the bird exist on",
+        "minItems": 1,
+        "items": {
+          "type": "string"
+        },
+        "_uniqueItems": true
+      },
+      "added": {
+        "type": "string",
+        "description": "Date the bird was added to the registry. Format YYYY-MM-DD"
+      },
+      "visible": {
+        "type": "boolean",
+        "description": "Determines if the bird should be visible in lists"
+      }
+    }
+  }
+}

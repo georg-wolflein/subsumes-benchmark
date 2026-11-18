@@ -1,0 +1,273 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "anyOf",
+    "enum",
+    "minProperties",
+    "not",
+    "oneOf",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "recursion",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/sat/o37788.anyOf_not_oneOf.json",
+  "a": {
+    "$id": "https://tabris.com/texts-schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Tabris.js Text Resources JSON Schema",
+    "oneOf": [
+      {
+        "$ref": "#/$defs/textResources"
+      }
+    ],
+    "$defs": {
+      "textResources": {
+        "type": "object",
+        "properties": {
+          "$schema": {
+            "type": "string"
+          },
+          "$scaleFactor": {
+            "enum": [
+              "nearest",
+              "lower",
+              "higher"
+            ]
+          },
+          "$fallbackLanguage": {
+            "type": "string",
+            "pattern": "^[a-zA-Z][a-zA-Z][a-zA-Z]?(-[\\-a-zA-Z0-9]+)?$"
+          }
+        },
+        "patternProperties": {
+          "^[a-z][a-zA-Z][a-zA-Z0-9]+$": {
+            "$ref": "#/$defs/textResource"
+          }
+        },
+        "additionalProperties": false
+      },
+      "textResource": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/textDefinition"
+          },
+          {
+            "$ref": "#/$defs/textSelector"
+          }
+        ]
+      },
+      "textSelector": {
+        "oneOf": [
+          {
+            "description": "Platform Selector",
+            "type": "object",
+            "properties": {
+              "ios": {
+                "$ref": "#/$defs/textResource"
+              },
+              "android": {
+                "$ref": "#/$defs/textResource"
+              }
+            },
+            "required": [
+              "ios",
+              "android"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "description": "Resource Reference",
+            "type": "object",
+            "required": [
+              "ref"
+            ],
+            "properties": {
+              "ref": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          {
+            "description": "Inherit Marker",
+            "type": "object",
+            "properties": {
+              "inherit": {
+                "enum": [
+                  true
+                ]
+              }
+            },
+            "required": [
+              "inherit"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "description": "Scale Selector",
+            "type": "object",
+            "patternProperties": {
+              "^([0-9]\\.?[0-9]*)x$": {
+                "$ref": "#/$defs/textResource"
+              }
+            },
+            "additionalProperties": false,
+            "minProperties": 1
+          },
+          {
+            "description": "Locale Selector",
+            "type": "object",
+            "patternProperties": {
+              "^[a-zA-Z][a-zA-Z][a-zA-Z]?(-[\\-a-zA-Z0-9]+)?$": {
+                "$ref": "#/$defs/textResource"
+              }
+            },
+            "additionalProperties": false,
+            "minProperties": 1,
+            "not": {
+              "required": [
+                "ios"
+              ]
+            }
+          }
+        ]
+      },
+      "textDefinition": {
+        "type": "string"
+      }
+    }
+  },
+  "b": {
+    "$id": "https://tabris.com/texts-schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Tabris.js Text Resources JSON Schema",
+    "anyOf": [
+      {
+        "$ref": "#/$defs/textResources"
+      }
+    ],
+    "$defs": {
+      "textResources": {
+        "type": "object",
+        "properties": {
+          "$schema": {
+            "type": "string"
+          },
+          "$scaleFactor": {
+            "enum": [
+              "nearest",
+              "lower",
+              "higher"
+            ]
+          },
+          "$fallbackLanguage": {
+            "type": "string",
+            "pattern": "^[a-zA-Z][a-zA-Z][a-zA-Z]?(-[\\-a-zA-Z0-9]+)?$"
+          }
+        },
+        "patternProperties": {
+          "^[a-z][a-zA-Z][a-zA-Z0-9]+$": {
+            "$ref": "#/$defs/textResource"
+          }
+        },
+        "additionalProperties": false
+      },
+      "textResource": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/textDefinition"
+          },
+          {
+            "$ref": "#/$defs/textSelector"
+          }
+        ]
+      },
+      "textSelector": {
+        "anyOf": [
+          {
+            "description": "Platform Selector",
+            "type": "object",
+            "properties": {
+              "ios": {
+                "$ref": "#/$defs/textResource"
+              },
+              "android": {
+                "$ref": "#/$defs/textResource"
+              }
+            },
+            "required": [
+              "ios",
+              "android"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "description": "Resource Reference",
+            "type": "object",
+            "required": [
+              "ref"
+            ],
+            "properties": {
+              "ref": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          {
+            "description": "Inherit Marker",
+            "type": "object",
+            "properties": {
+              "inherit": {
+                "enum": [
+                  true
+                ]
+              }
+            },
+            "required": [
+              "inherit"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "description": "Scale Selector",
+            "type": "object",
+            "patternProperties": {
+              "^([0-9]\\.?[0-9]*)x$": {
+                "$ref": "#/$defs/textResource"
+              }
+            },
+            "additionalProperties": false,
+            "minProperties": 1
+          },
+          {
+            "description": "Locale Selector",
+            "type": "object",
+            "patternProperties": {
+              "^[a-zA-Z][a-zA-Z][a-zA-Z]?(-[\\-a-zA-Z0-9]+)?$": {
+                "$ref": "#/$defs/textResource"
+              }
+            },
+            "additionalProperties": false,
+            "minProperties": 1,
+            "not": {
+              "required": [
+                "ios"
+              ]
+            }
+          }
+        ]
+      },
+      "textDefinition": {
+        "type": "string"
+      }
+    }
+  }
+}

@@ -1,12 +1,13 @@
 """The questions of the corpus, one task per question."""
 
-import json
 import random
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Literal
 
+from subsumes_benchmark.generated.case import CaseSpec
+
 if TYPE_CHECKING:
-    from collections.abc import Sequence
+    from collections.abc import Mapping, Sequence
     from pathlib import Path
 
 type Direction = Literal["a_subsumes_b", "b_subsumes_a"]
@@ -14,16 +15,16 @@ type Direction = Literal["a_subsumes_b", "b_subsumes_a"]
 
 @dataclass(frozen=True)
 class Task:
-    """One question: does ``a`` accept every instance valid under ``b``?
+    """One question about the two schemas of a case, which ``file`` holds.
 
-    For the direction ``b_subsumes_a`` the two files of the case are swapped, so that ``a``
-    is always the schema asked to accept everything.
+    For the direction ``b_subsumes_a`` the two schemas are swapped when the checker is asked,
+    so that it is always asked whether its first schema accepts every instance valid under
+    its second.
     """
 
     case: str
     direction: Direction
-    a: Path
-    b: Path
+    file: Path
     expected: bool | None
 
     @property
@@ -31,9 +32,20 @@ class Task:
         return self.case.partition("/")[0]
 
 
-def _label(value: object) -> bool | None:
-    assert value is None or isinstance(value, bool)
-    return value
+def case_files(corpus: Path) -> Mapping[str, Path]:
+    """The file of every case by its id, sorted by the folders and the name of the case.
+
+    A case is every JSON file below the folder of a collection, except the ``collection.json``
+    that makes the folder one. Its id is its path below the corpus without the extension.
+    """
+    found = {
+        path.relative_to(corpus).as_posix().removesuffix(".json"): path
+        for collection in corpus.iterdir()
+        if (collection / "collection.json").is_file()
+        for path in collection.rglob("*.json")
+        if path != collection / "collection.json"
+    }
+    return {case: found[case] for case in sorted(found, key=lambda case: case.split("/"))}
 
 
 def read_tasks(corpus: Path) -> Sequence[Task]:
@@ -44,15 +56,11 @@ def read_tasks(corpus: Path) -> Sequence[Task]:
     asks the other direction only where the corpus has a label for it.
     """
     found = []
-    for path in sorted(corpus.rglob("case.json")):
-        metadata = json.loads(path.read_text(encoding="utf-8"))
-        folder = path.parent
-        case = folder.relative_to(corpus).as_posix()
-        a, b = folder / "a.json", folder / "b.json"
-        found.append(Task(case, "a_subsumes_b", a, b, _label(metadata["a_subsumes_b"])))
-        reverse = _label(metadata["b_subsumes_a"])
-        if reverse is not None:
-            found.append(Task(case, "b_subsumes_a", b, a, reverse))
+    for case, path in case_files(corpus).items():
+        known = CaseSpec.read(path)
+        found.append(Task(case, "a_subsumes_b", path, known.a_subsumes_b))
+        if known.b_subsumes_a is not None:
+            found.append(Task(case, "b_subsumes_a", path, known.b_subsumes_a))
     return found
 
 

@@ -1,0 +1,142 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "items",
+    "minItems",
+    "minLength",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o58271.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+      "mappings": {
+        "$ref": "#/$defs/modern_1"
+      }
+    },
+    "required": [],
+    "title": "Import person configuration",
+    "type": "object",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "items": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "minItems": 0,
+                "required": [
+                  "ldapName",
+                  "dataType",
+                  "required"
+                ],
+                "type": "array",
+                "_uniqueItems": false
+              },
+              {
+                "items": {
+                  "anyOf": [
+                    true,
+                    true
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "dataType": {
+                    "enum": [
+                      "string",
+                      "numeric"
+                    ],
+                    "type": "string"
+                  },
+                  "displayName": {
+                    "type": "string"
+                  },
+                  "ldapName": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "required": {
+                    "type": "boolean"
+                  }
+                },
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^dataType$": true,
+                  "^displayName$": true,
+                  "^ldapName$": true,
+                  "^required$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+      "mappings": {
+        "items": {
+          "additionalProperties": false,
+          "properties": {
+            "dataType": {
+              "enum": [
+                "string",
+                "numeric"
+              ],
+              "type": "string"
+            },
+            "displayName": {
+              "type": "string"
+            },
+            "ldapName": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "required": {
+              "type": "boolean"
+            }
+          },
+          "type": "object"
+        },
+        "minItems": 0,
+        "required": [
+          "ldapName",
+          "dataType",
+          "required"
+        ],
+        "type": "array",
+        "_uniqueItems": false
+      }
+    },
+    "required": [],
+    "title": "Import person configuration",
+    "type": "object"
+  }
+}

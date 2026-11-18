@@ -1,0 +1,92 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": null,
+  "features": [
+    "additionalProperties",
+    "anyOf",
+    "maximum",
+    "oneOf",
+    "pattern",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/sat/o81530.anyOf_not_oneOf.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+      "email": {
+        "pattern": "^[\\w|-|.]+@[\\w]+\\.[A-Za-z]{2,4}$",
+        "type": "string"
+      },
+      "firstName": {
+        "type": "string"
+      },
+      "lastName": {
+        "type": "string"
+      },
+      "postedSlides": {
+        "type": "boolean"
+      },
+      "rating": {
+        "oneOf": [
+          {
+            "maximum": 2
+          },
+          {
+            "maximum": 5
+          }
+        ],
+        "type": "number"
+      }
+    },
+    "required": [
+      "email",
+      "firstName",
+      "lastName",
+      "postedSlides",
+      "rating"
+    ],
+    "type": "object"
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+      "email": {
+        "pattern": "^[\\w|-|.]+@[\\w]+\\.[A-Za-z]{2,4}$",
+        "type": "string"
+      },
+      "firstName": {
+        "type": "string"
+      },
+      "lastName": {
+        "type": "string"
+      },
+      "postedSlides": {
+        "type": "boolean"
+      },
+      "rating": {
+        "type": "number",
+        "anyOf": [
+          {
+            "maximum": 2
+          },
+          {
+            "maximum": 5
+          }
+        ]
+      }
+    },
+    "required": [
+      "email",
+      "firstName",
+      "lastName",
+      "postedSlides",
+      "rating"
+    ],
+    "type": "object"
+  }
+}

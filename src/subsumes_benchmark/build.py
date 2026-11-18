@@ -9,12 +9,12 @@ Two sources are read at the commits their submodules pin:
    (2026): eight datasets of fused tests in older drafts, which are split back into their two
    schemas (``unfuse``) and converted to draft 2020-12 (``convert``).
 
-Every case becomes one folder ``corpus/<collection>/.../<name>/`` holding ``a.json``,
-``b.json`` and ``case.json``, which holds the labels and what the two schemas use
-(``features``). The question a case asks is always whether ``a.json`` accepts every instance
-valid under ``b.json``. The artifact lists the narrower schema first, so ``b.json`` is its
-first schema and ``a.json`` its second. A schema that references other documents carries them
-embedded (``bundled``), so every schema stands on its own.
+Every case becomes one file ``corpus/<collection>/.../<name>.json`` holding the labels, what
+the two schemas use (``features``) and the two schemas, ``a`` and ``b``. The question a case
+asks is always whether ``a`` accepts every instance valid under ``b``. The artifact lists the
+narrower schema first, so ``b`` is its first schema and ``a`` its second. A schema that
+references other documents carries them embedded (``bundled``), so every schema stands on its
+own.
 
 ``collections.json`` names the collections and where each comes from; ``overrides.json``
 lists the cases that are left out and the cases whose label departs from upstream's. Run from
@@ -41,13 +41,12 @@ from pydantic import model_validator
 
 from subsumes_benchmark.config import ConfigError
 from subsumes_benchmark.convert import (
-    DRAFT_2020_12,
     ConversionError,
     Converter,
     dialect_of,
     nested,
 )
-from subsumes_benchmark.features import FEATURES, features
+from subsumes_benchmark.features import features
 from subsumes_benchmark.generated.collections import CollectionSpec, CollectionsSpec, SourceSpec
 from subsumes_benchmark.generated.overrides import Override, OverridesSpec
 from subsumes_benchmark.testsuite import SuiteCase, pairs
@@ -73,55 +72,8 @@ SYNTHESIZED_NAME_RE = re.compile(
     r"_(.+?)_id(\d+)_subschema1_not_2$"
 )
 
-CASE_SCHEMA: dict[str, Json] = {
-    "$schema": DRAFT_2020_12,
-    "$id": "https://github.com/georg-wolflein/subsumes-benchmark/blob/main/corpus/case.schema.json",
-    "title": "A JSON Schema inclusion benchmark case",
-    "description": (
-        "What is known about the two schemas next to this file: does a.json accept every "
-        "instance valid under b.json? The labels hold for draft 2020-12 with format asserted "
-        "and patterns read as ECMA-262 regular expressions with the u flag."
-    ),
-    "type": "object",
-    "required": ["a_subsumes_b", "b_subsumes_a", "features", "upstream"],
-    "additionalProperties": False,
-    "properties": {
-        "a_subsumes_b": {
-            "type": ["boolean", "null"],
-            "description": (
-                "Whether a.json accepts every instance valid under b.json; null when the "
-                "corpus claims nothing."
-            ),
-        },
-        "b_subsumes_a": {
-            "type": ["boolean", "null"],
-            "description": "The same question in the other direction.",
-        },
-        "features": {
-            "type": "array",
-            "items": {"enum": list(FEATURES)},
-            "uniqueItems": True,
-            "description": (
-                "What the two schemas use, in the order of this list: every keyword that "
-                "validation can reach and that decides what a schema accepts, and "
-                "'recursion' when a schema is reached again from itself through a reference."
-            ),
-        },
-        "upstream": {
-            "type": "string",
-            "format": "uri",
-            "description": (
-                "A permanent link to the file this case comes from, in the source repository "
-                "at the commit that collection.json names; the test suite's cases add a JSON "
-                "pointer to the test case or the test after a '#'."
-            ),
-        },
-        "note": {
-            "type": "string",
-            "description": "Why the labels depart from upstream's; absent when they do not.",
-        },
-    },
-}
+# The schema of a case, written by hand. The corpus carries a copy of it.
+CASE_SCHEMA = Path("schemas/case.schema.json")
 
 
 def git(*args: str) -> str:
@@ -238,8 +190,10 @@ class Case:
     note: str | None = None
 
     @property
-    def metadata(self) -> Json:
+    def document(self) -> Json:
+        """What the file of the case holds: what is known first, the two schemas last."""
         out: dict[str, Json] = {
+            "$schema": "../" * self.id.count("/") + "case.schema.json",
             "a_subsumes_b": self.a_subsumes_b,
             "b_subsumes_a": self.b_subsumes_a,
             "features": list(features(self.a, self.b)),
@@ -247,7 +201,7 @@ class Case:
         }
         if self.note is not None:
             out["note"] = self.note
-        return out
+        return {**out, "a": self.a, "b": self.b}
 
 
 def load_collections(path: Path) -> list[Collection]:
@@ -504,10 +458,7 @@ def write_json(path: Path, data: Json) -> None:
 
 
 def write_case(out: Path, case: Case) -> None:
-    folder = out / case.id
-    write_json(folder / "a.json", case.a)
-    write_json(folder / "b.json", case.b)
-    write_json(folder / "case.json", case.metadata)
+    write_json(out / f"{case.id}.json", case.document)
 
 
 def exclusion_of(case_id: str, exclusions: Mapping[str, str]) -> str | None:
@@ -595,6 +546,9 @@ def build(out: Path, collections_file: Path, overrides_file: Path) -> None:
         for before, after in zip(selected, final, strict=True)
     )
 
+    # A collection keeps its manifest next to its cases, so no case may have that name.
+    if taken := sorted(case.id for case in final if case.id.split("/")[1:] == ["collection"]):
+        raise ConversionError(f"cases named like the manifest of their collection: {taken}")
     if out.exists():
         shutil.rmtree(out)
     print(f"writing {len(final)} cases")
@@ -602,7 +556,7 @@ def build(out: Path, collections_file: Path, overrides_file: Path) -> None:
         write_case(out, case)
     for collection in collections:
         write_json(out / collection.name / "collection.json", collection.manifest)
-    write_json(out / "case.schema.json", CASE_SCHEMA)
+    shutil.copyfile(CASE_SCHEMA, out / CASE_SCHEMA.name)
     for name, source in sources.items():
         target = out / "licenses" / f"{name}.txt"
         target.parent.mkdir(parents=True, exist_ok=True)

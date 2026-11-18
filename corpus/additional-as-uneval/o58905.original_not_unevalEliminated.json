@@ -1,0 +1,147 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "format",
+    "maxLength",
+    "minLength",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o58905.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "account": {
+                    "$ref": "#/$defs/modern_2"
+                  }
+                },
+                "required": [
+                  "account"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^account$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 4,
+                    "maxLength": 255
+                  },
+                  "host": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 50
+                  },
+                  "contact_phone_number": {
+                    "type": "string",
+                    "minLength": 7,
+                    "maxLength": 20
+                  },
+                  "contact_name": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 255
+                  },
+                  "contact_email": {
+                    "type": "string",
+                    "format": "email"
+                  }
+                },
+                "required": [
+                  "contact_name",
+                  "contact_email",
+                  "contact_phone_number",
+                  "name"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^host$": true,
+                  "^name$": true,
+                  "^contact_email$": true,
+                  "^contact_phone_number$": true,
+                  "^contact_name$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "account": {
+        "properties": {
+          "contact_name": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 255
+          },
+          "contact_email": {
+            "type": "string",
+            "format": "email"
+          },
+          "contact_phone_number": {
+            "type": "string",
+            "minLength": 7,
+            "maxLength": 20
+          },
+          "host": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 50
+          },
+          "name": {
+            "type": "string",
+            "minLength": 4,
+            "maxLength": 255
+          }
+        },
+        "required": [
+          "contact_name",
+          "contact_email",
+          "contact_phone_number",
+          "name"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "required": [
+      "account"
+    ],
+    "additionalProperties": false
+  }
+}

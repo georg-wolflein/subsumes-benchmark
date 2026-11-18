@@ -1,0 +1,100 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "anyOf",
+    "items",
+    "oneOf",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o65541.oneOf_not_anyOf.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "An array of key-value pairs that represent Apple HealthKit metadata information.",
+    "type": "array",
+    "references": [
+      {
+        "description": "A general description of metadata in HealthKit.",
+        "url": "https://developer.apple.com/library/ios/documentation/HealthKit/Reference/HKObject_Class/index.html#//apple_ref/occ/instp/HKObject/metadata"
+      }
+    ],
+    "items": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "description": "A predefined or custom metadata key. Use Apple defined keys, e.g. HKMetadataKeyDeviceSerialNumber, when possible.",
+          "type": "string",
+          "references": [
+            {
+              "description": "The list of predefined metadata keys in HealthKit.",
+              "url": "https://developer.apple.com/library/ios/documentation/HealthKit/Reference/HealthKit_Constants/#//apple_ref/doc/constant_group/Metadata_Keys"
+            }
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        }
+      },
+      "required": [
+        "key",
+        "value"
+      ]
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "An array of key-value pairs that represent Apple HealthKit metadata information.",
+    "type": "array",
+    "references": [
+      {
+        "description": "A general description of metadata in HealthKit.",
+        "url": "https://developer.apple.com/library/ios/documentation/HealthKit/Reference/HKObject_Class/index.html#//apple_ref/occ/instp/HKObject/metadata"
+      }
+    ],
+    "items": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "description": "A predefined or custom metadata key. Use Apple defined keys, e.g. HKMetadataKeyDeviceSerialNumber, when possible.",
+          "type": "string",
+          "references": [
+            {
+              "description": "The list of predefined metadata keys in HealthKit.",
+              "url": "https://developer.apple.com/library/ios/documentation/HealthKit/Reference/HealthKit_Constants/#//apple_ref/doc/constant_group/Metadata_Keys"
+            }
+          ]
+        },
+        "value": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        }
+      },
+      "required": [
+        "key",
+        "value"
+      ]
+    }
+  }
+}

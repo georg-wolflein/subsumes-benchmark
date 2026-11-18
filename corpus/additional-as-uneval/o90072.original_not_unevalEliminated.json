@@ -1,0 +1,143 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "oneOf",
+    "patternProperties",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o90072.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "parameter",
+                "type": "object",
+                "description": "Objects defined by a [definitionEditor](definitionEditor.md) input.",
+                "properties": {
+                  "utcValue": {
+                    "type": "integer",
+                    "description": "An integer value representing exact UNIX time used when `defaultValue` is a date string."
+                  },
+                  "parameterId": {
+                    "type": "integer",
+                    "description": "Number given to uniquely identify the specified parameter."
+                  },
+                  "fieldName": {
+                    "type": "string",
+                    "description": "A string value representing the name of the field to query."
+                  },
+                  "type": {
+                    "type": "string",
+                    "description": "The field type for the specified field parameter.",
+                    "enum": [
+                      "esriFieldTypeBlob",
+                      "esriFieldTypeDate",
+                      "esriFieldTypeDouble",
+                      "esriFieldTypeGeometry",
+                      "esriFieldTypeGlobalID",
+                      "esriFieldTypeGUID",
+                      "esriFieldTypeInteger",
+                      "esriFieldTypeOID",
+                      "esriFieldTypeRaster",
+                      "esriFieldTypeSingle",
+                      "esriFieldTypeSmallInteger",
+                      "esriFieldTypeString",
+                      "esriFieldTypeXML"
+                    ]
+                  },
+                  "defaultValue": {
+                    "description": "The default value that is automatically given if nothing is provided.",
+                    "oneOf": [
+                      {
+                        "type": "number",
+                        "description": "Value given automatically if none provided."
+                      },
+                      {
+                        "type": "string"
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^utcValue$": true,
+                  "^parameterId$": true,
+                  "^defaultValue$": true,
+                  "^fieldName$": true,
+                  "^type$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "parameter",
+    "type": "object",
+    "description": "Objects defined by a [definitionEditor](definitionEditor.md) input.",
+    "properties": {
+      "defaultValue": {
+        "description": "The default value that is automatically given if nothing is provided.",
+        "oneOf": [
+          {
+            "type": "number",
+            "description": "Value given automatically if none provided."
+          },
+          {
+            "type": "string"
+          }
+        ]
+      },
+      "fieldName": {
+        "type": "string",
+        "description": "A string value representing the name of the field to query."
+      },
+      "parameterId": {
+        "type": "integer",
+        "description": "Number given to uniquely identify the specified parameter."
+      },
+      "type": {
+        "type": "string",
+        "description": "The field type for the specified field parameter.",
+        "enum": [
+          "esriFieldTypeBlob",
+          "esriFieldTypeDate",
+          "esriFieldTypeDouble",
+          "esriFieldTypeGeometry",
+          "esriFieldTypeGlobalID",
+          "esriFieldTypeGUID",
+          "esriFieldTypeInteger",
+          "esriFieldTypeOID",
+          "esriFieldTypeRaster",
+          "esriFieldTypeSingle",
+          "esriFieldTypeSmallInteger",
+          "esriFieldTypeString",
+          "esriFieldTypeXML"
+        ]
+      },
+      "utcValue": {
+        "type": "integer",
+        "description": "An integer value representing exact UNIX time used when `defaultValue` is a date string."
+      }
+    },
+    "additionalProperties": false
+  }
+}

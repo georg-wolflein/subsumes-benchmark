@@ -1,0 +1,143 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "anyOf",
+    "maxLength",
+    "minLength",
+    "oneOf",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o24951.oneOf_not_anyOf.json",
+  "a": {
+    "$id": "http://blog.axross.org/schemas/User.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+      "bio": {
+        "anyOf": [
+          {
+            "maxLength": 2000,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "email": {
+        "_format": "email",
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "id": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "imageUrl": {
+        "anyOf": [
+          {
+            "_format": "uri",
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "name": {
+        "maxLength": 64,
+        "type": "string"
+      },
+      "username": {
+        "maxLength": 128,
+        "type": "string"
+      }
+    },
+    "required": [
+      "id",
+      "username",
+      "email",
+      "name",
+      "imageUrl",
+      "bio"
+    ],
+    "title": "User",
+    "type": "object"
+  },
+  "b": {
+    "$id": "http://blog.axross.org/schemas/User.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+      "bio": {
+        "oneOf": [
+          {
+            "maxLength": 2000,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "email": {
+        "_format": "email",
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "id": {
+        "oneOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "imageUrl": {
+        "oneOf": [
+          {
+            "_format": "uri",
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "name": {
+        "maxLength": 64,
+        "type": "string"
+      },
+      "username": {
+        "maxLength": 128,
+        "type": "string"
+      }
+    },
+    "required": [
+      "id",
+      "username",
+      "email",
+      "name",
+      "imageUrl",
+      "bio"
+    ],
+    "title": "User",
+    "type": "object"
+  }
+}

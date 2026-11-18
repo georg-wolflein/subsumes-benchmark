@@ -1,0 +1,380 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "items",
+    "minItems",
+    "minLength",
+    "oneOf",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o6226.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_5": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "type": {
+                    "$ref": "#/$defs/_typeCopy"
+                  },
+                  "destination": {
+                    "$ref": "#/$defs/destination"
+                  },
+                  "source": {
+                    "$ref": "#/$defs/source"
+                  }
+                },
+                "required": [
+                  "type",
+                  "destination",
+                  "source"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^type$": true,
+                  "^destination$": true,
+                  "^source$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "source": {
+        "title": "Source",
+        "description": "JSON path of source value",
+        "type": "string",
+        "minLength": 1
+      },
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "rules": {
+                    "title": "Rules",
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "title": "Rule",
+                      "type": "object",
+                      "oneOf": [
+                        {
+                          "$ref": "#/$defs/modern_2"
+                        },
+                        {
+                          "$ref": "#/$defs/modern_3"
+                        },
+                        {
+                          "$ref": "#/$defs/modern_4"
+                        },
+                        {
+                          "$ref": "#/$defs/modern_5"
+                        }
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "rules"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^rules$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "valueTemplate": {
+        "title": "Value Template",
+        "type": "string",
+        "minLength": 1
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "type": {
+                    "$ref": "#/$defs/_typeSet"
+                  },
+                  "destination": {
+                    "$ref": "#/$defs/destination"
+                  },
+                  "valueTemplate": {
+                    "$ref": "#/$defs/valueTemplate"
+                  }
+                },
+                "required": [
+                  "type",
+                  "destination",
+                  "valueTemplate"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^type$": true,
+                  "^destination$": true,
+                  "^valueTemplate$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_3": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "type": {
+                    "$ref": "#/$defs/_typeRemove"
+                  },
+                  "source": {
+                    "$ref": "#/$defs/source"
+                  }
+                },
+                "required": [
+                  "type",
+                  "source"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^type$": true,
+                  "^source$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "destination": {
+        "title": "Destination",
+        "description": "JSON path to place result",
+        "type": "string",
+        "minLength": 1
+      },
+      "_typeMove": {
+        "title": "Type",
+        "enum": [
+          "move"
+        ]
+      },
+      "_typeCopy": {
+        "title": "Type",
+        "enum": [
+          "copy"
+        ]
+      },
+      "_typeRemove": {
+        "title": "Type",
+        "enum": [
+          "remove"
+        ]
+      },
+      "modern_4": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "type": {
+                    "$ref": "#/$defs/_typeMove"
+                  },
+                  "destination": {
+                    "$ref": "#/$defs/destination"
+                  },
+                  "source": {
+                    "$ref": "#/$defs/source"
+                  }
+                },
+                "required": [
+                  "type",
+                  "destination",
+                  "source"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^type$": true,
+                  "^destination$": true,
+                  "^source$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "_typeSet": {
+        "title": "Type",
+        "enum": [
+          "set"
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "type": "object",
+    "properties": {
+      "rules": {
+        "title": "Rules",
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "title": "Rule",
+          "type": "object",
+          "oneOf": [
+            {
+              "properties": {
+                "type": {
+                  "$ref": "#/$defs/_typeSet"
+                },
+                "destination": {
+                  "$ref": "#/$defs/destination"
+                },
+                "valueTemplate": {
+                  "$ref": "#/$defs/valueTemplate"
+                }
+              },
+              "required": [
+                "type",
+                "destination",
+                "valueTemplate"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "properties": {
+                "type": {
+                  "$ref": "#/$defs/_typeRemove"
+                },
+                "source": {
+                  "$ref": "#/$defs/source"
+                }
+              },
+              "required": [
+                "type",
+                "source"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "properties": {
+                "type": {
+                  "$ref": "#/$defs/_typeMove"
+                },
+                "destination": {
+                  "$ref": "#/$defs/destination"
+                },
+                "source": {
+                  "$ref": "#/$defs/source"
+                }
+              },
+              "required": [
+                "type",
+                "destination",
+                "source"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "properties": {
+                "type": {
+                  "$ref": "#/$defs/_typeCopy"
+                },
+                "destination": {
+                  "$ref": "#/$defs/destination"
+                },
+                "source": {
+                  "$ref": "#/$defs/source"
+                }
+              },
+              "required": [
+                "type",
+                "destination",
+                "source"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      }
+    },
+    "required": [
+      "rules"
+    ],
+    "$defs": {
+      "_typeSet": {
+        "title": "Type",
+        "enum": [
+          "set"
+        ]
+      },
+      "_typeRemove": {
+        "title": "Type",
+        "enum": [
+          "remove"
+        ]
+      },
+      "_typeMove": {
+        "title": "Type",
+        "enum": [
+          "move"
+        ]
+      },
+      "_typeCopy": {
+        "title": "Type",
+        "enum": [
+          "copy"
+        ]
+      },
+      "destination": {
+        "title": "Destination",
+        "description": "JSON path to place result",
+        "type": "string",
+        "minLength": 1
+      },
+      "source": {
+        "title": "Source",
+        "description": "JSON path of source value",
+        "type": "string",
+        "minLength": 1
+      },
+      "valueTemplate": {
+        "title": "Value Template",
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

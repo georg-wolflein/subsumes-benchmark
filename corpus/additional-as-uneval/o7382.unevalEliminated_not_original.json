@@ -1,0 +1,293 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "items",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o7382.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "timestamp": {
+        "default": "",
+        "type": "string"
+      },
+      "meta": {
+        "default": {},
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "authors": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "updated": {
+            "type": "string"
+          },
+          "updatedTime": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "authors",
+          "description",
+          "updated",
+          "updatedTime",
+          "url"
+        ]
+      },
+      "versions": {
+        "default": {},
+        "type": "object",
+        "additionalProperties": {
+          "type": "object",
+          "properties": {
+            "snapshot": {
+              "$ref": "#/$defs/LiteloaderVersionMeta"
+            },
+            "release": {
+              "$ref": "#/$defs/LiteloaderVersionMeta"
+            }
+          }
+        }
+      }
+    },
+    "required": [
+      "meta",
+      "timestamp",
+      "versions"
+    ],
+    "additionalProperties": false,
+    "$defs": {
+      "LiteloaderVersionMeta": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "file": {
+            "type": "string"
+          },
+          "mcversion": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "RELEASE",
+              "SNAPSHOT"
+            ],
+            "type": "string"
+          },
+          "md5": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "string"
+          },
+          "libraries": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name"
+              ]
+            }
+          },
+          "tweakClass": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "file",
+          "libraries",
+          "mcversion",
+          "md5",
+          "timestamp",
+          "tweakClass",
+          "type",
+          "url",
+          "version"
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "timestamp": {
+                    "default": "",
+                    "type": "string"
+                  },
+                  "meta": {
+                    "default": {},
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "updatedTime": {
+                        "type": "number"
+                      },
+                      "authors": {
+                        "type": "string"
+                      },
+                      "updated": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "authors",
+                      "description",
+                      "updated",
+                      "updatedTime",
+                      "url"
+                    ]
+                  },
+                  "versions": {
+                    "$ref": "#/$defs/modern_2"
+                  }
+                },
+                "required": [
+                  "meta",
+                  "timestamp",
+                  "versions"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^timestamp$": true,
+                  "^meta$": true,
+                  "^versions$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "default": {},
+                "type": "object"
+              },
+              {
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "snapshot": {
+                      "$ref": "#/$defs/LiteloaderVersionMeta"
+                    },
+                    "release": {
+                      "$ref": "#/$defs/LiteloaderVersionMeta"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "LiteloaderVersionMeta": {
+        "type": "object",
+        "properties": {
+          "tweakClass": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "md5": {
+            "type": "string"
+          },
+          "libraries": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name"
+              ]
+            }
+          },
+          "file": {
+            "type": "string"
+          },
+          "mcversion": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "RELEASE",
+              "SNAPSHOT"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "file",
+          "libraries",
+          "mcversion",
+          "md5",
+          "timestamp",
+          "tweakClass",
+          "type",
+          "url",
+          "version"
+        ]
+      }
+    }
+  }
+}

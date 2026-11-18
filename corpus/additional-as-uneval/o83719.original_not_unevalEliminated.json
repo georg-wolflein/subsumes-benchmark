@@ -1,0 +1,127 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "oneOf",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o83719.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "Taxation Id",
+                "description": "Identification number for taxation purposes",
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "ssn": {
+                    "type": "string",
+                    "pattern": "^[0-9]{3}-[0-9]{2}-[0-9]{4}$"
+                  },
+                  "ein": {
+                    "type": "string",
+                    "pattern": "^[0-9]{2}-[0-9]{7}$"
+                  },
+                  "itin": {
+                    "type": "string",
+                    "pattern": "^9[0-9]{2}-[0-9]{2}-[0-9]{4}$"
+                  }
+                },
+                "required": [
+                  "name"
+                ],
+                "oneOf": [
+                  {
+                    "required": [
+                      "ssn"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "ein"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "itin"
+                    ]
+                  }
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^name$": true,
+                  "^ssn$": true,
+                  "^ein$": true,
+                  "^itin$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Taxation Id",
+    "description": "Identification number for taxation purposes",
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "ssn": {
+        "type": "string",
+        "pattern": "^[0-9]{3}-[0-9]{2}-[0-9]{4}$"
+      },
+      "ein": {
+        "type": "string",
+        "pattern": "^[0-9]{2}-[0-9]{7}$"
+      },
+      "itin": {
+        "type": "string",
+        "pattern": "^9[0-9]{2}-[0-9]{2}-[0-9]{4}$"
+      }
+    },
+    "required": [
+      "name"
+    ],
+    "additionalProperties": false,
+    "oneOf": [
+      {
+        "required": [
+          "ssn"
+        ]
+      },
+      {
+        "required": [
+          "ein"
+        ]
+      },
+      {
+        "required": [
+          "itin"
+        ]
+      }
+    ]
+  }
+}

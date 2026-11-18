@@ -1,0 +1,96 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "maxLength",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o61536.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Event",
+    "description": "Festival event schema",
+    "type": "object",
+    "required": [
+      "uuid",
+      "title"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "uuid": {
+        "$ref": "#/$defs/uuid"
+      },
+      "owner": {
+        "$ref": "#/$defs/uuid"
+      },
+      "title": {
+        "type": "string",
+        "maxLength": 255,
+        "description": "event title"
+      }
+    },
+    "$defs": {
+      "uuid": {
+        "type": "string",
+        "pattern": "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "Event",
+                "description": "Festival event schema",
+                "type": "object",
+                "required": [
+                  "uuid",
+                  "title"
+                ],
+                "properties": {
+                  "uuid": {
+                    "$ref": "#/$defs/uuid"
+                  },
+                  "owner": {
+                    "$ref": "#/$defs/uuid"
+                  },
+                  "title": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "description": "event title"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^uuid$": true,
+                  "^owner$": true,
+                  "^title$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "uuid": {
+        "type": "string",
+        "pattern": "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+      }
+    }
+  }
+}

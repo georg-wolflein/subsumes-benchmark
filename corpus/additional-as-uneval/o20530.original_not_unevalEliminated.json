@@ -1,0 +1,190 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "format",
+    "maxLength",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o20530.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "Tag Schema",
+                "description": "The Tag Archetype - Essential properties that define a Tag",
+                "type": "object",
+                "required": [
+                  "tag",
+                  "archetype"
+                ],
+                "properties": {
+                  "state": {
+                    "type": "string",
+                    "enum": [
+                      "draft",
+                      "public",
+                      "private",
+                      "deleted"
+                    ],
+                    "description": "Indicates this archetype record's state",
+                    "default": "draft"
+                  },
+                  "archetype": {
+                    "type": "string",
+                    "enum": [
+                      "product",
+                      "article",
+                      "contact",
+                      "image",
+                      "tag",
+                      "tinytext"
+                    ],
+                    "description": "The archetype this tag is for",
+                    "default": "contact"
+                  },
+                  "updated": {
+                    "type": "string",
+                    "description": "Date and time this archetype record was updated in ISO 8601 date standard e.g. YYYY-MM-DDThh:mm:ss.sTZD",
+                    "format": "date-time",
+                    "default": ""
+                  },
+                  "servant_id": {
+                    "type": "string",
+                    "description": "The servant to whom this record belongs",
+                    "maxLength": 50,
+                    "default": ""
+                  },
+                  "_sid": {
+                    "type": "string",
+                    "description": "Unique short identifier for this archetype record",
+                    "maxLength": 50,
+                    "default": ""
+                  },
+                  "created": {
+                    "type": "string",
+                    "description": "Date and time this archetype record was created in ISO 8601 date standard e.g. YYYY-MM-DDThh:mm:ss.sTZD",
+                    "format": "date-time",
+                    "default": ""
+                  },
+                  "tag": {
+                    "type": "string",
+                    "description": "The text of the tag entry",
+                    "maxLength": 140,
+                    "default": ""
+                  },
+                  "_id": {
+                    "type": "string",
+                    "description": "Unique identifier for this archetype record",
+                    "maxLength": 50,
+                    "default": ""
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^_sid$": true,
+                  "^updated$": true,
+                  "^state$": true,
+                  "^_id$": true,
+                  "^archetype$": true,
+                  "^servant_id$": true,
+                  "^tag$": true,
+                  "^created$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Tag Schema",
+    "description": "The Tag Archetype - Essential properties that define a Tag",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "tag",
+      "archetype"
+    ],
+    "properties": {
+      "_id": {
+        "type": "string",
+        "description": "Unique identifier for this archetype record",
+        "maxLength": 50,
+        "default": ""
+      },
+      "_sid": {
+        "type": "string",
+        "description": "Unique short identifier for this archetype record",
+        "maxLength": 50,
+        "default": ""
+      },
+      "servant_id": {
+        "type": "string",
+        "description": "The servant to whom this record belongs",
+        "maxLength": 50,
+        "default": ""
+      },
+      "state": {
+        "type": "string",
+        "enum": [
+          "draft",
+          "public",
+          "private",
+          "deleted"
+        ],
+        "description": "Indicates this archetype record's state",
+        "default": "draft"
+      },
+      "created": {
+        "type": "string",
+        "description": "Date and time this archetype record was created in ISO 8601 date standard e.g. YYYY-MM-DDThh:mm:ss.sTZD",
+        "format": "date-time",
+        "default": ""
+      },
+      "updated": {
+        "type": "string",
+        "description": "Date and time this archetype record was updated in ISO 8601 date standard e.g. YYYY-MM-DDThh:mm:ss.sTZD",
+        "format": "date-time",
+        "default": ""
+      },
+      "tag": {
+        "type": "string",
+        "description": "The text of the tag entry",
+        "maxLength": 140,
+        "default": ""
+      },
+      "archetype": {
+        "type": "string",
+        "enum": [
+          "product",
+          "article",
+          "contact",
+          "image",
+          "tag",
+          "tinytext"
+        ],
+        "description": "The archetype this tag is for",
+        "default": "contact"
+      }
+    }
+  }
+}

@@ -1,0 +1,258 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o15203.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "version": "1.2.0",
+    "title": "NameArray",
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/name"
+        }
+      }
+    },
+    "required": [
+      "name"
+    ],
+    "additionalProperties": false,
+    "$defs": {
+      "nameTableRow": {
+        "properties": {
+          "min": {
+            "type": "integer"
+          },
+          "max": {
+            "type": "integer"
+          },
+          "result": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "min",
+          "max",
+          "result"
+        ],
+        "additionalProperties": false
+      },
+      "nameTable": {
+        "properties": {
+          "option": {
+            "type": "string"
+          },
+          "diceType": {
+            "type": "integer"
+          },
+          "table": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/nameTableRow"
+            }
+          }
+        },
+        "required": [
+          "option",
+          "table"
+        ],
+        "additionalProperties": false
+      },
+      "name": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "tables": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/nameTable"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "source",
+          "tables"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_4",
+    "$defs": {
+      "name": {
+        "$ref": "#/$defs/modern_3"
+      },
+      "nameTableRow": {
+        "$ref": "#/$defs/modern_1"
+      },
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "min": {
+                    "type": "integer"
+                  },
+                  "max": {
+                    "type": "integer"
+                  },
+                  "result": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "min",
+                  "max",
+                  "result"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^min$": true,
+                  "^max$": true,
+                  "^result$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "option": {
+                    "type": "string"
+                  },
+                  "diceType": {
+                    "type": "integer"
+                  },
+                  "table": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/nameTableRow"
+                    }
+                  }
+                },
+                "required": [
+                  "option",
+                  "table"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^option$": true,
+                  "^diceType$": true,
+                  "^table$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_3": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "page": {
+                    "type": "integer"
+                  },
+                  "tables": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/nameTable"
+                    }
+                  }
+                },
+                "required": [
+                  "name",
+                  "source",
+                  "tables"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^name$": true,
+                  "^source$": true,
+                  "^page$": true,
+                  "^tables$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "nameTable": {
+        "$ref": "#/$defs/modern_2"
+      },
+      "modern_4": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "version": "1.2.0",
+                "title": "NameArray",
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/name"
+                    }
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^name$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

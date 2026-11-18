@@ -1,0 +1,106 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "const",
+    "items",
+    "minItems",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/sat/o39082.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "$schema": {
+                    "type": "string"
+                  },
+                  "$tool": {
+                    "const": "json2ts",
+                    "description": "Must be set to json2ts.",
+                    "type": "string"
+                  },
+                  "dist": {
+                    "description": "The output file path (relative to the pwd), support .ts file.",
+                    "type": "string"
+                  },
+                  "src": {
+                    "description": "Input json files(Glob), relative to the pwd.",
+                    "items": {
+                      "type": "string"
+                    },
+                    "minItems": 1,
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "$tool",
+                  "src",
+                  "dist"
+                ],
+                "title": "json2ts Config",
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^$schema$": true,
+                  "^$tool$": true,
+                  "^dist$": true,
+                  "^src$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+      "$schema": {
+        "type": "string"
+      },
+      "$tool": {
+        "const": "json2ts",
+        "description": "Must be set to json2ts.",
+        "type": "string"
+      },
+      "dist": {
+        "description": "The output file path (relative to the pwd), support .ts file.",
+        "type": "string"
+      },
+      "src": {
+        "description": "Input json files(Glob), relative to the pwd.",
+        "items": {
+          "type": "string"
+        },
+        "minItems": 1,
+        "type": "array"
+      }
+    },
+    "required": [
+      "$tool",
+      "src",
+      "dist"
+    ],
+    "title": "json2ts Config",
+    "type": "object"
+  }
+}

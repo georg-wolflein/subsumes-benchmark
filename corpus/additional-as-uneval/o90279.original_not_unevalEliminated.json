@@ -1,0 +1,110 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o90279.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "popupElement text",
+                "type": "object",
+                "description": "Configures text in popup elements.",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "description": "This property applies to elements of type `text`. This is string value indicating the text to be displayed within the popupElement. If no `text` property is provided, the popupElement will display whatever is specified in the [popupInfo.description](popupInfo.md) property."
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "text"
+                    ]
+                  }
+                },
+                "required": [
+                  "type"
+                ],
+                "esriDocumentation": {
+                  "examples": [
+                    {
+                      "title": "popupElement",
+                      "code": {
+                        "popupElements": [
+                          {
+                            "type": "text",
+                            "text": "Some descriptive text describing the popup."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "patternProperties": {
+                  "^text$": true,
+                  "^type$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "popupElement text",
+    "type": "object",
+    "description": "Configures text in popup elements.",
+    "properties": {
+      "text": {
+        "type": "string",
+        "description": "This property applies to elements of type `text`. This is string value indicating the text to be displayed within the popupElement. If no `text` property is provided, the popupElement will display whatever is specified in the [popupInfo.description](popupInfo.md) property."
+      },
+      "type": {
+        "type": "string",
+        "enum": [
+          "text"
+        ]
+      }
+    },
+    "required": [
+      "type"
+    ],
+    "additionalProperties": false,
+    "esriDocumentation": {
+      "examples": [
+        {
+          "title": "popupElement",
+          "code": {
+            "popupElements": [
+              {
+                "type": "text",
+                "text": "Some descriptive text describing the popup."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

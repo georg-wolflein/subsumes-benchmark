@@ -1,0 +1,297 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o6767.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "Additional information",
+                "description": "Optional information concerning a whole submission rather than individual data tables",
+                "type": "object",
+                "properties": {
+                  "record_ids": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/modern_2"
+                    }
+                  },
+                  "preprintyear": {
+                    "type": "string",
+                    "title": "Preprint Year",
+                    "description": "Indicates the year when the submission preprint was first available.",
+                    "name": "preprintyear"
+                  },
+                  "modifications": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "action": {
+                          "type": "string"
+                        },
+                        "who": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "action",
+                        "who"
+                      ]
+                    }
+                  },
+                  "comment": {
+                    "type": "string",
+                    "description": "Information that applies to all data tables."
+                  },
+                  "dateupdated": {
+                    "type": "string",
+                    "title": "Date Updated",
+                    "description": "Indicates when the submission was last updated.",
+                    "name": "dateupdated"
+                  },
+                  "additional_resources": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "location": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "license": {
+                          "$ref": "#/$defs/modern_3"
+                        }
+                      },
+                      "required": [
+                        "location",
+                        "description"
+                      ]
+                    }
+                  },
+                  "publicationyear": {
+                    "type": "string",
+                    "title": "Publication Year",
+                    "description": "Indicates the year when the submission publication was available.",
+                    "name": "publicationyear"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^dateupdated$": true,
+                  "^additional_resources$": true,
+                  "^preprintyear$": true,
+                  "^modifications$": true,
+                  "^publicationyear$": true,
+                  "^comment$": true,
+                  "^record_ids$": true
+                },
+                "additionalProperties": true
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": [
+                      "string"
+                    ]
+                  },
+                  "id": {
+                    "type": [
+                      "string",
+                      "number"
+                    ]
+                  }
+                },
+                "required": [
+                  "type",
+                  "id"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^type$": true,
+                  "^id$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_3": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "url": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "url"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^name$": true,
+                  "^url$": true,
+                  "^description$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$id": "https://hepdata.net/submission/schemas/1.0.1/additional_info_schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Additional information",
+    "description": "Optional information concerning a whole submission rather than individual data tables",
+    "type": "object",
+    "properties": {
+      "record_ids": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": [
+                "string"
+              ]
+            },
+            "id": {
+              "type": [
+                "string",
+                "number"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "id"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "preprintyear": {
+        "type": "string",
+        "title": "Preprint Year",
+        "description": "Indicates the year when the submission preprint was first available.",
+        "name": "preprintyear"
+      },
+      "publicationyear": {
+        "type": "string",
+        "title": "Publication Year",
+        "description": "Indicates the year when the submission publication was available.",
+        "name": "publicationyear"
+      },
+      "dateupdated": {
+        "type": "string",
+        "title": "Date Updated",
+        "description": "Indicates when the submission was last updated.",
+        "name": "dateupdated"
+      },
+      "modifications": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "action": {
+              "type": "string"
+            },
+            "who": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "action",
+            "who"
+          ]
+        }
+      },
+      "additional_resources": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "location": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "license": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "url"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "location",
+            "description"
+          ]
+        }
+      },
+      "comment": {
+        "type": "string",
+        "description": "Information that applies to all data tables."
+      }
+    },
+    "additionalProperties": true
+  }
+}

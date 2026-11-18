@@ -1,0 +1,142 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "dependentRequired",
+    "items",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o83698.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Order",
+    "description": "Order billing and shipping information",
+    "type": "object",
+    "properties": {
+      "orders": {
+        "type": "array",
+        "items": {
+          "properties": {
+            "order": {
+              "type": "string"
+            },
+            "billTo": {
+              "type": "string"
+            },
+            "billAddress": {
+              "type": "string"
+            },
+            "shipTo": {
+              "type": "string"
+            },
+            "shipAddress": {
+              "type": "string"
+            },
+            "loyaltyId": {
+              "type": "string"
+            },
+            "loyaltyBonus": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "order",
+            "billTo",
+            "billAddress"
+          ],
+          "dependentRequired": {
+            "shipTo": [
+              "shipAddress"
+            ],
+            "loyaltyId": [
+              "loyaltyBonus"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Order",
+    "description": "Order billing and shipping information",
+    "type": "object",
+    "properties": {
+      "orders": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/modern_1"
+        }
+      }
+    },
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "shipTo": {
+                    "type": "string"
+                  },
+                  "shipAddress": {
+                    "type": "string"
+                  },
+                  "billAddress": {
+                    "type": "string"
+                  },
+                  "order": {
+                    "type": "string"
+                  },
+                  "loyaltyId": {
+                    "type": "string"
+                  },
+                  "loyaltyBonus": {
+                    "type": "string"
+                  },
+                  "billTo": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "order",
+                  "billTo",
+                  "billAddress"
+                ],
+                "dependentRequired": {
+                  "shipTo": [
+                    "shipAddress"
+                  ],
+                  "loyaltyId": [
+                    "loyaltyBonus"
+                  ]
+                }
+              },
+              {
+                "patternProperties": {
+                  "^order$": true,
+                  "^shipTo$": true,
+                  "^billTo$": true,
+                  "^loyaltyBonus$": true,
+                  "^shipAddress$": true,
+                  "^billAddress$": true,
+                  "^loyaltyId$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

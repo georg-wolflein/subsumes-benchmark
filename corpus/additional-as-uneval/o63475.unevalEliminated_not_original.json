@@ -1,0 +1,203 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o63475.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "patternProperties": {
+      ".*": {
+        "items": {
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "request": {
+              "type": "string"
+            },
+            "requestHeaders": {
+              "patternProperties": {
+                ".*": {
+                  "$ref": "#/$defs/stringArray"
+                }
+              },
+              "type": "object"
+            },
+            "requestViolations": {
+              "$ref": "#/$defs/stringArray"
+            },
+            "response": {
+              "type": "string"
+            },
+            "responseHeaders": {
+              "patternProperties": {
+                ".*": {
+                  "$ref": "#/$defs/stringArray"
+                }
+              },
+              "type": "object"
+            },
+            "responseViolations": {
+              "$ref": "#/$defs/stringArray"
+            }
+          },
+          "required": [
+            "id",
+            "request",
+            "requestHeaders",
+            "requestViolations",
+            "response",
+            "responseHeaders",
+            "responseViolations"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      }
+    },
+    "type": "object",
+    "$defs": {
+      "stringArray": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "patternProperties": {
+      ".*": {
+        "$ref": "#/$defs/modern_2"
+      }
+    },
+    "type": "object",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "items": {
+                  "anyOf": [
+                    true,
+                    false
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "items": {
+                  "$ref": "#/$defs/modern_3"
+                },
+                "type": "array"
+              },
+              {
+                "items": {
+                  "anyOf": [
+                    true,
+                    false
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "stringArray": {
+        "$ref": "#/$defs/modern_1"
+      },
+      "modern_3": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "responseViolations": {
+                    "$ref": "#/$defs/stringArray"
+                  },
+                  "request": {
+                    "type": "string"
+                  },
+                  "requestViolations": {
+                    "$ref": "#/$defs/stringArray"
+                  },
+                  "responseHeaders": {
+                    "patternProperties": {
+                      ".*": {
+                        "$ref": "#/$defs/stringArray"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "requestHeaders": {
+                    "patternProperties": {
+                      ".*": {
+                        "$ref": "#/$defs/stringArray"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "response": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "id",
+                  "request",
+                  "requestHeaders",
+                  "requestViolations",
+                  "response",
+                  "responseHeaders",
+                  "responseViolations"
+                ],
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^response$": true,
+                  "^requestHeaders$": true,
+                  "^responseHeaders$": true,
+                  "^request$": true,
+                  "^id$": true,
+                  "^requestViolations$": true,
+                  "^responseViolations$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

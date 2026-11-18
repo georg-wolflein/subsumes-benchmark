@@ -189,7 +189,7 @@ def integral(instance: Json) -> Json:
 def test_a_rewritten_schema_accepts_the_same_instances(
     target: OlderDraft, validator: type[Validator]
 ) -> None:
-    """Checked wherever ``b.json`` lists instances: each is valid under both or neither.
+    """Checked wherever ``b`` lists instances: each is valid under both or neither.
 
     Both validators match patterns with Python's ``re`` and leave ``format`` alone, so what
     they disagree on is the rewriting.

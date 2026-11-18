@@ -1,0 +1,81 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": null,
+  "features": [
+    "anyOf",
+    "not",
+    "oneOf",
+    "required"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/trickyschemas/sat/obj.24.eq2.notsub.strong.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "_required": [
+      "A",
+      "AA"
+    ],
+    "required": [
+      "A",
+      "AA",
+      "AAA"
+    ],
+    "_requiredWeak": [
+      "A"
+    ],
+    "oneOf": [
+      {
+        "anyOf": [
+          {
+            "required": [
+              "a"
+            ]
+          },
+          {
+            "required": [
+              "b"
+            ]
+          }
+        ]
+      },
+      {
+        "anyOf": [
+          {
+            "required": [
+              "b"
+            ]
+          },
+          {
+            "required": [
+              "c"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "required": [
+      "A",
+      "AA"
+    ],
+    "not": {
+      "required": [
+        "b"
+      ]
+    },
+    "oneOf": [
+      {
+        "required": [
+          "a"
+        ]
+      },
+      {
+        "required": [
+          "c"
+        ]
+      }
+    ]
+  }
+}

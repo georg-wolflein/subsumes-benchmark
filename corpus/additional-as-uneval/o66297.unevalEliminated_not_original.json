@@ -1,0 +1,128 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o66297.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "copyright": [
+      "Copyright 2013 Red Hat, Inc. and/or its affiliates.",
+      "This file is part of lightblue.",
+      "This program is free software: you can redistribute it and/or modify",
+      "it under the terms of the GNU General Public License as published by",
+      "the Free Software Foundation, either version 3 of the License, or",
+      "(at your option) any later version.",
+      "This program is distributed in the hope that it will be useful,",
+      "but WITHOUT ANY WARRANTY; without even the implied warranty of",
+      "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the",
+      "GNU General Public License for more details.",
+      "You should have received a copy of the GNU General Public License",
+      "along with this program.  If not, see <http://www.gnu.org/licenses/>."
+    ],
+    "type": "object",
+    "properties": {
+      "objectType": {
+        "enum": [
+          "error"
+        ],
+        "description": "Always 'error'"
+      },
+      "context": {
+        "type": "string",
+        "description": "A string delimited with '/' characters that define the context of execution where the error occurred. Analogous to a stack trace."
+      },
+      "errorCode": {
+        "type": "string",
+        "description": "Error code string"
+      },
+      "msg": {
+        "type": "string",
+        "description": "Somewhat user friendly error message"
+      }
+    },
+    "required": [
+      "objectType",
+      "context",
+      "errorCode",
+      "msg"
+    ],
+    "additionalProperties": false
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "copyright": [
+                  "Copyright 2013 Red Hat, Inc. and/or its affiliates.",
+                  "This file is part of lightblue.",
+                  "This program is free software: you can redistribute it and/or modify",
+                  "it under the terms of the GNU General Public License as published by",
+                  "the Free Software Foundation, either version 3 of the License, or",
+                  "(at your option) any later version.",
+                  "This program is distributed in the hope that it will be useful,",
+                  "but WITHOUT ANY WARRANTY; without even the implied warranty of",
+                  "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the",
+                  "GNU General Public License for more details.",
+                  "You should have received a copy of the GNU General Public License",
+                  "along with this program.  If not, see <http://www.gnu.org/licenses/>."
+                ],
+                "type": "object",
+                "properties": {
+                  "objectType": {
+                    "enum": [
+                      "error"
+                    ],
+                    "description": "Always 'error'"
+                  },
+                  "context": {
+                    "type": "string",
+                    "description": "A string delimited with '/' characters that define the context of execution where the error occurred. Analogous to a stack trace."
+                  },
+                  "errorCode": {
+                    "type": "string",
+                    "description": "Error code string"
+                  },
+                  "msg": {
+                    "type": "string",
+                    "description": "Somewhat user friendly error message"
+                  }
+                },
+                "required": [
+                  "objectType",
+                  "context",
+                  "errorCode",
+                  "msg"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^objectType$": true,
+                  "^context$": true,
+                  "^errorCode$": true,
+                  "^msg$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

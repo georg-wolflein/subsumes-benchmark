@@ -5,48 +5,46 @@ import json
 from jsonschema import Draft202012Validator
 
 from reading import CORPUS, ROOT, cases, read
-from subsumes_benchmark.build import CASE_SCHEMA, Overrides, exclusion_of
+from subsumes_benchmark.build import Overrides, exclusion_of
 
-CASE_FILES = {"a.json", "b.json", "case.json"}
 CONFIG = json.loads((ROOT / "collections.json").read_text(encoding="utf-8"))
 COLLECTIONS = CONFIG["collections"]
 LICENSES = {f"{name}.txt" for name in CONFIG["sources"]}
 
 
-def test_every_case_has_both_schemas() -> None:
-    incomplete = [
-        case.id
-        for case in cases()
-        if not ((case.folder / "a.json").is_file() and (case.folder / "b.json").is_file())
-    ]
-    assert incomplete == []
-
-
-def test_every_file_belongs_to_a_case_or_is_a_shared_file() -> None:
-    folders = {case.folder for case in cases()}
+def test_every_file_is_a_case_or_a_shared_file() -> None:
     shared = (
         {CORPUS / "case.schema.json"}
         | {CORPUS / name / "collection.json" for name in COLLECTIONS}
         | {CORPUS / "licenses" / name for name in LICENSES}
+        | {case.file for case in cases()}
     )
     stray = [
         path.relative_to(CORPUS).as_posix()
         for path in CORPUS.rglob("*")
-        if path.is_file()
-        and path not in shared
-        and not (path.parent in folders and path.name in CASE_FILES)
+        if path.is_file() and path not in shared
     ]
     assert stray == []
 
 
-def test_every_case_matches_the_case_schema() -> None:
-    assert read(CORPUS / "case.schema.json") == CASE_SCHEMA
-    validator = Draft202012Validator(CASE_SCHEMA)
-    invalid = {
-        case.id: [error.message for error in validator.iter_errors(read(case.folder / "case.json"))]
-        for case in cases()
-    }
-    assert {case_id: errors for case_id, errors in invalid.items() if errors} == {}
+def test_every_case_matches_the_case_schema_and_names_it() -> None:
+    schema = ROOT / "schemas" / "case.schema.json"
+    schema_of_corpus = (CORPUS / "case.schema.json").resolve()
+    assert schema_of_corpus.read_bytes() == schema.read_bytes()
+    written = read(schema)
+    assert isinstance(written, dict)
+    validator = Draft202012Validator(written)
+    invalid = {}
+    elsewhere = []
+    for case in cases():
+        document = read(case.file)
+        assert isinstance(document, dict)
+        if errors := [error.message for error in validator.iter_errors(document)]:
+            invalid[case.id] = errors
+        elif (case.file.parent / str(document["$schema"])).resolve() != schema_of_corpus:
+            elsewhere.append(case.id)
+    assert invalid == {}
+    assert elsewhere == []
 
 
 def test_every_upstream_is_a_permalink_into_the_dataset_of_its_collection() -> None:

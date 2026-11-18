@@ -1,0 +1,98 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "maximum",
+    "minimum",
+    "multipleOf",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o46416.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Expense",
+    "description": "Expense",
+    "type": "object",
+    "properties": {
+      "amount": {
+        "title": "Amount",
+        "description": "Expenses associated with the running of the business. The value must be between -99999999999.99 and 99999999999.99.",
+        "type": "number",
+        "multipleOf": 0.01,
+        "minimum": -99999999999.99,
+        "maximum": 99999999999.99,
+        "example": "1000.45"
+      },
+      "disallowableAmount": {
+        "title": "Disallowable amount",
+        "description": "Any expense or partial expense that cannot be claimed for tax purposes. The value must be between -99999999999.99 and 99999999999.99.",
+        "type": "number",
+        "multipleOf": 0.01,
+        "minimum": -99999999999.99,
+        "maximum": 99999999999.99,
+        "example": "1000.45"
+      }
+    },
+    "required": [
+      "amount"
+    ],
+    "additionalProperties": false
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "Expense",
+                "description": "Expense",
+                "type": "object",
+                "properties": {
+                  "amount": {
+                    "title": "Amount",
+                    "description": "Expenses associated with the running of the business. The value must be between -99999999999.99 and 99999999999.99.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": -99999999999.99,
+                    "maximum": 99999999999.99,
+                    "example": "1000.45"
+                  },
+                  "disallowableAmount": {
+                    "title": "Disallowable amount",
+                    "description": "Any expense or partial expense that cannot be claimed for tax purposes. The value must be between -99999999999.99 and 99999999999.99.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": -99999999999.99,
+                    "maximum": 99999999999.99,
+                    "example": "1000.45"
+                  }
+                },
+                "required": [
+                  "amount"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^amount$": true,
+                  "^disallowableAmount$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/georg-wolflein/subsumes-benchmark/blob/main/corpus/case.schema.json",
+  "title": "A JSON Schema inclusion benchmark case",
+  "description": "Two schemas and what is known about them: does a accept every instance valid under b? The labels hold for draft 2020-12 with format asserted and patterns read as ECMA-262 regular expressions with the u flag.",
+  "type": "object",
+  "required": ["$schema", "a_subsumes_b", "b_subsumes_a", "features", "upstream", "a", "b"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "description": "The path from this file to case.schema.json, which is at the root of the corpus.",
+      "type": "string",
+      "pattern": "^(\\.\\./)+case\\.schema\\.json$"
+    },
+    "a_subsumes_b": {
+      "description": "Whether a accepts every instance valid under b; null when the corpus claims nothing.",
+      "type": ["boolean", "null"]
+    },
+    "b_subsumes_a": {
+      "description": "The same question in the other direction.",
+      "type": ["boolean", "null"]
+    },
+    "features": {
+      "description": "What the two schemas use, in the order of the list of features: every keyword that validation can reach and that decides what a schema accepts, and 'recursion' when a schema is reached again from itself through a reference.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/Feature" }
+    },
+    "upstream": {
+      "description": "A permanent link to the file this case comes from, in the source repository at the commit that collection.json names; the test suite's cases add a JSON pointer to the test case or the test after a '#'.",
+      "type": "string",
+      "format": "uri"
+    },
+    "note": {
+      "description": "Why the labels depart from upstream's; absent when they do not.",
+      "type": "string"
+    },
+    "a": {
+      "description": "The schema that should accept everything.",
+      "$ref": "#/$defs/Schema"
+    },
+    "b": {
+      "description": "The schema whose instances must be accepted.",
+      "$ref": "#/$defs/Schema"
+    }
+  },
+  "$defs": {
+    "Schema": {
+      "description": "A draft 2020-12 schema that stands on its own: every document it references is embedded in it.",
+      "type": ["object", "boolean"]
+    },
+    "Feature": {
+      "description": "A keyword of draft 2020-12 that decides what a schema accepts, or 'recursion'.",
+      "enum": [
+        "$dynamicRef",
+        "$ref",
+        "additionalProperties",
+        "allOf",
+        "anyOf",
+        "const",
+        "contains",
+        "dependentRequired",
+        "dependentSchemas",
+        "else",
+        "enum",
+        "exclusiveMaximum",
+        "exclusiveMinimum",
+        "format",
+        "if",
+        "items",
+        "maxContains",
+        "maxItems",
+        "maxLength",
+        "maxProperties",
+        "maximum",
+        "minContains",
+        "minItems",
+        "minLength",
+        "minProperties",
+        "minimum",
+        "multipleOf",
+        "not",
+        "oneOf",
+        "pattern",
+        "patternProperties",
+        "prefixItems",
+        "properties",
+        "propertyNames",
+        "recursion",
+        "required",
+        "then",
+        "type",
+        "unevaluatedItems",
+        "unevaluatedProperties",
+        "uniqueItems"
+      ]
+    }
+  }
+}

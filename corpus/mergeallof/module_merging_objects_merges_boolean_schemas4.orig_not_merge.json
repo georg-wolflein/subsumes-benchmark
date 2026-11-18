@@ -1,0 +1,41 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "allOf",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/allOf_containment/unsat/module_merging_objects_merges_boolean_schemas4.orig_not_merge.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+      "name": false,
+      "added": {
+        "type": "integer"
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+      "name": true
+    },
+    "allOf": [
+      {
+        "properties": {
+          "name": false,
+          "added": {
+            "type": "integer"
+          }
+        }
+      },
+      {
+        "properties": {
+          "name": true
+        }
+      }
+    ]
+  }
+}

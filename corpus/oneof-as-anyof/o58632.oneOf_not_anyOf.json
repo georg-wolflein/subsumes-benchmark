@@ -1,0 +1,113 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "allOf",
+    "anyOf",
+    "enum",
+    "oneOf",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o58632.oneOf_not_anyOf.json",
+  "a": {
+    "$id": "http://example.com/schemas/Around.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "thing": {
+        "allOf": [
+          {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/ThingOne"
+              },
+              {
+                "$ref": "#/$defs/ThingTwo"
+              }
+            ]
+          },
+          {
+            "properties": {
+              "discriminator": {
+                "enum": [
+                  "ThingOne",
+                  "ThingTwo"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "$defs": {
+      "ThingOne": {
+        "type": "object",
+        "properties": {
+          "redFish": {
+            "type": "string"
+          }
+        }
+      },
+      "ThingTwo": {
+        "type": "object",
+        "properties": {
+          "blueFish": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "b": {
+    "$id": "http://example.com/schemas/Around.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "thing": {
+        "allOf": [
+          {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/ThingOne"
+              },
+              {
+                "$ref": "#/$defs/ThingTwo"
+              }
+            ]
+          },
+          {
+            "properties": {
+              "discriminator": {
+                "enum": [
+                  "ThingOne",
+                  "ThingTwo"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "$defs": {
+      "ThingOne": {
+        "type": "object",
+        "properties": {
+          "redFish": {
+            "type": "string"
+          }
+        }
+      },
+      "ThingTwo": {
+        "type": "object",
+        "properties": {
+          "blueFish": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

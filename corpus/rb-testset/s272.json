@@ -1,0 +1,54 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": null,
+  "features": [
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/issta/sat/s272.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "VolumeAttachmentSource represents a volume that should be attached. Right now only PersistenVolumes can be attached via external attacher, in future we may allow also inline volumes in pods. Exactly one member can be set.",
+    "properties": {
+      "persistentVolumeName": {
+        "description": "Name of the persistent volume to attach.",
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "type": "object"
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "required": [
+      "port"
+    ],
+    "type": "object",
+    "description": "EndpointPort is a tuple that describes a single port.",
+    "properties": {
+      "protocol": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "The IP protocol for this port. Must be UDP or TCP. Default is TCP."
+      },
+      "name": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "The name of this port (corresponds to ServicePort.Name). Must be a DNS_LABEL. Optional only if one port is defined."
+      },
+      "port": {
+        "type": "integer",
+        "description": "The port number of the endpoint.",
+        "_format": "int32"
+      }
+    }
+  }
+}

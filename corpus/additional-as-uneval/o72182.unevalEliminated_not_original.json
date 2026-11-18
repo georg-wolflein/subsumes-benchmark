@@ -1,0 +1,135 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "format",
+    "items",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o72182.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Integration Configuration",
+    "description": "The schema used to generate integration configuration in Contentful",
+    "type": "object",
+    "properties": {
+      "webhooks": {
+        "type": "array",
+        "title": "Managed Webhooks",
+        "description": "A list of webhooks managed by this integration",
+        "items": {
+          "$ref": "#/$defs/webhook"
+        }
+      }
+    },
+    "additionalProperties": false,
+    "$defs": {
+      "webhook": {
+        "type": "object",
+        "title": "Managed Webhook",
+        "description": "Configuration for setting up a webhook",
+        "properties": {
+          "endpointUrl": {
+            "type": "string",
+            "title": "Endpoint Url",
+            "format": "url",
+            "description": "The webhook destination"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "The name of the webhook (e.g. Stripe Integration Entry Point)"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "endpointUrl",
+          "name"
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_2",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "title": "Managed Webhook",
+                "description": "Configuration for setting up a webhook",
+                "properties": {
+                  "endpointUrl": {
+                    "type": "string",
+                    "title": "Endpoint Url",
+                    "format": "url",
+                    "description": "The webhook destination"
+                  },
+                  "name": {
+                    "type": "string",
+                    "title": "Name",
+                    "description": "The name of the webhook (e.g. Stripe Integration Entry Point)"
+                  }
+                },
+                "required": [
+                  "endpointUrl",
+                  "name"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^endpointUrl$": true,
+                  "^name$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "Integration Configuration",
+                "description": "The schema used to generate integration configuration in Contentful",
+                "type": "object",
+                "properties": {
+                  "webhooks": {
+                    "type": "array",
+                    "title": "Managed Webhooks",
+                    "description": "A list of webhooks managed by this integration",
+                    "items": {
+                      "$ref": "#/$defs/webhook"
+                    }
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^webhooks$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "webhook": {
+        "$ref": "#/$defs/modern_1"
+      }
+    }
+  }
+}

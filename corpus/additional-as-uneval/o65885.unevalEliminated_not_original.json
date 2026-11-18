@@ -1,0 +1,169 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "maxLength",
+    "minItems",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o65885.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "IBM App Connect Template Gallery metadata schema",
+    "type": "object",
+    "properties": {
+      "templates": {
+        "type": "array",
+        "items": {
+          "title": "Template",
+          "description": "A template from the template catalog",
+          "type": "object",
+          "properties": {
+            "name": {
+              "description": "The name of the template",
+              "type": "string",
+              "maxLength": 98
+            },
+            "description": {
+              "description": "A description of the flow created with the template",
+              "type": "string"
+            },
+            "summary": {
+              "description": "A summary of the flow created with the template",
+              "type": "string"
+            },
+            "sourceApp": {
+              "description": "The trigger application that triggers the flow",
+              "type": "string"
+            },
+            "targetApps": {
+              "description": "A list of the target applications that triggering the flow effects",
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1
+            },
+            "tags": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "offerings": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "name",
+            "summary",
+            "sourceApp",
+            "targetApps",
+            "tags",
+            "offerings"
+          ],
+          "additionalProperties": false
+        }
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "IBM App Connect Template Gallery metadata schema",
+    "type": "object",
+    "properties": {
+      "templates": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/modern_1"
+        }
+      }
+    },
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "Template",
+                "description": "A template from the template catalog",
+                "type": "object",
+                "properties": {
+                  "sourceApp": {
+                    "description": "The trigger application that triggers the flow",
+                    "type": "string"
+                  },
+                  "targetApps": {
+                    "description": "A list of the target applications that triggering the flow effects",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "minItems": 1
+                  },
+                  "summary": {
+                    "description": "A summary of the flow created with the template",
+                    "type": "string"
+                  },
+                  "name": {
+                    "description": "The name of the template",
+                    "type": "string",
+                    "maxLength": 98
+                  },
+                  "offerings": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "description": {
+                    "description": "A description of the flow created with the template",
+                    "type": "string"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "name",
+                  "summary",
+                  "sourceApp",
+                  "targetApps",
+                  "tags",
+                  "offerings"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^description$": true,
+                  "^name$": true,
+                  "^sourceApp$": true,
+                  "^tags$": true,
+                  "^offerings$": true,
+                  "^summary$": true,
+                  "^targetApps$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

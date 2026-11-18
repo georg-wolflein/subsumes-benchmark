@@ -1,0 +1,84 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "patternProperties",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o90234.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "lod",
+    "type": "object",
+    "properties": {
+      "level": {
+        "type": "integer",
+        "description": "ID for each level."
+      },
+      "levelValue": {
+        "type": "string",
+        "description": "String to be used when constructing URL to access a tile from this LOD."
+      },
+      "resolution": {
+        "type": "number",
+        "description": "Resolution in map units of each pixel in a tile for each level."
+      },
+      "scale": {
+        "type": "number",
+        "description": "Scale for each level."
+      }
+    },
+    "additionalProperties": false
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "lod",
+                "type": "object",
+                "properties": {
+                  "level": {
+                    "type": "integer",
+                    "description": "ID for each level."
+                  },
+                  "levelValue": {
+                    "type": "string",
+                    "description": "String to be used when constructing URL to access a tile from this LOD."
+                  },
+                  "resolution": {
+                    "type": "number",
+                    "description": "Resolution in map units of each pixel in a tile for each level."
+                  },
+                  "scale": {
+                    "type": "number",
+                    "description": "Scale for each level."
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^level$": true,
+                  "^levelValue$": true,
+                  "^resolution$": true,
+                  "^scale$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

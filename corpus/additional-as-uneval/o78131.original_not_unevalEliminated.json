@@ -1,0 +1,71 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o78131.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "description": "A hash of keys that should be returned, to paths to the data from each item that should be returned.",
+                "example": {
+                  "node_name": [
+                    "name"
+                  ],
+                  "apache_port": [
+                    "apache",
+                    "http_port"
+                  ]
+                }
+              },
+              {
+                "additionalProperties": {
+                  "description": "A path to the data that should be returned for this key, for each item. Each entry in the array represents a key that should be traversed in the results.",
+                  "type": "array",
+                  "items": {
+                    "description": "The next key to traverse (['a', 'b', 'c'] means look up { \"a\": { \"b\": { \"c\": ... } } }) and assign that value to the key.",
+                    "type": "string"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "A hash of keys that should be returned, to paths to the data from each item that should be returned.",
+    "additionalProperties": {
+      "description": "A path to the data that should be returned for this key, for each item. Each entry in the array represents a key that should be traversed in the results.",
+      "type": "array",
+      "items": {
+        "description": "The next key to traverse (['a', 'b', 'c'] means look up { \"a\": { \"b\": { \"c\": ... } } }) and assign that value to the key.",
+        "type": "string"
+      }
+    },
+    "example": {
+      "node_name": [
+        "name"
+      ],
+      "apache_port": [
+        "apache",
+        "http_port"
+      ]
+    }
+  }
+}

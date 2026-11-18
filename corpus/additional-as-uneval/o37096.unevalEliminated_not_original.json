@@ -1,0 +1,191 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o37096.unevalEliminated_not_original.json",
+  "a": {
+    "$id": "https://mcda.drugis.org/tDistribution.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "MCDA student's t distribution for the performance table entry of absolute data",
+    "type": "object",
+    "required": [
+      "type",
+      "parameters"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "type": {
+        "type": "string",
+        "enum": [
+          "dt"
+        ]
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "mu",
+          "stdErr",
+          "dof"
+        ],
+        "properties": {
+          "mu": {
+            "type": "number"
+          },
+          "stdErr": {
+            "type": "number"
+          },
+          "dof": {
+            "type": "number"
+          }
+        }
+      },
+      "input": {
+        "type": "object",
+        "required": [
+          "mu",
+          "sigma",
+          "sampleSize"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "mu": {
+            "type": "number"
+          },
+          "sigma": {
+            "type": "number"
+          },
+          "sampleSize": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  },
+  "b": {
+    "$id": "https://mcda.drugis.org/tDistribution.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "MCDA student's t distribution for the performance table entry of absolute data",
+                "type": "object",
+                "required": [
+                  "type",
+                  "parameters"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "dt"
+                    ]
+                  },
+                  "parameters": {
+                    "$ref": "#/$defs/modern_2"
+                  },
+                  "input": {
+                    "$ref": "#/$defs/modern_3"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^type$": true,
+                  "^parameters$": true,
+                  "^input$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "required": [
+                  "mu",
+                  "stdErr",
+                  "dof"
+                ],
+                "properties": {
+                  "mu": {
+                    "type": "number"
+                  },
+                  "stdErr": {
+                    "type": "number"
+                  },
+                  "dof": {
+                    "type": "number"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^mu$": true,
+                  "^stdErr$": true,
+                  "^dof$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_3": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "required": [
+                  "mu",
+                  "sigma",
+                  "sampleSize"
+                ],
+                "properties": {
+                  "mu": {
+                    "type": "number"
+                  },
+                  "sigma": {
+                    "type": "number"
+                  },
+                  "sampleSize": {
+                    "type": "number"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^mu$": true,
+                  "^sigma$": true,
+                  "^sampleSize$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

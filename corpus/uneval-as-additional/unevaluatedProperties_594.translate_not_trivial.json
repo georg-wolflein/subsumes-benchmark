@@ -1,0 +1,62 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "const",
+    "patternProperties",
+    "properties",
+    "required"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/uneval_eliminated_as_additional_containment/unknown/unevaluatedProperties_594.translate_not_trivial.json",
+  "a": {
+    "$id": "file:///driver/src/batch_score/common/configuration/file/schemas/public/api/chat_completion.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "required": [
+      "type"
+    ],
+    "properties": {
+      "type": {
+        "const": "chat_completion"
+      }
+    },
+    "description": "https://platform.openai.com/docs/api-reference/chat"
+  },
+  "b": {
+    "$id": "file:///driver/src/batch_score/common/configuration/file/schemas/public/api/chat_completion.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "required": [
+                  "type"
+                ],
+                "properties": {
+                  "type": {
+                    "const": "chat_completion"
+                  }
+                },
+                "description": "https://platform.openai.com/docs/api-reference/chat"
+              },
+              {
+                "patternProperties": {
+                  "^type$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

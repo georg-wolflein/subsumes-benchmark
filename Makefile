@@ -37,6 +37,7 @@ config:  ## the schemas are valid, every configuration file is valid under its s
 	uv run datamodel-codegen --check --input schemas/collections.schema.json --output src/subsumes_benchmark/generated/collections.py --class-name CollectionsSpec
 	uv run datamodel-codegen --check --input schemas/overrides.schema.json --output src/subsumes_benchmark/generated/overrides.py --class-name OverridesSpec
 	uv run datamodel-codegen --check --input schemas/checker.schema.json --output src/subsumes_benchmark/generated/checker.py --class-name CheckerSpec
+	uv run datamodel-codegen --check --input schemas/case.schema.json --output src/subsumes_benchmark/generated/case.py --class-name CaseSpec
 
 test:
 	uv run pytest
@@ -54,6 +55,7 @@ models:  ## write src/subsumes_benchmark/generated/ from the schemas; the option
 	uv run datamodel-codegen --input schemas/collections.schema.json --output src/subsumes_benchmark/generated/collections.py --class-name CollectionsSpec
 	uv run datamodel-codegen --input schemas/overrides.schema.json --output src/subsumes_benchmark/generated/overrides.py --class-name OverridesSpec
 	uv run datamodel-codegen --input schemas/checker.schema.json --output src/subsumes_benchmark/generated/checker.py --class-name CheckerSpec
+	uv run datamodel-codegen --input schemas/case.schema.json --output src/subsumes_benchmark/generated/case.py --class-name CaseSpec
 
 compare:  ## run every checker under checkers/ over the corpus into results/; hours, and needs their toolchains
 	for folder in checkers/*/; do uv run python -m subsumes_benchmark.compare run "$$(basename "$$folder")" || exit 1; done

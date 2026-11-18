@@ -1,0 +1,50 @@
+{
+  "$schema": "../../../../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": null,
+  "features": [
+    "$dynamicRef",
+    "$ref",
+    "const",
+    "items",
+    "not",
+    "type"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/dynamicRef.json#/tests/3/tests/0",
+  "a": {
+    "not": {
+      "$ref": "https://test.json-schema.org/typical-dynamic-resolution/root"
+    },
+    "$defs": {
+      "https://test.json-schema.org/typical-dynamic-resolution/root": {
+        "$id": "https://test.json-schema.org/typical-dynamic-resolution/root",
+        "$ref": "list",
+        "$defs": {
+          "foo": {
+            "$dynamicAnchor": "items",
+            "type": "string"
+          },
+          "list": {
+            "$id": "list",
+            "type": "array",
+            "items": {
+              "$dynamicRef": "#items"
+            },
+            "$defs": {
+              "items": {
+                "$comment": "This is only needed to satisfy the bookending requirement",
+                "$dynamicAnchor": "items"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "b": {
+    "const": [
+      "foo",
+      "bar"
+    ]
+  }
+}

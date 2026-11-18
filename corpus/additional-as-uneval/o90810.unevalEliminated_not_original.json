@@ -1,0 +1,178 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "minimum",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o90810.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+      "openvpn-admin": {
+        "additionalProperties": false,
+        "properties": {
+          "cpus": {
+            "default": 0.01,
+            "description": "CPU shares to allocate to each openvpn instance.",
+            "minimum": 0.01,
+            "type": "number"
+          },
+          "instances": {
+            "default": 1,
+            "description": "Number of openvpn instances to run.",
+            "minimum": 1,
+            "type": "integer"
+          },
+          "mem": {
+            "default": 128.0,
+            "description": "Memory (MB) to allocate to each openvpn task.",
+            "minimum": 64.0,
+            "type": "number"
+          }
+        },
+        "required": [
+          "cpus",
+          "mem",
+          "instances"
+        ],
+        "type": "object"
+      },
+      "service": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "default": "openvpn-admin",
+            "description": "openvpn service name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "type": "object"
+      }
+    },
+    "required": [
+      "openvpn-admin",
+      "service"
+    ],
+    "type": "object"
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "openvpn-admin": {
+                    "$ref": "#/$defs/modern_2"
+                  },
+                  "service": {
+                    "$ref": "#/$defs/modern_3"
+                  }
+                },
+                "required": [
+                  "openvpn-admin",
+                  "service"
+                ],
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^openvpn-admin$": true,
+                  "^service$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "cpus": {
+                    "default": 0.01,
+                    "description": "CPU shares to allocate to each openvpn instance.",
+                    "minimum": 0.01,
+                    "type": "number"
+                  },
+                  "instances": {
+                    "default": 1,
+                    "description": "Number of openvpn instances to run.",
+                    "minimum": 1.0,
+                    "type": "integer"
+                  },
+                  "mem": {
+                    "default": 128.0,
+                    "description": "Memory (MB) to allocate to each openvpn task.",
+                    "minimum": 64.0,
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "cpus",
+                  "mem",
+                  "instances"
+                ],
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^cpus$": true,
+                  "^instances$": true,
+                  "^mem$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_3": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "name": {
+                    "default": "openvpn-admin",
+                    "description": "openvpn service name",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ],
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^name$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

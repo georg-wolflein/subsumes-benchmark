@@ -1,0 +1,65 @@
+{
+  "$schema": "../../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "anyOf",
+    "items",
+    "not",
+    "properties",
+    "recursion",
+    "type"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/ref.json#/tests/11",
+  "a": true,
+  "b": {
+    "anyOf": [
+      {
+        "$ref": "https://subsumes-benchmark.example/schema"
+      },
+      {
+        "not": {
+          "$ref": "https://subsumes-benchmark.example/schema"
+        }
+      }
+    ],
+    "$defs": {
+      "https://subsumes-benchmark.example/schema": {
+        "$id": "https://subsumes-benchmark.example/schema",
+        "$ref": "http://localhost:1234/tree",
+        "$defs": {
+          "http://localhost:1234/node": {
+            "$id": "http://localhost:1234/node",
+            "description": "node",
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": "number"
+              },
+              "subtree": {
+                "$ref": "tree"
+              }
+            }
+          },
+          "http://localhost:1234/tree": {
+            "$id": "http://localhost:1234/tree",
+            "description": "tree of nodes",
+            "type": "object",
+            "properties": {
+              "meta": {
+                "type": "string"
+              },
+              "nodes": {
+                "type": "array",
+                "items": {
+                  "$ref": "node"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

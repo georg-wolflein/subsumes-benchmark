@@ -1,0 +1,132 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "anyOf",
+    "items",
+    "maxProperties",
+    "minItems",
+    "minProperties",
+    "oneOf",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o42217.anyOf_not_oneOf.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "minProperties": 1,
+    "patternProperties": {
+      "^[a-zA-Z][a-zA-Z0-9_]*$": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "contexts",
+            "attention_levels"
+          ],
+          "minProperties": 2,
+          "maxProperties": 2,
+          "properties": {
+            "contexts": {
+              "type": "object",
+              "minProperties": 1,
+              "patternProperties": {
+                "^[a-zA-Z][a-zA-Z0-9_]*$": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer"
+                    }
+                  ]
+                }
+              }
+            },
+            "attention_levels": {
+              "type": "object",
+              "minProperties": 1,
+              "patternProperties": {
+                "^[a-zA-Z][a-zA-Z0-9_]*$": {
+                  "type": "object",
+                  "minProperties": 1,
+                  "patternProperties": {
+                    "^[a-zA-Z][a-zA-Z0-9_]*$": {
+                      "type": "array",
+                      "minItems": 1,
+                      "_uniqueItems": true,
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "minProperties": 1,
+    "patternProperties": {
+      "^[a-zA-Z][a-zA-Z0-9_]*$": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "contexts",
+            "attention_levels"
+          ],
+          "minProperties": 2,
+          "maxProperties": 2,
+          "properties": {
+            "contexts": {
+              "type": "object",
+              "minProperties": 1,
+              "patternProperties": {
+                "^[a-zA-Z][a-zA-Z0-9_]*$": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer"
+                    }
+                  ]
+                }
+              }
+            },
+            "attention_levels": {
+              "type": "object",
+              "minProperties": 1,
+              "patternProperties": {
+                "^[a-zA-Z][a-zA-Z0-9_]*$": {
+                  "type": "object",
+                  "minProperties": 1,
+                  "patternProperties": {
+                    "^[a-zA-Z][a-zA-Z0-9_]*$": {
+                      "type": "array",
+                      "minItems": 1,
+                      "_uniqueItems": true,
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

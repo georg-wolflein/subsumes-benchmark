@@ -1,0 +1,103 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": null,
+  "features": [
+    "additionalProperties",
+    "anyOf",
+    "oneOf",
+    "pattern",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/sat/o83719.anyOf_not_oneOf.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Taxation Id",
+    "description": "Identification number for taxation purposes",
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "ssn": {
+        "type": "string",
+        "pattern": "^[0-9]{3}-[0-9]{2}-[0-9]{4}$"
+      },
+      "ein": {
+        "type": "string",
+        "pattern": "^[0-9]{2}-[0-9]{7}$"
+      },
+      "itin": {
+        "type": "string",
+        "pattern": "^9[0-9]{2}-[0-9]{2}-[0-9]{4}$"
+      }
+    },
+    "required": [
+      "name"
+    ],
+    "additionalProperties": false,
+    "oneOf": [
+      {
+        "required": [
+          "ssn"
+        ]
+      },
+      {
+        "required": [
+          "ein"
+        ]
+      },
+      {
+        "required": [
+          "itin"
+        ]
+      }
+    ]
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Taxation Id",
+    "description": "Identification number for taxation purposes",
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "ssn": {
+        "type": "string",
+        "pattern": "^[0-9]{3}-[0-9]{2}-[0-9]{4}$"
+      },
+      "ein": {
+        "type": "string",
+        "pattern": "^[0-9]{2}-[0-9]{7}$"
+      },
+      "itin": {
+        "type": "string",
+        "pattern": "^9[0-9]{2}-[0-9]{2}-[0-9]{4}$"
+      }
+    },
+    "required": [
+      "name"
+    ],
+    "additionalProperties": false,
+    "anyOf": [
+      {
+        "required": [
+          "ssn"
+        ]
+      },
+      {
+        "required": [
+          "ein"
+        ]
+      },
+      {
+        "required": [
+          "itin"
+        ]
+      }
+    ]
+  }
+}

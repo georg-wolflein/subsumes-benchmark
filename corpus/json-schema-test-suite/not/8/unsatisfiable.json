@@ -1,0 +1,48 @@
+{
+  "$schema": "../../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "allOf",
+    "anyOf",
+    "not",
+    "properties",
+    "unevaluatedProperties"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/not.json#/tests/8",
+  "a": false,
+  "b": {
+    "allOf": [
+      {
+        "not": {
+          "$comment": "this subschema must still produce annotations internally, even though the 'not' will ultimately discard them",
+          "anyOf": [
+            true,
+            {
+              "properties": {
+                "foo": true
+              }
+            }
+          ],
+          "unevaluatedProperties": false
+        }
+      },
+      {
+        "not": {
+          "not": {
+            "$comment": "this subschema must still produce annotations internally, even though the 'not' will ultimately discard them",
+            "anyOf": [
+              true,
+              {
+                "properties": {
+                  "foo": true
+                }
+              }
+            ],
+            "unevaluatedProperties": false
+          }
+        }
+      }
+    ]
+  }
+}

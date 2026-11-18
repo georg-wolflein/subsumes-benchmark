@@ -1,0 +1,176 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "anyOf",
+    "enum",
+    "items",
+    "minItems",
+    "oneOf",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o34759.oneOf_not_anyOf.json",
+  "a": {
+    "$id": "http://danielzhu.tk/birthland/data",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Stages",
+    "type": "object",
+    "additionalProperties": {
+      "title": "Stage",
+      "additionalProperties": false,
+      "properties": {
+        "start": {
+          "$ref": "#/$defs/break"
+        },
+        "text": {
+          "$ref": "#/$defs/text"
+        },
+        "end": {
+          "$ref": "#/$defs/break"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "choices": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "text",
+              "prompt"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "description": {
+                "$ref": "#/$defs/text"
+              },
+              "text": {
+                "type": "string"
+              },
+              "prompt": {
+                "$ref": "#/$defs/text"
+              },
+              "action": {
+                "type": "string"
+              },
+              "stage": {
+                "type": "string"
+              },
+              "condition": {
+                "type": "string"
+              }
+            }
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "$defs": {
+      "text": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          }
+        ]
+      },
+      "break": {
+        "enum": [
+          "none",
+          "paragraph",
+          "page"
+        ]
+      }
+    }
+  },
+  "b": {
+    "$id": "http://danielzhu.tk/birthland/data",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Stages",
+    "type": "object",
+    "additionalProperties": {
+      "title": "Stage",
+      "additionalProperties": false,
+      "properties": {
+        "start": {
+          "$ref": "#/$defs/break"
+        },
+        "text": {
+          "$ref": "#/$defs/text"
+        },
+        "end": {
+          "$ref": "#/$defs/break"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "choices": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "text",
+              "prompt"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "description": {
+                "$ref": "#/$defs/text"
+              },
+              "text": {
+                "type": "string"
+              },
+              "prompt": {
+                "$ref": "#/$defs/text"
+              },
+              "action": {
+                "type": "string"
+              },
+              "stage": {
+                "type": "string"
+              },
+              "condition": {
+                "type": "string"
+              }
+            }
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "$defs": {
+      "text": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          }
+        ]
+      },
+      "break": {
+        "enum": [
+          "none",
+          "paragraph",
+          "page"
+        ]
+      }
+    }
+  }
+}

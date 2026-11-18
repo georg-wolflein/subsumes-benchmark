@@ -1,0 +1,36 @@
+{
+  "$schema": "../../../../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "const",
+    "minimum",
+    "not",
+    "properties",
+    "recursion"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/id.json#/tests/11/tests/0",
+  "a": {
+    "not": {
+      "$ref": "foo:bar/baz"
+    },
+    "$defs": {
+      "foo:bar/baz": {
+        "$id": "foo:bar/baz",
+        "$comment": "URIs do not have to have HTTP(s) schemes",
+        "minimum": 30,
+        "properties": {
+          "foo": {
+            "$ref": "foo:bar/baz"
+          }
+        }
+      }
+    }
+  },
+  "b": {
+    "const": {
+      "foo": 37
+    }
+  }
+}

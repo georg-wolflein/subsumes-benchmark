@@ -1,0 +1,248 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "additionalProperties",
+    "enum",
+    "items",
+    "maxLength",
+    "minItems",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/issta/unsat/u283.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "IngressTLS describes the transport layer security associated with an Ingress.",
+    "properties": {
+      "hosts": {
+        "description": "Hosts are a list of hosts included in the TLS certificate. The values in this list must match the name/s used in the tlsSecret. Defaults to the wildcard host setting for the loadbalancer controller fulfilling this Ingress, if left unspecified.",
+        "items": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "type": [
+          "array",
+          "null"
+        ]
+      },
+      "secretName": {
+        "description": "SecretName is the name of the secret used to terminate SSL traffic on 443. Field is left optional to allow SSL routing based on SNI hostname alone. If the SNI host in a listener conflicts with the \"Host\" header field used by an IngressRule, the SNI host is used for termination and value of the Host header is used for routing.",
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "type": "object"
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "Schema for a local or remote push notification",
+    "self": {
+      "vendor": "com.apple",
+      "name": "notification_event",
+      "_format": "jsonschema",
+      "version": "1-0-0"
+    },
+    "type": "object",
+    "properties": {
+      "action": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "categoryIdentifier": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "threadIdentifier": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "trigger": {
+        "type": "string",
+        "enum": [
+          "PUSH",
+          "LOCATION",
+          "CALENDAR",
+          "TIME_INTERVAL"
+        ]
+      },
+      "deliveryDate": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "notification": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "subtitle": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "body": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "badge": {
+            "type": "integer"
+          },
+          "sound": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "launchImageName": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "userInfo": {
+            "type": "object",
+            "properties": {
+              "aps": {
+                "type": "object",
+                "properties": {
+                  "alert": {
+                    "type": [
+                      "string",
+                      "object"
+                    ],
+                    "properties": {
+                      "title": {
+                        "type": "string",
+                        "maxLength": 300
+                      },
+                      "body": {
+                        "type": "string",
+                        "maxLength": 1000
+                      },
+                      "titleLocKey": {
+                        "type": "string",
+                        "maxLength": 100
+                      },
+                      "titleLocArgs": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "maxLength": 100
+                        },
+                        "minItems": 1
+                      },
+                      "actionLocKey": {
+                        "type": "string",
+                        "maxLength": 100
+                      },
+                      "locKey": {
+                        "type": "string",
+                        "maxLength": 100
+                      },
+                      "locArgs": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "maxLength": 100
+                        },
+                        "minItems": 1
+                      },
+                      "launchImage": {
+                        "type": "string",
+                        "maxLength": 300
+                      }
+                    },
+                    "required": [
+                      "title",
+                      "body"
+                    ],
+                    "additionalProperties": {
+                      "type": [
+                        "string",
+                        "number"
+                      ]
+                    }
+                  },
+                  "badge": {
+                    "type": "integer"
+                  },
+                  "sound": {
+                    "type": "string",
+                    "maxLength": 300
+                  },
+                  "contentAvailable": {
+                    "type": "boolean"
+                  },
+                  "category": {
+                    "type": "string",
+                    "maxLength": 100
+                  },
+                  "threadId": {
+                    "type": "string",
+                    "maxLength": 100
+                  }
+                },
+                "required": [
+                  "alert"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": {
+              "type": [
+                "object",
+                "array",
+                "string",
+                "number",
+                "boolean"
+              ]
+            }
+          },
+          "attachments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "identifier": {
+                  "type": "string",
+                  "maxLength": 100
+                },
+                "url": {
+                  "type": "string",
+                  "maxLength": 750
+                },
+                "type": {
+                  "type": "string",
+                  "maxLength": 100
+                }
+              },
+              "required": [
+                "identifier",
+                "url",
+                "type"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "body"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "required": [
+      "action",
+      "categoryIdentifier",
+      "threadIdentifier",
+      "trigger",
+      "deliveryDate",
+      "notification"
+    ],
+    "additionalProperties": false
+  }
+}

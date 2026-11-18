@@ -1,0 +1,157 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o5468.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "array",
+    "items": {
+      "$ref": "#/$defs/GameBaseVariant"
+    },
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": [
+                      "null",
+                      "string"
+                    ]
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "contentId": {
+                    "type": "string"
+                  },
+                  "iconUrl": {
+                    "type": [
+                      "null",
+                      "string"
+                    ]
+                  },
+                  "internalName": {
+                    "type": "string"
+                  },
+                  "supportedGameModes": {
+                    "$ref": "#/$defs/modern_2"
+                  }
+                },
+                "required": [
+                  "name",
+                  "internalName",
+                  "iconUrl",
+                  "supportedGameModes",
+                  "id",
+                  "contentId"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^name$": true,
+                  "^id$": true,
+                  "^iconUrl$": true,
+                  "^contentId$": true,
+                  "^internalName$": true,
+                  "^supportedGameModes$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "GameBaseVariant": {
+        "$ref": "#/$defs/modern_1"
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              {
+                "items": {
+                  "anyOf": [
+                    true,
+                    false
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "array",
+    "items": {
+      "$ref": "#/$defs/GameBaseVariant"
+    },
+    "$defs": {
+      "GameBaseVariant": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "internalName": {
+            "type": "string"
+          },
+          "iconUrl": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "supportedGameModes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "id": {
+            "type": "string"
+          },
+          "contentId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "internalName",
+          "iconUrl",
+          "supportedGameModes",
+          "id",
+          "contentId"
+        ]
+      }
+    }
+  }
+}

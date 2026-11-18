@@ -1,0 +1,44 @@
+{
+  "$schema": "../../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "type"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/id.json#/tests/8",
+  "a": {
+    "$comment": "$id must be evaluated before $ref to get the proper $ref destination",
+    "$id": "https://example.com/ref-and-id3/base.json",
+    "$ref": "nested/foo.json",
+    "$defs": {
+      "foo": {
+        "$comment": "canonical uri: https://example.com/ref-and-id3/nested/foo.json",
+        "$id": "nested/foo.json",
+        "$ref": "./bar.json"
+      },
+      "bar": {
+        "$comment": "canonical uri: https://example.com/ref-and-id3/nested/bar.json",
+        "$id": "nested/bar.json",
+        "type": "number"
+      }
+    }
+  },
+  "b": {
+    "$comment": "$id must be evaluated before $ref to get the proper $ref destination",
+    "$id": "https://example.com/ref-and-id3/base.json",
+    "$ref": "nested/foo.json",
+    "$defs": {
+      "foo": {
+        "$comment": "canonical uri: https://example.com/ref-and-id3/nested/foo.json",
+        "$id": "nested/foo.json",
+        "$ref": "./bar.json"
+      },
+      "bar": {
+        "$comment": "canonical uri: https://example.com/ref-and-id3/nested/bar.json",
+        "$id": "nested/bar.json",
+        "type": "number"
+      }
+    }
+  }
+}

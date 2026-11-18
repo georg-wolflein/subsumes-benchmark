@@ -1,0 +1,132 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "oneOf",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o90249.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "ObjectSymbol3DLayer Resource",
+                "type": "object",
+                "description": "The primitive shape (primitive) or external 3D model (href) used to visualize the points.",
+                "properties": {
+                  "href": {
+                    "oneOf": [
+                      {
+                        "type": "string",
+                        "description": "An absolute URL",
+                        "pattern": "^https?://.+$"
+                      },
+                      {
+                        "type": "string",
+                        "description": "A relative path starting with ./",
+                        "pattern": "^\\./.+$"
+                      }
+                    ]
+                  },
+                  "primitive": {
+                    "type": "string",
+                    "enum": [
+                      "cone",
+                      "cube",
+                      "cylinder",
+                      "diamond",
+                      "invertedCone",
+                      "sphere",
+                      "tetrahedron"
+                    ]
+                  }
+                },
+                "oneOf": [
+                  {
+                    "required": [
+                      "primitive"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "href"
+                    ]
+                  }
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^href$": true,
+                  "^primitive$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "ObjectSymbol3DLayer Resource",
+    "type": "object",
+    "description": "The primitive shape (primitive) or external 3D model (href) used to visualize the points.",
+    "properties": {
+      "href": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "An absolute URL",
+            "pattern": "^https?://.+$"
+          },
+          {
+            "type": "string",
+            "description": "A relative path starting with ./",
+            "pattern": "^\\./.+$"
+          }
+        ]
+      },
+      "primitive": {
+        "type": "string",
+        "enum": [
+          "cone",
+          "cube",
+          "cylinder",
+          "diamond",
+          "invertedCone",
+          "sphere",
+          "tetrahedron"
+        ]
+      }
+    },
+    "oneOf": [
+      {
+        "required": [
+          "primitive"
+        ]
+      },
+      {
+        "required": [
+          "href"
+        ]
+      }
+    ],
+    "additionalProperties": false
+  }
+}

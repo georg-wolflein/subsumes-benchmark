@@ -1,0 +1,426 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "anyOf",
+    "enum",
+    "items",
+    "oneOf",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/sat/o69190.anyOf_not_oneOf.json",
+  "a": {
+    "$id": "http://spacebrew.cc/messaging-schema",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "a schema defining the messages sent by clients and admins",
+    "type": "object",
+    "oneOf": [
+      {
+        "$ref": "#/$defs/config"
+      },
+      {
+        "$ref": "#/$defs/message"
+      },
+      {
+        "$ref": "#/$defs/admin"
+      },
+      {
+        "$ref": "#/$defs/route"
+      }
+    ],
+    "$defs": {
+      "config": {
+        "type": "object",
+        "required": [
+          "config"
+        ],
+        "properties": {
+          "config": {
+            "type": "object",
+            "required": [
+              "name",
+              "description"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "subscribe": {
+                "type": "object",
+                "properties": {
+                  "messages": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "name"
+                      ],
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "default": {}
+                      }
+                    }
+                  }
+                }
+              },
+              "publish": {
+                "type": "object",
+                "properties": {
+                  "messages": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "name"
+                      ],
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "default": {}
+                      }
+                    }
+                  }
+                }
+              },
+              "options": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      },
+      "message": {
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "object",
+            "required": [
+              "clientName",
+              "name",
+              "type",
+              "value"
+            ],
+            "properties": {
+              "clientName": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "value": {}
+            }
+          }
+        }
+      },
+      "admin": {
+        "type": "object",
+        "required": [
+          "admin"
+        ],
+        "properties": {
+          "admin": {},
+          "no_msgs": {}
+        }
+      },
+      "route": {
+        "type": "object",
+        "required": [
+          "route"
+        ],
+        "properties": {
+          "route": {
+            "type": "object",
+            "required": [
+              "publisher",
+              "subscriber",
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "add",
+                  "remove"
+                ]
+              },
+              "publisher": {
+                "type": "object",
+                "required": [
+                  "type",
+                  "clientName",
+                  "remoteAddress",
+                  "name"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string"
+                  },
+                  "clientName": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "remoteAddress": {
+                    "type": "string"
+                  }
+                },
+                "subscriber": {
+                  "type": "object",
+                  "required": [
+                    "type",
+                    "clientName",
+                    "remoteAddress",
+                    "name"
+                  ],
+                  "properties": {
+                    "type": {
+                      "type": "string"
+                    },
+                    "clientName": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "remoteAddress": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "b": {
+    "$id": "http://spacebrew.cc/messaging-schema",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "a schema defining the messages sent by clients and admins",
+    "type": "object",
+    "anyOf": [
+      {
+        "$ref": "#/$defs/config"
+      },
+      {
+        "$ref": "#/$defs/message"
+      },
+      {
+        "$ref": "#/$defs/admin"
+      },
+      {
+        "$ref": "#/$defs/route"
+      }
+    ],
+    "$defs": {
+      "config": {
+        "type": "object",
+        "required": [
+          "config"
+        ],
+        "properties": {
+          "config": {
+            "type": "object",
+            "required": [
+              "name",
+              "description"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "subscribe": {
+                "type": "object",
+                "properties": {
+                  "messages": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "name"
+                      ],
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "default": {}
+                      }
+                    }
+                  }
+                }
+              },
+              "publish": {
+                "type": "object",
+                "properties": {
+                  "messages": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "name"
+                      ],
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "default": {}
+                      }
+                    }
+                  }
+                }
+              },
+              "options": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      },
+      "message": {
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "object",
+            "required": [
+              "clientName",
+              "name",
+              "type",
+              "value"
+            ],
+            "properties": {
+              "clientName": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "value": {}
+            }
+          }
+        }
+      },
+      "admin": {
+        "type": "object",
+        "required": [
+          "admin"
+        ],
+        "properties": {
+          "admin": {},
+          "no_msgs": {}
+        }
+      },
+      "route": {
+        "type": "object",
+        "required": [
+          "route"
+        ],
+        "properties": {
+          "route": {
+            "type": "object",
+            "required": [
+              "publisher",
+              "subscriber",
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "add",
+                  "remove"
+                ]
+              },
+              "publisher": {
+                "type": "object",
+                "required": [
+                  "type",
+                  "clientName",
+                  "remoteAddress",
+                  "name"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string"
+                  },
+                  "clientName": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "remoteAddress": {
+                    "type": "string"
+                  }
+                },
+                "subscriber": {
+                  "type": "object",
+                  "required": [
+                    "type",
+                    "clientName",
+                    "remoteAddress",
+                    "name"
+                  ],
+                  "properties": {
+                    "type": {
+                      "type": "string"
+                    },
+                    "clientName": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "remoteAddress": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

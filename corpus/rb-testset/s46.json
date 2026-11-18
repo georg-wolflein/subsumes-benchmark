@@ -1,0 +1,107 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": null,
+  "features": [
+    "additionalProperties",
+    "maximum",
+    "minimum",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/issta/sat/s46.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "Schema for an IP anonymization enrichment",
+    "self": {
+      "vendor": "com.snowplowanalytics.snowplow",
+      "name": "anon_ip",
+      "_format": "jsonschema",
+      "version": "1-0-0"
+    },
+    "type": "object",
+    "properties": {
+      "vendor": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "enabled": {
+        "type": "boolean"
+      },
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "anonOctets": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 4
+          }
+        },
+        "required": [
+          "anonOctets"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "required": [
+      "name",
+      "vendor",
+      "enabled",
+      "parameters"
+    ],
+    "additionalProperties": false
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "Schema for an IP anonymization enrichment",
+    "self": {
+      "vendor": "com.snowplowanalytics.snowplow",
+      "name": "anon_ip",
+      "_format": "jsonschema",
+      "version": "1-0-1"
+    },
+    "type": "object",
+    "properties": {
+      "vendor": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "enabled": {
+        "type": "boolean"
+      },
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "anonOctets": {
+            "description": "Number of IPv4 octets to anonymize",
+            "type": "number",
+            "minimum": 1,
+            "maximum": 4
+          },
+          "anonSegments": {
+            "description": "Number of IPv6 segments to anonymize",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 8
+          }
+        },
+        "required": [
+          "anonOctets"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "required": [
+      "name",
+      "vendor",
+      "enabled",
+      "parameters"
+    ],
+    "additionalProperties": false
+  }
+}

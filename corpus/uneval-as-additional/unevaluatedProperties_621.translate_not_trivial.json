@@ -1,0 +1,74 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "const",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/uneval_eliminated_as_additional_containment/unknown/unevaluatedProperties_621.translate_not_trivial.json",
+  "a": {
+    "$id": "file:///driver/src/batch_score/common/configuration/file/schemas/public/authentication/connection.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "type",
+      "name"
+    ],
+    "properties": {
+      "type": {
+        "const": "connection"
+      },
+      "name": {
+        "type": "string",
+        "description": "The name of the workspace connection used for scoring authentication."
+      }
+    }
+  },
+  "b": {
+    "$id": "file:///driver/src/batch_score/common/configuration/file/schemas/public/authentication/connection.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "required": [
+                  "type",
+                  "name"
+                ],
+                "properties": {
+                  "type": {
+                    "const": "connection"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "The name of the workspace connection used for scoring authentication."
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^type$": true,
+                  "^name$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

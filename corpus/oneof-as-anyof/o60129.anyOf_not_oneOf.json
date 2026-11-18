@@ -1,0 +1,90 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": null,
+  "features": [
+    "anyOf",
+    "items",
+    "oneOf",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/sat/o60129.anyOf_not_oneOf.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "The value returned by POST /{db}/_bulk_docs",
+    "items": {
+      "oneOf": [
+        {
+          "properties": {
+            "error": {
+              "type": "string"
+            },
+            "reason": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "error",
+            "reason"
+          ]
+        },
+        {
+          "properties": {
+            "ok": {
+              "type": "boolean"
+            },
+            "rev": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "ok"
+          ]
+        }
+      ],
+      "type": "object"
+    },
+    "title": "CouchDB _bulk_docs",
+    "type": "array"
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "The value returned by POST /{db}/_bulk_docs",
+    "items": {
+      "type": "object",
+      "anyOf": [
+        {
+          "properties": {
+            "error": {
+              "type": "string"
+            },
+            "reason": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "error",
+            "reason"
+          ]
+        },
+        {
+          "properties": {
+            "ok": {
+              "type": "boolean"
+            },
+            "rev": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "ok"
+          ]
+        }
+      ]
+    },
+    "title": "CouchDB _bulk_docs",
+    "type": "array"
+  }
+}

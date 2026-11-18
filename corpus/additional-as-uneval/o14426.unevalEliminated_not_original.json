@@ -1,0 +1,267 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "minItems",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o14426.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "StatusControlRequest Schema",
+    "type": "object",
+    "required": [
+      "StatusControlRequest"
+    ],
+    "properties": {
+      "_id": {
+        "type": "object",
+        "$ref": "#/$defs/identifier"
+      },
+      "StatusControlRequest": {
+        "type": "object",
+        "$ref": "#/$defs/data"
+      }
+    },
+    "additionalProperties": false,
+    "$defs": {
+      "identifier": {
+        "title": "id",
+        "description": "StatusContol identifier",
+        "type": "object",
+        "properties": {
+          "$oid": {
+            "type": "string"
+          }
+        }
+      },
+      "data": {
+        "title": "data",
+        "description": "StatusContol Info",
+        "type": "object",
+        "required": [
+          "timestamp",
+          "targetKpInstance",
+          "sourceKpInstance",
+          "request"
+        ],
+        "properties": {
+          "timestamp": {
+            "type": "object",
+            "required": [
+              "$date"
+            ],
+            "properties": {
+              "$date": {
+                "type": "string",
+                "_format": "date-time"
+              }
+            },
+            "additionalProperties": false
+          },
+          "targetKpInstance": {
+            "type": "string"
+          },
+          "sourceKpInstance": {
+            "type": "string"
+          },
+          "request": {
+            "$ref": "#/$defs/reqObj"
+          }
+        },
+        "additionalProperties": false
+      },
+      "reqObj": {
+        "title": "request",
+        "description": "request data",
+        "type": "array",
+        "items": {
+          "title": "array for request",
+          "type": "object",
+          "required": [
+            "key",
+            "value"
+          ],
+          "properties": {
+            "key": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "minItems": 1
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_4",
+    "$defs": {
+      "identifier": {
+        "title": "id",
+        "description": "StatusContol identifier",
+        "type": "object",
+        "properties": {
+          "$oid": {
+            "type": "string"
+          }
+        }
+      },
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "data",
+                "description": "StatusContol Info",
+                "type": "object",
+                "required": [
+                  "timestamp",
+                  "targetKpInstance",
+                  "sourceKpInstance",
+                  "request"
+                ],
+                "properties": {
+                  "timestamp": {
+                    "$ref": "#/$defs/modern_2"
+                  },
+                  "targetKpInstance": {
+                    "type": "string"
+                  },
+                  "sourceKpInstance": {
+                    "type": "string"
+                  },
+                  "request": {
+                    "$ref": "#/$defs/reqObj"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^timestamp$": true,
+                  "^targetKpInstance$": true,
+                  "^sourceKpInstance$": true,
+                  "^request$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "data": {
+        "$ref": "#/$defs/modern_1"
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "required": [
+                  "$date"
+                ],
+                "properties": {
+                  "$date": {
+                    "type": "string",
+                    "_format": "date-time"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^$date$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "reqObj": {
+        "title": "request",
+        "description": "request data",
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/modern_3"
+        },
+        "minItems": 1
+      },
+      "modern_3": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "array for request",
+                "type": "object",
+                "required": [
+                  "key",
+                  "value"
+                ],
+                "properties": {
+                  "key": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^key$": true,
+                  "^value$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_4": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "StatusControlRequest Schema",
+                "type": "object",
+                "required": [
+                  "StatusControlRequest"
+                ],
+                "properties": {
+                  "_id": {
+                    "type": "object",
+                    "$ref": "#/$defs/identifier"
+                  },
+                  "StatusControlRequest": {
+                    "type": "object",
+                    "$ref": "#/$defs/data"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^_id$": true,
+                  "^StatusControlRequest$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "patternProperties",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o6379.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "anyOf": [
+      {
+        "$ref": "#/$defs/TestStruct"
+      }
+    ],
+    "type": "object",
+    "$defs": {
+      "TestStruct": {
+        "additionalProperties": false,
+        "description": "for testing the schema generator.",
+        "preferredOrder": [
+          "int32Field",
+          "int64Field",
+          "intField"
+        ],
+        "properties": {
+          "int32Field": {
+            "description": "an integer",
+            "type": "integer",
+            "x-intellij-html-description": "an integer"
+          },
+          "int64Field": {
+            "description": "an integer",
+            "type": "integer",
+            "x-intellij-html-description": "an integer"
+          },
+          "intField": {
+            "description": "an integer",
+            "type": "integer",
+            "x-intellij-html-description": "an integer"
+          }
+        },
+        "x-intellij-html-description": "for testing the schema generator."
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "anyOf": [
+      {
+        "$ref": "#/$defs/TestStruct"
+      }
+    ],
+    "type": "object",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "description": "for testing the schema generator.",
+                "preferredOrder": [
+                  "int32Field",
+                  "int64Field",
+                  "intField"
+                ],
+                "properties": {
+                  "int32Field": {
+                    "description": "an integer",
+                    "type": "integer",
+                    "x-intellij-html-description": "an integer"
+                  },
+                  "int64Field": {
+                    "description": "an integer",
+                    "type": "integer",
+                    "x-intellij-html-description": "an integer"
+                  },
+                  "intField": {
+                    "description": "an integer",
+                    "type": "integer",
+                    "x-intellij-html-description": "an integer"
+                  }
+                },
+                "x-intellij-html-description": "for testing the schema generator."
+              },
+              {
+                "patternProperties": {
+                  "^int32Field$": true,
+                  "^int64Field$": true,
+                  "^intField$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "TestStruct": {
+        "$ref": "#/$defs/modern_1"
+      }
+    }
+  }
+}

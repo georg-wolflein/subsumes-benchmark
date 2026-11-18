@@ -1,0 +1,107 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "multipleOf",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o53899.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "statusCode": {
+                    "description": "Status code based on HTTP status codes.",
+                    "type": "number"
+                  },
+                  "config": {
+                    "description": "Configuration body of an arbitrary type (as defined by the request `config_format`)."
+                  },
+                  "id": {
+                    "description": "ID of the message used to match server response to the request.",
+                    "multipleOf": 1.0,
+                    "type": "number"
+                  },
+                  "configId": {
+                    "description": "Identifier of the current configuration.",
+                    "type": "string"
+                  },
+                  "reasonPhrase": {
+                    "description": "A human-readable string explaining the cause of an error (if any). In case the request was successful, it is `ok`.",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "configId",
+                  "statusCode",
+                  "reasonPhrase"
+                ],
+                "title": "5/CMX configuration pull response schema",
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^statusCode$": true,
+                  "^config$": true,
+                  "^reasonPhrase$": true,
+                  "^configId$": true,
+                  "^id$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+      "config": {
+        "description": "Configuration body of an arbitrary type (as defined by the request `config_format`)."
+      },
+      "configId": {
+        "description": "Identifier of the current configuration.",
+        "type": "string"
+      },
+      "id": {
+        "description": "ID of the message used to match server response to the request.",
+        "multipleOf": 1.0,
+        "type": "number"
+      },
+      "reasonPhrase": {
+        "description": "A human-readable string explaining the cause of an error (if any). In case the request was successful, it is `ok`.",
+        "type": "string"
+      },
+      "statusCode": {
+        "description": "Status code based on HTTP status codes.",
+        "type": "number"
+      }
+    },
+    "required": [
+      "id",
+      "configId",
+      "statusCode",
+      "reasonPhrase"
+    ],
+    "title": "5/CMX configuration pull response schema",
+    "type": "object"
+  }
+}

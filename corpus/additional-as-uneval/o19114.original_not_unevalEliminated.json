@@ -1,0 +1,250 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "minItems",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o19114.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "ZepyrusOutputSchema",
+    "description": "Output JSON schema for Zepyrus.",
+    "type": "object",
+    "properties": {
+      "version": {
+        "type": "integer",
+        "description": "Version number."
+      },
+      "locations": {
+        "type": "array",
+        "_uniqueItems": true,
+        "minItems": 1,
+        "description": "Location information.",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "repository": {
+              "type": "string"
+            },
+            "packages_installed": {
+              "type": "array",
+              "_uniqueItems": true,
+              "description": "Packages installed on the location.",
+              "items": {
+                "type": "string"
+              }
+            },
+            "provide_resources": {
+              "$ref": "#/$defs/modern_1"
+            },
+            "cost": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "name",
+            "repository"
+          ]
+        }
+      },
+      "components": {
+        "type": "array",
+        "_uniqueItems": true,
+        "description": "Deployed components.",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Name of the component (used as an id)."
+            },
+            "type": {
+              "type": "string",
+              "description": "Type of the component."
+            },
+            "state": {
+              "type": "string"
+            },
+            "location": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "type",
+            "state",
+            "location"
+          ]
+        }
+      },
+      "bindings": {
+        "type": "array",
+        "_uniqueItems": true,
+        "description": "Bindings between components.",
+        "items": {
+          "type": "object",
+          "properties": {
+            "port": {
+              "type": "string"
+            },
+            "requirer": {
+              "type": "string"
+            },
+            "provider": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "port",
+            "requirer",
+            "provider"
+          ]
+        }
+      }
+    },
+    "required": [
+      "version"
+    ],
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "description": "Mapping (resource -> value)",
+                "type": "object"
+              },
+              {
+                "additionalProperties": {
+                  "description": "The arity of the required port.",
+                  "type": "integer"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "ZepyrusOutputSchema",
+    "description": "Output JSON schema for Zepyrus.",
+    "type": "object",
+    "properties": {
+      "version": {
+        "type": "integer",
+        "description": "Version number."
+      },
+      "locations": {
+        "type": "array",
+        "_uniqueItems": true,
+        "minItems": 1,
+        "description": "Location information.",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "provide_resources": {
+              "description": "Mapping (resource -> value)",
+              "type": "object",
+              "additionalProperties": {
+                "description": "The arity of the required port.",
+                "type": "integer"
+              }
+            },
+            "repository": {
+              "type": "string"
+            },
+            "packages_installed": {
+              "type": "array",
+              "_uniqueItems": true,
+              "description": "Packages installed on the location.",
+              "items": {
+                "type": "string"
+              }
+            },
+            "cost": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "name",
+            "repository"
+          ]
+        }
+      },
+      "components": {
+        "type": "array",
+        "_uniqueItems": true,
+        "description": "Deployed components.",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Name of the component (used as an id)."
+            },
+            "type": {
+              "type": "string",
+              "description": "Type of the component."
+            },
+            "state": {
+              "type": "string"
+            },
+            "location": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "type",
+            "state",
+            "location"
+          ]
+        }
+      },
+      "bindings": {
+        "type": "array",
+        "_uniqueItems": true,
+        "description": "Bindings between components.",
+        "items": {
+          "type": "object",
+          "properties": {
+            "port": {
+              "type": "string"
+            },
+            "requirer": {
+              "type": "string"
+            },
+            "provider": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "port",
+            "requirer",
+            "provider"
+          ]
+        }
+      }
+    },
+    "required": [
+      "version"
+    ]
+  }
+}

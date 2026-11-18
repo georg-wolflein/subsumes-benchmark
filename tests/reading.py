@@ -58,7 +58,7 @@ def read(path: Path) -> Json:
 @dataclass(frozen=True)
 class Case:
     id: str
-    folder: Path
+    file: Path
     a_subsumes_b: bool | None
     b_subsumes_a: bool | None
     upstream: str
@@ -68,12 +68,12 @@ class Case:
     @property
     def a(self) -> Json:
         """The schema that should accept everything; read from disk on every access."""
-        return read(self.folder / "a.json")
+        return _document(self.file)["a"]
 
     @property
     def b(self) -> Json:
         """The schema whose instances must be accepted; read from disk on every access."""
-        return read(self.folder / "b.json")
+        return _document(self.file)["b"]
 
     @property
     def collection(self) -> str:
@@ -89,13 +89,32 @@ def _label(value: Json) -> bool | None:
     return value
 
 
+def _document(path: Path) -> dict[str, Json]:
+    document = read(path)
+    assert isinstance(document, dict)
+    return document
+
+
+def _case_id(path: Path) -> str:
+    return path.relative_to(CORPUS).as_posix().removesuffix(".json")
+
+
 @cache
 def cases() -> Sequence[Case]:
-    """Every case of the corpus: the folders that hold a ``case.json``."""
+    """Every case of the corpus: the JSON files of a collection, but its ``collection.json``.
+
+    They are sorted by the folders and the name of the case.
+    """
+    files = [
+        path
+        for collection in CORPUS.iterdir()
+        if (collection / "collection.json").is_file()
+        for path in collection.rglob("*.json")
+        if path != collection / "collection.json"
+    ]
     found = []
-    for path in sorted(CORPUS.rglob("case.json")):
-        metadata = read(path)
-        assert isinstance(metadata, dict)
+    for path in sorted(files, key=lambda path: _case_id(path).split("/")):
+        metadata = _document(path)
         upstream, note = metadata["upstream"], metadata.get("note")
         used = metadata["features"]
         assert isinstance(upstream, str)
@@ -103,8 +122,8 @@ def cases() -> Sequence[Case]:
         assert isinstance(used, list)
         found.append(
             Case(
-                id=path.parent.relative_to(CORPUS).as_posix(),
-                folder=path.parent,
+                id=_case_id(path),
+                file=path,
                 a_subsumes_b=_label(metadata["a_subsumes_b"]),
                 b_subsumes_a=_label(metadata["b_subsumes_a"]),
                 upstream=upstream,

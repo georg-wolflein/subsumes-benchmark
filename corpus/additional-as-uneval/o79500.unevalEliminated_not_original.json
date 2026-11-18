@@ -1,0 +1,116 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "format",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o79500.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+      "coverLetter": {
+        "access": "candidateOwned",
+        "description": "Please upload a cover letter. The shorter the better",
+        "format": "tas-fileUpload",
+        "options": {
+          "accept": "image/png,text/html"
+        },
+        "properties": {
+          "data": {
+            "media": {
+              "binaryEncoding": "base64"
+            },
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "via": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "favoriteColor": {
+        "access": "eeo",
+        "default": "blue",
+        "description": "Tell us your favorite color. Our advanced hiring algorithm uses it.",
+        "title": "Favorite color",
+        "type": "string"
+      }
+    },
+    "required": [
+      "favoriteColor"
+    ],
+    "type": "object"
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "coverLetter": {
+                    "access": "candidateOwned",
+                    "description": "Please upload a cover letter. The shorter the better",
+                    "format": "tas-fileUpload",
+                    "options": {
+                      "accept": "image/png,text/html"
+                    },
+                    "properties": {
+                      "data": {
+                        "media": {
+                          "binaryEncoding": "base64"
+                        },
+                        "type": "string"
+                      },
+                      "fileName": {
+                        "type": "string"
+                      },
+                      "via": {
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "favoriteColor": {
+                    "access": "eeo",
+                    "default": "blue",
+                    "description": "Tell us your favorite color. Our advanced hiring algorithm uses it.",
+                    "title": "Favorite color",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "favoriteColor"
+                ],
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^coverLetter$": true,
+                  "^favoriteColor$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

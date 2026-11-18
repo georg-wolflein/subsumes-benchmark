@@ -1,0 +1,57 @@
+{
+  "$schema": "../../../../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": null,
+  "features": [
+    "$dynamicRef",
+    "$ref",
+    "const",
+    "maxLength"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/dynamicRef.json#/tests/23/tests/1",
+  "a": {
+    "$id": "https://test.json-schema.org/dynamic-ref-avoids-root-of-each-schema/base",
+    "$ref": "first#/$defs/stuff",
+    "$defs": {
+      "first": {
+        "$id": "first",
+        "$defs": {
+          "stuff": {
+            "$ref": "second#/$defs/stuff"
+          },
+          "length": {
+            "$comment": "unused, because there is no $dynamicAnchor here",
+            "maxLength": 1
+          }
+        }
+      },
+      "second": {
+        "$id": "second",
+        "$defs": {
+          "stuff": {
+            "$ref": "third#/$defs/stuff"
+          },
+          "length": {
+            "$dynamicAnchor": "length",
+            "maxLength": 2
+          }
+        }
+      },
+      "third": {
+        "$id": "third",
+        "$defs": {
+          "stuff": {
+            "$dynamicRef": "#length"
+          },
+          "length": {
+            "$dynamicAnchor": "length",
+            "maxLength": 3
+          }
+        }
+      }
+    }
+  },
+  "b": {
+    "const": "hey"
+  }
+}

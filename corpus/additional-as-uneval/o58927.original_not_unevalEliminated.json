@@ -1,0 +1,230 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o58927.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_3",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ],
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^name$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "tag": {
+        "$ref": "#/$defs/modern_1"
+      },
+      "track": {
+        "$ref": "#/$defs/modern_2"
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "duration": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "url": {
+                    "_format": "uri",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ],
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^duration$": true,
+                  "^name$": true,
+                  "^url$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_3": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "description": "The JSON schema that matches album info.",
+                "properties": {
+                  "url": {
+                    "_format": "uri",
+                    "type": "string"
+                  },
+                  "tags": {
+                    "items": {
+                      "$ref": "#/$defs/tag"
+                    },
+                    "type": "array"
+                  },
+                  "tracks": {
+                    "items": {
+                      "$ref": "#/$defs/track"
+                    },
+                    "type": "array"
+                  },
+                  "raw": {
+                    "type": "object"
+                  },
+                  "artist": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "imageUrl": {
+                    "_format": "uri",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "artist",
+                  "title",
+                  "url",
+                  "tracks",
+                  "raw"
+                ],
+                "title": "album-info",
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^tracks$": true,
+                  "^url$": true,
+                  "^imageUrl$": true,
+                  "^title$": true,
+                  "^artist$": true,
+                  "^raw$": true,
+                  "^tags$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$id": "https://mastert.github.io/bandcamp-scraper/schemas/album-info.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "description": "The JSON schema that matches album info.",
+    "properties": {
+      "artist": {
+        "type": "string"
+      },
+      "imageUrl": {
+        "_format": "uri",
+        "type": "string"
+      },
+      "raw": {
+        "type": "object"
+      },
+      "tags": {
+        "items": {
+          "$ref": "#/$defs/tag"
+        },
+        "type": "array"
+      },
+      "title": {
+        "type": "string"
+      },
+      "tracks": {
+        "items": {
+          "$ref": "#/$defs/track"
+        },
+        "type": "array"
+      },
+      "url": {
+        "_format": "uri",
+        "type": "string"
+      }
+    },
+    "required": [
+      "artist",
+      "title",
+      "url",
+      "tracks",
+      "raw"
+    ],
+    "title": "album-info",
+    "type": "object",
+    "$defs": {
+      "tag": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "type": "object"
+      },
+      "track": {
+        "additionalProperties": false,
+        "properties": {
+          "duration": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "url": {
+            "_format": "uri",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "type": "object"
+      }
+    }
+  }
+}

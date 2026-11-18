@@ -1,0 +1,142 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "format",
+    "items",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o79448.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_2",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "uri": {
+                    "$ref": "#/$defs/httpUri"
+                  }
+                },
+                "required": [
+                  "name",
+                  "uri"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^name$": true,
+                  "^uri$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "repositories": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/pkgRepo"
+                    }
+                  }
+                },
+                "required": [
+                  "repositories"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^repositories$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "httpUri": {
+        "type": "string",
+        "allOf": [
+          {
+            "format": "uri"
+          },
+          {
+            "pattern": "^https?://"
+          }
+        ]
+      },
+      "pkgRepo": {
+        "$ref": "#/$defs/modern_1"
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "repositories": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/pkgRepo"
+        }
+      }
+    },
+    "required": [
+      "repositories"
+    ],
+    "additionalProperties": false,
+    "$defs": {
+      "httpUri": {
+        "type": "string",
+        "allOf": [
+          {
+            "format": "uri"
+          },
+          {
+            "pattern": "^https?://"
+          }
+        ]
+      },
+      "pkgRepo": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "uri": {
+            "$ref": "#/$defs/httpUri"
+          }
+        },
+        "required": [
+          "name",
+          "uri"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}
