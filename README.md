@@ -168,6 +168,14 @@ uv run python -m subsumes_benchmark.compare run jsoncompat --limit 300   # write
 uv run --group report python -m subsumes_benchmark.compare report results --out /tmp/comparison
 ```
 
+Whoever develops a checker can hold the run of a change against the run of what the change is based on:
+
+```bash
+uv run python -m subsumes_benchmark.compare diff results/jsoncompat --base base/jsoncompat --out comment.md
+```
+
+That writes a comment for a pull request: the answers by collection with what changed, the wrong answers, the tasks that the base answered and the change does not, those it answers newly, and the kinds of reason for declining. The command fails when an answer is wrong, when a task ended in an error, a crash or a timeout, and when a task of the base is no longer answered, unless `--allow-lost` accepts that.
+
 ## Departures from upstream
 
 The corpus leaves out 12 cases of the inclusion artifact and 23 test cases of the test suite. [`overrides.json`](overrides.json) lists them with the reason:
