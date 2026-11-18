@@ -2,9 +2,9 @@ name: Release
 
 # release-please keeps one pull request open that raises the version by what the commits on
 # main since the last release call for; release-please-config.json says how. Merging that
-# pull request is the release: this workflow then tags the merged commit v<version>,
-# publishes the package that runs a checker to PyPI, and publishes the corpus as one archive.
-# Both are built here from that commit.
+# pull request is the release: this workflow then tags the merged commit v<version>, packs
+# the corpus of that commit into one archive, publishes the package with the archive in it
+# to PyPI, and attaches the same archive to the release.
 on:
   push:
     branches: [main]
@@ -38,9 +38,10 @@ jobs:
         with:
           token: ${{ steps.app.outputs.token }}
 
-  # The package of the release on PyPI: the command that runs a checker over the corpus. It
-  # holds the code and none of the corpus, which is checked here before anything is uploaded,
-  # since a file on PyPI cannot be replaced.
+  # The package of the release on PyPI: the command that runs a checker, with the corpus in
+  # it as one archive. What the package holds is checked here before anything is uploaded,
+  # since a file on PyPI cannot be replaced. The archive is handed to the next job, so that
+  # the release has the file that the package has.
   package:
     needs: release-please
     if: needs.release-please.outputs.release_created == 'true'
@@ -57,22 +58,35 @@ jobs:
       - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
         with:
           python-version: "3.14"
+      - name: Pack the corpus
+        # Sorted entries without times and owners, so the file depends only on the corpus.
+        run: make archive
       - name: Build the package
         run: uv build
-      - name: Check that the package has the version of the release and none of the corpus
+      - name: Check that the package has the version of the release, and the corpus as the archive only
         run: |
           version="${TAG#v}"
           ls dist
           test -f "dist/subsumes_benchmark-$version-py3-none-any.whl"
           test -f "dist/subsumes_benchmark-$version.tar.gz"
-          {
-            python -m zipfile --list dist/*.whl
-            tar -tzf dist/*.tar.gz
-          } > "$RUNNER_TEMP/files"
-          if grep -E '(^|/)(corpus|sources|comparison)/' "$RUNNER_TEMP/files"; then
-            echo "::error::the package holds files that are not code"
+          python -m zipfile --list dist/*.whl > "$RUNNER_TEMP/wheel"
+          tar -tzf dist/*.tar.gz > "$RUNNER_TEMP/source"
+          for files in wheel source; do
+            grep -q 'subsumes_benchmark/corpus\.tar\.zst' "$RUNNER_TEMP/$files"
+          done
+          if cat "$RUNNER_TEMP/wheel" "$RUNNER_TEMP/source" \
+              | grep -E '(^|/)(sources|comparison|checkers)/|/corpus/[^ ]*\.json'; then
+            echo "::error::the package holds files that are neither code nor the archive"
             exit 1
           fi
+          # What the installed package unpacks is the corpus of the tag.
+          uvx --from dist/*.whl subsumes-benchmark corpus "$RUNNER_TEMP/unpacked"
+          diff --recursive --brief corpus "$RUNNER_TEMP/unpacked"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: corpus
+          path: src/subsumes_benchmark/corpus.tar.zst
+          if-no-files-found: error
       # No token is stored: PyPI trusts this workflow of this repository. A file that PyPI
       # has already, from an earlier attempt, is left as it is.
       - name: Publish the package to PyPI
@@ -90,16 +104,13 @@ jobs:
       contents: write
     env:
       GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }} # the job has no checkout that would say
       TAG: ${{ needs.release-please.outputs.tag }}
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      # The archive that the package holds, as the job before packed it.
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
-          ref: ${{ needs.release-please.outputs.tag }} # not always the commit of this run
-      - name: Build the archive
-        # Sorted entries with fixed times and owners, so the file depends only on the corpus.
-        run: |
-          tar --sort=name --mtime=@0 --owner=0 --group=0 --numeric-owner -cf - corpus \
-            | zstd -19 -T0 -o corpus.tar.zst
+          name: corpus
       - name: Attach the archive and publish the release
         # The notes are those of the release pull request, below the checksum. A line with
         # a checksum that is there already, from an earlier attempt, is replaced.

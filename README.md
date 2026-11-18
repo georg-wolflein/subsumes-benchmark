@@ -68,11 +68,17 @@ Every schema stands on its own: a reference resolves inside the schema or to a m
 
 ## Releases
 
-A release is a tag `v<version>` that carries one file, `corpus.tar.zst`: the `corpus/` folder as a tar archive compressed with Zstandard, about 4 MB. With it goes the package `subsumes-benchmark` of that version on PyPI, which [runs a checker](#comparing-checkers) over the corpus and holds none of it.
+A release is a tag `v<version>` that carries one file, `corpus.tar.zst`: the `corpus/` folder as a tar archive compressed with Zstandard, about 4 MB.
 
 ```bash
 curl -fsSLO https://github.com/georg-wolflein/subsumes-benchmark/releases/download/v0.1.0/corpus.tar.zst
 zstd -dc corpus.tar.zst | tar -xf -   # unpacks into corpus/
+```
+
+With it goes the package `subsumes-benchmark` of that version on PyPI, which holds the same file and [runs a checker](#comparing-checkers) over the corpus. So the corpus can be had without `curl` and `zstd`, and pinned by the version alone:
+
+```bash
+uvx subsumes-benchmark==<version> corpus corpus   # unpacks into corpus/
 ```
 
 The release notes give the SHA-256 of the file. The version says what a change means for someone who measures a checker:
@@ -176,7 +182,7 @@ uv run subsumes-benchmark diff results/jsoncompat --base base/jsoncompat --out c
 
 That writes a comment for a pull request: the answers by collection with what changed, the wrong answers, the tasks that the base answered and the change does not, those it answers newly, and the kinds of reason for declining. The command fails when an answer is wrong, when a task ended in an error, a crash or a timeout, and when a task of the base is no longer answered, unless `--allow-lost` accepts that.
 
-The command is also a package on PyPI, [`subsumes-benchmark`](https://pypi.org/project/subsumes-benchmark/), for a checker that lives in another repository: `uvx subsumes-benchmark==<version> run path/to/checker --corpus corpus` runs the adapter in that folder over an unpacked corpus. The package holds the code and no corpus, and the package of a version is made for the corpus of that version.
+The command is also a package on PyPI, [`subsumes-benchmark`](https://pypi.org/project/subsumes-benchmark/), for a checker that lives in another repository: `uvx subsumes-benchmark==<version> corpus corpus` unpacks the corpus of that version, which the package holds, and `uvx subsumes-benchmark==<version> run path/to/checker` runs the adapter in that folder over it.
 
 ## Departures from upstream
 
@@ -259,7 +265,7 @@ make models        # rewrite the generated models after a change to a schema of 
 
 CI runs the same on every push and pull request. The tests read every case of the committed corpus, which takes under a minute: each case matches the schema of a case, which says that its two schemas are valid draft 2020-12, every reference resolves, every case lists the features of its schemas, and every label that validation can check holds.
 
-Releases are made by [release-please](https://github.com/googleapis/release-please). It keeps one pull request open, `chore(main): release <version>`, that raises the version in `pyproject.toml` and `uv.lock` and lists what the release holds. Merging that pull request publishes the release: the `Release` workflow tags the merged commit `v<version>`, builds the archive and attaches it. Not every commit on `main` is released; the pull request waits and takes in what is merged meanwhile.
+Releases are made by [release-please](https://github.com/googleapis/release-please). It keeps one pull request open, `chore(main): release <version>`, that raises the version in `pyproject.toml` and `uv.lock` and lists what the release holds. Merging that pull request publishes the release: the `Release` workflow tags the merged commit `v<version>`, packs the archive, publishes the package with the archive in it to PyPI, and attaches the archive to the release. Not every commit on `main` is released; the pull request waits and takes in what is merged meanwhile.
 
 The titles of the pull requests merged since the last release decide the version. So the type in a title follows what the change does to the corpus, by the versioning [above](#releases), and not why it was made:
 
@@ -273,7 +279,7 @@ A pull request of another type, such as `docs`, `ci` or `chore`, opens no releas
 
 ## Credits and licences
 
-The code in this repository is MIT licensed, except [`checkers/rwg/`](checkers/rwg), which is compiled together with RWG and is GPL-3.0 like it. The corpus keeps the licences of its sources, which each `collection.json` names; the licence texts are in [`corpus/licenses/`](corpus/licenses).
+The code in this repository is MIT licensed, except [`checkers/rwg/`](checkers/rwg), which is compiled together with RWG and is GPL-3.0 like it. The corpus keeps the licences of its sources, which each `collection.json` names; the licence texts are in [`corpus/licenses/`](corpus/licenses). The package on PyPI holds the code and the corpus, so it is licensed `MIT AND GPL-3.0-only` and carries those texts.
 
 `json-schema-test-suite` is built from [json-schema-org/JSON-Schema-Test-Suite](https://github.com/json-schema-org/JSON-Schema-Test-Suite) (MIT, Julian Berman). The kinds of pairs are those of [sdbs-uni-p/json-schema-containment-testsuite](https://github.com/sdbs-uni-p/json-schema-containment-testsuite) (Stefanie Scherzinger, University of Passau), described in Lyes Attouche, Mohamed-Amine Baazizi, Dario Colazzo, Yunchen Ding, Michael Fruth, Giorgio Ghelli, Carlo Sartiani and Stefanie Scherzinger, *A Test Suite for JSON Schema Containment*, ER 2021 Demos and Posters, CEUR Workshop Proceedings 2958. Until version 0.4.0 the corpus took that suite's draft 2020-12 pairs as they were.
 

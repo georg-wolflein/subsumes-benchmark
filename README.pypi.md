@@ -1,30 +1,30 @@
 # subsumes-benchmark
 
-Runs a JSON Schema inclusion checker over the [subsumes benchmark corpus](https://github.com/georg-wolflein/subsumes-benchmark) and reports on the run.
+The [subsumes benchmark corpus](https://github.com/georg-wolflein/subsumes-benchmark) for JSON Schema inclusion, and the command that runs a checker over it and reports on the run.
 
 The corpus is pairs of draft 2020-12 schemas with known answers to one question: does schema A accept every instance that is valid under schema B? A checker is a program that answers it, and the [repository](https://github.com/georg-wolflein/subsumes-benchmark#comparing-checkers) compares the open-source ones.
 
-> [!NOTE]
-> The corpus is not part of this package. Each [release](https://github.com/georg-wolflein/subsumes-benchmark/releases) of the repository carries it as an archive, and the package of a version is made for the corpus of that version.
+The package of a version holds the corpus of that version, so the version pins both. Results measured on two versions are comparable exactly when their major and minor numbers match.
 
 ## Use
 
 The command needs Python 3.14, which [uv](https://docs.astral.sh/uv/) fetches by itself.
 
 ```bash
-# The corpus of the version that the package has, unpacked into corpus/.
-curl -fsSLO https://github.com/georg-wolflein/subsumes-benchmark/releases/download/v<version>/corpus.tar.zst
-zstd -dc corpus.tar.zst | tar -xf -
+# Unpack the corpus into corpus/.
+uvx subsumes-benchmark==<version> corpus corpus
 
 # Run a checker over every task; the results go to results/<folder of the checker>/.
-uvx subsumes-benchmark==<version> run path/to/checker --corpus corpus
+uvx subsumes-benchmark==<version> run path/to/checker
 
 # Hold the run against an earlier one, as a comment for a pull request.
 uvx subsumes-benchmark==<version> diff results/checker --base base/checker
 
 # Report on the runs of several checkers, with charts.
-uvx --from 'subsumes-benchmark[report]==<version>' subsumes-benchmark report results --corpus corpus
+uvx --from 'subsumes-benchmark[report]==<version>' subsumes-benchmark report results
 ```
+
+- **`corpus`** unpacks the corpus into a new or empty folder: one JSON file per case, in a folder per collection. The [repository](https://github.com/georg-wolflein/subsumes-benchmark#a-case) describes a case and the collections.
 
 - **`run`** asks the checker both directions of every case, one task after the other, and writes one line per task to `results.jsonl`. Where the checker gives a counterexample with a no, a validator is asked whether it is one.
 - **`diff`** holds one run against another of the same checker. It fails when an answer is wrong, when a task ended in an error, a crash or a timeout, and when a task that the other run answered is no longer answered.
@@ -40,3 +40,7 @@ A checker is a folder with a `checker.json` and an adapter: a program that start
 ```
 
 [The documentation of the checkers](https://github.com/georg-wolflein/subsumes-benchmark/blob/main/checkers/README.md) has the keys of `checker.json`, the protocol in full, and the adapters of the checkers that the repository compares.
+
+## Licences
+
+The code is MIT licensed. The corpus keeps the licences of its sources, which the `collection.json` of each collection names: GPL-3.0 for the collections built from the artifact of *JSON Schema Inclusion through Refutational Normalization*, and MIT for the one built from the official JSON Schema Test Suite. The package carries the texts, and so does the corpus, under `licenses/`.
