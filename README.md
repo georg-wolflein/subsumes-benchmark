@@ -149,7 +149,7 @@ Measured on corpus `v0.8.0`, all 18,240 tasks, with 10 seconds per task. [The fu
 
 <!-- comparison:end -->
 
-A **task** is one question of the corpus: every case asks whether A subsumes B, and the other direction too where it has a label for it. A task is **solved** when the checker answered yes or no and no label contradicts the answer. Every checker runs alone on its machine, as one long-running process that is warmed up first, and the time of a task is measured inside that process from the two schemas as text to the answer.
+A **task** is one question of the corpus, and every case is two: whether A subsumes B, and whether B subsumes A. The corpus has a label for some tasks and claims nothing about the others. A task is **solved** when the checker gave the answer that the label gives, so only a task with a label can be solved, and the share of solved tasks is a share of those. An answer to a task without a label is counted and not scored. Every checker runs alone on its machine, as one long-running process that is warmed up first, and the time of a task is measured inside that process from the two schemas as text to the answer.
 
 | Checker | Used through | Reads |
 | --- | --- | --- |

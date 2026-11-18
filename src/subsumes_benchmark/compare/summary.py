@@ -16,8 +16,9 @@ if TYPE_CHECKING:
 type Outcome = Literal["correct", "unlabelled", "wrong_no", "wrong_yes", "no_answer", "timeout"]
 """How a task counts.
 
-- ``correct``: the checker answered what the corpus says.
-- ``unlabelled``: the checker answered and the corpus claims nothing.
+- ``correct``: the checker answered what the corpus says. The task is solved.
+- ``unlabelled``: the checker answered and the corpus claims nothing, so the answer can be
+  held against nothing.
 - ``wrong_no``: the checker said no where A subsumes B.
 - ``wrong_yes``: the checker said yes where A does not subsume B.
 - ``no_answer``: the checker declined, failed, or cannot read the schemas.
@@ -25,20 +26,26 @@ type Outcome = Literal["correct", "unlabelled", "wrong_no", "wrong_yes", "no_ans
 """
 
 OUTCOMES: Sequence[Outcome] = get_args(Outcome.__value__)
+# How a task with a label can count, and how one without.
+LABELLED: Sequence[Outcome] = ("correct", "wrong_no", "wrong_yes", "no_answer", "timeout")
+UNLABELLED: Sequence[Outcome] = ("unlabelled", "no_answer", "timeout")
 OUTCOME_NAMES: Mapping[Outcome, str] = {
     "correct": "Correct",
-    "unlabelled": "Answered, no label",
+    "unlabelled": "Answered",
     "wrong_no": "Wrong no",
     "wrong_yes": "Wrong yes",
     "no_answer": "No answer",
     "timeout": "Timed out",
 }
-# A task is solved when the checker answered and no label contradicts the answer.
-SOLVED: frozenset[Outcome] = frozenset({"correct", "unlabelled"})
 
 
 class ReportError(Exception):
     pass
+
+
+def has_label(result: Result) -> bool:
+    """Whether the corpus says what the answer is."""
+    return result.expected is not None
 
 
 def outcome(result: Result) -> Outcome:
@@ -85,31 +92,39 @@ class Entry:
         """How many tasks ended each way, among those that ``keep`` lets through."""
         return Counter(outcome(r) for r in self.results if keep is None or keep(r))
 
+    def labelled(self, keep: Callable[[Result], bool] | None = None) -> Sequence[Result]:
+        """The tasks that the corpus has a label for, among those that ``keep`` lets through."""
+        return [r for r in self.results if has_label(r) and (keep is None or keep(r))]
+
+    def unlabelled(self) -> Sequence[Result]:
+        return [r for r in self.results if not has_label(r)]
+
     def solved(self, keep: Callable[[Result], bool] | None = None) -> int:
-        counts = self.counts(keep)
-        return sum(counts[o] for o in SOLVED)
+        """How many tasks the checker solved: it gave the answer that the label gives."""
+        return self.counts(keep)["correct"]
 
     def solved_seconds(self) -> Sequence[float]:
         """What the checker took on every task it solved, shortest first."""
         return sorted(
-            r.seconds for r in self.results if outcome(r) in SOLVED and r.seconds is not None
+            r.seconds for r in self.results if outcome(r) == "correct" and r.seconds is not None
         )
 
     def seconds_to_solve(self, share: float) -> float | None:
-        """The time within which the checker solved this share of all tasks, if it did.
+        """The time within which the checker solved this share of the labelled tasks, if it did.
 
         This is the time of the slowest task among the fastest ones that make up the share,
         so tasks that were not solved count as slower than every task that was.
         """
         seconds = self.solved_seconds()
-        needed = math.ceil(share * len(self.results))
+        needed = math.ceil(share * len(self.labelled()))
         return seconds[needed - 1] if 0 < needed <= len(seconds) else None
 
     def collections(self) -> Mapping[str, tuple[int, int]]:
-        """The solved tasks and all tasks of every collection."""
-        tasks = Counter(r.collection for r in self.results)
-        solved = Counter(r.collection for r in self.results if outcome(r) in SOLVED)
-        return {name: (solved[name], tasks[name]) for name in sorted(tasks)}
+        """The solved tasks and the labelled tasks of every collection."""
+        tasks = Counter(r.collection for r in self.labelled())
+        solved = Counter(r.collection for r in self.results if outcome(r) == "correct")
+        names = sorted({r.collection for r in self.results})
+        return {name: (solved[name], tasks[name]) for name in names}
 
 
 def read_entries(folder: Path) -> Sequence[Entry]:

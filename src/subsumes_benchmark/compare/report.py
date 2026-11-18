@@ -14,13 +14,14 @@ from matplotlib.colors import LinearSegmentedColormap, to_hex, to_rgb
 from matplotlib.patches import Patch, Rectangle
 
 from subsumes_benchmark.compare.summary import (
+    LABELLED,
     OUTCOME_NAMES,
-    OUTCOMES,
-    SOLVED,
+    UNLABELLED,
     Entry,
     Outcome,
     agreements,
     cases_using,
+    has_label,
     read_entries,
 )
 from subsumes_benchmark.compare.tasks import read_tasks
@@ -58,6 +59,7 @@ class Theme:
     axis: str
     # One per checker label, in the order the labels are listed; never cycled.
     series: Sequence[str]
+    # One for each way that a task with a label can end.
     outcomes: Mapping[Outcome, str]
     # From no task solved to every task solved.
     ramp: Sequence[str]
@@ -73,7 +75,6 @@ LIGHT = Theme(
     series=("#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#6250d6", "#e34948"),
     outcomes={
         "correct": "#0ca30c",
-        "unlabelled": "#898781",
         "wrong_no": "#ec835a",
         "wrong_yes": "#d03b3b",
         "no_answer": "#c3c2b7",
@@ -91,7 +92,6 @@ DARK = Theme(
     series=("#3987e5", "#d95926", "#199e70", "#c98500", "#d55181", "#0ca30c", "#9085e9", "#e66767"),
     outcomes={
         "correct": "#0ca30c",
-        "unlabelled": "#898781",
         "wrong_no": "#ec835a",
         "wrong_yes": "#d03b3b",
         "no_answer": "#52514e",
@@ -151,13 +151,13 @@ def _bare(ax: Axes) -> None:
 
 
 def _outcomes(ax: Axes, entries: Sequence[Entry], theme: Theme) -> None:
-    """One bar per checker, split by how its tasks ended."""
+    """One bar per checker, split by how its tasks with a label ended."""
     _bare(ax)
     for row, entry in enumerate(entries):
-        counts, total = entry.counts(), len(entry.results)
+        counts, total = entry.counts(has_label), len(entry.labelled())
         left = 0.0
-        for kind in OUTCOMES:
-            width = counts[kind] / total
+        for kind in LABELLED:
+            width = counts[kind] / total if total else 0
             if width == 0:
                 continue
             fill = theme.outcomes[kind]
@@ -190,7 +190,7 @@ def _thinned(seconds: Sequence[float], total: int) -> tuple[list[float], list[fl
 
 
 def _speed(ax: Axes, entries: Sequence[Entry], theme: Theme, styles: Mapping[str, tuple]) -> None:
-    """For every checker, the share of all tasks it solved within a time."""
+    """For every checker, the share of the tasks with a label it solved within a time."""
     timeout = entries[0].run.timeout
     # The axis starts at the power of ten below all but the very fastest tasks.
     early = min(
@@ -202,7 +202,8 @@ def _speed(ax: Axes, entries: Sequence[Entry], theme: Theme, styles: Mapping[str
         lowest *= 10
     for entry in entries:
         seconds = [max(s, lowest) for s in entry.solved_seconds()]
-        total = len(entry.results)
+        # Nothing is solved where nothing has a label, so the curve then stays at zero.
+        total = len(entry.labelled()) or 1
         xs, ys = _thinned(seconds, total)
         colour, line = styles[entry.name]
         ax.step([lowest, *xs, timeout], [0.0, *ys, len(seconds) / total], where="post",
@@ -227,7 +228,10 @@ def _speed(ax: Axes, entries: Sequence[Entry], theme: Theme, styles: Mapping[str
 
 
 def _collections(ax: Axes, entries: Sequence[Entry], theme: Theme) -> None:
-    """A cell per checker and collection: the share of the collection's tasks solved."""
+    """A cell per checker and collection: the share solved of its tasks with a label.
+
+    A collection of a sample that has no such task gets cells of the surface, without a share.
+    """
     _bare(ax)
     shades = LinearSegmentedColormap.from_list("solved", list(theme.ramp))
     by_entry = [entry.collections() for entry in entries]
@@ -235,6 +239,8 @@ def _collections(ax: Axes, entries: Sequence[Entry], theme: Theme) -> None:
     for row, name in enumerate(names):
         for column, solved in enumerate(by_entry):
             done, tasks = solved[name]
+            if not tasks:
+                continue
             fill = to_hex(shades(done / tasks))
             ax.add_patch(
                 Rectangle((column, row), 1, 1, facecolor=fill, edgecolor=theme.surface, lw=2)
@@ -313,22 +319,23 @@ def draw(entries: Sequence[Entry], theme: Theme, caption: str, path: Path) -> No
                        columnspacing=1.6, handletextpad=0.6, borderpad=0,
                        borderaxespad=0)  # fmt: skip
 
-        heading(0.3, 0.3, "How every task ended", "Share of all tasks, by checker")
+        heading(0.3, 0.3, "How every task with a label ended",
+                "Share of the tasks with a label, by checker")  # fmt: skip
         legend(
-            [Patch(facecolor=theme.outcomes[kind], label=OUTCOME_NAMES[kind]) for kind in OUTCOMES],
-            2.3, 0.95, len(OUTCOMES),
+            [Patch(facecolor=theme.outcomes[kind], label=OUTCOME_NAMES[kind]) for kind in LABELLED],
+            2.3, 0.95, len(LABELLED),
         )  # fmt: skip
         outcomes = axes(2.3, 1.3, width - 2.3 - 1.3, bars)
         _outcomes(outcomes, entries, theme)
 
         heading(0.3, lower, "How fast the tasks are solved",
-                "Share of all tasks solved within a time")  # fmt: skip
+                "Share of the tasks with a label solved within a time")  # fmt: skip
         speed = axes(0.85, plot, 3.85, 3.1)
         _speed(speed, entries, theme, styles)
         legend(speed.get_legend_handles_labels()[0], 0.85, lower + 0.62, 2)
 
         heading(5.25, lower, "Where each checker is strong",
-                "Tasks solved, in % of each collection (with its number of tasks)")  # fmt: skip
+                "Solved, in % of each collection's tasks with a label (and how many)")  # fmt: skip
         collections = axes(7.35, plot, width - 7.35 - 0.3, 3.1)
         _collections(collections, entries, theme)
 
@@ -343,13 +350,42 @@ def draw(entries: Sequence[Entry], theme: Theme, caption: str, path: Path) -> No
 
 
 def _outcome_table(entries: Sequence[Entry], keep: Callable[[Result], bool] | None) -> str:
+    """How the tasks with a label ended, among those that ``keep`` lets through."""
     rows = []
     for entry in entries:
-        counts = entry.counts(keep)
-        total = sum(counts.values())
-        solved = sum(counts[kind] for kind in SOLVED)
-        rows.append([entry.name, share(solved, total), *(count(counts[kind]) for kind in OUTCOMES)])
-    return table(["Checker", "Solved", *(OUTCOME_NAMES[kind] for kind in OUTCOMES)], rows)
+        counts = entry.counts(lambda r: has_label(r) and (keep is None or keep(r)))
+        rows.append(
+            [
+                entry.name,
+                share(counts["correct"], counts.total()),
+                *(count(counts[kind]) for kind in LABELLED),
+            ]
+        )
+    return table(["Checker", "Solved", *(OUTCOME_NAMES[kind] for kind in LABELLED)], rows)
+
+
+def _unlabelled_table(entries: Sequence[Entry]) -> str:
+    """How the tasks without a label ended, and what the answers were."""
+    rows = []
+    for entry in entries:
+        results = entry.unlabelled()
+        counts = entry.counts(lambda r: not has_label(r))
+        rows.append(
+            [
+                entry.name,
+                share(counts["unlabelled"], len(results)),
+                *(count(sum(1 for r in results if r.answer == answer)) for answer in ("yes", "no")),
+                *(count(counts[kind]) for kind in UNLABELLED[1:]),
+            ]
+        )
+    headers = [
+        "Checker",
+        "Answered",
+        "Yes",
+        "No",
+        *(OUTCOME_NAMES[kind] for kind in UNLABELLED[1:]),
+    ]
+    return table(headers, rows)
 
 
 def _time_table(entries: Sequence[Entry]) -> str:
@@ -359,7 +395,7 @@ def _time_table(entries: Sequence[Entry]) -> str:
         rows.append(
             [
                 entry.name,
-                share(len(seconds), len(entry.results)),
+                share(len(seconds), len(entry.labelled())),
                 duration(seconds[len(seconds) // 2] if seconds else None),
                 duration(entry.seconds_to_solve(0.5)),
                 duration(entry.seconds_to_solve(0.9)),
@@ -367,8 +403,8 @@ def _time_table(entries: Sequence[Entry]) -> str:
                 duration(entry.run.seconds),
             ]
         )
-    headers = ["Checker", "Solved", "Median solved task", "Fastest 50% of all tasks within",
-               "Fastest 90% of all tasks within", "Slowest solved task", "Whole run"]  # fmt: skip
+    headers = ["Checker", "Solved", "Median solved task", "Fastest 50% within",
+               "Fastest 90% within", "Slowest solved task", "Whole run"]  # fmt: skip
     return table(headers, rows)
 
 
@@ -378,7 +414,7 @@ def _collection_table(entries: Sequence[Entry]) -> str:
         [f"`{name}`", count(by_entry[0][name][1]), *(share(*solved[name]) for solved in by_entry)]
         for name in by_entry[0]
     ]
-    return table(["Collection", "Tasks", *(entry.name for entry in entries)], rows)
+    return table(["Collection", "With a label", *(entry.name for entry in entries)], rows)
 
 
 def _silence_table(entries: Sequence[Entry]) -> str:
@@ -417,8 +453,8 @@ def markdown(entries: Sequence[Entry], with_format: frozenset[str], all_tasks: i
     """The report, as the text of ``report.md``."""
     first = entries[0].run
     tasks = entries[0].results
-    labelled = sum(1 for r in tasks if r.expected is not None)
-    formatted = sum(1 for r in tasks if r.case in with_format)
+    labelled = entries[0].labelled()
+    formatted = sum(1 for r in labelled if r.case in with_format)
     agreement = [
         f"- {a.first} and {a.second} gave the same answer on {count(a.same)} of {count(a.tasks)} "
         f"tasks."
@@ -432,43 +468,52 @@ def markdown(entries: Sequence[Entry], with_format: frozenset[str], all_tasks: i
     ]
     parts = [
         "# Comparison of inclusion checkers",
-        f"Corpus `{first.corpus}`, {_scope(entries, all_tasks)}, of which {count(labelled)} have "
-        f"a label. Each checker had {first.timeout:g} seconds per task. Run on "
+        f"Corpus `{first.corpus}`, {_scope(entries, all_tasks)}, of which "
+        f"{count(len(labelled))} have a label. Each checker had {first.timeout:g} seconds per "
+        f"task. Run on "
         f"{first.started[:10]} on {first.processor} ({first.platform}).",
         '<picture>\n  <source media="(prefers-color-scheme: dark)" srcset="chart-dark.svg">\n'
         '  <img alt="How every task ended, how fast tasks are solved, and the solved share by '
         'collection, for each checker" src="chart-light.svg">\n</picture>',
-        "A task asks whether one schema accepts every instance valid under another. A task is "
-        "**solved** when the checker answered yes or no and no label of the corpus contradicts "
-        "the answer. A checker that declines is never wrong; a checker that can only say yes or "
-        "no is wrong wherever its no meets a label that says yes.",
+        "A task asks whether one schema accepts every instance valid under another. Every case "
+        "is two tasks, one in each direction, and the corpus has a label for some of them. A "
+        "task is **solved** when the checker gave the answer that the label gives, so only a "
+        "task with a label can be solved, and every share of solved tasks is a share of the "
+        "tasks with a label. A checker that declines is never wrong; a checker that can only "
+        "say yes or no is wrong wherever its no meets a label that says yes.",
         "## Outcomes",
+        f"The {count(len(labelled))} tasks with a label:",
         _outcome_table(entries, None),
         "- **Correct**: the answer is the label.\n"
-        "- **Answered, no label**: the checker answered and the corpus claims nothing.\n"
         "- **Wrong no**: the checker said no where the label says that A subsumes B.\n"
         "- **Wrong yes**: the checker said yes where the label says that it does not.\n"
         "- **No answer**: the checker declined, failed, or cannot read the schemas.\n"
         "- **Timed out**: no answer within the time.",
+        "### Without a label",
+        f"The {count(len(tasks) - len(labelled))} tasks without a label. An answer to one can be "
+        "held against nothing, so it is counted and not scored: a checker that always answers "
+        "has answered them all.",
+        _unlabelled_table(entries),
         "### With and without `format`",
         "The labels hold with `format` asserted. A checker that treats `format` as an "
         "annotation, or does not know it, answers a different question on the tasks that use "
-        "it, so the same counts follow for the two kinds of task.",
-        f"The {count(len(tasks) - formatted)} tasks whose schemas do not use `format`:",
+        "it, so the counts of the tasks with a label follow for the two kinds of task.",
+        f"The {count(len(labelled) - formatted)} whose schemas do not use `format`:",
         _outcome_table(entries, lambda r: r.case not in with_format),
-        f"The {count(formatted)} tasks whose schemas use `format`:",
+        f"The {count(formatted)} whose schemas use `format`:",
         _outcome_table(entries, lambda r: r.case in with_format),
         "## Time",
         _time_table(entries),
         "The time of a task is measured inside the checker's process, from the two schemas as "
         f"text to the answer, after {first.warmup} unmeasured tasks to warm up. Reading the "
-        "files, starting the process and rewriting a schema for an older draft are not in it. A "
-        "share of all "
-        f"tasks that a checker did not reach has no time ({NOTHING}).",
+        "files, starting the process and rewriting a schema for an older draft are not in it. "
+        "The fastest 50% is the time within which a checker solved half of the tasks with a "
+        f"label; a share that it did not reach has no time ({NOTHING}).",
         "## Collections",
-        "The share of each collection's tasks that a checker solved.",
+        "The share of each collection's tasks with a label that a checker solved.",
         _collection_table(entries),
         "## Where no answer came",
+        "Among all tasks, with a label and without:",
         _silence_table(entries),
         "- **Declined**: the checker ran and said that it does not know.\n"
         "- **Not asked**: the checker reads an older draft, and that draft cannot express one "
@@ -502,7 +547,7 @@ def readme_block(entries: Sequence[Entry], all_tasks: int, folder: str) -> str:
             [
                 entry.name,
                 entry.run.version,
-                share(entry.solved(), len(entry.results)),
+                share(entry.solved(), len(entry.labelled())),
                 count(counts["wrong_yes"]),
                 count(counts["wrong_no"]),
                 duration(entry.seconds_to_solve(0.5)),
@@ -518,9 +563,11 @@ def readme_block(entries: Sequence[Entry], all_tasks: int, folder: str) -> str:
             f'fast tasks are solved, and the solved share by collection, for each checker" '
             f'src="{folder}/{CHART_FILES["light"]}">\n</picture>',
             table(headers, rows),
-            f"Measured on corpus `{first.corpus}`, {_scope(entries, all_tasks)}, with "
-            f"{first.timeout:g} seconds per task. [The full report]({folder}/{REPORT_FILE}) has "
-            f"the counts with and without `format`, the collections and how it was measured.",
+            f"Measured on corpus `{first.corpus}`, {_scope(entries, all_tasks)}, of which "
+            f"{count(len(entries[0].labelled()))} have a label, with {first.timeout:g} seconds "
+            f"per task. [The full report]({folder}/{REPORT_FILE}) has the counts with and "
+            f"without `format`, the tasks without a label, the collections and how it was "
+            f"measured.",
         ]
     )
 
@@ -549,8 +596,7 @@ def report(results: Path, out: Path, corpus: Path, readme: Path | None = None) -
     all_tasks = len(read_tasks(corpus))
     caption = (
         f"Corpus {first.corpus}, {_scope(entries, all_tasks)}, {first.timeout:g} s per task. "
-        f"Solved: answered, and not contradicted by a label. Times are measured inside each "
-        f"checker's process."
+        f"Solved: the answer is the label. Times are measured inside each checker's process."
     )
     out.mkdir(parents=True, exist_ok=True)
     for name, theme in THEMES.items():
