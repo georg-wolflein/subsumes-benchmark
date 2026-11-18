@@ -15,8 +15,11 @@ classifiers = [
   "Typing :: Typed",
 ]
 # The build needs Pydantic, which reads the configuration files, and otherwise the standard
-# library only; what the tests need is in the dev group.
+# library only; what the tests need is in the dev group. Running a checker needs a validator
+# besides, for the counterexamples. Its version is pinned, since it decides which of them
+# count: a run is then held against the same validator wherever it is installed.
 dependencies = [
+    "jsonschema-rs==0.61.2",
     "pydantic>=2.14.3",
 ]
 
@@ -130,7 +133,6 @@ dev = [
     "check-jsonschema>=0.39.0",
     "datamodel-code-generator>=0.97.0",
     "jsonschema>=4.26.0",
-    "jsonschema-rs>=0.61.2",
     "pytest>=9.2.0",
     "referencing>=0.37.0",
     "regress>=2026.9.1",

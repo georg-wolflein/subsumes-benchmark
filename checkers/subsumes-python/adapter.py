@@ -14,24 +14,45 @@ import json
 import sys
 import time
 from pathlib import Path
+from typing import assert_never
 
-from subsumes import No, Unknown, Yes, subsumes
+from subsumes import Budget, Json, No, Reason, Unknown, Unrepresentable, Unsupported, Yes, subsumes
 
 
-def check(a: str, b: str) -> tuple[str, str | None]:
+def kind(reason: Reason) -> str:
+    """What a report counts the declined tasks by, as ``checkers/subsumes`` names it."""
+    match reason:
+        case Budget():
+            return "budget"
+        case Unrepresentable():
+            return "unrepresentable instance"
+        case Unsupported(location=location):
+            # The location is a URI reference whose fragment is a JSON Pointer, and the last
+            # token of the pointer names the keyword.
+            pointer = location.partition("#")[2]
+            if "/" not in pointer:
+                return "whole schema"
+            return pointer.rpartition("/")[2].replace("~1", "/").replace("~0", "~")
+        case _:
+            assert_never(reason)
+
+
+def check(a: str, b: str) -> dict[str, Json]:
+    """The reply without its time."""
     try:
         # The package takes a schema as ``json.loads`` gives it, with the default work budget.
         verdict = subsumes(json.loads(a), json.loads(b))
     except Exception as exc:
-        return "error", f"{type(exc).__name__}: {exc}"[:300]
+        return {"answer": "error", "detail": f"{type(exc).__name__}: {exc}"[:300]}
     match verdict:
         case Yes():
-            return "yes", None
+            return {"answer": "yes"}
         case No(counterexample):
-            return "no", json.dumps(counterexample)[:300]
+            detail = json.dumps(counterexample)[:300]
+            return {"answer": "no", "detail": detail, "counterexample": counterexample}
         case Unknown(reason):
             # A check that spends its work budget ends here too, and the reason says so.
-            return "unknown", str(reason)[:300]
+            return {"answer": "unknown", "detail": str(reason)[:300], "reason": kind(reason)}
 
 
 def main() -> None:
@@ -43,9 +64,9 @@ def main() -> None:
         # The clock runs from the schemas as text to the answer. The runner enforces the
         # timeout.
         start = time.perf_counter()
-        answer, detail = check(a, b)
+        reply = check(a, b)
         seconds = time.perf_counter() - start
-        print(json.dumps({"answer": answer, "seconds": seconds, "detail": detail}), flush=True)
+        print(json.dumps({**reply, "seconds": seconds}), flush=True)
 
 
 main()
