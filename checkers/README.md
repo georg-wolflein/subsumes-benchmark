@@ -10,6 +10,7 @@ Each folder here makes one inclusion checker answer the tasks of the corpus, so 
 | `jsonsubschema/` | [jsonsubschema](https://github.com/IBM/jsonsubschema) | the package from PyPI | draft-04 |
 | `rwg/` | [RWG](https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema), the tool of *JSON Schema Inclusion through Refutational Normalization* | its sources, in the submodule `sources/inclusion-artifact` | draft-07 |
 | `subsumes/` | [subsumes](https://github.com/georg-wolflein/subsumes) | the crate from crates.io | draft 2020-12 |
+| `subsumes-python/` | subsumes | the package from PyPI | draft 2020-12 |
 
 A checker is taken from a package index wherever it is published to one, at a pinned version. RWG is not published, so its adapter is compiled together with its sources.
 

@@ -160,7 +160,7 @@ A **task** is one question of the corpus: every case asks whether A subsumes B, 
 | [jsoncompat](https://github.com/ostrowr/jsoncompat) | the crate from crates.io, and the package from PyPI | draft 2020-12 |
 | [jsonsubschema](https://github.com/IBM/jsonsubschema) | the package from PyPI | draft-04 |
 | [RWG](https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema) | its sources, which are not published as a package | draft-07 |
-| [subsumes](https://github.com/georg-wolflein/subsumes) | the crate from crates.io | draft 2020-12 |
+| [subsumes](https://github.com/georg-wolflein/subsumes) | the crate from crates.io, and the package from PyPI | draft 2020-12 |
 
 A checker that reads an older draft gets every schema rewritten to that draft; where the draft cannot express a schema, the checker is not asked. [`checkers/`](checkers/README.md) has one folder per checker and describes how a checker is plugged in.
 
