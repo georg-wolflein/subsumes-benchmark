@@ -240,7 +240,7 @@ The submodules under `sources/` are marked `update = none`, so cloning this repo
 ```bash
 uv sync
 make ci            # ruff check, ruff format --check, ty check, check-jsonschema, datamodel-codegen --check, cargo fmt --check, cargo clippy, pytest
-make test-corpus   # the slow tests over every schema, about three minutes
+make test-corpus   # the slow tests over every schema, about half a minute
 make format        # apply ruff's fixes and formatting, and cargo fmt
 make models        # rewrite the generated models after a change to a schema of a configuration file
 ```

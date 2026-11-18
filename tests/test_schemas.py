@@ -3,13 +3,16 @@
 The schema of a case says that its two schemas are valid draft 2020-12. A reference resolves
 inside its schema or to a metaschema of the draft: no schema needs another document. Upstream
 cases that are not valid are left out of the corpus; ``overrides.json`` lists them.
+
+The validator is ``jsonschema-rs``: over the million and a half schemas of the corpus it takes
+seconds where ``jsonschema`` takes minutes.
 """
 
 import json
 from typing import TYPE_CHECKING
 
+import jsonschema_rs
 import pytest
-from jsonschema import Draft202012Validator
 from jsonschema_specifications import REGISTRY as METASCHEMAS
 from referencing import Resource
 from referencing.jsonschema import DRAFT202012
@@ -22,7 +25,10 @@ if TYPE_CHECKING:
     from subsumes_benchmark import Json
 
 SCHEMA = ROOT / "schemas" / "case.schema.json"
-CASE_SCHEMA = Draft202012Validator(json.loads(SCHEMA.read_text(encoding="utf-8")))
+# The metaschema comes with the validator; offline, it fetches nothing.
+CASE_SCHEMA = jsonschema_rs.Draft202012Validator(
+    json.loads(SCHEMA.read_text(encoding="utf-8")), offline=True
+)
 COLLECTIONS = sorted({case.collection for case in cases()})
 
 
@@ -72,7 +78,7 @@ def test_cases_are_valid_and_their_schemas_resolve(collection: str) -> None:
         assert isinstance(document, dict)
         # The schema of a case says that ``a`` and ``b`` are valid under the metaschema.
         problems = [
-            f"{'/'.join(map(str, error.absolute_path))}: {error.message[:160]}"
+            f"{'/'.join(map(str, error.instance_path))}: {error.message[:160]}"
             for error in CASE_SCHEMA.iter_errors(document)
         ]
         problems += [
