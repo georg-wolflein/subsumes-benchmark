@@ -182,7 +182,6 @@ def integral(instance: Json) -> Json:
     return instance
 
 
-@pytest.mark.slow
 @pytest.mark.parametrize(
     ("target", "validator"), [("draft-07", Draft7Validator), ("draft-04", Draft4Validator)]
 )

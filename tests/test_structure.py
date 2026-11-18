@@ -2,6 +2,8 @@
 
 import json
 
+import jsonschema_rs
+
 from reading import CORPUS, ROOT, cases, read
 from subsumes_benchmark.build import Overrides, exclusion_of
 from subsumes_benchmark.generated.case import CaseSpec
@@ -26,9 +28,26 @@ def test_every_file_is_a_case_or_a_shared_file() -> None:
     assert stray == []
 
 
+def test_every_case_matches_the_case_schema() -> None:
+    # The schema also says that the two schemas of a case are valid draft 2020-12. Over the
+    # million and a half schemas of the corpus ``jsonschema-rs`` takes seconds where
+    # ``jsonschema`` takes minutes. The metaschema comes with it; offline, it fetches nothing.
+    schema = read(ROOT / "schemas" / "case.schema.json")
+    assert isinstance(schema, dict)
+    validator = jsonschema_rs.Draft202012Validator(schema, offline=True)
+    invalid = {}
+    for case in cases():
+        errors = [
+            f"{'/'.join(map(str, error.instance_path))}: {error.message[:160]}"
+            for error in validator.iter_errors(read(case.file))
+        ]
+        if errors:
+            invalid[case.id] = errors
+    assert invalid == {}
+
+
 def test_every_case_is_read_by_the_model_of_a_case_and_names_its_schema() -> None:
-    # The slow tests hold every case against the schema itself, which also says that the two
-    # schemas of a case are valid; the model generated from it takes them as they are.
+    # The model generated from the schema takes the two schemas of a case as they are.
     schema = (CORPUS / "case.schema.json").resolve()
     assert schema.read_bytes() == (ROOT / "schemas" / "case.schema.json").read_bytes()
     elsewhere = [

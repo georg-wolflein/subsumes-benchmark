@@ -36,7 +36,6 @@ def test_counterexample_refutes_the_inclusion(case_id: str, instance: Json) -> N
     assert not is_valid(instance, found.a)
 
 
-@pytest.mark.slow
 def test_label_holds_where_b_lists_its_instances() -> None:
     checked = 0
     wrong = {}
@@ -57,7 +56,6 @@ def test_label_holds_where_b_lists_its_instances() -> None:
     assert checked > 2000
 
 
-@pytest.mark.slow
 def test_labelled_case_has_only_valid_patterns() -> None:
     wrong = []
     for found in cases():
@@ -81,7 +79,6 @@ def suite_cases() -> dict[str, dict[str, Case]]:
     return groups
 
 
-@pytest.mark.slow
 def test_the_test_suite_asks_no_question_twice() -> None:
     seen: dict[str, str] = {}
     twice = []
@@ -94,7 +91,6 @@ def test_the_test_suite_asks_no_question_twice() -> None:
     assert twice == []
 
 
-@pytest.mark.slow
 def test_a_schema_with_its_negation_accepts_everything_or_nothing() -> None:
     # ``universal`` and ``unsatisfiable`` hold whatever the schema is, as long as the negated
     # schema inside them is the same schema. The instances of the test case tell.

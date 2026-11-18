@@ -138,7 +138,6 @@ def test_a_schema_may_nest_deeper_than_python_recurses() -> None:
     assert features(schema) == ["not", "type"]
 
 
-@pytest.mark.slow
 def test_every_case_lists_the_features_of_its_schemas() -> None:
     stale = [case.id for case in cases() if case.features != features(case.a, case.b)]
     assert stale == []
@@ -165,7 +164,6 @@ def disagreements(node: Json, resolver: Resolver[Json], references: References) 
     return found
 
 
-@pytest.mark.slow
 def test_references_lead_where_the_referencing_library_says() -> None:
     """The resolution that ``features`` rests on, against an implementation of the draft."""
     found = {}
