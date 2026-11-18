@@ -205,6 +205,7 @@ PINS = {
     # collection that is built from it.
     "rwg": ("../../corpus/rb-testset/collection.json", '"commit": "{}'),
     "subsumes": ("Cargo.toml", 'subsumes = "={}"'),
+    "subsumes-python": ("adapter.py", "subsumes=={}"),
 }
 
 
