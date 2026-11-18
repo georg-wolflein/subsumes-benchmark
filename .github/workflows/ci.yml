@@ -49,6 +49,15 @@ jobs:
             uv run ty check --python "$(uv python find --script "$adapter")" "$adapter" || status=1
           done
           exit "$status"
+      - name: check-jsonschema, the configuration files
+        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
+        run: |
+          status=0
+          uv run check-jsonschema --check-metaschema schemas/*.schema.json || status=1
+          uv run check-jsonschema --schemafile schemas/collections.schema.json collections.json || status=1
+          uv run check-jsonschema --schemafile schemas/overrides.schema.json overrides.json || status=1
+          uv run check-jsonschema --schemafile schemas/checker.schema.json checkers/*/checker.json || status=1
+          exit "$status"
       - name: cargo fmt, the Rust adapters
         if: ${{ !cancelled() }}
         run: |

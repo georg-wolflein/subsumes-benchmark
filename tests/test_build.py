@@ -14,6 +14,7 @@ from subsumes_benchmark.build import (
     case_name,
     load_exclusions,
     without_excluded,
+    write_json,
 )
 from subsumes_benchmark.convert import DRAFT_2020_12, ConversionError, Converter
 from subsumes_benchmark.unfuse import unfuse
@@ -177,20 +178,18 @@ def test_a_folder_excludes_every_case_below_it() -> None:
 
 
 def test_exclusions_are_read_with_their_reason(tmp_path: Path) -> None:
-    file = tmp_path / "overrides.toml"
-    file.write_text(
-        '[[exclude]]\nreason = "broken"\ncases = ["one/a", "one/b"]\n'
-        '[[override]]\nnote = "corrected"\ncases = ["one/c"]\n',
-        encoding="utf-8",
+    file = tmp_path / "overrides.json"
+    corrected = {"note": "corrected", "a_subsumes_b": None, "b_subsumes_a": None}
+    write_json(
+        file,
+        {
+            "exclude": [{"reason": "broken", "cases": ["one/a", "one/b"]}],
+            "override": [{**corrected, "cases": ["one/c"]}],
+        },
     )
     assert load_exclusions(file) == {"one/a": "broken", "one/b": "broken"}
 
-    file.write_text(
-        '[[exclude]]\nreason = "broken"\ncases = ["one/a", "one/a"]\n', encoding="utf-8"
-    )
-    with pytest.raises(ConfigError):
-        load_exclusions(file)
-    file.write_text('[[exclude]]\nnote = "broken"\ncases = ["one/a"]\n', encoding="utf-8")
+    write_json(file, {"exclude": [{"reason": "broken", "cases": ["one/a", "one/a"]}]})
     with pytest.raises(ConfigError):
         load_exclusions(file)
 

@@ -16,7 +16,7 @@ valid under ``b.json``. The artifact lists the narrower schema first, so ``b.jso
 first schema and ``a.json`` its second. A schema that references other documents carries them
 embedded (``bundled``), so every schema stands on its own.
 
-``collections.toml`` names the collections and where each comes from; ``overrides.toml``
+``collections.json`` names the collections and where each comes from; ``overrides.json``
 lists the cases that are left out and the cases whose label departs from upstream's. Run from
 the repository root::
 
@@ -30,7 +30,6 @@ import json
 import re
 import shutil
 import subprocess
-import tomllib
 from collections import Counter
 from dataclasses import dataclass, replace
 from decimal import Decimal
@@ -58,6 +57,8 @@ if TYPE_CHECKING:
 SOURCES = Path("sources")
 
 type LabelOrigin = Literal["by-construction", "witness-generator", "upstream-tests"]
+
+type UseCase = Literal["tool-checking", "schema-evolution", "schema-analysis"]
 
 # Where a source is hosted, which decides how the address of one of its files is written.
 type Forge = Literal["github", "gitlab"]
@@ -148,7 +149,7 @@ class Source:
     @classmethod
     def create(cls, name: str, spec: Mapping[str, str]) -> Self:
         root = SOURCES / name
-        if not (root / spec["license-file"]).exists():
+        if not (root / spec["license_file"]).exists():
             raise ConfigError(f"{root} is not checked out; run `make sources`")
         match spec["forge"]:
             case "github" | "gitlab" as forge:
@@ -162,7 +163,7 @@ class Source:
             forge=forge,
             commit=git("-C", str(root), "rev-parse", "HEAD"),
             license=spec["license"],
-            license_file=root / spec["license-file"],
+            license_file=root / spec["license_file"],
         )
 
     def permalink(self, path: Path) -> str:
@@ -186,7 +187,7 @@ class Collection:
     source: Source
     path: str
     labels: LabelOrigin
-    use_case: str
+    use_case: UseCase
     description: str
 
     @property
@@ -238,7 +239,7 @@ class Case:
 
 
 def load_collections(path: Path) -> list[Collection]:
-    config = tomllib.loads(path.read_text(encoding="utf-8"))
+    config = json.loads(path.read_text(encoding="utf-8"))
     sources = {name: Source.create(name, spec) for name, spec in config["sources"].items()}
     return [
         Collection(
@@ -246,7 +247,7 @@ def load_collections(path: Path) -> list[Collection]:
             source=sources[spec["source"]],
             path=spec["path"],
             labels=spec["labels"],
-            use_case=spec["use-case"],
+            use_case=spec["use_case"],
             description=spec["description"],
         )
         for name, spec in config["collections"].items()
@@ -254,13 +255,10 @@ def load_collections(path: Path) -> list[Collection]:
 
 
 def load_overrides(path: Path) -> dict[str, Override]:
-    """The override of every case ``overrides.toml`` lists, by case id."""
+    """The override of every case ``overrides.json`` lists, by case id."""
     overrides: dict[str, Override] = {}
-    for entry in tomllib.loads(path.read_text(encoding="utf-8")).get("override", []):
-        unknown = entry.keys() - {"note", "a_subsumes_b", "b_subsumes_a", "cases"}
-        if unknown:
-            raise ConfigError(f"{path}: unknown keys {sorted(unknown)}")
-        override = Override(entry["note"], entry.get("a_subsumes_b"), entry.get("b_subsumes_a"))
+    for entry in json.loads(path.read_text(encoding="utf-8"))["override"]:
+        override = Override(entry["note"], entry["a_subsumes_b"], entry["b_subsumes_a"])
         for case_id in entry["cases"]:
             if case_id in overrides:
                 raise ConfigError(f"{path}: {case_id} is listed twice")
@@ -269,15 +267,12 @@ def load_overrides(path: Path) -> dict[str, Override]:
 
 
 def load_exclusions(path: Path) -> dict[str, str]:
-    """The reason of everything ``overrides.toml`` leaves out.
+    """The reason of everything ``overrides.json`` leaves out.
 
     A key is a case id, or a folder followed by ``/*`` for every case below it.
     """
     exclusions: dict[str, str] = {}
-    for entry in tomllib.loads(path.read_text(encoding="utf-8")).get("exclude", []):
-        unknown = entry.keys() - {"reason", "cases"}
-        if unknown:
-            raise ConfigError(f"{path}: unknown keys {sorted(unknown)}")
+    for entry in json.loads(path.read_text(encoding="utf-8"))["exclude"]:
         for case_id in entry["cases"]:
             if case_id in exclusions:
                 raise ConfigError(f"{path}: {case_id} is listed twice")
@@ -427,7 +422,7 @@ def external_schemas(given: Mapping[str, Json]) -> dict[str, Json]:
     The suite leaves ``$id`` out of them where it can and gives the URL as the key instead. A
     schema that gives itself another ``$id`` than the URL it is fetched from is left out: an
     embedded schema is known by its ``$id`` only, so a reference to that URL cannot resolve in
-    a schema that stands on its own, and ``overrides.toml`` excludes the test case.
+    a schema that stands on its own, and ``overrides.json`` excludes the test case.
     """
     documents: dict[str, Json] = {}
     for url, schema in given.items():
@@ -461,7 +456,7 @@ def read_test_suite(collection: Collection, exclusions: Mapping[str, str]) -> It
     A test case is left out when it is for other releases of the specification, when it
     belongs to a proposal, or when it expects ``format`` to be an annotation. The corpus
     writes numbers as doubles, so a test case with a number that a double does not hold
-    must be one that ``overrides.toml`` excludes.
+    must be one that ``overrides.json`` excludes.
     """
     tests_dir = collection.source.root / collection.path
     for path in sorted(tests_dir.rglob("*.json")):
@@ -538,7 +533,7 @@ def write_case(out: Path, case: Case) -> None:
 
 
 def exclusion_of(case_id: str, exclusions: Mapping[str, str]) -> str | None:
-    """The entry of ``overrides.toml`` that leaves the case out: its id, or a folder above it."""
+    """The entry of ``overrides.json`` that leaves the case out: its id, or a folder above it."""
     if case_id in exclusions:
         return case_id
     parts = case_id.split("/")
@@ -549,7 +544,7 @@ def exclusion_of(case_id: str, exclusions: Mapping[str, str]) -> str | None:
 
 
 def without_excluded(cases: Sequence[Case], exclusions: Mapping[str, str]) -> list[Case]:
-    """The cases that ``overrides.toml`` does not leave out."""
+    """The cases that ``overrides.json`` does not leave out."""
     kept: list[Case] = []
     used: set[str] = set()
     for case in cases:
@@ -558,7 +553,7 @@ def without_excluded(cases: Sequence[Case], exclusions: Mapping[str, str]) -> li
         else:
             used.add(entry)
     if missing := sorted(exclusions.keys() - used):
-        raise ConfigError(f"overrides.toml excludes cases that do not exist: {missing}")
+        raise ConfigError(f"overrides.json excludes cases that do not exist: {missing}")
     return kept
 
 
@@ -568,7 +563,7 @@ def overridden(cases: Sequence[Case], overrides: Mapping[str, Override]) -> list
     if duplicates := sorted(i for i, n in ids.items() if n > 1):
         raise ConversionError(f"duplicate case ids: {duplicates}")
     if missing := sorted(overrides.keys() - ids.keys()):
-        raise ConfigError(f"overrides.toml lists cases that do not exist: {missing}")
+        raise ConfigError(f"overrides.json lists cases that do not exist: {missing}")
     return [
         replace(
             case,
@@ -658,7 +653,7 @@ def build(out: Path, collections_file: Path, overrides_file: Path) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Build the corpus from the upstream sources.")
     parser.add_argument("--out", type=Path, default=Path("corpus"), help="where to write it")
-    parser.add_argument("--collections", type=Path, default=Path("collections.toml"))
-    parser.add_argument("--overrides", type=Path, default=Path("overrides.toml"))
+    parser.add_argument("--collections", type=Path, default=Path("collections.json"))
+    parser.add_argument("--overrides", type=Path, default=Path("overrides.json"))
     args = parser.parse_args()
     build(args.out, args.collections, args.overrides)

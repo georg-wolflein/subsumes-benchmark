@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/georg-wolflein/subsumes-benchmark/blob/main/schemas/collections.schema.json",
+  "title": "The collections of the corpus and the upstream sources they are built from",
+  "type": "object",
+  "required": ["sources", "collections"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "sources": {
+      "description": "The upstream sources, by name. A source is a submodule under sources/ with that name; its repository URL and commit are read from git.",
+      "type": "object",
+      "propertyNames": { "$ref": "#/$defs/name" },
+      "additionalProperties": { "$ref": "#/$defs/source" }
+    },
+    "collections": {
+      "description": "The collections, by name, in the order they are built. A collection is one dataset of a source, and its name is its folder in the corpus.",
+      "type": "object",
+      "propertyNames": { "$ref": "#/$defs/name" },
+      "additionalProperties": { "$ref": "#/$defs/collection" }
+    }
+  },
+  "$defs": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "source": {
+      "type": "object",
+      "required": ["forge", "license", "license_file"],
+      "additionalProperties": false,
+      "properties": {
+        "forge": {
+          "description": "Where the source is hosted, which decides how the permanent link to one of its files is written.",
+          "enum": ["github", "gitlab"]
+        },
+        "license": {
+          "description": "The SPDX identifier of the source's licence.",
+          "type": "string"
+        },
+        "license_file": {
+          "description": "Where the text of the licence lives inside the source.",
+          "type": "string"
+        }
+      }
+    },
+    "collection": {
+      "type": "object",
+      "required": ["source", "path", "labels", "use_case", "description"],
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "description": "The name of the source the collection is built from, one of those under sources.",
+          "$ref": "#/$defs/name"
+        },
+        "path": {
+          "description": "Where the dataset lives inside the source.",
+          "type": "string"
+        },
+        "labels": {
+          "description": "Where the answers come from. by-construction: the pair was built so that the answer is known. witness-generator: the upstream authors' complete but timeout-bound tool, so an unlabelled case means that it gave up. upstream-tests: the expectations of the jsonsubschema tool's own tests.",
+          "enum": ["by-construction", "witness-generator", "upstream-tests"]
+        },
+        "use_case": {
+          "description": "What the pairs of the collection are for.",
+          "enum": ["tool-checking", "schema-evolution", "schema-analysis"]
+        },
+        "description": {
+          "description": "What the collection holds, in a sentence or two.",
+          "type": "string"
+        }
+      }
+    }
+  }
+}

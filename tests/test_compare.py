@@ -21,7 +21,7 @@ if TYPE_CHECKING:
     from collections.abc import Sequence
     from pathlib import Path
 
-CHECKERS = sorted(path.parent for path in (ROOT / "checkers").glob("*/checker.toml"))
+CHECKERS = sorted(path.parent for path in (ROOT / "checkers").glob("*/checker.json"))
 
 
 def a_run(checker: str = "one", label: str = "One", variant: str | None = None) -> Run:

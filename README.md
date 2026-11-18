@@ -173,7 +173,7 @@ uv run --group report python -m subsumes_benchmark.compare report results --out 
 
 ## Departures from upstream
 
-The corpus leaves out four cases of the inclusion artifact and 21 test cases of the test suite. [`overrides.toml`](overrides.toml) lists them with the reason:
+The corpus leaves out four cases of the inclusion artifact and 21 test cases of the test suite. [`overrides.json`](overrides.json) lists them with the reason:
 
 | Reason | Left out |
 | --- | --- |
@@ -218,8 +218,9 @@ The artifact lists the narrower schema first, so `b.json` is its first schema an
 | Path | Content |
 | --- | --- |
 | `corpus/` | The corpus: generated, committed, never edited by hand |
-| `collections.toml` | The collections and the upstream dataset each is built from |
-| `overrides.toml` | Every departure from upstream, with the reason: the cases left out and the labels changed |
+| `collections.json` | The collections and the upstream dataset each is built from |
+| `overrides.json` | Every departure from upstream, with the reason: the cases left out and the labels changed |
+| `schemas/` | The schemas of `collections.json`, `overrides.json` and a checker's `checker.json`, which say what each key means |
 | `sources/` | The upstream repositories as submodules, fetched only to rebuild |
 | `src/subsumes_benchmark/` | The build: `testsuite`, `unfuse`, `convert`, `features`, `build` |
 | `src/subsumes_benchmark/compare/` | The comparison: running a checker over the tasks, and the report |
@@ -241,7 +242,7 @@ The submodules under `sources/` are marked `update = none`, so cloning this repo
 
 ```bash
 uv sync
-make ci            # ruff check, ruff format --check, ty check, cargo fmt --check, cargo clippy, pytest
+make ci            # ruff check, ruff format --check, ty check, check-jsonschema, cargo fmt --check, cargo clippy, pytest
 make test-corpus   # the slow tests over every schema, about three minutes
 make format        # apply ruff's fixes and formatting, and cargo fmt
 ```
