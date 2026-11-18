@@ -2,7 +2,7 @@ r"""The validator the tests use reads patterns as ECMA-262 does with the ``u`` f
 
 from typing import TYPE_CHECKING
 
-from validation import is_valid, pattern_error, search
+from subsumes_benchmark.validation import is_valid, pattern_error, search
 
 if TYPE_CHECKING:
     from subsumes_benchmark import Json

@@ -63,6 +63,7 @@ class Case:
     b_subsumes_a: bool | None
     upstream: str
     note: str | None
+    derived: Json
     features: Sequence[str]
 
     @property
@@ -128,6 +129,7 @@ def cases() -> Sequence[Case]:
                 b_subsumes_a=_label(metadata["b_subsumes_a"]),
                 upstream=upstream,
                 note=note,
+                derived=metadata.get("derived"),
                 features=[str(feature) for feature in used],
             )
         )
@@ -171,10 +173,6 @@ def patterns(schema: Json) -> set[str]:
         if isinstance(pattern_properties, dict):
             found.update(pattern_properties)
     return found
-
-
-def uses_format(schema: Json) -> bool:
-    return any(isinstance(sub.get("format"), str) for sub in subschemas(schema))
 
 
 def constants(schema: Json) -> list[Json] | None:

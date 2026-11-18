@@ -6,8 +6,8 @@ RUST_ADAPTERS := $(wildcard checkers/*/Cargo.toml)
 PYTHON_ADAPTERS := $(wildcard checkers/*/adapter.py)
 
 # The schemas under schemas/ that a model is generated from, each with the name of its model.
-MODELS := collections:CollectionsSpec overrides:OverridesSpec checker:CheckerSpec case:CaseSpec \
-	ready:ReadySpec request:RequestSpec reply:ReplySpec result:ResultSpec run:RunSpec
+MODELS := collections:CollectionsSpec overrides:OverridesSpec derived:DerivedSpec checker:CheckerSpec \
+	case:CaseSpec ready:ReadySpec request:RequestSpec reply:ReplySpec result:ResultSpec run:RunSpec
 
 ci: lint format-check typecheck config test  ## what CI runs on every change
 
@@ -37,6 +37,7 @@ config:  ## the schemas are valid, every configuration file is valid under its s
 	uv run check-jsonschema --check-metaschema schemas/*.schema.json
 	uv run check-jsonschema --schemafile schemas/collections.schema.json collections.json
 	uv run check-jsonschema --schemafile schemas/overrides.schema.json overrides.json
+	uv run check-jsonschema --schemafile schemas/derived.schema.json derived.json
 	uv run check-jsonschema --schemafile schemas/checker.schema.json checkers/*/checker.json
 	for model in $(MODELS); do \
 		uv run datamodel-codegen --check --input schemas/$${model%%:*}.schema.json \

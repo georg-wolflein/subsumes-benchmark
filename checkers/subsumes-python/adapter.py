@@ -11,11 +11,16 @@ what the binding costs.
 """
 
 import json
+import os
 import sys
 import time
 from typing import assert_never
 
 from subsumes import Budget, Json, No, Reason, Unknown, Unrepresentable, Unsupported, Yes, subsumes
+
+# The default work budget, which is what a user of the package gets, unless the environment
+# sets another: a run that is to find labels may work for longer.
+BUDGET = int(os.environ["SUBSUMES_BUDGET"]) if "SUBSUMES_BUDGET" in os.environ else None
 
 
 def kind(reason: Reason) -> str:
@@ -40,9 +45,9 @@ def check(request: str) -> dict[str, Json]:
     """The reply to a request, without its time."""
     try:
         # The package takes a schema as ``json.loads`` gives it, which is how the request
-        # holds the two, and checks with the default work budget.
+        # holds the two.
         schemas = json.loads(request)
-        verdict = subsumes(schemas["a"], schemas["b"])
+        verdict = subsumes(schemas["a"], schemas["b"], budget=BUDGET)
     except Exception as exc:
         return {"failure": "error", "message": f"{type(exc).__name__}: {exc}"[:300]}
     match verdict:

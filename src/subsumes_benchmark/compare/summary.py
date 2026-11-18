@@ -32,6 +32,8 @@ if TYPE_CHECKING:
     from collections.abc import Callable, Mapping, Sequence
     from pathlib import Path
 
+    from subsumes_benchmark.generated.result import Direction
+
 type Outcome = Literal["correct", "unlabelled", "wrong_no", "wrong_yes", "no_answer", "timeout"]
 """How a task counts.
 
@@ -208,3 +210,17 @@ def cases_using(corpus: Path, feature: str) -> frozenset[str]:
     return frozenset(
         case for case, path in case_files(corpus).items() if feature in CaseSpec.read(path).features
     )
+
+
+def derived_tasks(corpus: Path) -> frozenset[tuple[str, Direction]]:
+    """The tasks whose label is derived, where upstream gives none: each a case and a direction."""
+    found: set[tuple[str, Direction]] = set()
+    for case, path in case_files(corpus).items():
+        derived = CaseSpec.read(path).derived
+        if derived is None:
+            continue
+        if derived.a_subsumes_b is not None:
+            found.add((case, "a_subsumes_b"))
+        if derived.b_subsumes_a is not None:
+            found.add((case, "b_subsumes_a"))
+    return frozenset(found)

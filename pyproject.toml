@@ -21,7 +21,8 @@ classifiers = [
 # The build needs Pydantic, which reads the configuration files, and otherwise the standard
 # library only; what the tests need is in the dev group. Running a checker needs a validator
 # besides, for the counterexamples. Its version is pinned, since it decides which of them
-# count: a run is then held against the same validator wherever it is installed.
+# count: a run is then held against the same validator wherever it is installed. What
+# validating an instance as the labels read a schema needs besides is in the validation group.
 dependencies = [
     "jsonschema-rs==0.61.2",
     "pydantic>=2.14.3",
@@ -93,6 +94,7 @@ runtime-evaluated-base-classes = [
   "subsumes_benchmark.config.Config",
   "subsumes_benchmark.generated.checker.CheckerSpec",
   "subsumes_benchmark.generated.collections.CollectionsSpec",
+  "subsumes_benchmark.generated.derived.DerivedSpec",
   "subsumes_benchmark.generated.overrides.OverridesSpec",
   "subsumes_benchmark.generated.run.RunSpec",
 ]
@@ -144,12 +146,17 @@ addopts = "--import-mode=importlib"
 
 [dependency-groups]
 dev = [
+    { include-group = "validation" },
     "check-jsonschema>=0.39.0",
     "datamodel-code-generator>=0.97.0",
-    "jsonschema>=4.26.0",
     "pytest>=9.2.0",
-    "referencing>=0.37.0",
-    "regress>=2026.9.1",
     "ruff>=0.17.4",
     "ty>=0.0.100",
+]
+# What `subsumes_benchmark.validation` imports besides the validator of a run: the tests
+# validate with it, and so does deriving a label from a counterexample.
+validation = [
+    "jsonschema>=4.26.0",
+    "referencing>=0.37.0",
+    "regress>=2026.9.1",
 ]

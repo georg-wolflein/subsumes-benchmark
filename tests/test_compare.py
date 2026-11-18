@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING
 import pytest
 
 import runs
-from reading import CORPUS, ROOT, case, cases
+from reading import CORPUS, ROOT, Case, case, cases
 from runs import Confirmation, a_run, a_witness, write
 from subsumes_benchmark.compare.checkers import Checker
 from subsumes_benchmark.compare.report import README_END, README_START, report, update_readme
@@ -320,17 +320,27 @@ def test_runs_are_listed_by_label_and_must_be_over_the_same_tasks(tmp_path: Path
         read_entries(tmp_path)
 
 
+def _derived_forward(case: Case) -> bool:
+    """Whether the label of the case for ``a_subsumes_b`` is a derived one."""
+    return isinstance(case.derived, dict) and "a_subsumes_b" in case.derived
+
+
 def test_a_report_is_written_and_shown_in_the_readme(tmp_path: Path) -> None:
     labelled = [case for case in cases() if case.a_subsumes_b is not None]
-    case = next(case for case in labelled if "format" not in case.features)
-    with_format = next(case for case in labelled if "format" in case.features)
+    from_upstream = [case for case in labelled if not _derived_forward(case)]
+    case = next(case for case in from_upstream if "format" not in case.features)
+    with_format = next(case for case in from_upstream if "format" in case.features)
     without_label = next(case for case in cases() if case.b_subsumes_a is None)
+    derived = next(
+        case for case in labelled if _derived_forward(case) and "format" not in case.features
+    )
     results = [
         a_result(case.id, "yes", case.a_subsumes_b, 0.002),
         a_result(with_format.id, "no", with_format.a_subsumes_b, 0.5),
         runs.a_result(
             without_label.id, "no", None, direction="b_subsumes_a", witness=a_witness("accepted")
         ),
+        a_result(derived.id, "yes", derived.a_subsumes_b, 0.01),
     ]
     write(tmp_path / "results" / "one", a_run("one", variant="Rust"), results)
     write(tmp_path / "results" / "two", a_run("two", variant="Python"), results[::-1])
@@ -340,13 +350,15 @@ def test_a_report_is_written_and_shown_in_the_readme(tmp_path: Path) -> None:
     report(tmp_path / "results", tmp_path / "comparison", CORPUS, readme)
 
     text = (tmp_path / "comparison" / "report.md").read_text(encoding="utf-8")
-    assert "a sample of 3 of the" in text
-    assert "of which 2 have a label" in text
+    assert "a sample of 4 of the" in text
+    assert "of which 3 have a label" in text
     assert "The 1 tasks without a label." in text
     assert "The 1 whose schemas use `format`" in text
+    assert "The 2 whose label is upstream's" in text
+    assert "The 1 whose label is derived" in text
     # Said no, with a counterexample, and what the validator made of it.
     assert "| One (Rust) | 2 | 1 | 0 | 0 | 1 | 0 |" in text
-    assert "One (Rust) and One (Python) gave the same answer on 3 of 3 tasks." in text
+    assert "One (Rust) and One (Python) gave the same answer on 4 of 4 tasks." in text
     for name in ("chart-light.svg", "chart-dark.svg"):
         assert (tmp_path / "comparison" / name).read_text(encoding="utf-8").startswith("<?xml")
     shown = readme.read_text(encoding="utf-8")

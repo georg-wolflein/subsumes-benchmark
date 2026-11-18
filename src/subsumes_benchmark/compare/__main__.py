@@ -2,6 +2,7 @@
 
 ``python -m subsumes_benchmark.compare`` is the same command. Every path it takes is relative
 to the working directory, so that it runs the same from a checkout and as an installed package.
+In a checkout it also derives labels from runs, for the questions that upstream leaves open.
 """
 
 import argparse
@@ -13,7 +14,7 @@ from subsumes_benchmark.compare.checkers import Checker
 from subsumes_benchmark.compare.diff import diff
 from subsumes_benchmark.compare.run import run
 from subsumes_benchmark.compare.summary import ReportError, read_entry
-from subsumes_benchmark.compare.tasks import read_tasks, select
+from subsumes_benchmark.compare.tasks import read_tasks, read_unlabelled, select
 from subsumes_benchmark.config import ConfigError
 
 CORPUS = Path("corpus")
@@ -51,6 +52,11 @@ def _main() -> None:
     running.add_argument("--limit", type=int, help="run only this many tasks, a random sample")
     running.add_argument("--collection", action="append", default=[], help="only this one")
     running.add_argument("--seed", type=int, default=0, help="of the order of the tasks")
+    running.add_argument(
+        "--unlabelled",
+        action="store_true",
+        help="ask the questions without a label, in both directions, in place of the tasks",
+    )
     running.add_argument("--jobs", type=int, default=1, help="adapter processes side by side")
     running.add_argument("--no-build", action="store_true", help="the adapter is built already")
 
@@ -76,6 +82,18 @@ def _main() -> None:
         "--lost-hint", help="what the comment says about such tasks, such as how to accept them"
     )
     differing.add_argument("--out", type=Path, help="write the comment here, not to the terminal")
+
+    deriving = commands.add_parser(
+        "derive",
+        help="derive labels from runs with --unlabelled, in a checkout of the repository",
+        description="Writes derived.json, from which the build gives the cases their labels. "
+        "It needs the validators of the `validation` dependency group, which a checkout has.",
+    )
+    deriving.add_argument(
+        "runs", type=Path, nargs="+", help="the folder of a run with --unlabelled"
+    )
+    deriving.add_argument("--corpus", type=Path, default=CORPUS, help="the folder of the corpus")
+    deriving.add_argument("--derived", type=Path, default=Path("derived.json"), help="the file")
 
     args = parser.parse_args()
     if args.command == "corpus":
@@ -111,7 +129,7 @@ def _main() -> None:
         if not args.no_build:
             checker.compile()
         tasks = select(
-            read_tasks(args.corpus),
+            (read_unlabelled if args.unlabelled else read_tasks)(args.corpus),
             collections=args.collection,
             limit=args.limit,
             seed=args.seed,
@@ -126,11 +144,17 @@ def _main() -> None:
             seed=args.seed,
             jobs=args.jobs,
         )
-    else:
+    elif args.command == "report":
         # The report draws charts, which needs matplotlib; a run does not.
         from subsumes_benchmark.compare.report import report  # noqa: PLC0415
 
         report(args.results, args.out, args.corpus, args.readme)
+    else:
+        # Deriving validates instances as the labels read a schema, which needs the
+        # validators of the `validation` group; a run does not.
+        from subsumes_benchmark.compare.derive import derive  # noqa: PLC0415
+
+        derive(args.corpus, args.derived, args.runs)
 
 
 if __name__ == "__main__":

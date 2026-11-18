@@ -24,10 +24,11 @@ Every case asks the same question: does `a` accept every instance valid under `b
 
 - **`$schema`**: The path to [`corpus/case.schema.json`](corpus/case.schema.json), the schema of a case, for an editor or a validator. The schemas `a` and `b` are draft 2020-12 whatever this says.
 - **`a_subsumes_b`**: `true` when `a` accepts every instance valid under `b`, `false` when some instance of `b` is not valid under `a`, `null` when the corpus claims nothing.
-- **`b_subsumes_a`**: The same question in the other direction. Only some cases built from the test suite answer it.
+- **`b_subsumes_a`**: The same question in the other direction. Upstream answers it only for some cases built from the test suite; the other answers are [derived](#derived-labels).
 - **`features`**: What the two schemas use, so that cases can be selected and results broken down by it; see [Features](#features).
 - **`upstream`**: A permanent link to the file the case comes from, in the source repository at the commit that the collection's `collection.json` names. A case built from the test suite adds a JSON pointer to the test case or the test after a `#`.
 - **`note`**: Present only when the labels depart from upstream's, and says why.
+- **`derived`**: Present only when the case has a label that upstream does not give. It names each such label with what shows it: a `counterexample` for `false`, the `checkers` that agree for `true`; see [Derived labels](#derived-labels).
 - **`a`** and **`b`**: The two schemas, last in the file, so that what is known is at the top however long they are.
 
 ## Features
@@ -63,6 +64,7 @@ Run every case whose `a_subsumes_b` is not `null`, and `b_subsumes_a` likewise w
 
 - A checker is **wrong** when it answers yes and the label is `false`, or no and the label is `true`.
 - Declining to answer is never wrong. How often a checker declines, and how long it takes, can be measured on every case, including those labelled `null`.
+- A label is upstream's unless the case names it under `derived`. A derived `false` is proven by its counterexample. A derived `true` rests on checkers that agree, so a result on upstream's labels alone leaves the derived ones out.
 
 Every schema stands on its own: a reference resolves inside the schema or to a meta-schema of draft 2020-12, so a checker needs no other document. Where an upstream schema references other documents, they are embedded in it under `$defs`, as [the specification's bundling](https://json-schema.org/draft/2020-12/json-schema-core#section-9.3) does.
 
@@ -98,15 +100,15 @@ Results measured on two versions are comparable exactly when their major and min
 | `handwritten-sc` | 282 | 160 / 122 / 0 | construction | Hand-written hard cases |
 | `rb-testset` | 300 | 108 / 192 / 0 | upstream tests | The tests of the jsonsubschema tool, some with the documents they reference embedded |
 | `mergeallof` | 174 | 165 / 9 / 0 | witness generator | Schemas against a rewriting that merges their `allOf` |
-| `schemastore-versions` | 1,052 | 0 / 148 / 904 | witness generator | Successive versions of real schemas |
-| `oneof-as-anyof` | 1,820 | 0 / 144 / 1,676 | witness generator | Is `oneOf` used where `anyOf` would be equivalent? |
-| `uneval-as-additional` | 608 | 0 / 179 / 429 | witness generator | `unevaluated*` against a translation to `additional*` |
-| `additional-as-uneval` | 5,692 | 5,377 / 136 / 179 | witness generator | `additional*` against a rewriting through `unevaluated*` |
+| `schemastore-versions` | 1,052 | 674 / 148 / 230 | witness generator | Successive versions of real schemas |
+| `oneof-as-anyof` | 1,820 | 562 / 189 / 1,069 | witness generator | Is `oneOf` used where `anyOf` would be equivalent? |
+| `uneval-as-additional` | 608 | 104 / 187 / 317 | witness generator | `unevaluated*` against a translation to `additional*` |
+| `additional-as-uneval` | 5,692 | 5,379 / 142 / 171 | witness generator | `additional*` against a rewriting through `unevaluated*` |
 
-Each collection folder has a `collection.json` with its description, the source repository and commit, the licence, and where its labels come from:
+The counts include the [derived labels](#derived-labels). Each collection folder has a `collection.json` with its description, the source repository and commit, the licence, and where upstream's labels come from:
 
 - **`by-construction`**: The pair was built so that the answer is known.
-- **`witness-generator`**: The answer is that of the upstream authors' tool, which is complete but bound by a timeout. An unknown label means that it gave up.
+- **`witness-generator`**: The answer is that of the upstream authors' tool, which is complete but bound by a timeout. Where it gave up, the label is [derived](#derived-labels) or unknown.
 - **`upstream-tests`**: The expectations of the jsonsubschema tool's own tests.
 
 ### Pairs built from the test suite
@@ -211,8 +213,66 @@ The same file lists every case whose labels differ from upstream's, with the rea
 
 Two limits remain:
 
-- **Patterns.** 6,200 labelled cases use patterns. In 439 of them `b` only lists its instances, so the label can be checked by validating those instances against `a`; the tests do that with an ECMA-262 engine, for these and for 2,993 such cases without patterns. Another 120 compare a schema of the test suite with itself or its negation, which holds in any dialect. The other 5,641 labels come from upstream tools that read patterns in their own dialect. They are kept as they are until a checker disagrees and the dialect turns out to be the reason.
+- **Patterns.** 6,200 cases with a label of upstream's use patterns. In 439 of them `b` only lists its instances, so the label can be checked by validating those instances against `a`; the tests do that with an ECMA-262 engine and `format` asserted, for these and for 4,842 such cases without patterns. Another 120 compare a schema of the test suite with itself or its negation, which holds in any dialect. The other 5,641 labels come from upstream tools that read patterns in their own dialect. They are kept as they are until a checker disagrees and the dialect turns out to be the reason. A derived label does not have this limit: it is `false` by a counterexample that the same engine confirms, or the schemas use no pattern.
 - **Formats.** Upstream's witness generator asserts only a few formats. A label of a `witness-generator` collection that hinges on a format may therefore not hold with every format asserted; six such cases are known and listed.
+
+## Derived labels
+
+Upstream leaves questions open. Its witness generator gave up on 3,188 cases, and it says whether B subsumes A only for some cases built from the test suite. Where checkers settle such a question, the corpus has a label for it. [`derived.json`](derived.json) lists these labels, each with what shows it, and the case repeats that under `derived`:
+
+| Label | Shown by | Labels |
+| --- | --- | ---: |
+| `false` | A counterexample: an instance that is valid under the schema whose instances must be accepted and not valid under the other. Two validators that share no code must both say so: the one of the tests, which reads patterns as ECMA-262 does, and `jsonschema-rs`. That is a proof, whichever checker found the instance. | 5,159 |
+| `true` | Two or more checkers that say yes, where none says no and the schemas use neither a pattern nor a format, nor a number that a double does not hold. That is evidence and no proof. | 2,043 |
+
+For example, `corpus/additional-as-uneval/o21764.original_not_unevalEliminated.json` and `corpus/additional-as-uneval/o69207.original_not_unevalEliminated.json` have:
+
+```json
+"derived": {"a_subsumes_b": {"counterexample": {"$schema": "", "encoding": {}, "mark": "box-plot"}}}
+"derived": {"a_subsumes_b": {"checkers": ["jsoncompat 0.6.0", "subsumes 0.2.0"]}}
+```
+
+- **No label rests on one checker.** One checker's yes is never a label, and neither is a no without an instance that proves it.
+- **Patterns and formats.** Checkers read these in their own ways: subsumes 0.2.0, whose answers these are, read a pattern in the dialect of the Rust `regex` crate, in which `\d` matches every digit of Unicode, and RWG takes `format` for an annotation. Their yes is then the answer to another question, so no `true` is derived for schemas that use either. A counterexample is held against the schemas as the corpus reads them, so a `false` is derived for those too.
+- **Numbers.** A question that hinges on digits that a double does not hold is not in the corpus. So a counterexample holds only numbers that a double holds, and it must refute the schemas also as someone reads them who reads every number as a double.
+- **Overrides.** A case that `overrides.json` lists keeps the labels that the override states, also where it claims nothing.
+- **The other direction** gets a label only where no case asks that question already. Most cases of the artifact come in pairs, such as `…_v1_not_v2` and `…_v2_not_v1`, and the other direction of one is the question of the other, so it stays `null`.
+- **A proof replaces an agreement.** `derive` reads the file as it reads a run, so a later run adds labels, and a counterexample for a label that is `true` makes it `false`.
+
+Of the derived labels, 1,401 say whether A subsumes B and 5,801 whether B subsumes A. What became of the open questions of each collection:
+
+| Collection | Open questions | Derived `true` | Derived `false` | Still open |
+| --- | ---: | ---: | ---: | ---: |
+| `additional-as-uneval` | 179 | 2 | 6 | 171 |
+| `json-schema-test-suite` | 4,499 | 154 | 4,218 | 127 |
+| `oneof-as-anyof` | 1,676 | 562 | 45 | 1,069 |
+| `rb-testset` | 270 | 57 | 207 | 6 |
+| `schemastore-versions` | 904 | 674 | 0 | 230 |
+| `synthesized` | 1,201 | 490 | 675 | 36 |
+| `uneval-as-additional` | 435 | 104 | 8 | 323 |
+| All | 9,164 | 2,043 | 5,159 | 1,962 |
+
+The questions that are still open:
+
+| Why | Questions |
+| --- | ---: |
+| Two checkers say yes, and the schemas use a pattern, a format or a number that a double does not hold | 1,359 |
+| The corpus cannot say what a schema accepts: a pattern is not valid, or a format is none of draft 2020-12 | 309 |
+| No checker says yes or no | 145 |
+| One checker says yes and no other does | 139 |
+| A checker says no, and no instance it gave proves it | 5 |
+| An override states the labels of the case, also where it claims nothing | 5 |
+
+The labels come from three runs: subsumes 0.2.0 with 100 times its default work budget and jsoncompat 0.6.0, both over every open question, and the answers of RWG in the comparison of v0.8.0, which asked A subsumes B only. `comparison.tar.zst` of a release holds the runs of its comparison. To derive labels again, with the toolchains of the checkers installed:
+
+```bash
+SUBSUMES_BUDGET=1000000000 uv run subsumes-benchmark run checkers/subsumes --unlabelled --warmup 0 --jobs 8 --timeout 1800 --out results/unlabelled
+uv run subsumes-benchmark run checkers/jsoncompat --unlabelled --warmup 0 --jobs 2 --timeout 60 --out results/unlabelled
+uv run subsumes-benchmark derive results/unlabelled/subsumes results/unlabelled/jsoncompat   # and the folder of any other run
+make corpus
+```
+
+A run reads the corpus while it works, so the corpus is rebuilt only after the last run has ended.
 
 ## How the sources are converted
 
@@ -235,14 +295,15 @@ The artifact lists the narrower schema first, so `b` is its first schema and `a`
 | `corpus/` | The corpus: generated, committed, never edited by hand |
 | `collections.json` | The collections and the upstream dataset each is built from |
 | `overrides.json` | Every departure from upstream, with the reason: the cases left out and the labels changed |
-| `schemas/` | The schemas of a case, of `collections.json`, of `overrides.json` and of a checker's `checker.json`, of the three lines of the protocol between the runner and an adapter, and of the two files of a run. They say what each key means. The corpus carries a copy of the first |
+| `derived.json` | The labels that upstream does not give, each with what shows it; written by `subsumes-benchmark derive` |
+| `schemas/` | The schemas of a case, of `collections.json`, of `overrides.json`, of `derived.json` and of a checker's `checker.json`, of the three lines of the protocol between the runner and an adapter, and of the two files of a run. They say what each key means. The corpus carries a copy of the first |
 | `src/subsumes_benchmark/generated/` | The Pydantic models that read the files those schemas describe: generated from the schemas, never edited by hand |
 | `sources/` | The upstream repositories as submodules, fetched only to rebuild |
-| `src/subsumes_benchmark/` | The build: `testsuite`, `unfuse`, `convert`, `features`, `build` |
-| `src/subsumes_benchmark/compare/` | The comparison: running a checker over the tasks, and the report |
+| `src/subsumes_benchmark/` | The build: `testsuite`, `unfuse`, `convert`, `features`, `derived`, `build`. And `validation`, which validates an instance the way the corpus reads a schema |
+| `src/subsumes_benchmark/compare/` | The comparison: running a checker over the tasks, and the report. And `derive`, which derives labels from runs over the questions without one |
 | `checkers/` | One folder per checker of the comparison, with the adapter that makes it answer |
 | `comparison/` | The latest published report, written by the `Comparison` workflow |
-| `tests/` | The layout of the corpus, the validity of its schemas, the features of its cases, the labels that can be checked |
+| `tests/` | The layout of the corpus, the validity of its schemas, the features of its cases, the labels that can be checked, the counterexamples of the derived ones |
 
 ## Rebuilding the corpus
 
@@ -252,7 +313,7 @@ make sources   # fetches the two upstream repositories, about 900 MB
 make corpus    # about 15 seconds
 ```
 
-The submodules under `sources/` are marked `update = none`, so cloning this repository, even recursively, does not fetch them; `make sources` does. Their commits pin what the corpus is built from. The build needs Pydantic, which reads the configuration files, and otherwise nothing but the standard library.
+The submodules under `sources/` are marked `update = none`, so cloning this repository, even recursively, does not fetch them; `make sources` does. Their commits pin what the corpus is built from. The build needs Pydantic, which reads the configuration files, and otherwise nothing but the standard library. It reads `derived.json` as it is and runs no checker.
 
 ## Development
 
@@ -265,7 +326,7 @@ make models        # rewrite the generated models after a change to a schema of 
 
 `make ci` covers the adapters under `checkers/` too, so it needs `cargo`. The Rust adapters are formatted by `cargo fmt` and linted by `cargo clippy`. The Python adapters are linted and formatted by ruff with everything else, and type-checked by ty, each against the environment its script declares.
 
-CI runs the same on every push and pull request. The tests read every case of the committed corpus, which takes under a minute: each case matches the schema of a case, which says that its two schemas are valid draft 2020-12, every reference resolves, every case lists the features of its schemas, and every label that validation can check holds.
+CI runs the same on every push and pull request. The tests read every case of the committed corpus, which takes under a minute: each case matches the schema of a case, which says that its two schemas are valid draft 2020-12, every reference resolves, every case lists the features of its schemas, every label that validation can check holds, and every counterexample of a derived label refutes.
 
 Releases are made by [release-please](https://github.com/googleapis/release-please). It keeps one pull request open, `chore(main): release <version>`, that raises the version in `pyproject.toml` and `uv.lock` and lists what the release holds. Merging that pull request publishes the release: the `Release` workflow tags the merged commit `v<version>`, packs the archive, publishes the package with the archive in it to PyPI, and attaches the archive to the release. Not every commit on `main` is released; the pull request waits and takes in what is merged meanwhile.
 

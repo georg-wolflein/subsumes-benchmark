@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/georg-wolflein/subsumes-benchmark/blob/main/schemas/derived.schema.json",
+  "description": "The labels that the corpus has where upstream has none, each with what shows it. `python -m subsumes_benchmark.compare derive` writes the file from the answers of checkers, and the build gives each case its labels. A label may only stand here where the case has none otherwise.",
+  "type": "object",
+  "required": ["$schema", "cases"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "description": "The schema of this file, for an editor.",
+      "const": "./schemas/derived.schema.json"
+    },
+    "cases": {
+      "description": "What shows the derived labels of each case, by the path of the case below corpus/.",
+      "type": "object",
+      "propertyNames": { "pattern": "^[^/]+(/[^/]+)+$" },
+      "additionalProperties": { "$ref": "#/$defs/Derived" }
+    }
+  },
+  "$defs": {
+    "Derived": {
+      "description": "What shows the labels of a case that upstream does not give, by label.",
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": false,
+      "properties": {
+        "a_subsumes_b": { "$ref": "#/$defs/Evidence" },
+        "b_subsumes_a": { "$ref": "#/$defs/Evidence" }
+      }
+    },
+    "Evidence": {
+      "description": "What shows one label: a counterexample for false, an agreement of checkers for true.",
+      "oneOf": [{ "$ref": "#/$defs/Counterexample" }, { "$ref": "#/$defs/Agreement" }]
+    },
+    "Counterexample": {
+      "description": "The label is false, and an instance proves it.",
+      "type": "object",
+      "required": ["counterexample"],
+      "additionalProperties": false,
+      "properties": {
+        "counterexample": {
+          "description": "An instance that is valid under the schema whose instances must be accepted and not valid under the schema that should accept everything."
+        }
+      }
+    },
+    "Agreement": {
+      "description": "The label is true as far as checkers can tell: at least two of them say so and none that was asked says otherwise. This is evidence and no proof.",
+      "type": "object",
+      "required": ["checkers"],
+      "additionalProperties": false,
+      "properties": {
+        "checkers": {
+          "description": "The checkers that say so, each with its version, sorted.",
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^\\S.* \\S+$" }
+        }
+      }
+    }
+  }
+}
