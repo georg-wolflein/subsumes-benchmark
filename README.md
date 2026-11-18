@@ -134,7 +134,20 @@ The repository also measures open-source inclusion checkers on the corpus: how m
 
 <!-- comparison:start -->
 
-No comparison has been published yet. The first report appears here after the next release.
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="comparison/chart-dark.svg">
+  <img alt="How every task ended, how fast tasks are solved, and the solved share by collection, for each checker" src="comparison/chart-light.svg">
+</picture>
+
+| Checker | Version | Solved | Wrong yes | Wrong no | Fastest 50% within | Fastest 90% within |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Confluent Schema Registry | 8.4.1 | 50.7% | 533 | 8,267 | 31.3 ms | — |
+| jsoncompat (Rust) | 0.6.0 | 70.5% | 12 | 11 | 606 µs | — |
+| jsoncompat (Python) | 0.6.0 | 70.5% | 12 | 11 | 930 µs | — |
+| jsonsubschema | 0.0.8 | 38.9% | 641 | 2,348 | — | — |
+| RWG | 8064ad8 | 84.8% | 537 | 507 | 1.3 ms | — |
+
+Measured on corpus `v0.5.0`, all 18,262 tasks, with 10 seconds per task. [The full report](comparison/report.md) has the counts with and without `format`, the collections and how it was measured.
 
 <!-- comparison:end -->
 
