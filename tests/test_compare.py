@@ -204,6 +204,7 @@ PINS = {
     # RWG is compiled from the submodule, whose commit the corpus records for every
     # collection that is built from it.
     "rwg": ("../../corpus/rb-testset/collection.json", '"commit": "{}'),
+    "subsumes": ("Cargo.toml", 'subsumes = "={}"'),
 }
 
 
