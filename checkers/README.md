@@ -20,17 +20,30 @@ The adapters are MIT licensed like the rest of this repository, with one excepti
 
 ## A checker's folder
 
-`checker.toml` describes the checker:
+`checker.json` describes the checker, and [`schemas/checker.schema.json`](../schemas/checker.schema.json) is its schema:
 
-```toml
-label = "jsoncompat"            # the checker's name in a report
-variant = "Rust"                # optional: what tells it from another folder with this label
-version = "0.6.0"               # the version the folder pins, as the report states it
-homepage = "https://github.com/ostrowr/jsoncompat"
-dialect = "2020-12"             # what it reads: "2020-12", "draft-07" or "draft-04"
-build = ["cargo", "build", "--release", "--locked"]   # run once, in the folder
-run = ["target/release/adapter"]                      # starts the adapter, in the folder
+```json
+{
+  "$schema": "../../schemas/checker.schema.json",
+  "label": "jsoncompat",
+  "variant": "Rust",
+  "version": "0.6.0",
+  "homepage": "https://github.com/ostrowr/jsoncompat",
+  "dialect": "2020-12",
+  "build": ["cargo", "build", "--release", "--locked"],
+  "run": ["target/release/adapter"]
+}
 ```
+
+| Key | Meaning |
+| --- | --- |
+| `label` | The checker's name in a report |
+| `variant` | Optional: what tells the folder from another one with this label |
+| `version` | The version the folder pins, as the report states it |
+| `homepage` | Where the checker lives |
+| `dialect` | What it reads: `2020-12`, `draft-07` or `draft-04` |
+| `build` | The command that builds the adapter; run once, in the folder |
+| `run` | The command that starts the adapter, in the folder |
 
 Folders with the same `label` are variants of one checker. A report draws them in one colour and says whether they gave the same answers.
 
@@ -68,7 +81,7 @@ Rules for an adapter:
 
 ## Adding a checker
 
-1. Create the folder with `checker.toml` and the adapter. Pin the checker's version, and commit a lock file where the toolchain has one.
+1. Create the folder with `checker.json` and the adapter. Pin the checker's version, and commit a lock file where the toolchain has one.
 2. Try it on a sample: `uv run python -m subsumes_benchmark.compare run <folder> --limit 300`.
 3. Add the folder to the matrix in `.github/workflows/comparison.yml`, with the toolchain it needs, and to the table above.
 4. Push the branch and run the sample for every checker on it: `gh workflow run comparison.yml --ref <branch> -f limit=300`.

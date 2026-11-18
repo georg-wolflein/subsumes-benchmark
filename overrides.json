@@ -1,0 +1,362 @@
+{
+  "$schema": "./schemas/overrides.schema.json",
+  "exclude": [
+    {
+      "reason": "The schemas are not valid draft 2020-12: they contain an empty oneOf.",
+      "cases": [
+        "additional-as-uneval/o47922.original_not_unevalEliminated",
+        "additional-as-uneval/o47922.unevalEliminated_not_original"
+      ]
+    },
+    {
+      "reason": "The schemas are not valid draft 2020-12: a type array lists \"array\" twice.",
+      "cases": [
+        "additional-as-uneval/o83092.original_not_unevalEliminated",
+        "additional-as-uneval/o83092.unevalEliminated_not_original"
+      ]
+    },
+    {
+      "reason": "The schema declares another dialect than draft 2020-12 as its $schema.",
+      "cases": [
+        "json-schema-test-suite/optional/format-assertion/0/*",
+        "json-schema-test-suite/optional/format-assertion/1/*",
+        "json-schema-test-suite/vocabulary/2/*",
+        "json-schema-test-suite/vocabulary/3/*"
+      ]
+    },
+    {
+      "reason": "The schema references a schema of an older draft, and the test expects that schema to be read as its own draft.",
+      "cases": [
+        "json-schema-test-suite/optional/cross-draft/2/*",
+        "json-schema-test-suite/optional/cross-draft/3/*"
+      ]
+    },
+    {
+      "reason": "The schema does not resolve when it stands on its own: it references a document by a URL other than the $id that the document gives itself, and an embedded document is known by its $id only.",
+      "cases": [
+        "json-schema-test-suite/id/22/*",
+        "json-schema-test-suite/id/23/*"
+      ]
+    },
+    {
+      "reason": "The expected results hold only where dependencies still works. Draft 2020-12 replaced it by dependentRequired and dependentSchemas, so under draft 2020-12 it is an unknown keyword that asserts nothing.",
+      "cases": [
+        "json-schema-test-suite/optional/dependencies-compatibility/*"
+      ]
+    },
+    {
+      "reason": "With format asserted, draft 2020-12 does not say what an unknown format accepts, and an implementation may refuse the schema. The expected results are those of format as an annotation.",
+      "cases": [
+        "json-schema-test-suite/format-unknown/0/*"
+      ]
+    },
+    {
+      "reason": "The test case tells numbers apart by digits that a double does not hold, and the corpus writes numbers as doubles.",
+      "cases": [
+        "json-schema-test-suite/optional/bignum/5/*",
+        "json-schema-test-suite/optional/bignum/8/*",
+        "json-schema-test-suite/optional/bignum/9/*",
+        "json-schema-test-suite/optional/bignum/10/*",
+        "json-schema-test-suite/optional/bignum/12/*"
+      ]
+    }
+  ],
+  "override": [
+    {
+      "note": "ECMA-262 with the u flag rejects the pattern (^\\d{4}-\\d{2}-\\d{2}T\\d{2}\\:\\d{2}\\:\\d{2}[+-]\\d{2}\\:\\d{2}$) (the escape \\: is not allowed), so the schemas have no meaning.",
+      "a_subsumes_b": null,
+      "b_subsumes_a": null,
+      "cases": [
+        "additional-as-uneval/o69099.original_not_unevalEliminated",
+        "additional-as-uneval/o69099.unevalEliminated_not_original"
+      ]
+    },
+    {
+      "note": "ECMA-262 with the u flag rejects the pattern .*{{.+}}.* (a { that begins no quantifier), so the schemas have no meaning.",
+      "a_subsumes_b": null,
+      "b_subsumes_a": null,
+      "cases": [
+        "oneof-as-anyof/o9802.anyOf_not_oneOf",
+        "oneof-as-anyof/o9804.anyOf_not_oneOf",
+        "oneof-as-anyof/o9805.anyOf_not_oneOf",
+        "oneof-as-anyof/o9808.anyOf_not_oneOf"
+      ]
+    },
+    {
+      "note": "ECMA-262 with the u flag rejects the pattern [0-9]+(\\-[0-9]+)?(\\,([0-9]+(\\-[0-9]+)?))* (the escape \\- is not allowed outside a class), so the schemas have no meaning.",
+      "a_subsumes_b": null,
+      "b_subsumes_a": null,
+      "cases": [
+        "uneval-as-additional/unevaluatedProperties_835.translate_not_trivial"
+      ]
+    },
+    {
+      "note": "ECMA-262 with the u flag rejects the patterns ^([0-9x]+\\.[0-9x]+\\.*[0-9x]*$|\\%VERSION\\%) (the escape \\% is not allowed) and ^(\\d{4}-\\d{2}-\\d{2}|\\%TODAY\\%)$ (the escape \\% is not allowed), so the schemas have no meaning.",
+      "a_subsumes_b": null,
+      "b_subsumes_a": null,
+      "cases": [
+        "additional-as-uneval/o44713.original_not_unevalEliminated",
+        "additional-as-uneval/o44713.unevalEliminated_not_original"
+      ]
+    },
+    {
+      "note": "ECMA-262 with the u flag rejects the pattern ^(\\*|\\d{4}\\-\\d{2}\\-\\d{2})$ (the escape \\- is not allowed outside a class), so the schemas have no meaning.",
+      "a_subsumes_b": null,
+      "b_subsumes_a": null,
+      "cases": [
+        "additional-as-uneval/o32807.original_not_unevalEliminated",
+        "additional-as-uneval/o32807.unevalEliminated_not_original"
+      ]
+    },
+    {
+      "note": "ECMA-262 with the u flag rejects the pattern ^(\\d{4})$|^([a-zA-Z]{2}(\\-[A-Za-z]{2})?)$|^neutral$ (the escape \\- is not allowed outside a class), so the schemas have no meaning.",
+      "a_subsumes_b": null,
+      "b_subsumes_a": null,
+      "cases": [
+        "schemastore-versions/vsix-publish_v2_not_v1"
+      ]
+    },
+    {
+      "note": "ECMA-262 with the u flag rejects the pattern ^(http(s)?\\:\\/\\/(([a-zA-Z0-9]+((\\.|\\-)[a-zA-Z0-9]+)+)|(localhost))(\\:\\d+)?(\\/[\\w\\-]+)*(\\/?|\\/\\w+\\.[a-zA-Z]{2,4}(\\?[\\w]+\\=[\\w\\-]+)?)?(\\&[\\w]+\\=[\\w\\-]+)*)$ (the escape \\: is not allowed), so the schemas have no meaning.",
+      "a_subsumes_b": null,
+      "b_subsumes_a": null,
+      "cases": [
+        "additional-as-uneval/o47658.original_not_unevalEliminated",
+        "additional-as-uneval/o47658.unevalEliminated_not_original"
+      ]
+    },
+    {
+      "note": "ECMA-262 with the u flag rejects the pattern ^(http|https)://[\\w\\-_]+(\\.[\\w\\-_]+)+([\\w\\-\\.,@?^=%&amp;:/~\\+#]*[\\w\\-\\@?^=%&amp;/~\\+#])?$ (the escape \\@ is not allowed), so the schemas have no meaning.",
+      "a_subsumes_b": null,
+      "b_subsumes_a": null,
+      "cases": [
+        "additional-as-uneval/o16740.original_not_unevalEliminated",
+        "additional-as-uneval/o16740.unevalEliminated_not_original"
+      ]
+    },
+    {
+      "note": "ECMA-262 with the u flag rejects the pattern ^*$ (a quantifier after ^), so the schemas have no meaning.",
+      "a_subsumes_b": null,
+      "b_subsumes_a": null,
+      "cases": [
+        "additional-as-uneval/o8618.original_not_unevalEliminated",
+        "additional-as-uneval/o8618.unevalEliminated_not_original"
+      ]
+    },
+    {
+      "note": "ECMA-262 with the u flag rejects the patterns ^*$ (a quantifier after ^) and ^+$ (a quantifier after ^), so the schemas have no meaning.",
+      "a_subsumes_b": null,
+      "b_subsumes_a": null,
+      "cases": [
+        "additional-as-uneval/o47165.original_not_unevalEliminated"
+      ]
+    },
+    {
+      "note": "ECMA-262 with the u flag rejects the pattern ^.+\\<.+@.+\\..+\\>$ (the escape \\< is not allowed), so the schemas have no meaning.",
+      "a_subsumes_b": null,
+      "b_subsumes_a": null,
+      "cases": [
+        "additional-as-uneval/o72113.original_not_unevalEliminated",
+        "additional-as-uneval/o72113.unevalEliminated_not_original"
+      ]
+    },
+    {
+      "note": "ECMA-262 with the u flag rejects the pattern ^4\\-.* (the escape \\- is not allowed outside a class), so the schemas have no meaning.",
+      "a_subsumes_b": null,
+      "b_subsumes_a": null,
+      "cases": [
+        "additional-as-uneval/o62056.original_not_unevalEliminated",
+        "additional-as-uneval/o62056.unevalEliminated_not_original",
+        "oneof-as-anyof/o62056.anyOf_not_oneOf"
+      ]
+    },
+    {
+      "note": "ECMA-262 with the u flag rejects the pattern ^5\\-.* (the escape \\- is not allowed outside a class), so the schemas have no meaning.",
+      "a_subsumes_b": null,
+      "b_subsumes_a": null,
+      "cases": [
+        "additional-as-uneval/o62057.original_not_unevalEliminated",
+        "additional-as-uneval/o62057.unevalEliminated_not_original",
+        "oneof-as-anyof/o62057.anyOf_not_oneOf"
+      ]
+    },
+    {
+      "note": "ECMA-262 with the u flag rejects the patterns ^ISO(\\/IEC)?(\\/((TS)|(DIS)|(FDIS)))? \\d{3,}(\\-\\d+)?(\\:\\d{4})?$ (the escape \\- is not allowed outside a class) and ^OGC \\d{2}\\-\\d+(r\\d+)?$ (the escape \\- is not allowed outside a class), so the schemas have no meaning.",
+      "a_subsumes_b": null,
+      "b_subsumes_a": null,
+      "cases": [
+        "additional-as-uneval/o81650.original_not_unevalEliminated",
+        "additional-as-uneval/o81650.unevalEliminated_not_original"
+      ]
+    },
+    {
+      "note": "ECMA-262 with the u flag rejects the pattern ^[ !\"#$%&\\'()*+,\\-./0-9:;<=>?@A-Z[\\\\\\]\\^_`a-z{\\|}]+$ (the escape \\' is not allowed), so the schemas have no meaning.",
+      "a_subsumes_b": null,
+      "b_subsumes_a": null,
+      "cases": [
+        "additional-as-uneval/o10012.original_not_unevalEliminated",
+        "additional-as-uneval/o10012.unevalEliminated_not_original"
+      ]
+    },
+    {
+      "note": "ECMA-262 with the u flag rejects the pattern ^[[a-z]*[-]?[a-z]*]*$ (a ] outside a class), so the schemas have no meaning.",
+      "a_subsumes_b": null,
+      "b_subsumes_a": null,
+      "cases": [
+        "additional-as-uneval/o58776.original_not_unevalEliminated",
+        "additional-as-uneval/o58776.unevalEliminated_not_original",
+        "schemastore-versions/pattern_v2_not_v1"
+      ]
+    },
+    {
+      "note": "ECMA-262 with the u flag rejects the pattern ^[\\.\\,\\*\\\\\\-\\s\\{\\}\\(\\)]+$ (the escape \\, is not allowed), so the schemas have no meaning.",
+      "a_subsumes_b": null,
+      "b_subsumes_a": null,
+      "cases": [
+        "additional-as-uneval/o65414.unevalEliminated_not_original",
+        "additional-as-uneval/o65417.original_not_unevalEliminated",
+        "additional-as-uneval/o65417.unevalEliminated_not_original",
+        "additional-as-uneval/o65418.unevalEliminated_not_original",
+        "additional-as-uneval/o65421.original_not_unevalEliminated",
+        "additional-as-uneval/o65421.unevalEliminated_not_original",
+        "additional-as-uneval/o65423.original_not_unevalEliminated",
+        "additional-as-uneval/o65423.unevalEliminated_not_original",
+        "additional-as-uneval/o65424.original_not_unevalEliminated",
+        "additional-as-uneval/o65424.unevalEliminated_not_original",
+        "additional-as-uneval/o65429.original_not_unevalEliminated",
+        "additional-as-uneval/o65429.unevalEliminated_not_original",
+        "additional-as-uneval/o65431.unevalEliminated_not_original",
+        "additional-as-uneval/o65432.unevalEliminated_not_original",
+        "oneof-as-anyof/o65417.anyOf_not_oneOf"
+      ]
+    },
+    {
+      "note": "ECMA-262 with the u flag rejects the pattern ^[\\w-/_]+$ (a range that begins with \\w), so the schemas have no meaning.",
+      "a_subsumes_b": null,
+      "b_subsumes_a": null,
+      "cases": [
+        "additional-as-uneval/o36572.original_not_unevalEliminated",
+        "additional-as-uneval/o36572.unevalEliminated_not_original"
+      ]
+    },
+    {
+      "note": "ECMA-262 with the u flag rejects the pattern ^[\\w\\.\\d\\_]+$ (the escape \\_ is not allowed), so the schemas have no meaning.",
+      "a_subsumes_b": null,
+      "b_subsumes_a": null,
+      "cases": [
+        "additional-as-uneval/o47670.original_not_unevalEliminated",
+        "additional-as-uneval/o47670.unevalEliminated_not_original"
+      ]
+    },
+    {
+      "note": "ECMA-262 with the u flag rejects the pattern ^[a-zA-Z][a-zA-Z0-9\\_]*(\\.[a-zA-Z][a-zA-Z0-9\\_]*)+$ (the escape \\_ is not allowed), so the schemas have no meaning.",
+      "a_subsumes_b": null,
+      "b_subsumes_a": null,
+      "cases": [
+        "schemastore-versions/expo-37.0.0_v2_not_v1"
+      ]
+    },
+    {
+      "note": "ECMA-262 with the u flag rejects the pattern ^\\[(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))]:([0-9]*)$ (a ] outside a class), so the schemas have no meaning.",
+      "a_subsumes_b": null,
+      "b_subsumes_a": null,
+      "cases": [
+        "additional-as-uneval/o65826.original_not_unevalEliminated",
+        "additional-as-uneval/o65826.unevalEliminated_not_original"
+      ]
+    },
+    {
+      "note": "ECMA-262 with the u flag rejects the pattern ^connectedService\\:.+$ (the escape \\: is not allowed), so the schemas have no meaning.",
+      "a_subsumes_b": null,
+      "b_subsumes_a": null,
+      "cases": [
+        "additional-as-uneval/o10499.original_not_unevalEliminated",
+        "additional-as-uneval/o10499.unevalEliminated_not_original"
+      ]
+    },
+    {
+      "note": "ECMA-262 with the u flag rejects the pattern ^string_table\\:(([0-9A-Z]{8})-([0-9A-Z]{4})-([0-9A-Z]{4})-([0-9A-Z]{4})-([0-9A-Z]{12}))$ (the escape \\: is not allowed), so the schemas have no meaning.",
+      "a_subsumes_b": null,
+      "b_subsumes_a": null,
+      "cases": [
+        "additional-as-uneval/o47674.original_not_unevalEliminated",
+        "additional-as-uneval/o47674.unevalEliminated_not_original"
+      ]
+    },
+    {
+      "note": "Upstream's label does not hold: the translation wrote the integer bound 36893488147419103000 as the float 3.6893488147419103e+19, which is 36893488147419103232, so 36893488147419103001 is valid under it and invalid under the original.",
+      "a_subsumes_b": null,
+      "b_subsumes_a": null,
+      "cases": [
+        "additional-as-uneval/o19187.unevalEliminated_not_original"
+      ]
+    },
+    {
+      "note": "Upstream's label does not hold: the translation wrote the integer bound 9223372036854775807 as the float 9.223372036854776e+18, which is 2**63, so 9223372036854775808 is valid under it and invalid under the original.",
+      "a_subsumes_b": null,
+      "b_subsumes_a": null,
+      "cases": [
+        "additional-as-uneval/o90912.unevalEliminated_not_original"
+      ]
+    },
+    {
+      "note": "Upstream's label holds only if format is an annotation: a date-time and a date pattern are disjoint.",
+      "a_subsumes_b": null,
+      "b_subsumes_a": null,
+      "cases": [
+        "oneof-as-anyof/o20.anyOf_not_oneOf",
+        "oneof-as-anyof/o21.anyOf_not_oneOf",
+        "oneof-as-anyof/o22.anyOf_not_oneOf",
+        "oneof-as-anyof/o23.anyOf_not_oneOf"
+      ]
+    },
+    {
+      "note": "Upstream's label holds only if format is an annotation: a uri and a hostname are disjoint.",
+      "a_subsumes_b": null,
+      "b_subsumes_a": null,
+      "cases": [
+        "oneof-as-anyof/o58478.anyOf_not_oneOf"
+      ]
+    },
+    {
+      "note": "Upstream's label holds only if format is an annotation: a uuid never contains 32 consecutive alphanumerics, so the required uuid_field is empty.",
+      "a_subsumes_b": null,
+      "b_subsumes_a": null,
+      "cases": [
+        "uneval-as-additional/unevaluatedProperties_856.translate_not_trivial"
+      ]
+    },
+    {
+      "note": "Upstream's label holds only if . matches a line terminator. In ECMA-262 . matches none, so \"aa\\nbb\" is valid under b.json and not under a.json.",
+      "a_subsumes_b": false,
+      "b_subsumes_a": null,
+      "cases": [
+        "handwritten-sc/bool.7.eq1.sub.eq2"
+      ]
+    },
+    {
+      "note": "Upstream's label holds only if . matches a line terminator. In ECMA-262 . matches none, so \"aaa\\nbb\" is valid under b.json and not under a.json.",
+      "a_subsumes_b": false,
+      "b_subsumes_a": null,
+      "cases": [
+        "handwritten-sc/bool.7.strong.sub.eq2"
+      ]
+    },
+    {
+      "note": "Upstream's label holds only if . matches a line terminator. In ECMA-262 . matches none, so [{}, {\"name\": \"foo\\nbar\"}] is valid under b.json and not under a.json.",
+      "a_subsumes_b": false,
+      "b_subsumes_a": null,
+      "cases": [
+        "mergeallof/items_merges_additionalItems.orig_not_merge"
+      ]
+    },
+    {
+      "note": "Upstream's label holds only if . matches a line terminator. In ECMA-262 . matches none, so \"fdsaf\\nabba\" is valid under b.json and not under a.json.",
+      "a_subsumes_b": false,
+      "b_subsumes_a": null,
+      "cases": [
+        "mergeallof/module_merges_pattern_using_allOf.orig_not_merge"
+      ]
+    }
+  ]
+}

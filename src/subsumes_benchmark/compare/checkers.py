@@ -12,7 +12,6 @@ import selectors
 import signal
 import subprocess
 import time
-import tomllib
 from dataclasses import dataclass
 from typing import IO, TYPE_CHECKING, Literal, Self, cast, get_args
 
@@ -41,7 +40,7 @@ class ConfigError(Exception):
 
 @dataclass(frozen=True)
 class Checker:
-    """A checker as its ``checker.toml`` describes it."""
+    """A checker as its ``checker.json`` describes it."""
 
     name: str
     folder: Path
@@ -57,10 +56,10 @@ class Checker:
 
     @classmethod
     def load(cls, folder: Path) -> Self:
-        path = folder / "checker.toml"
+        path = folder / "checker.json"
         if not path.is_file():
             raise ConfigError(f"{path} does not exist")
-        spec = tomllib.loads(path.read_text(encoding="utf-8"))
+        spec = json.loads(path.read_text(encoding="utf-8"))
         dialect = spec["dialect"]
         if dialect not in DIALECTS:
             raise ConfigError(f"{path}: dialect is {dialect!r}, not one of {list(DIALECTS)}")
