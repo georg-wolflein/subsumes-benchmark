@@ -1,6 +1,6 @@
 # Checkers
 
-Each folder here makes one inclusion checker answer the tasks of the corpus, so that `python -m subsumes_benchmark.compare` can run them all the same way. The [README](../README.md#comparing-checkers) says how to run a comparison and where its report goes.
+Each folder here makes one inclusion checker answer the tasks of the corpus, so that `subsumes-benchmark run` can run them all the same way. The [README](../README.md#comparing-checkers) says how to run a comparison and where its report goes.
 
 | Folder | Checker | Used through | Reads |
 | --- | --- | --- | --- |
@@ -88,9 +88,21 @@ Rules for an adapter:
 - **Survive an error.** Catch what the checker throws and reply `error`, so that the next request is answered by a warm process.
 - **A timeout need not be handled.** The runner waits two seconds longer than the time allowed, then kills the adapter, counts the task as a timeout and starts the adapter again. An adapter that can stop a check itself replies `timeout` and stays warm.
 
+## A checker in another repository
+
+The folder of a checker can be anywhere: `subsumes-benchmark run` takes its path. So a checker can keep its adapter next to its own code, built from the working tree, and run it with the package from PyPI, as the Rust library [subsumes](https://github.com/georg-wolflein/subsumes) does to hold a change against the corpus. Its `checker.json` names the schema by a URL:
+
+```json
+{
+  "$schema": "https://raw.githubusercontent.com/georg-wolflein/subsumes-benchmark/main/schemas/checker.schema.json"
+}
+```
+
+A run is named like the folder and goes to a folder of that name under `--out`.
+
 ## Adding a checker
 
 1. Create the folder with `checker.json` and the adapter. Pin the checker's version, and commit a lock file where the toolchain has one.
-2. Try it on a sample: `uv run python -m subsumes_benchmark.compare run <folder> --limit 300`.
+2. Try it on a sample: `uv run subsumes-benchmark run checkers/<folder> --limit 300`.
 3. Add the folder to the matrix in `.github/workflows/comparison.yml`, with the toolchain it needs, and to the table above.
 4. Push the branch and run the sample for every checker on it: `gh workflow run comparison.yml --ref <branch> -f limit=300`.

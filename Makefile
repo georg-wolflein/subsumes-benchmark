@@ -55,7 +55,7 @@ models:  ## write src/subsumes_benchmark/generated/ from the schemas; the option
 	uv run datamodel-codegen --input schemas/case.schema.json --output src/subsumes_benchmark/generated/case.py --class-name CaseSpec
 
 compare:  ## run every checker under checkers/ over the corpus into results/; hours, and needs their toolchains
-	for folder in checkers/*/; do uv run python -m subsumes_benchmark.compare run "$$(basename "$$folder")" || exit 1; done
+	for folder in checkers/*/; do uv run subsumes-benchmark run "$$folder" || exit 1; done
 
 report:  ## write the report on the runs in results/ to comparison/
-	uv run --group report python -m subsumes_benchmark.compare report results
+	uv run --extra report subsumes-benchmark report results

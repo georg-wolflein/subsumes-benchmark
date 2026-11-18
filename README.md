@@ -68,7 +68,7 @@ Every schema stands on its own: a reference resolves inside the schema or to a m
 
 ## Releases
 
-A release is a tag `v<version>` that carries one file, `corpus.tar.zst`: the `corpus/` folder as a tar archive compressed with Zstandard, about 4 MB.
+A release is a tag `v<version>` that carries one file, `corpus.tar.zst`: the `corpus/` folder as a tar archive compressed with Zstandard, about 4 MB. With it goes the package `subsumes-benchmark` of that version on PyPI, which [runs a checker](#comparing-checkers) over the corpus and holds none of it.
 
 ```bash
 curl -fsSLO https://github.com/georg-wolflein/subsumes-benchmark/releases/download/v0.1.0/corpus.tar.zst
@@ -79,7 +79,7 @@ The release notes give the SHA-256 of the file. The version says what a change m
 
 - **Major**: A reader has to change, because the layout, the fields of a case, the form of the case ids or the semantics of the labels changed.
 - **Minor**: Results are no longer comparable, because cases were added or removed, or a label or a schema changed.
-- **Patch**: Anything else, such as notes, descriptions, documentation and code.
+- **Patch**: Anything else, such as notes, descriptions, documentation and code. That includes the command that runs a checker, and what it asks of an adapter.
 
 Results measured on two versions are comparable exactly when their major and minor numbers match. Before 1.0.0, a minor version may also bring what a major version would.
 
@@ -164,17 +164,19 @@ A checker that reads an older draft gets every schema rewritten to that draft; w
 The `Comparison` workflow runs every checker over every task after each release, and whenever it is started by hand. It then opens a pull request that updates `comparison/` and the part of this page above. Started by hand with a limit, it runs a sample of that many tasks and publishes nothing, which shows that every checker still builds and answers. To run one checker locally, with its toolchain installed:
 
 ```bash
-uv run python -m subsumes_benchmark.compare run jsoncompat --limit 300   # writes results/jsoncompat/
-uv run --group report python -m subsumes_benchmark.compare report results --out /tmp/comparison
+uv run subsumes-benchmark run checkers/jsoncompat --limit 300   # writes results/jsoncompat/
+uv run --extra report subsumes-benchmark report results --out /tmp/comparison
 ```
 
 Whoever develops a checker can hold the run of a change against the run of what the change is based on:
 
 ```bash
-uv run python -m subsumes_benchmark.compare diff results/jsoncompat --base base/jsoncompat --out comment.md
+uv run subsumes-benchmark diff results/jsoncompat --base base/jsoncompat --out comment.md
 ```
 
 That writes a comment for a pull request: the answers by collection with what changed, the wrong answers, the tasks that the base answered and the change does not, those it answers newly, and the kinds of reason for declining. The command fails when an answer is wrong, when a task ended in an error, a crash or a timeout, and when a task of the base is no longer answered, unless `--allow-lost` accepts that.
+
+The command is also a package on PyPI, [`subsumes-benchmark`](https://pypi.org/project/subsumes-benchmark/), for a checker that lives in another repository: `uvx subsumes-benchmark==<version> run path/to/checker --corpus corpus` runs the adapter in that folder over an unpacked corpus. The package holds the code and no corpus, and the package of a version is made for the corpus of that version.
 
 ## Departures from upstream
 

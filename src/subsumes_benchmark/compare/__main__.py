@@ -1,4 +1,8 @@
-"""``python -m subsumes_benchmark.compare``: run a checker, or report on the runs."""
+"""The ``subsumes-benchmark`` command: run a checker, report on runs, or hold one against another.
+
+``python -m subsumes_benchmark.compare`` is the same command. Every path it takes is relative
+to the working directory, so that it runs the same from a checkout and as an installed package.
+"""
 
 import argparse
 import sys
@@ -7,20 +11,33 @@ from pathlib import Path
 from subsumes_benchmark.compare.checkers import Checker
 from subsumes_benchmark.compare.diff import diff
 from subsumes_benchmark.compare.run import run
-from subsumes_benchmark.compare.summary import read_entry
+from subsumes_benchmark.compare.summary import ReportError, read_entry
 from subsumes_benchmark.compare.tasks import read_tasks, select
+from subsumes_benchmark.config import ConfigError
 
-ROOT = Path(__file__).resolve().parents[3]
+CORPUS = Path("corpus")
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(prog="python -m subsumes_benchmark.compare")
+    try:
+        _main()
+    except (ConfigError, ReportError) as error:
+        sys.exit(str(error))
+
+
+def _main() -> None:
+    parser = argparse.ArgumentParser(prog="subsumes-benchmark")
     commands = parser.add_subparsers(dest="command", required=True)
 
-    running = commands.add_parser("run", help="run one checker over the corpus")
-    running.add_argument("checker", help="the name of a folder under checkers/")
-    running.add_argument("--out", type=Path, default=ROOT / "results", help="where results go")
-    running.add_argument("--corpus", type=Path, default=ROOT / "corpus")
+    running = commands.add_parser(
+        "run",
+        help="run one checker over the corpus",
+        description="Writes the results to a folder under --out that is named like the folder "
+        "of the checker.",
+    )
+    running.add_argument("checker", type=Path, help="the folder of a checker.json")
+    running.add_argument("--out", type=Path, default=Path("results"), help="where results go")
+    running.add_argument("--corpus", type=Path, default=CORPUS, help="the folder of the corpus")
     running.add_argument("--timeout", type=float, default=10.0, help="seconds per task")
     running.add_argument("--warmup", type=int, default=200, help="unmeasured tasks first")
     running.add_argument("--limit", type=int, help="run only this many tasks, a random sample")
@@ -31,8 +48,8 @@ def main() -> None:
 
     reporting = commands.add_parser("report", help="report on the runs in a folder")
     reporting.add_argument("results", type=Path, help="a folder with one folder per checker")
-    reporting.add_argument("--out", type=Path, default=ROOT / "comparison", help="where it goes")
-    reporting.add_argument("--corpus", type=Path, default=ROOT / "corpus")
+    reporting.add_argument("--out", type=Path, default=Path("comparison"), help="where it goes")
+    reporting.add_argument("--corpus", type=Path, default=CORPUS, help="the folder of the corpus")
     reporting.add_argument("--readme", type=Path, help="a README whose marked part to rewrite")
 
     differing = commands.add_parser(
@@ -71,8 +88,12 @@ def main() -> None:
             print(f"{found.lost} tasks of the base are no longer answered", file=sys.stderr)
         if found.failures or (found.lost and not args.allow_lost):
             sys.exit(1)
-    elif args.command == "run":
-        checker = Checker.load(ROOT / "checkers" / args.checker)
+        return
+    if not args.corpus.is_dir():
+        sys.exit(f"there is no corpus at {args.corpus}; --corpus names its folder")
+    if args.command == "run":
+        # The run is named like the folder, and a path such as `.` has no name.
+        checker = Checker.load(args.checker.resolve())
         if not args.no_build:
             checker.compile()
         tasks = select(
@@ -98,4 +119,5 @@ def main() -> None:
         report(args.results, args.out, args.corpus, args.readme)
 
 
-main()
+if __name__ == "__main__":
+    main()

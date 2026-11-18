@@ -1195,6 +1195,11 @@ dependencies = [
     { name = "pydantic" },
 ]
 
+[package.optional-dependencies]
+report = [
+    { name = "matplotlib" },
+]
+
 [package.dev-dependencies]
 dev = [
     { name = "check-jsonschema" },
@@ -1206,15 +1211,14 @@ dev = [
     { name = "ruff" },
     { name = "ty" },
 ]
-report = [
-    { name = "matplotlib" },
-]
 
 [package.metadata]
 requires-dist = [
     { name = "jsonschema-rs", specifier = "==0.61.2" },
+    { name = "matplotlib", marker = "extra == 'report'", specifier = ">=3.10" },
     { name = "pydantic", specifier = ">=2.14.3" },
 ]
+provides-extras = ["report"]
 
 [package.metadata.requires-dev]
 dev = [
@@ -1227,7 +1231,6 @@ dev = [
     { name = "ruff", specifier = ">=0.17.4" },
     { name = "ty", specifier = ">=0.0.100" },
 ]
-report = [{ name = "matplotlib", specifier = ">=3.10" }]
 
 [[package]]
 name = "ty"
