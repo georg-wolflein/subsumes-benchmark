@@ -84,7 +84,8 @@ jobs:
           done
           exit "$status"
 
-  # The quick tests: the build's transformations and the layout of the committed corpus.
+  # The quick tests: the build's transformations, the layout of the committed corpus, and
+  # that every case matches the schema of a case, so that its schemas are valid draft 2020-12.
   tests:
     runs-on: ubuntu-latest
     steps:
@@ -96,9 +97,9 @@ jobs:
       - run: uv sync --all-groups
       - run: uv run pytest
 
-  # The slow tests read every schema of the committed corpus: each is valid draft 2020-12,
-  # each reference resolves, and each label that validation can check holds. They need no
-  # upstream sources, so the submodules under sources/ stay unfetched.
+  # The slow tests read every schema of the committed corpus: each reference resolves, each
+  # case lists the features of its schemas, and each label that validation can check holds.
+  # They need no upstream sources, so the submodules under sources/ stay unfetched.
   #
   # They do not run on the release pull request, which changes the version and nothing in
   # the corpus. A job that is skipped counts as passed where the ruleset requires it.

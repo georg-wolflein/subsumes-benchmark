@@ -247,7 +247,7 @@ make models        # rewrite the generated models after a change to a schema of 
 
 `make ci` covers the adapters under `checkers/` too, so it needs `cargo`. The Rust adapters are formatted by `cargo fmt` and linted by `cargo clippy`. The Python adapters are linted and formatted by ruff with everything else, and type-checked by ty, each against the environment its script declares.
 
-CI runs both on every push and pull request. The slow tests check that every schema is valid draft 2020-12, that every reference resolves, that every case lists the features of its schemas, and that every label that validation can check holds.
+CI runs both on every push and pull request. The quick tests hold every case against the schema of a case, which says that its two schemas are valid draft 2020-12. The slow tests check that every reference resolves, that every case lists the features of its schemas, and that every label that validation can check holds.
 
 Releases are made by [release-please](https://github.com/googleapis/release-please). It keeps one pull request open, `chore(main): release <version>`, that raises the version in `pyproject.toml` and `uv.lock` and lists what the release holds. Merging that pull request publishes the release: the `Release` workflow tags the merged commit `v<version>`, builds the archive and attaches it. Not every commit on `main` is released; the pull request waits and takes in what is merged meanwhile. The slow tests do not run on it, because it changes the version and nothing in the corpus.
 

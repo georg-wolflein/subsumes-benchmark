@@ -42,7 +42,7 @@ config:  ## the schemas are valid, every configuration file is valid under its s
 test:
 	uv run pytest
 
-test-corpus:  ## the slow tests: every schema is valid, every reference resolves, every checkable label holds
+test-corpus:  ## the slow tests: every reference resolves, every case lists its features, every checkable label holds
 	uv run pytest -m slow
 
 sources:  ## fetch the upstream sources; they are opt-in submodules and only needed to rebuild
