@@ -72,22 +72,29 @@ def ask(worker: Worker, task: Task, scratch: Path, timeout: float) -> Reply:
     return worker.ask(a, b, timeout)
 
 
+# The root of the repository, where this file is in a checkout of it.
+CHECKOUT = Path(__file__).resolve().parents[3]
+
+
 def _git(*args: str) -> str | None:
-    done = subprocess.run(
-        ["git", *args], cwd=Path(__file__).parent, capture_output=True, text=True, check=False
-    )
+    done = subprocess.run(["git", *args], cwd=CHECKOUT, capture_output=True, text=True, check=False)
     return done.stdout.strip() if done.returncode == 0 else None
 
 
 def _revision(corpus: Path) -> str:
-    """What ``git describe`` says about the checkout, or the version where there is none.
+    """What the corpus is: a release, or what ``git describe`` says about a checkout.
 
-    ``-dirty`` is added when the corpus itself differs from what is committed; other
-    uncommitted changes do not change what is measured.
+    The package of a version is made for the corpus of that version, and a corpus does not say
+    which one it is. So the corpus is taken to be the release that the package is of, as
+    ``v0.5.0``. Only where the package runs from a checkout of the repository, over the corpus
+    of that checkout, is it what ``git describe`` says, with ``-dirty`` where the corpus
+    differs from what is committed; other uncommitted changes do not change what is measured.
     """
-    described = _git("describe", "--tags", "--always")
+    released = "v" + version("subsumes-benchmark")
+    in_checkout = (CHECKOUT / ".git").exists() and corpus.resolve() == CHECKOUT / "corpus"
+    described = _git("describe", "--tags", "--always") if in_checkout else None
     if not described:
-        return "v" + version("subsumes-benchmark")
+        return released
     changed = _git("status", "--porcelain", "--", str(corpus.resolve()))
     return described + ("-dirty" if changed else "")
 

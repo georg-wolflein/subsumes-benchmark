@@ -1,15 +1,16 @@
 [project]
 name = "subsumes-benchmark"
 version = "0.8.0"
-description = "A benchmark corpus for JSON Schema inclusion: pairs of draft 2020-12 schemas with known answers."
-readme = "README.md"
+description = "Runs JSON Schema inclusion checkers over the subsumes benchmark corpus: pairs of draft 2020-12 schemas with known answers."
+# The page of the package on PyPI. README.md is that of the repository, and shows pictures
+# by paths that only the repository has.
+readme = "README.pypi.md"
 license = "MIT"
 license-files = ["LICENSE"]
 authors = [{ name = "Georg Wölflein", email = "georgw7777@gmail.com" }]
 requires-python = ">=3.14"
 keywords = ["json-schema", "subschema", "inclusion", "containment", "benchmark"]
 classifiers = [
-  "Private :: Do Not Upload",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.14",
   "Typing :: Typed",
@@ -22,6 +23,15 @@ dependencies = [
     "jsonschema-rs==0.61.2",
     "pydantic>=2.14.3",
 ]
+
+# What only the report needs, which draws charts: `subsumes-benchmark[report]`.
+[project.optional-dependencies]
+report = [
+    "matplotlib>=3.10",
+]
+
+[project.scripts]
+subsumes-benchmark = "subsumes_benchmark.compare.__main__:main"
 
 [project.urls]
 Repository = "https://github.com/georg-wolflein/subsumes-benchmark"
@@ -138,7 +148,4 @@ dev = [
     "regress>=2026.9.1",
     "ruff>=0.17.4",
     "ty>=0.0.100",
-]
-report = [
-    "matplotlib>=3.10",
 ]

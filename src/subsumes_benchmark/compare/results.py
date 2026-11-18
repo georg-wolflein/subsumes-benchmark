@@ -63,8 +63,9 @@ class Result:
 class Run:
     """One checker's run over the corpus: what ran, on what, and under which limits.
 
-    ``corpus`` is what ``git describe`` says about the commit the corpus was read from:
-    ``v0.5.0`` for a release, ``v0.5.0-3-gabc1234`` for what came after one.
+    ``corpus`` is the release that the corpus is of, as ``v0.5.0``, or for a run from a
+    checkout of the repository what ``git describe`` says about its commit, as
+    ``v0.5.0-3-gabc1234``.
     """
 
     @property

@@ -20,9 +20,9 @@ class CheckerSpec(Config):
         extra="forbid",
         use_attribute_docstrings=True,
     )
-    field_schema: Annotated[Literal["../../schemas/checker.schema.json"], Field(alias="$schema")]
+    field_schema: Annotated[str, Field(alias="$schema")]
     """
-    The schema of this file, for an editor.
+    The schema of this file, for an editor: this one, by a path from a folder under checkers/ or by a URL from anywhere else.
     """
     label: str
     """

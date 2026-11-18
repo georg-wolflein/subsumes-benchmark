@@ -2,8 +2,9 @@ name: Release
 
 # release-please keeps one pull request open that raises the version by what the commits on
 # main since the last release call for; release-please-config.json says how. Merging that
-# pull request is the release: this workflow then tags the merged commit v<version> and
-# publishes the corpus as one archive, built here from that commit.
+# pull request is the release: this workflow then tags the merged commit v<version>,
+# publishes the package that runs a checker to PyPI, and publishes the corpus as one archive.
+# Both are built here from that commit.
 on:
   push:
     branches: [main]
@@ -37,12 +38,52 @@ jobs:
         with:
           token: ${{ steps.app.outputs.token }}
 
-  # The release stays a draft until its archive is attached, so that a release that can be
-  # seen always has one. Nothing is checked here: the release pull request changes the
-  # version only, and the corpus it releases was checked on main and on every pull request
-  # that changed it.
-  publish:
+  # The package of the release on PyPI: the command that runs a checker over the corpus. It
+  # holds the code and none of the corpus, which is checked here before anything is uploaded,
+  # since a file on PyPI cannot be replaced.
+  package:
     needs: release-please
+    if: needs.release-please.outputs.release_created == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # to show PyPI which workflow asks
+    env:
+      TAG: ${{ needs.release-please.outputs.tag }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.release-please.outputs.tag }} # not always the commit of this run
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          python-version: "3.14"
+      - name: Build the package
+        run: uv build
+      - name: Check that the package has the version of the release and none of the corpus
+        run: |
+          version="${TAG#v}"
+          ls dist
+          test -f "dist/subsumes_benchmark-$version-py3-none-any.whl"
+          test -f "dist/subsumes_benchmark-$version.tar.gz"
+          {
+            python -m zipfile --list dist/*.whl
+            tar -tzf dist/*.tar.gz
+          } > "$RUNNER_TEMP/files"
+          if grep -E '(^|/)(corpus|sources|comparison)/' "$RUNNER_TEMP/files"; then
+            echo "::error::the package holds files that are not code"
+            exit 1
+          fi
+      # No token is stored: PyPI trusts this workflow of this repository. A file that PyPI
+      # has already, from an earlier attempt, is left as it is.
+      - name: Publish the package to PyPI
+        run: uv publish --trusted-publishing always --check-url https://pypi.org/simple/ dist/*
+
+  # The release stays a draft until PyPI has the package and the archive is attached, so
+  # that a release that can be seen always has both. Nothing is checked here: the release
+  # pull request changes the version only, and the corpus it releases was checked on main
+  # and on every pull request that changed it.
+  publish:
+    needs: [release-please, package]
     if: needs.release-please.outputs.release_created == 'true'
     runs-on: ubuntu-latest
     permissions:

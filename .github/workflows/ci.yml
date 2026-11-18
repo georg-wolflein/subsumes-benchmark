@@ -30,7 +30,7 @@ jobs:
       - name: Check that the lockfile is current
         run: uv lock --check
       - name: Install
-        run: uv sync --all-groups
+        run: uv sync --all-groups --all-extras
       - name: ruff check
         if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
         run: uv run ruff check --output-format=github .
@@ -97,5 +97,5 @@ jobs:
         with:
           python-version: "3.14"
           enable-cache: true
-      - run: uv sync --all-groups
+      - run: uv sync --all-groups --all-extras
       - run: uv run pytest

@@ -1,7 +1,9 @@
 """The comparison of checkers: the tasks, what a report counts, and the folders under ``checkers/``."""
 
 import json
+import subprocess
 import sys
+from importlib.metadata import version
 from typing import TYPE_CHECKING
 
 import pytest
@@ -14,10 +16,11 @@ from subsumes_benchmark.compare.results import (
     Result,
     Run,
     read_results,
+    read_run,
     result_line,
     write_run,
 )
-from subsumes_benchmark.compare.run import prepare, run
+from subsumes_benchmark.compare.run import prepare
 from subsumes_benchmark.compare.summary import (
     Entry,
     ReportError,
@@ -166,12 +169,16 @@ for line in sys.stdin:
 """
 
 
-def test_a_run_keeps_the_reason_and_asks_about_the_counterexample(tmp_path: Path) -> None:
-    folder = tmp_path / "checkers" / "fake"
+def test_a_checker_and_a_corpus_from_anywhere_are_run_by_their_paths(tmp_path: Path) -> None:
+    """The command as an installed package runs it: in a folder that is no checkout.
+
+    The run keeps the kind of reason of an unknown, and asks about the counterexample of a no.
+    """
+    folder = tmp_path / "mine" / "fake"
     folder.mkdir(parents=True)
     (folder / "adapter.py").write_text(ADAPTER, encoding="utf-8")
     described: dict[str, Json] = {
-        "$schema": "../../schemas/checker.schema.json",
+        "$schema": "https://example.com/checker.schema.json",
         "label": "Fake",
         "version": "1",
         "homepage": "https://example.com",
@@ -191,9 +198,13 @@ def test_a_run_keeps_the_reason_and_asks_about_the_counterexample(tmp_path: Path
     for name, content in written.items():
         (corpus / "c" / f"{name}.json").write_text(json.dumps(content), encoding="utf-8")
 
-    out = tmp_path / "results" / "fake"
-    run(Checker.load(folder), read_tasks(corpus), out, corpus=corpus, timeout=10, warmup=0, seed=0, jobs=1)  # fmt: skip
+    # The paths are taken from the working directory, the corpus and the results by default.
+    command = [sys.executable, "-m", "subsumes_benchmark.compare", "run", "mine/fake"]
+    subprocess.run([*command, "--warmup", "0"], cwd=tmp_path, check=True, capture_output=True)
 
+    out = tmp_path / "results" / "fake"
+    # A corpus that is not the one of a checkout is taken to be that of the package's version.
+    assert read_run(out).corpus == "v" + version("subsumes-benchmark")
     results = {(r.case, r.direction): r for r in read_results(out)}
     assert len(results) == 6
     # `null` is a counterexample like any other, and is told from none by the key.
