@@ -220,7 +220,7 @@ The artifact lists the narrower schema first, so `b.json` is its first schema an
 | `corpus/` | The corpus: generated, committed, never edited by hand |
 | `collections.json` | The collections and the upstream dataset each is built from |
 | `overrides.json` | Every departure from upstream, with the reason: the cases left out and the labels changed |
-| `schemas/` | The schemas of `collections.json`, `overrides.json` and a checker's `checker.json`, which say what each key means |
+| `schemas/` | The schemas of `collections.json`, `overrides.json` and a checker's `checker.json`, which say what each key means: generated from the models that read the files, never edited by hand |
 | `sources/` | The upstream repositories as submodules, fetched only to rebuild |
 | `src/subsumes_benchmark/` | The build: `testsuite`, `unfuse`, `convert`, `features`, `build` |
 | `src/subsumes_benchmark/compare/` | The comparison: running a checker over the tasks, and the report |
@@ -236,7 +236,7 @@ make sources   # fetches the two upstream repositories, about 900 MB
 make corpus    # about 15 seconds
 ```
 
-The submodules under `sources/` are marked `update = none`, so cloning this repository, even recursively, does not fetch them; `make sources` does. Their commits pin what the corpus is built from. The build needs nothing but the standard library.
+The submodules under `sources/` are marked `update = none`, so cloning this repository, even recursively, does not fetch them; `make sources` does. Their commits pin what the corpus is built from. The build needs Pydantic, which reads the configuration files, and otherwise nothing but the standard library.
 
 ## Development
 
@@ -245,6 +245,7 @@ uv sync
 make ci            # ruff check, ruff format --check, ty check, check-jsonschema, cargo fmt --check, cargo clippy, pytest
 make test-corpus   # the slow tests over every schema, about three minutes
 make format        # apply ruff's fixes and formatting, and cargo fmt
+make schemas       # rewrite schemas/ after a change to a model that reads a configuration file
 ```
 
 `make ci` covers the adapters under `checkers/` too, so it needs `cargo`. The Rust adapters are formatted by `cargo fmt` and linted by `cargo clippy`. The Python adapters are linted and formatted by ruff with everything else, and type-checked by ty, each against the environment its script declares.

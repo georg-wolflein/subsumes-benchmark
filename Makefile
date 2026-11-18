@@ -1,4 +1,4 @@
-.PHONY: ci lint format format-check typecheck config test test-corpus sources corpus compare report
+.PHONY: ci lint format format-check typecheck config test test-corpus sources corpus schemas compare report
 
 # The adapters under checkers/ that are checked like the code under src/: each Rust one is
 # a crate of its own, and each Python one a script with an environment of its own.
@@ -46,6 +46,9 @@ sources:  ## fetch the upstream sources; they are opt-in submodules and only nee
 
 corpus:  ## rebuild corpus/ from the upstream sources
 	uv run python -m subsumes_benchmark
+
+schemas:  ## write schemas/ from the models that read the configuration files
+	uv run python -m subsumes_benchmark.schemas
 
 compare:  ## run every checker under checkers/ over the corpus into results/; hours, and needs their toolchains
 	for folder in checkers/*/; do uv run python -m subsumes_benchmark.compare run "$$(basename "$$folder")" || exit 1; done

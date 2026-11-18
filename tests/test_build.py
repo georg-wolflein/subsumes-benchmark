@@ -9,10 +9,11 @@ from subsumes_benchmark.build import (
     Case,
     ConfigError,
     Forge,
+    Overrides,
     Source,
+    SourceSpec,
     bundled,
     case_name,
-    load_exclusions,
     without_excluded,
     write_json,
 )
@@ -137,12 +138,10 @@ def test_a_permalink_names_the_commit_in_the_way_of_the_forge(forge: Forge, link
     root = Path("sources/suite")
     source = Source(
         name="suite",
+        spec=SourceSpec(forge=forge, license="MIT", license_file="LICENSE"),
         root=root,
         repository="https://example.com/group/suite.git",
-        forge=forge,
         commit="abc123",
-        license="MIT",
-        license_file=root / "LICENSE",
     )
     assert source.permalink(root / "tests" / "a b" / "c.json") == link
 
@@ -177,21 +176,54 @@ def test_a_folder_excludes_every_case_below_it() -> None:
         without_excluded(cases, {"one/a/reflexive/*": "broken"})
 
 
-def test_exclusions_are_read_with_their_reason(tmp_path: Path) -> None:
-    file = tmp_path / "overrides.json"
-    corrected = {"note": "corrected", "a_subsumes_b": None, "b_subsumes_a": None}
-    write_json(
-        file,
-        {
-            "exclude": [{"reason": "broken", "cases": ["one/a", "one/b"]}],
-            "override": [{**corrected, "cases": ["one/c"]}],
-        },
-    )
-    assert load_exclusions(file) == {"one/a": "broken", "one/b": "broken"}
+def overrides_file(folder: Path, exclude: Json, override: Json) -> Path:
+    file = folder / "overrides.json"
+    schema = "./schemas/overrides.schema.json"
+    write_json(file, {"$schema": schema, "exclude": exclude, "override": override})
+    return file
 
-    write_json(file, {"exclude": [{"reason": "broken", "cases": ["one/a", "one/a"]}]})
+
+def test_exclusions_and_overrides_are_read_by_case(tmp_path: Path) -> None:
+    corrected = {"note": "corrected", "a_subsumes_b": False, "b_subsumes_a": None}
+    departures = Overrides.read(
+        overrides_file(
+            tmp_path,
+            [{"reason": "broken", "cases": ["one/a", "one/b/*"]}],
+            [{**corrected, "cases": ["one/c"]}],
+        )
+    )
+    assert departures.exclusions == {"one/a": "broken", "one/b/*": "broken"}
+    assert departures.overrides.keys() == {"one/c"}
+    override = departures.overrides["one/c"]
+    assert (override.note, override.a_subsumes_b, override.b_subsumes_a) == (
+        "corrected",
+        False,
+        None,
+    )
+
+
+@pytest.mark.parametrize(
+    ("exclude", "override"),
+    [
+        # A case is listed once: not twice in an entry, and not left out and overridden.
+        ([{"reason": "broken", "cases": ["one/a", "one/a"]}], []),
+        (
+            [{"reason": "broken", "cases": ["one/a"]}],
+            [{"note": "x", "a_subsumes_b": None, "b_subsumes_a": None, "cases": ["one/a"]}],
+        ),
+        # An override states both labels, and nothing has a key that is not known.
+        ([], [{"note": "x", "a_subsumes_b": None, "cases": ["one/a"]}]),
+        ([{"reason": "broken", "note": "x", "cases": ["one/a"]}], []),
+        # A case is a path below its collection, and an entry lists at least one.
+        ([{"reason": "broken", "cases": ["one"]}], []),
+        ([{"reason": "broken", "cases": []}], []),
+    ],
+)
+def test_overrides_that_are_not_what_the_model_says_are_not_read(
+    tmp_path: Path, exclude: Json, override: Json
+) -> None:
     with pytest.raises(ConfigError):
-        load_exclusions(file)
+        Overrides.read(overrides_file(tmp_path, exclude, override))
 
 
 def test_a_name_in_a_map_of_schemas_is_not_taken_for_a_keyword() -> None:

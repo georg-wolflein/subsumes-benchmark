@@ -12,13 +12,16 @@ import selectors
 import signal
 import subprocess
 import time
+from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import IO, TYPE_CHECKING, Literal, Self, cast, get_args
+from pathlib import Path
+from typing import IO, TYPE_CHECKING, Annotated, Literal, Self, cast, get_args
+
+from pydantic import Field, PrivateAttr
+
+from subsumes_benchmark.config import ConfigFile
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
-    from pathlib import Path
-
     from subsumes_benchmark.compare.results import Answer
 
 type Dialect = Literal["2020-12", "draft-07", "draft-04"]
@@ -34,46 +37,46 @@ STARTUP_SECONDS = 300.0
 GRACE_SECONDS = 2.0
 
 
-class ConfigError(Exception):
-    pass
+type Command = Annotated[Sequence[str], Field(min_length=1)]
 
 
-@dataclass(frozen=True)
-class Checker:
-    """A checker as its ``checker.json`` describes it."""
+class Checker(ConfigFile):
+    """A checker of the comparison, as the checker.json in its folder describes it."""
 
-    name: str
-    folder: Path
+    schema_ref: Literal["../../schemas/checker.schema.json"] = Field(alias="$schema")
+    """The schema of this file, for an editor."""
     label: str
-    # What tells this checker from another one of the same label, such as the language of
-    # the package it is used through.
-    variant: str | None
+    """The checker's name in a report. Folders with the same label are variants of one checker."""
+    variant: str | None = None
+    """What tells this folder from another one with the same label, such as the language of
+    the package the checker is used through."""
     version: str
+    """The version the folder pins, as the report states it."""
     homepage: str
+    """Where the checker lives."""
     dialect: Dialect
-    build: Sequence[str]
-    run: Sequence[str]
+    """The dialect the checker reads. Every schema is rewritten to it before the checker is
+    asked."""
+    build: Command
+    """The command that builds the adapter. It is run once, in the folder."""
+    run: Command
+    """The command that starts the adapter, in the folder."""
+
+    _folder: Path = PrivateAttr()
 
     @classmethod
     def load(cls, folder: Path) -> Self:
-        path = folder / "checker.json"
-        if not path.is_file():
-            raise ConfigError(f"{path} does not exist")
-        spec = json.loads(path.read_text(encoding="utf-8"))
-        dialect = spec["dialect"]
-        if dialect not in DIALECTS:
-            raise ConfigError(f"{path}: dialect is {dialect!r}, not one of {list(DIALECTS)}")
-        return cls(
-            name=folder.name,
-            folder=folder,
-            label=spec["label"],
-            variant=spec.get("variant"),
-            version=spec["version"],
-            homepage=spec["homepage"],
-            dialect=dialect,
-            build=spec["build"],
-            run=spec["run"],
-        )
+        checker = cls.read(folder / "checker.json")
+        checker._folder = folder
+        return checker
+
+    @property
+    def folder(self) -> Path:
+        return self._folder
+
+    @property
+    def name(self) -> str:
+        return self._folder.name
 
     def compile(self) -> None:
         """Build the adapter, in its folder."""

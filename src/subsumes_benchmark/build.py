@@ -31,12 +31,16 @@ import re
 import shutil
 import subprocess
 from collections import Counter
+from collections.abc import Sequence
 from dataclasses import dataclass, replace
 from decimal import Decimal
 from pathlib import Path
-from typing import TYPE_CHECKING, Literal, Self, assert_never
+from typing import TYPE_CHECKING, Annotated, Literal, Self, assert_never
 from urllib.parse import quote, urldefrag, urljoin
 
+from pydantic import Field, StringConstraints, model_validator
+
+from subsumes_benchmark.config import Config, ConfigError, ConfigFile
 from subsumes_benchmark.convert import (
     DRAFT_2020_12,
     ConversionError,
@@ -49,12 +53,19 @@ from subsumes_benchmark.testsuite import SuiteCase, pairs
 from subsumes_benchmark.unfuse import unfuse
 
 if TYPE_CHECKING:
-    from collections.abc import Iterator, Mapping, Sequence
+    from collections.abc import Iterator, Mapping
 
     from subsumes_benchmark import Json
     from subsumes_benchmark.convert import PointerMap
 
 SOURCES = Path("sources")
+
+# The name of a source or of a collection, which is the name of a folder.
+type Name = Annotated[str, StringConstraints(pattern=r"^[a-z0-9]+(-[a-z0-9]+)*$")]
+
+# The path of a case below corpus/, starting with its collection.
+type CasePath = Annotated[str, StringConstraints(pattern=r"^[^/]+(/[^/]+)+$")]
+type Cases = Annotated[Sequence[CasePath], Field(min_length=1)]
 
 type LabelOrigin = Literal["by-construction", "witness-generator", "upstream-tests"]
 
@@ -126,12 +137,57 @@ CASE_SCHEMA: dict[str, Json] = {
 }
 
 
-class ConfigError(Exception):
-    pass
-
-
 def git(*args: str) -> str:
     return subprocess.run(["git", *args], check=True, capture_output=True, text=True).stdout.strip()
+
+
+class SourceSpec(Config):
+    """An upstream source: a submodule under sources/, at the commit it pins."""
+
+    forge: Forge
+    """Where the source is hosted, which decides how the permanent link to one of its files
+    is written."""
+    license: str
+    """The SPDX identifier of the source's licence."""
+    license_file: str
+    """Where the text of the licence lives inside the source."""
+
+
+class CollectionSpec(Config):
+    """A collection: one dataset of a source."""
+
+    source: Name
+    """The name of the source the collection is built from, one of those under sources."""
+    path: str
+    """Where the dataset lives inside the source."""
+    labels: LabelOrigin
+    """Where the answers come from. by-construction: the pair was built so that the answer is
+    known. witness-generator: the upstream authors' complete but timeout-bound tool, so an
+    unlabelled case means that it gave up. upstream-tests: the expectations of the
+    jsonsubschema tool's own tests."""
+    use_case: UseCase
+    """What the pairs of the collection are for."""
+    description: str
+    """What the collection holds, in a sentence or two."""
+
+
+class Collections(ConfigFile):
+    """The collections of the corpus and the upstream sources they are built from."""
+
+    schema_ref: Literal["./schemas/collections.schema.json"] = Field(alias="$schema")
+    """The schema of this file, for an editor."""
+    sources: dict[Name, SourceSpec]
+    """The upstream sources, by name. The name is that of the submodule under sources/."""
+    collections: dict[Name, CollectionSpec]
+    """The collections, by name, in the order they are built. The name is the collection's
+    folder in the corpus."""
+
+    @model_validator(mode="after")
+    def _every_source_is_listed(self) -> Self:
+        named = {collection.source for collection in self.collections.values()}
+        if unknown := sorted(named - self.sources.keys()):
+            raise ValueError(f"collections are built from sources that are not listed: {unknown}")
+        return self
 
 
 @dataclass(frozen=True)
@@ -139,42 +195,37 @@ class Source:
     """An upstream repository, checked out as a submodule under ``sources/``."""
 
     name: str
+    spec: SourceSpec
     root: Path
     repository: str
-    forge: Forge
     commit: str
-    license: str
-    license_file: Path
 
     @classmethod
-    def create(cls, name: str, spec: Mapping[str, str]) -> Self:
+    def create(cls, name: str, spec: SourceSpec) -> Self:
         root = SOURCES / name
-        if not (root / spec["license_file"]).exists():
+        if not (root / spec.license_file).exists():
             raise ConfigError(f"{root} is not checked out; run `make sources`")
-        match spec["forge"]:
-            case "github" | "gitlab" as forge:
-                pass
-            case other:
-                raise ConfigError(f"source {name}: unknown forge {other}")
         return cls(
             name=name,
+            spec=spec,
             root=root,
             repository=git("config", "-f", ".gitmodules", "--get", f"submodule.{root}.url"),
-            forge=forge,
             commit=git("-C", str(root), "rev-parse", "HEAD"),
-            license=spec["license"],
-            license_file=root / spec["license_file"],
         )
+
+    @property
+    def license_file(self) -> Path:
+        return self.root / self.spec.license_file
 
     def permalink(self, path: Path) -> str:
         """The address of a file of this source at the commit the corpus is built from."""
-        match self.forge:
+        match self.spec.forge:
             case "github":
                 blob = "blob"
             case "gitlab":
                 blob = "-/blob"
             case _:
-                assert_never(self.forge)
+                assert_never(self.spec.forge)
         file = quote(path.relative_to(self.root).as_posix())
         return f"{self.repository.removesuffix('.git')}/{blob}/{self.commit}/{file}"
 
@@ -185,34 +236,87 @@ class Collection:
 
     name: str
     source: Source
-    path: str
-    labels: LabelOrigin
-    use_case: UseCase
-    description: str
+    spec: CollectionSpec
 
     @property
     def manifest(self) -> Json:
         return {
-            "description": self.description,
-            "use_case": self.use_case,
-            "labels": self.labels,
-            "license": self.source.license,
+            "description": self.spec.description,
+            "use_case": self.spec.use_case,
+            "labels": self.spec.labels,
+            "license": self.source.spec.license,
             "license_file": f"licenses/{self.source.name}.txt",
             "source": {
                 "repository": self.source.repository,
                 "commit": self.source.commit,
-                "path": self.path,
+                "path": self.spec.path,
             },
         }
 
 
-@dataclass(frozen=True)
-class Override:
-    """The labels a case gets instead of upstream's, and why."""
+class Exclusion(Config):
+    """Upstream cases that the corpus leaves out."""
+
+    reason: str
+    """Why the cases have no place in the corpus."""
+    cases: Cases
+    """What is left out. An entry is a case, or a folder followed by /* for every case below
+    it. For the test suite a folder is one test case, or one file."""
+
+
+class Override(Config):
+    """The labels that cases get in place of upstream's."""
 
     note: str
+    """What is wrong with upstream's label. It is copied into the case.json of every case
+    listed."""
     a_subsumes_b: bool | None
+    """Whether a.json accepts every instance valid under b.json; null when the corpus claims
+    nothing."""
     b_subsumes_a: bool | None
+    """The same for the other direction."""
+    cases: Cases
+    """The cases that get these labels."""
+
+
+class Overrides(ConfigFile):
+    """Where the corpus departs from upstream, and why.
+
+    A case may be listed only once. The labels hold for draft 2020-12 with format asserted
+    and patterns read as ECMA-262 regular expressions with the u flag. `make test-corpus`
+    checks every label that can be checked by validating instances, which includes the
+    corrected ones.
+    """
+
+    schema_ref: Literal["./schemas/overrides.schema.json"] = Field(alias="$schema")
+    """The schema of this file, for an editor."""
+    exclude: Sequence[Exclusion]
+    """The upstream cases that the corpus leaves out. A case is left out when one of its
+    schemas is not valid draft 2020-12 or does not resolve, or when a test case of the test
+    suite does not say what draft 2020-12 requires of a schema that stands on its own: such
+    a pair has no answer."""
+    override: Sequence[Override]
+    """The cases whose labels are not upstream's."""
+
+    @model_validator(mode="after")
+    def _a_case_is_listed_once(self) -> Self:
+        listed = Counter(case for entry in (*self.exclude, *self.override) for case in entry.cases)
+        if repeated := sorted(case for case, count in listed.items() if count > 1):
+            raise ValueError(f"listed more than once: {repeated}")
+        return self
+
+    @property
+    def exclusions(self) -> dict[str, str]:
+        """The reason of everything that is left out.
+
+        A key is a case id, or a folder followed by ``/*`` for every case below it.
+        """
+        return {case: entry.reason for entry in self.exclude for case in entry.cases}
+
+    @property
+    def overrides(self) -> dict[str, Override]:
+        """The override of every case that has one, by case id."""
+        return {case: entry for entry in self.override for case in entry.cases}
 
 
 @dataclass(frozen=True)
@@ -239,45 +343,11 @@ class Case:
 
 
 def load_collections(path: Path) -> list[Collection]:
-    config = json.loads(path.read_text(encoding="utf-8"))
-    sources = {name: Source.create(name, spec) for name, spec in config["sources"].items()}
+    config = Collections.read(path)
+    sources = {name: Source.create(name, spec) for name, spec in config.sources.items()}
     return [
-        Collection(
-            name=name,
-            source=sources[spec["source"]],
-            path=spec["path"],
-            labels=spec["labels"],
-            use_case=spec["use_case"],
-            description=spec["description"],
-        )
-        for name, spec in config["collections"].items()
+        Collection(name, sources[spec.source], spec) for name, spec in config.collections.items()
     ]
-
-
-def load_overrides(path: Path) -> dict[str, Override]:
-    """The override of every case ``overrides.json`` lists, by case id."""
-    overrides: dict[str, Override] = {}
-    for entry in json.loads(path.read_text(encoding="utf-8"))["override"]:
-        override = Override(entry["note"], entry["a_subsumes_b"], entry["b_subsumes_a"])
-        for case_id in entry["cases"]:
-            if case_id in overrides:
-                raise ConfigError(f"{path}: {case_id} is listed twice")
-            overrides[case_id] = override
-    return overrides
-
-
-def load_exclusions(path: Path) -> dict[str, str]:
-    """The reason of everything ``overrides.json`` leaves out.
-
-    A key is a case id, or a folder followed by ``/*`` for every case below it.
-    """
-    exclusions: dict[str, str] = {}
-    for entry in json.loads(path.read_text(encoding="utf-8"))["exclude"]:
-        for case_id in entry["cases"]:
-            if case_id in exclusions:
-                raise ConfigError(f"{path}: {case_id} is listed twice")
-            exclusions[case_id] = entry["reason"]
-    return exclusions
 
 
 # --------------------------------------------------------------------------- the inclusion artifact
@@ -314,7 +384,7 @@ def read_external_documents(
             cache[match.group(1)] = path
     needed: set[str] = set()
     for collection in collections:
-        for path in (source.root / collection.path).rglob("*.json"):
+        for path in (source.root / collection.spec.path).rglob("*.json"):
             external_refs(json.loads(path.read_text(encoding="utf-8")), "", needed)
     converted: dict[str, tuple[Converter, Json]] = {}
     pending = sorted(needed)
@@ -389,7 +459,7 @@ def read_inclusion(
     notes: Counter[str],
     dialects: Counter[str],
 ) -> Iterator[Case]:
-    dataset = collection.source.root / collection.path
+    dataset = collection.source.root / collection.spec.path
     for verdict_dir, included in VERDICT_DIRS.items():
         for path in sorted((dataset / verdict_dir).glob("*.json")):
             try:
@@ -458,7 +528,7 @@ def read_test_suite(collection: Collection, exclusions: Mapping[str, str]) -> It
     writes numbers as doubles, so a test case with a number that a double does not hold
     must be one that ``overrides.json`` excludes.
     """
-    tests_dir = collection.source.root / collection.path
+    tests_dir = collection.source.root / collection.spec.path
     for path in sorted(tests_dir.rglob("*.json")):
         name = path.relative_to(tests_dir).with_suffix("").as_posix()
         if name.startswith("proposals/"):
@@ -579,10 +649,9 @@ def overridden(cases: Sequence[Case], overrides: Mapping[str, Override]) -> list
 
 def build(out: Path, collections_file: Path, overrides_file: Path) -> None:
     collections = load_collections(collections_file)
-    overrides = load_overrides(overrides_file)
-    exclusions = load_exclusions(overrides_file)
-    if both := sorted(overrides.keys() & exclusions.keys()):
-        raise ConfigError(f"{overrides_file}: excluded and overridden at once: {both}")
+    departures = Overrides.read(overrides_file)
+    overrides = departures.overrides
+    exclusions = departures.exclusions
     sources = {c.source.name: c.source for c in collections}
     artifact = [c for c in collections if c.source.name == "inclusion-artifact"]
 

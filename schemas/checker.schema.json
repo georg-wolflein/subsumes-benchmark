@@ -1,13 +1,29 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/georg-wolflein/subsumes-benchmark/blob/main/schemas/checker.schema.json",
-  "title": "A checker of the comparison",
-  "description": "What the runner needs to know about the checker whose adapter lives in the folder of this file.",
-  "type": "object",
-  "required": ["label", "version", "homepage", "dialect", "build", "run"],
+  "$defs": {
+    "Command": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "Dialect": {
+      "enum": [
+        "2020-12",
+        "draft-07",
+        "draft-04"
+      ],
+      "type": "string"
+    }
+  },
   "additionalProperties": false,
+  "description": "A checker of the comparison, as the checker.json in its folder describes it.",
   "properties": {
     "$schema": {
+      "const": "../../schemas/checker.schema.json",
+      "description": "The schema of this file, for an editor.",
       "type": "string"
     },
     "label": {
@@ -15,35 +31,47 @@
       "type": "string"
     },
     "variant": {
-      "description": "What tells this folder from another one with the same label, such as the language of the package the checker is used through.",
-      "type": "string"
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "What tells this folder from another one with the same label, such as the language of the package the checker is used through."
     },
     "version": {
       "description": "The version the folder pins, as the report states it.",
       "type": "string"
     },
     "homepage": {
-      "type": "string",
-      "format": "uri"
+      "description": "Where the checker lives.",
+      "type": "string"
     },
     "dialect": {
-      "description": "The dialect the checker reads. Every schema is rewritten to it before the checker is asked.",
-      "enum": ["2020-12", "draft-07", "draft-04"]
+      "$ref": "#/$defs/Dialect",
+      "description": "The dialect the checker reads. Every schema is rewritten to it before the checker is asked."
     },
     "build": {
-      "description": "The command that builds the adapter. It is run once, in the folder.",
-      "$ref": "#/$defs/command"
+      "$ref": "#/$defs/Command",
+      "description": "The command that builds the adapter. It is run once, in the folder."
     },
     "run": {
-      "description": "The command that starts the adapter, in the folder.",
-      "$ref": "#/$defs/command"
+      "$ref": "#/$defs/Command",
+      "description": "The command that starts the adapter, in the folder."
     }
   },
-  "$defs": {
-    "command": {
-      "type": "array",
-      "minItems": 1,
-      "items": { "type": "string" }
-    }
-  }
+  "required": [
+    "$schema",
+    "label",
+    "version",
+    "homepage",
+    "dialect",
+    "build",
+    "run"
+  ],
+  "title": "Checker",
+  "type": "object"
 }

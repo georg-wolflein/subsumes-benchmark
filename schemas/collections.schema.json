@@ -1,40 +1,68 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/georg-wolflein/subsumes-benchmark/blob/main/schemas/collections.schema.json",
-  "title": "The collections of the corpus and the upstream sources they are built from",
-  "type": "object",
-  "required": ["sources", "collections"],
-  "additionalProperties": false,
-  "properties": {
-    "$schema": {
+  "$defs": {
+    "CollectionSpec": {
+      "additionalProperties": false,
+      "description": "A collection: one dataset of a source.",
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/Name",
+          "description": "The name of the source the collection is built from, one of those under sources."
+        },
+        "path": {
+          "description": "Where the dataset lives inside the source.",
+          "type": "string"
+        },
+        "labels": {
+          "$ref": "#/$defs/LabelOrigin",
+          "description": "Where the answers come from. by-construction: the pair was built so that the answer is known. witness-generator: the upstream authors' complete but timeout-bound tool, so an unlabelled case means that it gave up. upstream-tests: the expectations of the jsonsubschema tool's own tests."
+        },
+        "use_case": {
+          "$ref": "#/$defs/UseCase",
+          "description": "What the pairs of the collection are for."
+        },
+        "description": {
+          "description": "What the collection holds, in a sentence or two.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source",
+        "path",
+        "labels",
+        "use_case",
+        "description"
+      ],
+      "title": "CollectionSpec",
+      "type": "object"
+    },
+    "Forge": {
+      "enum": [
+        "github",
+        "gitlab"
+      ],
       "type": "string"
     },
-    "sources": {
-      "description": "The upstream sources, by name. A source is a submodule under sources/ with that name; its repository URL and commit are read from git.",
-      "type": "object",
-      "propertyNames": { "$ref": "#/$defs/name" },
-      "additionalProperties": { "$ref": "#/$defs/source" }
+    "LabelOrigin": {
+      "enum": [
+        "by-construction",
+        "witness-generator",
+        "upstream-tests"
+      ],
+      "type": "string"
     },
-    "collections": {
-      "description": "The collections, by name, in the order they are built. A collection is one dataset of a source, and its name is its folder in the corpus.",
-      "type": "object",
-      "propertyNames": { "$ref": "#/$defs/name" },
-      "additionalProperties": { "$ref": "#/$defs/collection" }
-    }
-  },
-  "$defs": {
-    "name": {
-      "type": "string",
-      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    "Name": {
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "type": "string"
     },
-    "source": {
-      "type": "object",
-      "required": ["forge", "license", "license_file"],
+    "SourceSpec": {
       "additionalProperties": false,
+      "description": "An upstream source: a submodule under sources/, at the commit it pins.",
       "properties": {
         "forge": {
-          "description": "Where the source is hosted, which decides how the permanent link to one of its files is written.",
-          "enum": ["github", "gitlab"]
+          "$ref": "#/$defs/Forge",
+          "description": "Where the source is hosted, which decides how the permanent link to one of its files is written."
         },
         "license": {
           "description": "The SPDX identifier of the source's licence.",
@@ -44,34 +72,58 @@
           "description": "Where the text of the licence lives inside the source.",
           "type": "string"
         }
-      }
+      },
+      "required": [
+        "forge",
+        "license",
+        "license_file"
+      ],
+      "title": "SourceSpec",
+      "type": "object"
     },
-    "collection": {
-      "type": "object",
-      "required": ["source", "path", "labels", "use_case", "description"],
-      "additionalProperties": false,
-      "properties": {
-        "source": {
-          "description": "The name of the source the collection is built from, one of those under sources.",
-          "$ref": "#/$defs/name"
-        },
-        "path": {
-          "description": "Where the dataset lives inside the source.",
-          "type": "string"
-        },
-        "labels": {
-          "description": "Where the answers come from. by-construction: the pair was built so that the answer is known. witness-generator: the upstream authors' complete but timeout-bound tool, so an unlabelled case means that it gave up. upstream-tests: the expectations of the jsonsubschema tool's own tests.",
-          "enum": ["by-construction", "witness-generator", "upstream-tests"]
-        },
-        "use_case": {
-          "description": "What the pairs of the collection are for.",
-          "enum": ["tool-checking", "schema-evolution", "schema-analysis"]
-        },
-        "description": {
-          "description": "What the collection holds, in a sentence or two.",
-          "type": "string"
-        }
-      }
+    "UseCase": {
+      "enum": [
+        "tool-checking",
+        "schema-evolution",
+        "schema-analysis"
+      ],
+      "type": "string"
     }
-  }
+  },
+  "additionalProperties": false,
+  "description": "The collections of the corpus and the upstream sources they are built from.",
+  "properties": {
+    "$schema": {
+      "const": "./schemas/collections.schema.json",
+      "description": "The schema of this file, for an editor.",
+      "type": "string"
+    },
+    "sources": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SourceSpec"
+      },
+      "description": "The upstream sources, by name. The name is that of the submodule under sources/.",
+      "propertyNames": {
+        "$ref": "#/$defs/Name"
+      },
+      "type": "object"
+    },
+    "collections": {
+      "additionalProperties": {
+        "$ref": "#/$defs/CollectionSpec"
+      },
+      "description": "The collections, by name, in the order they are built. The name is the collection's folder in the corpus.",
+      "propertyNames": {
+        "$ref": "#/$defs/Name"
+      },
+      "type": "object"
+    }
+  },
+  "required": [
+    "$schema",
+    "sources",
+    "collections"
+  ],
+  "title": "Collections",
+  "type": "object"
 }

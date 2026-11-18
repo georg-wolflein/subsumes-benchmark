@@ -54,7 +54,7 @@ def main() -> None:
             jobs=args.jobs,
         )
     else:
-        # The report draws charts, which needs more than the standard library; a run does not.
+        # The report draws charts, which needs matplotlib; a run does not.
         from subsumes_benchmark.compare.report import report  # noqa: PLC0415
 
         report(args.results, args.out, args.corpus, args.readme)

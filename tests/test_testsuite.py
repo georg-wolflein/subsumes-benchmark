@@ -9,7 +9,9 @@ import pytest
 from subsumes_benchmark.build import (
     Case,
     Collection,
+    CollectionSpec,
     Source,
+    SourceSpec,
     as_doubles,
     read_test_suite,
     without_repeats,
@@ -213,14 +215,19 @@ SUITE: Json = {
 def suite(root: Path) -> Collection:
     source = Source(
         name="suite",
+        spec=SourceSpec(forge="github", license="MIT", license_file="L"),
         root=root,
         repository="https://example.com/suite.git",
-        forge="github",
         commit="0" * 40,
-        license="MIT",
-        license_file=root / "L",
     )
-    return Collection("suite", source, "tests", "by-construction", "tool-checking", "Examples.")
+    spec = CollectionSpec(
+        source="suite",
+        path="tests",
+        labels="by-construction",
+        use_case="tool-checking",
+        description="Examples.",
+    )
+    return Collection("suite", source, spec)
 
 
 def test_the_test_cases_for_draft_2020_12_are_read(tmp_path: Path) -> None:
