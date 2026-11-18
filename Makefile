@@ -1,4 +1,4 @@
-.PHONY: ci lint format format-check typecheck config test test-corpus sources corpus compare report
+.PHONY: ci lint format format-check typecheck config test test-corpus sources corpus models compare report
 
 # The adapters under checkers/ that are checked like the code under src/: each Rust one is
 # a crate of its own, and each Python one a script with an environment of its own.
@@ -29,11 +29,14 @@ typecheck:
 		uv run ty check --python "$$(uv python find --script $$adapter)" $$adapter || exit 1; \
 	done
 
-config:  ## the schemas are valid, and every configuration file is valid under its schema
+config:  ## the schemas are valid, every configuration file is valid under its schema, and the generated models are current
 	uv run check-jsonschema --check-metaschema schemas/*.schema.json
 	uv run check-jsonschema --schemafile schemas/collections.schema.json collections.json
 	uv run check-jsonschema --schemafile schemas/overrides.schema.json overrides.json
 	uv run check-jsonschema --schemafile schemas/checker.schema.json checkers/*/checker.json
+	uv run datamodel-codegen --check --input schemas/collections.schema.json --output src/subsumes_benchmark/generated/collections.py --class-name CollectionsSpec
+	uv run datamodel-codegen --check --input schemas/overrides.schema.json --output src/subsumes_benchmark/generated/overrides.py --class-name OverridesSpec
+	uv run datamodel-codegen --check --input schemas/checker.schema.json --output src/subsumes_benchmark/generated/checker.py --class-name CheckerSpec
 
 test:
 	uv run pytest
@@ -46,6 +49,11 @@ sources:  ## fetch the upstream sources; they are opt-in submodules and only nee
 
 corpus:  ## rebuild corpus/ from the upstream sources
 	uv run python -m subsumes_benchmark
+
+models:  ## write src/subsumes_benchmark/generated/ from the schemas; the options are in pyproject.toml
+	uv run datamodel-codegen --input schemas/collections.schema.json --output src/subsumes_benchmark/generated/collections.py --class-name CollectionsSpec
+	uv run datamodel-codegen --input schemas/overrides.schema.json --output src/subsumes_benchmark/generated/overrides.py --class-name OverridesSpec
+	uv run datamodel-codegen --input schemas/checker.schema.json --output src/subsumes_benchmark/generated/checker.py --class-name CheckerSpec
 
 compare:  ## run every checker under checkers/ over the corpus into results/; hours, and needs their toolchains
 	for folder in checkers/*/; do uv run python -m subsumes_benchmark.compare run "$$(basename "$$folder")" || exit 1; done

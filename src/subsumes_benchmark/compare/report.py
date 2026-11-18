@@ -1,7 +1,7 @@
 """Writing the report on a set of runs: ``report.md`` and a chart for light and dark pages.
 
 The chart is drawn with matplotlib, which the ``report`` dependency group brings; a run
-needs the standard library only.
+does not need it.
 """
 
 import textwrap
