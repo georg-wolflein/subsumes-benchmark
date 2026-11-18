@@ -60,14 +60,14 @@ def write(folder: Path, run: Run, results: Sequence[Result]) -> None:
 # --------------------------------------------------------------------------- the tasks
 
 
-def test_a_case_is_asked_the_other_way_only_where_it_has_a_label_for_it(tmp_path: Path) -> None:
+def test_a_case_is_asked_both_ways_with_the_label_of_each(tmp_path: Path) -> None:
     tasks = read_tasks(CORPUS)
     forward = [task for task in tasks if task.direction == "a_subsumes_b"]
     backward = [task for task in tasks if task.direction == "b_subsumes_a"]
     assert [task.case for task in forward] == [case.id for case in cases()]
-    assert {task.case for task in backward} == {
-        case.id for case in cases() if case.b_subsumes_a is not None
-    }
+    assert [task.case for task in backward] == [case.id for case in cases()]
+    assert [task.expected for task in forward] == [case.a_subsumes_b for case in cases()]
+    assert [task.expected for task in backward] == [case.b_subsumes_a for case in cases()]
     # Asked the other way, the two schemas swap, so that the first is still the one that accepts.
     for task in (forward[0], backward[0]):
         found = case(task.case)
@@ -106,22 +106,27 @@ def test_how_a_task_counts(answer: Answer, expected: bool | None, counted: str) 
     assert outcome(a_result("c/1", answer, expected)) == counted
 
 
-def test_the_time_to_solve_a_share_counts_unsolved_tasks_as_slower() -> None:
+def test_only_a_task_with_a_label_is_solved_and_the_shares_are_of_those() -> None:
     entry = Entry(
         a_run(),
         [
             a_result("c/1", "yes", seconds=0.003),
-            a_result("c/2", "no", expected=None, seconds=0.001),
+            a_result("c/2", "no", expected=False, seconds=0.001),
             a_result("c/3", "no", seconds=0.0001),  # wrong, so not solved
             a_result("c/4", "unknown", seconds=0.0002),
+            a_result("c/5", "no", expected=None, seconds=0.00001),  # answered, and no more
+            a_result("d/1", "yes", expected=None),
         ],
     )
+    assert [result.case for result in entry.labelled()] == ["c/1", "c/2", "c/3", "c/4"]
+    assert [result.case for result in entry.unlabelled()] == ["c/5", "d/1"]
     assert entry.solved() == 2
     assert entry.solved_seconds() == [0.001, 0.003]
+    # Of the four tasks with a label; those that were not solved count as slower.
     assert entry.seconds_to_solve(0.25) == 0.001
     assert entry.seconds_to_solve(0.5) == 0.003
     assert entry.seconds_to_solve(0.75) is None
-    assert entry.collections() == {"c": (2, 4)}
+    assert entry.collections() == {"c": (2, 4), "d": (0, 0)}
     assert entry.solved(lambda result: result.case == "c/1") == 1
 
 
@@ -157,11 +162,14 @@ def test_runs_are_listed_by_label_and_must_be_over_the_same_tasks(tmp_path: Path
 
 
 def test_a_report_is_written_and_shown_in_the_readme(tmp_path: Path) -> None:
-    case = cases()[0]
-    with_format = next(case for case in cases() if "format" in case.features)
+    labelled = [case for case in cases() if case.a_subsumes_b is not None]
+    case = next(case for case in labelled if "format" not in case.features)
+    with_format = next(case for case in labelled if "format" in case.features)
+    without_label = next(case for case in cases() if case.b_subsumes_a is None)
     results = [
         a_result(case.id, "yes", case.a_subsumes_b, 0.002),
         a_result(with_format.id, "no", with_format.a_subsumes_b, 0.5),
+        Result(without_label.id, "b_subsumes_a", None, "no", 0.001, 0.001),
     ]
     write(tmp_path / "results" / "one", a_run("one", variant="Rust"), results)
     write(tmp_path / "results" / "two", a_run("two", variant="Python"), results[::-1])
@@ -171,9 +179,11 @@ def test_a_report_is_written_and_shown_in_the_readme(tmp_path: Path) -> None:
     report(tmp_path / "results", tmp_path / "comparison", CORPUS, readme)
 
     text = (tmp_path / "comparison" / "report.md").read_text(encoding="utf-8")
-    assert "a sample of 2 of the" in text
-    assert "The 1 tasks whose schemas use `format`" in text
-    assert "One (Rust) and One (Python) gave the same answer on 2 of 2 tasks." in text
+    assert "a sample of 3 of the" in text
+    assert "of which 2 have a label" in text
+    assert "The 1 tasks without a label." in text
+    assert "The 1 whose schemas use `format`" in text
+    assert "One (Rust) and One (Python) gave the same answer on 3 of 3 tasks." in text
     for name in ("chart-light.svg", "chart-dark.svg"):
         assert (tmp_path / "comparison" / name).read_text(encoding="utf-8").startswith("<?xml")
     shown = readme.read_text(encoding="utf-8")

@@ -49,18 +49,16 @@ def case_files(corpus: Path) -> Mapping[str, Path]:
 
 
 def read_tasks(corpus: Path) -> Sequence[Task]:
-    """Every task of the corpus, sorted by case.
+    """Every task of the corpus, sorted by case: two for each case, one in each direction.
 
-    A case always asks whether A subsumes B, also where the corpus claims nothing, since
-    how often a checker answers and how long it takes can be measured without a label. It
-    asks the other direction only where the corpus has a label for it.
+    Both are asked also where the corpus claims nothing, since how often a checker answers
+    can be measured without a label. Only a task with a label can be solved.
     """
     found = []
     for case, path in case_files(corpus).items():
         known = CaseSpec.read(path)
         found.append(Task(case, "a_subsumes_b", path, known.a_subsumes_b))
-        if known.b_subsumes_a is not None:
-            found.append(Task(case, "b_subsumes_a", path, known.b_subsumes_a))
+        found.append(Task(case, "b_subsumes_a", path, known.b_subsumes_a))
     return found
 
 
