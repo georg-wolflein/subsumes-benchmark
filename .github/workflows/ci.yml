@@ -84,8 +84,11 @@ jobs:
           done
           exit "$status"
 
-  # The quick tests: the build's transformations, the layout of the committed corpus, and
-  # that every case matches the schema of a case, so that its schemas are valid draft 2020-12.
+  # The tests: the build's transformations, and the committed corpus. They read every case of
+  # it: its layout holds, each case matches the schema of a case, so that its schemas are valid
+  # draft 2020-12, each reference resolves, each case lists the features of its schemas, and
+  # each label that validation can check holds. They need no upstream sources, so the
+  # submodules under sources/ stay unfetched.
   tests:
     runs-on: ubuntu-latest
     steps:
@@ -96,21 +99,3 @@ jobs:
           enable-cache: true
       - run: uv sync --all-groups
       - run: uv run pytest
-
-  # The slow tests read every schema of the committed corpus: each reference resolves, each
-  # case lists the features of its schemas, and each label that validation can check holds.
-  # They need no upstream sources, so the submodules under sources/ stay unfetched.
-  #
-  # They do not run on the release pull request, which changes the version and nothing in
-  # the corpus. A job that is skipped counts as passed where the ruleset requires it.
-  corpus:
-    if: github.head_ref != 'release-please--branches--main'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
-        with:
-          python-version: "3.14"
-          enable-cache: true
-      - run: uv sync --all-groups
-      - run: uv run pytest -m slow

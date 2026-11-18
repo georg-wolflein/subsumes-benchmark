@@ -1,11 +1,11 @@
-.PHONY: ci lint format format-check typecheck config test test-corpus sources corpus models compare report
+.PHONY: ci lint format format-check typecheck config test sources corpus models compare report
 
 # The adapters under checkers/ that are checked like the code under src/: each Rust one is
 # a crate of its own, and each Python one a script with an environment of its own.
 RUST_ADAPTERS := $(wildcard checkers/*/Cargo.toml)
 PYTHON_ADAPTERS := $(wildcard checkers/*/adapter.py)
 
-ci: lint format-check typecheck config test  ## what CI runs on every change, without the slow corpus tests
+ci: lint format-check typecheck config test  ## what CI runs on every change
 
 lint:
 	uv run ruff check .
@@ -41,9 +41,6 @@ config:  ## the schemas are valid, every configuration file is valid under its s
 
 test:
 	uv run pytest
-
-test-corpus:  ## the slow tests: every reference resolves, every case lists its features, every checkable label holds
-	uv run pytest -m slow
 
 sources:  ## fetch the upstream sources; they are opt-in submodules and only needed to rebuild
 	git submodule update --init --checkout sources/json-schema-test-suite sources/inclusion-artifact

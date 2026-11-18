@@ -58,7 +58,6 @@ def unresolved_in(schema: Json, uri: str) -> list[str]:
     return unresolved(schema, resolver, set())
 
 
-@pytest.mark.slow
 @pytest.mark.parametrize("collection", COLLECTIONS)
 def test_references_resolve(collection: str) -> None:
     found = {}
