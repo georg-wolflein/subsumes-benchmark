@@ -100,17 +100,29 @@ def test_every_license_is_there() -> None:
 
 
 def test_every_override_is_applied() -> None:
+    # An override is about an upstream case. Where the corpus has one case for several of
+    # them, that case has the notes of all, and the label of each direction from whichever
+    # of them gives one; so a label that an override leaves open may come from another.
     overrides = Overrides.read(ROOT / "overrides.json").overrides
     by_id = {case.id: case for case in cases()}
-    assert sorted(overrides.keys() - by_id.keys()) == []
-    not_applied = [
-        case_id
-        for case_id, override in overrides.items()
-        if (by_id[case_id].a_subsumes_b, by_id[case_id].b_subsumes_a, by_id[case_id].note)
-        != (override.a_subsumes_b, override.b_subsumes_a, override.note)
-    ]
+    not_applied = []
+    for case_id, override in overrides.items():
+        if (case := by_id.get(case_id)) is None:
+            continue
+        stated = (
+            (override.a_subsumes_b, case.a_subsumes_b),
+            (override.b_subsumes_a, case.b_subsumes_a),
+        )
+        if override.note not in (case.note or "") or any(
+            label is not None and label != given for label, given in stated
+        ):
+            not_applied.append(case_id)
     assert not_applied == []
-    assert [case.id for case in cases() if case.note is not None and case.id not in overrides] == []
+    assert len(overrides.keys() & by_id.keys()) > 30
+    # Every note is that of an override, and the note of every override is in the corpus.
+    assert {case.note for case in cases() if case.note is not None} == {
+        override.note for override in overrides.values()
+    }
 
 
 def test_no_excluded_case_is_in_the_corpus() -> None:

@@ -7,14 +7,12 @@ from typing import TYPE_CHECKING
 import pytest
 
 from subsumes_benchmark.build import (
-    Case,
     Collection,
     CollectionSpec,
     Source,
     SourceSpec,
     as_doubles,
     read_test_suite,
-    without_repeats,
 )
 from subsumes_benchmark.convert import ConversionError
 from subsumes_benchmark.testsuite import (
@@ -152,30 +150,6 @@ def test_the_negation_of_a_recursive_schema_rejects_what_the_schema_accepts() ->
     for instance in accepted + rejected:
         assert is_valid(instance, by_category["universal"].b)
         assert not is_valid(instance, by_category["unsatisfiable"].b)
-
-
-def case(case_id: str, a: Json, b: Json, a_subsumes_b: bool, b_subsumes_a: bool | None) -> Case:
-    return Case(case_id, a, b, a_subsumes_b, b_subsumes_a, upstream="x.json")
-
-
-def test_a_repeated_pair_is_kept_once_with_the_most_labels() -> None:
-    constant: Json = {"const": 2}
-    cases = [
-        case("suite/a/valid/0", constant, constant, True, None),
-        case("suite/a/valid/1", constant, {"const": 2.0}, True, None),
-        case("suite/a/reflexive", constant, constant, True, True),
-        case("suite/b/reflexive", constant, constant, True, True),
-        case("other/x", constant, constant, True, None),
-        case("other/y", constant, constant, True, None),
-    ]
-    assert [found.id for found in without_repeats(cases, "suite")] == [
-        "suite/a/valid/1",
-        "suite/a/reflexive",
-        "other/x",
-        "other/y",
-    ]
-    with pytest.raises(ConversionError):
-        without_repeats([*cases, case("suite/c/valid/0", constant, constant, False, None)], "suite")
 
 
 def test_numbers_are_read_as_doubles_and_the_lost_ones_are_named() -> None:

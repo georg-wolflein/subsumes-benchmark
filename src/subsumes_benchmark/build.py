@@ -192,6 +192,7 @@ class Case:
     upstream: str
     note: str | None = None
     derived: Derived | None = None
+    duplicates: Sequence[str] = ()
 
     @property
     def document(self) -> Json:
@@ -203,6 +204,8 @@ class Case:
             "features": list(features(self.a, self.b)),
             "upstream": self.upstream,
         }
+        if self.duplicates:
+            out["duplicates"] = list(self.duplicates)
         if self.note is not None:
             out["note"] = self.note
         if self.derived is not None:
@@ -428,30 +431,64 @@ def read_test_suite(collection: Collection, exclusions: Mapping[str, str]) -> It
                 )
 
 
-def without_repeats(cases: Sequence[Case], collection: str) -> list[Case]:
-    """The cases without those of a collection that repeat the two schemas of another one.
+def _digest(schema: Json) -> bytes:
+    """What tells a schema from every other one: two that are the same JSON value have the same."""
+    return hashlib.sha256(json.dumps(schema, sort_keys=True).encode()).digest()
 
-    The suite tests some schemas with the same instance twice, several test cases share a
-    schema, and a schema that is a ``const`` is its own instance. Each such pair is one
-    question, and the build asks it once: of the cases that ask it, the one that answers
-    both directions is kept, or else the first.
+
+def _one(case: Case, name: str, answers: Sequence[tuple[Case, bool | None]]) -> bool | None:
+    """The one answer that cases give to a question of ``case``, or ``None`` if none gives one."""
+    given = {answer: other for other, answer in answers if answer is not None}
+    if len(given) > 1:
+        raise ConversionError(
+            f"{given[True].id} and {given[False].id} hold the same two schemas and give "
+            f"{name} of {case.id} two answers"
+        )
+    return next(iter(given), None)
+
+
+def without_duplicates(cases: Sequence[Case]) -> list[Case]:
+    """One case for every pair of schemas, with what every case of that pair says.
+
+    Two cases are duplicates when they hold the same two schemas, in either order. Upstream
+    asks many a question twice: the suite tests some schemas with the same instance twice,
+    and the artifact asks most of its questions in both directions, as two tests. Of such
+    cases the one whose id sorts first is kept. It answers each direction with what any of
+    them says about it, has their notes, and lists the upstream files of the others.
+
+    A case whose two schemas are the same is a duplicate only of the cases with that schema.
+    Its two directions are one question, and still each keeps the label it has.
+
+    Raises:
+        ConversionError: Two duplicates give one question two answers.
     """
-    best: dict[str, Case] = {}
-    keys: dict[str, str] = {}
+    digests = {case.id: (_digest(case.a), _digest(case.b)) for case in cases}
+    groups: dict[frozenset[bytes], list[Case]] = {}
     for case in cases:
-        if case.id.partition("/")[0] != collection:
+        groups.setdefault(frozenset(digests[case.id]), []).append(case)
+    kept: dict[str, Case] = {}
+    for group in groups.values():
+        first, *others = sorted(group, key=lambda case: case.id.split("/"))
+        if not others:
+            kept[first.id] = first
             continue
-        key = keys[case.id] = json.dumps([case.a, case.b], sort_keys=True)
-        kept = best.setdefault(key, case)
-        for mine, theirs in (
-            (kept.a_subsumes_b, case.a_subsumes_b),
-            (kept.b_subsumes_a, case.b_subsumes_a),
-        ):
-            if mine is not None and theirs is not None and mine != theirs:
-                raise ConversionError(f"{kept.id} and {case.id} are one pair with two answers")
-        if kept.b_subsumes_a is None and case.b_subsumes_a is not None:
-            best[key] = case
-    return [case for case in cases if case.id not in keys or best[keys[case.id]] is case]
+        forward, backward = [(first, first.a_subsumes_b)], [(first, first.b_subsumes_a)]
+        for other in others:
+            mirrored = digests[other.id] != digests[first.id]
+            forward.append((other, other.b_subsumes_a if mirrored else other.a_subsumes_b))
+            backward.append((other, other.a_subsumes_b if mirrored else other.b_subsumes_a))
+        notes = dict.fromkeys(case.note for case in group if case.note is not None)
+        links = dict.fromkeys(
+            other.upstream for other in others if other.upstream != first.upstream
+        )
+        kept[first.id] = replace(
+            first,
+            a_subsumes_b=_one(first, "a_subsumes_b", forward),
+            b_subsumes_a=_one(first, "b_subsumes_a", backward),
+            note=" ".join(notes) or None,
+            duplicates=tuple(links),
+        )
+    return [kept[case.id] for case in cases if case.id in kept]
 
 
 # --------------------------------------------------------------------------- writing
@@ -561,19 +598,17 @@ def build(out: Path, collections_file: Path, overrides_file: Path, derived_file:
                 raise ConfigError(f"no reader for source {other}")
     upstream = [case for group in cases.values() for case in group]
     included = without_excluded(upstream, exclusions)
-    distinct = included
-    for collection in collections:
-        if collection.source.name == "json-schema-test-suite":
-            distinct = without_repeats(distinct, collection.name)
-    selected = with_derived(overridden(distinct, overrides), derived)
-    final = [
+    selected = overridden(included, overrides)
+    whole = [
         replace(case, a=bundled(case.a, documents), b=bundled(case.b, documents))
         for case in selected
     ]
     bundles = sum(
         (after.a is not before.a) + (after.b is not before.b)
-        for before, after in zip(selected, final, strict=True)
+        for before, after in zip(selected, whole, strict=True)
     )
+    distinct = without_duplicates(whole)
+    final = with_derived(distinct, derived)
 
     # A collection keeps its manifest next to its cases, so no case may have that name.
     if taken := sorted(case.id for case in final if case.id.split("/")[1:] == ["collection"]):
@@ -600,8 +635,8 @@ def build(out: Path, collections_file: Path, overrides_file: Path, derived_file:
     print(
         f"\n{len(documents)} external documents embedded in the {bundles} schemas that "
         f"reference them, {len(overrides)} overridden cases, {len(upstream) - len(included)} "
-        f"excluded cases, {len(included) - len(distinct)} repeated pairs of the test suite left "
-        f"out, {sum(len(list(by_label(entry))) for entry in derived.values())} derived labels"
+        f"excluded cases, {len(included) - len(distinct)} duplicate cases left out, "
+        f"{sum(len(list(by_label(entry))) for entry in derived.values())} derived labels"
     )
     print("\nwhat each side of the inclusion artifact declared as its dialect:")
     for dialect, n in dialects.most_common():

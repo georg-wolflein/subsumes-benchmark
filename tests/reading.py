@@ -63,6 +63,7 @@ class Case:
     b_subsumes_a: bool | None
     upstream: str
     note: str | None
+    duplicates: Sequence[str]
     derived: Json
     features: Sequence[str]
 
@@ -121,6 +122,8 @@ def cases() -> Sequence[Case]:
         assert isinstance(upstream, str)
         assert note is None or isinstance(note, str)
         assert isinstance(used, list)
+        also = metadata.get("duplicates", [])
+        assert isinstance(also, list)
         found.append(
             Case(
                 id=_case_id(path),
@@ -129,6 +132,7 @@ def cases() -> Sequence[Case]:
                 b_subsumes_a=_label(metadata["b_subsumes_a"]),
                 upstream=upstream,
                 note=note,
+                duplicates=[str(link) for link in also],
                 derived=metadata.get("derived"),
                 features=[str(feature) for feature in used],
             )
