@@ -159,15 +159,15 @@ The repository also measures open-source inclusion checkers on the corpus: how m
 
 | Checker | Version | Solved | Wrong yes | Wrong no | Fastest 50% within | Fastest 90% within |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Confluent Schema Registry | 8.4.1 | 50.9% | 533 | 8,228 | 19.1 ms | — |
-| jsoncompat (Rust) | 0.6.0 | 70.6% | 0 | 0 | 607 µs | — |
-| jsoncompat (Python) | 0.6.0 | 70.6% | 0 | 0 | 961 µs | — |
-| jsonsubschema | 0.0.8 | 38.8% | 648 | 2,351 | — | — |
-| RWG | 8064ad8 | 84.9% | 530 | 503 | 1.4 ms | — |
-| subsumes (Rust) | 0.2.0 | 94.1% | 10 | 11 | 103 µs | 2.1 ms |
-| subsumes (Python) | 0.2.0 | 94.1% | 10 | 11 | 174 µs | 3.6 ms |
+| Confluent Schema Registry | 8.4.1 | 55.9% | 547 | 8,879 | 1.6 ms | — |
+| jsoncompat (Rust) | 0.6.0 | 78.5% | 0 | 0 | 365 µs | — |
+| jsoncompat (Python) | 0.6.0 | 78.5% | 0 | 0 | 399 µs | — |
+| jsonsubschema | 0.0.8 | 39.4% | 691 | 2,458 | — | — |
+| RWG | 8064ad8 | 81.2% | 1,332 | 503 | 958 µs | — |
+| subsumes (Rust) | 0.4.0 | 94.2% | 0 | 0 | 87 µs | 2.3 ms |
+| subsumes (Python) | 0.4.0 | 94.2% | 0 | 0 | 81 µs | 1.8 ms |
 
-Measured on corpus `v0.8.0`, all 18,240 tasks, with 10 seconds per task. [The full report](comparison/report.md) has the counts with and without `format`, the collections and how it was measured.
+Measured on corpus `v0.9.0`, all 24,078 tasks, of which 21,867 have a label, with 10 seconds per task. [The full report](comparison/report.md) has the counts with and without `format`, the tasks without a label, the collections and how it was measured.
 
 <!-- comparison:end -->
 
