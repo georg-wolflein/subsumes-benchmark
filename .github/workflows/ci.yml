@@ -62,7 +62,8 @@ jobs:
         if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
         run: |
           status=0
-          for model in collections:CollectionsSpec overrides:OverridesSpec checker:CheckerSpec case:CaseSpec; do
+          for model in collections:CollectionsSpec overrides:OverridesSpec checker:CheckerSpec case:CaseSpec \
+              ready:ReadySpec request:RequestSpec reply:ReplySpec result:ResultSpec run:RunSpec; do
             uv run datamodel-codegen --check --input "schemas/${model%%:*}.schema.json" \
               --output "src/subsumes_benchmark/generated/${model%%:*}.py" --class-name "${model##*:}" || status=1
           done

@@ -2,7 +2,7 @@
 
 import random
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Literal
+from typing import TYPE_CHECKING
 
 from subsumes_benchmark.generated.case import CaseSpec
 
@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from collections.abc import Mapping, Sequence
     from pathlib import Path
 
-type Direction = Literal["a_subsumes_b", "b_subsumes_a"]
+    from subsumes_benchmark.generated.result import Direction
 
 
 @dataclass(frozen=True)

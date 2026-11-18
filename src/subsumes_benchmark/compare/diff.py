@@ -11,8 +11,21 @@ from collections import Counter
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Literal, assert_never
 
+from subsumes_benchmark.compare.results import collection, ending, seconds
 from subsumes_benchmark.compare.summary import outcome
+from subsumes_benchmark.compare.witness import refuted
 from subsumes_benchmark.compare.words import count, duration, plural, table
+from subsumes_benchmark.generated.result import (
+    Checked,
+    Crash,
+    Error,
+    No,
+    Timeout,
+    Unchecked,
+    Unknown,
+    Unsupported,
+    Yes,
+)
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -57,11 +70,11 @@ class Difference:
 
 
 def _answered(result: Result) -> bool:
-    return result.answer in ("yes", "no")
+    return isinstance(result, Yes | No)
 
 
 def _failed(result: Result) -> bool:
-    return result.answer in ("error", "crash", "timeout")
+    return isinstance(result, Error | Crash | Timeout)
 
 
 def _wrong(result: Result) -> bool:
@@ -69,15 +82,17 @@ def _wrong(result: Result) -> bool:
 
 
 def _columns(result: Result) -> Sequence[Column]:
-    match result.answer:
-        case "yes" | "no":
-            ended: Column = result.answer
-        case "unknown" | "unsupported":
+    match result:
+        case Yes():
+            ended: Column = "yes"
+        case No():
+            ended = "no"
+        case Unknown() | Unsupported():
             ended = "unknown"
-        case "error" | "crash" | "timeout":
+        case Error() | Crash() | Timeout():
             ended = "failed"
         case _:
-            assert_never(result.answer)
+            assert_never(result)
     return ("tasks", ended, "wrong") if _wrong(result) else ("tasks", ended)
 
 
@@ -94,14 +109,14 @@ def _name(result: Result) -> str:
 
 
 def _said(result: Result) -> str:
-    """The answer, with the kind of reason of an unknown and the message of an error."""
-    match result.answer:
-        case "unknown" if result.reason is not None:
+    """How the task ended, with the kind of reason of an unknown and the message of an error."""
+    match result:
+        case Unknown() if result.reason is not None:
             return f"unknown ({result.reason})"
-        case "error" | "crash" if result.detail:
-            return f"{result.answer} ({_shortened(result.detail)})"
+        case Error() | Crash():
+            return f"{ending(result)} ({_shortened(result.message)})"
         case _:
-            return result.answer
+            return ending(result)
 
 
 def _schemas(direction: Direction) -> tuple[str, str]:
@@ -118,12 +133,11 @@ def _schemas(direction: Direction) -> tuple[str, str]:
 def _described(result: Result) -> str:
     """The task with its answer, and with what is wrong with the answer if anything is."""
     faults = []
-    contradicted = _answered(result) and result.expected == (result.answer != "yes")
-    if contradicted:
+    if isinstance(result, Yes | No) and result.expected not in (None, result.answer):
         faults.append(f"the corpus says {'yes' if result.expected else 'no'}")
-    if result.witness is not None and result.witness.refuted:
+    if isinstance(result, No) and isinstance(result.witness, Checked) and refuted(result.witness):
         accepting, accepted = _schemas(result.direction)
-        instance = _shortened(json.dumps(result.witness.instance, ensure_ascii=False))
+        instance = _shortened(json.dumps(result.witness.counterexample, ensure_ascii=False))
         match result.witness.confirmation:
             case "not_an_instance":
                 faults.append(f"`{accepted}` rejects the counterexample `{instance}`")
@@ -185,7 +199,7 @@ class _Changes:
             answered=[(b, a) for b, a in pairs if not _answered(b) and _answered(a)],
             lost=[(b, a) for b, a in pairs if _answered(b) and not _answered(a)],
             flipped=[
-                (b, a) for b, a in pairs if _answered(b) and _answered(a) and b.answer != a.answer
+                (b, a) for b, a in pairs if _answered(b) and _answered(a) and ending(b) != ending(a)
             ],
             only_head=len(head) - len(pairs),
             only_base=len(base) - len(pairs),
@@ -198,7 +212,7 @@ def _tally_table(head: Sequence[Result], base: Sequence[Result] | None) -> str:
     def per_collection(results: Sequence[Result]) -> dict[str, Counter[Column]]:
         found: dict[str, list[Result]] = {}
         for result in results:
-            found.setdefault(result.collection, []).append(result)
+            found.setdefault(collection(result), []).append(result)
         return {name: _tally(found[name]) for name in sorted(found)}
 
     def row(name: str, now: Counter[Column], before: Counter[Column] | None) -> Sequence[str]:
@@ -216,7 +230,7 @@ def _tally_table(head: Sequence[Result], base: Sequence[Result] | None) -> str:
 
 def _time(head: Entry, base: Entry | None, changes: _Changes | None) -> str:
     def spent(results: Sequence[Result]) -> str:
-        return duration(sum(result.seconds or 0.0 for result in results))
+        return duration(sum(seconds(result) or 0.0 for result in results))
 
     text = f"The checker took {spent(head.results)} for the tasks of this run"
     if base is not None:
@@ -238,15 +252,19 @@ def _counterexamples(head: Sequence[Result]) -> str | None:
     One that is none is a wrong answer and named among those; one that was not looked at is
     named here, with the reason.
     """
-    witnesses = [(result, result.witness) for result in head if result.witness is not None]
+    witnesses = [
+        (result, result.witness)
+        for result in head
+        if isinstance(result, No) and result.witness is not None
+    ]
     if not witnesses:
         return None
     confirmed = sum(1 for _, witness in witnesses if witness.confirmation == "confirmed")
     text = f"A validator confirms {count(confirmed)} of {plural(len(witnesses), 'counterexample')}."
     unchecked = [
-        f"{_name(result)}: {witness.note}"
+        f"{_name(result)}: {witness.message}"
         for result, witness in witnesses
-        if witness.confirmation == "unchecked"
+        if isinstance(witness, Unchecked)
     ]
     if unchecked:
         heading = f"{plural(len(unchecked), 'counterexample')} not checked"
@@ -269,7 +287,7 @@ def _reasons(head: Sequence[Result], base: Sequence[Result] | None) -> str:
     """The kinds of reason for an unknown, counted."""
 
     def per_reason(results: Sequence[Result]) -> Counter[str]:
-        return Counter(r.reason or "none given" for r in results if r.answer == "unknown")
+        return Counter(r.reason or "none given" for r in results if isinstance(r, Unknown))
 
     now = per_reason(head)
     before = None if base is None else per_reason(base)
@@ -283,11 +301,11 @@ def _reasons(head: Sequence[Result], base: Sequence[Result] | None) -> str:
 
 
 def _slowest(head: Sequence[Result]) -> str | None:
-    timed = [(result.seconds, result) for result in head if result.seconds is not None]
+    timed = [(taken, result) for result in head if (taken := seconds(result)) is not None]
     if not timed:
         return None
     timed.sort(key=lambda pair: -pair[0])
-    rows = [[_name(r), _said(r), duration(seconds)] for seconds, r in timed[:TABLE_LIMIT]]
+    rows = [[_name(r), _said(r), duration(taken)] for taken, r in timed[:TABLE_LIMIT]]
     return _details("The tasks that took the longest", table(["task", "answer", "time"], rows))
 
 
@@ -317,7 +335,8 @@ def diff(
     run = head.run
     parts = [
         "## Benchmark",
-        f"{run.name} {run.version} on corpus `{run.corpus}`, {plural(len(results), 'task')}. "
+        f"{run.title} {run.checker.version} on corpus `{run.corpus}`, "
+        f"{plural(len(results), 'task')}. "
         + (
             "There is no run of the base to compare with."
             if base is None

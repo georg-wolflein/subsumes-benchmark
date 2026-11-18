@@ -19,20 +19,21 @@ fn schemas(request: &str) -> Result<(Value, Value), String> {
     Ok((schema("a")?, schema("b")?))
 }
 
-/// The answer to a request and what there is to say about it.
-fn check(request: &str, options: &SchemaOptions) -> Result<(&'static str, Option<String>), String> {
+/// The reply to a request, without its time.
+fn check(request: &str, options: &SchemaOptions) -> Result<Value, String> {
     let (a, b) = schemas(request)?;
     let read = |schema: &Value| -> Result<SchemaDocument, String> {
         SchemaDocument::from_json_with_options(schema, options).map_err(|e| e.to_string())
     };
     let (a, b) = (read(&a)?, read(&b)?);
-    match analyze_compat(&a, &b, Role::Serializer).map_err(|e| e.to_string())? {
-        CompatibilityResult::Compatible => Ok(("yes", None)),
+    let result = analyze_compat(&a, &b, Role::Serializer).map_err(|e| e.to_string())?;
+    Ok(match result {
+        CompatibilityResult::Compatible => json!({"answer": true}),
         CompatibilityResult::Incompatible { counterexample, .. } => {
-            Ok(("no", Some(counterexample.to_string())))
+            json!({"answer": false, "message": counterexample.to_string()})
         }
-        CompatibilityResult::Unknown { reason } => Ok(("unknown", Some(reason))),
-    }
+        CompatibilityResult::Unknown { reason } => json!({"answer": null, "message": reason}),
+    })
 }
 
 fn answer(request: &str, options: &SchemaOptions) -> Value {
@@ -42,10 +43,10 @@ fn answer(request: &str, options: &SchemaOptions) -> Value {
     let start = Instant::now();
     let outcome = check(request, options);
     let seconds = start.elapsed().as_secs_f64();
-    match outcome {
-        Ok((answer, detail)) => json!({"answer": answer, "seconds": seconds, "detail": detail}),
-        Err(detail) => json!({"answer": "error", "seconds": seconds, "detail": detail}),
-    }
+    let mut reply =
+        outcome.unwrap_or_else(|message| json!({"failure": "error", "message": message}));
+    reply["seconds"] = json!(seconds);
+    reply
 }
 
 fn main() -> io::Result<()> {

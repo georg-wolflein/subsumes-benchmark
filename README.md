@@ -180,7 +180,9 @@ Whoever develops a checker can hold the run of a change against the run of what 
 uv run subsumes-benchmark diff results/jsoncompat --base base/jsoncompat --out comment.md
 ```
 
-That writes a comment for a pull request: the answers by collection with what changed, the wrong answers, the tasks that the base answered and the change does not, those it answers newly, and the kinds of reason for declining. The command fails when an answer is wrong, when a task ended in an error, a crash or a timeout, and when a task of the base is no longer answered, unless `--allow-lost` accepts that.
+A run is two files in its folder: `results.jsonl` with one line per task, which [`schemas/result.schema.json`](schemas/result.schema.json) describes, and `run.json` with what ran and under which limits, which [`schemas/run.schema.json`](schemas/run.schema.json) describes.
+
+The `diff` above writes a comment for a pull request: the answers by collection with what changed, the wrong answers, the tasks that the base answered and the change does not, those it answers newly, and the kinds of reason for declining. The command fails when an answer is wrong, when a task ended in an error, a crash or a timeout, and when a task of the base is no longer answered, unless `--allow-lost` accepts that.
 
 The command is also a package on PyPI, [`subsumes-benchmark`](https://pypi.org/project/subsumes-benchmark/), for a checker that lives in another repository: `uvx subsumes-benchmark==<version> corpus corpus` unpacks the corpus of that version, which the package holds, and `uvx subsumes-benchmark==<version> run path/to/checker` runs the adapter in that folder over it.
 
@@ -233,7 +235,7 @@ The artifact lists the narrower schema first, so `b` is its first schema and `a`
 | `corpus/` | The corpus: generated, committed, never edited by hand |
 | `collections.json` | The collections and the upstream dataset each is built from |
 | `overrides.json` | Every departure from upstream, with the reason: the cases left out and the labels changed |
-| `schemas/` | The schemas of a case, of `collections.json`, of `overrides.json` and of a checker's `checker.json`, which say what each key means. The corpus carries a copy of the first |
+| `schemas/` | The schemas of a case, of `collections.json`, of `overrides.json` and of a checker's `checker.json`, of the three lines of the protocol between the runner and an adapter, and of the two files of a run. They say what each key means. The corpus carries a copy of the first |
 | `src/subsumes_benchmark/generated/` | The Pydantic models that read the files those schemas describe: generated from the schemas, never edited by hand |
 | `sources/` | The upstream repositories as submodules, fetched only to rebuild |
 | `src/subsumes_benchmark/` | The build: `testsuite`, `unfuse`, `convert`, `features`, `build` |

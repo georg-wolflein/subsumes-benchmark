@@ -56,28 +56,38 @@ The adapter is a program that starts once and answers many requests, so that sta
 1. On start, the adapter prints `{"ready": true}`.
 2. For every request line it prints one reply line.
 
+Each of the three lines has a schema under [`schemas/`](../schemas): [`ready`](../schemas/ready.schema.json), [`request`](../schemas/request.schema.json) and [`reply`](../schemas/reply.schema.json). They say what a line holds, key by key, and the runner writes a request and reads the other two with models that are generated from them. Two rules hold in all of them, and in the files of a run: a key that does not apply is left out and not written as `null`, and no line has a key that its schema does not name.
+
 A request holds two schemas and the time allowed:
 
 ```json
 {"a": {"type": "string"}, "b": {"maxLength": 3}, "timeout": 10.0}
 ```
 
-`a` and `b` are the schemas themselves, as JSON values on the one line of the request. Nothing is written to a file, and an adapter never reads the corpus. The question is always whether `a` accepts every instance valid under `b`. The reply:
+`a` and `b` are the schemas themselves, as JSON values on the one line of the request. Nothing is written to a file, and an adapter never reads the corpus. The question is always whether `a` accepts every instance valid under `b`.
+
+A reply is an answer to that question, or it says why there is none. An answer is `true`, `false` or `null`, as the label of a case is:
 
 ```json
-{"answer": "yes", "seconds": 0.00042, "detail": null}
+{"answer": true, "seconds": 0.00042}
+{"answer": false, "seconds": 0.00042, "counterexample": "x"}
+{"answer": null, "seconds": 0.00042, "reason": "uniqueItems", "message": "#/uniqueItems in schema A is not supported"}
+{"failure": "error", "message": "the schema is no schema"}
+{"failure": "timeout"}
 ```
 
-- **`answer`**: `yes` when A accepts every instance of B, `no` when it does not, `unknown` when the checker ran and declined, `error` when it failed or rejected a schema, `timeout` when it stopped itself after the time allowed.
+| Reply | When | Has to have | May have |
+| --- | --- | --- | --- |
+| `"answer": true` | `a` accepts every instance of `b` | `seconds` | |
+| `"answer": false` | It does not | `seconds` | `counterexample`, `message` |
+| `"answer": null` | The checker ran and declined | `seconds` | `reason`, `message` |
+| `"failure": "error"` | The checker failed, or rejected a schema | `message` | `seconds` |
+| `"failure": "timeout"` | The checker stopped itself after the time allowed | | |
+
 - **`seconds`**: what the checker took, measured by the adapter. It covers parsing each schema once, and the check, which is what someone pays who holds two schemas as text. An adapter whose checker takes a parsed schema starts the clock before it parses the request, since that parses the two. An adapter whose checker takes text writes each schema back to text first, and starts the clock then.
-- **`detail`**: optional, a short text for a person: a counterexample, the reason for declining, the error.
-- **`reason`**: optional, with an `unknown`: what kind of reason the checker had, in a word or two that are the same for every task declined for it, such as the keyword it does not support. A report counts the declined tasks by it; `detail` has the reason in full.
-- **`counterexample`**: optional, with a `no`: an instance that is valid under `b` and invalid under `a`, as JSON. The runner asks a validator whether it is one, and a `no` with a counterexample that is none counts as a wrong answer. Leave the key out where the checker gives none, since `null` is an instance.
-
-```json
-{"answer": "no", "seconds": 0.00042, "detail": "\"x\"", "counterexample": "x"}
-{"answer": "unknown", "seconds": 0.00042, "detail": "#/uniqueItems in schema A is not supported", "reason": "uniqueItems"}
-```
+- **`counterexample`**: an instance that is valid under `b` and invalid under `a`, as JSON. The runner asks a validator whether it is one, and a no with a counterexample that is none counts as a wrong answer. Leave the key out where the checker gives none, since `null` is an instance.
+- **`reason`**: what kind of reason the checker had to decline, in a word or two that are the same for every task declined for it, such as the keyword it does not support. A report counts the declined tasks by it.
+- **`message`**: a text for a person: what the checker says about its no, the reason for declining in full, the error.
 
 The validator is [jsonschema-rs](https://github.com/Stranger6667/jsonschema) for draft 2020-12 with `format` asserted. It is asked about the two schemas of the case as the corpus has them, also where the checker reads an older draft and got them rewritten.
 
@@ -85,8 +95,9 @@ Rules for an adapter:
 
 - **Nothing but replies on the standard output.** A library that prints must be redirected to the standard error, which the runner keeps as a log next to the results.
 - **Assert `format`** where the checker can, since the labels of the corpus hold with `format` asserted.
-- **Survive an error.** Catch what the checker throws and reply `error`, so that the next request is answered by a warm process.
-- **A timeout need not be handled.** The runner waits two seconds longer than the time allowed, then kills the adapter, counts the task as a timeout and starts the adapter again. An adapter that can stop a check itself replies `timeout` and stays warm.
+- **Only the keys of the reply.** Each of the five has its own keys, as the table has them: a `counterexample` belongs to a no and a `reason` to a `null`. A line that is no reply by the schema counts as a crash of the adapter: the runner records the task so, with what is wrong with the line, and starts the adapter again.
+- **Survive an error.** Catch what the checker throws and reply with the failure `error`, so that the next request is answered by a warm process.
+- **A timeout need not be handled.** The runner waits two seconds longer than the time allowed, then kills the adapter, counts the task as a timeout and starts the adapter again. An adapter that can stop a check itself replies with the failure `timeout` and stays warm.
 
 ## A checker in another repository
 

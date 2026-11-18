@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/georg-wolflein/subsumes-benchmark/blob/main/schemas/request.schema.json",
+  "description": "A request of the runner to an adapter, as one line on its standard input: does a accept every instance that is valid under b?",
+  "type": "object",
+  "required": [
+    "a",
+    "b",
+    "timeout"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "a": {
+      "description": "The schema that should accept everything.",
+      "$ref": "#/$defs/Schema"
+    },
+    "b": {
+      "description": "The schema whose instances must be accepted.",
+      "$ref": "#/$defs/Schema"
+    },
+    "timeout": {
+      "description": "The seconds that the checker may take. The runner waits a little longer and then kills the adapter, so an adapter need not keep to it.",
+      "type": "number",
+      "exclusiveMinimum": 0
+    }
+  },
+  "$defs": {
+    "Schema": {
+      "description": "A schema of the draft that the checker reads: of draft 2020-12 as the corpus has it, or rewritten to an older draft.",
+      "type": [
+        "object",
+        "boolean"
+      ]
+    }
+  }
+}
