@@ -141,13 +141,14 @@ The repository also measures open-source inclusion checkers on the corpus: how m
 
 | Checker | Version | Solved | Wrong yes | Wrong no | Fastest 50% within | Fastest 90% within |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Confluent Schema Registry | 8.4.1 | 50.7% | 533 | 8,267 | 31.3 ms | — |
-| jsoncompat (Rust) | 0.6.0 | 70.5% | 12 | 11 | 606 µs | — |
-| jsoncompat (Python) | 0.6.0 | 70.5% | 12 | 11 | 930 µs | — |
-| jsonsubschema | 0.0.8 | 38.9% | 641 | 2,348 | — | — |
-| RWG | 8064ad8 | 84.8% | 537 | 507 | 1.3 ms | — |
+| Confluent Schema Registry | 8.4.1 | 50.7% | 533 | 8,267 | 40.5 ms | — |
+| jsoncompat (Rust) | 0.6.0 | 70.5% | 12 | 11 | 763 µs | — |
+| jsoncompat (Python) | 0.6.0 | 70.5% | 12 | 11 | 1.3 ms | — |
+| jsonsubschema | 0.0.8 | 39.0% | 641 | 2,360 | — | — |
+| RWG | 8064ad8 | 84.9% | 537 | 507 | 1.1 ms | — |
+| subsumes | 0.1.0 | 94.2% | 1 | 1 | 126 µs | 2.7 ms |
 
-Measured on corpus `v0.5.0`, all 18,262 tasks, with 10 seconds per task. [The full report](comparison/report.md) has the counts with and without `format`, the collections and how it was measured.
+Measured on corpus `v0.5.0-7-g6e2be6c29`, all 18,262 tasks, with 10 seconds per task. [The full report](comparison/report.md) has the counts with and without `format`, the collections and how it was measured.
 
 <!-- comparison:end -->
 
