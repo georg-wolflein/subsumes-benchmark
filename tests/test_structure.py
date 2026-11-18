@@ -2,10 +2,9 @@
 
 import json
 
-from jsonschema import Draft202012Validator
-
 from reading import CORPUS, ROOT, cases, read
 from subsumes_benchmark.build import Overrides, exclusion_of
+from subsumes_benchmark.generated.case import CaseSpec
 
 CONFIG = json.loads((ROOT / "collections.json").read_text(encoding="utf-8"))
 COLLECTIONS = CONFIG["collections"]
@@ -27,23 +26,16 @@ def test_every_file_is_a_case_or_a_shared_file() -> None:
     assert stray == []
 
 
-def test_every_case_matches_the_case_schema_and_names_it() -> None:
-    schema = ROOT / "schemas" / "case.schema.json"
-    schema_of_corpus = (CORPUS / "case.schema.json").resolve()
-    assert schema_of_corpus.read_bytes() == schema.read_bytes()
-    written = read(schema)
-    assert isinstance(written, dict)
-    validator = Draft202012Validator(written)
-    invalid = {}
-    elsewhere = []
-    for case in cases():
-        document = read(case.file)
-        assert isinstance(document, dict)
-        if errors := [error.message for error in validator.iter_errors(document)]:
-            invalid[case.id] = errors
-        elif (case.file.parent / str(document["$schema"])).resolve() != schema_of_corpus:
-            elsewhere.append(case.id)
-    assert invalid == {}
+def test_every_case_is_read_by_the_model_of_a_case_and_names_its_schema() -> None:
+    # The slow tests hold every case against the schema itself, which also says that the two
+    # schemas of a case are valid; the model generated from it takes them as they are.
+    schema = (CORPUS / "case.schema.json").resolve()
+    assert schema.read_bytes() == (ROOT / "schemas" / "case.schema.json").read_bytes()
+    elsewhere = [
+        case.id
+        for case in cases()
+        if (case.file.parent / CaseSpec.read(case.file).field_schema).resolve() != schema
+    ]
     assert elsewhere == []
 
 

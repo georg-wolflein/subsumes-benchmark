@@ -9,7 +9,7 @@ from subsumes_benchmark.config import Config
 
 type Schema = dict[str, Any] | bool
 """
-A draft 2020-12 schema that stands on its own: every document it references is embedded in it.
+A schema of draft 2020-12.
 """
 
 
