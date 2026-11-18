@@ -13,7 +13,6 @@ what the binding costs.
 import json
 import sys
 import time
-from pathlib import Path
 
 from jsoncompat import SchemaOptions, analyze_compat
 
@@ -37,10 +36,11 @@ def main() -> None:
     print(json.dumps({"ready": True}), flush=True)
     for line in sys.stdin:
         request = json.loads(line)
-        a = Path(request["a"]).read_text(encoding="utf-8")
-        b = Path(request["b"]).read_text(encoding="utf-8")
-        # The clock runs from the schemas as text to the answer. The call cannot be
-        # interrupted from Python, so the runner enforces the timeout.
+        # The package takes a schema as text, so each is written back to text first.
+        a, b = json.dumps(request["a"]), json.dumps(request["b"])
+        # The clock runs from the schemas as text to the answer, so that each is parsed once
+        # in that time. The call cannot be interrupted from Python, so the runner enforces
+        # the timeout.
         start = time.perf_counter()
         answer, detail = check(a, b)
         seconds = time.perf_counter() - start

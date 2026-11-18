@@ -8,8 +8,6 @@ import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 
 /**
@@ -40,9 +38,11 @@ public final class Adapter {
     }
   }
 
-  /** The registry reads a schema without {@code $schema} as draft-07; the corpus is 2020-12. */
-  private static String read(String path) throws Exception {
-    JsonNode schema = MAPPER.readTree(Files.readString(Path.of(path)));
+  /**
+   * A schema of a request as the text that the registry takes. The registry reads a schema
+   * without {@code $schema} as draft-07; the corpus is 2020-12.
+   */
+  private static String text(JsonNode schema) throws Exception {
     if (schema instanceof ObjectNode object && !object.has("$schema")) {
       object.put("$schema", DRAFT_2020_12);
     }
@@ -59,14 +59,15 @@ public final class Adapter {
     protocol.println("{\"ready\":true}");
     for (String line = requests.readLine(); line != null; line = requests.readLine()) {
       JsonNode request = MAPPER.readTree(line);
-      String a = read(request.get("a").asText());
-      String b = read(request.get("b").asText());
+      String a = text(request.get("a"));
+      String b = text(request.get("b"));
       long timeoutMillis = (long) (request.get("timeout").asDouble() * 1000);
 
       Outcome[] outcome = new Outcome[1];
       Thread thread = new Thread(null, () -> outcome[0] = check(a, b), "check", STACK_BYTES);
       thread.setDaemon(true);
-      // The clock runs from the schemas as text to the answer.
+      // The clock runs from the schemas as text to the answer, so that each is parsed once
+      // in that time.
       long start = System.nanoTime();
       thread.start();
       thread.join(timeoutMillis);

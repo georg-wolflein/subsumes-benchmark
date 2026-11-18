@@ -103,18 +103,24 @@ class Worker:
         self._process: subprocess.Popen[bytes] | None = None
         self._buffer = b""
 
-    def ask(self, a: Path, b: Path, timeout: float) -> Reply:
-        """Ask whether ``a`` accepts every instance valid under ``b``."""
+    def ask(self, a: Json, b: Json, timeout: float) -> Reply:
+        """Ask whether the schema ``a`` accepts every instance valid under the schema ``b``.
+
+        The two go into the request as they are, as JSON values, on its one line.
+        """
         try:
             process = self._started()
         except (_TimedOutError, _DiedError) as exc:
             self._kill()
             return Reply("crash", None, 0.0, f"the adapter did not start: {exc}")
-        request = json.dumps({"a": str(a), "b": str(b), "timeout": timeout}) + "\n"
+        request = json.dumps({"a": a, "b": b, "timeout": timeout}, allow_nan=False) + "\n"
         start = time.perf_counter()
         try:
             assert process.stdin is not None
-            process.stdin.write(request.encode())
+            # A request holds two schemas and may be longer than a pipe takes at once.
+            unsent = memoryview(request.encode())
+            while unsent:
+                unsent = unsent[process.stdin.write(unsent) :]
             process.stdin.flush()
             line = self._line(start + timeout + GRACE_SECONDS)
         except _TimedOutError:

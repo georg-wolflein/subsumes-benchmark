@@ -11,7 +11,6 @@ import utils.SchemaProcessorLib
 
 import java.io.{BufferedReader, FileDescriptor, FileOutputStream, InputStreamReader, OutputStream, PrintStream}
 import java.nio.charset.StandardCharsets
-import java.nio.file.{Files, Paths}
 import scala.collection.mutable
 import scala.util.control.NonFatal
 
@@ -67,7 +66,8 @@ object Adapter:
       protocol.println("""{"ready":true}""")
       Iterator.continually(requests.readLine()).takeWhile(_ != null).foreach { line =>
         val request = parse(line).fold(throw _, identity).hcursor
-        def text(key: String) = Files.readString(Paths.get(request.get[String](key).fold(throw _, identity)))
+        // RWG takes a schema as text, so each is written back to text.
+        def text(key: String) = request.get[Json](key).fold(throw _, identity).noSpaces
         val (a, b) = (text("a"), text("b"))
         val timeoutMillis = (request.get[Double]("timeout").fold(throw _, identity) * 1000).toLong
 
