@@ -13,6 +13,7 @@ from subsumes_benchmark.build import (
     SourceSpec,
     bundled,
     case_name,
+    without_duplicates,
     without_excluded,
     write_json,
 )
@@ -198,6 +199,96 @@ def test_a_folder_excludes_every_case_below_it() -> None:
         without_excluded(cases, {"one/a/refl/*": "broken"})
     with pytest.raises(ConfigError):
         without_excluded(cases, {"one/a/reflexive/*": "broken"})
+
+
+def a_case(
+    case_id: str,
+    a: Json,
+    b: Json,
+    a_subsumes_b: bool | None = None,
+    b_subsumes_a: bool | None = None,
+    note: str | None = None,
+) -> Case:
+    return Case(case_id, a, b, a_subsumes_b, b_subsumes_a, f"{case_id}.json", note)
+
+
+TEXT: Json = {"type": "string"}
+OPTIONAL: Json = {"type": ["string", "null"]}
+NUMBER: Json = {"type": "number"}
+
+
+def test_cases_with_the_same_two_schemas_are_one_case_that_says_what_each_says() -> None:
+    cases = [
+        # Asked in both directions, as two cases: the second is the first one the other way.
+        a_case("one/x_v2_not_v1", OPTIONAL, TEXT, True),
+        a_case("one/x_v1_not_v2", TEXT, OPTIONAL, False),
+        # Asked twice the same way; only the one that is not kept knows the answer.
+        a_case("one/b", TEXT, NUMBER, None, None),
+        a_case("two/b", TEXT, NUMBER, False, False, note="Corrected."),
+        a_case("one/alone", NUMBER, OPTIONAL, False),
+    ]
+    kept = without_duplicates(cases)
+    assert [case.id for case in kept] == ["one/x_v1_not_v2", "one/b", "one/alone"]
+    both, twice, alone = kept
+    assert (both.a_subsumes_b, both.b_subsumes_a) == (False, True)
+    assert both.duplicates == ("one/x_v2_not_v1.json",)
+    assert (twice.a_subsumes_b, twice.b_subsumes_a, twice.note) == (False, False, "Corrected.")
+    assert twice.duplicates == ("two/b.json",)
+    assert alone is cases[4]
+    written = both.document
+    assert isinstance(written, dict)
+    assert list(written)[4:6] == ["upstream", "duplicates"]
+    # The order the cases come in decides nothing.
+    assert without_duplicates(cases[::-1]) == kept[::-1]
+
+
+def test_the_case_whose_id_sorts_first_is_kept() -> None:
+    cases = [a_case(case_id, TEXT, NUMBER) for case_id in ("two/a", "one/b/2", "one/b/10", "one/c")]
+    (kept,) = without_duplicates(cases)
+    # Sorted as the cases of the corpus are: by folder, then by name.
+    assert kept.id == "one/b/10"
+    assert kept.duplicates == ("one/b/2.json", "one/c.json", "two/a.json")
+
+
+def test_a_case_whose_two_schemas_are_the_same_keeps_the_label_of_each_direction() -> None:
+    cases = [a_case("one/a", TEXT, TEXT, True), a_case("one/b", TEXT, TEXT, None, True)]
+    (kept,) = without_duplicates(cases)
+    assert (kept.a_subsumes_b, kept.b_subsumes_a) == (True, True)
+    # Its own label for one direction is not taken for the other, though they are one question.
+    (alone,) = without_duplicates([cases[0]])
+    assert (alone.a_subsumes_b, alone.b_subsumes_a) == (True, None)
+    (still,) = without_duplicates([cases[0], a_case("one/c", TEXT, TEXT, True)])
+    assert (still.a_subsumes_b, still.b_subsumes_a) == (True, None)
+
+
+def test_duplicates_that_come_from_one_upstream_file_list_it_once_and_not_their_own() -> None:
+    same_file = [
+        Case("one/a", TEXT, NUMBER, None, None, "x.json#/0"),
+        Case("one/b", TEXT, NUMBER, None, None, "x.json#/0"),
+        Case("one/c", NUMBER, TEXT, None, None, "x.json#/1"),
+        Case("one/d", NUMBER, TEXT, None, None, "x.json#/1"),
+    ]
+    (kept,) = without_duplicates(same_file)
+    assert kept.duplicates == ("x.json#/1",)
+
+
+def test_duplicates_must_not_contradict_each_other() -> None:
+    with pytest.raises(ConversionError, match="two answers"):
+        without_duplicates(
+            [a_case("one/a", TEXT, NUMBER, True), a_case("one/b", TEXT, NUMBER, False)]
+        )
+    with pytest.raises(ConversionError, match="two answers"):
+        without_duplicates(
+            [a_case("one/a", TEXT, NUMBER, True), a_case("one/b", NUMBER, TEXT, None, False)]
+        )
+    # Two notes are both kept.
+    (kept,) = without_duplicates(
+        [
+            a_case("one/a", TEXT, NUMBER, note="First."),
+            a_case("one/b", NUMBER, TEXT, note="Second."),
+        ]
+    )
+    assert kept.note == "First. Second."
 
 
 def overrides_file(folder: Path, exclude: Json, override: Json) -> Path:

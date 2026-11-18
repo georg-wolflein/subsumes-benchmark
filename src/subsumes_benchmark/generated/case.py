@@ -134,6 +134,10 @@ class CaseSpec(Config):
     """
     A permanent link to the file this case comes from, in the source repository at the commit that collection.json names; the test suite's cases add a JSON pointer to the test case or the test after a '#'.
     """
+    duplicates: Annotated[list[str] | None, Field(min_length=1)] = None
+    """
+    Permanent links to the other upstream files that hold these two schemas, in either order, each written like upstream. The corpus has one case for all of them, and its labels are what any of them says; absent when there is no other.
+    """
     note: str | None = None
     """
     Why the labels depart from upstream's; absent when they do not.

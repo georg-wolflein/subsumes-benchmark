@@ -180,4 +180,4 @@ def test_references_lead_where_the_referencing_library_says() -> None:
                 found[f"{case.id}/{side}.json"] = wrong
             checked += 1
     assert found == {}
-    assert checked > 25000
+    assert checked > 20000
