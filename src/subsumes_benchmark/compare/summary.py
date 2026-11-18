@@ -5,9 +5,28 @@ from collections import Counter
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Literal, assert_never, get_args
 
-from subsumes_benchmark.compare.results import RUN_FILE, Result, Run, read_results, read_run
+from subsumes_benchmark.compare.results import (
+    RUN_FILE,
+    Result,
+    Run,
+    collection,
+    ending,
+    read_results,
+    read_run,
+    seconds,
+)
 from subsumes_benchmark.compare.tasks import case_files
+from subsumes_benchmark.compare.witness import refuted
 from subsumes_benchmark.generated.case import CaseSpec
+from subsumes_benchmark.generated.result import (
+    Crash,
+    Error,
+    No,
+    Timeout,
+    Unknown,
+    Unsupported,
+    Yes,
+)
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Mapping, Sequence
@@ -50,21 +69,21 @@ def has_label(result: Result) -> bool:
 
 
 def outcome(result: Result) -> Outcome:
-    match result.answer:
-        case "yes" | "no":
-            if result.witness is not None and result.witness.refuted:
-                return "wrong_no"
+    match result:
+        case No() if result.witness is not None and refuted(result.witness):
+            return "wrong_no"
+        case Yes() | No():
             if result.expected is None:
                 return "unlabelled"
-            if result.expected == (result.answer == "yes"):
+            if result.answer == result.expected:
                 return "correct"
-            return "wrong_yes" if result.answer == "yes" else "wrong_no"
-        case "timeout":
+            return "wrong_yes" if result.answer else "wrong_no"
+        case Timeout():
             return "timeout"
-        case "unknown" | "unsupported" | "error" | "crash":
+        case Unknown() | Unsupported() | Error() | Crash():
             return "no_answer"
         case _:
-            assert_never(result.answer)
+            assert_never(result)
 
 
 @dataclass(frozen=True)
@@ -89,7 +108,7 @@ class Entry:
 
     @property
     def name(self) -> str:
-        return self.run.name
+        return self.run.title
 
     def counts(self, keep: Callable[[Result], bool] | None = None) -> Counter[Outcome]:
         """How many tasks ended each way, among those that ``keep`` lets through."""
@@ -108,9 +127,8 @@ class Entry:
 
     def solved_seconds(self) -> Sequence[float]:
         """What the checker took on every task it solved, shortest first."""
-        return sorted(
-            r.seconds for r in self.results if outcome(r) == "correct" and r.seconds is not None
-        )
+        solved = (seconds(r) for r in self.results if outcome(r) == "correct")
+        return sorted(taken for taken in solved if taken is not None)
 
     def seconds_to_solve(self, share: float) -> float | None:
         """The time within which the checker solved this share of the labelled tasks, if it did.
@@ -118,15 +136,15 @@ class Entry:
         This is the time of the slowest task among the fastest ones that make up the share,
         so tasks that were not solved count as slower than every task that was.
         """
-        seconds = self.solved_seconds()
+        solved = self.solved_seconds()
         needed = math.ceil(share * len(self.labelled()))
-        return seconds[needed - 1] if 0 < needed <= len(seconds) else None
+        return solved[needed - 1] if 0 < needed <= len(solved) else None
 
     def collections(self) -> Mapping[str, tuple[int, int]]:
         """The solved tasks and the labelled tasks of every collection."""
-        tasks = Counter(r.collection for r in self.labelled())
-        solved = Counter(r.collection for r in self.results if outcome(r) == "correct")
-        names = sorted({r.collection for r in self.results})
+        tasks = Counter(collection(r) for r in self.labelled())
+        solved = Counter(collection(r) for r in self.results if outcome(r) == "correct")
+        names = sorted({collection(r) for r in self.results})
         return {name: (solved[name], tasks[name]) for name in names}
 
 
@@ -153,7 +171,7 @@ def read_entries(folder: Path) -> Sequence[Entry]:
     entries = [read_entry(path) for path in sorted(folder.iterdir()) if (path / RUN_FILE).is_file()]
     if not entries:
         raise ReportError(f"no run under {folder}")
-    entries.sort(key=lambda e: (e.run.label.casefold(), e.run.checker))
+    entries.sort(key=lambda e: (e.run.checker.label.casefold(), e.run.name))
     tasks = {(r.case, r.direction) for r in entries[0].results}
     for entry in entries:
         if {(r.case, r.direction) for r in entry.results} != tasks:
@@ -168,10 +186,10 @@ def agreements(entries: Sequence[Entry]) -> Sequence[Agreement]:
     found = []
     for i, first in enumerate(entries):
         for second in entries[i + 1 :]:
-            if first.run.label != second.run.label:
+            if first.run.checker.label != second.run.checker.label:
                 continue
-            answers = {(r.case, r.direction): r.answer for r in second.results}
-            pairs = [(r.answer, answers[r.case, r.direction]) for r in first.results]
+            answers = {(r.case, r.direction): ending(r) for r in second.results}
+            pairs = [(ending(r), answers[r.case, r.direction]) for r in first.results]
             different = [pair for pair in pairs if pair[0] != pair[1]]
             found.append(
                 Agreement(

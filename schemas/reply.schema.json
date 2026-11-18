@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/georg-wolflein/subsumes-benchmark/blob/main/schemas/reply.schema.json",
+  "description": "The reply of an adapter to one request, as one line on its standard output. It is an answer to whether a accepts every instance that is valid under b, which is true, false or null as the label of a case is, or it says why there is none. Each of the five has its own keys, and a key that does not apply is left out.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/Yes"
+    },
+    {
+      "$ref": "#/$defs/No"
+    },
+    {
+      "$ref": "#/$defs/Unknown"
+    },
+    {
+      "$ref": "#/$defs/Error"
+    },
+    {
+      "$ref": "#/$defs/Timeout"
+    }
+  ],
+  "$defs": {
+    "Yes": {
+      "description": "The checker says yes.",
+      "type": "object",
+      "required": [
+        "answer",
+        "seconds"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "answer": {
+          "description": "a accepts every instance that is valid under b.",
+          "const": true
+        },
+        "seconds": {
+          "description": "What the checker took for the task, as its adapter measured it: parsing each schema once, and the check.",
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "No": {
+      "description": "The checker says no.",
+      "type": "object",
+      "required": [
+        "answer",
+        "seconds"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "answer": {
+          "description": "Some instance is valid under b and invalid under a.",
+          "const": false
+        },
+        "seconds": {
+          "description": "What the checker took for the task, as its adapter measured it: parsing each schema once, and the check.",
+          "type": "number",
+          "minimum": 0
+        },
+        "counterexample": {
+          "description": "An instance that is valid under b and invalid under a. The key is left out where there is none: null is an instance. The runner asks a validator whether it is one, and a no with a counterexample that is none counts as a wrong answer."
+        },
+        "message": {
+          "description": "A text for a person: what the checker says about its no.",
+          "type": "string"
+        }
+      }
+    },
+    "Unknown": {
+      "description": "The checker ran and declined to answer.",
+      "type": "object",
+      "required": [
+        "answer",
+        "seconds"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "answer": {
+          "description": "The checker ran and declined to answer.",
+          "const": null
+        },
+        "seconds": {
+          "description": "What the checker took for the task, as its adapter measured it: parsing each schema once, and the check.",
+          "type": "number",
+          "minimum": 0
+        },
+        "reason": {
+          "description": "What kind of reason the checker had, in a word or two that are the same for every task declined for it, such as the keyword that it does not support. A report counts the declined tasks by it.",
+          "type": "string",
+          "minLength": 1
+        },
+        "message": {
+          "description": "A text for a person: the reason in full.",
+          "type": "string"
+        }
+      }
+    },
+    "Error": {
+      "description": "The checker failed, by an exception or by rejecting a schema.",
+      "type": "object",
+      "required": [
+        "failure",
+        "message"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "failure": {
+          "description": "There is no answer, because the checker failed.",
+          "const": "error"
+        },
+        "message": {
+          "description": "A text for a person: the error.",
+          "type": "string"
+        },
+        "seconds": {
+          "description": "What the checker took for the task, as its adapter measured it: parsing each schema once, and the check.",
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "Timeout": {
+      "description": "The checker stopped itself after the time that the request allows. An adapter that cannot stop a check need not reply: the runner then counts the timeout itself and starts the adapter again.",
+      "type": "object",
+      "required": [
+        "failure"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "failure": {
+          "description": "There is no answer, because the time ran out.",
+          "const": "timeout"
+        }
+      }
+    }
+  }
+}

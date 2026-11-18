@@ -2,7 +2,9 @@
 
 Every checker is driven through an adapter: a program that starts once, prints
 ``{"ready": true}`` and then answers one request per line on its standard input with one
-line on its standard output. ``checkers/README.md`` has the protocol.
+line on its standard output. ``checkers/README.md`` has the protocol, and the schemas
+``ready``, ``request`` and ``reply`` under ``schemas/`` say what each line holds: the models
+that write a request and read the other two are generated from those.
 """
 
 import contextlib
@@ -14,22 +16,25 @@ import subprocess
 import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import IO, TYPE_CHECKING, Literal, Self, cast, get_args
+from typing import IO, TYPE_CHECKING, Self, get_args
 
-from pydantic import PrivateAttr
+from pydantic import PrivateAttr, TypeAdapter, ValidationError
 
 from subsumes_benchmark.generated.checker import CheckerSpec, Dialect
+from subsumes_benchmark.generated.ready import ReadySpec
+from subsumes_benchmark.generated.reply import ReplySpec, Timeout
+from subsumes_benchmark.generated.request import RequestSpec, Schema
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
-    from subsumes_benchmark import Json
-    from subsumes_benchmark.compare.results import Answer
-
 DIALECTS: Sequence[Dialect] = get_args(Dialect.__value__)
 
-type AdapterAnswer = Literal["yes", "no", "unknown", "error", "timeout"]
-ADAPTER_ANSWERS: Sequence[AdapterAnswer] = get_args(AdapterAnswer.__value__)
+_REPLY: TypeAdapter[ReplySpec] = TypeAdapter(ReplySpec)
+# The class of each of the five that a reply can be, by the value of the key that tells them
+# apart: `answer` for the first three, `failure` for the others.
+_ANSWERS = {True: "Yes", False: "No", None: "Unknown"}
+_FAILURES = {"error": "Error", "timeout": "Timeout"}
 
 # How long an adapter may take to start, which for some includes starting a JVM.
 STARTUP_SECONDS = 300.0
@@ -63,26 +68,37 @@ class Checker(CheckerSpec):
 
 
 @dataclass(frozen=True)
-class Counterexample:
-    """The instance that a checker gave with a no. It may be ``null``, which is an instance."""
+class Crashed:
+    """The adapter is at fault: its process died or did not start, or a line of it is no reply."""
 
-    instance: Json
+    message: str
 
 
-@dataclass(frozen=True)
-class Reply:
-    """What came back for one request.
+def _fault(line: bytes, error: ValidationError) -> str:
+    """What is wrong with a line that is no reply.
 
-    ``reason`` is what kind of reason a checker had to decline, and ``counterexample`` what it
-    gave with a no; each is ``None`` where the adapter said nothing of the kind.
+    A reply is one of five, and the line fails to be each of them. What is said is why it is
+    not the one that its ``answer`` or its ``failure`` says it means to be.
     """
-
-    answer: Answer
-    seconds: float | None
-    wall_seconds: float
-    detail: str | None = None
-    reason: str | None = None
-    counterexample: Counterexample | None = None
+    try:
+        document = json.loads(line)
+    except ValueError:
+        return "it is no JSON"
+    if not isinstance(document, dict):
+        return "it is no object"
+    try:
+        if "failure" in document:
+            meant = _FAILURES.get(document["failure"])
+        elif "answer" in document:
+            meant = _ANSWERS.get(document["answer"])
+        else:
+            return "it has neither an answer nor a failure"
+    except TypeError:  # a value that is no key of a dictionary, such as a list
+        meant = None
+    if meant is None:
+        return "an answer is true, false or null, and a failure is error or timeout"
+    faults = [e for e in error.errors() if e["loc"] and e["loc"][0] == meant]
+    return "; ".join(f"{'.'.join(map(str, e['loc'][1:]))}: {e['msg']}" for e in faults)
 
 
 class _TimedOutError(Exception):
@@ -103,17 +119,23 @@ class Worker:
         self._process: subprocess.Popen[bytes] | None = None
         self._buffer = b""
 
-    def ask(self, a: Json, b: Json, timeout: float) -> Reply:
+    def ask(self, a: Schema, b: Schema, timeout: float) -> tuple[ReplySpec | Crashed, float]:
         """Ask whether the schema ``a`` accepts every instance valid under the schema ``b``.
 
         The two go into the request as they are, as JSON values, on its one line.
+
+        Returns:
+            The reply, or that the adapter is at fault, and the seconds that the runner
+            waited. A reply that came too late, and one that did not come, is a timeout.
         """
         try:
             process = self._started()
         except (_TimedOutError, _DiedError) as exc:
             self._kill()
-            return Reply("crash", None, 0.0, f"the adapter did not start: {exc}")
-        request = json.dumps({"a": a, "b": b, "timeout": timeout}, allow_nan=False) + "\n"
+            return Crashed(f"the adapter did not start: {exc}"), 0.0
+        # In ASCII, so that an adapter reads the line the same whatever it takes its
+        # standard input to be encoded in.
+        request = RequestSpec(a=a, b=b, timeout=timeout).model_dump_json(ensure_ascii=True) + "\n"
         start = time.perf_counter()
         try:
             assert process.stdin is not None
@@ -125,39 +147,23 @@ class Worker:
             line = self._line(start + timeout + GRACE_SECONDS)
         except _TimedOutError:
             self._kill()
-            return Reply("timeout", None, time.perf_counter() - start)
+            return Timeout(failure="timeout"), time.perf_counter() - start
         except (_DiedError, BrokenPipeError) as exc:
             self._kill()
-            return Reply("crash", None, time.perf_counter() - start, str(exc) or None)
+            return Crashed(str(exc) or "the adapter died"), time.perf_counter() - start
         wall = time.perf_counter() - start
         try:
-            reply = json.loads(line)
-            answer, seconds, detail = reply["answer"], reply.get("seconds"), reply.get("detail")
-            if answer not in ADAPTER_ANSWERS:
-                raise ValueError(answer)
-            if seconds is not None:
-                seconds = float(seconds)
-            reason = reply.get("reason")
-            if not (reason is None or isinstance(reason, str)):
-                raise TypeError(reason)
-        except ValueError, KeyError, TypeError:
-            # The adapter and the runner no longer agree on where a reply ends.
+            reply = _REPLY.validate_json(line)
+        except ValidationError as error:
+            # The adapter and the runner no longer agree on what a reply is, or on where
+            # one ends.
             self._kill()
-            return Reply("crash", None, wall, f"not a reply: {line[:200]!r}")
-        answer = cast("AdapterAnswer", answer)
-        if answer == "timeout" or (seconds is not None and seconds > timeout):
-            return Reply("timeout", None, wall)
-        return Reply(
-            answer,
-            seconds,
-            wall,
-            None if detail is None else str(detail)[:500],
-            reason if answer == "unknown" else None,
-            # The key and not its value says whether there is one: ``null`` is an instance.
-            Counterexample(reply["counterexample"])
-            if answer == "no" and "counterexample" in reply
-            else None,
-        )
+            return Crashed(f"not a reply ({_fault(line, error)}): {line[:200]!r}"), wall
+        # An adapter that cannot stop a check may still reply after the time.
+        seconds = None if isinstance(reply, Timeout) else reply.seconds
+        if seconds is not None and seconds > timeout:
+            return Timeout(failure="timeout"), wall
+        return reply, wall
 
     def close(self) -> None:
         self._kill()
@@ -176,9 +182,11 @@ class Worker:
             start_new_session=True,  # so that killing reaches what the command started
         )
         self.restarts += 1
-        ready = json.loads(self._line(time.perf_counter() + STARTUP_SECONDS))
-        if not (isinstance(ready, dict) and ready.get("ready") is True):
-            raise _DiedError(f"expected the ready line, got {ready!r}")
+        line = self._line(time.perf_counter() + STARTUP_SECONDS)
+        try:
+            ReadySpec.model_validate_json(line)
+        except ValidationError as error:
+            raise _DiedError(f"expected the ready line, got {line[:200]!r}") from error
         return self._process
 
     def _line(self, deadline: float) -> bytes:

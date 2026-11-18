@@ -4,61 +4,36 @@ import subprocess
 import sys
 from typing import TYPE_CHECKING
 
+import runs
+from runs import Confirmation, a_run, a_witness
 from subsumes_benchmark.compare.diff import LIST_LIMIT, diff
-from subsumes_benchmark.compare.results import Answer, Result, Run, result_line, write_run
+from subsumes_benchmark.compare.results import Ending, Result, result_line, write_run
 from subsumes_benchmark.compare.summary import Entry
-from subsumes_benchmark.compare.witness import Confirmation, Witness
 
 if TYPE_CHECKING:
     from pathlib import Path
 
 
-def a_run(corpus: str = "v1.0.0") -> Run:
-    return Run(
-        checker="one",
-        label="One",
-        variant=None,
-        version="1.0",
-        homepage="https://example.com",
-        dialect="2020-12",
-        corpus=corpus,
-        timeout=10.0,
-        warmup=0,
-        seed=0,
-        tasks=0,
-        platform="a machine",
-        processor="a processor",
-        started="2026-01-01T00:00:00+00:00",
-        seconds=1.0,
-    )
-
-
 def a_result(
     case: str,
-    answer: Answer,
+    ended: Ending,
     expected: bool | None = None,
     *,
-    seconds: float | None = 0.001,
+    seconds: float = 0.001,
     reason: str | None = None,
-    detail: str | None = None,
+    message: str | None = None,
     witness: Confirmation | None = None,
-    note: str | None = None,
 ) -> Result:
-    return Result(
-        case=case,
-        direction="a_subsumes_b",
-        expected=expected,
-        answer=answer,
-        seconds=seconds,
-        wall_seconds=seconds,
-        detail=detail,
-        reason=reason,
-        witness=None if witness is None else Witness({"x": 1}, witness, note),
+    """A result whose witness, where it has one, holds the counterexample ``{"x": 1}``."""
+    given = None if witness is None else a_witness(witness, {"x": 1}, message or "why")
+    said = None if ended == "no" else message
+    return runs.a_result(
+        case, ended, expected, seconds=seconds, reason=reason, message=said, witness=given
     )
 
 
 def an_entry(*results: Result, corpus: str = "v1.0.0") -> Entry:
-    return Entry(a_run(corpus), results)
+    return Entry(a_run(corpus=corpus), results)
 
 
 def test_without_a_base_the_comment_only_tallies() -> None:
@@ -108,7 +83,7 @@ def test_a_counterexample_that_was_not_checked_is_named_with_the_reason() -> Non
     found = diff(
         an_entry(
             a_result("one/a", "no", False, witness="confirmed"),
-            a_result("one/b", "no", witness="unchecked", note="the validator does not take it"),
+            a_result("one/b", "no", witness="unchecked", message="the validator does not take it"),
         )
     )
     assert found.failures == 0
@@ -158,8 +133,8 @@ def test_a_wrong_answer_and_a_failed_task_are_named() -> None:
         an_entry(
             a_result("one/a", "no", True),
             a_result("one/b", "yes", False),
-            a_result("one/c", "error", detail="no schema"),
-            a_result("one/d", "timeout", seconds=None),
+            a_result("one/c", "error", message="no schema"),
+            a_result("one/d", "timeout"),
         )
     )
     assert found.failures == 4

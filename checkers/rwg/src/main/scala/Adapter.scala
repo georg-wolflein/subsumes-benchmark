@@ -26,7 +26,28 @@ import scala.util.control.NonFatal
 object Adapter:
   private val StackBytes = 512L * 1024 * 1024
 
-  private case class Outcome(answer: String, detail: Option[String] = None)
+  /** How a check ended: an answer, which is yes, no or neither, or why there is none. */
+  private enum Outcome:
+    case Answered(answer: Option[Boolean], message: Option[String] = None)
+    case Failed(message: String)
+    case TimedOut
+
+    /** The reply, with the time for all but a timeout, where the check did not end. */
+    def reply(seconds: Double): Json = this match
+      case Answered(answer, message) =>
+        Json.fromFields(
+          List("answer" -> answer.fold(Json.Null)(Json.fromBoolean), "seconds" -> Json.fromDoubleOrNull(seconds))
+            ++ message.map(text => "message" -> Json.fromString(text))
+        )
+      case Failed(message) =>
+        Json.obj(
+          "failure" -> Json.fromString("error"),
+          "message" -> Json.fromString(message),
+          "seconds" -> Json.fromDoubleOrNull(seconds)
+        )
+      case TimedOut => Json.obj("failure" -> Json.fromString("timeout"))
+
+  import Outcome.*
 
   private def check(fused: String): Outcome =
     val schema = parse(fused).fold(throw _, identity)
@@ -35,26 +56,26 @@ object Adapter:
     val (stratifiedRoot, stratified) = stratify(root, translated)
     val extended = newExtendedEnv(notComplete(stratified))
     val result = varAllOf(stratifiedRoot.asInstanceOf[CVar], varTrue, extended)
-    if result == varFalse then Outcome("yes")
+    if result == varFalse then Answered(Some(true))
     else
       generate.Generate.generateFromCVarEEFile(result, extended, schema) match
-        case UnSat    => Outcome("yes")
-        case WhoKnows => Outcome("unknown")
+        case UnSat    => Answered(Some(true))
+        case WhoKnows => Answered(None)
         case Witness(value) =>
           // As the artifact does: a witness counts unless the validator rejects it, and a
           // validator that fails says nothing.
           val rejected =
             try !validateStringWitness(schema.toString, value.toString).isEmpty
             catch case NonFatal(_) => false
-          if rejected then Outcome("error", Some("the witness is not an instance"))
-          else Outcome("no", Some(value.noSpaces.take(300)))
+          if rejected then Failed("the witness is not an instance")
+          else Answered(Some(false), Some(value.noSpaces.take(300)))
 
   private def guarded(fused: String): Outcome =
     try check(fused)
     catch
-      case _: InterruptedException => Outcome("timeout")
+      case _: InterruptedException => TimedOut
       // Also a StackOverflowError: the next request can still be answered.
-      case e: Throwable => Outcome("error", Some(s"${e.getClass.getSimpleName}: ${e.getMessage}".take(300)))
+      case e: Throwable => Failed(s"${e.getClass.getSimpleName}: ${e.getMessage}".take(300))
 
   def main(args: Array[String]): Unit =
     // RWG prints while it works; the runner owns the standard output.
@@ -77,7 +98,7 @@ object Adapter:
           try Right(SchemaProcessorLib.combineSchemas(b, a)._1)
           catch case NonFatal(e) => Left(e)
         fused match
-          case Left(e) => outcome = Outcome("error", Some(s"combineSchemas: ${e.getClass.getSimpleName}: ${e.getMessage}".take(300)))
+          case Left(e) => outcome = Failed(s"combineSchemas: ${e.getClass.getSimpleName}: ${e.getMessage}".take(300))
           case Right(fused) =>
             @volatile var finished: Outcome = null
             val thread = new Thread(null, () => finished = guarded(fused), "check", StackBytes)
@@ -93,13 +114,8 @@ object Adapter:
               // A check that cannot be stopped would slow down what follows. Saying nothing
               // makes the runner record the timeout and start a new process.
               if thread.isAlive then Thread.sleep(Long.MaxValue)
-              outcome = Outcome("timeout")
+              outcome = TimedOut
             else outcome = finished
-        val reply = Json.obj(
-          "answer" -> Json.fromString(outcome.answer),
-          "seconds" -> Json.fromDoubleOrNull(seconds),
-          "detail" -> outcome.detail.fold(Json.Null)(Json.fromString)
-        )
-        protocol.println(reply.noSpaces)
+        protocol.println(outcome.reply(seconds).noSpaces)
       }
     }

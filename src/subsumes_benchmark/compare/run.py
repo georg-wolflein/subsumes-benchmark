@@ -7,28 +7,42 @@ import sys
 import threading
 import time
 from collections import Counter
+from dataclasses import dataclass
 from datetime import UTC, datetime
 from importlib.metadata import version
 from pathlib import Path
-from typing import TYPE_CHECKING, assert_never
+from typing import TYPE_CHECKING, assert_never, cast
 
-from subsumes_benchmark.compare.checkers import Checker, Dialect, Reply, Worker
+from subsumes_benchmark.compare.checkers import Checker, Crashed, Dialect, Worker
 from subsumes_benchmark.compare.downgrade import UnsupportedError, downgrade
-from subsumes_benchmark.compare.results import RESULTS_FILE, Result, Run, result_line, write_run
+from subsumes_benchmark.compare.results import (
+    RESULTS_FILE,
+    Result,
+    Run,
+    ending,
+    result_line,
+    write_run,
+)
 from subsumes_benchmark.compare.witness import confirm
+from subsumes_benchmark.generated import reply as replies, result as results
 from subsumes_benchmark.generated.case import CaseSpec
+from subsumes_benchmark.generated.run import Checker as CheckerOfRun
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
     from subsumes_benchmark import Json
     from subsumes_benchmark.compare.tasks import Task
+    from subsumes_benchmark.generated.reply import ReplySpec
+    from subsumes_benchmark.generated.request import Schema
 
+# At most this many characters of what an adapter says for a person are kept.
+MESSAGE_LENGTH = 500
 # A warm-up task is not measured, so it need not be given the full time either.
 WARMUP_TIMEOUT_SECONDS = 2.0
 
 
-def prepare(task: Task, dialect: Dialect) -> tuple[Json, Json]:
+def prepare(task: Task, dialect: Dialect) -> tuple[Schema, Schema]:
     """The two schemas to hand to a checker of the given dialect.
 
     The first is the schema asked to accept everything, which is ``b`` of the case when the
@@ -50,19 +64,76 @@ def prepare(task: Task, dialect: Dialect) -> tuple[Json, Json]:
         case "2020-12":
             return schemas["a"], schemas["b"]
         case "draft-07" | "draft-04":
-            return downgrade(schemas["a"], dialect), downgrade(schemas["b"], dialect)
+            older = (downgrade(schemas["a"], dialect), downgrade(schemas["b"], dialect))
+            return cast("tuple[Schema, Schema]", older)
         case _:
             assert_never(dialect)
 
 
-def ask(worker: Worker, task: Task, timeout: float) -> Reply:
+@dataclass(frozen=True)
+class NotAsked:
+    """The checker was not asked, because its draft cannot express one of the schemas."""
+
+    message: str
+
+
+def ask(worker: Worker, task: Task, timeout: float) -> tuple[ReplySpec | Crashed | NotAsked, float]:
+    """What came back for a task, and the seconds that the runner waited for it."""
     try:
         a, b = prepare(task, worker.checker.dialect)
     except UnsupportedError as exc:
-        return Reply("unsupported", None, 0.0, str(exc))
+        return NotAsked(str(exc)), 0.0
     except RecursionError:
-        return Reply("unsupported", None, 0.0, "the schema nests too deeply to rewrite")
+        return NotAsked("the schema nests too deeply to rewrite"), 0.0
     return worker.ask(a, b, timeout)
+
+
+def result(task: Task, came: ReplySpec | Crashed | NotAsked, wall_seconds: float) -> Result:
+    """How the task ended: what came back for it, as a line of the results.
+
+    A key that does not apply is not set, so that it is left out of the line. The validator
+    is asked about the counterexample of a no here, after the checker has answered, so that
+    it is in no time that is measured.
+    """
+    said: dict[str, Json] = {"case": task.case, "direction": task.direction}
+    said["expected"] = task.expected
+    match came:
+        case NotAsked():
+            said |= {"failure": "unsupported", "message": came.message}
+            return results.Unsupported.model_validate(said)
+        case Crashed():
+            said |= {"failure": "crash", "message": came.message[:MESSAGE_LENGTH]}
+            return results.Crash.model_validate(said | {"wall_seconds": wall_seconds})
+        case replies.Timeout():
+            said |= {"failure": "timeout", "wall_seconds": wall_seconds}
+            return results.Timeout.model_validate(said)
+        case replies.Error():
+            said |= {"failure": "error", "message": came.message[:MESSAGE_LENGTH]}
+            if came.seconds is not None:
+                said["seconds"] = came.seconds
+            return results.Error.model_validate(said | {"wall_seconds": wall_seconds})
+        case replies.Yes():
+            said |= {"answer": True, "seconds": came.seconds, "wall_seconds": wall_seconds}
+            return results.Yes.model_validate(said)
+        case replies.Unknown():
+            said |= {"answer": None, "seconds": came.seconds, "wall_seconds": wall_seconds}
+            if came.reason is not None:
+                said["reason"] = came.reason
+            if came.message is not None:
+                said["message"] = came.message[:MESSAGE_LENGTH]
+            return results.Unknown.model_validate(said)
+        case replies.No():
+            said |= {"answer": False, "seconds": came.seconds, "wall_seconds": wall_seconds}
+            if came.message is not None:
+                said["message"] = came.message[:MESSAGE_LENGTH]
+            no = results.No.model_validate(said)
+            # The key and not its value says whether there is one: ``null`` is an instance.
+            if "counterexample" not in came.model_fields_set:
+                return no
+            witness = confirm(CaseSpec.read(task.file), task.direction, came.counterexample)
+            return no.model_copy(update={"witness": witness})
+        case _:
+            assert_never(came)
 
 
 # The root of the repository, where this file is in a checkout of it.
@@ -127,7 +198,7 @@ def run(
             makes the times less exact.
     """
     out.mkdir(parents=True, exist_ok=True)
-    started = datetime.now(UTC)
+    started = datetime.now(UTC).replace(microsecond=0)
     clock = time.perf_counter()
     pending: queue.SimpleQueue[Task] = queue.SimpleQueue()
     for task in tasks:
@@ -146,28 +217,7 @@ def run(
                             task = pending.get_nowait()
                         except queue.Empty:
                             return
-                        reply = ask(worker, task, timeout)
-                        # The validator is asked after the checker has answered, so that
-                        # it is in no time that is measured.
-                        given = reply.counterexample
-                        witness = (
-                            None
-                            if given is None
-                            else confirm(CaseSpec.read(task.file), task.direction, given.instance)
-                        )
-                        done.put(
-                            Result(
-                                case=task.case,
-                                direction=task.direction,
-                                expected=task.expected,
-                                answer=reply.answer,
-                                seconds=reply.seconds,
-                                wall_seconds=reply.wall_seconds or None,
-                                detail=reply.detail,
-                                reason=reply.reason,
-                                witness=witness,
-                            )
-                        )
+                        done.put(result(task, *ask(worker, task, timeout)))
                 finally:
                     worker.close()
         except BaseException as exc:
@@ -181,11 +231,11 @@ def run(
     answers: Counter[str] = Counter()
     with (out / RESULTS_FILE).open("w", encoding="utf-8") as lines:
         for count in range(1, len(tasks) + 1):
-            result = done.get()
-            if isinstance(result, BaseException):
-                raise result
-            lines.write(result_line(result))
-            answers[result.answer] += 1
+            ended = done.get()
+            if isinstance(ended, BaseException):
+                raise ended
+            lines.write(result_line(ended))
+            answers[ending(ended)] += 1
             if count % 500 == 0 or count == len(tasks):
                 lines.flush()
                 elapsed = time.perf_counter() - clock
@@ -201,20 +251,20 @@ def run(
     write_run(
         out,
         Run(
-            checker=checker.name,
-            label=checker.label,
-            variant=checker.variant,
-            version=checker.version,
-            homepage=checker.homepage,
-            dialect=checker.dialect,
+            name=checker.name,
+            # The checker as its file describes it, with nothing set that the file leaves out.
+            checker=CheckerOfRun.model_validate(
+                checker.model_dump(by_alias=True, exclude_unset=True)
+            ),
             corpus=_revision(corpus),
             timeout=timeout,
             warmup=warmup,
             seed=seed,
+            jobs=jobs,
             tasks=len(tasks),
             platform=platform.platform(),
             processor=_processor(),
-            started=started.isoformat(timespec="seconds"),
-            seconds=round(time.perf_counter() - clock, 1),
+            started=started,
+            wall_seconds=round(time.perf_counter() - clock, 1),
         ),
     )

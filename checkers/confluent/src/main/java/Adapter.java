@@ -23,19 +23,25 @@ public final class Adapter {
   private static final long STACK_BYTES = 512L * 1024 * 1024;
   private static final ObjectMapper MAPPER = new ObjectMapper();
 
-  private record Outcome(String answer, String detail) {}
-
-  private static Outcome check(String a, String b) {
+  /** The reply to a request, without its time. */
+  private static ObjectNode check(String a, String b) {
+    ObjectNode reply = MAPPER.createObjectNode();
     try {
       List<String> problems = new JsonSchema(a).isBackwardCompatible(new JsonSchema(b));
-      return problems.isEmpty() ? new Outcome("yes", null) : new Outcome("no", problems.get(0));
-    } catch (Throwable e) { // also a StackOverflowError: the next request can still be answered
-      String detail = e.getClass().getSimpleName() + ": " + e.getMessage();
-      if (e.getCause() != null) {
-        detail += " (" + e.getCause().getMessage() + ")";
+      reply.put("answer", problems.isEmpty());
+      if (!problems.isEmpty()) {
+        reply.put("message", problems.get(0));
       }
-      return new Outcome("error", detail);
+    } catch (Throwable e) { // also a StackOverflowError: the next request can still be answered
+      String message = e.getClass().getSimpleName() + ": " + e.getMessage();
+      if (e.getCause() != null) {
+        message += " (" + e.getCause().getMessage() + ")";
+      }
+      reply.removeAll();
+      reply.put("failure", "error");
+      reply.put("message", message);
     }
+    return reply;
   }
 
   /**
@@ -63,7 +69,7 @@ public final class Adapter {
       String b = text(request.get("b"));
       long timeoutMillis = (long) (request.get("timeout").asDouble() * 1000);
 
-      Outcome[] outcome = new Outcome[1];
+      ObjectNode[] outcome = new ObjectNode[1];
       Thread thread = new Thread(null, () -> outcome[0] = check(a, b), "check", STACK_BYTES);
       thread.setDaemon(true);
       // The clock runs from the schemas as text to the answer, so that each is parsed once
@@ -80,12 +86,14 @@ public final class Adapter {
           // the runner record the timeout and start a new process.
           Thread.sleep(Long.MAX_VALUE);
         }
-        outcome[0] = new Outcome("timeout", null);
+        // A timeout has no time: the check did not end.
+        ObjectNode timeout = MAPPER.createObjectNode();
+        timeout.put("failure", "timeout");
+        protocol.println(MAPPER.writeValueAsString(timeout));
+        continue;
       }
-      ObjectNode reply = MAPPER.createObjectNode();
-      reply.put("answer", outcome[0].answer());
+      ObjectNode reply = outcome[0];
       reply.put("seconds", seconds);
-      reply.put("detail", outcome[0].detail());
       protocol.println(MAPPER.writeValueAsString(reply));
     }
   }

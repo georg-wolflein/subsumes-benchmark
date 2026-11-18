@@ -13,6 +13,7 @@ from matplotlib import pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap, to_hex, to_rgb
 from matplotlib.patches import Patch, Rectangle
 
+from subsumes_benchmark.compare.results import ending
 from subsumes_benchmark.compare.summary import (
     LABELLED,
     OUTCOME_NAMES,
@@ -27,6 +28,7 @@ from subsumes_benchmark.compare.summary import (
 )
 from subsumes_benchmark.compare.tasks import read_tasks
 from subsumes_benchmark.compare.words import NOTHING, count, duration, share, table
+from subsumes_benchmark.generated.result import No
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Mapping, Sequence
@@ -36,7 +38,6 @@ if TYPE_CHECKING:
     from matplotlib.axes import Axes
 
     from subsumes_benchmark.compare.results import Result
-    from subsumes_benchmark.compare.witness import Confirmation
 
 REPORT_FILE = "report.md"
 CHART_FILES = {"light": "chart-light.svg", "dark": "chart-dark.svg"}
@@ -236,7 +237,7 @@ def draw(entries: Sequence[Entry], theme: Theme, caption: str, path: Path) -> No
 
     The file is an SVG, or what the suffix of ``path`` names.
     """
-    labels = list(dict.fromkeys(entry.run.label for entry in entries))
+    labels = list(dict.fromkeys(entry.run.checker.label for entry in entries))
     if len(labels) > len(theme.series):
         raise ValueError(
             f"the chart has colours for {len(theme.series)} checkers, not {len(labels)}"
@@ -244,7 +245,7 @@ def draw(entries: Sequence[Entry], theme: Theme, caption: str, path: Path) -> No
     # A colour per label and a line per variant, so that variants of a checker look alike.
     styles: dict[str, tuple] = {}
     for label, colour in zip(labels, theme.series, strict=False):
-        variants = [entry for entry in entries if entry.run.label == label]
+        variants = [entry for entry in entries if entry.run.checker.label == label]
         for variant, line in zip(variants, LINE_STYLES, strict=False):
             styles[variant.name] = (colour, line)
 
@@ -339,7 +340,7 @@ def _unlabelled_table(entries: Sequence[Entry]) -> str:
     for entry in entries:
         results = entry.unlabelled()
         counts = entry.counts(lambda r: not has_label(r))
-        answered = [r.answer for r in results if outcome(r) == "unlabelled"]
+        answered = [ending(r) for r in results if outcome(r) == "unlabelled"]
         rows.append(
             [
                 entry.name,
@@ -370,7 +371,7 @@ def _time_table(entries: Sequence[Entry]) -> str:
                 duration(entry.seconds_to_solve(0.5)),
                 duration(entry.seconds_to_solve(0.9)),
                 duration(seconds[-1] if seconds else None),
-                duration(entry.run.seconds),
+                duration(entry.run.wall_seconds),
             ]
         )
     headers = ["Checker", "Solved", "Median solved task", "Fastest 50% within",
@@ -389,7 +390,7 @@ def _collection_table(entries: Sequence[Entry]) -> str:
 
 def _witness_table(entries: Sequence[Entry]) -> str:
     """How many counterexamples each checker gave, and what the validator made of them."""
-    kinds: Mapping[Confirmation, str] = {
+    kinds = {
         "confirmed": "Confirmed",
         "not_an_instance": "No instance of B",
         "accepted": "Accepted by A",
@@ -397,11 +398,12 @@ def _witness_table(entries: Sequence[Entry]) -> str:
     }
     rows = []
     for entry in entries:
-        witnesses = [r.witness for r in entry.results if r.witness is not None]
+        said_no = [r for r in entry.results if isinstance(r, No)]
+        witnesses = [r.witness for r in said_no if r.witness is not None]
         rows.append(
             [
                 entry.name,
-                count(sum(1 for r in entry.results if r.answer == "no")),
+                count(len(said_no)),
                 count(len(witnesses)),
                 *(count(sum(1 for w in witnesses if w.confirmation == kind)) for kind in kinds),
             ]
@@ -418,7 +420,7 @@ def _silence_table(entries: Sequence[Entry]) -> str:
         "timeout": "Timed out",
     }
     rows = [
-        [entry.name, *(count(sum(1 for r in entry.results if r.answer == kind)) for kind in kinds)]
+        [entry.name, *(count(sum(1 for r in entry.results if ending(r) == kind)) for kind in kinds)]
         for entry in entries
     ]
     return table(["Checker", *kinds.values()], rows)
@@ -427,9 +429,9 @@ def _silence_table(entries: Sequence[Entry]) -> str:
 def _setup_table(entries: Sequence[Entry]) -> str:
     lines = ["| Checker | Version | Reads | Source |", "| --- | --- | --- | --- |"]
     for entry in entries:
-        run = entry.run
-        dialect = "draft 2020-12" if run.dialect == "2020-12" else run.dialect
-        lines.append(f"| {entry.name} | {run.version} | {dialect} | <{run.homepage}> |")
+        checker = entry.run.checker
+        dialect = "draft 2020-12" if checker.dialect == "2020-12" else checker.dialect
+        lines.append(f"| {entry.name} | {checker.version} | {dialect} | <{checker.homepage}> |")
     return "\n".join(lines)
 
 
@@ -463,7 +465,7 @@ def markdown(entries: Sequence[Entry], with_format: frozenset[str], all_tasks: i
         f"Corpus `{first.corpus}`, {_scope(entries, all_tasks)}, of which "
         f"{count(len(labelled))} have a label. Each checker had {first.timeout:g} seconds per "
         f"task. Run on "
-        f"{first.started[:10]} on {first.processor} ({first.platform}).",
+        f"{first.started:%Y-%m-%d} on {first.processor} ({first.platform}).",
         '<picture>\n  <source media="(prefers-color-scheme: dark)" srcset="chart-dark.svg">\n'
         '  <img alt="How every task ended, how fast tasks are solved, and the solved share by '
         'collection, for each checker" src="chart-light.svg">\n</picture>',
@@ -552,7 +554,7 @@ def readme_block(entries: Sequence[Entry], all_tasks: int, folder: str) -> str:
         rows.append(
             [
                 entry.name,
-                entry.run.version,
+                entry.run.checker.version,
                 share(entry.solved(), len(entry.labelled())),
                 count(counts["wrong_yes"]),
                 count(counts["wrong_no"]),

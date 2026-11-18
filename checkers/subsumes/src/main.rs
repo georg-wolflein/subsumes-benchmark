@@ -23,17 +23,15 @@ fn schemas(request: &str) -> Result<(Value, Value), String> {
 fn check(request: &str, checker: &Checker) -> Result<Value, String> {
     let (a, b) = schemas(request)?;
     Ok(match checker.subsumes(&a, &b).map_err(|e| e.to_string())? {
-        Verdict::Yes => json!({"answer": "yes"}),
-        Verdict::No { counterexample } => json!({
-            "answer": "no",
-            "detail": counterexample.to_string(),
-            "counterexample": counterexample,
-        }),
+        Verdict::Yes => json!({"answer": true}),
+        Verdict::No { counterexample } => {
+            json!({"answer": false, "counterexample": counterexample})
+        }
         // A check that spends its work budget ends here too, and the reason says so.
         Verdict::Unknown { reason } => json!({
-            "answer": "unknown",
-            "detail": reason.to_string(),
+            "answer": null,
             "reason": kind(&reason),
+            "message": reason.to_string(),
         }),
     })
 }
@@ -64,7 +62,8 @@ fn answer(request: &str, checker: &Checker) -> Value {
     let start = Instant::now();
     let outcome = check(request, checker);
     let seconds = start.elapsed().as_secs_f64();
-    let mut reply = outcome.unwrap_or_else(|detail| json!({"answer": "error", "detail": detail}));
+    let mut reply =
+        outcome.unwrap_or_else(|message| json!({"failure": "error", "message": message}));
     reply["seconds"] = json!(seconds);
     reply
 }

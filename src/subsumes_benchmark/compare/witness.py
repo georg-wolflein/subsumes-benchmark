@@ -14,39 +14,21 @@ turns on digits that a double does not hold.
 """
 
 import math
-from dataclasses import dataclass
-from typing import TYPE_CHECKING, Literal, assert_never, cast
+from typing import TYPE_CHECKING, assert_never, cast
 
 from jsonschema_rs import Draft202012Validator, ValidationError
+
+from subsumes_benchmark.generated.result import Checked, Unchecked, Witness
 
 if TYPE_CHECKING:
     from subsumes_benchmark import Json
     from subsumes_benchmark.compare.tasks import Direction
     from subsumes_benchmark.generated.case import CaseSpec, Schema
 
-type Confirmation = Literal["confirmed", "not_an_instance", "accepted", "unchecked"]
-"""What the validator makes of a counterexample.
 
-- ``confirmed``: it is valid under the one schema and invalid under the other, as it has to be.
-- ``not_an_instance``: the schema whose instances were to be accepted rejects it, so the other
-  schema did not have to accept it.
-- ``accepted``: the schema that was to accept it does, so it tells the two apart in nothing.
-- ``unchecked``: the validator did not look at it; the note of the witness says why.
-"""
-
-
-@dataclass(frozen=True)
-class Witness:
-    """The counterexample that a checker gave with a no, and what the validator made of it."""
-
-    instance: Json
-    confirmation: Confirmation
-    note: str | None = None
-
-    @property
-    def refuted(self) -> bool:
-        """Whether the validator found that the counterexample is none."""
-        return self.confirmation in ("not_an_instance", "accepted")
+def refuted(witness: Witness) -> bool:
+    """Whether the validator found that the counterexample is none."""
+    return isinstance(witness, Checked) and witness.confirmation != "confirmed"
 
 
 class _NoNumberError(Exception):
@@ -103,17 +85,20 @@ def confirm(case: CaseSpec, direction: Direction, instance: Json) -> Witness:
     try:
         read = _read(instance)
     except _NoNumberError:
-        # The instance is not kept: a results file could not hold such a number either.
-        return Witness(None, "unchecked", "the counterexample holds a number that is none in JSON")
+        # The counterexample is not kept: a results file could not hold such a number either.
+        message = "the counterexample holds a number that is none in JSON"
+        return Unchecked(confirmation="unchecked", message=message)
     try:
         wide, narrow = _validator(accepting), _validator(accepted)
     except ValidationError as error:
         refusal = str(error).partition("\n")[0]
-        return Witness(instance, "unchecked", f"the validator does not take a schema: {refusal}")
+        message = f"the validator does not take a schema: {refusal}"
+        return Unchecked(counterexample=instance, confirmation="unchecked", message=message)
     except _NoNumberError:
-        return Witness(instance, "unchecked", "a schema holds a number that no double is near")
+        message = "a schema holds a number that no double is near"
+        return Unchecked(counterexample=instance, confirmation="unchecked", message=message)
     if not narrow.is_valid(read):
-        return Witness(instance, "not_an_instance")
+        return Checked(counterexample=instance, confirmation="not_an_instance")
     if wide.is_valid(read):
-        return Witness(instance, "accepted")
-    return Witness(instance, "confirmed")
+        return Checked(counterexample=instance, confirmation="accepted")
+    return Checked(counterexample=instance, confirmation="confirmed")

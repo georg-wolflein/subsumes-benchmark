@@ -8,18 +8,12 @@ from typing import TYPE_CHECKING
 
 import pytest
 
+import runs
 from reading import CORPUS, ROOT, case, cases
+from runs import Confirmation, a_run, a_witness, write
 from subsumes_benchmark.compare.checkers import Checker
 from subsumes_benchmark.compare.report import README_END, README_START, report, update_readme
-from subsumes_benchmark.compare.results import (
-    Answer,
-    Result,
-    Run,
-    read_results,
-    read_run,
-    result_line,
-    write_run,
-)
+from subsumes_benchmark.compare.results import Ending, Result, ending, read_results, read_run
 from subsumes_benchmark.compare.run import prepare
 from subsumes_benchmark.compare.summary import (
     Entry,
@@ -29,11 +23,11 @@ from subsumes_benchmark.compare.summary import (
     read_entries,
 )
 from subsumes_benchmark.compare.tasks import read_tasks, select
-from subsumes_benchmark.compare.witness import Confirmation, Witness, confirm
+from subsumes_benchmark.compare.witness import confirm, refuted
 from subsumes_benchmark.generated.case import CaseSpec
+from subsumes_benchmark.generated.result import Checked, Crash, No, Unchecked, Unknown, Yes
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
     from pathlib import Path
 
     from subsumes_benchmark import Json
@@ -41,36 +35,10 @@ if TYPE_CHECKING:
 CHECKERS = sorted(path.parent for path in (ROOT / "checkers").glob("*/checker.json"))
 
 
-def a_run(checker: str = "one", label: str = "One", variant: str | None = None) -> Run:
-    return Run(
-        checker=checker,
-        label=label,
-        variant=variant,
-        version="1.0",
-        homepage="https://example.com",
-        dialect="2020-12",
-        corpus="v1.0.0",
-        timeout=10.0,
-        warmup=0,
-        seed=0,
-        tasks=0,
-        platform="a machine",
-        processor="a processor",
-        started="2026-01-01T00:00:00+00:00",
-        seconds=1.0,
-    )
-
-
 def a_result(
-    case: str, answer: Answer, expected: bool | None = True, seconds: float | None = 0.001
+    case: str, ended: Ending, expected: bool | None = True, seconds: float = 0.001
 ) -> Result:
-    return Result(case, "a_subsumes_b", expected, answer, seconds, seconds)
-
-
-def write(folder: Path, run: Run, results: Sequence[Result]) -> None:
-    folder.mkdir(parents=True)
-    write_run(folder, run)
-    (folder / "results.jsonl").write_text("".join(map(result_line, results)), encoding="utf-8")
+    return runs.a_result(case, ended, expected, seconds=seconds)
 
 
 def a_case(a: Json, b: Json, a_subsumes_b: bool | None = None) -> dict[str, Json]:
@@ -145,27 +113,35 @@ def test_a_validator_says_whether_a_counterexample_is_one(
 def test_a_counterexample_that_was_not_checked_says_why() -> None:
     case = CaseSpec.model_validate(a_case({"pattern": "^[^\\0]+$"}, True))
     witness = confirm(case, "a_subsumes_b", "x")
-    assert witness.instance == "x"
-    assert witness.note is not None
-    assert witness.note.startswith("the validator does not take a schema: ")
-    assert not witness.refuted
+    assert isinstance(witness, Unchecked)
+    assert witness.counterexample == "x"
+    assert witness.message.startswith("the validator does not take a schema: ")
+    assert not refuted(witness)
+    # A number that is none in JSON is not kept, since a file of results could not hold it.
+    dropped = confirm(case, "a_subsumes_b", float("nan"))
+    assert isinstance(dropped, Unchecked)
+    assert "counterexample" not in dropped.model_fields_set
 
 
 # An adapter that says no with the `const` of B for a counterexample, where B has one, declines
-# where A has a `format`, and says yes to everything else.
+# where A has a `format`, and says yes to everything else. Where A has a `title`, it gives a
+# line that is no reply: a yes with a key that only a no has.
 ADAPTER = """
 import json, sys
 print(json.dumps({"ready": True}), flush=True)
 for line in sys.stdin:
     request = json.loads(line)
+    assert set(request) == {"a", "b", "timeout"}
     a, b = request["a"], request["b"]
-    if isinstance(b, dict) and "const" in b:
-        reply = {"answer": "no", "counterexample": b["const"], "reason": "not kept"}
+    if isinstance(a, dict) and "title" in a:
+        reply = {"answer": True, "seconds": 0.001, "counterexample": 1}
+    elif isinstance(b, dict) and "const" in b:
+        reply = {"answer": False, "seconds": 0.001, "counterexample": b["const"]}
     elif isinstance(a, dict) and "format" in a:
-        reply = {"answer": "unknown", "reason": "format", "detail": "format is not supported"}
+        reply = {"answer": None, "seconds": 0.001, "reason": "format", "message": "no format"}
     else:
-        reply = {"answer": "yes", "counterexample": 1}
-    print(json.dumps({"seconds": 0.001, **reply}), flush=True)
+        reply = {"answer": True, "seconds": 0}
+    print(json.dumps(reply), flush=True)
 """
 
 
@@ -192,6 +168,7 @@ def test_a_checker_and_a_corpus_from_anywhere_are_run_by_their_paths(tmp_path: P
         "null": a_case({"type": "string"}, {"const": None}, a_subsumes_b=False),
         "none": a_case({"type": "null"}, {"const": None}, a_subsumes_b=True),
         "format": a_case({"format": "hostname"}, {"type": "string"}),
+        "typo": a_case({"title": "a reply that is none"}, True),
     }
     (corpus / "c").mkdir(parents=True)
     (corpus / "c" / "collection.json").write_text("{}", encoding="utf-8")
@@ -206,20 +183,51 @@ def test_a_checker_and_a_corpus_from_anywhere_are_run_by_their_paths(tmp_path: P
     # A corpus that is not the one of a checkout is taken to be that of the package's version.
     assert read_run(out).corpus == "v" + version("subsumes-benchmark")
     results = {(r.case, r.direction): r for r in read_results(out)}
-    assert len(results) == 6
+    assert len(results) == 8
     # `null` is a counterexample like any other, and is told from none by the key.
     found = results["c/null", "a_subsumes_b"]
-    assert (found.answer, found.witness, found.reason) == ("no", Witness(None, "confirmed"), None)
+    assert isinstance(found, No)
+    assert found.witness == Checked(counterexample=None, confirmation="confirmed")
     assert outcome(found) == "correct"
     # A no with a counterexample that is none is wrong, whatever the label says.
     found = results["c/none", "a_subsumes_b"]
-    assert found.witness == Witness(None, "accepted")
+    assert isinstance(found, No)
+    assert found.witness == Checked(counterexample=None, confirmation="accepted")
     assert outcome(found) == "wrong_no"
-    # A reason belongs to an unknown and a counterexample to a no, and to nothing else.
     found = results["c/format", "a_subsumes_b"]
-    assert (found.answer, found.reason, found.witness) == ("unknown", "format", None)
+    assert isinstance(found, Unknown)
+    assert (found.reason, found.message) == ("format", "no format")
+    # A whole number of seconds is a number of seconds.
     found = results["c/format", "b_subsumes_a"]
-    assert (found.answer, found.reason, found.witness) == ("yes", None, None)
+    assert isinstance(found, Yes)
+    assert found.seconds == 0.0
+    # A counterexample belongs to a no. A line with a key that its answer does not have is no
+    # reply: the task counts as a crash, and the adapter is started again for the next.
+    found = results["c/typo", "a_subsumes_b"]
+    assert isinstance(found, Crash)
+    assert found.message.startswith("not a reply (counterexample: Extra inputs are not permitted)")
+    assert ending(results["c/typo", "b_subsumes_a"]) == "yes"
+    # A key that does not apply is left out of a line, and is not written as null.
+    lines = (out / "results.jsonl").read_text(encoding="utf-8").splitlines()
+    written = {(line["case"], line["direction"]): line for line in map(json.loads, lines)}
+    assert written["c/format", "b_subsumes_a"] == {
+        "case": "c/format",
+        "direction": "b_subsumes_a",
+        "expected": None,
+        "answer": True,
+        "seconds": 0.0,
+        "wall_seconds": written["c/format", "b_subsumes_a"]["wall_seconds"],
+    }
+    assert set(written["c/typo", "a_subsumes_b"]) == {
+        "case",
+        "direction",
+        "expected",
+        "failure",
+        "message",
+        "wall_seconds",
+    }
+    run = json.loads((out / "run.json").read_text(encoding="utf-8"))
+    assert (run["name"], run["jobs"], run["checker"]) == ("fake", 1, described)
 
 
 # --------------------------------------------------------------------------- what a report counts
@@ -241,15 +249,14 @@ def test_a_checker_and_a_corpus_from_anywhere_are_run_by_their_paths(tmp_path: P
         ("timeout", True, "timeout"),
     ],
 )
-def test_how_a_task_counts(answer: Answer, expected: bool | None, counted: str) -> None:
+def test_how_a_task_counts(answer: Ending, expected: bool | None, counted: str) -> None:
     assert outcome(a_result("c/1", answer, expected)) == counted
 
 
 @pytest.mark.parametrize("expected", [True, False, None])
 def test_a_no_counts_by_its_counterexample_before_its_label(expected: bool | None) -> None:
     def no(confirmation: Confirmation) -> Result:
-        witness = Witness(1, confirmation)
-        return Result("c/1", "a_subsumes_b", expected, "no", 0.001, 0.001, witness=witness)
+        return runs.a_result("c/1", "no", expected, witness=a_witness(confirmation))
 
     without = outcome(a_result("c/1", "no", expected))
     assert outcome(no("not_an_instance")) == "wrong_no"
@@ -321,14 +328,8 @@ def test_a_report_is_written_and_shown_in_the_readme(tmp_path: Path) -> None:
     results = [
         a_result(case.id, "yes", case.a_subsumes_b, 0.002),
         a_result(with_format.id, "no", with_format.a_subsumes_b, 0.5),
-        Result(
-            without_label.id,
-            "b_subsumes_a",
-            None,
-            "no",
-            0.001,
-            0.001,
-            witness=Witness(1, "accepted"),
+        runs.a_result(
+            without_label.id, "no", None, direction="b_subsumes_a", witness=a_witness("accepted")
         ),
     ]
     write(tmp_path / "results" / "one", a_run("one", variant="Rust"), results)

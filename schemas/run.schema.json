@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/georg-wolflein/subsumes-benchmark/blob/main/schemas/run.schema.json",
+  "description": "One checker's run over the corpus: what ran, on what, and under which limits. It is the run.json of a run.",
+  "type": "object",
+  "required": [
+    "name",
+    "checker",
+    "corpus",
+    "timeout",
+    "warmup",
+    "seed",
+    "jobs",
+    "tasks",
+    "platform",
+    "processor",
+    "started",
+    "wall_seconds"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "description": "The name of the run, which is the name of the folder of the checker.",
+      "type": "string"
+    },
+    "checker": {
+      "description": "The checker, as the checker.json in its folder describes it.",
+      "$ref": "#/$defs/Checker"
+    },
+    "corpus": {
+      "description": "The release that the corpus is of, as v0.5.0, or for a run from a checkout of the repository what git describe says about its commit, as v0.5.0-3-gabc1234.",
+      "type": "string"
+    },
+    "timeout": {
+      "description": "The seconds that the checker had for one task.",
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "warmup": {
+      "description": "How many tasks each process of the adapter answered before anything was measured.",
+      "type": "integer",
+      "minimum": 0
+    },
+    "seed": {
+      "description": "The seed that the order of the tasks was drawn with.",
+      "type": "integer"
+    },
+    "jobs": {
+      "description": "How many processes of the adapter answered side by side. With more than one, the times of the tasks are no more than a hint, since the checks shared the machine.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "tasks": {
+      "description": "How many tasks the run has.",
+      "type": "integer",
+      "minimum": 0
+    },
+    "platform": {
+      "description": "The system that the run was on.",
+      "type": "string"
+    },
+    "processor": {
+      "description": "Its processor.",
+      "type": "string"
+    },
+    "started": {
+      "description": "When the run started.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "wall_seconds": {
+      "description": "What the whole run took.",
+      "type": "number",
+      "minimum": 0
+    }
+  },
+  "$defs": {
+    "Checker": {
+      "description": "A checker of the comparison, as the checker.json in its folder describes it.",
+      "type": "object",
+      "required": [
+        "$schema",
+        "label",
+        "version",
+        "homepage",
+        "dialect",
+        "build",
+        "run"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "$schema": {
+          "description": "The schema of this file, for an editor: this one, by a path from a folder under checkers/ or by a URL from anywhere else.",
+          "type": "string",
+          "format": "uri-reference"
+        },
+        "label": {
+          "description": "The checker's name in a report. Folders with the same label are variants of one checker.",
+          "type": "string"
+        },
+        "variant": {
+          "description": "What tells this folder from another one with the same label, such as the language of the package the checker is used through.",
+          "type": "string"
+        },
+        "version": {
+          "description": "The version the folder pins, as the report states it.",
+          "type": "string"
+        },
+        "homepage": {
+          "description": "Where the checker lives.",
+          "type": "string",
+          "format": "uri"
+        },
+        "dialect": {
+          "description": "The dialect the checker reads. Every schema is rewritten to it before the checker is asked.",
+          "$ref": "#/$defs/Dialect"
+        },
+        "build": {
+          "description": "The command that builds the adapter. It is run once, in the folder.",
+          "$ref": "#/$defs/Command"
+        },
+        "run": {
+          "description": "The command that starts the adapter, in the folder.",
+          "$ref": "#/$defs/Command"
+        }
+      }
+    },
+    "Dialect": {
+      "enum": [
+        "2020-12",
+        "draft-07",
+        "draft-04"
+      ]
+    },
+    "Command": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

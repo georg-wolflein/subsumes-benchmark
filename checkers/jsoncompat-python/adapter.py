@@ -20,16 +20,17 @@ from jsoncompat import SchemaOptions, analyze_compat
 OPTIONS: SchemaOptions = {"assert_formats": True}
 
 
-def check(a: str, b: str) -> tuple[str, str | None]:
+def check(a: str, b: str) -> dict[str, object]:
+    """The reply without its time."""
     try:
         result = analyze_compat(a, b, "serializer", options=OPTIONS)
     except Exception as exc:
-        return "error", f"{type(exc).__name__}: {exc}"[:300]
+        return {"failure": "error", "message": f"{type(exc).__name__}: {exc}"[:300]}
     if result["status"] == "compatible":
-        return "yes", None
+        return {"answer": True}
     if result["status"] == "incompatible":
-        return "no", result["counterexample_json"][:300]
-    return "unknown", result["reason"][:300]
+        return {"answer": False, "message": result["counterexample_json"][:300]}
+    return {"answer": None, "message": result["reason"][:300]}
 
 
 def main() -> None:
@@ -42,9 +43,9 @@ def main() -> None:
         # in that time. The call cannot be interrupted from Python, so the runner enforces
         # the timeout.
         start = time.perf_counter()
-        answer, detail = check(a, b)
+        reply = check(a, b)
         seconds = time.perf_counter() - start
-        print(json.dumps({"answer": answer, "seconds": seconds, "detail": detail}), flush=True)
+        print(json.dumps({**reply, "seconds": seconds}), flush=True)
 
 
 main()

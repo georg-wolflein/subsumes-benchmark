@@ -44,16 +44,15 @@ def check(request: str) -> dict[str, Json]:
         schemas = json.loads(request)
         verdict = subsumes(schemas["a"], schemas["b"])
     except Exception as exc:
-        return {"answer": "error", "detail": f"{type(exc).__name__}: {exc}"[:300]}
+        return {"failure": "error", "message": f"{type(exc).__name__}: {exc}"[:300]}
     match verdict:
         case Yes():
-            return {"answer": "yes"}
+            return {"answer": True}
         case No(counterexample):
-            detail = json.dumps(counterexample)[:300]
-            return {"answer": "no", "detail": detail, "counterexample": counterexample}
+            return {"answer": False, "counterexample": counterexample}
         case Unknown(reason):
             # A check that spends its work budget ends here too, and the reason says so.
-            return {"answer": "unknown", "detail": str(reason)[:300], "reason": kind(reason)}
+            return {"answer": None, "reason": kind(reason), "message": str(reason)[:300]}
 
 
 def main() -> None:

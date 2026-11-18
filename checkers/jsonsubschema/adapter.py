@@ -29,18 +29,26 @@ def on_alarm(signum: int, frame: object) -> None:
     raise TimedOutError
 
 
-def check(a: object, b: object) -> tuple[str, str | None]:
+TIMEOUT: dict[str, object] = {"failure": "timeout"}
+
+
+def failed(message: str) -> dict[str, object]:
+    return {"failure": "error", "message": message}
+
+
+def check(a: object, b: object) -> dict[str, object]:
+    """The reply without its time."""
     try:
         # Anything but ``True`` is a no: some of the library's paths fall through to ``None``.
-        return ("yes" if isSubschema(b, a) is True else "no"), None
+        return {"answer": isSubschema(b, a) is True}
     except TimedOutError:
-        return "timeout", None
+        return TIMEOUT
     except RecursionError:
-        return "error", "RecursionError"
+        return failed("RecursionError")
     except SystemExit:
-        return "error", "the library called sys.exit"  # it does where it sees no way on
+        return failed("the library called sys.exit")  # it does where it sees no way on
     except Exception as exc:
-        return "error", f"{type(exc).__name__}: {exc}"[:300]
+        return failed(f"{type(exc).__name__}: {exc}"[:300])
 
 
 def main() -> None:
@@ -54,12 +62,14 @@ def main() -> None:
         request = json.loads(line)
         signal.setitimer(signal.ITIMER_REAL, request["timeout"])
         try:
-            answer, detail = check(request["a"], request["b"])
+            reply = check(request["a"], request["b"])
         except TimedOutError:  # the alarm went off between the check and here
-            answer, detail = "timeout", None
+            reply = TIMEOUT
         seconds = time.perf_counter() - start
         signal.setitimer(signal.ITIMER_REAL, 0)
-        reply = {"answer": answer, "seconds": seconds, "detail": detail}
+        # A timeout has no time: the check did not end.
+        if reply is not TIMEOUT:
+            reply = {**reply, "seconds": seconds}
         print(json.dumps(reply), file=protocol, flush=True)
 
 

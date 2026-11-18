@@ -1,0 +1,341 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/georg-wolflein/subsumes-benchmark/blob/main/schemas/result.schema.json",
+  "description": "How one checker did on one task: a line of the results.jsonl of a run. It is the task and how it ended, which is one of the five ways that a reply can be, with what the runner adds, or one of two ways that are the runner's own. A key that does not apply is left out.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/Yes"
+    },
+    {
+      "$ref": "#/$defs/No"
+    },
+    {
+      "$ref": "#/$defs/Unknown"
+    },
+    {
+      "$ref": "#/$defs/Error"
+    },
+    {
+      "$ref": "#/$defs/Timeout"
+    },
+    {
+      "$ref": "#/$defs/Unsupported"
+    },
+    {
+      "$ref": "#/$defs/Crash"
+    }
+  ],
+  "$defs": {
+    "Task": {
+      "description": "The task: one of the two questions of a case, and what the corpus says the answer is.",
+      "type": "object",
+      "required": [
+        "case",
+        "direction",
+        "expected"
+      ],
+      "properties": {
+        "case": {
+          "description": "The id of the case: the path of its file in the corpus without the extension.",
+          "type": "string"
+        },
+        "direction": {
+          "description": "Which of the two questions of the case was asked: the key of the case that has its label.",
+          "$ref": "#/$defs/Direction"
+        },
+        "expected": {
+          "description": "The label of the corpus for the task; null where it claims nothing.",
+          "type": [
+            "boolean",
+            "null"
+          ]
+        }
+      }
+    },
+    "Yes": {
+      "description": "The checker says yes.",
+      "allOf": [
+        {
+          "$ref": "#/$defs/Task"
+        }
+      ],
+      "type": "object",
+      "required": [
+        "answer",
+        "seconds",
+        "wall_seconds"
+      ],
+      "unevaluatedProperties": false,
+      "properties": {
+        "answer": {
+          "description": "a accepts every instance that is valid under b.",
+          "const": true
+        },
+        "seconds": {
+          "description": "What the checker took for the task, as its adapter measured it: parsing each schema once, and the check.",
+          "type": "number",
+          "minimum": 0
+        },
+        "wall_seconds": {
+          "description": "What the runner waited for the reply.",
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "No": {
+      "description": "The checker says no.",
+      "allOf": [
+        {
+          "$ref": "#/$defs/Task"
+        }
+      ],
+      "type": "object",
+      "required": [
+        "answer",
+        "seconds",
+        "wall_seconds"
+      ],
+      "unevaluatedProperties": false,
+      "properties": {
+        "answer": {
+          "description": "Some instance is valid under b and invalid under a.",
+          "const": false
+        },
+        "seconds": {
+          "description": "What the checker took for the task, as its adapter measured it: parsing each schema once, and the check.",
+          "type": "number",
+          "minimum": 0
+        },
+        "message": {
+          "description": "A text for a person: what the checker says about its no.",
+          "type": "string"
+        },
+        "wall_seconds": {
+          "description": "What the runner waited for the reply.",
+          "type": "number",
+          "minimum": 0
+        },
+        "witness": {
+          "description": "The counterexample that the checker gave, with what a validator made of it. The key is left out where the checker gave none.",
+          "$ref": "#/$defs/Witness"
+        }
+      }
+    },
+    "Unknown": {
+      "description": "The checker ran and declined to answer.",
+      "allOf": [
+        {
+          "$ref": "#/$defs/Task"
+        }
+      ],
+      "type": "object",
+      "required": [
+        "answer",
+        "seconds",
+        "wall_seconds"
+      ],
+      "unevaluatedProperties": false,
+      "properties": {
+        "answer": {
+          "description": "The checker ran and declined to answer.",
+          "const": null
+        },
+        "seconds": {
+          "description": "What the checker took for the task, as its adapter measured it: parsing each schema once, and the check.",
+          "type": "number",
+          "minimum": 0
+        },
+        "reason": {
+          "description": "What kind of reason the checker had, in a word or two that are the same for every task declined for it, such as the keyword that it does not support. A report counts the declined tasks by it.",
+          "type": "string",
+          "minLength": 1
+        },
+        "message": {
+          "description": "A text for a person: the reason in full.",
+          "type": "string"
+        },
+        "wall_seconds": {
+          "description": "What the runner waited for the reply.",
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "Error": {
+      "description": "The checker failed, by an exception or by rejecting a schema.",
+      "allOf": [
+        {
+          "$ref": "#/$defs/Task"
+        }
+      ],
+      "type": "object",
+      "required": [
+        "failure",
+        "message",
+        "wall_seconds"
+      ],
+      "unevaluatedProperties": false,
+      "properties": {
+        "failure": {
+          "description": "There is no answer, because the checker failed.",
+          "const": "error"
+        },
+        "message": {
+          "description": "A text for a person: the error.",
+          "type": "string"
+        },
+        "seconds": {
+          "description": "What the checker took for the task, as its adapter measured it: parsing each schema once, and the check.",
+          "type": "number",
+          "minimum": 0
+        },
+        "wall_seconds": {
+          "description": "What the runner waited for the reply.",
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "Timeout": {
+      "description": "The checker did not answer in time: it stopped itself, or the runner stopped waiting and killed it.",
+      "allOf": [
+        {
+          "$ref": "#/$defs/Task"
+        }
+      ],
+      "type": "object",
+      "required": [
+        "failure",
+        "wall_seconds"
+      ],
+      "unevaluatedProperties": false,
+      "properties": {
+        "failure": {
+          "description": "There is no answer, because the time ran out.",
+          "const": "timeout"
+        },
+        "wall_seconds": {
+          "description": "What the runner waited for the reply.",
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "Unsupported": {
+      "description": "The checker was not asked, because the draft that it reads cannot express one of the schemas.",
+      "allOf": [
+        {
+          "$ref": "#/$defs/Task"
+        }
+      ],
+      "type": "object",
+      "required": [
+        "failure",
+        "message"
+      ],
+      "unevaluatedProperties": false,
+      "properties": {
+        "failure": {
+          "description": "There is no answer, because the checker was not asked.",
+          "const": "unsupported"
+        },
+        "message": {
+          "description": "A text for a person: what the draft cannot express.",
+          "type": "string"
+        }
+      }
+    },
+    "Crash": {
+      "description": "The process of the adapter died, did not start, or gave a line that is no reply.",
+      "allOf": [
+        {
+          "$ref": "#/$defs/Task"
+        }
+      ],
+      "type": "object",
+      "required": [
+        "failure",
+        "message",
+        "wall_seconds"
+      ],
+      "unevaluatedProperties": false,
+      "properties": {
+        "failure": {
+          "description": "There is no answer, because the adapter is at fault.",
+          "const": "crash"
+        },
+        "message": {
+          "description": "A text for a person: what happened.",
+          "type": "string"
+        },
+        "wall_seconds": {
+          "description": "What the runner waited for the reply.",
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "Direction": {
+      "enum": [
+        "a_subsumes_b",
+        "b_subsumes_a"
+      ]
+    },
+    "Witness": {
+      "description": "The counterexample that a checker gave with a no, and what a validator made of it. The validator reads the two schemas as the labels of the corpus do: as draft 2020-12, with format asserted.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/Checked"
+        },
+        {
+          "$ref": "#/$defs/Unchecked"
+        }
+      ]
+    },
+    "Checked": {
+      "description": "The validator looked at the counterexample.",
+      "type": "object",
+      "required": [
+        "counterexample",
+        "confirmation"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "counterexample": {
+          "description": "An instance that is valid under b and invalid under a. The key is left out where there is none: null is an instance."
+        },
+        "confirmation": {
+          "description": "confirmed: it is valid under b and invalid under a, as it has to be. not_an_instance: b rejects it, so a did not have to accept it. accepted: a accepts it, so it tells the two apart in nothing. With either of the last two the no counts as a wrong answer.",
+          "enum": [
+            "confirmed",
+            "not_an_instance",
+            "accepted"
+          ]
+        }
+      }
+    },
+    "Unchecked": {
+      "description": "The validator did not look at the counterexample.",
+      "type": "object",
+      "required": [
+        "confirmation",
+        "message"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "counterexample": {
+          "description": "An instance that is valid under b and invalid under a. The key is left out where there is none: null is an instance. It is left out too where it held a number that is none in JSON, and could not be kept."
+        },
+        "confirmation": {
+          "description": "That it was not looked at.",
+          "const": "unchecked"
+        },
+        "message": {
+          "description": "A text for a person: why the validator did not look at it.",
+          "type": "string"
+        }
+      }
+    }
+  }
+}
