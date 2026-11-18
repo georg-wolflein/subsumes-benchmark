@@ -13,15 +13,18 @@ import signal
 import subprocess
 import time
 from dataclasses import dataclass
+from pathlib import Path
 from typing import IO, TYPE_CHECKING, Literal, Self, cast, get_args
+
+from pydantic import PrivateAttr
+
+from subsumes_benchmark.generated.checker import CheckerSpec, Dialect
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
-    from pathlib import Path
 
     from subsumes_benchmark.compare.results import Answer
 
-type Dialect = Literal["2020-12", "draft-07", "draft-04"]
 DIALECTS: Sequence[Dialect] = get_args(Dialect.__value__)
 
 type AdapterAnswer = Literal["yes", "no", "unknown", "error", "timeout"]
@@ -34,46 +37,24 @@ STARTUP_SECONDS = 300.0
 GRACE_SECONDS = 2.0
 
 
-class ConfigError(Exception):
-    pass
+class Checker(CheckerSpec):
+    """A checker of the comparison, and the folder under ``checkers/`` that holds its adapter."""
 
-
-@dataclass(frozen=True)
-class Checker:
-    """A checker as its ``checker.json`` describes it."""
-
-    name: str
-    folder: Path
-    label: str
-    # What tells this checker from another one of the same label, such as the language of
-    # the package it is used through.
-    variant: str | None
-    version: str
-    homepage: str
-    dialect: Dialect
-    build: Sequence[str]
-    run: Sequence[str]
+    _folder: Path = PrivateAttr()
 
     @classmethod
     def load(cls, folder: Path) -> Self:
-        path = folder / "checker.json"
-        if not path.is_file():
-            raise ConfigError(f"{path} does not exist")
-        spec = json.loads(path.read_text(encoding="utf-8"))
-        dialect = spec["dialect"]
-        if dialect not in DIALECTS:
-            raise ConfigError(f"{path}: dialect is {dialect!r}, not one of {list(DIALECTS)}")
-        return cls(
-            name=folder.name,
-            folder=folder,
-            label=spec["label"],
-            variant=spec.get("variant"),
-            version=spec["version"],
-            homepage=spec["homepage"],
-            dialect=dialect,
-            build=spec["build"],
-            run=spec["run"],
-        )
+        checker = cls.read(folder / "checker.json")
+        checker._folder = folder
+        return checker
+
+    @property
+    def folder(self) -> Path:
+        return self._folder
+
+    @property
+    def name(self) -> str:
+        return self._folder.name
 
     def compile(self) -> None:
         """Build the adapter, in its folder."""

@@ -5,7 +5,7 @@ import json
 from jsonschema import Draft202012Validator
 
 from reading import CORPUS, ROOT, cases, read
-from subsumes_benchmark.build import CASE_SCHEMA, exclusion_of, load_exclusions, load_overrides
+from subsumes_benchmark.build import CASE_SCHEMA, Overrides, exclusion_of
 
 CASE_FILES = {"a.json", "b.json", "case.json"}
 CONFIG = json.loads((ROOT / "collections.json").read_text(encoding="utf-8"))
@@ -91,7 +91,7 @@ def test_every_license_is_there() -> None:
 
 
 def test_every_override_is_applied() -> None:
-    overrides = load_overrides(ROOT / "overrides.json")
+    overrides = Overrides.read(ROOT / "overrides.json").overrides
     by_id = {case.id: case for case in cases()}
     assert sorted(overrides.keys() - by_id.keys()) == []
     not_applied = [
@@ -105,5 +105,5 @@ def test_every_override_is_applied() -> None:
 
 
 def test_no_excluded_case_is_in_the_corpus() -> None:
-    exclusions = load_exclusions(ROOT / "overrides.json")
+    exclusions = Overrides.read(ROOT / "overrides.json").exclusions
     assert [case.id for case in cases() if exclusion_of(case.id, exclusions) is not None] == []

@@ -14,8 +14,11 @@ classifiers = [
   "Programming Language :: Python :: 3.14",
   "Typing :: Typed",
 ]
-# The build needs the standard library only; what the tests need is in the dev group.
-dependencies = []
+# The build needs Pydantic, which reads the configuration files, and otherwise the standard
+# library only; what the tests need is in the dev group.
+dependencies = [
+    "pydantic>=2.14.3",
+]
 
 [project.urls]
 Repository = "https://github.com/georg-wolflein/subsumes-benchmark"
@@ -66,8 +69,41 @@ ignore = [
 pydocstyle = { convention = "google" }
 isort = { combine-as-imports = true }
 
+[tool.ruff.lint.flake8-type-checking]
+# Pydantic reads the annotations of a model when the class is created, so what they name must
+# be imported for real.
+runtime-evaluated-base-classes = [
+  "pydantic.BaseModel",
+  "subsumes_benchmark.config.Config",
+  "subsumes_benchmark.generated.checker.CheckerSpec",
+  "subsumes_benchmark.generated.collections.CollectionsSpec",
+  "subsumes_benchmark.generated.overrides.OverridesSpec",
+]
+
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["E501"]
+# Generated code: a description from a schema is one long line.
+"src/subsumes_benchmark/generated/*" = ["E501"]
+
+# How `make models` writes src/subsumes_benchmark/generated/ from the schemas under schemas/.
+[tool.datamodel-codegen]
+input-file-type = "jsonschema"
+output-model-type = "pydantic_v2.BaseModel"
+target-python-version = "3.14"
+base-class = "subsumes_benchmark.config.Config"
+enum-field-as-literal = "all"
+use-type-alias-type = true
+use-annotated = true
+field-constraints = true
+use-standard-collections = true
+use-union-operator = true
+use-schema-description = true
+use-field-description = true
+use-attribute-docstrings = true
+use-double-quotes = true
+disable-timestamp = true
+type-mappings = ["uri=string"]
+formatters = ["ruff-format", "ruff-check"]
 
 [tool.ty.rules]
 unused-ignore-comment = "warn"
@@ -90,6 +126,7 @@ markers = ["slow: reads every schema of the corpus; deselected by default"]
 [dependency-groups]
 dev = [
     "check-jsonschema>=0.39.0",
+    "datamodel-code-generator>=0.97.0",
     "jsonschema>=4.26.0",
     "pytest>=9.2.0",
     "referencing>=0.37.0",

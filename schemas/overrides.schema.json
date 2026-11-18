@@ -1,28 +1,40 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/georg-wolflein/subsumes-benchmark/blob/main/schemas/overrides.schema.json",
-  "title": "Where the corpus departs from upstream, and why",
-  "description": "A case may be listed only once in the whole file. The labels hold for draft 2020-12 with format asserted and patterns read as ECMA-262 regular expressions with the u flag. `make test-corpus` checks every label that can be checked by validating instances, which includes the corrected ones.",
+  "description": "Where the corpus departs from upstream, and why. A case may be listed only once. The labels hold for draft 2020-12 with format asserted and patterns read as ECMA-262 regular expressions with the u flag. `make test-corpus` checks every label that can be checked by validating instances, which includes the corrected ones.",
   "type": "object",
-  "required": ["exclude", "override"],
+  "required": ["$schema", "exclude", "override"],
   "additionalProperties": false,
   "properties": {
     "$schema": {
-      "type": "string"
+      "description": "The schema of this file, for an editor.",
+      "const": "./schemas/overrides.schema.json"
     },
     "exclude": {
       "description": "The upstream cases that the corpus leaves out. A case is left out when one of its schemas is not valid draft 2020-12 or does not resolve, or when a test case of the test suite does not say what draft 2020-12 requires of a schema that stands on its own: such a pair has no answer.",
       "type": "array",
-      "items": { "$ref": "#/$defs/exclusion" }
+      "items": { "$ref": "#/$defs/Exclusion" }
     },
     "override": {
       "description": "The cases whose labels are not upstream's.",
       "type": "array",
-      "items": { "$ref": "#/$defs/override" }
+      "items": { "$ref": "#/$defs/Override" }
     }
   },
   "$defs": {
-    "exclusion": {
+    "CasePath": {
+      "description": "The path of a case below corpus/, starting with its collection.",
+      "type": "string",
+      "pattern": "^[^/]+(/[^/]+)+$"
+    },
+    "Cases": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/CasePath" }
+    },
+    "Exclusion": {
+      "description": "Upstream cases that the corpus leaves out.",
       "type": "object",
       "required": ["reason", "cases"],
       "additionalProperties": false,
@@ -33,14 +45,12 @@
         },
         "cases": {
           "description": "What is left out. An entry is a case id, or a folder followed by /* for every case below it. For the test suite a folder is one test case, or one file.",
-          "type": "array",
-          "minItems": 1,
-          "uniqueItems": true,
-          "items": { "$ref": "#/$defs/case" }
+          "$ref": "#/$defs/Cases"
         }
       }
     },
-    "override": {
+    "Override": {
+      "description": "The labels that cases get in place of upstream's.",
       "type": "object",
       "required": ["note", "a_subsumes_b", "b_subsumes_a", "cases"],
       "additionalProperties": false,
@@ -59,20 +69,9 @@
         },
         "cases": {
           "description": "The ids of the cases that get these labels.",
-          "type": "array",
-          "minItems": 1,
-          "uniqueItems": true,
-          "items": {
-            "$ref": "#/$defs/case",
-            "not": { "pattern": "/\\*$" }
-          }
+          "$ref": "#/$defs/Cases"
         }
       }
-    },
-    "case": {
-      "description": "The path of a case below corpus/, starting with its collection.",
-      "type": "string",
-      "pattern": "^[^/]+(/[^/]+)+$"
     }
   }
 }
