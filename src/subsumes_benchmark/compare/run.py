@@ -84,8 +84,8 @@ def _git(*args: str) -> str | None:
 def _revision(corpus: Path) -> str:
     """What the corpus is: a release, or what ``git describe`` says about a checkout.
 
-    The package of a version is made for the corpus of that version, and a corpus does not say
-    which one it is. So the corpus is taken to be the release that the package is of, as
+    The package of a version holds the corpus of that version, and an unpacked corpus does not
+    say which one it is. So the corpus is taken to be the release that the package is of, as
     ``v0.5.0``. Only where the package runs from a checkout of the repository, over the corpus
     of that checkout, is it what ``git describe`` says, with ``-dirty`` where the corpus
     differs from what is committed; other uncommitted changes do not change what is measured.

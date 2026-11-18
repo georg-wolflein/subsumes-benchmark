@@ -6,7 +6,8 @@ Everything runs through `uv`. `make ci` runs what CI runs on a pull request: `ru
 
 ## Rules
 
-- The built package must never contain benchmark data. It is published to PyPI with every release, as the command `subsumes-benchmark` that runs a checker; the corpus is the archive of the release.
+- The built package holds the corpus as one file, `src/subsumes_benchmark/corpus.tar.zst`, and no other benchmark data. The file is not committed: the release packs it from `corpus/` before it builds the package, with `make archive`, and attaches the same file to the release. The package is published to PyPI with every release, as the command `subsumes-benchmark`, which unpacks the corpus and runs a checker over it.
+- The package is licensed `MIT AND GPL-3.0-only`: the code is MIT, and the corpus in it keeps the licences of its sources. The texts under `corpus/licenses/` go into the package as licence files. A collection from a source under another licence needs that licence in `pyproject.toml` too.
 - Every change reaches `main` through a pull request; a ruleset rejects a direct push.
 - Commit messages and pull request titles follow the Conventional Commits format.
 - Pull requests are squash-merged, so the PR title becomes the commit message on `main`.

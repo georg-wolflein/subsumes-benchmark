@@ -1,4 +1,4 @@
-.PHONY: ci lint format format-check typecheck config test sources corpus models compare report
+.PHONY: ci lint format format-check typecheck config test sources corpus models compare report archive
 
 # The adapters under checkers/ that are checked like the code under src/: each Rust one is
 # a crate of its own, and each Python one a script with an environment of its own.
@@ -47,6 +47,9 @@ sources:  ## fetch the upstream sources; they are opt-in submodules and only nee
 
 corpus:  ## rebuild corpus/ from the upstream sources
 	uv run python -m subsumes_benchmark
+
+archive:  ## pack corpus/ into the file that a built package holds, so that `uv build` after it builds a package with the corpus
+	uv run python -m subsumes_benchmark.archive corpus src/subsumes_benchmark/corpus.tar.zst
 
 models:  ## write src/subsumes_benchmark/generated/ from the schemas; the options are in pyproject.toml
 	uv run datamodel-codegen --input schemas/collections.schema.json --output src/subsumes_benchmark/generated/collections.py --class-name CollectionsSpec

@@ -1,4 +1,4 @@
-"""The ``subsumes-benchmark`` command: run a checker, report on runs, or hold one against another.
+"""The ``subsumes-benchmark`` command: unpack the corpus, run a checker, and report on runs.
 
 ``python -m subsumes_benchmark.compare`` is the same command. Every path it takes is relative
 to the working directory, so that it runs the same from a checkout and as an installed package.
@@ -8,6 +8,7 @@ import argparse
 import sys
 from pathlib import Path
 
+from subsumes_benchmark.archive import ArchiveError, unpack
 from subsumes_benchmark.compare.checkers import Checker
 from subsumes_benchmark.compare.diff import diff
 from subsumes_benchmark.compare.run import run
@@ -21,13 +22,20 @@ CORPUS = Path("corpus")
 def main() -> None:
     try:
         _main()
-    except (ConfigError, ReportError) as error:
+    except (ArchiveError, ConfigError, ReportError) as error:
         sys.exit(str(error))
 
 
 def _main() -> None:
     parser = argparse.ArgumentParser(prog="subsumes-benchmark")
     commands = parser.add_subparsers(dest="command", required=True)
+
+    unpacking = commands.add_parser(
+        "corpus",
+        help="unpack the corpus that the package holds",
+        description="The corpus is the one of the release that the package is of.",
+    )
+    unpacking.add_argument("folder", type=Path, help="where it goes: a new folder, or an empty one")
 
     running = commands.add_parser(
         "run",
@@ -70,6 +78,9 @@ def _main() -> None:
     differing.add_argument("--out", type=Path, help="write the comment here, not to the terminal")
 
     args = parser.parse_args()
+    if args.command == "corpus":
+        unpack(args.folder)
+        return
     if args.command == "diff":
         found = diff(
             read_entry(args.results),
@@ -90,7 +101,10 @@ def _main() -> None:
             sys.exit(1)
         return
     if not args.corpus.is_dir():
-        sys.exit(f"there is no corpus at {args.corpus}; --corpus names its folder")
+        sys.exit(
+            f"there is no corpus at {args.corpus}; `subsumes-benchmark corpus {args.corpus}` "
+            "unpacks the one of the package there, and --corpus names another folder"
+        )
     if args.command == "run":
         # The run is named like the folder, and a path such as `.` has no name.
         checker = Checker.load(args.checker.resolve())
