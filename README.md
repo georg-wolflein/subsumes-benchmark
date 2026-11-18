@@ -227,10 +227,12 @@ The submodules under `sources/` are marked `update = none`, so cloning this repo
 
 ```bash
 uv sync
-make ci            # ruff check, ruff format --check, ty check, pytest
+make ci            # ruff check, ruff format --check, ty check, cargo fmt --check, cargo clippy, pytest
 make test-corpus   # the slow tests over every schema, about three minutes
-make format        # apply ruff's fixes and formatting
+make format        # apply ruff's fixes and formatting, and cargo fmt
 ```
+
+`make ci` covers the adapters under `checkers/` too, so it needs `cargo`. The Rust adapters are formatted by `cargo fmt` and linted by `cargo clippy`. The Python adapters are linted and formatted by ruff with everything else, and type-checked by ty, each against the environment its script declares.
 
 CI runs both on every push and pull request. The slow tests check that every schema is valid draft 2020-12, that every reference resolves, that every case lists the features of its schemas, and that every label that validation can check holds.
 
