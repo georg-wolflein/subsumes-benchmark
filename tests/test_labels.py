@@ -2,7 +2,7 @@
 
 When ``b.json`` only lists its instances, ``a.json`` subsumes it exactly when every one of
 them is valid under ``a.json``. That checks the label without an inclusion checker, with
-patterns matched in the Rust regex dialect.
+patterns matched as ECMA-262 does with the ``u`` flag.
 """
 
 import json
@@ -58,7 +58,7 @@ def test_label_holds_where_b_lists_its_instances() -> None:
 
 
 @pytest.mark.slow
-def test_labelled_case_has_only_patterns_of_the_rust_regex_dialect() -> None:
+def test_labelled_case_has_only_valid_patterns() -> None:
     wrong = []
     for found in cases():
         if found.claims_nothing:

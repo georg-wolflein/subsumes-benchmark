@@ -13,9 +13,9 @@
 #
 # A case may be listed only once.
 #
-# The labels hold for draft 2020-12 with format asserted and patterns read in the dialect of
-# the Rust regex crate. `make test-corpus` checks every label that can be checked by
-# validating instances, which includes the corrected ones.
+# The labels hold for draft 2020-12 with format asserted and patterns read as ECMA-262
+# regular expressions with the u flag. `make test-corpus` checks every label that can be
+# checked by validating instances, which includes the corrected ones.
 
 
 # ----------------------------------------------------------------------------
@@ -82,116 +82,183 @@ cases = [
 
 
 # ----------------------------------------------------------------------------
-# Patterns that are not valid in the Rust regex dialect
+# Patterns that are not valid in ECMA-262 with the u flag
 # ----------------------------------------------------------------------------
 
 [[override]]
-note = "The Rust regex crate rejects the pattern .*{{.+}}.* (repetition quantifier expects a valid decimal), so the schemas have no meaning in its dialect."
+note = "ECMA-262 with the u flag rejects the pattern (^\\d{4}-\\d{2}-\\d{2}T\\d{2}\\:\\d{2}\\:\\d{2}[+-]\\d{2}\\:\\d{2}$) (the escape \\: is not allowed), so the schemas have no meaning."
 cases = [
-  "additional-as-uneval/o9802.original_not_unevalEliminated",
-  "additional-as-uneval/o9802.unevalEliminated_not_original",
-  "additional-as-uneval/o9804.original_not_unevalEliminated",
-  "additional-as-uneval/o9804.unevalEliminated_not_original",
-  "additional-as-uneval/o9805.original_not_unevalEliminated",
-  "additional-as-uneval/o9805.unevalEliminated_not_original",
-  "additional-as-uneval/o9808.original_not_unevalEliminated",
-  "additional-as-uneval/o9808.unevalEliminated_not_original",
+  "additional-as-uneval/o69099.original_not_unevalEliminated",
+  "additional-as-uneval/o69099.unevalEliminated_not_original",
+]
+
+[[override]]
+note = "ECMA-262 with the u flag rejects the pattern .*{{.+}}.* (a { that begins no quantifier), so the schemas have no meaning."
+cases = [
   "oneof-as-anyof/o9802.anyOf_not_oneOf",
-  "oneof-as-anyof/o9802.oneOf_not_anyOf",
   "oneof-as-anyof/o9804.anyOf_not_oneOf",
-  "oneof-as-anyof/o9804.oneOf_not_anyOf",
   "oneof-as-anyof/o9805.anyOf_not_oneOf",
-  "oneof-as-anyof/o9805.oneOf_not_anyOf",
   "oneof-as-anyof/o9808.anyOf_not_oneOf",
-  "oneof-as-anyof/o9808.oneOf_not_anyOf",
 ]
 
 [[override]]
-note = "The Rust regex crate rejects the pattern ^((?!(\\.(nii|nrrd|mp4|avi)\\b)).)*$ (look-around, including look-ahead and look-behind, is not supported), so the schemas have no meaning in its dialect."
+note = "ECMA-262 with the u flag rejects the pattern [0-9]+(\\-[0-9]+)?(\\,([0-9]+(\\-[0-9]+)?))* (the escape \\- is not allowed outside a class), so the schemas have no meaning."
 cases = [
-  "uneval-as-additional/unevaluatedProperties_901.translate_not_trivial",
-  "uneval-as-additional/unevaluatedProperties_901.trivial_not_translate",
+  "uneval-as-additional/unevaluatedProperties_835.translate_not_trivial",
 ]
 
 [[override]]
-note = "The Rust regex crate rejects the pattern ^/[^\\0]+$ (backreferences are not supported), so the schemas have no meaning in its dialect."
+note = "ECMA-262 with the u flag rejects the patterns ^([0-9x]+\\.[0-9x]+\\.*[0-9x]*$|\\%VERSION\\%) (the escape \\% is not allowed) and ^(\\d{4}-\\d{2}-\\d{2}|\\%TODAY\\%)$ (the escape \\% is not allowed), so the schemas have no meaning."
 cases = [
-  "additional-as-uneval/o27356.original_not_unevalEliminated",
-  "additional-as-uneval/o27356.unevalEliminated_not_original",
+  "additional-as-uneval/o44713.original_not_unevalEliminated",
+  "additional-as-uneval/o44713.unevalEliminated_not_original",
 ]
 
 [[override]]
-note = "The Rust regex crate rejects the patterns ^/[^\\0]+$ (backreferences are not supported) and ^[^\\0]+$ (backreferences are not supported), so the schemas have no meaning in its dialect."
+note = "ECMA-262 with the u flag rejects the pattern ^(\\*|\\d{4}\\-\\d{2}\\-\\d{2})$ (the escape \\- is not allowed outside a class), so the schemas have no meaning."
 cases = [
-  "additional-as-uneval/o27348.original_not_unevalEliminated",
-  "additional-as-uneval/o27348.unevalEliminated_not_original",
-  "oneof-as-anyof/o27348.anyOf_not_oneOf",
-  "oneof-as-anyof/o27348.oneOf_not_anyOf",
+  "additional-as-uneval/o32807.original_not_unevalEliminated",
+  "additional-as-uneval/o32807.unevalEliminated_not_original",
 ]
 
 [[override]]
-note = "The Rust regex crate rejects the pattern ^[ !\"#$%&\\'()*+,\\-./0-9:;<=>?@A-Z[\\\\\\]\\^_`a-z{\\|}]+$ (unclosed character class), so the schemas have no meaning in its dialect."
+note = "ECMA-262 with the u flag rejects the pattern ^(\\d{4})$|^([a-zA-Z]{2}(\\-[A-Za-z]{2})?)$|^neutral$ (the escape \\- is not allowed outside a class), so the schemas have no meaning."
+cases = [
+  "schemastore-versions/vsix-publish_v2_not_v1",
+]
+
+[[override]]
+note = "ECMA-262 with the u flag rejects the pattern ^(http(s)?\\:\\/\\/(([a-zA-Z0-9]+((\\.|\\-)[a-zA-Z0-9]+)+)|(localhost))(\\:\\d+)?(\\/[\\w\\-]+)*(\\/?|\\/\\w+\\.[a-zA-Z]{2,4}(\\?[\\w]+\\=[\\w\\-]+)?)?(\\&[\\w]+\\=[\\w\\-]+)*)$ (the escape \\: is not allowed), so the schemas have no meaning."
+cases = [
+  "additional-as-uneval/o47658.original_not_unevalEliminated",
+  "additional-as-uneval/o47658.unevalEliminated_not_original",
+]
+
+[[override]]
+note = "ECMA-262 with the u flag rejects the pattern ^(http|https)://[\\w\\-_]+(\\.[\\w\\-_]+)+([\\w\\-\\.,@?^=%&amp;:/~\\+#]*[\\w\\-\\@?^=%&amp;/~\\+#])?$ (the escape \\@ is not allowed), so the schemas have no meaning."
+cases = [
+  "additional-as-uneval/o16740.original_not_unevalEliminated",
+  "additional-as-uneval/o16740.unevalEliminated_not_original",
+]
+
+[[override]]
+note = "ECMA-262 with the u flag rejects the pattern ^*$ (a quantifier after ^), so the schemas have no meaning."
+cases = [
+  "additional-as-uneval/o8618.original_not_unevalEliminated",
+  "additional-as-uneval/o8618.unevalEliminated_not_original",
+]
+
+[[override]]
+note = "ECMA-262 with the u flag rejects the patterns ^*$ (a quantifier after ^) and ^+$ (a quantifier after ^), so the schemas have no meaning."
+cases = [
+  "additional-as-uneval/o47165.original_not_unevalEliminated",
+]
+
+[[override]]
+note = "ECMA-262 with the u flag rejects the pattern ^.+\\<.+@.+\\..+\\>$ (the escape \\< is not allowed), so the schemas have no meaning."
+cases = [
+  "additional-as-uneval/o72113.original_not_unevalEliminated",
+  "additional-as-uneval/o72113.unevalEliminated_not_original",
+]
+
+[[override]]
+note = "ECMA-262 with the u flag rejects the pattern ^4\\-.* (the escape \\- is not allowed outside a class), so the schemas have no meaning."
+cases = [
+  "additional-as-uneval/o62056.original_not_unevalEliminated",
+  "additional-as-uneval/o62056.unevalEliminated_not_original",
+  "oneof-as-anyof/o62056.anyOf_not_oneOf",
+]
+
+[[override]]
+note = "ECMA-262 with the u flag rejects the pattern ^5\\-.* (the escape \\- is not allowed outside a class), so the schemas have no meaning."
+cases = [
+  "additional-as-uneval/o62057.original_not_unevalEliminated",
+  "additional-as-uneval/o62057.unevalEliminated_not_original",
+  "oneof-as-anyof/o62057.anyOf_not_oneOf",
+]
+
+[[override]]
+note = "ECMA-262 with the u flag rejects the patterns ^ISO(\\/IEC)?(\\/((TS)|(DIS)|(FDIS)))? \\d{3,}(\\-\\d+)?(\\:\\d{4})?$ (the escape \\- is not allowed outside a class) and ^OGC \\d{2}\\-\\d+(r\\d+)?$ (the escape \\- is not allowed outside a class), so the schemas have no meaning."
+cases = [
+  "additional-as-uneval/o81650.original_not_unevalEliminated",
+  "additional-as-uneval/o81650.unevalEliminated_not_original",
+]
+
+[[override]]
+note = "ECMA-262 with the u flag rejects the pattern ^[ !\"#$%&\\'()*+,\\-./0-9:;<=>?@A-Z[\\\\\\]\\^_`a-z{\\|}]+$ (the escape \\' is not allowed), so the schemas have no meaning."
 cases = [
   "additional-as-uneval/o10012.original_not_unevalEliminated",
   "additional-as-uneval/o10012.unevalEliminated_not_original",
 ]
 
 [[override]]
-note = "The Rust regex crate rejects the pattern ^[A-Za-z0-9\\-._~:/?#[\\]@!$&'()*+,;=%]*$ (unclosed character class), so the schemas have no meaning in its dialect."
+note = "ECMA-262 with the u flag rejects the pattern ^[[a-z]*[-]?[a-z]*]*$ (a ] outside a class), so the schemas have no meaning."
 cases = [
-  "additional-as-uneval/o89147.original_not_unevalEliminated",
-  "additional-as-uneval/o89147.unevalEliminated_not_original",
+  "additional-as-uneval/o58776.original_not_unevalEliminated",
+  "additional-as-uneval/o58776.unevalEliminated_not_original",
+  "schemastore-versions/pattern_v2_not_v1",
 ]
 
 [[override]]
-note = "The Rust regex crate rejects the pattern ^[\\w-/_]+$ (invalid range boundary, must be a literal), so the schemas have no meaning in its dialect."
+note = "ECMA-262 with the u flag rejects the pattern ^[\\.\\,\\*\\\\\\-\\s\\{\\}\\(\\)]+$ (the escape \\, is not allowed), so the schemas have no meaning."
+cases = [
+  "additional-as-uneval/o65414.unevalEliminated_not_original",
+  "additional-as-uneval/o65417.original_not_unevalEliminated",
+  "additional-as-uneval/o65417.unevalEliminated_not_original",
+  "additional-as-uneval/o65418.unevalEliminated_not_original",
+  "additional-as-uneval/o65421.original_not_unevalEliminated",
+  "additional-as-uneval/o65421.unevalEliminated_not_original",
+  "additional-as-uneval/o65423.original_not_unevalEliminated",
+  "additional-as-uneval/o65423.unevalEliminated_not_original",
+  "additional-as-uneval/o65424.original_not_unevalEliminated",
+  "additional-as-uneval/o65424.unevalEliminated_not_original",
+  "additional-as-uneval/o65429.original_not_unevalEliminated",
+  "additional-as-uneval/o65429.unevalEliminated_not_original",
+  "additional-as-uneval/o65431.unevalEliminated_not_original",
+  "additional-as-uneval/o65432.unevalEliminated_not_original",
+  "oneof-as-anyof/o65417.anyOf_not_oneOf",
+]
+
+[[override]]
+note = "ECMA-262 with the u flag rejects the pattern ^[\\w-/_]+$ (a range that begins with \\w), so the schemas have no meaning."
 cases = [
   "additional-as-uneval/o36572.original_not_unevalEliminated",
   "additional-as-uneval/o36572.unevalEliminated_not_original",
 ]
 
 [[override]]
-note = "The Rust regex crate rejects the pattern ^\\$[.[].*$ (unclosed character class), so the schemas have no meaning in its dialect."
+note = "ECMA-262 with the u flag rejects the pattern ^[\\w\\.\\d\\_]+$ (the escape \\_ is not allowed), so the schemas have no meaning."
 cases = [
-  "additional-as-uneval/o57762.original_not_unevalEliminated",
-  "additional-as-uneval/o57762.unevalEliminated_not_original",
-  "oneof-as-anyof/o57762.anyOf_not_oneOf",
-  "oneof-as-anyof/o57762.oneOf_not_anyOf",
+  "additional-as-uneval/o47670.original_not_unevalEliminated",
+  "additional-as-uneval/o47670.unevalEliminated_not_original",
 ]
 
 [[override]]
-note = "The Rust regex crate rejects the pattern ^\\cC$ (unrecognized escape sequence), so the schemas have no meaning in its dialect."
+note = "ECMA-262 with the u flag rejects the pattern ^[a-zA-Z][a-zA-Z0-9\\_]*(\\.[a-zA-Z][a-zA-Z0-9\\_]*)+$ (the escape \\_ is not allowed), so the schemas have no meaning."
 cases = [
-  "json-schema-test-suite/optional/ecmascript-regex/2/nonvalid/0",
-  "json-schema-test-suite/optional/ecmascript-regex/2/nonvalid/1",
-  "json-schema-test-suite/optional/ecmascript-regex/2/reflexive",
-  "json-schema-test-suite/optional/ecmascript-regex/2/universal",
-  "json-schema-test-suite/optional/ecmascript-regex/2/unsatisfiable",
-  "json-schema-test-suite/optional/ecmascript-regex/2/valid/0",
-  "json-schema-test-suite/optional/ecmascript-regex/2/valid/1",
+  "schemastore-versions/expo-37.0.0_v2_not_v1",
 ]
 
 [[override]]
-note = "The Rust regex crate rejects the pattern ^\\cc$ (unrecognized escape sequence), so the schemas have no meaning in its dialect."
+note = "ECMA-262 with the u flag rejects the pattern ^\\[(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))]:([0-9]*)$ (a ] outside a class), so the schemas have no meaning."
 cases = [
-  "json-schema-test-suite/optional/ecmascript-regex/3/nonvalid/0",
-  "json-schema-test-suite/optional/ecmascript-regex/3/nonvalid/1",
-  "json-schema-test-suite/optional/ecmascript-regex/3/reflexive",
-  "json-schema-test-suite/optional/ecmascript-regex/3/universal",
-  "json-schema-test-suite/optional/ecmascript-regex/3/unsatisfiable",
-  "json-schema-test-suite/optional/ecmascript-regex/3/valid/0",
-  "json-schema-test-suite/optional/ecmascript-regex/3/valid/1",
+  "additional-as-uneval/o65826.original_not_unevalEliminated",
+  "additional-as-uneval/o65826.unevalEliminated_not_original",
 ]
 
 [[override]]
-note = "The schemas reference a document whose pattern ^(?!(referent|type|version)$)[a-zA-Z0-9_]*$ the Rust regex crate rejects (look-around, including look-ahead and look-behind, is not supported), so they have no meaning in its dialect."
+note = "ECMA-262 with the u flag rejects the pattern ^connectedService\\:.+$ (the escape \\: is not allowed), so the schemas have no meaning."
 cases = [
-  "rb-testset/s87",
-  "rb-testset/s89",
-  "rb-testset/s91",
-  "rb-testset/u90",
+  "additional-as-uneval/o10499.original_not_unevalEliminated",
+  "additional-as-uneval/o10499.unevalEliminated_not_original",
 ]
 
+[[override]]
+note = "ECMA-262 with the u flag rejects the pattern ^string_table\\:(([0-9A-Z]{8})-([0-9A-Z]{4})-([0-9A-Z]{4})-([0-9A-Z]{4})-([0-9A-Z]{12}))$ (the escape \\: is not allowed), so the schemas have no meaning."
+cases = [
+  "additional-as-uneval/o47674.original_not_unevalEliminated",
+  "additional-as-uneval/o47674.unevalEliminated_not_original",
+]
 
 # ----------------------------------------------------------------------------
 # Labels that do not hold
@@ -236,102 +303,33 @@ cases = [
 
 
 # ----------------------------------------------------------------------------
-# Labels that depend on the regex dialect
+# Labels that hold only if . matches a line terminator
 # ----------------------------------------------------------------------------
 
 [[override]]
-note = "Upstream's label holds only if . matches a line terminator. In the Rust regex dialect . does not match a line feed, so \"aa\\nbb\" is valid under b.json and not under a.json."
+note = "Upstream's label holds only if . matches a line terminator. In ECMA-262 . matches none, so \"aa\\nbb\" is valid under b.json and not under a.json."
 a_subsumes_b = false
 cases = [
   "handwritten-sc/bool.7.eq1.sub.eq2",
 ]
 
 [[override]]
-note = "Upstream's label holds only if . matches a line terminator. In the Rust regex dialect . does not match a line feed, so \"aaa\\nbb\" is valid under b.json and not under a.json."
+note = "Upstream's label holds only if . matches a line terminator. In ECMA-262 . matches none, so \"aaa\\nbb\" is valid under b.json and not under a.json."
 a_subsumes_b = false
 cases = [
   "handwritten-sc/bool.7.strong.sub.eq2",
 ]
 
 [[override]]
-note = "Upstream's label holds only if . matches a line terminator. In the Rust regex dialect . does not match a line feed, so [{}, {\"name\": \"foo\\nbar\"}] is valid under b.json and not under a.json."
+note = "Upstream's label holds only if . matches a line terminator. In ECMA-262 . matches none, so [{}, {\"name\": \"foo\\nbar\"}] is valid under b.json and not under a.json."
 a_subsumes_b = false
 cases = [
   "mergeallof/items_merges_additionalItems.orig_not_merge",
 ]
 
 [[override]]
-note = "Upstream's label holds only if . matches a line terminator. In the Rust regex dialect . does not match a line feed, so \"fdsaf\\nabba\" is valid under b.json and not under a.json."
+note = "Upstream's label holds only if . matches a line terminator. In ECMA-262 . matches none, so \"fdsaf\\nabba\" is valid under b.json and not under a.json."
 a_subsumes_b = false
 cases = [
   "mergeallof/module_merges_pattern_using_allOf.orig_not_merge",
-]
-
-[[override]]
-note = "The test suite's expected result follows ECMA-262, where \\d matches only the ASCII digits. In the Rust regex dialect \\d matches every Unicode decimal digit, and U+07C0 (NKO DIGIT ZERO) is one."
-a_subsumes_b = false
-cases = [
-  "json-schema-test-suite/optional/ecmascript-regex/4/nonvalid/1",
-  "json-schema-test-suite/optional/ecmascript-regex/5/valid/1",
-]
-
-[[override]]
-note = "The test suite's expected result follows ECMA-262, where \\d matches only the ASCII digits. In the Rust regex dialect \\d matches every Unicode decimal digit, and U+07C0 (NKO DIGIT ZERO) is one."
-a_subsumes_b = true
-cases = [
-  "json-schema-test-suite/optional/ecmascript-regex/4/valid/1",
-  "json-schema-test-suite/optional/ecmascript-regex/5/nonvalid/1",
-]
-
-[[override]]
-note = "The test suite's expected result follows ECMA-262, where \\d matches only the ASCII digits. In the Rust regex dialect \\d matches every Unicode decimal digit, and U+09EA and U+09E8 (BENGALI DIGIT FOUR and BENGALI DIGIT TWO) are two."
-a_subsumes_b = false
-cases = [
-  "json-schema-test-suite/optional/ecmascript-regex/13/nonvalid/2",
-  "json-schema-test-suite/optional/ecmascript-regex/18/nonvalid/2",
-]
-
-[[override]]
-note = "The test suite's expected result follows ECMA-262, where \\d matches only the ASCII digits. In the Rust regex dialect \\d matches every Unicode decimal digit, and U+09EA and U+09E8 (BENGALI DIGIT FOUR and BENGALI DIGIT TWO) are two."
-a_subsumes_b = true
-cases = [
-  "json-schema-test-suite/optional/ecmascript-regex/13/valid/2",
-  "json-schema-test-suite/optional/ecmascript-regex/18/valid/2",
-]
-
-[[override]]
-note = "The test suite's expected result follows ECMA-262, where \\s matches U+FEFF (ZERO WIDTH NO-BREAK SPACE). In the Rust regex dialect \\s matches the characters with the Unicode property White_Space, which U+FEFF does not have."
-a_subsumes_b = false
-cases = [
-  "json-schema-test-suite/optional/ecmascript-regex/8/unions",
-  "json-schema-test-suite/optional/ecmascript-regex/8/valid/5",
-  "json-schema-test-suite/optional/ecmascript-regex/9/nonvalid/5",
-]
-
-[[override]]
-note = "The test suite's expected result follows ECMA-262, where \\s matches U+FEFF (ZERO WIDTH NO-BREAK SPACE). In the Rust regex dialect \\s matches the characters with the Unicode property White_Space, which U+FEFF does not have."
-a_subsumes_b = true
-cases = [
-  "json-schema-test-suite/optional/ecmascript-regex/8/nonvalid/5",
-  "json-schema-test-suite/optional/ecmascript-regex/9/valid/5",
-]
-
-[[override]]
-note = "The test suite's expected result follows ECMA-262, where \\w matches only ASCII letters, ASCII digits and the underscore. In the Rust regex dialect \\w matches every Unicode word character, and U+00E9 (LATIN SMALL LETTER E WITH ACUTE) is one."
-a_subsumes_b = false
-cases = [
-  "json-schema-test-suite/optional/ecmascript-regex/6/nonvalid/1",
-  "json-schema-test-suite/optional/ecmascript-regex/7/valid/1",
-  "json-schema-test-suite/optional/ecmascript-regex/11/nonvalid/1",
-  "json-schema-test-suite/optional/ecmascript-regex/16/nonvalid/1",
-]
-
-[[override]]
-note = "The test suite's expected result follows ECMA-262, where \\w matches only ASCII letters, ASCII digits and the underscore. In the Rust regex dialect \\w matches every Unicode word character, and U+00E9 (LATIN SMALL LETTER E WITH ACUTE) is one."
-a_subsumes_b = true
-cases = [
-  "json-schema-test-suite/optional/ecmascript-regex/6/valid/1",
-  "json-schema-test-suite/optional/ecmascript-regex/7/nonvalid/1",
-  "json-schema-test-suite/optional/ecmascript-regex/11/valid/1",
-  "json-schema-test-suite/optional/ecmascript-regex/16/valid/1",
 ]

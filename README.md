@@ -55,7 +55,7 @@ A label holds under these semantics:
 
 - **Draft 2020-12.**
 - **`format` is asserted**, not treated as an annotation.
-- **Patterns are read in the dialect of the Rust [`regex`](https://docs.rs/regex/latest/regex/#syntax) crate**, which is what [Pydantic](https://docs.pydantic.dev/) validates `pattern` with by default. This is not ECMA-262: `\d`, `\w` and `\s` are Unicode-aware, and look-around and backreferences do not exist.
+- **Patterns are read as [ECMA-262](https://tc39.es/ecma262/#sec-regexp-regular-expression-objects) regular expressions with the `u` flag**, which is what [the specification recommends](https://json-schema.org/draft/2020-12/json-schema-core#section-6.4). So `\d` and `\w` match ASCII characters only, `.` matches no line terminator, and a character is a code point. A pattern that is not valid with the `u` flag, such as one that escapes a character that needs no escape, has no meaning, and the corpus claims nothing about a case that uses one.
 
 Where an upstream label does not hold under these semantics, the corpus corrects it or withdraws it; see [Departures from upstream](#departures-from-upstream).
 
@@ -91,15 +91,15 @@ Results measured on two versions are comparable exactly when their major and min
 
 | Collection | Cases | A subsumes B: true / false / unknown | Labels from | Content |
 | --- | --- | --- | --- | --- |
-| `json-schema-test-suite` | 5,756 | 3,577 / 2,165 / 14 | construction | Pairs built from the official test suite for draft 2020-12 |
+| `json-schema-test-suite` | 5,756 | 3,588 / 2,168 / 0 | construction | Pairs built from the official test suite for draft 2020-12 |
 | `synthesized` | 1,331 | 881 / 450 / 0 | construction | Such pairs for drafts 4, 6 and 2019-09, built by others and converted |
 | `handwritten-sc` | 282 | 160 / 122 / 0 | construction | Hand-written hard cases |
-| `rb-testset` | 300 | 107 / 189 / 4 | upstream tests | The tests of the jsonsubschema tool, some with the documents they reference embedded |
+| `rb-testset` | 300 | 108 / 192 / 0 | upstream tests | The tests of the jsonsubschema tool, some with the documents they reference embedded |
 | `mergeallof` | 174 | 165 / 9 / 0 | witness generator | Schemas against a rewriting that merges their `allOf` |
-| `schemastore-versions` | 1,056 | 0 / 153 / 903 | witness generator | Successive versions of real schemas |
-| `oneof-as-anyof` | 1,822 | 0 / 146 / 1,676 | witness generator | Is `oneOf` used where `anyOf` would be equivalent? |
+| `schemastore-versions` | 1,056 | 0 / 150 / 906 | witness generator | Successive versions of real schemas |
+| `oneof-as-anyof` | 1,822 | 0 / 144 / 1,678 | witness generator | Is `oneOf` used where `anyOf` would be equivalent? |
 | `uneval-as-additional` | 608 | 0 / 179 / 429 | witness generator | `unevaluated*` against a translation to `additional*` |
-| `additional-as-uneval` | 5,694 | 5,413 / 139 / 142 | witness generator | `additional*` against a rewriting through `unevaluated*` |
+| `additional-as-uneval` | 5,694 | 5,379 / 136 / 179 | witness generator | `additional*` against a rewriting through `unevaluated*` |
 
 Each collection folder has a `collection.json` with its description, the source repository and commit, the licence, and where its labels come from:
 
@@ -185,18 +185,18 @@ The corpus leaves out four cases of the inclusion artifact and 21 test cases of 
 
 Every schema that is in the corpus is therefore valid, and every reference in it resolves.
 
-The same file lists every case whose labels differ from upstream's, with the reason, which is copied into the case's `note`. For a case built from the test suite, upstream's label is what the suite's expected result gives. There are 85 such cases:
+The same file lists every case whose labels differ from upstream's, with the reason, which is copied into the case's `note`. For a case built from the test suite, upstream's label is what the suite's expected result gives. There are 72 such cases:
 
 | Reason | Cases | What the corpus does |
 | --- | --- | --- |
-| A pattern is not valid in the Rust regex dialect | 52 | Claims nothing |
+| A pattern is not valid in ECMA-262 with the `u` flag | 60 | Claims nothing |
 | Upstream's label does not hold | 2 | Claims nothing |
 | Upstream's label holds only if `format` is an annotation | 6 | Claims nothing |
-| Upstream's label depends on the regex dialect | 25 | Corrects all 25 |
+| Upstream's label holds only if `.` matches a line terminator | 4 | Corrects all 4 |
 
 Two limits remain:
 
-- **Patterns.** 6,226 labelled cases use patterns. In 431 of them `b.json` only lists its instances, so the label can be checked by validating those instances against `a.json`; the tests do that with Rust regex matching, for these and for 3,001 such cases without patterns. Another 114 compare a schema of the test suite with itself or its negation, which holds in any dialect. The other 5,681 labels come from upstream tools that read patterns in their own dialect. They are kept as they are until a checker disagrees and the dialect turns out to be the reason.
+- **Patterns.** 6,202 labelled cases use patterns. In 439 of them `b.json` only lists its instances, so the label can be checked by validating those instances against `a.json`; the tests do that with an ECMA-262 engine, for these and for 3,001 such cases without patterns. Another 120 compare a schema of the test suite with itself or its negation, which holds in any dialect. The other 5,643 labels come from upstream tools that read patterns in their own dialect. They are kept as they are until a checker disagrees and the dialect turns out to be the reason.
 - **Formats.** Upstream's witness generator asserts only a few formats. A label of a `witness-generator` collection that hinges on a format may therefore not hold with every format asserted; six such cases are known and listed.
 
 ## How the sources are converted
