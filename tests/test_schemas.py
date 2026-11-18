@@ -1,7 +1,7 @@
 """Every schema of the corpus is valid draft 2020-12 and every reference in it resolves.
 
 A reference resolves inside its schema or to a metaschema of the draft: no schema needs another
-document. Upstream cases that are not valid are left out of the corpus; ``overrides.toml`` lists
+document. Upstream cases that are not valid are left out of the corpus; ``overrides.json`` lists
 them.
 """
 

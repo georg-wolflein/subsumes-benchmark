@@ -1,11 +1,11 @@
-.PHONY: ci lint format format-check typecheck test test-corpus sources corpus compare report
+.PHONY: ci lint format format-check typecheck config test test-corpus sources corpus compare report
 
 # The adapters under checkers/ that are checked like the code under src/: each Rust one is
 # a crate of its own, and each Python one a script with an environment of its own.
 RUST_ADAPTERS := $(wildcard checkers/*/Cargo.toml)
 PYTHON_ADAPTERS := $(wildcard checkers/*/adapter.py)
 
-ci: lint format-check typecheck test  ## what CI runs on every change, without the slow corpus tests
+ci: lint format-check typecheck config test  ## what CI runs on every change, without the slow corpus tests
 
 lint:
 	uv run ruff check .
@@ -28,6 +28,12 @@ typecheck:
 		uv sync --quiet --locked --script $$adapter && \
 		uv run ty check --python "$$(uv python find --script $$adapter)" $$adapter || exit 1; \
 	done
+
+config:  ## the schemas are valid, and every configuration file is valid under its schema
+	uv run check-jsonschema --check-metaschema schemas/*.schema.json
+	uv run check-jsonschema --schemafile schemas/collections.schema.json collections.json
+	uv run check-jsonschema --schemafile schemas/overrides.schema.json overrides.json
+	uv run check-jsonschema --schemafile schemas/checker.schema.json checkers/*/checker.json
 
 test:
 	uv run pytest

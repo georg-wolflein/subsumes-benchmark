@@ -18,7 +18,7 @@ if TYPE_CHECKING:
 
 CATEGORIES = frozenset({"valid", "nonvalid", "unions", "reflexive", "universal", "unsatisfiable"})
 
-# Instances valid under b.json and not under a.json, for the labels that overrides.toml
+# Instances valid under b.json and not under a.json, for the labels that overrides.json
 # corrects to false in cases where b.json does not list its instances.
 COUNTEREXAMPLES: dict[str, Json] = {
     "handwritten-sc/bool.7.eq1.sub.eq2": "aa\nbb",
