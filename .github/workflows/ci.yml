@@ -10,11 +10,14 @@ permissions:
 
 env:
   FORCE_COLOR: 1
+  CARGO_TERM_COLOR: always
 
 jobs:
   # Every static check shares one job: each is seconds of work behind the environment
   # setup, and each step runs whenever the setup succeeded so one failure does not hide
-  # the others.
+  # the others. The adapters under checkers/ are checked here too: the Python ones by ruff
+  # with everything else and by ty, each against its own environment, and the Rust ones by
+  # cargo, which the runner has.
   checks:
     runs-on: ubuntu-latest
     steps:
@@ -37,6 +40,31 @@ jobs:
       - name: ty check
         if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
         run: uv run ty check
+      - name: ty check, the Python adapters
+        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
+        run: |
+          status=0
+          for adapter in checkers/*/adapter.py; do
+            uv sync --quiet --locked --script "$adapter"
+            uv run ty check --python "$(uv python find --script "$adapter")" "$adapter" || status=1
+          done
+          exit "$status"
+      - name: cargo fmt, the Rust adapters
+        if: ${{ !cancelled() }}
+        run: |
+          status=0
+          for manifest in checkers/*/Cargo.toml; do
+            cargo fmt --manifest-path "$manifest" --check || status=1
+          done
+          exit "$status"
+      - name: cargo clippy, the Rust adapters
+        if: ${{ !cancelled() }}
+        run: |
+          status=0
+          for manifest in checkers/*/Cargo.toml; do
+            cargo clippy --manifest-path "$manifest" --locked --all-targets -- --deny warnings || status=1
+          done
+          exit "$status"
 
   # The quick tests: the build's transformations and the layout of the committed corpus.
   tests:

@@ -1,19 +1,33 @@
 .PHONY: ci lint format format-check typecheck test test-corpus sources corpus compare report
 
+# The adapters under checkers/ that are checked like the code under src/: each Rust one is
+# a crate of its own, and each Python one a script with an environment of its own.
+RUST_ADAPTERS := $(wildcard checkers/*/Cargo.toml)
+PYTHON_ADAPTERS := $(wildcard checkers/*/adapter.py)
+
 ci: lint format-check typecheck test  ## what CI runs on every change, without the slow corpus tests
 
 lint:
 	uv run ruff check .
+	for manifest in $(RUST_ADAPTERS); do \
+		cargo clippy --manifest-path $$manifest --locked --all-targets -- --deny warnings || exit 1; \
+	done
 
 format:
 	uv run ruff format .
 	uv run ruff check --fix .
+	for manifest in $(RUST_ADAPTERS); do cargo fmt --manifest-path $$manifest || exit 1; done
 
 format-check:
 	uv run ruff format --check .
+	for manifest in $(RUST_ADAPTERS); do cargo fmt --manifest-path $$manifest --check || exit 1; done
 
 typecheck:
 	uv run ty check
+	for adapter in $(PYTHON_ADAPTERS); do \
+		uv sync --quiet --locked --script $$adapter && \
+		uv run ty check --python "$$(uv python find --script $$adapter)" $$adapter || exit 1; \
+	done
 
 test:
 	uv run pytest
