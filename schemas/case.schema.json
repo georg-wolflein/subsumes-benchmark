@@ -35,6 +35,10 @@
       "description": "Why the labels depart from upstream's; absent when they do not.",
       "type": "string"
     },
+    "derived": {
+      "description": "What shows each label that upstream does not give and that was derived from the answers of checkers; absent when the case has no such label.",
+      "$ref": "#/$defs/Derived"
+    },
     "a": {
       "description": "The schema that should accept everything.",
       "$ref": "#/$defs/Schema"
@@ -48,6 +52,46 @@
     "Schema": {
       "description": "A schema that is valid draft 2020-12 and stands on its own: every document it references is embedded in it.",
       "$ref": "https://json-schema.org/draft/2020-12/schema"
+    },
+    "Derived": {
+      "description": "What shows the labels of a case that upstream does not give, by label.",
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": false,
+      "properties": {
+        "a_subsumes_b": { "$ref": "#/$defs/Evidence" },
+        "b_subsumes_a": { "$ref": "#/$defs/Evidence" }
+      }
+    },
+    "Evidence": {
+      "description": "What shows one label: a counterexample for false, an agreement of checkers for true.",
+      "oneOf": [{ "$ref": "#/$defs/Counterexample" }, { "$ref": "#/$defs/Agreement" }]
+    },
+    "Counterexample": {
+      "description": "The label is false, and an instance proves it.",
+      "type": "object",
+      "required": ["counterexample"],
+      "additionalProperties": false,
+      "properties": {
+        "counterexample": {
+          "description": "An instance that is valid under the schema whose instances must be accepted and not valid under the schema that should accept everything."
+        }
+      }
+    },
+    "Agreement": {
+      "description": "The label is true as far as checkers can tell: at least two of them say so and none that was asked says otherwise. This is evidence and no proof.",
+      "type": "object",
+      "required": ["checkers"],
+      "additionalProperties": false,
+      "properties": {
+        "checkers": {
+          "description": "The checkers that say so, each with its version, sorted.",
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^\\S.* \\S+$" }
+        }
+      }
     },
     "Feature": {
       "description": "A keyword of draft 2020-12 that decides what a schema accepts, or 'recursion'.",

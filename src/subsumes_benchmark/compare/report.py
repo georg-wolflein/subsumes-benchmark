@@ -22,6 +22,7 @@ from subsumes_benchmark.compare.summary import (
     Outcome,
     agreements,
     cases_using,
+    derived_tasks,
     has_label,
     outcome,
     read_entries,
@@ -38,6 +39,7 @@ if TYPE_CHECKING:
     from matplotlib.axes import Axes
 
     from subsumes_benchmark.compare.results import Result
+    from subsumes_benchmark.generated.result import Direction
 
 REPORT_FILE = "report.md"
 CHART_FILES = {"light": "chart-light.svg", "dark": "chart-dark.svg"}
@@ -443,12 +445,29 @@ def _scope(entries: Sequence[Entry], all_tasks: int) -> str:
     return f"a sample of {count(tasks)} of the {count(all_tasks)} tasks"
 
 
-def markdown(entries: Sequence[Entry], with_format: frozenset[str], all_tasks: int) -> str:
-    """The report, as the text of ``report.md``."""
+def _in(result: Result, tasks: frozenset[tuple[str, Direction]]) -> bool:
+    return (result.case, result.direction) in tasks
+
+
+def markdown(
+    entries: Sequence[Entry],
+    with_format: frozenset[str],
+    derived: frozenset[tuple[str, Direction]],
+    all_tasks: int,
+) -> str:
+    """The report, as the text of ``report.md``.
+
+    Args:
+        entries: The runs.
+        with_format: The cases whose schemas use ``format``.
+        derived: The tasks whose label is derived, each a case and a direction.
+        all_tasks: How many tasks the corpus has.
+    """
     first = entries[0].run
     tasks = entries[0].results
     labelled = entries[0].labelled()
     formatted = sum(1 for r in labelled if r.case in with_format)
+    from_upstream = sum(1 for r in labelled if not _in(r, derived))
     agreement = [
         f"- {a.first} and {a.second} gave the same answer on {count(a.same)} of {count(a.tasks)} "
         f"tasks."
@@ -498,6 +517,15 @@ def markdown(entries: Sequence[Entry], with_format: frozenset[str], all_tasks: i
         _outcome_table(entries, lambda r: r.case not in with_format),
         f"The {count(formatted)} whose schemas use `format`:",
         _outcome_table(entries, lambda r: r.case in with_format),
+        "### Labels of upstream and derived labels",
+        "A label is upstream's, or it is derived where upstream gives none: `false` from a "
+        "counterexample, which proves it, and `true` from checkers that agree, which does not. "
+        "A checker whose answers the labels are derived from is measured against itself on "
+        "those, so the counts of the tasks with a label follow for the two kinds of label.",
+        f"The {count(from_upstream)} whose label is upstream's:",
+        _outcome_table(entries, lambda r: not _in(r, derived)),
+        f"The {count(len(labelled) - from_upstream)} whose label is derived:",
+        _outcome_table(entries, lambda r: _in(r, derived)),
         "## Time",
         _time_table(entries),
         "The time of a task is measured inside the checker's process, from the two schemas as "
@@ -609,7 +637,7 @@ def report(results: Path, out: Path, corpus: Path, readme: Path | None = None) -
     out.mkdir(parents=True, exist_ok=True)
     for name, theme in THEMES.items():
         draw(entries, theme, caption, out / CHART_FILES[name])
-    text = markdown(entries, cases_using(corpus, "format"), all_tasks)
+    text = markdown(entries, cases_using(corpus, "format"), derived_tasks(corpus), all_tasks)
     (out / REPORT_FILE).write_text(text, encoding="utf-8")
     if readme is not None:
         update_readme(readme, readme_block(entries, all_tasks, out.name))

@@ -2,7 +2,7 @@
 
 When ``b`` only lists its instances, ``a`` subsumes it exactly when every one of them is
 valid under ``a``. That checks the label without an inclusion checker, with
-patterns matched as ECMA-262 does with the ``u`` flag.
+patterns matched as ECMA-262 does with the ``u`` flag and ``format`` asserted.
 """
 
 import json
@@ -10,8 +10,8 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from reading import Case, case, cases, constants, patterns, uses_format
-from validation import is_valid, pattern_error
+from reading import Case, case, cases, constants, patterns
+from subsumes_benchmark.validation import is_valid, pattern_error
 
 if TYPE_CHECKING:
     from subsumes_benchmark import Json
@@ -45,15 +45,12 @@ def test_label_holds_where_b_lists_its_instances() -> None:
         instances = constants(found.b)
         if instances is None:
             continue
-        a = found.a
-        if uses_format(a):
-            continue
         checked += 1
-        computed = all(is_valid(instance, a) for instance in instances)
+        computed = all(is_valid(instance, found.a) for instance in instances)
         if computed != found.a_subsumes_b:
             wrong[found.id] = computed
     assert wrong == {}
-    assert checked > 2000
+    assert checked > 5000
 
 
 def test_labelled_case_has_only_valid_patterns() -> None:
@@ -106,11 +103,8 @@ def test_a_schema_with_its_negation_accepts_everything_or_nothing() -> None:
             found = group.get(kind)
             if found is None or found.claims_nothing:
                 continue
-            b = found.b
-            if uses_format(b):
-                continue
             checked += len(instances)
-            if any(is_valid(instance, b) != expected for instance in instances):
+            if any(is_valid(instance, found.b) != expected for instance in instances):
                 wrong.append(found.id)
     assert wrong == []
-    assert checked > 2000
+    assert checked > 2500

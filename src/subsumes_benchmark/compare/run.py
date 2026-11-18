@@ -229,7 +229,8 @@ def run(
         thread.start()
 
     answers: Counter[str] = Counter()
-    with (out / RESULTS_FILE).open("w", encoding="utf-8") as lines:
+    # A line is written when it is there, so that a run that is stopped keeps its answers.
+    with (out / RESULTS_FILE).open("w", encoding="utf-8", buffering=1) as lines:
         for count in range(1, len(tasks) + 1):
             ended = done.get()
             if isinstance(ended, BaseException):
@@ -237,7 +238,6 @@ def run(
             lines.write(result_line(ended))
             answers[ending(ended)] += 1
             if count % 500 == 0 or count == len(tasks):
-                lines.flush()
                 elapsed = time.perf_counter() - clock
                 summary = ", ".join(f"{n} {answer}" for answer, n in sorted(answers.items()))
                 print(

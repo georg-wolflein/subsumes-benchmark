@@ -85,7 +85,7 @@ A reply is an answer to that question, or it says why there is none. An answer i
 | `"failure": "timeout"` | The checker stopped itself after the time allowed | | |
 
 - **`seconds`**: what the checker took, measured by the adapter. It covers parsing each schema once, and the check, which is what someone pays who holds two schemas as text. An adapter whose checker takes a parsed schema starts the clock before it parses the request, since that parses the two. An adapter whose checker takes text writes each schema back to text first, and starts the clock then.
-- **`counterexample`**: an instance that is valid under `b` and invalid under `a`, as JSON. The runner asks a validator whether it is one, and a no with a counterexample that is none counts as a wrong answer. Leave the key out where the checker gives none, since `null` is an instance.
+- **`counterexample`**: an instance that is valid under `b` and invalid under `a`, as JSON. The runner asks a validator whether it is one, and a no with a counterexample that is none counts as a wrong answer. Leave the key out where the checker gives none, since `null` is an instance. A label can be [derived](../README.md#derived-labels) from a counterexample.
 - **`reason`**: what kind of reason the checker had to decline, in a word or two that are the same for every task declined for it, such as the keyword it does not support. A report counts the declined tasks by it.
 - **`message`**: a text for a person: what the checker says about its no, the reason for declining in full, the error.
 
@@ -110,6 +110,16 @@ The folder of a checker can be anywhere: `subsumes-benchmark run` takes its path
 ```
 
 A run is named like the folder and goes to a folder of that name under `--out`.
+
+## A run that is to find labels
+
+`--unlabelled` asks only the tasks that the corpus has no label for. Such a run is not measured, so it needs no warm-up and may run several processes side by side:
+
+```bash
+uv run subsumes-benchmark run checkers/jsoncompat --unlabelled --warmup 0 --jobs 4 --out results/unlabelled
+```
+
+The adapters of subsumes read `SUBSUMES_BUDGET`, the work a check may take in steps. Unset, a check has the library's default of 10 million steps, which is what a user gets and what the comparison measures.
 
 ## Adding a checker
 

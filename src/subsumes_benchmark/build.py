@@ -17,8 +17,9 @@ references other documents carries them embedded (``bundled``), so every schema 
 own.
 
 ``collections.json`` names the collections and where each comes from; ``overrides.json``
-lists the cases that are left out and the cases whose label departs from upstream's. Run from
-the repository root::
+lists the cases that are left out and the cases whose label departs from upstream's;
+``derived.json`` holds the labels of questions that upstream leaves open, each with what
+shows it. Run from the repository root::
 
     make sources   # once: check out the upstream submodules
     make corpus
@@ -46,6 +47,7 @@ from subsumes_benchmark.convert import (
     dialect_of,
     nested,
 )
+from subsumes_benchmark.derived import Derivations, by_label, document, label
 from subsumes_benchmark.features import features
 from subsumes_benchmark.generated.collections import CollectionSpec, CollectionsSpec, SourceSpec
 from subsumes_benchmark.generated.overrides import Override, OverridesSpec
@@ -57,6 +59,7 @@ if TYPE_CHECKING:
 
     from subsumes_benchmark import Json
     from subsumes_benchmark.convert import PointerMap
+    from subsumes_benchmark.generated.derived import Derived
 
 SOURCES = Path("sources")
 
@@ -188,6 +191,7 @@ class Case:
     b_subsumes_a: bool | None
     upstream: str
     note: str | None = None
+    derived: Derived | None = None
 
     @property
     def document(self) -> Json:
@@ -201,6 +205,8 @@ class Case:
         }
         if self.note is not None:
             out["note"] = self.note
+        if self.derived is not None:
+            out["derived"] = document(self.derived)
         return {**out, "a": self.a, "b": self.b}
 
 
@@ -506,9 +512,32 @@ def overridden(cases: Sequence[Case], overrides: Mapping[str, Override]) -> list
     ]
 
 
-def build(out: Path, collections_file: Path, overrides_file: Path) -> None:
+def with_derived(cases: Sequence[Case], derived: Mapping[str, Derived]) -> list[Case]:
+    """The cases with the labels of ``derived.json``.
+
+    Such a label may only stand where a case has none and no override states its labels.
+    """
+    if missing := sorted(derived.keys() - {case.id for case in cases}):
+        raise ConfigError(f"derived.json lists cases that do not exist: {missing}")
+    found = []
+    for case in cases:
+        if (entry := derived.get(case.id)) is None:
+            found.append(case)
+            continue
+        if taken := [name for name, _ in by_label(entry) if getattr(case, name) is not None]:
+            raise ConfigError(f"derived.json labels {case.id}, which has a label: {taken}")
+        if case.note is not None:
+            # An override states both labels of its cases, also where it claims nothing.
+            raise ConfigError(f"derived.json labels {case.id}, which overrides.json lists")
+        shown = {name: label(evidence) for name, evidence in by_label(entry)}
+        found.append(replace(case, derived=entry, **shown))
+    return found
+
+
+def build(out: Path, collections_file: Path, overrides_file: Path, derived_file: Path) -> None:
     collections = load_collections(collections_file)
     departures = Overrides.read(overrides_file)
+    derived = Derivations.read(derived_file).cases
     overrides = departures.overrides
     exclusions = departures.exclusions
     sources = {c.source.name: c.source for c in collections}
@@ -536,7 +565,7 @@ def build(out: Path, collections_file: Path, overrides_file: Path) -> None:
     for collection in collections:
         if collection.source.name == "json-schema-test-suite":
             distinct = without_repeats(distinct, collection.name)
-    selected = overridden(distinct, overrides)
+    selected = with_derived(overridden(distinct, overrides), derived)
     final = [
         replace(case, a=bundled(case.a, documents), b=bundled(case.b, documents))
         for case in selected
@@ -571,7 +600,8 @@ def build(out: Path, collections_file: Path, overrides_file: Path) -> None:
     print(
         f"\n{len(documents)} external documents embedded in the {bundles} schemas that "
         f"reference them, {len(overrides)} overridden cases, {len(upstream) - len(included)} "
-        f"excluded cases, {len(included) - len(distinct)} repeated pairs of the test suite left out"
+        f"excluded cases, {len(included) - len(distinct)} repeated pairs of the test suite left "
+        f"out, {sum(len(list(by_label(entry))) for entry in derived.values())} derived labels"
     )
     print("\nwhat each side of the inclusion artifact declared as its dialect:")
     for dialect, n in dialects.most_common():
@@ -586,5 +616,6 @@ def main() -> None:
     parser.add_argument("--out", type=Path, default=Path("corpus"), help="where to write it")
     parser.add_argument("--collections", type=Path, default=Path("collections.json"))
     parser.add_argument("--overrides", type=Path, default=Path("overrides.json"))
+    parser.add_argument("--derived", type=Path, default=Path("derived.json"))
     args = parser.parse_args()
-    build(args.out, args.collections, args.overrides)
+    build(args.out, args.collections, args.overrides, args.derived)

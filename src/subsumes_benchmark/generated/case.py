@@ -13,6 +13,35 @@ A schema of draft 2020-12.
 """
 
 
+class Counterexample(Config):
+    """The label is false, and an instance proves it."""
+
+    model_config = ConfigDict(
+        extra="forbid",
+        use_attribute_docstrings=True,
+    )
+    counterexample: Any
+    """
+    An instance that is valid under the schema whose instances must be accepted and not valid under the schema that should accept everything.
+    """
+
+
+type Checker = Annotated[str, Field(pattern="^\\S.* \\S+$")]
+
+
+class Agreement(Config):
+    """The label is true as far as checkers can tell: at least two of them say so and none that was asked says otherwise. This is evidence and no proof."""
+
+    model_config = ConfigDict(
+        extra="forbid",
+        use_attribute_docstrings=True,
+    )
+    checkers: Annotated[list[Checker], Field(min_length=2)]
+    """
+    The checkers that say so, each with its version, sorted.
+    """
+
+
 type Feature = Literal[
     "$dynamicRef",
     "$ref",
@@ -61,6 +90,23 @@ A keyword of draft 2020-12 that decides what a schema accepts, or 'recursion'.
 """
 
 
+type Evidence = Counterexample | Agreement
+"""
+What shows one label: a counterexample for false, an agreement of checkers for true.
+"""
+
+
+class Derived(Config):
+    """What shows the labels of a case that upstream does not give, by label."""
+
+    model_config = ConfigDict(
+        extra="forbid",
+        use_attribute_docstrings=True,
+    )
+    a_subsumes_b: Evidence | None = None
+    b_subsumes_a: Evidence | None = None
+
+
 class CaseSpec(Config):
     """Two schemas and what is known about them: does a accept every instance valid under b? The labels hold for draft 2020-12 with format asserted and patterns read as ECMA-262 regular expressions with the u flag."""
 
@@ -91,6 +137,10 @@ class CaseSpec(Config):
     note: str | None = None
     """
     Why the labels depart from upstream's; absent when they do not.
+    """
+    derived: Derived | None = None
+    """
+    What shows each label that upstream does not give and that was derived from the answers of checkers; absent when the case has no such label.
     """
     a: Schema
     """

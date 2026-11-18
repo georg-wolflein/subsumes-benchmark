@@ -1,10 +1,12 @@
 """The questions of the corpus, one task per question."""
 
+import hashlib
+import json
 import random
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
-from subsumes_benchmark.generated.case import CaseSpec
+from subsumes_benchmark.generated.case import CaseSpec, Schema
 
 if TYPE_CHECKING:
     from collections.abc import Mapping, Sequence
@@ -60,6 +62,31 @@ def read_tasks(corpus: Path) -> Sequence[Task]:
         found.append(Task(case, "a_subsumes_b", path, known.a_subsumes_b))
         found.append(Task(case, "b_subsumes_a", path, known.b_subsumes_a))
     return found
+
+
+def read_unlabelled(corpus: Path) -> Sequence[Task]:
+    """Every question that the corpus has no label for, sorted by case.
+
+    These are what a run asks that is to find labels, where ``read_tasks`` gives what a run
+    asks that is to measure a checker. A case's other direction is left out where the
+    corpus asks that question already: as the first direction of a case, which is this very
+    case when its two schemas are the same.
+    """
+    files = case_files(corpus)
+    cases = {case: CaseSpec.read(path) for case, path in files.items()}
+    asked = {(_digest(known.a), _digest(known.b)) for known in cases.values()}
+    found = []
+    for case, known in cases.items():
+        if known.a_subsumes_b is None:
+            found.append(Task(case, "a_subsumes_b", files[case], None))
+        if known.b_subsumes_a is None and (_digest(known.b), _digest(known.a)) not in asked:
+            found.append(Task(case, "b_subsumes_a", files[case], None))
+    return found
+
+
+def _digest(schema: Schema) -> bytes:
+    """What tells a schema from every other one: two that are the same JSON value have the same."""
+    return hashlib.sha256(json.dumps(schema, sort_keys=True).encode()).digest()
 
 
 def select(

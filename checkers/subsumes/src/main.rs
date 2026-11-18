@@ -69,8 +69,12 @@ fn answer(request: &str, checker: &Checker) -> Value {
 }
 
 fn main() -> io::Result<()> {
-    // The default work budget, which is what a user of the library gets.
-    let checker = Checker::new();
+    // The default work budget, which is what a user of the library gets, unless the
+    // environment sets another: a run that is to find labels may work for longer.
+    let checker = match std::env::var("SUBSUMES_BUDGET") {
+        Ok(steps) => Checker::new().budget(steps.parse().map_err(io::Error::other)?),
+        Err(_) => Checker::new(),
+    };
     let mut out = io::stdout().lock();
     writeln!(out, "{}", json!({"ready": true}))?;
     out.flush()?;

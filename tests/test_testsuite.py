@@ -26,7 +26,7 @@ from subsumes_benchmark.testsuite import (
     pairs,
     self_contained,
 )
-from validation import is_valid
+from subsumes_benchmark.validation import is_valid
 
 if TYPE_CHECKING:
     from pathlib import Path
