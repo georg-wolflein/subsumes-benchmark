@@ -130,6 +130,17 @@ class Entry:
         return {name: (solved[name], tasks[name]) for name in names}
 
 
+def read_entry(folder: Path) -> Entry:
+    """The run that a folder holds, as ``run`` wrote it.
+
+    Raises:
+        ReportError: The folder holds no run.
+    """
+    if not (folder / RUN_FILE).is_file():
+        raise ReportError(f"no run in {folder}")
+    return Entry(read_run(folder), read_results(folder))
+
+
 def read_entries(folder: Path) -> Sequence[Entry]:
     """The runs under a folder, one per subfolder, in the order a report lists them.
 
@@ -139,11 +150,7 @@ def read_entries(folder: Path) -> Sequence[Entry]:
     Raises:
         ReportError: There is no run, or the runs are not over the same tasks.
     """
-    entries = [
-        Entry(read_run(path), read_results(path))
-        for path in sorted(folder.iterdir())
-        if (path / RUN_FILE).is_file()
-    ]
+    entries = [read_entry(path) for path in sorted(folder.iterdir()) if (path / RUN_FILE).is_file()]
     if not entries:
         raise ReportError(f"no run under {folder}")
     entries.sort(key=lambda e: (e.run.label.casefold(), e.run.checker))

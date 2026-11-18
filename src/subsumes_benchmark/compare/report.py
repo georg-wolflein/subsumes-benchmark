@@ -26,6 +26,7 @@ from subsumes_benchmark.compare.summary import (
     read_entries,
 )
 from subsumes_benchmark.compare.tasks import read_tasks
+from subsumes_benchmark.compare.words import NOTHING, count, duration, share, table
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Mapping, Sequence
@@ -43,7 +44,6 @@ CHART_FILES = {"light": "chart-light.svg", "dark": "chart-dark.svg"}
 README_START = "<!-- comparison:start -->"
 README_END = "<!-- comparison:end -->"
 
-NOTHING = "—"
 LINE_STYLES = ("solid", (0, (4, 2)), (0, (1, 2)))
 # How many steps a curve of the chart keeps; more would only make the file larger.
 STEPS = 250
@@ -102,39 +102,6 @@ DARK = Theme(
     ramp=("#0d366b", "#184f95", "#256abf", "#3987e5", "#86b6ef"),
 )
 THEMES: Mapping[str, Theme] = {"light": LIGHT, "dark": DARK}
-
-
-# --------------------------------------------------------------------------- words and numbers
-
-
-def count(n: int) -> str:
-    return f"{n:,}"
-
-
-def share(part: int, whole: int) -> str:
-    return f"{100 * part / whole:.1f}%" if whole else NOTHING
-
-
-def duration(seconds: float | None) -> str:
-    if seconds is None:
-        return NOTHING
-    if seconds < 0.001:
-        return f"{seconds * 1e6:.0f} µs"
-    if seconds < 1:
-        return f"{seconds * 1e3:.1f} ms" if seconds < 0.1 else f"{seconds * 1e3:.0f} ms"
-    if seconds < 120:
-        return f"{seconds:.1f} s"
-    return f"{seconds / 60:.0f} min"
-
-
-def table(headers: Sequence[str], rows: Sequence[Sequence[str]]) -> str:
-    """A markdown table whose first column is text and whose other columns are numbers."""
-    lines = [
-        "| " + " | ".join(headers) + " |",
-        "| " + " | ".join(["---"] + ["---:"] * (len(headers) - 1)) + " |",
-    ]
-    lines += ["| " + " | ".join(row) + " |" for row in rows]
-    return "\n".join(lines)
 
 
 # --------------------------------------------------------------------------- the chart
