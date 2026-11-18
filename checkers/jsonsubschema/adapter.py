@@ -13,7 +13,6 @@ import os
 import signal
 import sys
 import time
-from pathlib import Path
 
 # The library prints while it works; the runner owns the standard output.
 protocol = os.fdopen(os.dup(sys.stdout.fileno()), "w", encoding="utf-8")
@@ -30,10 +29,10 @@ def on_alarm(signum: int, frame: object) -> None:
     raise TimedOutError
 
 
-def check(a: str, b: str) -> tuple[str, str | None]:
+def check(a: object, b: object) -> tuple[str, str | None]:
     try:
         # Anything but ``True`` is a no: some of the library's paths fall through to ``None``.
-        return ("yes" if isSubschema(json.loads(b), json.loads(a)) is True else "no"), None
+        return ("yes" if isSubschema(b, a) is True else "no"), None
     except TimedOutError:
         return "timeout", None
     except RecursionError:
@@ -48,14 +47,14 @@ def main() -> None:
     signal.signal(signal.SIGALRM, on_alarm)
     print(json.dumps({"ready": True}), file=protocol, flush=True)
     for line in sys.stdin:
-        request = json.loads(line)
-        a = Path(request["a"]).read_text(encoding="utf-8")
-        b = Path(request["b"]).read_text(encoding="utf-8")
-        # The clock runs from the schemas as text to the answer.
-        signal.setitimer(signal.ITIMER_REAL, request["timeout"])
+        # The library takes a schema as ``json.loads`` gives it, which is how the request
+        # holds the two. So the clock runs from the request as text to the answer: each
+        # schema is parsed once in that time.
         start = time.perf_counter()
+        request = json.loads(line)
+        signal.setitimer(signal.ITIMER_REAL, request["timeout"])
         try:
-            answer, detail = check(a, b)
+            answer, detail = check(request["a"], request["b"])
         except TimedOutError:  # the alarm went off between the check and here
             answer, detail = "timeout", None
         seconds = time.perf_counter() - start

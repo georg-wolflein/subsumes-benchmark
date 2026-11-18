@@ -32,10 +32,10 @@ uvx --from 'subsumes-benchmark[report]==<version>' subsumes-benchmark report res
 
 ## A checker
 
-A checker is a folder with a `checker.json` and an adapter: a program that starts once, prints `{"ready": true}`, and then answers one request per line on its standard input with one line on its standard output.
+A checker is a folder with a `checker.json` and an adapter: a program that starts once, prints `{"ready": true}`, and then answers one request per line on its standard input with one line on its standard output. A request holds the two schemas and asks whether `a` accepts every instance that is valid under `b`.
 
 ```json
-{"a": "/scratch/a.json", "b": "/scratch/b.json", "timeout": 10.0}
+{"a": {"type": "string"}, "b": {"maxLength": 3}, "timeout": 10.0}
 {"answer": "no", "seconds": 0.00042, "counterexample": "x"}
 ```
 

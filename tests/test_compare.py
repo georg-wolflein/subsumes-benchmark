@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from reading import CORPUS, ROOT, case, cases, read
+from reading import CORPUS, ROOT, case, cases
 from subsumes_benchmark.compare.checkers import Checker
 from subsumes_benchmark.compare.report import README_END, README_START, report, update_readme
 from subsumes_benchmark.compare.results import (
@@ -89,7 +89,7 @@ def a_case(a: Json, b: Json, a_subsumes_b: bool | None = None) -> dict[str, Json
 # --------------------------------------------------------------------------- the tasks
 
 
-def test_a_case_is_asked_both_ways_with_the_label_of_each(tmp_path: Path) -> None:
+def test_a_case_is_asked_both_ways_with_the_label_of_each() -> None:
     tasks = read_tasks(CORPUS)
     forward = [task for task in tasks if task.direction == "a_subsumes_b"]
     backward = [task for task in tasks if task.direction == "b_subsumes_a"]
@@ -100,9 +100,9 @@ def test_a_case_is_asked_both_ways_with_the_label_of_each(tmp_path: Path) -> Non
     # Asked the other way, the two schemas swap, so that the first is still the one that accepts.
     for task in (forward[0], backward[0]):
         found = case(task.case)
-        first, second = prepare(task, "2020-12", tmp_path)
+        first, second = prepare(task, "2020-12")
         expected = (found.a, found.b) if task.direction == "a_subsumes_b" else (found.b, found.a)
-        assert (read(first), read(second)) == expected
+        assert (first, second) == expected
 
 
 def test_a_sample_is_the_same_for_every_checker() -> None:
@@ -158,7 +158,7 @@ import json, sys
 print(json.dumps({"ready": True}), flush=True)
 for line in sys.stdin:
     request = json.loads(line)
-    a, b = (json.load(open(request[name])) for name in ("a", "b"))
+    a, b = request["a"], request["b"]
     if isinstance(b, dict) and "const" in b:
         reply = {"answer": "no", "counterexample": b["const"], "reason": "not kept"}
     elif isinstance(a, dict) and "format" in a:

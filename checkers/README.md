@@ -56,20 +56,20 @@ The adapter is a program that starts once and answers many requests, so that sta
 1. On start, the adapter prints `{"ready": true}`.
 2. For every request line it prints one reply line.
 
-A request names two files and the time allowed:
+A request holds two schemas and the time allowed:
 
 ```json
-{"a": "/scratch/a.json", "b": "/scratch/b.json", "timeout": 10.0}
+{"a": {"type": "string"}, "b": {"maxLength": 3}, "timeout": 10.0}
 ```
 
-The runner writes the two schemas of the task to these files before it asks, so an adapter never reads the corpus. The question is always whether `a` accepts every instance valid under `b`. The reply:
+`a` and `b` are the schemas themselves, as JSON values on the one line of the request. Nothing is written to a file, and an adapter never reads the corpus. The question is always whether `a` accepts every instance valid under `b`. The reply:
 
 ```json
 {"answer": "yes", "seconds": 0.00042, "detail": null}
 ```
 
 - **`answer`**: `yes` when A accepts every instance of B, `no` when it does not, `unknown` when the checker ran and declined, `error` when it failed or rejected a schema, `timeout` when it stopped itself after the time allowed.
-- **`seconds`**: what the checker took, measured by the adapter from the two schemas as text to the answer. Parsing the text is part of it; reading the files is not.
+- **`seconds`**: what the checker took, measured by the adapter. It covers parsing each schema once, and the check, which is what someone pays who holds two schemas as text. An adapter whose checker takes a parsed schema starts the clock before it parses the request, since that parses the two. An adapter whose checker takes text writes each schema back to text first, and starts the clock then.
 - **`detail`**: optional, a short text for a person: a counterexample, the reason for declining, the error.
 - **`reason`**: optional, with an `unknown`: what kind of reason the checker had, in a word or two that are the same for every task declined for it, such as the keyword it does not support. A report counts the declined tasks by it; `detail` has the reason in full.
 - **`counterexample`**: optional, with a `no`: an instance that is valid under `b` and invalid under `a`, as JSON. The runner asks a validator whether it is one, and a `no` with a counterexample that is none counts as a wrong answer. Leave the key out where the checker gives none, since `null` is an instance.

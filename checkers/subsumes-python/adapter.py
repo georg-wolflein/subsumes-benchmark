@@ -13,7 +13,6 @@ what the binding costs.
 import json
 import sys
 import time
-from pathlib import Path
 from typing import assert_never
 
 from subsumes import Budget, Json, No, Reason, Unknown, Unrepresentable, Unsupported, Yes, subsumes
@@ -37,11 +36,13 @@ def kind(reason: Reason) -> str:
             assert_never(reason)
 
 
-def check(a: str, b: str) -> dict[str, Json]:
-    """The reply without its time."""
+def check(request: str) -> dict[str, Json]:
+    """The reply to a request, without its time."""
     try:
-        # The package takes a schema as ``json.loads`` gives it, with the default work budget.
-        verdict = subsumes(json.loads(a), json.loads(b))
+        # The package takes a schema as ``json.loads`` gives it, which is how the request
+        # holds the two, and checks with the default work budget.
+        schemas = json.loads(request)
+        verdict = subsumes(schemas["a"], schemas["b"])
     except Exception as exc:
         return {"answer": "error", "detail": f"{type(exc).__name__}: {exc}"[:300]}
     match verdict:
@@ -58,13 +59,10 @@ def check(a: str, b: str) -> dict[str, Json]:
 def main() -> None:
     print(json.dumps({"ready": True}), flush=True)
     for line in sys.stdin:
-        request = json.loads(line)
-        a = Path(request["a"]).read_text(encoding="utf-8")
-        b = Path(request["b"]).read_text(encoding="utf-8")
-        # The clock runs from the schemas as text to the answer. The runner enforces the
-        # timeout.
+        # The clock runs from the request as text to the answer, so that each schema is
+        # parsed once in that time. The runner enforces the timeout.
         start = time.perf_counter()
-        reply = check(a, b)
+        reply = check(line)
         seconds = time.perf_counter() - start
         print(json.dumps({**reply, "seconds": seconds}), flush=True)
 

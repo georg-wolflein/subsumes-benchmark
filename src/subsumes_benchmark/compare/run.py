@@ -1,11 +1,9 @@
 """Running one checker over the tasks of the corpus."""
 
-import json
 import platform
 import queue
 import subprocess
 import sys
-import tempfile
 import threading
 import time
 from collections import Counter
@@ -23,18 +21,19 @@ from subsumes_benchmark.generated.case import CaseSpec
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
+    from subsumes_benchmark import Json
     from subsumes_benchmark.compare.tasks import Task
 
 # A warm-up task is not measured, so it need not be given the full time either.
 WARMUP_TIMEOUT_SECONDS = 2.0
 
 
-def prepare(task: Task, dialect: Dialect, scratch: Path) -> tuple[Path, Path]:
-    """The two files to hand to a checker of the given dialect, written to ``scratch``.
+def prepare(task: Task, dialect: Dialect) -> tuple[Json, Json]:
+    """The two schemas to hand to a checker of the given dialect.
 
     The first is the schema asked to accept everything, which is ``b`` of the case when the
-    task asks the other direction. A checker of draft 2020-12 gets each schema as text
-    indented like the rest of the corpus.
+    task asks the other direction. A checker of draft 2020-12 gets each schema as the
+    corpus has it, and one of an older draft gets it rewritten to that draft.
 
     Raises:
         UnsupportedError: The dialect cannot express one of the schemas.
@@ -47,24 +46,18 @@ def prepare(task: Task, dialect: Dialect, scratch: Path) -> tuple[Path, Path]:
             schemas = {"a": case.b, "b": case.a}
         case _:
             assert_never(task.direction)
-    paths = []
-    for name, schema in schemas.items():
-        match dialect:
-            case "2020-12":
-                text = json.dumps(schema, indent=2, allow_nan=False) + "\n"
-            case "draft-07" | "draft-04":
-                text = json.dumps(downgrade(schema, dialect), ensure_ascii=True)
-            case _:
-                assert_never(dialect)
-        path = scratch / f"{name}.json"
-        path.write_text(text, encoding="utf-8")
-        paths.append(path)
-    return paths[0], paths[1]
+    match dialect:
+        case "2020-12":
+            return schemas["a"], schemas["b"]
+        case "draft-07" | "draft-04":
+            return downgrade(schemas["a"], dialect), downgrade(schemas["b"], dialect)
+        case _:
+            assert_never(dialect)
 
 
-def ask(worker: Worker, task: Task, scratch: Path, timeout: float) -> Reply:
+def ask(worker: Worker, task: Task, timeout: float) -> Reply:
     try:
-        a, b = prepare(task, worker.checker.dialect, scratch)
+        a, b = prepare(task, worker.checker.dialect)
     except UnsupportedError as exc:
         return Reply("unsupported", None, 0.0, str(exc))
     except RecursionError:
@@ -143,20 +136,17 @@ def run(
 
     def work(number: int) -> None:
         try:
-            with (
-                tempfile.TemporaryDirectory(prefix=f"{checker.name}-") as scratch,
-                (out / f"adapter-{number}.log").open("wb") as log,
-            ):
+            with (out / f"adapter-{number}.log").open("wb") as log:
                 worker = Worker(checker, log)
                 try:
                     for task in tasks[:warmup]:
-                        ask(worker, task, Path(scratch), min(timeout, WARMUP_TIMEOUT_SECONDS))
+                        ask(worker, task, min(timeout, WARMUP_TIMEOUT_SECONDS))
                     while True:
                         try:
                             task = pending.get_nowait()
                         except queue.Empty:
                             return
-                        reply = ask(worker, task, Path(scratch), timeout)
+                        reply = ask(worker, task, timeout)
                         # The validator is asked after the checker has answered, so that
                         # it is in no time that is measured.
                         given = reply.counterexample
