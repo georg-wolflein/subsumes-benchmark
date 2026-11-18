@@ -42,11 +42,11 @@ class Override(Config):
     )
     note: str
     """
-    What is wrong with upstream's label. It is copied into the case.json of every case listed.
+    What is wrong with upstream's label. It is copied into every case listed.
     """
     a_subsumes_b: bool | None
     """
-    The label the cases get in place of upstream's: whether a.json accepts every instance valid under b.json; null when the corpus claims nothing.
+    The label the cases get in place of upstream's: whether a accepts every instance valid under b; null when the corpus claims nothing.
     """
     b_subsumes_a: bool | None
     """

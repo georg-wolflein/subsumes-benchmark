@@ -1,0 +1,145 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "maxLength",
+    "minLength",
+    "minimum",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o56021.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "Fibaro Home Center Variable JSON Schema",
+    "name": "variable",
+    "type": "object",
+    "properties": {
+      "name": {
+        "description": "Identifier for the variable",
+        "type": "string",
+        "maxLength": 18,
+        "minLength": 1,
+        "pattern": "^[A-Za-z][A-Za-z0-9_]*"
+      },
+      "value": {
+        "description": "Value of the variable",
+        "type": "string",
+        "maxLength": 8177
+      },
+      "readOnly": {
+        "description": "Read only flag",
+        "type": "boolean"
+      },
+      "isEnum": {
+        "description": "Is Predefined Variable Flag",
+        "type": "boolean"
+      },
+      "enumValues": {
+        "description": "Predefined values",
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "created": {
+        "description": "Variable created timestamp",
+        "type": "integer",
+        "minimum": 0
+      },
+      "modified": {
+        "description": "Variable modified timestamp",
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "name",
+      "value"
+    ],
+    "additionalProperties": false
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "description": "Fibaro Home Center Variable JSON Schema",
+                "name": "variable",
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "description": "Identifier for the variable",
+                    "type": "string",
+                    "maxLength": 18,
+                    "minLength": 1,
+                    "pattern": "^[A-Za-z][A-Za-z0-9_]*"
+                  },
+                  "readOnly": {
+                    "description": "Read only flag",
+                    "type": "boolean"
+                  },
+                  "isEnum": {
+                    "description": "Is Predefined Variable Flag",
+                    "type": "boolean"
+                  },
+                  "enumValues": {
+                    "description": "Predefined values",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "modified": {
+                    "description": "Variable modified timestamp",
+                    "type": "integer",
+                    "minimum": 0.0
+                  },
+                  "value": {
+                    "description": "Value of the variable",
+                    "type": "string",
+                    "maxLength": 8177
+                  },
+                  "created": {
+                    "description": "Variable created timestamp",
+                    "type": "integer",
+                    "minimum": 0.0
+                  }
+                },
+                "required": [
+                  "name",
+                  "value"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^readOnly$": true,
+                  "^isEnum$": true,
+                  "^name$": true,
+                  "^enumValues$": true,
+                  "^value$": true,
+                  "^created$": true,
+                  "^modified$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

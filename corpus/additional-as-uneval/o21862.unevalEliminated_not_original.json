@@ -1,0 +1,355 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o21862.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "required": [
+      "DomainName"
+    ],
+    "properties": {
+      "DomainName": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9\\-]+$"
+      },
+      "AccessPolicies": {
+        "type": "string",
+        "pattern": ".+"
+      },
+      "AdvancedOptions": {
+        "type": "object",
+        "patternProperties": {
+          ".+": {
+            "type": "string",
+            "pattern": ".+"
+          }
+        },
+        "additionalProperties": false
+      },
+      "EBSOptions": {
+        "type": "object",
+        "properties": {
+          "EBSEnabled": {
+            "type": "string",
+            "enum": [
+              "true",
+              "false"
+            ]
+          },
+          "Iops": {
+            "type": "string",
+            "pattern": "^\\d+$"
+          },
+          "VolumeSize": {
+            "type": "string",
+            "pattern": "^\\d+$"
+          },
+          "VolumeType": {
+            "type": "string",
+            "enum": [
+              "standard",
+              "gp2",
+              "io1"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "ElasticsearchClusterConfig": {
+        "type": "object",
+        "properties": {
+          "DedicatedMasterCount": {
+            "type": "string",
+            "pattern": "^\\d$"
+          },
+          "DedicatedMasterEnabled": {
+            "type": "string",
+            "enum": [
+              "true",
+              "false"
+            ]
+          },
+          "DedicatedMasterType": {
+            "$ref": "#/$defs/ElasticseachNodeType"
+          },
+          "InstanceCount": {
+            "type": "string",
+            "pattern": "^\\d$"
+          },
+          "InstanceType": {
+            "$ref": "#/$defs/ElasticseachNodeType"
+          },
+          "ZoneAwarenessEnabled": {
+            "type": "string",
+            "enum": [
+              "true",
+              "false"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "SnapshotOptions": {
+        "type": "object",
+        "properties": {
+          "AutomatedSnapshotStartHour": {
+            "type": "string",
+            "pattern": "^\\d$"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "additionalProperties": false,
+    "$defs": {
+      "ElasticseachNodeType": {
+        "type": "string",
+        "enum": [
+          "m3.medium.elasticsearch",
+          "m3.large.elasticsearch",
+          "m3.xlarge.elasticsearch",
+          "m3.2xlarge.elasticsearch",
+          "t2.micro.elasticsearch",
+          "t2.small.elasticsearch",
+          "t2.medium.elasticsearch",
+          "r3.large.elasticsearch",
+          "r3.xlarge.elasticsearch",
+          "r3.2xlarge.elasticsearch",
+          "r3.4xlarge.elasticsearch",
+          "r3.8xlarge.elasticsearch",
+          "i2.xlarge.elasticsearch",
+          "i2.2xlarge.elasticsearch"
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_5": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "AutomatedSnapshotStartHour": {
+                    "type": "string",
+                    "pattern": "^\\d$"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^AutomatedSnapshotStartHour$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "required": [
+                  "DomainName"
+                ],
+                "properties": {
+                  "AccessPolicies": {
+                    "type": "string",
+                    "pattern": ".+"
+                  },
+                  "ElasticsearchClusterConfig": {
+                    "$ref": "#/$defs/modern_2"
+                  },
+                  "AdvancedOptions": {
+                    "$ref": "#/$defs/modern_3"
+                  },
+                  "DomainName": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9\\-]+$"
+                  },
+                  "EBSOptions": {
+                    "$ref": "#/$defs/modern_4"
+                  },
+                  "SnapshotOptions": {
+                    "$ref": "#/$defs/modern_5"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^EBSOptions$": true,
+                  "^AccessPolicies$": true,
+                  "^SnapshotOptions$": true,
+                  "^DomainName$": true,
+                  "^ElasticsearchClusterConfig$": true,
+                  "^AdvancedOptions$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "DedicatedMasterType": {
+                    "$ref": "#/$defs/ElasticseachNodeType"
+                  },
+                  "DedicatedMasterEnabled": {
+                    "type": "string",
+                    "enum": [
+                      "true",
+                      "false"
+                    ]
+                  },
+                  "DedicatedMasterCount": {
+                    "type": "string",
+                    "pattern": "^\\d$"
+                  },
+                  "InstanceCount": {
+                    "type": "string",
+                    "pattern": "^\\d$"
+                  },
+                  "InstanceType": {
+                    "$ref": "#/$defs/ElasticseachNodeType"
+                  },
+                  "ZoneAwarenessEnabled": {
+                    "type": "string",
+                    "enum": [
+                      "true",
+                      "false"
+                    ]
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^InstanceType$": true,
+                  "^DedicatedMasterCount$": true,
+                  "^InstanceCount$": true,
+                  "^ZoneAwarenessEnabled$": true,
+                  "^DedicatedMasterType$": true,
+                  "^DedicatedMasterEnabled$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_3": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "patternProperties": {
+                  ".+": {
+                    "type": "string",
+                    "pattern": ".+"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  ".+": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "ElasticseachNodeType": {
+        "type": "string",
+        "enum": [
+          "m3.medium.elasticsearch",
+          "m3.large.elasticsearch",
+          "m3.xlarge.elasticsearch",
+          "m3.2xlarge.elasticsearch",
+          "t2.micro.elasticsearch",
+          "t2.small.elasticsearch",
+          "t2.medium.elasticsearch",
+          "r3.large.elasticsearch",
+          "r3.xlarge.elasticsearch",
+          "r3.2xlarge.elasticsearch",
+          "r3.4xlarge.elasticsearch",
+          "r3.8xlarge.elasticsearch",
+          "i2.xlarge.elasticsearch",
+          "i2.2xlarge.elasticsearch"
+        ]
+      },
+      "modern_4": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "EBSEnabled": {
+                    "type": "string",
+                    "enum": [
+                      "true",
+                      "false"
+                    ]
+                  },
+                  "Iops": {
+                    "type": "string",
+                    "pattern": "^\\d+$"
+                  },
+                  "VolumeSize": {
+                    "type": "string",
+                    "pattern": "^\\d+$"
+                  },
+                  "VolumeType": {
+                    "type": "string",
+                    "enum": [
+                      "standard",
+                      "gp2",
+                      "io1"
+                    ]
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^EBSEnabled$": true,
+                  "^Iops$": true,
+                  "^VolumeSize$": true,
+                  "^VolumeType$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

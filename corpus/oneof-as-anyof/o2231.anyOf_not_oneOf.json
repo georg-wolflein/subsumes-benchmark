@@ -1,0 +1,138 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "anyOf",
+    "items",
+    "oneOf",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/sat/o2231.anyOf_not_oneOf.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Tree container",
+    "description": "Testing chained containers",
+    "$ref": "#/$defs/LevelOneContainer",
+    "$defs": {
+      "Item": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "type": "integer"
+          }
+        }
+      },
+      "LevelThreeContainer": {
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Item"
+            }
+          }
+        }
+      },
+      "LevelTwoContainer": {
+        "oneOf": [
+          {
+            "properties": {
+              "threes": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/LevelThreeContainer"
+                }
+              }
+            }
+          },
+          {
+            "#ref": "#/definitions3/LevelThreeContainer"
+          }
+        ]
+      },
+      "LevelOneContainer": {
+        "oneOf": [
+          {
+            "properties": {
+              "twos": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/LevelTwoContainer"
+                }
+              }
+            }
+          },
+          {
+            "#ref": "#/definitions3/LevelTwoContainer"
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Tree container",
+    "description": "Testing chained containers",
+    "$ref": "#/$defs/LevelOneContainer",
+    "$defs": {
+      "Item": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "type": "integer"
+          }
+        }
+      },
+      "LevelThreeContainer": {
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Item"
+            }
+          }
+        }
+      },
+      "LevelTwoContainer": {
+        "anyOf": [
+          {
+            "properties": {
+              "threes": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/LevelThreeContainer"
+                }
+              }
+            }
+          },
+          {
+            "#ref": "#/definitions4/LevelThreeContainer"
+          }
+        ]
+      },
+      "LevelOneContainer": {
+        "anyOf": [
+          {
+            "properties": {
+              "twos": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/LevelTwoContainer"
+                }
+              }
+            }
+          },
+          {
+            "#ref": "#/definitions4/LevelTwoContainer"
+          }
+        ]
+      }
+    }
+  }
+}

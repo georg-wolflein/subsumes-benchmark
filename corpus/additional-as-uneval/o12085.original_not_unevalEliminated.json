@@ -1,0 +1,122 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o12085.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "items": {
+                  "$ref": "#/$defs/modern_2"
+                },
+                "self": {
+                  "format": "jsonschema",
+                  "name": "contribution/items",
+                  "vendor": "com.nordstrom",
+                  "version": "1-0-0"
+                },
+                "type": "array"
+              },
+              {
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "photographer": {
+                    "type": "string"
+                  },
+                  "creator": {
+                    "type": "string"
+                  },
+                  "creatorScore": {
+                    "type": "number"
+                  },
+                  "productId": {
+                    "type": "string"
+                  },
+                  "lastEventId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "productId"
+                ],
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^productId$": true,
+                  "^creator$": true,
+                  "^photographer$": true,
+                  "^lastEventId$": true,
+                  "^creatorScore$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "items": {
+      "additionalProperties": false,
+      "properties": {
+        "creator": {
+          "type": "string"
+        },
+        "creatorScore": {
+          "type": "number"
+        },
+        "lastEventId": {
+          "type": "string"
+        },
+        "photographer": {
+          "type": "string"
+        },
+        "productId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "productId"
+      ],
+      "type": "object"
+    },
+    "self": {
+      "format": "jsonschema",
+      "name": "contribution/items",
+      "vendor": "com.nordstrom",
+      "version": "1-0-0"
+    },
+    "type": "array"
+  }
+}

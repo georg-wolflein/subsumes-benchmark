@@ -1,0 +1,56 @@
+{
+  "$schema": "../../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "allOf",
+    "const",
+    "not",
+    "prefixItems",
+    "unevaluatedItems"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/unevaluatedItems.json#/tests/22",
+  "a": false,
+  "b": {
+    "allOf": [
+      {
+        "prefixItems": [
+          {
+            "const": "foo"
+          }
+        ],
+        "not": {
+          "not": {
+            "prefixItems": [
+              true,
+              {
+                "const": "bar"
+              }
+            ]
+          }
+        },
+        "unevaluatedItems": false
+      },
+      {
+        "not": {
+          "prefixItems": [
+            {
+              "const": "foo"
+            }
+          ],
+          "not": {
+            "not": {
+              "prefixItems": [
+                true,
+                {
+                  "const": "bar"
+                }
+              ]
+            }
+          },
+          "unevaluatedItems": false
+        }
+      }
+    ]
+  }
+}

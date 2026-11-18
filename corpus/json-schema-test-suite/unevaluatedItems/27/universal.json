@@ -1,0 +1,49 @@
+{
+  "$schema": "../../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "anyOf",
+    "not",
+    "prefixItems",
+    "type",
+    "unevaluatedItems"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/unevaluatedItems.json#/tests/27",
+  "a": true,
+  "b": {
+    "anyOf": [
+      {
+        "$ref": "https://subsumes-benchmark.example/schema"
+      },
+      {
+        "not": {
+          "$ref": "https://subsumes-benchmark.example/schema"
+        }
+      }
+    ],
+    "$defs": {
+      "https://subsumes-benchmark.example/schema": {
+        "$id": "https://subsumes-benchmark.example/schema",
+        "$ref": "#/$defs/bar",
+        "prefixItems": [
+          {
+            "type": "string"
+          }
+        ],
+        "unevaluatedItems": false,
+        "$defs": {
+          "bar": {
+            "prefixItems": [
+              true,
+              {
+                "type": "string"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

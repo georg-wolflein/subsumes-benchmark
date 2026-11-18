@@ -1,0 +1,135 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "maxLength",
+    "maximum",
+    "minLength",
+    "minimum",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o9967.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 255
+      },
+      "responseCode": {
+        "type": "integer",
+        "minimum": 100,
+        "maximum": 599
+      },
+      "verificationType": {
+        "type": "string",
+        "enum": [
+          "facebook",
+          "fitbit",
+          "none",
+          "twilio",
+          "alexa"
+        ]
+      },
+      "verificationCode": {
+        "type": "string",
+        "maxLength": 32767
+      },
+      "waitForReply": {
+        "type": "boolean"
+      },
+      "basicAuthUsername": {
+        "type": "string",
+        "maxLength": 255
+      },
+      "basicAuthPassword": {
+        "type": "string",
+        "maxLength": 255
+      }
+    },
+    "required": [
+      "name"
+    ],
+    "additionalProperties": false
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "basicAuthPassword": {
+                    "type": "string",
+                    "maxLength": 255
+                  },
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255
+                  },
+                  "verificationType": {
+                    "type": "string",
+                    "enum": [
+                      "facebook",
+                      "fitbit",
+                      "none",
+                      "twilio",
+                      "alexa"
+                    ]
+                  },
+                  "verificationCode": {
+                    "type": "string",
+                    "maxLength": 32767
+                  },
+                  "responseCode": {
+                    "type": "integer",
+                    "minimum": 100.0,
+                    "maximum": 599.0
+                  },
+                  "waitForReply": {
+                    "type": "boolean"
+                  },
+                  "basicAuthUsername": {
+                    "type": "string",
+                    "maxLength": 255
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^waitForReply$": true,
+                  "^verificationCode$": true,
+                  "^verificationType$": true,
+                  "^basicAuthUsername$": true,
+                  "^name$": true,
+                  "^responseCode$": true,
+                  "^basicAuthPassword$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

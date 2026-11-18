@@ -1,0 +1,267 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "additionalProperties",
+    "const",
+    "items",
+    "oneOf",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/schemastore_containment/unknown/samt_v3_not_v2.json",
+  "a": {
+    "$id": "https://json.schemastore.org/samt.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+      "source": {
+        "description": "Path to the source directory, defaults to ./src",
+        "type": "string",
+        "_format": "uri-reference"
+      },
+      "repositories": {
+        "description": "The default repositories to use if no repository is specified for a plugin",
+        "type": "object",
+        "properties": {
+          "maven": {
+            "description": "The url to the maven repository to use, defaults to https://repo.maven.apache.org/maven2",
+            "type": "string",
+            "_format": "uri"
+          }
+        },
+        "additionalProperties": false
+      },
+      "plugins": {
+        "type": "array",
+        "items": {
+          "oneOf": [
+            {
+              "description": "A local plugin, should most likely not be used in production",
+              "type": "object",
+              "required": [
+                "type",
+                "path"
+              ],
+              "properties": {
+                "type": {
+                  "const": "local"
+                },
+                "path": {
+                  "type": "string",
+                  "_format": "uri-reference"
+                }
+              },
+              "additionalProperties": false
+            },
+            {
+              "description": "A maven plugin in POM-like notation, will be downloaded from the provided repository",
+              "type": "object",
+              "required": [
+                "type",
+                "groupId",
+                "artifactId",
+                "version"
+              ],
+              "properties": {
+                "type": {
+                  "const": "maven"
+                },
+                "groupId": {
+                  "type": "string"
+                },
+                "artifactId": {
+                  "type": "string"
+                },
+                "version": {
+                  "type": "string"
+                },
+                "repository": {
+                  "type": "string",
+                  "_format": "uri"
+                }
+              },
+              "additionalProperties": false
+            },
+            {
+              "description": "A maven plugin in gradle-like notation, will be downloaded from the provided repository",
+              "type": "object",
+              "required": [
+                "type",
+                "dependency"
+              ],
+              "properties": {
+                "type": {
+                  "const": "gradle"
+                },
+                "dependency": {
+                  "type": "string"
+                },
+                "repository": {
+                  "type": "string",
+                  "_format": "uri"
+                }
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "generators": {
+        "description": "Which SAMT generators to use",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "name"
+          ],
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "output": {
+              "type": "string",
+              "_format": "uri-reference"
+            },
+            "options": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "type": "object"
+  },
+  "b": {
+    "$id": "https://json.schemastore.org/samt.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+      "source": {
+        "description": "Path to the source directory, defaults to ./src",
+        "type": "string",
+        "_format": "uri-reference"
+      },
+      "repositories": {
+        "description": "The default repositories to use if no repository is specified for a plugin",
+        "type": "object",
+        "properties": {
+          "maven": {
+            "description": "The url to the maven repository to use, defaults to https://repo.maven.apache.org/maven2",
+            "type": "string",
+            "_format": "uri"
+          }
+        },
+        "additionalProperties": false
+      },
+      "plugins": {
+        "type": "array",
+        "items": {
+          "oneOf": [
+            {
+              "description": "A local plugin, should most likely not be used in production",
+              "type": "object",
+              "required": [
+                "type",
+                "path"
+              ],
+              "properties": {
+                "type": {
+                  "const": "local"
+                },
+                "path": {
+                  "type": "string",
+                  "_format": "uri-reference"
+                }
+              },
+              "additionalProperties": false
+            },
+            {
+              "description": "A maven plugin in POM-like notation, will be downloaded from the provided repository",
+              "type": "object",
+              "required": [
+                "type",
+                "groupId",
+                "artifactId",
+                "version"
+              ],
+              "properties": {
+                "type": {
+                  "const": "maven"
+                },
+                "groupId": {
+                  "type": "string"
+                },
+                "artifactId": {
+                  "type": "string"
+                },
+                "version": {
+                  "type": "string"
+                },
+                "repository": {
+                  "type": "string",
+                  "_format": "uri"
+                }
+              },
+              "additionalProperties": false
+            },
+            {
+              "description": "A maven plugin in gradle-like notation, will be downloaded from the provided repository",
+              "type": "object",
+              "required": [
+                "type",
+                "dependency"
+              ],
+              "properties": {
+                "type": {
+                  "const": "gradle"
+                },
+                "dependency": {
+                  "type": "string"
+                },
+                "repository": {
+                  "type": "string",
+                  "_format": "uri"
+                }
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "generators": {
+        "description": "Which SAMT generators to use",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "name"
+          ],
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "output": {
+              "type": "string",
+              "_format": "uri-reference"
+            },
+            "options": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "type": "object"
+  }
+}

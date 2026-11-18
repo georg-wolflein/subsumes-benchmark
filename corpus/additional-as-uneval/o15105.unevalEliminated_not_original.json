@@ -1,0 +1,120 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o15105.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "description": "Specifies how to describe an external source.",
+    "properties": {
+      "path": {
+        "_id": "path",
+        "description": "Full path to the source (may include port number)",
+        "title": "Path schema.",
+        "type": "string"
+      },
+      "referenceId": {
+        "_id": "referenceId",
+        "description": "Which property should we use to name the feature.",
+        "title": "ReferenceId schema.",
+        "type": "string"
+      },
+      "refreshIntervalMSec": {
+        "_id": "refreshIntervalMSec",
+        "description": "Interval in milliseconds to refresh the source.",
+        "title": "RefreshIntervalMSec schema.",
+        "type": "integer"
+      },
+      "type": {
+        "_id": "type",
+        "description": "Specify the subscriber to use.",
+        "enum": [
+          "REST"
+        ],
+        "title": "Type schema."
+      }
+    },
+    "required": [
+      "type",
+      "path",
+      "referenceId",
+      "refreshIntervalMSec"
+    ],
+    "title": "Subscriber schema.",
+    "type": "object"
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "description": "Specifies how to describe an external source.",
+                "properties": {
+                  "path": {
+                    "_id": "path",
+                    "description": "Full path to the source (may include port number)",
+                    "title": "Path schema.",
+                    "type": "string"
+                  },
+                  "referenceId": {
+                    "_id": "referenceId",
+                    "description": "Which property should we use to name the feature.",
+                    "title": "ReferenceId schema.",
+                    "type": "string"
+                  },
+                  "refreshIntervalMSec": {
+                    "_id": "refreshIntervalMSec",
+                    "description": "Interval in milliseconds to refresh the source.",
+                    "title": "RefreshIntervalMSec schema.",
+                    "type": "integer"
+                  },
+                  "type": {
+                    "_id": "type",
+                    "description": "Specify the subscriber to use.",
+                    "enum": [
+                      "REST"
+                    ],
+                    "title": "Type schema."
+                  }
+                },
+                "required": [
+                  "type",
+                  "path",
+                  "referenceId",
+                  "refreshIntervalMSec"
+                ],
+                "title": "Subscriber schema.",
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^path$": true,
+                  "^referenceId$": true,
+                  "^refreshIntervalMSec$": true,
+                  "^type$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

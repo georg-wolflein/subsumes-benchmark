@@ -1,0 +1,122 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "patternProperties",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o57536.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Exam test options",
+    "description": "Options for an Exam test.",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "qidGroups": {
+        "description": "Array of QID difficulty groups, one per difficulty level of questions.",
+        "type": "array",
+        "items": {
+          "description": "Array of QID topic groups, one per topic of questions.",
+          "type": "array",
+          "items": {
+            "description": "Array of question IDs (QIDs) for this topic and difficulty.",
+            "type": "array",
+            "_uniqueItems": true,
+            "item": {
+              "description": "A single question ID (QID).",
+              "type": "string"
+            }
+          }
+        }
+      },
+      "availDate": {
+        "description": "The date after which the test is available for students to view.",
+        "type": "string"
+      },
+      "nQuestions": {
+        "description": "The number of questions to select for each instance of this test.",
+        "type": "integer"
+      },
+      "timeLimitMin": {
+        "description": "The number of minutes allowed for this test.",
+        "type": "integer"
+      },
+      "text": {
+        "description": "HTML text shown on the test overview page.",
+        "type": "string"
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "Exam test options",
+                "description": "Options for an Exam test.",
+                "type": "object",
+                "properties": {
+                  "nQuestions": {
+                    "description": "The number of questions to select for each instance of this test.",
+                    "type": "integer"
+                  },
+                  "timeLimitMin": {
+                    "description": "The number of minutes allowed for this test.",
+                    "type": "integer"
+                  },
+                  "availDate": {
+                    "description": "The date after which the test is available for students to view.",
+                    "type": "string"
+                  },
+                  "text": {
+                    "description": "HTML text shown on the test overview page.",
+                    "type": "string"
+                  },
+                  "qidGroups": {
+                    "description": "Array of QID difficulty groups, one per difficulty level of questions.",
+                    "type": "array",
+                    "items": {
+                      "description": "Array of QID topic groups, one per topic of questions.",
+                      "type": "array",
+                      "items": {
+                        "description": "Array of question IDs (QIDs) for this topic and difficulty.",
+                        "type": "array",
+                        "_uniqueItems": true,
+                        "item": {
+                          "description": "A single question ID (QID).",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^nQuestions$": true,
+                  "^timeLimitMin$": true,
+                  "^text$": true,
+                  "^qidGroups$": true,
+                  "^availDate$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

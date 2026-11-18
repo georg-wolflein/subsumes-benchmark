@@ -1,0 +1,31 @@
+{
+  "$schema": "../../../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "const",
+    "type"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/anchor.json#/tests/6/tests/0",
+  "a": {
+    "$ref": "http://localhost:1234/locationIndependentIdentifier.json#foo",
+    "$defs": {
+      "http://localhost:1234/locationIndependentIdentifier.json": {
+        "$id": "http://localhost:1234/locationIndependentIdentifier.json",
+        "$defs": {
+          "refToInteger": {
+            "$ref": "#foo"
+          },
+          "A": {
+            "$anchor": "foo",
+            "type": "integer"
+          }
+        }
+      }
+    }
+  },
+  "b": {
+    "const": 1
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "allOf",
+    "anyOf",
+    "const",
+    "if",
+    "items",
+    "not",
+    "prefixItems"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/uneval_eliminated_as_additional_containment/sat/unevaluatedItems_46_items.translate_not_trivial.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "if": {
+      "prefixItems": [
+        {
+          "const": "a"
+        }
+      ]
+    },
+    "items": false
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "prefixItems": [
+                  {
+                    "const": "a"
+                  }
+                ]
+              },
+              {
+                "prefixItems": [
+                  true
+                ],
+                "items": {
+                  "anyOf": [
+                    false,
+                    false
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "allOf": [
+              {
+                "not": {
+                  "prefixItems": [
+                    {
+                      "const": "a"
+                    }
+                  ]
+                }
+              },
+              {
+                "items": {
+                  "anyOf": [
+                    false,
+                    false
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

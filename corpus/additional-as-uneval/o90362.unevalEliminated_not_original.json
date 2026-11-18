@@ -1,0 +1,128 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "items",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o90362.unevalEliminated_not_original.json",
+  "a": {
+    "$id": "http://judkins.house/apis/k2/v1/awsSecurityConfig.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$$target": "awsSecurityConfig.json",
+    "title": "AWS Security Configuration",
+    "description": "AWS Security Configuration",
+    "properties": {
+      "protocol": {
+        "description": "The protocol for this Security Rule.",
+        "enum": [
+          "TCP",
+          "UDP",
+          "-1",
+          "ICMP"
+        ],
+        "type": "string"
+      },
+      "cidr_blocks": {
+        "description": "The cidr to associate this rule to.",
+        "items": {
+          "type": "string"
+        },
+        "type": "array",
+        "default": [
+          "0.0.0.0/0"
+        ]
+      },
+      "from_port": {
+        "description": "The from port number.",
+        "type": "number"
+      },
+      "to_port": {
+        "description": "The to port number.",
+        "type": "number"
+      }
+    },
+    "required": [
+      "protocol",
+      "cidr_blocks",
+      "from_port",
+      "to_port"
+    ],
+    "additionalProperties": false,
+    "type": "object"
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "$$target": "awsSecurityConfig.json",
+                "title": "AWS Security Configuration",
+                "description": "AWS Security Configuration",
+                "properties": {
+                  "protocol": {
+                    "description": "The protocol for this Security Rule.",
+                    "enum": [
+                      "TCP",
+                      "UDP",
+                      "-1",
+                      "ICMP"
+                    ],
+                    "type": "string"
+                  },
+                  "cidr_blocks": {
+                    "description": "The cidr to associate this rule to.",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array",
+                    "default": [
+                      "0.0.0.0/0"
+                    ]
+                  },
+                  "from_port": {
+                    "description": "The from port number.",
+                    "type": "number"
+                  },
+                  "to_port": {
+                    "description": "The to port number.",
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "protocol",
+                  "cidr_blocks",
+                  "from_port",
+                  "to_port"
+                ],
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^protocol$": true,
+                  "^cidr_blocks$": true,
+                  "^from_port$": true,
+                  "^to_port$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

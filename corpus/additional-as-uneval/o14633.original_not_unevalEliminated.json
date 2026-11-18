@@ -1,0 +1,315 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "items",
+    "patternProperties",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o14633.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "version": {
+                    "type": "string"
+                  },
+                  "resources": {
+                    "type": "object",
+                    "properties": {
+                      "reference": {
+                        "type": "string"
+                      },
+                      "dbsnp": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "globalQsub": {
+                    "type": "object"
+                  },
+                  "analyses": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/modern_2"
+                    }
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^version$": true,
+                  "^resources$": true,
+                  "^globalQsub$": true,
+                  "^analyses$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "enable": {
+                    "type": "integer",
+                    "enum": [
+                      0,
+                      1
+                    ]
+                  },
+                  "program": {
+                    "type": "string"
+                  },
+                  "outfiles": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    }
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "params": {
+                    "type": "object"
+                  },
+                  "outdirs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    }
+                  },
+                  "javavm": {
+                    "type": "string"
+                  },
+                  "args": {
+                    "description": "An array of command-line arguments.",
+                    "type": "array"
+                  },
+                  "inputFormat": {
+                    "type": "string"
+                  },
+                  "modules": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "analysis": {
+                    "type": "string"
+                  },
+                  "jar": {
+                    "type": "string"
+                  },
+                  "qsub": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "host": {
+                        "type": "string"
+                      },
+                      "pe": {
+                        "type": "string"
+                      },
+                      "directory": {
+                        "type": "string"
+                      },
+                      "queue": {
+                        "type": "string"
+                      },
+                      "project": {
+                        "type": "string"
+                      },
+                      "mem": {
+                        "type": "string"
+                      },
+                      "slots": {
+                        "type": "integer"
+                      },
+                      "account": {
+                        "type": "string"
+                      },
+                      "time": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "dependencies": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^modules$": true,
+                  "^params$": true,
+                  "^analysis$": true,
+                  "^jar$": true,
+                  "^outfiles$": true,
+                  "^args$": true,
+                  "^enable$": true,
+                  "^inputFormat$": true,
+                  "^dependencies$": true,
+                  "^description$": true,
+                  "^qsub$": true,
+                  "^program$": true,
+                  "^javavm$": true,
+                  "^outdirs$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "version": {
+        "type": "string"
+      },
+      "resources": {
+        "type": "object",
+        "properties": {
+          "reference": {
+            "type": "string"
+          },
+          "dbsnp": {
+            "type": "string"
+          }
+        }
+      },
+      "globalQsub": {
+        "type": "object"
+      },
+      "analyses": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "analysis": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "inputFormat": {
+              "type": "string"
+            },
+            "program": {
+              "type": "string"
+            },
+            "enable": {
+              "type": "integer",
+              "enum": [
+                0,
+                1
+              ]
+            },
+            "outdirs": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            },
+            "outfiles": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            },
+            "dependencies": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "modules": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "jar": {
+              "type": "string"
+            },
+            "javavm": {
+              "type": "string"
+            },
+            "qsub": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "slots": {
+                  "type": "integer"
+                },
+                "mem": {
+                  "type": "string"
+                },
+                "time": {
+                  "type": "string"
+                },
+                "directory": {
+                  "type": "string"
+                },
+                "queue": {
+                  "type": "string"
+                },
+                "project": {
+                  "type": "string"
+                },
+                "host": {
+                  "type": "string"
+                },
+                "pe": {
+                  "type": "string"
+                },
+                "account": {
+                  "type": "string"
+                }
+              }
+            },
+            "params": {
+              "type": "object"
+            },
+            "args": {
+              "description": "An array of command-line arguments.",
+              "type": "array"
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "additionalProperties": false
+  }
+}

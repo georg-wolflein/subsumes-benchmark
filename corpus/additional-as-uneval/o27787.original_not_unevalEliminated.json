@@ -1,0 +1,259 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "minItems",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "recursion",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o27787.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "VRT to CWE Mapping",
+    "description": "Mapping from the Vulnerability Rating Taxonomy to CWE",
+    "type": "object",
+    "required": [
+      "metadata",
+      "content"
+    ],
+    "properties": {
+      "metadata": {
+        "$ref": "#/$defs/MappingMetadata"
+      },
+      "content": {
+        "type": "array",
+        "items": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MappingParent"
+            },
+            {
+              "$ref": "#/$defs/Mapping"
+            }
+          ]
+        }
+      }
+    },
+    "$defs": {
+      "CWE": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "items": {
+          "type": "string",
+          "pattern": "^CWE-[0-9]*$"
+        },
+        "minItems": 1,
+        "_uniqueItems": true
+      },
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/$defs/VRTid"
+                  },
+                  "cwe": {
+                    "$ref": "#/$defs/CWE"
+                  }
+                },
+                "required": [
+                  "id",
+                  "cwe"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^id$": true,
+                  "^cwe$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/$defs/VRTid"
+                  },
+                  "children": {
+                    "type": "array",
+                    "items": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/$defs/MappingParent"
+                        },
+                        {
+                          "$ref": "#/$defs/Mapping"
+                        }
+                      ]
+                    }
+                  },
+                  "cwe": {
+                    "$ref": "#/$defs/CWE"
+                  }
+                },
+                "required": [
+                  "id",
+                  "children"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^id$": true,
+                  "^children$": true,
+                  "^cwe$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "Mapping": {
+        "$ref": "#/$defs/modern_1"
+      },
+      "MappingMetadata": {
+        "type": "object",
+        "properties": {
+          "default": {
+            "type": "null"
+          }
+        },
+        "required": [
+          "default"
+        ]
+      },
+      "VRTid": {
+        "type": "string",
+        "pattern": "^[a-z_]*$"
+      },
+      "MappingParent": {
+        "$ref": "#/$defs/modern_2"
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "VRT to CWE Mapping",
+    "description": "Mapping from the Vulnerability Rating Taxonomy to CWE",
+    "type": "object",
+    "required": [
+      "metadata",
+      "content"
+    ],
+    "properties": {
+      "metadata": {
+        "$ref": "#/$defs/MappingMetadata"
+      },
+      "content": {
+        "type": "array",
+        "items": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MappingParent"
+            },
+            {
+              "$ref": "#/$defs/Mapping"
+            }
+          ]
+        }
+      }
+    },
+    "$defs": {
+      "MappingMetadata": {
+        "type": "object",
+        "properties": {
+          "default": {
+            "type": "null"
+          }
+        },
+        "required": [
+          "default"
+        ]
+      },
+      "VRTid": {
+        "type": "string",
+        "pattern": "^[a-z_]*$"
+      },
+      "CWE": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "items": {
+          "type": "string",
+          "pattern": "^CWE-[0-9]*$"
+        },
+        "minItems": 1,
+        "_uniqueItems": true
+      },
+      "Mapping": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/VRTid"
+          },
+          "cwe": {
+            "$ref": "#/$defs/CWE"
+          }
+        },
+        "required": [
+          "id",
+          "cwe"
+        ],
+        "additionalProperties": false
+      },
+      "MappingParent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/VRTid"
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/MappingParent"
+                },
+                {
+                  "$ref": "#/$defs/Mapping"
+                }
+              ]
+            }
+          },
+          "cwe": {
+            "$ref": "#/$defs/CWE"
+          }
+        },
+        "required": [
+          "id",
+          "children"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

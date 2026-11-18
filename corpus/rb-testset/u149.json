@@ -1,0 +1,95 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "items",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/issta/unsat/u149.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "description": "IngressStatus describe the current state of the Ingress.",
+    "properties": {
+      "loadBalancer": {
+        "description": "LoadBalancerStatus represents the status of a load-balancer.",
+        "properties": {
+          "ingress": {
+            "items": {
+              "description": "LoadBalancerIngress represents the status of a load-balancer ingress point: traffic intended for the service should be sent to an ingress point.",
+              "properties": {
+                "ip": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "description": "IP is set for load-balancer ingress points that are IP based (typically GCE or OpenStack load-balancers)"
+                },
+                "hostname": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "description": "Hostname is set for load-balancer ingress points that are DNS based (typically AWS load-balancers)"
+                }
+              }
+            },
+            "type": [
+              "array",
+              "null"
+            ],
+            "description": "Ingress is a list containing ingress points for the load-balancer. Traffic intended for the service should be sent to these ingress points."
+          }
+        }
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "IngressStatus describe the current state of the Ingress.",
+    "properties": {
+      "loadBalancer": {
+        "description": "LoadBalancerStatus represents the status of a load-balancer.",
+        "properties": {
+          "ingress": {
+            "description": "Ingress is a list containing ingress points for the load-balancer. Traffic intended for the service should be sent to these ingress points.",
+            "items": {
+              "description": "LoadBalancerIngress represents the status of a load-balancer ingress point: traffic intended for the service should be sent to an ingress point.",
+              "properties": {
+                "hostname": {
+                  "description": "Hostname is set for load-balancer ingress points that are DNS based (typically AWS load-balancers)",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "ip": {
+                  "description": "IP is set for load-balancer ingress points that are IP based (typically GCE or OpenStack load-balancers)",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "type": [
+                "object",
+                "null"
+              ]
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          }
+        },
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "type": "object"
+  }
+}

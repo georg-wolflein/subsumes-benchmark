@@ -1,0 +1,183 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o79563.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "description": "details for a previously uploaded file",
+    "properties": {
+      "dateUploaded": {
+        "_format": "date-time",
+        "description": "the date and time the file was uploaded",
+        "type": "string"
+      },
+      "fileName": {
+        "$ref": "#/$defs/fileName"
+      },
+      "md5": {
+        "description": "hash of the file's binary content",
+        "type": "string"
+      },
+      "mediaType": {
+        "$ref": "#/$defs/mediaType"
+      },
+      "preSignedUri": {
+        "_format": "uri",
+        "description": "pre-signed link as per http://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-query-string-auth.html to access the raw data. Includes file name as the trailing component so that browsers name the download correctly.",
+        "type": "string"
+      },
+      "size": {
+        "type": "integer"
+      },
+      "via": {
+        "$ref": "#/$defs/via"
+      }
+    },
+    "required": [
+      "fileName",
+      "size",
+      "mediaType",
+      "preSignedUri"
+    ],
+    "type": "object",
+    "$defs": {
+      "data": {
+        "media": {
+          "binaryEncoding": "base64"
+        },
+        "type": "string"
+      },
+      "fileName": {
+        "type": "string"
+      },
+      "mediaType": {
+        "description": "keep in synch with the trait document_asStream",
+        "enum": [
+          "application/pdf",
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          "application/msword",
+          "application/rtf",
+          "text/plain",
+          "image/png",
+          "image/jpeg",
+          "image/gif",
+          "text/html",
+          "audio/x-mpeg-3",
+          "video/x-msvideo",
+          "video/mp4"
+        ]
+      },
+      "via": {
+        "description": "the mechanism via which the file was uploaded - either 'device' or the fqdn of a cloud storage platform (e.g. dropbox.com)",
+        "type": "string"
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "mediaType": {
+        "description": "keep in synch with the trait document_asStream",
+        "enum": [
+          "application/pdf",
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          "application/msword",
+          "application/rtf",
+          "text/plain",
+          "image/png",
+          "image/jpeg",
+          "image/gif",
+          "text/html",
+          "audio/x-mpeg-3",
+          "video/x-msvideo",
+          "video/mp4"
+        ]
+      },
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "description": "details for a previously uploaded file",
+                "properties": {
+                  "mediaType": {
+                    "$ref": "#/$defs/mediaType"
+                  },
+                  "size": {
+                    "type": "integer"
+                  },
+                  "fileName": {
+                    "$ref": "#/$defs/fileName"
+                  },
+                  "preSignedUri": {
+                    "_format": "uri",
+                    "description": "pre-signed link as per http://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-query-string-auth.html to access the raw data. Includes file name as the trailing component so that browsers name the download correctly.",
+                    "type": "string"
+                  },
+                  "md5": {
+                    "description": "hash of the file's binary content",
+                    "type": "string"
+                  },
+                  "via": {
+                    "$ref": "#/$defs/via"
+                  },
+                  "dateUploaded": {
+                    "_format": "date-time",
+                    "description": "the date and time the file was uploaded",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "fileName",
+                  "size",
+                  "mediaType",
+                  "preSignedUri"
+                ],
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^preSignedUri$": true,
+                  "^fileName$": true,
+                  "^md5$": true,
+                  "^mediaType$": true,
+                  "^via$": true,
+                  "^size$": true,
+                  "^dateUploaded$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "data": {
+        "media": {
+          "binaryEncoding": "base64"
+        },
+        "type": "string"
+      },
+      "fileName": {
+        "type": "string"
+      },
+      "via": {
+        "description": "the mechanism via which the file was uploaded - either 'device' or the fqdn of a cloud storage platform (e.g. dropbox.com)",
+        "type": "string"
+      }
+    }
+  }
+}

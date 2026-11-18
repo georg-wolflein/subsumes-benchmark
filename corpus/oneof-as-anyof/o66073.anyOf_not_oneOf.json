@@ -1,0 +1,165 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "additionalProperties",
+    "anyOf",
+    "enum",
+    "oneOf",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o66073.anyOf_not_oneOf.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Object install-if-different property",
+    "description": "This property handles when an object should be installed on target",
+    "oneOf": [
+      {
+        "title": "sha256sum verification type",
+        "description": "Installs if sha256sum doesn't match",
+        "type": "string",
+        "enum": [
+          "sha256sum"
+        ]
+      },
+      {
+        "title": "Known patterns verification type",
+        "description": "Installs if version of know object type is different",
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "string"
+          },
+          "pattern": {
+            "type": "string",
+            "enum": [
+              "linux-kernel",
+              "u-boot"
+            ]
+          }
+        },
+        "required": [
+          "version",
+          "pattern"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "title": "Custom pattern verification type",
+        "description": "Installs if version of unknow object type is different",
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "string"
+          },
+          "pattern": {
+            "type": "object",
+            "properties": {
+              "regexp": {
+                "description": "the pattern to match",
+                "type": "string"
+              },
+              "seek": {
+                "description": "Where to start reading file.",
+                "type": "integer",
+                "default": 0
+              },
+              "buffer-size": {
+                "description": "How much bytes must be read. If -1, until the end.",
+                "type": "integer",
+                "default": -1
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "regexp"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "version",
+          "pattern"
+        ]
+      }
+    ]
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Object install-if-different property",
+    "description": "This property handles when an object should be installed on target",
+    "anyOf": [
+      {
+        "title": "sha256sum verification type",
+        "description": "Installs if sha256sum doesn't match",
+        "type": "string",
+        "enum": [
+          "sha256sum"
+        ]
+      },
+      {
+        "title": "Known patterns verification type",
+        "description": "Installs if version of know object type is different",
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "string"
+          },
+          "pattern": {
+            "type": "string",
+            "enum": [
+              "linux-kernel",
+              "u-boot"
+            ]
+          }
+        },
+        "required": [
+          "version",
+          "pattern"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "title": "Custom pattern verification type",
+        "description": "Installs if version of unknow object type is different",
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "string"
+          },
+          "pattern": {
+            "type": "object",
+            "properties": {
+              "regexp": {
+                "description": "the pattern to match",
+                "type": "string"
+              },
+              "seek": {
+                "description": "Where to start reading file.",
+                "type": "integer",
+                "default": 0
+              },
+              "buffer-size": {
+                "description": "How much bytes must be read. If -1, until the end.",
+                "type": "integer",
+                "default": -1
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "regexp"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "version",
+          "pattern"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,216 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o12455.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "Module specifications",
+    "type": "object",
+    "$comment": "Example key: 'magdeck'",
+    "patternProperties": {
+      ".*": {
+        "$ref": "#/$defs/modern_2"
+      }
+    },
+    "$defs": {
+      "coordinates": {
+        "$ref": "#/$defs/modern_1"
+      },
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "required": [
+                  "x",
+                  "y"
+                ],
+                "properties": {
+                  "x": {
+                    "type": "number"
+                  },
+                  "y": {
+                    "type": "number"
+                  },
+                  "z": {
+                    "type": "number"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^x$": true,
+                  "^y$": true,
+                  "^z$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "required": [
+                  "labwareOffset",
+                  "dimensions",
+                  "calibrationPoint",
+                  "displayName",
+                  "loadName",
+                  "quirks"
+                ],
+                "properties": {
+                  "displayName": {
+                    "type": "string"
+                  },
+                  "labwareOffset": {
+                    "$ref": "#/$defs/coordinates"
+                  },
+                  "quirks": {
+                    "type": "array",
+                    "description": "List of quirks for a given module",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "dimensions": {
+                    "type": "object",
+                    "required": [
+                      "bareOverallHeight",
+                      "overLabwareHeight"
+                    ],
+                    "properties": {
+                      "bareOverallHeight": {
+                        "type": "number"
+                      },
+                      "overLabwareHeight": {
+                        "type": "number"
+                      },
+                      "lidHeight": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  "calibrationPoint": {
+                    "$ref": "#/$defs/coordinates"
+                  },
+                  "loadName": {
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^calibrationPoint$": true,
+                  "^loadName$": true,
+                  "^quirks$": true,
+                  "^labwareOffset$": true,
+                  "^displayName$": true,
+                  "^dimensions$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "Module specifications",
+    "type": "object",
+    "$comment": "Example key: 'magdeck'",
+    "patternProperties": {
+      ".*": {
+        "type": "object",
+        "required": [
+          "labwareOffset",
+          "dimensions",
+          "calibrationPoint",
+          "displayName",
+          "loadName",
+          "quirks"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "labwareOffset": {
+            "$ref": "#/$defs/coordinates"
+          },
+          "dimensions": {
+            "type": "object",
+            "required": [
+              "bareOverallHeight",
+              "overLabwareHeight"
+            ],
+            "properties": {
+              "bareOverallHeight": {
+                "type": "number"
+              },
+              "overLabwareHeight": {
+                "type": "number"
+              },
+              "lidHeight": {
+                "type": "number"
+              }
+            }
+          },
+          "calibrationPoint": {
+            "$ref": "#/$defs/coordinates"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "loadName": {
+            "type": "string"
+          },
+          "quirks": {
+            "type": "array",
+            "description": "List of quirks for a given module",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "$defs": {
+      "coordinates": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "x",
+          "y"
+        ],
+        "properties": {
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          },
+          "z": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,190 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "anyOf",
+    "items",
+    "oneOf",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o37415.anyOf_not_oneOf.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "$schema": {
+        "type": "string"
+      },
+      "hierarchies": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/hierarchy"
+        }
+      }
+    },
+    "required": [
+      "$schema",
+      "hierarchies"
+    ],
+    "additionalProperties": false,
+    "$defs": {
+      "hierarchy": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "asPostfix": {
+            "type": "boolean"
+          },
+          "baseProperties": {
+            "$ref": "#/$defs/property"
+          },
+          "subTypes": {
+            "$ref": "#/$defs/subType"
+          }
+        },
+        "required": [
+          "name",
+          "path",
+          "asPostfix"
+        ],
+        "additionalProperties": false
+      },
+      "subType": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "superType": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "properties": {
+            "$ref": "#/$defs/property"
+          }
+        },
+        "required": [
+          "name",
+          "superType",
+          "properties"
+        ],
+        "additionalProperties": false
+      },
+      "property": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "$schema": {
+        "type": "string"
+      },
+      "hierarchies": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/hierarchy"
+        }
+      }
+    },
+    "required": [
+      "$schema",
+      "hierarchies"
+    ],
+    "additionalProperties": false,
+    "$defs": {
+      "hierarchy": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "asPostfix": {
+            "type": "boolean"
+          },
+          "baseProperties": {
+            "$ref": "#/$defs/property"
+          },
+          "subTypes": {
+            "$ref": "#/$defs/subType"
+          }
+        },
+        "required": [
+          "name",
+          "path",
+          "asPostfix"
+        ],
+        "additionalProperties": false
+      },
+      "subType": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "superType": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "properties": {
+            "$ref": "#/$defs/property"
+          }
+        },
+        "required": [
+          "name",
+          "superType",
+          "properties"
+        ],
+        "additionalProperties": false
+      },
+      "property": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

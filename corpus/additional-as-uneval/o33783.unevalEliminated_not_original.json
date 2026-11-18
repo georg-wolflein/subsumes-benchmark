@@ -1,0 +1,131 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o33783.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Alignment Schema",
+    "description": "A alignment of a transcript to an audio file",
+    "type": "object",
+    "additionalProperties": true,
+    "properties": {
+      "words": {
+        "type": "array",
+        "items": {
+          "title": "Word",
+          "type": "object",
+          "description": "An individual aligned word of the transcript and audio file",
+          "properties": {
+            "word": {
+              "description": "Original word",
+              "type": "string"
+            },
+            "alignedWord": {
+              "description": "Word processed by the alignment algorithm",
+              "type": "string"
+            },
+            "start": {
+              "description": "Start time of the aligned word, in seconds",
+              "type": "number"
+            },
+            "end": {
+              "description": "End time of the aligned word, in seconds",
+              "type": "number"
+            },
+            "speaker": {
+              "description": "Speaker of the word"
+            },
+            "line_idx": {
+              "description": "Index of input line that word came from",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "word",
+            "alignedWord",
+            "start",
+            "end"
+          ]
+        }
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "Alignment Schema",
+                "description": "A alignment of a transcript to an audio file",
+                "type": "object",
+                "properties": {
+                  "words": {
+                    "type": "array",
+                    "items": {
+                      "title": "Word",
+                      "type": "object",
+                      "description": "An individual aligned word of the transcript and audio file",
+                      "properties": {
+                        "speaker": {
+                          "description": "Speaker of the word"
+                        },
+                        "alignedWord": {
+                          "description": "Word processed by the alignment algorithm",
+                          "type": "string"
+                        },
+                        "end": {
+                          "description": "End time of the aligned word, in seconds",
+                          "type": "number"
+                        },
+                        "start": {
+                          "description": "Start time of the aligned word, in seconds",
+                          "type": "number"
+                        },
+                        "word": {
+                          "description": "Original word",
+                          "type": "string"
+                        },
+                        "line_idx": {
+                          "description": "Index of input line that word came from",
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "word",
+                        "alignedWord",
+                        "start",
+                        "end"
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^words$": true
+                },
+                "additionalProperties": true
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

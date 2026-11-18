@@ -1,0 +1,127 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "minimum",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o10093.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+      "additionalProperties": false,
+      "paging": {
+        "properties": {
+          "lastPage": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "limit": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "next": {
+            "type": "string"
+          },
+          "page": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "previous": {
+            "type": "string"
+          },
+          "total": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "uri": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "uri"
+        ]
+      },
+      "results": {}
+    },
+    "required": [
+      "paging"
+    ],
+    "title": "Cursor response schema for your api",
+    "type": "object"
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "additionalProperties": false,
+                  "paging": {
+                    "properties": {
+                      "uri": {
+                        "type": "string"
+                      },
+                      "total": {
+                        "minimum": 0.0,
+                        "type": "integer"
+                      },
+                      "next": {
+                        "type": "string"
+                      },
+                      "limit": {
+                        "minimum": 1.0,
+                        "type": "integer"
+                      },
+                      "lastPage": {
+                        "minimum": 1.0,
+                        "type": "integer"
+                      },
+                      "previous": {
+                        "type": "string"
+                      },
+                      "page": {
+                        "minimum": 1.0,
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "uri"
+                    ]
+                  },
+                  "results": true
+                },
+                "required": [
+                  "paging"
+                ],
+                "title": "Cursor response schema for your api",
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^additionalProperties$": true,
+                  "^paging$": true,
+                  "^results$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "$schema": "../../../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "anyOf",
+    "const",
+    "enum",
+    "type"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/optional/non-schemas.json#/tests/0",
+  "a": {
+    "$defs": {
+      "id_in_enum": {
+        "enum": [
+          {
+            "$id": "https://localhost:1234/id/my_identifier.json",
+            "type": "null"
+          }
+        ]
+      },
+      "real_id_in_schema": {
+        "$id": "https://localhost:1234/id/my_identifier.json",
+        "type": "string"
+      },
+      "zzz_id_in_const": {
+        "const": {
+          "$id": "https://localhost:1234/id/my_identifier.json",
+          "type": "null"
+        }
+      }
+    },
+    "anyOf": [
+      {
+        "$ref": "#/$defs/id_in_enum"
+      },
+      {
+        "$ref": "https://localhost:1234/id/my_identifier.json"
+      }
+    ]
+  },
+  "b": {
+    "anyOf": [
+      {
+        "const": {
+          "$id": "https://localhost:1234/id/my_identifier.json",
+          "type": "null"
+        }
+      },
+      {
+        "const": "a string to match #/$defs/id_in_enum"
+      }
+    ]
+  }
+}

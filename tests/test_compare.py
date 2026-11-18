@@ -4,10 +4,11 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from reading import CORPUS, ROOT, cases
+from reading import CORPUS, ROOT, case, cases, read
 from subsumes_benchmark.compare.checkers import Checker
 from subsumes_benchmark.compare.report import README_END, README_START, report, update_readme
 from subsumes_benchmark.compare.results import Answer, Result, Run, result_line, write_run
+from subsumes_benchmark.compare.run import prepare
 from subsumes_benchmark.compare.summary import (
     Entry,
     ReportError,
@@ -59,7 +60,7 @@ def write(folder: Path, run: Run, results: Sequence[Result]) -> None:
 # --------------------------------------------------------------------------- the tasks
 
 
-def test_a_case_is_asked_the_other_way_only_where_it_has_a_label_for_it() -> None:
+def test_a_case_is_asked_the_other_way_only_where_it_has_a_label_for_it(tmp_path: Path) -> None:
     tasks = read_tasks(CORPUS)
     forward = [task for task in tasks if task.direction == "a_subsumes_b"]
     backward = [task for task in tasks if task.direction == "b_subsumes_a"]
@@ -67,8 +68,12 @@ def test_a_case_is_asked_the_other_way_only_where_it_has_a_label_for_it() -> Non
     assert {task.case for task in backward} == {
         case.id for case in cases() if case.b_subsumes_a is not None
     }
-    # Asked the other way, the two schemas swap, so that A is still the one that accepts.
-    assert all(task.a.name == "b.json" and task.b.name == "a.json" for task in backward)
+    # Asked the other way, the two schemas swap, so that the first is still the one that accepts.
+    for task in (forward[0], backward[0]):
+        found = case(task.case)
+        first, second = prepare(task, "2020-12", tmp_path)
+        expected = (found.a, found.b) if task.direction == "a_subsumes_b" else (found.b, found.a)
+        assert (read(first), read(second)) == expected
 
 
 def test_a_sample_is_the_same_for_every_checker() -> None:

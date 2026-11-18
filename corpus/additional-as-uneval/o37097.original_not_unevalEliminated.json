@@ -1,0 +1,197 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "oneOf",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o37097.original_not_unevalEliminated.json",
+  "a": {
+    "$id": "https://mcda.drugis.org/valueCIEffect.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "MCDA value, confidence interval effect for the performance table entry of absolute data",
+                "type": "object",
+                "required": [
+                  "type",
+                  "value",
+                  "input"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "exact"
+                    ]
+                  },
+                  "value": {
+                    "type": "number"
+                  },
+                  "input": {
+                    "$ref": "#/$defs/modern_2"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^type$": true,
+                  "^value$": true,
+                  "^input$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "required": [
+                  "value",
+                  "lowerBound",
+                  "upperBound"
+                ],
+                "properties": {
+                  "value": {
+                    "type": "number"
+                  },
+                  "lowerBound": {
+                    "oneOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "NE"
+                        ]
+                      }
+                    ]
+                  },
+                  "upperBound": {
+                    "oneOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "NE"
+                        ]
+                      }
+                    ]
+                  },
+                  "scale": {
+                    "type": "string",
+                    "enum": [
+                      "percentage",
+                      "decimal"
+                    ]
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^value$": true,
+                  "^lowerBound$": true,
+                  "^upperBound$": true,
+                  "^scale$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$id": "https://mcda.drugis.org/valueCIEffect.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "MCDA value, confidence interval effect for the performance table entry of absolute data",
+    "type": "object",
+    "required": [
+      "type",
+      "value",
+      "input"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "type": {
+        "type": "string",
+        "enum": [
+          "exact"
+        ]
+      },
+      "value": {
+        "type": "number"
+      },
+      "input": {
+        "type": "object",
+        "required": [
+          "value",
+          "lowerBound",
+          "upperBound"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "number"
+          },
+          "lowerBound": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "NE"
+                ]
+              }
+            ]
+          },
+          "upperBound": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "NE"
+                ]
+              }
+            ]
+          },
+          "scale": {
+            "type": "string",
+            "enum": [
+              "percentage",
+              "decimal"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "$schema": "../../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "type"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/id.json#/tests/24",
+  "a": {
+    "$ref": "http://localhost:1234/nested-absolute-ref-to-string.json",
+    "$defs": {
+      "http://localhost:1234/nested-absolute-ref-to-string.json": {
+        "$id": "http://localhost:1234/nested-absolute-ref-to-string.json",
+        "$defs": {
+          "bar": {
+            "$id": "http://localhost:1234/the-nested-id.json",
+            "type": "string"
+          }
+        },
+        "$ref": "http://localhost:1234/the-nested-id.json"
+      }
+    }
+  },
+  "b": {
+    "$ref": "http://localhost:1234/nested-absolute-ref-to-string.json",
+    "$defs": {
+      "http://localhost:1234/nested-absolute-ref-to-string.json": {
+        "$id": "http://localhost:1234/nested-absolute-ref-to-string.json",
+        "$defs": {
+          "bar": {
+            "$id": "http://localhost:1234/the-nested-id.json",
+            "type": "string"
+          }
+        },
+        "$ref": "http://localhost:1234/the-nested-id.json"
+      }
+    }
+  }
+}

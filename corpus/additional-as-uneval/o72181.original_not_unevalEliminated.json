@@ -1,0 +1,187 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o72181.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "HTML Widget Template Schema",
+                "description": "Defines a web-component based widget template that uses vanilla HTML.",
+                "type": "object",
+                "required": [
+                  "meta",
+                  "htmlTemplate"
+                ],
+                "properties": {
+                  "meta": {
+                    "$ref": "#/$defs/modern_2"
+                  },
+                  "htmlTemplate": {
+                    "type": "string",
+                    "title": "HTML Template",
+                    "description": "Raw HTML content that can use web components."
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^meta$": true,
+                  "^htmlTemplate$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "title": "Template Meta",
+                "required": [
+                  "dependencies",
+                  "plugins"
+                ],
+                "properties": {
+                  "dependencies": {
+                    "type": "array",
+                    "description": "A list of NPM resources to load into the widget",
+                    "items": {
+                      "$ref": "#/$defs/npmDependency"
+                    }
+                  },
+                  "plugins": {
+                    "type": "array",
+                    "description": "A list of component editors used in editing the widget",
+                    "items": {
+                      "$ref": "#/$defs/npmDependency"
+                    }
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^dependencies$": true,
+                  "^plugins$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "npmDependency": {
+        "type": "object",
+        "properties": {
+          "package": {
+            "type": "string",
+            "description": "An NPM package name or scoped package"
+          },
+          "version": {
+            "type": "string",
+            "description": "An NPM version string, such as Patch releases: 1.0 or 1.0.x or ~1.0.4 Minor releases: 1 or 1.x or ^1.0.4 Major releases: * or x",
+            "default": "latest"
+          },
+          "filePath": {
+            "type": "string",
+            "description": "The path to a resource in the specified package",
+            "default": ""
+          }
+        },
+        "required": [
+          "version",
+          "package"
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "HTML Widget Template Schema",
+    "description": "Defines a web-component based widget template that uses vanilla HTML.",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "meta",
+      "htmlTemplate"
+    ],
+    "properties": {
+      "meta": {
+        "type": "object",
+        "title": "Template Meta",
+        "additionalProperties": false,
+        "required": [
+          "dependencies",
+          "plugins"
+        ],
+        "properties": {
+          "dependencies": {
+            "type": "array",
+            "description": "A list of NPM resources to load into the widget",
+            "items": {
+              "$ref": "#/$defs/npmDependency"
+            }
+          },
+          "plugins": {
+            "type": "array",
+            "description": "A list of component editors used in editing the widget",
+            "items": {
+              "$ref": "#/$defs/npmDependency"
+            }
+          }
+        }
+      },
+      "htmlTemplate": {
+        "type": "string",
+        "title": "HTML Template",
+        "description": "Raw HTML content that can use web components."
+      }
+    },
+    "$defs": {
+      "npmDependency": {
+        "type": "object",
+        "properties": {
+          "package": {
+            "type": "string",
+            "description": "An NPM package name or scoped package"
+          },
+          "version": {
+            "type": "string",
+            "description": "An NPM version string, such as Patch releases: 1.0 or 1.0.x or ~1.0.4 Minor releases: 1 or 1.x or ^1.0.4 Major releases: * or x",
+            "default": "latest"
+          },
+          "filePath": {
+            "type": "string",
+            "description": "The path to a resource in the specified package",
+            "default": ""
+          }
+        },
+        "required": [
+          "version",
+          "package"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,198 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "oneOf",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o3454.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_2",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "required": [
+                  "name",
+                  "version"
+                ],
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "author-name": {
+                    "type": "string"
+                  },
+                  "version": {
+                    "type": "string"
+                  },
+                  "author-link": {
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^version$": true,
+                  "^author-link$": true,
+                  "^description$": true,
+                  "^name$": true,
+                  "^author-name$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "description": "Schema for IOx application descriptor - version 1.0",
+                "required": [
+                  "manifest-version",
+                  "info",
+                  "app"
+                ],
+                "type": "object",
+                "properties": {
+                  "info": {
+                    "$ref": "#/$defs/descriptorschema_1_0.AppInfo"
+                  },
+                  "app": {
+                    "oneOf": [
+                      {
+                        "required": [
+                          "apptype"
+                        ],
+                        "type": "object",
+                        "properties": {
+                          "apptype": {
+                            "enum": [
+                              "vm"
+                            ],
+                            "type": "string"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "manifest-version": {
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "number"
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^info$": true,
+                  "^app$": true,
+                  "^manifest-version$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "descriptorschema_1_0.AppInfo": {
+        "$ref": "#/$defs/modern_1"
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "Schema for IOx application descriptor - version 1.0",
+    "additionalProperties": false,
+    "required": [
+      "manifest-version",
+      "info",
+      "app"
+    ],
+    "type": "object",
+    "properties": {
+      "info": {
+        "$ref": "#/$defs/descriptorschema_1_0.AppInfo"
+      },
+      "app": {
+        "oneOf": [
+          {
+            "required": [
+              "apptype"
+            ],
+            "type": "object",
+            "properties": {
+              "apptype": {
+                "enum": [
+                  "vm"
+                ],
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "manifest-version": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      }
+    },
+    "$defs": {
+      "descriptorschema_1_0.AppInfo": {
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "version"
+        ],
+        "type": "object",
+        "properties": {
+          "author-name": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "author-link": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

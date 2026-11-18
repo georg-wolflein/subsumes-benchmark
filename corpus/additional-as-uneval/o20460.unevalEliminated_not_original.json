@@ -1,0 +1,131 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "patternProperties",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o20460.unevalEliminated_not_original.json",
+  "a": {
+    "$id": "http://localhost:3000/schemas/get-client-response.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Get client response",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "logo_uri": {
+        "type": "string"
+      },
+      "client_uri": {
+        "type": "string"
+      },
+      "client_name": {
+        "type": "string"
+      },
+      "client_secret": {
+        "type": "string"
+      },
+      "client_id": {
+        "type": "string"
+      },
+      "responses_types": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "grant_types": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "contacts": {
+        "type": "array"
+      },
+      "redirect_uris": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "Get client response",
+                "type": "object",
+                "properties": {
+                  "grant_types": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "logo_uri": {
+                    "type": "string"
+                  },
+                  "responses_types": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "client_name": {
+                    "type": "string"
+                  },
+                  "redirect_uris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "client_secret": {
+                    "type": "string"
+                  },
+                  "client_uri": {
+                    "type": "string"
+                  },
+                  "client_id": {
+                    "type": "string"
+                  },
+                  "contacts": {
+                    "type": "array"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^logo_uri$": true,
+                  "^client_id$": true,
+                  "^grant_types$": true,
+                  "^contacts$": true,
+                  "^client_name$": true,
+                  "^client_secret$": true,
+                  "^client_uri$": true,
+                  "^responses_types$": true,
+                  "^redirect_uris$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

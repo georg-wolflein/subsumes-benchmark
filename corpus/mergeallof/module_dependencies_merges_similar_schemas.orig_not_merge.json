@@ -1,0 +1,77 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "allOf",
+    "dependentRequired",
+    "dependentSchemas",
+    "minimum",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/allOf_containment/unsat/module_dependencies_merges_similar_schemas.orig_not_merge.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "dependentSchemas": {
+      "foo": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minimum": 7
+      }
+    },
+    "dependentRequired": {
+      "bar": [
+        "prop1",
+        "prop2",
+        "prop4"
+      ]
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "dependentSchemas": {
+      "foo": {
+        "type": [
+          "string",
+          "null",
+          "integer"
+        ],
+        "allOf": [
+          {
+            "minimum": 5
+          }
+        ]
+      }
+    },
+    "dependentRequired": {
+      "bar": [
+        "prop1",
+        "prop2"
+      ]
+    },
+    "allOf": [
+      {
+        "dependentSchemas": {
+          "foo": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "allOf": [
+              {
+                "minimum": 7
+              }
+            ]
+          }
+        },
+        "dependentRequired": {
+          "bar": [
+            "prop4"
+          ]
+        }
+      }
+    ]
+  }
+}

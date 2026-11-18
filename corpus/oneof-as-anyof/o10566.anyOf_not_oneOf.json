@@ -1,0 +1,276 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "oneOf",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "recursion",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o10566.anyOf_not_oneOf.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "allOf": [
+      {
+        "$ref": "#/$defs/subdocument"
+      },
+      {
+        "required": [
+          "_id"
+        ]
+      }
+    ],
+    "$defs": {
+      "subdocument": {
+        "type": "object",
+        "patternProperties": {
+          "^[^$]": {
+            "$ref": "#/$defs/value"
+          }
+        },
+        "additionalProperties": false
+      },
+      "value": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          },
+          {
+            "$ref": "#/$defs/$binary"
+          },
+          {
+            "$ref": "#/$defs/$date"
+          },
+          {
+            "$ref": "#/$defs/$oid"
+          },
+          {
+            "$ref": "#/$defs/$timestamp"
+          },
+          {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/value"
+            }
+          },
+          {
+            "$ref": "#/$defs/subdocument"
+          }
+        ]
+      },
+      "$binary": {
+        "type": "object",
+        "properties": {
+          "$binary": {
+            "type": "string"
+          },
+          "$type": {
+            "type": "string",
+            "pattern": "[a-z0-9]"
+          }
+        },
+        "required": [
+          "$binary",
+          "$type"
+        ],
+        "additionalProperties": false
+      },
+      "$date": {
+        "type": "object",
+        "properties": {
+          "$date": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "$date"
+        ],
+        "additionalProperties": false
+      },
+      "$oid": {
+        "type": "object",
+        "properties": {
+          "$oid": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{24}$"
+          }
+        },
+        "required": [
+          "$oid"
+        ],
+        "additionalProperties": false
+      },
+      "$timestamp": {
+        "type": "object",
+        "properties": {
+          "$timestamp": {
+            "type": "object",
+            "properties": {
+              "t": {
+                "type": "integer"
+              },
+              "i": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "t",
+              "i"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "$timestamp"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "allOf": [
+      {
+        "$ref": "#/$defs/subdocument"
+      },
+      {
+        "required": [
+          "_id"
+        ]
+      }
+    ],
+    "$defs": {
+      "subdocument": {
+        "type": "object",
+        "patternProperties": {
+          "^[^$]": {
+            "$ref": "#/$defs/value"
+          }
+        },
+        "additionalProperties": false
+      },
+      "value": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          },
+          {
+            "$ref": "#/$defs/$binary"
+          },
+          {
+            "$ref": "#/$defs/$date"
+          },
+          {
+            "$ref": "#/$defs/$oid"
+          },
+          {
+            "$ref": "#/$defs/$timestamp"
+          },
+          {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/value"
+            }
+          },
+          {
+            "$ref": "#/$defs/subdocument"
+          }
+        ]
+      },
+      "$binary": {
+        "type": "object",
+        "properties": {
+          "$binary": {
+            "type": "string"
+          },
+          "$type": {
+            "type": "string",
+            "pattern": "[a-z0-9]"
+          }
+        },
+        "required": [
+          "$binary",
+          "$type"
+        ],
+        "additionalProperties": false
+      },
+      "$date": {
+        "type": "object",
+        "properties": {
+          "$date": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "$date"
+        ],
+        "additionalProperties": false
+      },
+      "$oid": {
+        "type": "object",
+        "properties": {
+          "$oid": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{24}$"
+          }
+        },
+        "required": [
+          "$oid"
+        ],
+        "additionalProperties": false
+      },
+      "$timestamp": {
+        "type": "object",
+        "properties": {
+          "$timestamp": {
+            "type": "object",
+            "properties": {
+              "t": {
+                "type": "integer"
+              },
+              "i": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "t",
+              "i"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "$timestamp"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

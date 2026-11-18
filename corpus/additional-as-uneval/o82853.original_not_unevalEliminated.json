@@ -1,0 +1,142 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "maxLength",
+    "minLength",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o82853.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "_schema": {
+                    "type": "string",
+                    "pattern": "^pbj:([a-z0-9-]+):([a-z0-9\\.-]+):([a-z0-9-]+)?:([a-z0-9-]+):([0-9]+-[0-9]+-[0-9]+)$",
+                    "default": "pbj:triniti:curator::slot:1-0-0"
+                  },
+                  "name": {
+                    "type": "string",
+                    "pattern": "^([\\w\\/-]|[\\w-][\\w\\/-]*[\\w-])$",
+                    "minLength": 0,
+                    "maxLength": 255,
+                    "description": "The name of the location where the widget should render, e.g. \"sidebar\", \"html-head\" or \"jumbotron-top\".",
+                    "pbj": {
+                      "type": "string",
+                      "rule": "single",
+                      "format": "slug"
+                    }
+                  },
+                  "widget_ref": {
+                    "type": "string",
+                    "pattern": "^[\\w\\/\\.:-]+$",
+                    "description": "A reference to the widget this slot will render.",
+                    "pbj": {
+                      "type": "identifier",
+                      "rule": "single"
+                    }
+                  },
+                  "rendering": {
+                    "type": "string",
+                    "default": "lazy",
+                    "enum": [
+                      "unknown",
+                      "server",
+                      "client",
+                      "lazy"
+                    ],
+                    "pbj": {
+                      "type": "string-enum",
+                      "rule": "single"
+                    }
+                  }
+                },
+                "required": [
+                  "_schema"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^_schema$": true,
+                  "^name$": true,
+                  "^widget_ref$": true,
+                  "^rendering$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$id": "http://schemas.triniti.io/json-schema/triniti/curator/slot/1-0-0.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "_schema": {
+        "type": "string",
+        "pattern": "^pbj:([a-z0-9-]+):([a-z0-9\\.-]+):([a-z0-9-]+)?:([a-z0-9-]+):([0-9]+-[0-9]+-[0-9]+)$",
+        "default": "pbj:triniti:curator::slot:1-0-0"
+      },
+      "name": {
+        "type": "string",
+        "pattern": "^([\\w\\/-]|[\\w-][\\w\\/-]*[\\w-])$",
+        "minLength": 0,
+        "maxLength": 255,
+        "description": "The name of the location where the widget should render, e.g. \"sidebar\", \"html-head\" or \"jumbotron-top\".",
+        "pbj": {
+          "type": "string",
+          "rule": "single",
+          "format": "slug"
+        }
+      },
+      "widget_ref": {
+        "type": "string",
+        "pattern": "^[\\w\\/\\.:-]+$",
+        "description": "A reference to the widget this slot will render.",
+        "pbj": {
+          "type": "identifier",
+          "rule": "single"
+        }
+      },
+      "rendering": {
+        "type": "string",
+        "default": "lazy",
+        "enum": [
+          "unknown",
+          "server",
+          "client",
+          "lazy"
+        ],
+        "pbj": {
+          "type": "string-enum",
+          "rule": "single"
+        }
+      }
+    },
+    "required": [
+      "_schema"
+    ],
+    "additionalProperties": false
+  }
+}

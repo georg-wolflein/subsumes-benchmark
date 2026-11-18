@@ -1,0 +1,172 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o72189.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Program Share Links",
+    "description": "Links this user can share to make referrals",
+    "type": "object",
+    "patternProperties": {
+      "^[a-zA-Z0-9-]{1,64}$": {
+        "type": "object",
+        "title": "Program Share Link",
+        "description": "The share links available for this program",
+        "properties": {
+          "MOBILE": {
+            "title": "Mobile Share Links",
+            "description": "Share links tracked with the MOBILE engagement medium",
+            "$ref": "#/$defs/subShareLinks"
+          },
+          "EMAIL": {
+            "title": "Email Share Links",
+            "description": "Share links tracked with the EMAIL engagement medium",
+            "$ref": "#/$defs/subShareLinks"
+          },
+          "UNKNOWN": {
+            "title": "Share Links",
+            "description": "Share links tracked with the UNKNOWN engagement medium",
+            "$ref": "#/$defs/subShareLinks"
+          }
+        },
+        "required": [
+          "MOBILE",
+          "EMAIL",
+          "UNKNOWN"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "additionalProperties": false,
+    "$defs": {
+      "subShareLinks": {
+        "type": "object",
+        "properties": {
+          "DIRECT": {
+            "type": "string",
+            "title": "Direct Share Link",
+            "description": "Share link associated with the DIRECT share medium"
+          }
+        },
+        "required": [
+          "DIRECT"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_2",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "DIRECT": {
+                    "type": "string",
+                    "title": "Direct Share Link",
+                    "description": "Share link associated with the DIRECT share medium"
+                  }
+                },
+                "required": [
+                  "DIRECT"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^DIRECT$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "Program Share Links",
+                "description": "Links this user can share to make referrals",
+                "type": "object",
+                "patternProperties": {
+                  "^[a-zA-Z0-9-]{1,64}$": {
+                    "$ref": "#/$defs/modern_3"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^[a-zA-Z0-9-]{1,64}$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "subShareLinks": {
+        "$ref": "#/$defs/modern_1"
+      },
+      "modern_3": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "title": "Program Share Link",
+                "description": "The share links available for this program",
+                "properties": {
+                  "MOBILE": {
+                    "title": "Mobile Share Links",
+                    "description": "Share links tracked with the MOBILE engagement medium",
+                    "$ref": "#/$defs/subShareLinks"
+                  },
+                  "EMAIL": {
+                    "title": "Email Share Links",
+                    "description": "Share links tracked with the EMAIL engagement medium",
+                    "$ref": "#/$defs/subShareLinks"
+                  },
+                  "UNKNOWN": {
+                    "title": "Share Links",
+                    "description": "Share links tracked with the UNKNOWN engagement medium",
+                    "$ref": "#/$defs/subShareLinks"
+                  }
+                },
+                "required": [
+                  "MOBILE",
+                  "EMAIL",
+                  "UNKNOWN"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^MOBILE$": true,
+                  "^EMAIL$": true,
+                  "^UNKNOWN$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

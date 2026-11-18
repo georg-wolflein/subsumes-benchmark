@@ -1,0 +1,119 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o90233.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "locationInfo",
+                "type": "object",
+                "description": "Defines how location information will be retrieved from a [CSV](csvLayer.md) file referenced through the web, ie. referenced by URL.",
+                "properties": {
+                  "latitudeFieldName": {
+                    "type": "string",
+                    "description": "A string defining the field name that holds the latitude (Y) coordinate."
+                  },
+                  "locationType": {
+                    "type": "string",
+                    "description": "String value indicating location type.",
+                    "enum": [
+                      "coordinates"
+                    ]
+                  },
+                  "longitudeFieldName": {
+                    "type": "string",
+                    "description": "A string defining the field name that holds the longitude (X) coordinate."
+                  }
+                },
+                "required": [
+                  "locationType"
+                ],
+                "esriDocumentation": {
+                  "examples": [
+                    {
+                      "title": "locationInfo",
+                      "code": {
+                        "locationInfo": {
+                          "locationType": "coordinates",
+                          "latitudeFieldName": "latitude",
+                          "longitudeFieldName": "longitude"
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "patternProperties": {
+                  "^latitudeFieldName$": true,
+                  "^locationType$": true,
+                  "^longitudeFieldName$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "locationInfo",
+    "type": "object",
+    "description": "Defines how location information will be retrieved from a [CSV](csvLayer.md) file referenced through the web, ie. referenced by URL.",
+    "properties": {
+      "latitudeFieldName": {
+        "type": "string",
+        "description": "A string defining the field name that holds the latitude (Y) coordinate."
+      },
+      "locationType": {
+        "type": "string",
+        "description": "String value indicating location type.",
+        "enum": [
+          "coordinates"
+        ]
+      },
+      "longitudeFieldName": {
+        "type": "string",
+        "description": "A string defining the field name that holds the longitude (X) coordinate."
+      }
+    },
+    "required": [
+      "locationType"
+    ],
+    "additionalProperties": false,
+    "esriDocumentation": {
+      "examples": [
+        {
+          "title": "locationInfo",
+          "code": {
+            "locationInfo": {
+              "locationType": "coordinates",
+              "latitudeFieldName": "latitude",
+              "longitudeFieldName": "longitude"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

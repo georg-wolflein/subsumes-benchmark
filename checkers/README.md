@@ -59,10 +59,10 @@ The adapter is a program that starts once and answers many requests, so that sta
 A request names two files and the time allowed:
 
 ```json
-{"a": "/path/to/a.json", "b": "/path/to/b.json", "timeout": 10.0}
+{"a": "/scratch/a.json", "b": "/scratch/b.json", "timeout": 10.0}
 ```
 
-The question is always whether `a` accepts every instance valid under `b`. The reply:
+The runner writes the two schemas of the task to these files before it asks, so an adapter never reads the corpus. The question is always whether `a` accepts every instance valid under `b`. The reply:
 
 ```json
 {"answer": "yes", "seconds": 0.00042, "detail": null}

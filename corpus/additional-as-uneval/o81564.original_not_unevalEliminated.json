@@ -1,0 +1,99 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o81564.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "city": {
+                    "type": "string"
+                  },
+                  "zip": {
+                    "type": "string",
+                    "pattern": "^[0-9]{5}(-[0-9]{4})?$"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "country": {
+                    "type": "string"
+                  },
+                  "line1": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "line1",
+                  "city",
+                  "state",
+                  "zip",
+                  "country"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^zip$": true,
+                  "^city$": true,
+                  "^line1$": true,
+                  "^state$": true,
+                  "^country$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "line1": {
+        "type": "string"
+      },
+      "city": {
+        "type": "string"
+      },
+      "state": {
+        "type": "string"
+      },
+      "zip": {
+        "type": "string",
+        "pattern": "^[0-9]{5}(-[0-9]{4})?$"
+      },
+      "country": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "line1",
+      "city",
+      "state",
+      "zip",
+      "country"
+    ]
+  }
+}

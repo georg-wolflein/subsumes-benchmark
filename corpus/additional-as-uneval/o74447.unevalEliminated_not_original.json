@@ -1,0 +1,312 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "items",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o74447.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Site",
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": "string",
+        "enum": [
+          "site"
+        ]
+      },
+      "division_id": {
+        "type": "string",
+        "pattern": "^ocd-division/country:[a-z]{2}$"
+      },
+      "gid": {
+        "type": "integer"
+      },
+      "row": {
+        "type": "integer"
+      },
+      "id": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$"
+      },
+      "name": {
+        "$ref": "#/$defs/simple_string"
+      },
+      "geonames_name": {
+        "$ref": "#/$defs/complex_string"
+      },
+      "geonames_id": {
+        "$ref": "#/$defs/simple_integer"
+      },
+      "admin_level_1_geonames_name": {
+        "$ref": "#/$defs/complex_string"
+      },
+      "admin_level_1_geonames_id": {
+        "$ref": "#/$defs/simple_integer"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "type",
+      "division_id",
+      "gid",
+      "row",
+      "id",
+      "name"
+    ],
+    "$defs": {
+      "simple_integer": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "value"
+        ]
+      },
+      "simple_string": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "value"
+        ]
+      },
+      "complex_string": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          },
+          "sources": {
+            "$ref": "#/$defs/sources"
+          },
+          "confidence": {
+            "$ref": "#/$defs/confidence"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "value"
+        ]
+      },
+      "confidence": {
+        "type": "string",
+        "enum": [
+          "Low",
+          "Medium",
+          "High"
+        ]
+      },
+      "sources": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_4",
+    "$defs": {
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "value"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^value$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "confidence": {
+        "type": "string",
+        "enum": [
+          "Low",
+          "Medium",
+          "High"
+        ]
+      },
+      "simple_string": {
+        "$ref": "#/$defs/modern_2"
+      },
+      "simple_integer": {
+        "$ref": "#/$defs/modern_3"
+      },
+      "modern_3": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "value"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^value$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "sources": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "modern_4": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "Site",
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "$ref": "#/$defs/simple_string"
+                  },
+                  "gid": {
+                    "type": "integer"
+                  },
+                  "row": {
+                    "type": "integer"
+                  },
+                  "id": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$"
+                  },
+                  "admin_level_1_geonames_name": {
+                    "$ref": "#/$defs/complex_string"
+                  },
+                  "geonames_name": {
+                    "$ref": "#/$defs/complex_string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "site"
+                    ]
+                  },
+                  "admin_level_1_geonames_id": {
+                    "$ref": "#/$defs/simple_integer"
+                  },
+                  "division_id": {
+                    "type": "string",
+                    "pattern": "^ocd-division/country:[a-z]{2}$"
+                  },
+                  "geonames_id": {
+                    "$ref": "#/$defs/simple_integer"
+                  }
+                },
+                "required": [
+                  "type",
+                  "division_id",
+                  "gid",
+                  "row",
+                  "id",
+                  "name"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^geonames_name$": true,
+                  "^geonames_id$": true,
+                  "^name$": true,
+                  "^type$": true,
+                  "^division_id$": true,
+                  "^row$": true,
+                  "^admin_level_1_geonames_id$": true,
+                  "^id$": true,
+                  "^gid$": true,
+                  "^admin_level_1_geonames_name$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "string"
+                  },
+                  "sources": {
+                    "$ref": "#/$defs/sources"
+                  },
+                  "confidence": {
+                    "$ref": "#/$defs/confidence"
+                  }
+                },
+                "required": [
+                  "value"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^value$": true,
+                  "^sources$": true,
+                  "^confidence$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "complex_string": {
+        "$ref": "#/$defs/modern_1"
+      }
+    }
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "maxLength",
+    "minLength",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o90404.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "$$target": "kubeNodeTaint.json",
+                "title": "Taint Configuration",
+                "description": "Configuration for taint for use in K2.",
+                "properties": {
+                  "key": {
+                    "description": "Taint key which must match toleration",
+                    "pattern": "^([A-Za-z0-9][A-Za-z0-9-._]*)?$",
+                    "minLength": 0,
+                    "maxLength": 253,
+                    "type": "string"
+                  },
+                  "value": {
+                    "description": "Taint value",
+                    "pattern": "^([A-Za-z0-9][A-Za-z0-9-._]*)?$",
+                    "minLength": 0,
+                    "maxLength": 63,
+                    "type": "string"
+                  },
+                  "effect": {
+                    "description": "NoSchedule, PreferNoSchedule or NoExecute to restrict access to node",
+                    "enum": [
+                      "NoSchedule",
+                      "PreferNoSchedule",
+                      "NoExecute"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "key",
+                  "value",
+                  "effect"
+                ],
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^key$": true,
+                  "^value$": true,
+                  "^effect$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$id": "http://judkins.house/apis/k2/v1/kubeNodeTaint.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$$target": "kubeNodeTaint.json",
+    "title": "Taint Configuration",
+    "description": "Configuration for taint for use in K2.",
+    "properties": {
+      "key": {
+        "description": "Taint key which must match toleration",
+        "pattern": "^([A-Za-z0-9][A-Za-z0-9-._]*)?$",
+        "minLength": 0,
+        "maxLength": 253,
+        "type": "string"
+      },
+      "value": {
+        "description": "Taint value",
+        "pattern": "^([A-Za-z0-9][A-Za-z0-9-._]*)?$",
+        "minLength": 0,
+        "maxLength": 63,
+        "type": "string"
+      },
+      "effect": {
+        "description": "NoSchedule, PreferNoSchedule or NoExecute to restrict access to node",
+        "enum": [
+          "NoSchedule",
+          "PreferNoSchedule",
+          "NoExecute"
+        ],
+        "type": "string"
+      }
+    },
+    "required": [
+      "key",
+      "value",
+      "effect"
+    ],
+    "additionalProperties": false,
+    "type": "object"
+  }
+}

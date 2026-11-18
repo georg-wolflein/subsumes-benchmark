@@ -1,0 +1,36 @@
+{
+  "$schema": "../../../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "const",
+    "not",
+    "type"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/id.json#/tests/17/tests/1",
+  "a": {
+    "not": {
+      "$ref": "http://example.com/ref/absref.json"
+    },
+    "$defs": {
+      "http://example.com/ref/absref.json": {
+        "$id": "http://example.com/ref/absref.json",
+        "$defs": {
+          "a": {
+            "$id": "http://example.com/ref/absref/foobar.json",
+            "type": "number"
+          },
+          "b": {
+            "$id": "http://example.com/absref/foobar.json",
+            "type": "string"
+          }
+        },
+        "$ref": "/absref/foobar.json"
+      }
+    }
+  },
+  "b": {
+    "const": 12
+  }
+}

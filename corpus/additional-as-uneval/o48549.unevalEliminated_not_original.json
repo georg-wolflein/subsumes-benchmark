@@ -1,0 +1,155 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "minimum",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o48549.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+      "address": {
+        "pattern": "^(0x)?(([0-9]|[a-f]|[A-F]){2}){20}$",
+        "type": "string"
+      },
+      "crypto": {
+        "additionalProperties": false,
+        "properties": {
+          "cipher": {
+            "type": "string"
+          },
+          "cipherparams": {
+            "type": "object"
+          },
+          "ciphertext": {
+            "type": "string"
+          },
+          "kdf": {
+            "type": "string"
+          },
+          "kdfparams": {
+            "type": "object"
+          },
+          "mac": {
+            "pattern": "^(([0-9]|[a-f]){2}){32}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "cipher",
+          "cipherparams",
+          "ciphertext",
+          "kdf",
+          "kdfparams",
+          "mac"
+        ],
+        "type": "object"
+      },
+      "meta": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "version": {
+        "minimum": 1,
+        "type": "integer"
+      }
+    },
+    "required": [
+      "version",
+      "crypto"
+    ],
+    "type": "object"
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "crypto": {
+        "$ref": "#/$defs/modern_1"
+      },
+      "version": {
+        "minimum": 1.0,
+        "type": "integer"
+      },
+      "meta": {
+        "type": "string"
+      },
+      "address": {
+        "pattern": "^(0x)?(([0-9]|[a-f]|[A-F]){2}){20}$",
+        "type": "string"
+      }
+    },
+    "required": [
+      "version",
+      "crypto"
+    ],
+    "type": "object",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "mac": {
+                    "pattern": "^(([0-9]|[a-f]){2}){32}$",
+                    "type": "string"
+                  },
+                  "kdf": {
+                    "type": "string"
+                  },
+                  "cipherparams": {
+                    "type": "object"
+                  },
+                  "ciphertext": {
+                    "type": "string"
+                  },
+                  "cipher": {
+                    "type": "string"
+                  },
+                  "kdfparams": {
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "cipher",
+                  "cipherparams",
+                  "ciphertext",
+                  "kdf",
+                  "kdfparams",
+                  "mac"
+                ],
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^kdf$": true,
+                  "^kdfparams$": true,
+                  "^cipher$": true,
+                  "^ciphertext$": true,
+                  "^mac$": true,
+                  "^cipherparams$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

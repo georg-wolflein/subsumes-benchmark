@@ -1,0 +1,47 @@
+{
+  "$schema": "../../../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "anyOf",
+    "not",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/test_suite_containment/unsat/draft4_universal_ref_id10_subschema1_not_2.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema"
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "anyOf": [
+      {
+        "$defs": {
+          "is-string": {
+            "type": "string"
+          }
+        },
+        "properties": {
+          "$ref": {
+            "$ref": "#/anyOf/0/$defs/is-string"
+          }
+        }
+      },
+      {
+        "$defs": {
+          "is-string": {
+            "type": "string"
+          }
+        },
+        "not": {
+          "properties": {
+            "$ref": {
+              "$ref": "#/anyOf/1/$defs/is-string"
+            }
+          }
+        }
+      }
+    ]
+  }
+}

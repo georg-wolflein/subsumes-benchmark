@@ -1,0 +1,113 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "dependentRequired",
+    "items",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o81526.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "dependentRequired": {
+      "favoriteTopic": [
+        "tags"
+      ]
+    },
+    "properties": {
+      "email": {
+        "pattern": "^[\\w|-|.]+@[\\w]+\\.[A-Za-z]{2,4}$",
+        "type": "string"
+      },
+      "favoriteTopic": {
+        "type": "string"
+      },
+      "firstName": {
+        "type": "string"
+      },
+      "lastName": {
+        "type": "string"
+      },
+      "tags": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      }
+    },
+    "required": [
+      "email",
+      "firstName",
+      "lastName"
+    ],
+    "type": "object"
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "dependentRequired": {
+                  "favoriteTopic": [
+                    "tags"
+                  ]
+                },
+                "properties": {
+                  "tags": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "pattern": "^[\\w|-|.]+@[\\w]+\\.[A-Za-z]{2,4}$",
+                    "type": "string"
+                  },
+                  "favoriteTopic": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "firstName",
+                  "lastName"
+                ],
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^favoriteTopic$": true,
+                  "^lastName$": true,
+                  "^firstName$": true,
+                  "^tags$": true,
+                  "^email$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

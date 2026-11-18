@@ -1,0 +1,143 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "oneOf",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o27074.anyOf_not_oneOf.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+      "default": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/command"
+          },
+          {
+            "required": [
+              "command"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "iterations": {
+        "items": {
+          "$ref": "#/$defs/command"
+        },
+        "type": "array"
+      }
+    },
+    "required": [
+      "iterations"
+    ],
+    "title": "Clack Schema",
+    "type": "object",
+    "$defs": {
+      "command": {
+        "additionalProperties": false,
+        "properties": {
+          "arguments": {
+            "oneOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "command": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "options": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+      "default": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/command"
+          },
+          {
+            "required": [
+              "command"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "iterations": {
+        "items": {
+          "$ref": "#/$defs/command"
+        },
+        "type": "array"
+      }
+    },
+    "required": [
+      "iterations"
+    ],
+    "title": "Clack Schema",
+    "type": "object",
+    "$defs": {
+      "command": {
+        "additionalProperties": false,
+        "properties": {
+          "arguments": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "command": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "options": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      }
+    }
+  }
+}

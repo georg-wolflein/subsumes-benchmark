@@ -1,0 +1,200 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "additionalProperties",
+    "anyOf",
+    "enum",
+    "oneOf",
+    "pattern",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o83689.oneOf_not_anyOf.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "National address",
+    "description": "National portion of an address",
+    "type": "object",
+    "anyOf": [
+      {
+        "properties": {
+          "country": {
+            "type": "string",
+            "enum": [
+              "CAN"
+            ]
+          },
+          "province": {
+            "type": "string",
+            "enum": [
+              "AB",
+              "BC",
+              "MB"
+            ]
+          },
+          "postalCode": {
+            "type": "string",
+            "pattern": "^[A-Z][0-9][A-Z][0-9][A-Z][0-9]$"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "country",
+          "province",
+          "postalCode"
+        ]
+      },
+      {
+        "properties": {
+          "country": {
+            "type": "string",
+            "enum": [
+              "USA"
+            ]
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "AL",
+              "AK",
+              "AR"
+            ]
+          },
+          "zipCode": {
+            "type": "string",
+            "pattern": "^[0-9]{5}(-[0-9]{4})?$"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "country",
+          "state",
+          "zipCode"
+        ]
+      },
+      {
+        "properties": {
+          "country": {
+            "type": "string",
+            "enum": [
+              "MEX"
+            ]
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "AGS",
+              "BC",
+              "BCS"
+            ]
+          },
+          "postalCode": {
+            "type": "string",
+            "pattern": "^[0-9]{5}$"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "country",
+          "state",
+          "postalCode"
+        ]
+      }
+    ]
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "National address",
+    "description": "National portion of an address",
+    "type": "object",
+    "oneOf": [
+      {
+        "properties": {
+          "country": {
+            "type": "string",
+            "enum": [
+              "CAN"
+            ]
+          },
+          "province": {
+            "type": "string",
+            "enum": [
+              "AB",
+              "BC",
+              "MB"
+            ]
+          },
+          "postalCode": {
+            "type": "string",
+            "pattern": "^[A-Z][0-9][A-Z][0-9][A-Z][0-9]$"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "country",
+          "province",
+          "postalCode"
+        ]
+      },
+      {
+        "properties": {
+          "country": {
+            "type": "string",
+            "enum": [
+              "USA"
+            ]
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "AL",
+              "AK",
+              "AR"
+            ]
+          },
+          "zipCode": {
+            "type": "string",
+            "pattern": "^[0-9]{5}(-[0-9]{4})?$"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "country",
+          "state",
+          "zipCode"
+        ]
+      },
+      {
+        "properties": {
+          "country": {
+            "type": "string",
+            "enum": [
+              "MEX"
+            ]
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "AGS",
+              "BC",
+              "BCS"
+            ]
+          },
+          "postalCode": {
+            "type": "string",
+            "pattern": "^[0-9]{5}$"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "country",
+          "state",
+          "postalCode"
+        ]
+      }
+    ]
+  }
+}

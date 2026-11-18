@@ -1,0 +1,638 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "const",
+    "enum",
+    "if",
+    "items",
+    "not",
+    "patternProperties",
+    "properties",
+    "required",
+    "then",
+    "type",
+    "uniqueItems"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/uneval_eliminated_as_additional_containment/unknown/unevaluatedProperties_663.trivial_not_translate.json",
+  "a": {
+    "$id": "http://jetuml.org/docs/schema/3.0/sequence.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "JetUML File Format for Sequence Diagrams",
+                "type": "object",
+                "required": [
+                  "diagram",
+                  "nodes",
+                  "edges",
+                  "version"
+                ],
+                "properties": {
+                  "diagram": {
+                    "const": "SequenceDiagram"
+                  },
+                  "nodes": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                      "$ref": "#/$defs/modern_2"
+                    }
+                  },
+                  "edges": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                      "$ref": "#/$defs/modern_3"
+                    }
+                  },
+                  "version": {
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^diagram$": true,
+                  "^nodes$": true,
+                  "^edges$": true,
+                  "^version$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "required": [
+                  "x",
+                  "y",
+                  "id",
+                  "type"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "y": {
+                    "type": "integer"
+                  },
+                  "id": {
+                    "type": "integer"
+                  },
+                  "openBottom": {
+                    "type": "boolean"
+                  },
+                  "type": {
+                    "enum": [
+                      "ImplicitParameterNode",
+                      "PointNode",
+                      "NoteNode",
+                      "CallNode"
+                    ]
+                  },
+                  "x": {
+                    "type": "integer"
+                  },
+                  "children": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "integer"
+                    }
+                  }
+                },
+                "allOf": [
+                  {
+                    "anyOf": [
+                      {
+                        "allOf": [
+                          {
+                            "properties": {
+                              "type": {
+                                "const": "ImplicitParameterNode"
+                              }
+                            }
+                          },
+                          {
+                            "required": [
+                              "name"
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "not": {
+                          "properties": {
+                            "type": {
+                              "const": "ImplicitParameterNode"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "anyOf": [
+                      {
+                        "allOf": [
+                          {
+                            "properties": {
+                              "type": {
+                                "const": "PointNode"
+                              }
+                            }
+                          },
+                          {
+                            "required": []
+                          }
+                        ]
+                      },
+                      {
+                        "not": {
+                          "properties": {
+                            "type": {
+                              "const": "PointNode"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "anyOf": [
+                      {
+                        "allOf": [
+                          {
+                            "properties": {
+                              "type": {
+                                "const": "NoteNode"
+                              }
+                            }
+                          },
+                          {
+                            "required": [
+                              "name"
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "not": {
+                          "properties": {
+                            "type": {
+                              "const": "NoteNode"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "anyOf": [
+                      {
+                        "allOf": [
+                          {
+                            "properties": {
+                              "type": {
+                                "const": "CallNode"
+                              }
+                            }
+                          },
+                          {
+                            "required": [
+                              "openBottom"
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "not": {
+                          "properties": {
+                            "type": {
+                              "const": "CallNode"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^children$": true,
+                  "^x$": true,
+                  "^name$": true,
+                  "^type$": true,
+                  "^id$": true,
+                  "^openBottom$": true,
+                  "^y$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_3": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "required": [
+                  "start",
+                  "end",
+                  "type"
+                ],
+                "properties": {
+                  "middleLabel": {
+                    "type": "string"
+                  },
+                  "end": {
+                    "type": "integer"
+                  },
+                  "type": {
+                    "enum": [
+                      "ReturnEdge",
+                      "ConstructorEdge",
+                      "CallEdge",
+                      "NoteEdge"
+                    ]
+                  },
+                  "start": {
+                    "type": "integer"
+                  },
+                  "signal": {
+                    "type": "boolean"
+                  }
+                },
+                "allOf": [
+                  {
+                    "anyOf": [
+                      {
+                        "allOf": [
+                          {
+                            "properties": {
+                              "type": {
+                                "const": "ReturnEdge"
+                              }
+                            }
+                          },
+                          {
+                            "required": [
+                              "middleLabel"
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "not": {
+                          "properties": {
+                            "type": {
+                              "const": "ReturnEdge"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "anyOf": [
+                      {
+                        "allOf": [
+                          {
+                            "properties": {
+                              "type": {
+                                "const": "ConstructorEdge"
+                              }
+                            }
+                          },
+                          {
+                            "required": [
+                              "middleLabel",
+                              "signal"
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "not": {
+                          "properties": {
+                            "type": {
+                              "const": "ConstructorEdge"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "anyOf": [
+                      {
+                        "allOf": [
+                          {
+                            "properties": {
+                              "type": {
+                                "const": "CallEdge"
+                              }
+                            }
+                          },
+                          {
+                            "required": [
+                              "middleLabel",
+                              "signal"
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "not": {
+                          "properties": {
+                            "type": {
+                              "const": "CallEdge"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "anyOf": [
+                      {
+                        "allOf": [
+                          {
+                            "properties": {
+                              "type": {
+                                "const": "NoteEdge"
+                              }
+                            }
+                          },
+                          {
+                            "required": []
+                          }
+                        ]
+                      },
+                      {
+                        "not": {
+                          "properties": {
+                            "type": {
+                              "const": "NoteEdge"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^end$": true,
+                  "^start$": true,
+                  "^signal$": true,
+                  "^middleLabel$": true,
+                  "^type$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$id": "http://jetuml.org/docs/schema/3.0/sequence.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "JetUML File Format for Sequence Diagrams",
+    "type": "object",
+    "required": [
+      "diagram",
+      "nodes",
+      "edges",
+      "version"
+    ],
+    "properties": {
+      "diagram": {
+        "const": "SequenceDiagram"
+      },
+      "nodes": {
+        "type": "array",
+        "uniqueItems": true,
+        "items": {
+          "type": "object",
+          "required": [
+            "x",
+            "y",
+            "id",
+            "type"
+          ],
+          "properties": {
+            "x": {
+              "type": "integer"
+            },
+            "y": {
+              "type": "integer"
+            },
+            "id": {
+              "type": "integer"
+            },
+            "type": {
+              "enum": [
+                "ImplicitParameterNode",
+                "PointNode",
+                "NoteNode",
+                "CallNode"
+              ]
+            },
+            "children": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "integer"
+              }
+            },
+            "name": {
+              "type": "string"
+            },
+            "openBottom": {
+              "type": "boolean"
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "type": {
+                    "const": "ImplicitParameterNode"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "name"
+                ]
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "type": {
+                    "const": "PointNode"
+                  }
+                }
+              },
+              "then": {
+                "required": []
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "type": {
+                    "const": "NoteNode"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "name"
+                ]
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "type": {
+                    "const": "CallNode"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "openBottom"
+                ]
+              }
+            }
+          ],
+          "additionalProperties": false
+        }
+      },
+      "edges": {
+        "type": "array",
+        "uniqueItems": true,
+        "items": {
+          "type": "object",
+          "required": [
+            "start",
+            "end",
+            "type"
+          ],
+          "properties": {
+            "start": {
+              "type": "integer"
+            },
+            "end": {
+              "type": "integer"
+            },
+            "type": {
+              "enum": [
+                "ReturnEdge",
+                "ConstructorEdge",
+                "CallEdge",
+                "NoteEdge"
+              ]
+            },
+            "middleLabel": {
+              "type": "string"
+            },
+            "signal": {
+              "type": "boolean"
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "type": {
+                    "const": "ReturnEdge"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "middleLabel"
+                ]
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "type": {
+                    "const": "ConstructorEdge"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "middleLabel",
+                  "signal"
+                ]
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "type": {
+                    "const": "CallEdge"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "middleLabel",
+                  "signal"
+                ]
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "type": {
+                    "const": "NoteEdge"
+                  }
+                }
+              },
+              "then": {
+                "required": []
+              }
+            }
+          ],
+          "additionalProperties": false
+        }
+      },
+      "version": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false
+  }
+}

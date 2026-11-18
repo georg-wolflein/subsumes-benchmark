@@ -1,0 +1,411 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "patternProperties",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o31362.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Angular CLI Config Schema",
+    "type": "object",
+    "properties": {
+      "project": {
+        "description": "The global configuration of the project.",
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "apps": {
+        "description": "Properties of the different applications in this project.",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "main": {
+              "type": "string"
+            },
+            "tsconfig": {
+              "type": "string"
+            },
+            "mobile": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "additionalProperties": false
+      },
+      "addons": {
+        "description": "Configuration reserved for installed third party addons.",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true
+        }
+      },
+      "packages": {
+        "description": "Configuration reserved for installed third party packages.",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true
+        }
+      },
+      "e2e": {
+        "type": "object",
+        "properties": {
+          "protractor": {
+            "type": "object",
+            "properties": {
+              "config": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      },
+      "test": {
+        "type": "object",
+        "properties": {
+          "karma": {
+            "type": "object",
+            "properties": {
+              "config": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      },
+      "defaults": {
+        "type": "object",
+        "properties": {
+          "prefix": {
+            "type": "string"
+          },
+          "sourceDir": {
+            "type": "string"
+          },
+          "styleExt": {
+            "type": "string"
+          },
+          "prefixInterfaces": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "additionalProperties": false
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_5": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "description": "The global configuration of the project.",
+                "type": "object",
+                "properties": {
+                  "version": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^version$": true,
+                  "^name$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_6": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "protractor": {
+                    "$ref": "#/$defs/modern_7"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^protractor$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_10": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {}
+              },
+              {
+                "additionalProperties": true
+              }
+            ]
+          }
+        ]
+      },
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "Angular CLI Config Schema",
+                "type": "object",
+                "properties": {
+                  "test": {
+                    "$ref": "#/$defs/modern_2"
+                  },
+                  "defaults": {
+                    "$ref": "#/$defs/modern_4"
+                  },
+                  "project": {
+                    "$ref": "#/$defs/modern_5"
+                  },
+                  "e2e": {
+                    "$ref": "#/$defs/modern_6"
+                  },
+                  "apps": {
+                    "$ref": "#/$defs/modern_8"
+                  },
+                  "packages": {
+                    "description": "Configuration reserved for installed third party packages.",
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/modern_10"
+                    }
+                  },
+                  "addons": {
+                    "description": "Configuration reserved for installed third party addons.",
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/modern_11"
+                    }
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^apps$": true,
+                  "^addons$": true,
+                  "^test$": true,
+                  "^packages$": true,
+                  "^defaults$": true,
+                  "^project$": true,
+                  "^e2e$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_7": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "config": {
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^config$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "karma": {
+                    "$ref": "#/$defs/modern_3"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^karma$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_8": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "description": "Properties of the different applications in this project.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/modern_9"
+                }
+              },
+              {
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_9": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "main": {
+                    "type": "string"
+                  },
+                  "tsconfig": {
+                    "type": "string"
+                  },
+                  "mobile": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^main$": true,
+                  "^tsconfig$": true,
+                  "^mobile$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_3": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "config": {
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^config$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_11": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {}
+              },
+              {
+                "additionalProperties": true
+              }
+            ]
+          }
+        ]
+      },
+      "modern_4": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "prefix": {
+                    "type": "string"
+                  },
+                  "sourceDir": {
+                    "type": "string"
+                  },
+                  "styleExt": {
+                    "type": "string"
+                  },
+                  "prefixInterfaces": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^prefix$": true,
+                  "^sourceDir$": true,
+                  "^styleExt$": true,
+                  "^prefixInterfaces$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

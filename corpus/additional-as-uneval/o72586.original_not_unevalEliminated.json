@@ -1,0 +1,183 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "format",
+    "items",
+    "minLength",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o72586.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "visible": {
+                    "type": "boolean"
+                  },
+                  "tags": {
+                    "items": {
+                      "enum": [
+                        "inaccurate",
+                        "incomplete",
+                        "proprietary",
+                        "not-a-number"
+                      ],
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "id": {
+                    "pattern": "^[a-z0-9-]+$",
+                    "type": "string"
+                  },
+                  "related": {
+                    "items": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "categories": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "keywords": {
+                    "items": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "furtherReading": {
+                    "$ref": "#/$defs/modern_2"
+                  },
+                  "title": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "title",
+                  "visible"
+                ],
+                "title": "Article",
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^related$": true,
+                  "^keywords$": true,
+                  "^categories$": true,
+                  "^id$": true,
+                  "^furtherReading$": true,
+                  "^title$": true,
+                  "^visible$": true,
+                  "^tags$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object"
+              },
+              {
+                "additionalProperties": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+      "categories": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "furtherReading": {
+        "additionalProperties": {
+          "format": "uri",
+          "type": "string"
+        },
+        "type": "object"
+      },
+      "id": {
+        "pattern": "^[a-z0-9-]+$",
+        "type": "string"
+      },
+      "keywords": {
+        "items": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "related": {
+        "items": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "tags": {
+        "items": {
+          "enum": [
+            "inaccurate",
+            "incomplete",
+            "proprietary",
+            "not-a-number"
+          ],
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "title": {
+        "type": "string"
+      },
+      "visible": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "id",
+      "title",
+      "visible"
+    ],
+    "title": "Article",
+    "type": "object"
+  }
+}

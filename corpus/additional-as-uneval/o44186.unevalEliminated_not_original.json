@@ -1,0 +1,140 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o44186.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "schema for type text",
+    "type": "object",
+    "properties": {
+      "Z1K1": {
+        "enum": [
+          "Z11"
+        ]
+      },
+      "Z1K2": {
+        "type": "string",
+        "pattern": "^[a-z_A-Z0-9]+$"
+      },
+      "Z1K3": {},
+      "Z1K4": {},
+      "Z1K5": {},
+      "Z11K1": {
+        "type": "object",
+        "properties": {
+          "Z1K1": {
+            "enum": [
+              "Z9"
+            ]
+          },
+          "Z9K1": {
+            "enum": [
+              "Z251",
+              "Z252",
+              "Z253",
+              "Z254",
+              "Z255",
+              "Z256",
+              "Z257"
+            ]
+          }
+        }
+      },
+      "Z11K2": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "Z1K1",
+      "Z11K1",
+      "Z11K2"
+    ],
+    "additionalProperties": false
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "description": "schema for type text",
+                "type": "object",
+                "properties": {
+                  "Z1K3": true,
+                  "Z1K4": true,
+                  "Z1K1": {
+                    "enum": [
+                      "Z11"
+                    ]
+                  },
+                  "Z11K1": {
+                    "type": "object",
+                    "properties": {
+                      "Z1K1": {
+                        "enum": [
+                          "Z9"
+                        ]
+                      },
+                      "Z9K1": {
+                        "enum": [
+                          "Z251",
+                          "Z252",
+                          "Z253",
+                          "Z254",
+                          "Z255",
+                          "Z256",
+                          "Z257"
+                        ]
+                      }
+                    }
+                  },
+                  "Z1K2": {
+                    "type": "string",
+                    "pattern": "^[a-z_A-Z0-9]+$"
+                  },
+                  "Z11K2": {
+                    "type": "string"
+                  },
+                  "Z1K5": true
+                },
+                "required": [
+                  "Z1K1",
+                  "Z11K1",
+                  "Z11K2"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^Z11K1$": true,
+                  "^Z1K5$": true,
+                  "^Z1K2$": true,
+                  "^Z1K4$": true,
+                  "^Z11K2$": true,
+                  "^Z1K1$": true,
+                  "^Z1K3$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -541,7 +541,7 @@ def report(results: Path, out: Path, corpus: Path, readme: Path | None = None) -
     Args:
         results: A folder with one folder per checker, as ``run`` writes them.
         out: The folder for the report.
-        corpus: The corpus the runs were over, for what ``case.json`` says about a case.
+        corpus: The corpus the runs were over, for what the file of a case says about it.
         readme: A README whose marked part is to show the report, if any.
     """
     entries = read_entries(results)

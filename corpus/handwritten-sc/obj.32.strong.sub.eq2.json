@@ -1,0 +1,56 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "additionalProperties",
+    "allOf",
+    "maxLength",
+    "maxProperties",
+    "minLength",
+    "minProperties",
+    "not",
+    "patternProperties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/trickyschemas/unsat/obj.32.strong.sub.eq2.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "not": {
+      "patternProperties": {
+        "a.*": {
+          "minLength": 3
+        }
+      }
+    },
+    "maxProperties": 1
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "allOf": [
+      {
+        "type": "object",
+        "patternProperties": {
+          "a.*": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": {
+          "type": "string",
+          "minLength": 3
+        },
+        "minProperties": 1,
+        "maxProperties": 1
+      },
+      {
+        "patternProperties": {
+          ".*": {
+            "_maxLength": 2,
+            "maxLength": 1,
+            "_maxLengthWeak": 3
+          }
+        }
+      }
+    ]
+  }
+}

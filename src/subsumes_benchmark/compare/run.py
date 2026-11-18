@@ -17,6 +17,7 @@ from typing import TYPE_CHECKING, assert_never
 from subsumes_benchmark.compare.checkers import Checker, Dialect, Reply, Worker
 from subsumes_benchmark.compare.downgrade import UnsupportedError, downgrade
 from subsumes_benchmark.compare.results import RESULTS_FILE, Result, Run, result_line, write_run
+from subsumes_benchmark.generated.case import CaseSpec
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -28,24 +29,36 @@ WARMUP_TIMEOUT_SECONDS = 2.0
 
 
 def prepare(task: Task, dialect: Dialect, scratch: Path) -> tuple[Path, Path]:
-    """The two files to hand to a checker of the given dialect.
+    """The two files to hand to a checker of the given dialect, written to ``scratch``.
+
+    The first is the schema asked to accept everything, which is ``b`` of the case when the
+    task asks the other direction. A checker of draft 2020-12 gets each schema as text
+    indented like the rest of the corpus.
 
     Raises:
         UnsupportedError: The dialect cannot express one of the schemas.
     """
-    match dialect:
-        case "2020-12":
-            return task.a, task.b
-        case "draft-07" | "draft-04":
-            paths = []
-            for name, source in (("a", task.a), ("b", task.b)):
-                schema = downgrade(json.loads(source.read_text(encoding="utf-8")), dialect)
-                path = scratch / f"{name}.json"
-                path.write_text(json.dumps(schema, ensure_ascii=True), encoding="utf-8")
-                paths.append(path)
-            return paths[0], paths[1]
+    case = CaseSpec.read(task.file)
+    match task.direction:
+        case "a_subsumes_b":
+            schemas = {"a": case.a, "b": case.b}
+        case "b_subsumes_a":
+            schemas = {"a": case.b, "b": case.a}
         case _:
-            assert_never(dialect)
+            assert_never(task.direction)
+    paths = []
+    for name, schema in schemas.items():
+        match dialect:
+            case "2020-12":
+                text = json.dumps(schema, indent=2, allow_nan=False) + "\n"
+            case "draft-07" | "draft-04":
+                text = json.dumps(downgrade(schema, dialect), ensure_ascii=True)
+            case _:
+                assert_never(dialect)
+        path = scratch / f"{name}.json"
+        path.write_text(text, encoding="utf-8")
+        paths.append(path)
+    return paths[0], paths[1]
 
 
 def ask(worker: Worker, task: Task, scratch: Path, timeout: float) -> Reply:

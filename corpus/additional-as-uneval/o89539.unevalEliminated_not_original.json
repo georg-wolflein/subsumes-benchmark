@@ -1,0 +1,225 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "maxLength",
+    "maximum",
+    "minItems",
+    "oneOf",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o89539.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Standing instance",
+    "type": "object",
+    "required": [
+      "positions"
+    ],
+    "properties": {
+      "positions": {
+        "type": "object",
+        "description": "Docson is able to visualize it",
+        "properties": {
+          "id": {
+            "description": "The unique identifier for a product",
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "patternProperties": {
+          "a*": {
+            "type": "integer"
+          },
+          "aaa*": {
+            "type": "integer",
+            "maximum": 20
+          },
+          "[0-9]{2,}": {
+            "type": "boolean"
+          },
+          "X_": {
+            "type": "string"
+          },
+          "[0-9]+": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "key"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "key": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "patternProperties": {
+      "a*": {
+        "oneOf": [
+          {
+            "type": "integer",
+            "maximum": 20
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "string",
+            "maxLength": 5
+          }
+        ]
+      },
+      "aaa*": {
+        "type": "integer",
+        "maximum": 20
+      },
+      "[0-9]{2,}": {
+        "type": "boolean"
+      },
+      "X_": {
+        "type": "string"
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Standing instance",
+    "type": "object",
+    "required": [
+      "positions"
+    ],
+    "properties": {
+      "positions": {
+        "$ref": "#/$defs/modern_1"
+      }
+    },
+    "patternProperties": {
+      "a*": {
+        "oneOf": [
+          {
+            "type": "integer",
+            "maximum": 20.0
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "string",
+            "maxLength": 5
+          }
+        ]
+      },
+      "aaa*": {
+        "type": "integer",
+        "maximum": 20.0
+      },
+      "[0-9]{2,}": {
+        "type": "boolean"
+      },
+      "X_": {
+        "type": "string"
+      }
+    },
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "description": "Docson is able to visualize it",
+                "properties": {
+                  "id": {
+                    "description": "The unique identifier for a product",
+                    "type": "number"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "patternProperties": {
+                  "a*": {
+                    "type": "integer"
+                  },
+                  "[0-9]{2,}": {
+                    "type": "boolean"
+                  },
+                  "[0-9]+": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "$ref": "#/$defs/modern_2"
+                    }
+                  },
+                  "aaa*": {
+                    "type": "integer",
+                    "maximum": 20.0
+                  },
+                  "X_": {
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "a*": true,
+                  "[0-9]{2,}": true,
+                  "[0-9]+": true,
+                  "aaa*": true,
+                  "^name$": true,
+                  "^id$": true,
+                  "X_": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "required": [
+                  "key"
+                ],
+                "properties": {
+                  "key": {
+                    "type": "integer"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^key$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

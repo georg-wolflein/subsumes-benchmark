@@ -1,0 +1,300 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "patternProperties",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o58372.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_2",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "y": {
+                    "type": "number"
+                  },
+                  "px": {
+                    "type": "number"
+                  },
+                  "id": {
+                    "type": "integer"
+                  },
+                  "dashed": {
+                    "optional": true,
+                    "type": "boolean"
+                  },
+                  "fixed": {
+                    "type": "integer"
+                  },
+                  "py": {
+                    "type": "number"
+                  },
+                  "r": {
+                    "description": "Radius",
+                    "type": [
+                      "integer",
+                      "string"
+                    ]
+                  },
+                  "index": {
+                    "type": "integer"
+                  },
+                  "weight": {
+                    "type": "integer"
+                  },
+                  "x": {
+                    "type": "number"
+                  }
+                },
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^dashed$": true,
+                  "^x$": true,
+                  "^name$": true,
+                  "^fixed$": true,
+                  "^r$": true,
+                  "^y$": true,
+                  "^px$": true,
+                  "^weight$": true,
+                  "^py$": true,
+                  "^index$": true,
+                  "^id$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "scale": {
+                    "type": "number"
+                  },
+                  "links": {
+                    "items": {
+                      "$ref": "#/$defs/modern_3"
+                    },
+                    "type": "array"
+                  },
+                  "nodes": {
+                    "items": {
+                      "$ref": "#/$defs/node"
+                    },
+                    "type": "array"
+                  },
+                  "translate": {
+                    "items": {
+                      "type": "number"
+                    },
+                    "type": "array"
+                  },
+                  "lastId": {
+                    "type": "integer"
+                  }
+                },
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^translate$": true,
+                  "^lastId$": true,
+                  "^scale$": true,
+                  "^links$": true,
+                  "^nodes$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_3": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "strength": {
+                    "type": [
+                      "integer",
+                      "string"
+                    ]
+                  },
+                  "sourceText": {
+                    "optional": true,
+                    "type": "string"
+                  },
+                  "dashed": {
+                    "optional": true,
+                    "type": "boolean"
+                  },
+                  "target": {
+                    "$ref": "#/$defs/node"
+                  },
+                  "centerText": {
+                    "optional": true,
+                    "type": "string"
+                  },
+                  "source": {
+                    "$ref": "#/$defs/node"
+                  },
+                  "targetText": {
+                    "optional": true,
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^target$": true,
+                  "^dashed$": true,
+                  "^strength$": true,
+                  "^source$": true,
+                  "^targetText$": true,
+                  "^centerText$": true,
+                  "^sourceText$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "node": {
+        "$ref": "#/$defs/modern_1"
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+      "lastId": {
+        "type": "integer"
+      },
+      "links": {
+        "items": {
+          "additionalProperties": false,
+          "properties": {
+            "centerText": {
+              "optional": true,
+              "type": "string"
+            },
+            "dashed": {
+              "optional": true,
+              "type": "boolean"
+            },
+            "source": {
+              "$ref": "#/$defs/node"
+            },
+            "sourceText": {
+              "optional": true,
+              "type": "string"
+            },
+            "strength": {
+              "type": [
+                "integer",
+                "string"
+              ]
+            },
+            "target": {
+              "$ref": "#/$defs/node"
+            },
+            "targetText": {
+              "optional": true,
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "nodes": {
+        "items": {
+          "$ref": "#/$defs/node"
+        },
+        "type": "array"
+      },
+      "scale": {
+        "type": "number"
+      },
+      "translate": {
+        "items": {
+          "type": "number"
+        },
+        "type": "array"
+      }
+    },
+    "type": "object",
+    "$defs": {
+      "node": {
+        "additionalProperties": false,
+        "properties": {
+          "dashed": {
+            "optional": true,
+            "type": "boolean"
+          },
+          "fixed": {
+            "type": "integer"
+          },
+          "id": {
+            "type": "integer"
+          },
+          "index": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "px": {
+            "type": "number"
+          },
+          "py": {
+            "type": "number"
+          },
+          "r": {
+            "description": "Radius",
+            "type": [
+              "integer",
+              "string"
+            ]
+          },
+          "weight": {
+            "type": "integer"
+          },
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          }
+        },
+        "type": "object"
+      }
+    }
+  }
+}

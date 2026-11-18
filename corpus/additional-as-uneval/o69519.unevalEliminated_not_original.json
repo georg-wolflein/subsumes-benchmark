@@ -1,0 +1,98 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o69519.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "person": {
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "type": "string",
+            "enum": [
+              "Andrew"
+            ]
+          },
+          "last_name": {
+            "type": "string",
+            "enum": [
+              "Smith"
+            ]
+          }
+        },
+        "required": [
+          "first_name",
+          "last_name"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "required": [
+      "person"
+    ]
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "person": {
+        "$ref": "#/$defs/modern_1"
+      }
+    },
+    "required": [
+      "person"
+    ],
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "first_name": {
+                    "type": "string",
+                    "enum": [
+                      "Andrew"
+                    ]
+                  },
+                  "last_name": {
+                    "type": "string",
+                    "enum": [
+                      "Smith"
+                    ]
+                  }
+                },
+                "required": [
+                  "first_name",
+                  "last_name"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^first_name$": true,
+                  "^last_name$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,530 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "format",
+    "items",
+    "oneOf",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o81164.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "oneOf": [
+      {
+        "$ref": "#/$defs/v20Package"
+      },
+      {
+        "$ref": "#/$defs/v30Package"
+      }
+    ],
+    "$defs": {
+      "dcosReleaseVersion": {
+        "type": "string",
+        "pattern": "^(?:0|[1-9][0-9]*)(?:\\.(?:0|[1-9][0-9]*))*$",
+        "description": "A string representation of a DC/OS Release Version"
+      },
+      "url": {
+        "type": "string",
+        "allOf": [
+          {
+            "format": "uri"
+          },
+          {
+            "pattern": "^https?://"
+          }
+        ]
+      },
+      "v20Package": {
+        "properties": {
+          "packagingVersion": {
+            "type": "string",
+            "enum": [
+              "2.0"
+            ]
+          },
+          "name": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "scm": {
+            "type": "string"
+          },
+          "maintainer": {
+            "type": "string"
+          },
+          "website": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "framework": {
+            "type": "boolean",
+            "default": false,
+            "description": "True if this package installs a new Mesos framework."
+          },
+          "preInstallNotes": {
+            "type": "string",
+            "description": "Pre installation notes that would be useful to the user of this package."
+          },
+          "postInstallNotes": {
+            "type": "string",
+            "description": "Post installation notes that would be useful to the user of this package."
+          },
+          "postUninstallNotes": {
+            "type": "string",
+            "description": "Post uninstallation notes that would be useful to the user of this package."
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[^\\s]+$"
+            }
+          },
+          "selected": {
+            "type": "boolean",
+            "description": "Flag indicating if the package is selected in search results",
+            "default": false
+          },
+          "licenses": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The name of the license. For example one of [Apache License Version 2.0 | MIT License | BSD License | Proprietary]"
+                },
+                "url": {
+                  "$ref": "#/$defs/url",
+                  "description": "The URL where the license can be accessed"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "name",
+                "url"
+              ]
+            }
+          }
+        },
+        "required": [
+          "packagingVersion",
+          "name",
+          "version",
+          "maintainer",
+          "description",
+          "tags"
+        ],
+        "additionalProperties": false
+      },
+      "v30Package": {
+        "properties": {
+          "packagingVersion": {
+            "type": "string",
+            "enum": [
+              "3.0"
+            ]
+          },
+          "name": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "scm": {
+            "type": "string"
+          },
+          "maintainer": {
+            "type": "string"
+          },
+          "website": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "framework": {
+            "type": "boolean",
+            "default": false,
+            "description": "True if this package installs a new Mesos framework."
+          },
+          "preInstallNotes": {
+            "type": "string",
+            "description": "Pre installation notes that would be useful to the user of this package."
+          },
+          "postInstallNotes": {
+            "type": "string",
+            "description": "Post installation notes that would be useful to the user of this package."
+          },
+          "postUninstallNotes": {
+            "type": "string",
+            "description": "Post uninstallation notes that would be useful to the user of this package."
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[^\\s]+$"
+            }
+          },
+          "selected": {
+            "type": "boolean",
+            "description": "Flag indicating if the package is selected in search results",
+            "default": false
+          },
+          "licenses": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The name of the license. For example one of [Apache License Version 2.0 | MIT License | BSD License | Proprietary]"
+                },
+                "url": {
+                  "$ref": "#/$defs/url",
+                  "description": "The URL where the license can be accessed"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "name",
+                "url"
+              ]
+            }
+          },
+          "minDcosReleaseVersion": {
+            "$ref": "#/$defs/dcosReleaseVersion",
+            "description": "The minimum DC/OS Release Version the package can run on."
+          }
+        },
+        "required": [
+          "packagingVersion",
+          "name",
+          "version",
+          "maintainer",
+          "description",
+          "tags"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "oneOf": [
+      {
+        "$ref": "#/$defs/v20Package"
+      },
+      {
+        "$ref": "#/$defs/v30Package"
+      }
+    ],
+    "$defs": {
+      "url": {
+        "type": "string",
+        "allOf": [
+          {
+            "format": "uri"
+          },
+          {
+            "pattern": "^https?://"
+          }
+        ]
+      },
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "licenses": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/modern_2"
+                    }
+                  },
+                  "website": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "postInstallNotes": {
+                    "type": "string",
+                    "description": "Post installation notes that would be useful to the user of this package."
+                  },
+                  "scm": {
+                    "type": "string"
+                  },
+                  "selected": {
+                    "type": "boolean",
+                    "description": "Flag indicating if the package is selected in search results",
+                    "default": false
+                  },
+                  "framework": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "True if this package installs a new Mesos framework."
+                  },
+                  "version": {
+                    "type": "string"
+                  },
+                  "preInstallNotes": {
+                    "type": "string",
+                    "description": "Pre installation notes that would be useful to the user of this package."
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "packagingVersion": {
+                    "type": "string",
+                    "enum": [
+                      "2.0"
+                    ]
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[^\\s]+$"
+                    }
+                  },
+                  "postUninstallNotes": {
+                    "type": "string",
+                    "description": "Post uninstallation notes that would be useful to the user of this package."
+                  },
+                  "maintainer": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "packagingVersion",
+                  "name",
+                  "version",
+                  "maintainer",
+                  "description",
+                  "tags"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^postInstallNotes$": true,
+                  "^selected$": true,
+                  "^version$": true,
+                  "^description$": true,
+                  "^framework$": true,
+                  "^postUninstallNotes$": true,
+                  "^name$": true,
+                  "^website$": true,
+                  "^licenses$": true,
+                  "^scm$": true,
+                  "^maintainer$": true,
+                  "^tags$": true,
+                  "^preInstallNotes$": true,
+                  "^packagingVersion$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "v20Package": {
+        "$ref": "#/$defs/modern_1"
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The name of the license. For example one of [Apache License Version 2.0 | MIT License | BSD License | Proprietary]"
+                  },
+                  "url": {
+                    "$ref": "#/$defs/url",
+                    "description": "The URL where the license can be accessed"
+                  }
+                },
+                "required": [
+                  "name",
+                  "url"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^name$": true,
+                  "^url$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_4": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The name of the license. For example one of [Apache License Version 2.0 | MIT License | BSD License | Proprietary]"
+                  },
+                  "url": {
+                    "$ref": "#/$defs/url",
+                    "description": "The URL where the license can be accessed"
+                  }
+                },
+                "required": [
+                  "name",
+                  "url"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^name$": true,
+                  "^url$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "dcosReleaseVersion": {
+        "type": "string",
+        "pattern": "^(?:0|[1-9][0-9]*)(?:\\.(?:0|[1-9][0-9]*))*$",
+        "description": "A string representation of a DC/OS Release Version"
+      },
+      "modern_3": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "licenses": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/modern_4"
+                    }
+                  },
+                  "website": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "postInstallNotes": {
+                    "type": "string",
+                    "description": "Post installation notes that would be useful to the user of this package."
+                  },
+                  "scm": {
+                    "type": "string"
+                  },
+                  "selected": {
+                    "type": "boolean",
+                    "description": "Flag indicating if the package is selected in search results",
+                    "default": false
+                  },
+                  "framework": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "True if this package installs a new Mesos framework."
+                  },
+                  "version": {
+                    "type": "string"
+                  },
+                  "preInstallNotes": {
+                    "type": "string",
+                    "description": "Pre installation notes that would be useful to the user of this package."
+                  },
+                  "minDcosReleaseVersion": {
+                    "$ref": "#/$defs/dcosReleaseVersion",
+                    "description": "The minimum DC/OS Release Version the package can run on."
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "packagingVersion": {
+                    "type": "string",
+                    "enum": [
+                      "3.0"
+                    ]
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[^\\s]+$"
+                    }
+                  },
+                  "postUninstallNotes": {
+                    "type": "string",
+                    "description": "Post uninstallation notes that would be useful to the user of this package."
+                  },
+                  "maintainer": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "packagingVersion",
+                  "name",
+                  "version",
+                  "maintainer",
+                  "description",
+                  "tags"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^postInstallNotes$": true,
+                  "^selected$": true,
+                  "^version$": true,
+                  "^description$": true,
+                  "^framework$": true,
+                  "^postUninstallNotes$": true,
+                  "^name$": true,
+                  "^website$": true,
+                  "^licenses$": true,
+                  "^scm$": true,
+                  "^maintainer$": true,
+                  "^tags$": true,
+                  "^minDcosReleaseVersion$": true,
+                  "^preInstallNotes$": true,
+                  "^packagingVersion$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "v30Package": {
+        "$ref": "#/$defs/modern_3"
+      }
+    }
+  }
+}

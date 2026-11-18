@@ -1,0 +1,78 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "minimum",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/uneval_eliminated_as_additional_containment/unknown/unevaluatedProperties_634.translate_not_trivial.json",
+  "a": {
+    "$id": "file:///driver/src/batch_score/common/configuration/file/schemas/public/concurrency_settings.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [],
+    "properties": {
+      "initial_worker_count": {
+        "type": "integer",
+        "default": 100,
+        "minimum": 1,
+        "description": "The initial number of workers."
+      },
+      "max_worker_count": {
+        "type": "integer",
+        "default": 200,
+        "minimum": 1,
+        "description": "The maximum number of workers to use. Overrides initial_worker_count if needed."
+      }
+    }
+  },
+  "b": {
+    "$id": "file:///driver/src/batch_score/common/configuration/file/schemas/public/concurrency_settings.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "initial_worker_count": {
+                    "type": "integer",
+                    "default": 100,
+                    "minimum": 1.0,
+                    "description": "The initial number of workers."
+                  },
+                  "max_worker_count": {
+                    "type": "integer",
+                    "default": 200,
+                    "minimum": 1.0,
+                    "description": "The maximum number of workers to use. Overrides initial_worker_count if needed."
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^initial_worker_count$": true,
+                  "^max_worker_count$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

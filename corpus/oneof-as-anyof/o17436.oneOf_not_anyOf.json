@@ -1,0 +1,151 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "allOf",
+    "anyOf",
+    "enum",
+    "items",
+    "minItems",
+    "oneOf",
+    "prefixItems",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o17436.oneOf_not_anyOf.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "geometry for polygon only",
+    "description": "One geometry as defined by GeoJSON For SAS",
+    "type": "object",
+    "required": [
+      "type",
+      "coordinates"
+    ],
+    "anyOf": [
+      {
+        "title": "Polygon",
+        "properties": {
+          "type": {
+            "enum": [
+              "Polygon"
+            ]
+          },
+          "coordinates": {
+            "$ref": "#/$defs/polygon"
+          }
+        }
+      }
+    ],
+    "$defs": {
+      "position": {
+        "description": "A single position",
+        "type": "array",
+        "minItems": 2,
+        "prefixItems": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "number"
+          }
+        ],
+        "items": false
+      },
+      "positionArray": {
+        "description": "An array of positions",
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/position"
+        }
+      },
+      "linearRing": {
+        "description": "An array of four positions where the first equals the last",
+        "allOf": [
+          {
+            "$ref": "#/$defs/positionArray"
+          },
+          {
+            "minItems": 4
+          }
+        ]
+      },
+      "polygon": {
+        "description": "An array of linear rings",
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/linearRing"
+        }
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "geometry for polygon only",
+    "description": "One geometry as defined by GeoJSON For SAS",
+    "type": "object",
+    "required": [
+      "type",
+      "coordinates"
+    ],
+    "oneOf": [
+      {
+        "title": "Polygon",
+        "properties": {
+          "type": {
+            "enum": [
+              "Polygon"
+            ]
+          },
+          "coordinates": {
+            "$ref": "#/$defs/polygon"
+          }
+        }
+      }
+    ],
+    "$defs": {
+      "position": {
+        "description": "A single position",
+        "type": "array",
+        "minItems": 2,
+        "prefixItems": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "number"
+          }
+        ],
+        "items": false
+      },
+      "positionArray": {
+        "description": "An array of positions",
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/position"
+        }
+      },
+      "linearRing": {
+        "description": "An array of four positions where the first equals the last",
+        "allOf": [
+          {
+            "$ref": "#/$defs/positionArray"
+          },
+          {
+            "minItems": 4
+          }
+        ]
+      },
+      "polygon": {
+        "description": "An array of linear rings",
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/linearRing"
+        }
+      }
+    }
+  }
+}

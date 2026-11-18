@@ -1,0 +1,34 @@
+{
+  "$schema": "../../../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "const",
+    "dependentSchemas",
+    "minProperties",
+    "not",
+    "required"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/dependentSchemas.json#/tests/4/tests/1",
+  "a": {
+    "not": {
+      "dependentSchemas": {
+        "foo\tbar": {
+          "minProperties": 4
+        },
+        "foo'bar": {
+          "required": [
+            "foo\"bar"
+          ]
+        }
+      }
+    }
+  },
+  "b": {
+    "const": {
+      "foo'bar": {
+        "foo\"bar": 1
+      }
+    }
+  }
+}

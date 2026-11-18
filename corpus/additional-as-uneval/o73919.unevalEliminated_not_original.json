@@ -1,0 +1,194 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "format",
+    "items",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o73919.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "JSON schema for Entry Point Regulation manifest files",
+    "type": "object",
+    "properties": {
+      "site": {
+        "description": "A fully qualified URL of your website.",
+        "type": "string",
+        "format": "uri"
+      },
+      "maxAge": {
+        "description": "Set the max age HTTP cache expiration.",
+        "type": "integer"
+      },
+      "reportUrl": {
+        "type": "string",
+        "format": "uri"
+      },
+      "defaultNavBehavior": {
+        "$ref": "#/$defs/behavior"
+      },
+      "defaultResBehavior": {
+        "$ref": "#/$defs/behavior"
+      },
+      "rules": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/rule"
+        }
+      }
+    },
+    "additionalProperties": true,
+    "required": [
+      "rules"
+    ],
+    "$defs": {
+      "behavior": {
+        "type": "string",
+        "enum": [
+          "block",
+          "allow",
+          "noAuth"
+        ]
+      },
+      "rule": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "description": "Relative path to resource.",
+            "type": "string"
+          },
+          "regex": {
+            "description": "A regular expression for identifying paths to resources.",
+            "type": "string"
+          },
+          "types": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "navigation",
+                "image",
+                "stylesheet",
+                "script",
+                "xhr",
+                "other"
+              ]
+            }
+          },
+          "allowData": {
+            "description": "Determines if data is allowed at this path.",
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "JSON schema for Entry Point Regulation manifest files",
+                "type": "object",
+                "properties": {
+                  "defaultResBehavior": {
+                    "$ref": "#/$defs/behavior"
+                  },
+                  "site": {
+                    "description": "A fully qualified URL of your website.",
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "reportUrl": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "defaultNavBehavior": {
+                    "$ref": "#/$defs/behavior"
+                  },
+                  "rules": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/rule"
+                    }
+                  },
+                  "maxAge": {
+                    "description": "Set the max age HTTP cache expiration.",
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "rules"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^rules$": true,
+                  "^defaultResBehavior$": true,
+                  "^reportUrl$": true,
+                  "^maxAge$": true,
+                  "^site$": true,
+                  "^defaultNavBehavior$": true
+                },
+                "additionalProperties": true
+              }
+            ]
+          }
+        ]
+      },
+      "rule": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "description": "Relative path to resource.",
+            "type": "string"
+          },
+          "regex": {
+            "description": "A regular expression for identifying paths to resources.",
+            "type": "string"
+          },
+          "types": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "navigation",
+                "image",
+                "stylesheet",
+                "script",
+                "xhr",
+                "other"
+              ]
+            }
+          },
+          "allowData": {
+            "description": "Determines if data is allowed at this path.",
+            "type": "boolean"
+          }
+        }
+      },
+      "behavior": {
+        "type": "string",
+        "enum": [
+          "block",
+          "allow",
+          "noAuth"
+        ]
+      }
+    }
+  }
+}

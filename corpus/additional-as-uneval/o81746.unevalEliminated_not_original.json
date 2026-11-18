@@ -1,0 +1,216 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "format",
+    "oneOf",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o81746.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "crs",
+    "description": "a Coordinate Reference System object",
+    "type": [
+      "object",
+      "null"
+    ],
+    "required": [
+      "type",
+      "properties"
+    ],
+    "properties": {
+      "type": {
+        "type": "string"
+      },
+      "properties": {
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "oneOf": [
+      {
+        "$ref": "#/$defs/namedCrs"
+      },
+      {
+        "$ref": "#/$defs/linkedCrs"
+      }
+    ],
+    "$defs": {
+      "namedCrs": {
+        "properties": {
+          "type": {
+            "enum": [
+              "name"
+            ]
+          },
+          "properties": {
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "FIXME": "semantic validation necessary"
+              }
+            }
+          }
+        }
+      },
+      "linkedObject": {
+        "type": "object",
+        "required": [
+          "href"
+        ],
+        "properties": {
+          "href": {
+            "type": "string",
+            "format": "uri",
+            "FIXME": "spec says \"dereferenceable\", cannot enforce that"
+          },
+          "type": {
+            "type": "string",
+            "description": "Suggested values: proj4, ogjwkt, esriwkt"
+          }
+        }
+      },
+      "linkedCrs": {
+        "properties": {
+          "type": {
+            "enum": [
+              "link"
+            ]
+          },
+          "properties": {
+            "$ref": "#/$defs/linkedObject"
+          }
+        }
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_2",
+    "$defs": {
+      "linkedCrs": {
+        "properties": {
+          "type": {
+            "enum": [
+              "link"
+            ]
+          },
+          "properties": {
+            "$ref": "#/$defs/linkedObject"
+          }
+        }
+      },
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "FIXME": "semantic validation necessary"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^name$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "crs",
+                "description": "a Coordinate Reference System object",
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "required": [
+                  "type",
+                  "properties"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string"
+                  },
+                  "properties": {
+                    "type": "object"
+                  }
+                },
+                "oneOf": [
+                  {
+                    "$ref": "#/$defs/namedCrs"
+                  },
+                  {
+                    "$ref": "#/$defs/linkedCrs"
+                  }
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^type$": true,
+                  "^properties$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "linkedObject": {
+        "type": "object",
+        "required": [
+          "href"
+        ],
+        "properties": {
+          "href": {
+            "type": "string",
+            "format": "uri",
+            "FIXME": "spec says \"dereferenceable\", cannot enforce that"
+          },
+          "type": {
+            "type": "string",
+            "description": "Suggested values: proj4, ogjwkt, esriwkt"
+          }
+        }
+      },
+      "namedCrs": {
+        "properties": {
+          "type": {
+            "enum": [
+              "name"
+            ]
+          },
+          "properties": {
+            "$ref": "#/$defs/modern_1"
+          }
+        }
+      }
+    }
+  }
+}

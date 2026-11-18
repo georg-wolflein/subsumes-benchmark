@@ -1,0 +1,55 @@
+{
+  "$schema": "../../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "anyOf",
+    "items",
+    "not",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/id.json#/tests/2",
+  "a": true,
+  "b": {
+    "anyOf": [
+      {
+        "$ref": "http://localhost:1234/scope_change_defs2.json"
+      },
+      {
+        "not": {
+          "$ref": "http://localhost:1234/scope_change_defs2.json"
+        }
+      }
+    ],
+    "$defs": {
+      "http://localhost:1234/scope_change_defs2.json": {
+        "$id": "http://localhost:1234/scope_change_defs2.json",
+        "type": "object",
+        "properties": {
+          "list": {
+            "$ref": "baseUriChangeFolderInSubschema/#/$defs/bar"
+          }
+        },
+        "$defs": {
+          "baz": {
+            "$id": "baseUriChangeFolderInSubschema/",
+            "$defs": {
+              "bar": {
+                "type": "array",
+                "items": {
+                  "$ref": "folderInteger.json"
+                }
+              }
+            }
+          },
+          "http://localhost:1234/baseUriChangeFolderInSubschema/folderInteger.json": {
+            "$id": "http://localhost:1234/baseUriChangeFolderInSubschema/folderInteger.json",
+            "type": "integer"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o90161.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Filter Type",
+    "type": "object",
+    "description": "The file authoring information for a filter, including the filter type and its value settings.",
+    "properties": {
+      "filterType": {
+        "type": "string",
+        "description": "Represents the filter type name. Name is a unique identifier."
+      },
+      "filterValues": {
+        "type": "array",
+        "description": "Array of filter values. Filter values are the attributes that can be stored for individual fields in a layer.",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "required": [
+      "filterType",
+      "filterValues"
+    ],
+    "additionalProperties": false
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "Filter Type",
+                "type": "object",
+                "description": "The file authoring information for a filter, including the filter type and its value settings.",
+                "properties": {
+                  "filterType": {
+                    "type": "string",
+                    "description": "Represents the filter type name. Name is a unique identifier."
+                  },
+                  "filterValues": {
+                    "type": "array",
+                    "description": "Array of filter values. Filter values are the attributes that can be stored for individual fields in a layer.",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "filterType",
+                  "filterValues"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^filterType$": true,
+                  "^filterValues$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

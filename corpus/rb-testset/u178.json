@@ -1,0 +1,140 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "additionalProperties",
+    "anyOf",
+    "enum",
+    "items",
+    "maxItems",
+    "minItems",
+    "prefixItems",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/issta/unsat/u178.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "Input data schema for training Project.",
+    "type": "object",
+    "required": [
+      "X"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "X": {
+        "description": "Features; the outer array is over samples.",
+        "type": "array",
+        "items": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          }
+        }
+      },
+      "y": {
+        "description": "Target class labels; the array is over samples."
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "X",
+      "y"
+    ],
+    "properties": {
+      "X": {
+        "type": "array",
+        "minItems": 32724,
+        "maxItems": 32724,
+        "items": {
+          "type": "array",
+          "minItems": 14,
+          "maxItems": 14,
+          "prefixItems": [
+            {
+              "description": "age",
+              "type": "number"
+            },
+            {
+              "description": "workclass",
+              "type": "string"
+            },
+            {
+              "description": "fnlwgt",
+              "type": "number"
+            },
+            {
+              "description": "education",
+              "type": "string"
+            },
+            {
+              "description": "education-num",
+              "type": "number"
+            },
+            {
+              "description": "marital-status",
+              "type": "string"
+            },
+            {
+              "description": "occupation",
+              "type": "string"
+            },
+            {
+              "description": "relationship",
+              "type": "string"
+            },
+            {
+              "description": "race",
+              "type": "string"
+            },
+            {
+              "description": "sex",
+              "type": "string"
+            },
+            {
+              "description": "capital-gain",
+              "type": "number"
+            },
+            {
+              "description": "capital-loss",
+              "type": "number"
+            },
+            {
+              "description": "hours-per-week",
+              "type": "number"
+            },
+            {
+              "description": "native-country",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "y": {
+        "type": "array",
+        "minItems": 32724,
+        "maxItems": 32724,
+        "items": {
+          "description": "class",
+          "enum": [
+            "<=50K",
+            ">50K"
+          ]
+        }
+      }
+    }
+  }
+}

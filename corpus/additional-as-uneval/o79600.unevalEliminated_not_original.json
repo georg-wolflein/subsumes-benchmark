@@ -1,0 +1,106 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "format",
+    "items",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o79600.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "array",
+    "description": "details of the social networks enabled by this tenant",
+    "items": {
+      "$ref": "#/$defs/socialNetwork"
+    },
+    "$defs": {
+      "socialNetwork": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "name of the network, e.g. LinkedIn"
+          },
+          "icon": {
+            "type": "string",
+            "format": "uri",
+            "description": "uri of a thumbnail image representing the social network"
+          },
+          "uri": {
+            "type": "string",
+            "format": "uri",
+            "description": "uri that a candidate can follow to connect to the social network"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "icon",
+          "uri"
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "array",
+    "description": "details of the social networks enabled by this tenant",
+    "items": {
+      "$ref": "#/$defs/socialNetwork"
+    },
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "name of the network, e.g. LinkedIn"
+                  },
+                  "icon": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "uri of a thumbnail image representing the social network"
+                  },
+                  "uri": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "uri that a candidate can follow to connect to the social network"
+                  }
+                },
+                "required": [
+                  "name",
+                  "icon",
+                  "uri"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^name$": true,
+                  "^icon$": true,
+                  "^uri$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "socialNetwork": {
+        "$ref": "#/$defs/modern_1"
+      }
+    }
+  }
+}

@@ -1,0 +1,278 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o39749.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {},
+    "patternProperties": {
+      "^[a-z0-9_-]+\\/[a-z0-9_-]+$": {
+        "type": "object",
+        "properties": {},
+        "patternProperties": {
+          "^[0-9.*]+(,[0-9.*]+)*$": {
+            "type": "object",
+            "properties": {
+              "order": {
+                "type": "array"
+              },
+              "exclude": {
+                "$ref": "#/$defs/inexclude"
+              },
+              "include": {
+                "$ref": "#/$defs/inexclude"
+              }
+            },
+            "required": [
+              "exclude",
+              "include"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "additionalProperties": false,
+    "required": [],
+    "$defs": {
+      "inexclude": {
+        "type": "object",
+        "properties": {
+          "combined": {
+            "type": "boolean"
+          },
+          "onlyOne": {
+            "type": "boolean"
+          },
+          "path": {
+            "$ref": "#/$defs/argument"
+          },
+          "file": {
+            "$ref": "#/$defs/argument"
+          }
+        },
+        "required": [
+          "combined",
+          "path",
+          "file"
+        ],
+        "additionalProperties": false
+      },
+      "argument": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "properties": {
+          "parameter": {
+            "type": "string"
+          },
+          "separator": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "multiple": {
+            "type": "boolean"
+          },
+          "relative": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "parameter"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_3",
+    "$defs": {
+      "modern_5": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "order": {
+                    "type": "array"
+                  },
+                  "exclude": {
+                    "$ref": "#/$defs/inexclude"
+                  },
+                  "include": {
+                    "$ref": "#/$defs/inexclude"
+                  }
+                },
+                "required": [
+                  "exclude",
+                  "include"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^order$": true,
+                  "^exclude$": true,
+                  "^include$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "combined": {
+                    "type": "boolean"
+                  },
+                  "onlyOne": {
+                    "type": "boolean"
+                  },
+                  "path": {
+                    "$ref": "#/$defs/argument"
+                  },
+                  "file": {
+                    "$ref": "#/$defs/argument"
+                  }
+                },
+                "required": [
+                  "combined",
+                  "path",
+                  "file"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^combined$": true,
+                  "^onlyOne$": true,
+                  "^path$": true,
+                  "^file$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "properties": {
+                  "parameter": {
+                    "type": "string"
+                  },
+                  "separator": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "multiple": {
+                    "type": "boolean"
+                  },
+                  "relative": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "parameter"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^parameter$": true,
+                  "^separator$": true,
+                  "^multiple$": true,
+                  "^relative$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "inexclude": {
+        "$ref": "#/$defs/modern_1"
+      },
+      "modern_3": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {},
+                "patternProperties": {
+                  "^[a-z0-9_-]+\\/[a-z0-9_-]+$": {
+                    "$ref": "#/$defs/modern_4"
+                  }
+                },
+                "required": []
+              },
+              {
+                "patternProperties": {
+                  "^[a-z0-9_-]+\\/[a-z0-9_-]+$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "argument": {
+        "$ref": "#/$defs/modern_2"
+      },
+      "modern_4": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {},
+                "patternProperties": {
+                  "^[0-9.*]+(,[0-9.*]+)*$": {
+                    "$ref": "#/$defs/modern_5"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^[0-9.*]+(,[0-9.*]+)*$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

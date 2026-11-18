@@ -1,0 +1,159 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o69908.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_2",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "content": {
+                    "type": "string"
+                  },
+                  "file": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "file"
+                ],
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^content$": true,
+                  "^file$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "description": "Email resource",
+                "properties": {
+                  "schedule_at": {
+                    "_format": "date-time",
+                    "type": "string"
+                  },
+                  "mail_template_code": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "_format": "email",
+                    "type": "string"
+                  },
+                  "context": {
+                    "type": "string"
+                  },
+                  "params": {
+                    "type": "object"
+                  },
+                  "attachments": {
+                    "items": {
+                      "$ref": "#/$defs/attachment"
+                    },
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "email",
+                  "mail_template_code"
+                ],
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^mail_template_code$": true,
+                  "^params$": true,
+                  "^context$": true,
+                  "^attachments$": true,
+                  "^schedule_at$": true,
+                  "^email$": true
+                },
+                "additionalProperties": true
+              }
+            ]
+          }
+        ]
+      },
+      "attachment": {
+        "$ref": "#/$defs/modern_1"
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": true,
+    "description": "Email resource",
+    "properties": {
+      "attachments": {
+        "items": {
+          "$ref": "#/$defs/attachment"
+        },
+        "type": "array"
+      },
+      "context": {
+        "type": "string"
+      },
+      "email": {
+        "_format": "email",
+        "type": "string"
+      },
+      "mail_template_code": {
+        "type": "string"
+      },
+      "params": {
+        "type": "object"
+      },
+      "schedule_at": {
+        "_format": "date-time",
+        "type": "string"
+      }
+    },
+    "required": [
+      "email",
+      "mail_template_code"
+    ],
+    "type": "object",
+    "$defs": {
+      "attachment": {
+        "additionalProperties": false,
+        "properties": {
+          "content": {
+            "type": "string"
+          },
+          "file": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "file"
+        ],
+        "type": "object"
+      }
+    }
+  }
+}

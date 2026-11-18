@@ -1,0 +1,89 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "maximum",
+    "minimum",
+    "multipleOf",
+    "patternProperties",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o46410.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "Savings account annual summary",
+                "type": "object",
+                "properties": {
+                  "taxedUkInterest": {
+                    "title": "Taxed UK interest",
+                    "description": "Total net taxed interest for the specified savings account. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0.0,
+                    "maximum": 99999999999.99,
+                    "example": "1230.55"
+                  },
+                  "untaxedUkInterest": {
+                    "title": "Untaxed UK interest",
+                    "description": "Total untaxed interest for the specified savings account. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0.0,
+                    "maximum": 99999999999.99,
+                    "example": "500.23"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^taxedUkInterest$": true,
+                  "^untaxedUkInterest$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Savings account annual summary",
+    "type": "object",
+    "properties": {
+      "taxedUkInterest": {
+        "title": "Taxed UK interest",
+        "description": "Total net taxed interest for the specified savings account. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+        "type": "number",
+        "multipleOf": 0.01,
+        "minimum": 0,
+        "maximum": 99999999999.99,
+        "example": "1230.55"
+      },
+      "untaxedUkInterest": {
+        "title": "Untaxed UK interest",
+        "description": "Total untaxed interest for the specified savings account. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+        "type": "number",
+        "multipleOf": 0.01,
+        "minimum": 0,
+        "maximum": 99999999999.99,
+        "example": "500.23"
+      }
+    },
+    "additionalProperties": false
+  }
+}

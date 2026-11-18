@@ -1,0 +1,88 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "patternProperties",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o20462.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "Get client response",
+                "type": "object",
+                "properties": {
+                  "error": {
+                    "type": "string",
+                    "description": "Single ASCII error code string.",
+                    "enum": [
+                      "invalid_redirect_uri",
+                      "invalid_client_metadata",
+                      "invalid_software_statement",
+                      "unapproved_software_statement"
+                    ],
+                    "description_invalid_redirect_uri": "The value of one or more redirection URIs is invalid.",
+                    "description_invalid_client_metadata": "The value of one of the client metadata fields is invalid and the server has rejected this request.  Note that an Authorization server MAY choose to substitute a valid value for any requested parameter of a client's metadata.",
+                    "description_invalid_software_statement": "The software statement presented is invalid.",
+                    "description_unapproved_software_statement": "The software statement presented is not approved for use by this authorization server."
+                  },
+                  "error_description": {
+                    "type": "string",
+                    "desciption": "Human-readable ASCII text description of the error used for debugging."
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^error$": true,
+                  "^error_description$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$id": "http://localhost:3000/schemas/post-client-error-response.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Get client response",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "error": {
+        "type": "string",
+        "description": "Single ASCII error code string.",
+        "enum": [
+          "invalid_redirect_uri",
+          "invalid_client_metadata",
+          "invalid_software_statement",
+          "unapproved_software_statement"
+        ],
+        "description_invalid_redirect_uri": "The value of one or more redirection URIs is invalid.",
+        "description_invalid_client_metadata": "The value of one of the client metadata fields is invalid and the server has rejected this request.  Note that an Authorization server MAY choose to substitute a valid value for any requested parameter of a client's metadata.",
+        "description_invalid_software_statement": "The software statement presented is invalid.",
+        "description_unapproved_software_statement": "The software statement presented is not approved for use by this authorization server."
+      },
+      "error_description": {
+        "type": "string",
+        "desciption": "Human-readable ASCII text description of the error used for debugging."
+      }
+    }
+  }
+}

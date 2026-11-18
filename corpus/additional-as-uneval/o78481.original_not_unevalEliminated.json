@@ -1,0 +1,89 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "patternProperties",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o78481.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "WctRunnerOptions",
+                "type": "object",
+                "properties": {
+                  "wct": {
+                    "description": "Configuration for the @stryker-mutator/wct-runner. For more information about the available wct options, please see [wct's config.ts file](https://github.com/Polymer/tools/blob/master/packages/web-component-tester/runner/config.ts#L36).",
+                    "type": "object",
+                    "properties": {
+                      "configFile": {
+                        "description": "Location of the 'wct.conf.json' file.",
+                        "type": "string"
+                      },
+                      "verbose": {
+                        "description": "Enable/disable verbose WCT logging. WCT can be noisy. By default, Stryker will swallow any wct log messages. Enabling this option will forward any wct log messages to Stryker logging. Don't forget to set `logLevel` (or `fileLogLevel`) to `'debug'` in your Stryker configuration to get the most logging out of WCT.",
+                        "type": "boolean",
+                        "default": false
+                      },
+                      "npm": {
+                        "description": "Use WCT with the `--npm` flag. This will allow web-components installed via npm, instead of bower.",
+                        "type": "boolean",
+                        "default": false
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^wct$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "WctRunnerOptions",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "wct": {
+        "description": "Configuration for the @stryker-mutator/wct-runner. For more information about the available wct options, please see [wct's config.ts file](https://github.com/Polymer/tools/blob/master/packages/web-component-tester/runner/config.ts#L36).",
+        "type": "object",
+        "properties": {
+          "configFile": {
+            "description": "Location of the 'wct.conf.json' file.",
+            "type": "string"
+          },
+          "verbose": {
+            "description": "Enable/disable verbose WCT logging. WCT can be noisy. By default, Stryker will swallow any wct log messages. Enabling this option will forward any wct log messages to Stryker logging. Don't forget to set `logLevel` (or `fileLogLevel`) to `'debug'` in your Stryker configuration to get the most logging out of WCT.",
+            "type": "boolean",
+            "default": false
+          },
+          "npm": {
+            "description": "Use WCT with the `--npm` flag. This will allow web-components installed via npm, instead of bower.",
+            "type": "boolean",
+            "default": false
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,145 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o43029.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "avalon-core:asset-3.0",
+    "description": "A unit of data",
+    "type": "object",
+    "additionalProperties": true,
+    "required": [
+      "schema",
+      "type",
+      "name",
+      "data"
+    ],
+    "properties": {
+      "schema": {
+        "description": "Schema identifier for payload",
+        "type": "string",
+        "enum": [
+          "avalon-core:asset-3.0"
+        ],
+        "example": "avalon-core:asset-3.0"
+      },
+      "type": {
+        "description": "The type of document",
+        "type": "string",
+        "enum": [
+          "asset"
+        ],
+        "example": "asset"
+      },
+      "parent": {
+        "description": "Unique identifier to parent document",
+        "example": "592c33475f8c1b064c4d1696"
+      },
+      "name": {
+        "description": "Name of asset",
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9_.]*$",
+        "example": "Bruce"
+      },
+      "silo": {
+        "description": "(Deprecated) Group or container of asset",
+        "example": "assets"
+      },
+      "data": {
+        "description": "Document metadata",
+        "type": "object",
+        "example": {
+          "key": "value"
+        }
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "avalon-core:asset-3.0",
+                "description": "A unit of data",
+                "type": "object",
+                "required": [
+                  "schema",
+                  "type",
+                  "name",
+                  "data"
+                ],
+                "properties": {
+                  "parent": {
+                    "description": "Unique identifier to parent document",
+                    "example": "592c33475f8c1b064c4d1696"
+                  },
+                  "name": {
+                    "description": "Name of asset",
+                    "type": "string",
+                    "pattern": "^[a-zA-Z0-9_.]*$",
+                    "example": "Bruce"
+                  },
+                  "data": {
+                    "description": "Document metadata",
+                    "type": "object",
+                    "example": {
+                      "key": "value"
+                    }
+                  },
+                  "silo": {
+                    "description": "(Deprecated) Group or container of asset",
+                    "example": "assets"
+                  },
+                  "schema": {
+                    "description": "Schema identifier for payload",
+                    "type": "string",
+                    "enum": [
+                      "avalon-core:asset-3.0"
+                    ],
+                    "example": "avalon-core:asset-3.0"
+                  },
+                  "type": {
+                    "description": "The type of document",
+                    "type": "string",
+                    "enum": [
+                      "asset"
+                    ],
+                    "example": "asset"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^silo$": true,
+                  "^schema$": true,
+                  "^name$": true,
+                  "^type$": true,
+                  "^parent$": true,
+                  "^data$": true
+                },
+                "additionalProperties": true
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

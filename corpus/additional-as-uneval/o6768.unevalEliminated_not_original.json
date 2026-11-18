@@ -1,0 +1,557 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "oneOf",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o6768.unevalEliminated_not_original.json",
+  "a": {
+    "$id": "https://hepdata.net/submission/schemas/1.0.1/data_schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Data table",
+    "description": "A HEPData table comprising independent_variables and dependent_variables",
+    "type": "object",
+    "properties": {
+      "independent_variables": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "header": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "units": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "additionalProperties": false
+            },
+            "values": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": [
+                      "string",
+                      "number"
+                    ]
+                  },
+                  "low": {
+                    "type": "number"
+                  },
+                  "high": {
+                    "type": "number"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "header",
+            "values"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "dependent_variables": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "header": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "units": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "additionalProperties": false
+            },
+            "qualifiers": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": [
+                      "string",
+                      "number"
+                    ]
+                  },
+                  "units": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "value"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "values": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": [
+                      "string",
+                      "number"
+                    ]
+                  },
+                  "errors": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "symerror": {
+                          "type": [
+                            "number",
+                            "string"
+                          ]
+                        },
+                        "asymerror": {
+                          "type": "object",
+                          "properties": {
+                            "minus": {
+                              "type": [
+                                "number",
+                                "string"
+                              ]
+                            },
+                            "plus": {
+                              "type": [
+                                "number",
+                                "string"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "minus",
+                            "plus"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "label": {
+                          "type": "string"
+                        }
+                      },
+                      "oneOf": [
+                        {
+                          "required": [
+                            "symerror"
+                          ]
+                        },
+                        {
+                          "required": [
+                            "asymerror"
+                          ]
+                        }
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "value"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": [
+      "independent_variables",
+      "dependent_variables"
+    ],
+    "additionalProperties": false
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_5": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "header": {
+                    "$ref": "#/$defs/modern_6"
+                  },
+                  "qualifiers": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/modern_7"
+                    }
+                  },
+                  "values": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/modern_8"
+                    }
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^header$": true,
+                  "^qualifiers$": true,
+                  "^values$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_6": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "units": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^name$": true,
+                  "^units$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_10": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "minus": {
+                    "type": [
+                      "number",
+                      "string"
+                    ]
+                  },
+                  "plus": {
+                    "type": [
+                      "number",
+                      "string"
+                    ]
+                  }
+                },
+                "required": [
+                  "minus",
+                  "plus"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^minus$": true,
+                  "^plus$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "Data table",
+                "description": "A HEPData table comprising independent_variables and dependent_variables",
+                "type": "object",
+                "properties": {
+                  "independent_variables": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/modern_2"
+                    }
+                  },
+                  "dependent_variables": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/modern_5"
+                    }
+                  }
+                },
+                "required": [
+                  "independent_variables",
+                  "dependent_variables"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^independent_variables$": true,
+                  "^dependent_variables$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_7": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": [
+                      "string",
+                      "number"
+                    ]
+                  },
+                  "units": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "value"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^name$": true,
+                  "^value$": true,
+                  "^units$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "header": {
+                    "$ref": "#/$defs/modern_3"
+                  },
+                  "values": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/modern_4"
+                    }
+                  }
+                },
+                "required": [
+                  "header",
+                  "values"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^header$": true,
+                  "^values$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_8": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": [
+                      "string",
+                      "number"
+                    ]
+                  },
+                  "errors": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/modern_9"
+                    }
+                  }
+                },
+                "required": [
+                  "value"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^value$": true,
+                  "^errors$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_9": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "symerror": {
+                    "type": [
+                      "number",
+                      "string"
+                    ]
+                  },
+                  "asymerror": {
+                    "$ref": "#/$defs/modern_10"
+                  },
+                  "label": {
+                    "type": "string"
+                  }
+                },
+                "oneOf": [
+                  {
+                    "required": [
+                      "symerror"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "asymerror"
+                    ]
+                  }
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^symerror$": true,
+                  "^asymerror$": true,
+                  "^label$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_3": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "units": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^name$": true,
+                  "^units$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_4": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": [
+                      "string",
+                      "number"
+                    ]
+                  },
+                  "low": {
+                    "type": "number"
+                  },
+                  "high": {
+                    "type": "number"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^value$": true,
+                  "^low$": true,
+                  "^high$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

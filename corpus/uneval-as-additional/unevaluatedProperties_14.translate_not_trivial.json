@@ -1,0 +1,77 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/uneval_eliminated_as_additional_containment/unknown/unevaluatedProperties_14.translate_not_trivial.json",
+  "a": {
+    "$id": "std:dcaProperty",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Standart DCA Property",
+    "description": "This extension aims to allow data to be deleted if the DCA has a property. The properties are generically encoded as strings. So you can give a DCA for example the property that it is part of a department or other kind of group.",
+    "$comment": "This extension has potential to produce unexpected behavior. The extension depends on self-selected and coded properties. It is recommended to code the properties uniquely. In a global context, the properties should be bound to IRIs that you control. Otherwise, there is potential for miscommunication.",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "property",
+      "has"
+    ],
+    "properties": {
+      "property": {
+        "type": "string"
+      },
+      "has": {
+        "type": "boolean"
+      }
+    }
+  },
+  "b": {
+    "$id": "std:dcaProperty",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "Standart DCA Property",
+                "description": "This extension aims to allow data to be deleted if the DCA has a property. The properties are generically encoded as strings. So you can give a DCA for example the property that it is part of a department or other kind of group.",
+                "$comment": "This extension has potential to produce unexpected behavior. The extension depends on self-selected and coded properties. It is recommended to code the properties uniquely. In a global context, the properties should be bound to IRIs that you control. Otherwise, there is potential for miscommunication.",
+                "type": "object",
+                "required": [
+                  "property",
+                  "has"
+                ],
+                "properties": {
+                  "property": {
+                    "type": "string"
+                  },
+                  "has": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^property$": true,
+                  "^has$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o10088.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+      "schemas": {
+        "items": {
+          "additionalProperties": false,
+          "properties": {
+            "component": {
+              "pattern": "^[a-z_]$",
+              "type": "string"
+            },
+            "group": {
+              "pattern": "^[a-z_]$",
+              "type": "string"
+            },
+            "path": {
+              "pattern": "^[a-zA-Z0-9_\\-\\./]+$",
+              "type": "string"
+            },
+            "schema": {
+              "type": "object"
+            }
+          }
+        },
+        "type": "array"
+      }
+    },
+    "title": "RegisterResourceSchema",
+    "type": "object"
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "schemas": {
+                    "items": {
+                      "$ref": "#/$defs/modern_2"
+                    },
+                    "type": "array"
+                  }
+                },
+                "title": "RegisterResourceSchema",
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^schemas$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "component": {
+                    "pattern": "^[a-z_]$",
+                    "type": "string"
+                  },
+                  "group": {
+                    "pattern": "^[a-z_]$",
+                    "type": "string"
+                  },
+                  "path": {
+                    "pattern": "^[a-zA-Z0-9_\\-\\./]+$",
+                    "type": "string"
+                  },
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^component$": true,
+                  "^group$": true,
+                  "^path$": true,
+                  "^schema$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

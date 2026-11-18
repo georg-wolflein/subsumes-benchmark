@@ -1,12 +1,13 @@
 """What a report says about the runs, as numbers: outcomes, solved shares and times."""
 
-import json
 import math
 from collections import Counter
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Literal, assert_never, get_args
 
 from subsumes_benchmark.compare.results import RUN_FILE, Result, Run, read_results, read_run
+from subsumes_benchmark.compare.tasks import case_files
+from subsumes_benchmark.generated.case import CaseSpec
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Mapping, Sequence
@@ -160,9 +161,7 @@ def agreements(entries: Sequence[Entry]) -> Sequence[Agreement]:
 
 
 def cases_using(corpus: Path, feature: str) -> frozenset[str]:
-    """The ids of the cases whose ``case.json`` lists the feature."""
-    found = set()
-    for path in corpus.rglob("case.json"):
-        if feature in json.loads(path.read_text(encoding="utf-8"))["features"]:
-            found.add(path.parent.relative_to(corpus).as_posix())
-    return frozenset(found)
+    """The ids of the cases that list the feature."""
+    return frozenset(
+        case for case, path in case_files(corpus).items() if feature in CaseSpec.read(path).features
+    )

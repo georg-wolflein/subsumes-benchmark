@@ -1,0 +1,82 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "additionalProperties",
+    "enum",
+    "items",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/schemastore_containment/unknown/global_v4_not_v3.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "JSON schema for the ASP.NET global configuration files",
+    "type": "object",
+    "additionalProperties": true,
+    "required": [
+      "projects"
+    ],
+    "properties": {
+      "projects": {
+        "type": "array",
+        "description": "A list of project folders relative to this file.",
+        "items": {
+          "type": "string"
+        }
+      },
+      "packages": {
+        "type": "string",
+        "description": "The location to store packages"
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "JSON schema for the ASP.NET global configuration files",
+    "type": "object",
+    "additionalProperties": true,
+    "required": [
+      "projects"
+    ],
+    "properties": {
+      "projects": {
+        "type": "array",
+        "description": "A list of project folders relative to this file.",
+        "items": {
+          "type": "string"
+        }
+      },
+      "packages": {
+        "type": "string",
+        "description": "The location to store packages"
+      },
+      "sdk": {
+        "type": "object",
+        "description": "Specify information about the SDK.",
+        "properties": {
+          "version": {
+            "type": "string",
+            "description": "The version of the SDK to use."
+          },
+          "architecture": {
+            "enum": [
+              "x64",
+              "x86"
+            ],
+            "description": "Specify which processor architecture to target."
+          },
+          "runtime": {
+            "enum": [
+              "clr",
+              "coreclr"
+            ],
+            "description": "Chose which runtime to target."
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o82311.unevalEliminated_not_original.json",
+  "a": {
+    "$id": "http://schemas.triniti.io/json-schema/gdbots/enrichments/mixin/utm/1-0-0.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "utm_source": {
+        "type": "string",
+        "pattern": "^[\\w\\/\\.:-]+$",
+        "pbj": {
+          "type": "string",
+          "rule": "single"
+        }
+      },
+      "utm_medium": {
+        "type": "string",
+        "pattern": "^[\\w\\/\\.:-]+$",
+        "pbj": {
+          "type": "string",
+          "rule": "single"
+        }
+      },
+      "utm_term": {
+        "type": "string",
+        "pattern": "^[\\w\\s\\/\\.,:-]+$",
+        "pbj": {
+          "type": "string",
+          "rule": "single"
+        }
+      },
+      "utm_content": {
+        "type": "string",
+        "pattern": "^[\\w\\/\\.:-]+$",
+        "pbj": {
+          "type": "string",
+          "rule": "single"
+        }
+      },
+      "utm_campaign": {
+        "type": "string",
+        "pattern": "^[\\w\\/\\.:-]+$",
+        "pbj": {
+          "type": "string",
+          "rule": "single"
+        }
+      }
+    },
+    "additionalProperties": true
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "utm_source": {
+                    "type": "string",
+                    "pattern": "^[\\w\\/\\.:-]+$",
+                    "pbj": {
+                      "type": "string",
+                      "rule": "single"
+                    }
+                  },
+                  "utm_content": {
+                    "type": "string",
+                    "pattern": "^[\\w\\/\\.:-]+$",
+                    "pbj": {
+                      "type": "string",
+                      "rule": "single"
+                    }
+                  },
+                  "utm_campaign": {
+                    "type": "string",
+                    "pattern": "^[\\w\\/\\.:-]+$",
+                    "pbj": {
+                      "type": "string",
+                      "rule": "single"
+                    }
+                  },
+                  "utm_medium": {
+                    "type": "string",
+                    "pattern": "^[\\w\\/\\.:-]+$",
+                    "pbj": {
+                      "type": "string",
+                      "rule": "single"
+                    }
+                  },
+                  "utm_term": {
+                    "type": "string",
+                    "pattern": "^[\\w\\s\\/\\.,:-]+$",
+                    "pbj": {
+                      "type": "string",
+                      "rule": "single"
+                    }
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^utm_content$": true,
+                  "^utm_campaign$": true,
+                  "^utm_medium$": true,
+                  "^utm_source$": true,
+                  "^utm_term$": true
+                },
+                "additionalProperties": true
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

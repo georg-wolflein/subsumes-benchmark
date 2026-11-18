@@ -1,0 +1,140 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "format",
+    "items",
+    "maxItems",
+    "maxLength",
+    "minItems",
+    "minLength",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o83815.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "title": "VCMI map object template format",
+    "description": "Description of map object tempate that describes appearence of object instance",
+    "required": [
+      "animation",
+      "mask"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "animation": {
+        "type": "string",
+        "description": "Path to def file with animation of this object",
+        "format": "defFile"
+      },
+      "editorAnimation": {
+        "type": "string",
+        "description": "Optional path to def file with animation of this object to use in map editor",
+        "format": "defFile"
+      },
+      "visitableFrom": {
+        "type": "array",
+        "description": "Directions from which this object is visible",
+        "minItems": 3,
+        "maxItems": 3,
+        "items": {
+          "type": "string",
+          "maxLength": 3,
+          "minLength": 3
+        }
+      },
+      "allowedTerrains": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "List of terrain on which this object can be placed"
+      },
+      "mask": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Object mask that describes on which tiles object is visible/blocked/activatable"
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "title": "VCMI map object template format",
+                "description": "Description of map object tempate that describes appearence of object instance",
+                "required": [
+                  "animation",
+                  "mask"
+                ],
+                "properties": {
+                  "mask": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Object mask that describes on which tiles object is visible/blocked/activatable"
+                  },
+                  "visitableFrom": {
+                    "type": "array",
+                    "description": "Directions from which this object is visible",
+                    "minItems": 3,
+                    "maxItems": 3,
+                    "items": {
+                      "type": "string",
+                      "maxLength": 3,
+                      "minLength": 3
+                    }
+                  },
+                  "editorAnimation": {
+                    "type": "string",
+                    "description": "Optional path to def file with animation of this object to use in map editor",
+                    "format": "defFile"
+                  },
+                  "allowedTerrains": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "List of terrain on which this object can be placed"
+                  },
+                  "animation": {
+                    "type": "string",
+                    "description": "Path to def file with animation of this object",
+                    "format": "defFile"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^visitableFrom$": true,
+                  "^editorAnimation$": true,
+                  "^animation$": true,
+                  "^mask$": true,
+                  "^allowedTerrains$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

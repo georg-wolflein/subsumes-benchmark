@@ -1,0 +1,92 @@
+{
+  "$schema": "../../../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "anyOf",
+    "items",
+    "not",
+    "prefixItems",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/test_suite_containment/unsat/draft6_universal_items_id6_subschema1_not_2.json",
+  "a": true,
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "anyOf": [
+      {
+        "$defs": {
+          "item": {
+            "prefixItems": [
+              {
+                "$ref": "#/anyOf/0/$defs/sub-item"
+              },
+              {
+                "$ref": "#/anyOf/0/$defs/sub-item"
+              }
+            ],
+            "items": false,
+            "type": "array"
+          },
+          "sub-item": {
+            "required": [
+              "foo"
+            ],
+            "type": "object"
+          }
+        },
+        "prefixItems": [
+          {
+            "$ref": "#/anyOf/0/$defs/item"
+          },
+          {
+            "$ref": "#/anyOf/0/$defs/item"
+          },
+          {
+            "$ref": "#/anyOf/0/$defs/item"
+          }
+        ],
+        "items": false,
+        "type": "array"
+      },
+      {
+        "$defs": {
+          "item": {
+            "prefixItems": [
+              {
+                "$ref": "#/anyOf/1/$defs/sub-item"
+              },
+              {
+                "$ref": "#/anyOf/1/$defs/sub-item"
+              }
+            ],
+            "items": false,
+            "type": "array"
+          },
+          "sub-item": {
+            "required": [
+              "foo"
+            ],
+            "type": "object"
+          }
+        },
+        "not": {
+          "prefixItems": [
+            {
+              "$ref": "#/anyOf/1/$defs/item"
+            },
+            {
+              "$ref": "#/anyOf/1/$defs/item"
+            },
+            {
+              "$ref": "#/anyOf/1/$defs/item"
+            }
+          ]
+        },
+        "type": "array"
+      }
+    ]
+  }
+}

@@ -1,4 +1,4 @@
-"""What the two schemas of a case use: the ``features`` of its ``case.json``.
+"""What the two schemas of a case use: the ``features`` of the case.
 
 A feature is a keyword of draft 2020-12 that decides what a schema accepts, or
 ``recursion``, which is not a keyword: a schema is reached again from itself, through a
@@ -12,61 +12,19 @@ followed. The list says what is written in the schemas, not what the answer depe
 saying that would take an inclusion checker.
 """
 
-from typing import TYPE_CHECKING, Literal, get_args
+from typing import TYPE_CHECKING, get_args
 from urllib.parse import unquote, urldefrag, urljoin
 
 from subsumes_benchmark.convert import parse_pointer
+from subsumes_benchmark.generated.case import Feature
 
 if TYPE_CHECKING:
     from collections.abc import Iterator, Mapping, Sequence
 
     from subsumes_benchmark import Json
 
-type Feature = Literal[
-    "$dynamicRef",
-    "$ref",
-    "additionalProperties",
-    "allOf",
-    "anyOf",
-    "const",
-    "contains",
-    "dependentRequired",
-    "dependentSchemas",
-    "else",
-    "enum",
-    "exclusiveMaximum",
-    "exclusiveMinimum",
-    "format",
-    "if",
-    "items",
-    "maxContains",
-    "maxItems",
-    "maxLength",
-    "maxProperties",
-    "maximum",
-    "minContains",
-    "minItems",
-    "minLength",
-    "minProperties",
-    "minimum",
-    "multipleOf",
-    "not",
-    "oneOf",
-    "pattern",
-    "patternProperties",
-    "prefixItems",
-    "properties",
-    "propertyNames",
-    "recursion",
-    "required",
-    "then",
-    "type",
-    "unevaluatedItems",
-    "unevaluatedProperties",
-    "uniqueItems",
-]
-
-# In the order a list of features is written in: that of the code points.
+# In the order a list of features is written in: that of the code points. The list itself is
+# in ``schemas/case.schema.json``.
 FEATURES: Sequence[Feature] = get_args(Feature.__value__)
 NOT_KEYWORDS: frozenset[Feature] = frozenset({"recursion"})
 _KEYWORDS: Mapping[str, Feature] = {name: name for name in FEATURES if name not in NOT_KEYWORDS}

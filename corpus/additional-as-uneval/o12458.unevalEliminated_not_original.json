@@ -1,0 +1,252 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "minimum",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o12458.unevalEliminated_not_original.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "Model-level pipette specifications. These do not vary across different versions of the same model",
+    "type": "object",
+    "$comment": "Example key: 'p10_single'",
+    "patternProperties": {
+      ".*": {
+        "type": "object",
+        "required": [
+          "channels",
+          "displayName",
+          "defaultAspirateFlowRate",
+          "defaultDispenseFlowRate",
+          "defaultBlowOutFlowRate",
+          "maxVolume",
+          "minVolume"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "channels": {
+            "$ref": "#/$defs/channels"
+          },
+          "defaultAspirateFlowRate": {
+            "value": {
+              "$ref": "#/$defs/positiveNumber"
+            },
+            "min": {
+              "$ref": "#/$defs/positiveNumber"
+            },
+            "max": {
+              "$ref": "#/$defs/positiveNumber"
+            }
+          },
+          "defaultDispenseFlowRate": {
+            "value": {
+              "$ref": "#/$defs/positiveNumber"
+            },
+            "min": {
+              "$ref": "#/$defs/positiveNumber"
+            },
+            "max": {
+              "$ref": "#/$defs/positiveNumber"
+            }
+          },
+          "defaultBlowOutFlowRate": {
+            "value": {
+              "$ref": "#/$defs/positiveNumber"
+            },
+            "min": {
+              "$ref": "#/$defs/positiveNumber"
+            },
+            "max": {
+              "$ref": "#/$defs/positiveNumber"
+            }
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "displayCategory": {
+            "$ref": "#/$defs/displayCategory"
+          },
+          "maxVolume": {
+            "$ref": "#/$defs/positiveNumber"
+          },
+          "minVolume": {
+            "$ref": "#/$defs/positiveNumber"
+          },
+          "smoothieConfigs": {
+            "type": "object",
+            "description": "Runtime smoothie configs per pipette type",
+            "properties": {
+              "stepsPerMM": {
+                "type": "number"
+              },
+              "homePosition": {
+                "type": "number"
+              },
+              "travelDistance": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      }
+    },
+    "$defs": {
+      "positiveNumber": {
+        "type": "number",
+        "minimum": 0
+      },
+      "channels": {
+        "enum": [
+          1,
+          8
+        ]
+      },
+      "displayCategory": {
+        "type": "string",
+        "enum": [
+          "GEN1",
+          "GEN2"
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "Model-level pipette specifications. These do not vary across different versions of the same model",
+    "type": "object",
+    "$comment": "Example key: 'p10_single'",
+    "patternProperties": {
+      ".*": {
+        "$ref": "#/$defs/modern_1"
+      }
+    },
+    "$defs": {
+      "channels": {
+        "enum": [
+          1,
+          8
+        ]
+      },
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "required": [
+                  "channels",
+                  "displayName",
+                  "defaultAspirateFlowRate",
+                  "defaultDispenseFlowRate",
+                  "defaultBlowOutFlowRate",
+                  "maxVolume",
+                  "minVolume"
+                ],
+                "properties": {
+                  "displayName": {
+                    "type": "string"
+                  },
+                  "channels": {
+                    "$ref": "#/$defs/channels"
+                  },
+                  "smoothieConfigs": {
+                    "type": "object",
+                    "description": "Runtime smoothie configs per pipette type",
+                    "properties": {
+                      "stepsPerMM": {
+                        "type": "number"
+                      },
+                      "homePosition": {
+                        "type": "number"
+                      },
+                      "travelDistance": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  "defaultDispenseFlowRate": {
+                    "value": {
+                      "$ref": "#/$defs/positiveNumber"
+                    },
+                    "min": {
+                      "$ref": "#/$defs/positiveNumber"
+                    },
+                    "max": {
+                      "$ref": "#/$defs/positiveNumber"
+                    }
+                  },
+                  "minVolume": {
+                    "$ref": "#/$defs/positiveNumber"
+                  },
+                  "displayCategory": {
+                    "$ref": "#/$defs/displayCategory"
+                  },
+                  "maxVolume": {
+                    "$ref": "#/$defs/positiveNumber"
+                  },
+                  "defaultBlowOutFlowRate": {
+                    "value": {
+                      "$ref": "#/$defs/positiveNumber"
+                    },
+                    "min": {
+                      "$ref": "#/$defs/positiveNumber"
+                    },
+                    "max": {
+                      "$ref": "#/$defs/positiveNumber"
+                    }
+                  },
+                  "defaultAspirateFlowRate": {
+                    "value": {
+                      "$ref": "#/$defs/positiveNumber"
+                    },
+                    "min": {
+                      "$ref": "#/$defs/positiveNumber"
+                    },
+                    "max": {
+                      "$ref": "#/$defs/positiveNumber"
+                    }
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^defaultAspirateFlowRate$": true,
+                  "^defaultDispenseFlowRate$": true,
+                  "^minVolume$": true,
+                  "^channels$": true,
+                  "^maxVolume$": true,
+                  "^defaultBlowOutFlowRate$": true,
+                  "^displayName$": true,
+                  "^displayCategory$": true,
+                  "^smoothieConfigs$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "positiveNumber": {
+        "type": "number",
+        "minimum": 0.0
+      },
+      "displayCategory": {
+        "type": "string",
+        "enum": [
+          "GEN1",
+          "GEN2"
+        ]
+      }
+    }
+  }
+}

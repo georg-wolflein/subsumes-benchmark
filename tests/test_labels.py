@@ -1,7 +1,7 @@
 """The labels that can be checked by validating instances hold.
 
-When ``b.json`` only lists its instances, ``a.json`` subsumes it exactly when every one of
-them is valid under ``a.json``. That checks the label without an inclusion checker, with
+When ``b`` only lists its instances, ``a`` subsumes it exactly when every one of them is
+valid under ``a``. That checks the label without an inclusion checker, with
 patterns matched as ECMA-262 does with the ``u`` flag.
 """
 
@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from reading import Case, case, cases, constants, patterns, read, uses_format
+from reading import Case, case, cases, constants, patterns, uses_format
 from validation import is_valid, pattern_error
 
 if TYPE_CHECKING:
@@ -18,8 +18,8 @@ if TYPE_CHECKING:
 
 CATEGORIES = frozenset({"valid", "nonvalid", "unions", "reflexive", "universal", "unsatisfiable"})
 
-# Instances valid under b.json and not under a.json, for the labels that overrides.json
-# corrects to false in cases where b.json does not list its instances.
+# Instances valid under b and not under a, for the labels that overrides.json corrects to
+# false in cases where b does not list its instances.
 COUNTEREXAMPLES: dict[str, Json] = {
     "handwritten-sc/bool.7.eq1.sub.eq2": "aa\nbb",
     "handwritten-sc/bool.7.strong.sub.eq2": "aaa\nbb",
@@ -104,8 +104,7 @@ def test_a_schema_with_its_negation_accepts_everything_or_nothing() -> None:
         instances = [
             constant["const"]
             for kind, found in group.items()
-            if kind.startswith("valid/")
-            and isinstance(constant := read(found.folder / "b.json"), dict)
+            if kind.startswith("valid/") and isinstance(constant := found.b, dict)
         ]
         for kind, expected in (("universal", True), ("unsatisfiable", False)):
             found = group.get(kind)

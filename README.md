@@ -2,41 +2,37 @@
 
 A benchmark corpus for JSON Schema inclusion: **does schema A accept every instance valid under schema B?**
 
-It holds 17,023 pairs of draft 2020-12 schemas, most of them with a known answer. A third are built from the official JSON Schema Test Suite, whose instances make the answer known by construction. The others come from the benchmark published with the Refutational Normalization inclusion checker, converted to draft 2020-12. Each pair is stored as one folder. The corpus is what [`subsumes`](https://github.com/georg-wolflein/subsumes) is measured against, but nothing in it depends on that library.
+It holds 17,023 pairs of draft 2020-12 schemas, most of them with a known answer. A third are built from the official JSON Schema Test Suite, whose instances make the answer known by construction. The others come from the benchmark published with the Refutational Normalization inclusion checker, converted to draft 2020-12. Each pair is stored as one JSON file. The corpus is what [`subsumes`](https://github.com/georg-wolflein/subsumes) is measured against, but nothing in it depends on that library.
 
 ## A case
 
-```
-corpus/schemastore-versions/agripparc-1.2_v2_not_v1/
-├── a.json
-├── b.json
-└── case.json
-```
-
-Every case asks the same question: does `a.json` accept every instance valid under `b.json`? If it does, A subsumes B. A folder is a case exactly when it contains `case.json`, and its path below `corpus/` is its id.
-
-`a.json` and `b.json` are plain schemas, indented, with every non-ASCII character escaped so that none is invisible. `case.json` says what is known:
+A case is one file, `corpus/schemastore-versions/agripparc-1.2_v2_not_v1.json`. It holds two schemas, `a` and `b`, and what is known about them:
 
 ```json
 {
+  "$schema": "../case.schema.json",
   "a_subsumes_b": false,
   "b_subsumes_a": null,
   "features": ["additionalProperties", "enum", "properties", "type"],
-  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/schemastore_containment/sat/agripparc-1.2_v2_not_v1.json"
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/schemastore_containment/sat/agripparc-1.2_v2_not_v1.json",
+  "a": { "type": "object", "additionalProperties": false, "properties": { "…": {} } },
+  "b": { "type": "object", "properties": { "…": {} } }
 }
 ```
 
-- **`a_subsumes_b`**: `true` when `a.json` accepts every instance valid under `b.json`, `false` when some instance of `b.json` is not valid under `a.json`, `null` when the corpus claims nothing.
+Every case asks the same question: does `a` accept every instance valid under `b`? If it does, A subsumes B. Every JSON file below the folder of a collection is a case, except the collection's `collection.json`, and its path below `corpus/` without the `.json` is its id. A file is indented, with every non-ASCII character escaped so that none is invisible.
+
+- **`$schema`**: The path to [`corpus/case.schema.json`](corpus/case.schema.json), the schema of a case, for an editor or a validator. The schemas `a` and `b` are draft 2020-12 whatever this says.
+- **`a_subsumes_b`**: `true` when `a` accepts every instance valid under `b`, `false` when some instance of `b` is not valid under `a`, `null` when the corpus claims nothing.
 - **`b_subsumes_a`**: The same question in the other direction. Only some cases built from the test suite answer it.
 - **`features`**: What the two schemas use, so that cases can be selected and results broken down by it; see [Features](#features).
 - **`upstream`**: A permanent link to the file the case comes from, in the source repository at the commit that the collection's `collection.json` names. A case built from the test suite adds a JSON pointer to the test case or the test after a `#`.
 - **`note`**: Present only when the labels depart from upstream's, and says why.
-
-[`corpus/case.schema.json`](corpus/case.schema.json) is the schema of `case.json`.
+- **`a`** and **`b`**: The two schemas, last in the file, so that what is known is at the top however long they are.
 
 ## Features
 
-`features` lists what `a.json` and `b.json` use between them. An entry is a keyword of draft 2020-12 or `recursion`, which is not a keyword:
+`features` lists what `a` and `b` use between them. An entry is a keyword of draft 2020-12 or `recursion`, which is not a keyword:
 
 | Entry | Cases | Meaning |
 | --- | --- | --- |
@@ -81,7 +77,7 @@ zstd -dc corpus.tar.zst | tar -xf -   # unpacks into corpus/
 
 The release notes give the SHA-256 of the file. The version says what a change means for someone who measures a checker:
 
-- **Major**: A reader has to change, because the layout, the fields of `case.json`, the form of the case ids or the semantics of the labels changed.
+- **Major**: A reader has to change, because the layout, the fields of a case, the form of the case ids or the semantics of the labels changed.
 - **Minor**: Results are no longer comparable, because cases were added or removed, or a label or a schema changed.
 - **Patch**: Anything else, such as notes, descriptions, documentation and code.
 
@@ -196,7 +192,7 @@ The same file lists every case whose labels differ from upstream's, with the rea
 
 Two limits remain:
 
-- **Patterns.** 6,202 labelled cases use patterns. In 439 of them `b.json` only lists its instances, so the label can be checked by validating those instances against `a.json`; the tests do that with an ECMA-262 engine, for these and for 3,001 such cases without patterns. Another 120 compare a schema of the test suite with itself or its negation, which holds in any dialect. The other 5,643 labels come from upstream tools that read patterns in their own dialect. They are kept as they are until a checker disagrees and the dialect turns out to be the reason.
+- **Patterns.** 6,202 labelled cases use patterns. In 439 of them `b` only lists its instances, so the label can be checked by validating those instances against `a`; the tests do that with an ECMA-262 engine, for these and for 3,001 such cases without patterns. Another 120 compare a schema of the test suite with itself or its negation, which holds in any dialect. The other 5,643 labels come from upstream tools that read patterns in their own dialect. They are kept as they are until a checker disagrees and the dialect turns out to be the reason.
 - **Formats.** Upstream's witness generator asserts only a few formats. A label of a `witness-generator` collection that hinges on a format may therefore not hold with every format asserted; six such cases are known and listed.
 
 ## How the sources are converted
@@ -211,7 +207,7 @@ The pairs of `json-schema-test-suite` are built as [described above](#pairs-buil
 - A document that a schema references is embedded in it under `$defs`, named by its URL and with that URL as its `$id`, together with the documents that it references in turn. No reference changes. A reference to the URL of the schema itself stays a reference to the schema.
 - Unknown keywords and `format` are kept as written.
 
-The artifact lists the narrower schema first, so `b.json` is its first schema and `a.json` its second. In `agripparc-1.2_v2_not_v1`, `b.json` is version 2 and `a.json` is version 1.
+The artifact lists the narrower schema first, so `b` is its first schema and `a` its second. In `agripparc-1.2_v2_not_v1`, `b` is version 2 and `a` is version 1.
 
 ## Repository layout
 
@@ -220,8 +216,8 @@ The artifact lists the narrower schema first, so `b.json` is its first schema an
 | `corpus/` | The corpus: generated, committed, never edited by hand |
 | `collections.json` | The collections and the upstream dataset each is built from |
 | `overrides.json` | Every departure from upstream, with the reason: the cases left out and the labels changed |
-| `schemas/` | The schemas of `collections.json`, `overrides.json` and a checker's `checker.json`, which say what each key means |
-| `src/subsumes_benchmark/generated/` | The Pydantic models that read those files: generated from the schemas, never edited by hand |
+| `schemas/` | The schemas of a case, of `collections.json`, of `overrides.json` and of a checker's `checker.json`, which say what each key means. The corpus carries a copy of the first |
+| `src/subsumes_benchmark/generated/` | The Pydantic models that read the files those schemas describe: generated from the schemas, never edited by hand |
 | `sources/` | The upstream repositories as submodules, fetched only to rebuild |
 | `src/subsumes_benchmark/` | The build: `testsuite`, `unfuse`, `convert`, `features`, `build` |
 | `src/subsumes_benchmark/compare/` | The comparison: running a checker over the tasks, and the report |

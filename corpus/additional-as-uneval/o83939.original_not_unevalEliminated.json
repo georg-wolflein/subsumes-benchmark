@@ -1,0 +1,112 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o83939.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "displayGroupOnSameAxis": {
+                    "description": "Whether the concepts in this group should be displayed on the same axis, or each on their individual axis in the same card.",
+                    "type": "boolean"
+                  },
+                  "graphType": {
+                    "description": "The way the graph should be plotted for this display group. If NONE, then graph will not be displayed.",
+                    "enum": [
+                      "SCATTER",
+                      "LINE",
+                      "DIAGNOSTIC",
+                      "MICROBIO",
+                      "STEP",
+                      "NONE"
+                    ],
+                    "type": "string"
+                  },
+                  "groupName": {
+                    "description": "The display name for this clinical concept group.",
+                    "type": "string"
+                  },
+                  "parentGroupName": {
+                    "description": "The name of the parent group that this group should be displayed with. This helps in the case that you want to show multiple resource groups with different graph configurations such as Medication administrations and Medication monitoring.",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "groupName",
+                  "graphType",
+                  "displayGroupOnSameAxis"
+                ],
+                "title": "Clinical Concept Display Group",
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^displayGroupOnSameAxis$": true,
+                  "^graphType$": true,
+                  "^groupName$": true,
+                  "^parentGroupName$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+      "displayGroupOnSameAxis": {
+        "description": "Whether the concepts in this group should be displayed on the same axis, or each on their individual axis in the same card.",
+        "type": "boolean"
+      },
+      "graphType": {
+        "description": "The way the graph should be plotted for this display group. If NONE, then graph will not be displayed.",
+        "enum": [
+          "SCATTER",
+          "LINE",
+          "DIAGNOSTIC",
+          "MICROBIO",
+          "STEP",
+          "NONE"
+        ],
+        "type": "string"
+      },
+      "groupName": {
+        "description": "The display name for this clinical concept group.",
+        "type": "string"
+      },
+      "parentGroupName": {
+        "description": "The name of the parent group that this group should be displayed with. This helps in the case that you want to show multiple resource groups with different graph configurations such as Medication administrations and Medication monitoring.",
+        "type": "string"
+      }
+    },
+    "required": [
+      "groupName",
+      "graphType",
+      "displayGroupOnSameAxis"
+    ],
+    "title": "Clinical Concept Display Group",
+    "type": "object"
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "minLength",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o89106.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "combineParameters",
+                "type": "object",
+                "properties": {
+                  "signedTransactions": {
+                    "type": "array",
+                    "description": "An array of signed transactions (from the output of [sign](#sign)) to combine.",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[A-F0-9]+$",
+                      "description": "A single-signed transaction represented as an uppercase hexadecimal string (from the output of [sign](#sign))"
+                    },
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "signedTransactions"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^signedTransactions$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "combineParameters",
+    "type": "object",
+    "properties": {
+      "signedTransactions": {
+        "type": "array",
+        "description": "An array of signed transactions (from the output of [sign](#sign)) to combine.",
+        "items": {
+          "type": "string",
+          "pattern": "^[A-F0-9]+$",
+          "description": "A single-signed transaction represented as an uppercase hexadecimal string (from the output of [sign](#sign))"
+        },
+        "minLength": 1
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "signedTransactions"
+    ]
+  }
+}

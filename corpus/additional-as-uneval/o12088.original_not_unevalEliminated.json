@@ -1,0 +1,136 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o12088.original_not_unevalEliminated.json",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "httpMethod": {
+                    "pattern": "^GET$",
+                    "type": "string"
+                  },
+                  "path": {
+                    "pattern": "^/scores$",
+                    "type": "string"
+                  },
+                  "queryStringParameters": {
+                    "$ref": "#/$defs/modern_2"
+                  }
+                },
+                "required": [
+                  "path",
+                  "httpMethod",
+                  "queryStringParameters"
+                ],
+                "self": {
+                  "format": "jsonschema",
+                  "name": "scores/request",
+                  "vendor": "com.nordstrom",
+                  "version": "1-0-0"
+                },
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^httpMethod$": true,
+                  "^path$": true,
+                  "^queryStringParameters$": true
+                },
+                "additionalProperties": true
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "limit": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "role"
+                ],
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^limit$": true,
+                  "^role$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": true,
+    "properties": {
+      "httpMethod": {
+        "pattern": "^GET$",
+        "type": "string"
+      },
+      "path": {
+        "pattern": "^/scores$",
+        "type": "string"
+      },
+      "queryStringParameters": {
+        "additionalProperties": false,
+        "properties": {
+          "limit": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "role"
+        ],
+        "type": "object"
+      }
+    },
+    "required": [
+      "path",
+      "httpMethod",
+      "queryStringParameters"
+    ],
+    "self": {
+      "format": "jsonschema",
+      "name": "scores/request",
+      "vendor": "com.nordstrom",
+      "version": "1-0-0"
+    },
+    "type": "object"
+  }
+}

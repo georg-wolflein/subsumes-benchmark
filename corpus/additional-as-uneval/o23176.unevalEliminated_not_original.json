@@ -1,0 +1,351 @@
+{
+  "$schema": "../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "format",
+    "items",
+    "oneOf",
+    "patternProperties",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o23176.unevalEliminated_not_original.json",
+  "a": {
+    "$id": "http://test.phpsx.org/test",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "any": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "string"
+        }
+      },
+      "array": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "arrayComplex": {
+        "type": "array",
+        "items": {
+          "title": "a",
+          "type": "object",
+          "properties": {
+            "foo": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "arrayChoice": {
+        "type": "array",
+        "items": {
+          "oneOf": [
+            {
+              "title": "choiceA",
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "foo": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "title": "choiceB",
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "bar": {
+                  "type": "string"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "boolean": {
+        "type": "boolean"
+      },
+      "choice": {
+        "oneOf": [
+          {
+            "title": "choiceA",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "foo": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "title": "choiceB",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "bar": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "complex": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "foo": {
+            "type": "string"
+          }
+        }
+      },
+      "date": {
+        "type": "string",
+        "format": "date"
+      },
+      "dateTime": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "duration": {
+        "type": "string",
+        "format": "duration"
+      },
+      "float": {
+        "type": "number"
+      },
+      "integer": {
+        "type": "integer"
+      },
+      "string": {
+        "type": "string"
+      },
+      "time": {
+        "type": "string",
+        "format": "time"
+      }
+    }
+  },
+  "b": {
+    "$id": "http://test.phpsx.org/test",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "float": {
+        "type": "number"
+      },
+      "string": {
+        "type": "string"
+      },
+      "dateTime": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "array": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "date": {
+        "type": "string",
+        "format": "date"
+      },
+      "choice": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/modern_1"
+          },
+          {
+            "$ref": "#/$defs/modern_2"
+          }
+        ]
+      },
+      "arrayComplex": {
+        "type": "array",
+        "items": {
+          "title": "a",
+          "type": "object",
+          "properties": {
+            "foo": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "complex": {
+        "$ref": "#/$defs/modern_3"
+      },
+      "duration": {
+        "type": "string",
+        "format": "duration"
+      },
+      "any": {
+        "$ref": "#/$defs/modern_4"
+      },
+      "arrayChoice": {
+        "type": "array",
+        "items": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/modern_5"
+            },
+            {
+              "$ref": "#/$defs/modern_6"
+            }
+          ]
+        }
+      },
+      "boolean": {
+        "type": "boolean"
+      },
+      "integer": {
+        "type": "integer"
+      },
+      "time": {
+        "type": "string",
+        "format": "time"
+      }
+    },
+    "$defs": {
+      "modern_5": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "choiceA",
+                "type": "object",
+                "properties": {
+                  "foo": {
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^foo$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_6": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "choiceB",
+                "type": "object",
+                "properties": {
+                  "bar": {
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^bar$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "choiceA",
+                "type": "object",
+                "properties": {
+                  "foo": {
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^foo$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "choiceB",
+                "type": "object",
+                "properties": {
+                  "bar": {
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^bar$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_3": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "foo": {
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^foo$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_4": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object"
+              },
+              {
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
