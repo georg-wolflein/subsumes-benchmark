@@ -1,10 +1,10 @@
 r"""Validating an instance the way this corpus reads a schema.
 
 The validator is ``jsonschema``'s for draft 2020-12 with the keywords that match a regular
-expression replaced: they match in the dialect of the Rust ``regex`` crate, through
-``pydantic-core``, which embeds that crate and is what Pydantic validates ``pattern`` with.
-Python's ``re``, which ``jsonschema`` uses, is another dialect: its ``$`` also matches before
-a trailing newline, for one.
+expression replaced: they match as ECMA-262 does with the ``u`` flag, which is what the
+specification recommends, through ``regress``, an ECMA-262 engine. Python's ``re``, which
+``jsonschema`` uses, is another dialect: its ``\d`` matches every decimal digit of Unicode
+and its ``$`` also matches before a trailing newline, for two.
 
 ``format`` is not asserted: Python's format checkers disagree with the official test suite on
 leap seconds and e-mail addresses, so the tests that validate skip the schemas that use it.
@@ -17,7 +17,7 @@ from jsonschema import Draft202012Validator
 from jsonschema.exceptions import ValidationError
 from jsonschema.validators import extend
 from jsonschema_specifications import REGISTRY as METASCHEMAS
-from pydantic_core import SchemaError, SchemaValidator, core_schema
+from regress import Regex, RegressError
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -29,19 +29,19 @@ if TYPE_CHECKING:
 
 
 class InvalidPatternError(Exception):
-    """The pattern is not valid in the Rust regex dialect."""
+    """The pattern is not valid in ECMA-262 with the ``u`` flag."""
 
 
 @cache
-def _compile(pattern: str) -> SchemaValidator | str:
+def _compile(pattern: str) -> Regex | str:
     try:
-        return SchemaValidator(core_schema.str_schema(pattern=pattern, regex_engine="rust-regex"))
-    except SchemaError as exc:
+        return Regex(pattern, flags="u")
+    except RegressError as exc:
         return str(exc)
 
 
 def pattern_error(pattern: str) -> str | None:
-    """Why the Rust regex crate rejects the pattern, or ``None`` if it accepts it."""
+    """Why the pattern is not valid, or ``None`` if it is."""
     compiled = _compile(pattern)
     return compiled if isinstance(compiled, str) else None
 
@@ -51,8 +51,8 @@ def search(pattern: str, value: str) -> bool:
     compiled = _compile(pattern)
     if isinstance(compiled, str):
         raise InvalidPatternError(pattern)
-    value.encode()  # a lone surrogate is no string to the regex crate; fail rather than say no
-    return compiled.isinstance_python(value)
+    value.encode()  # a lone surrogate is no string of a JSON document; fail rather than say no
+    return compiled.find(value) is not None
 
 
 class _Validating(Protocol):

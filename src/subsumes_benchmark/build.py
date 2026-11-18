@@ -81,7 +81,7 @@ CASE_SCHEMA: dict[str, Json] = {
     "description": (
         "What is known about the two schemas next to this file: does a.json accept every "
         "instance valid under b.json? The labels hold for draft 2020-12 with format asserted "
-        "and patterns read in the dialect of the Rust regex crate."
+        "and patterns read as ECMA-262 regular expressions with the u flag."
     ),
     "type": "object",
     "required": ["a_subsumes_b", "b_subsumes_a", "features", "upstream"],
