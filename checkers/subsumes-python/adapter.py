@@ -1,6 +1,6 @@
 # /// script
 # requires-python = "==3.14.*"
-# dependencies = ["subsumes==0.2.0"]
+# dependencies = ["subsumes==0.4.0"]
 # ///
 """The adapter for subsumes's Python package: answers the runner's requests, one JSON line each.
 
@@ -15,16 +15,13 @@ import sys
 import time
 from pathlib import Path
 
-from subsumes import No, UndecidedError, Yes, subsumes
+from subsumes import No, Unknown, Yes, subsumes
 
 
 def check(a: str, b: str) -> tuple[str, str | None]:
     try:
         # The package takes a schema as ``json.loads`` gives it, with the default work budget.
         verdict = subsumes(json.loads(a), json.loads(b))
-    except UndecidedError as exc:
-        # A check that spends its work budget ends here too, and the message says so.
-        return "unknown", str(exc)[:300]
     except Exception as exc:
         return "error", f"{type(exc).__name__}: {exc}"[:300]
     match verdict:
@@ -32,6 +29,9 @@ def check(a: str, b: str) -> tuple[str, str | None]:
             return "yes", None
         case No(counterexample):
             return "no", json.dumps(counterexample)[:300]
+        case Unknown(reason):
+            # A check that spends its work budget ends here too, and the reason says so.
+            return "unknown", str(reason)[:300]
 
 
 def main() -> None:
