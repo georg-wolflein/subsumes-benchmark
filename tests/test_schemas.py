@@ -1,10 +1,11 @@
-"""Every schema of the corpus is valid draft 2020-12 and every reference in it resolves.
+"""Every case is valid under the schema of a case, and every reference in its schemas resolves.
 
-A reference resolves inside its schema or to a metaschema of the draft: no schema needs another
-document. Upstream cases that are not valid are left out of the corpus; ``overrides.json`` lists
-them.
+The schema of a case says that its two schemas are valid draft 2020-12. A reference resolves
+inside its schema or to a metaschema of the draft: no schema needs another document. Upstream
+cases that are not valid are left out of the corpus; ``overrides.json`` lists them.
 """
 
+import json
 from typing import TYPE_CHECKING
 
 import pytest
@@ -13,28 +14,15 @@ from jsonschema_specifications import REGISTRY as METASCHEMAS
 from referencing import Resource
 from referencing.jsonschema import DRAFT202012
 
-from reading import cases, nested
+from reading import ROOT, cases, nested, read
 
 if TYPE_CHECKING:
     from referencing._core import Resolver
 
     from subsumes_benchmark import Json
 
-METASCHEMA = Draft202012Validator(Draft202012Validator.META_SCHEMA)
-# Keywords whose values the metaschema types but no validator acts on. SchemaStore writes
-# ``"deprecated": "use X instead"``, which changes nothing about what a schema accepts.
-ANNOTATIONS = frozenset(
-    {
-        "title",
-        "description",
-        "default",
-        "examples",
-        "deprecated",
-        "readOnly",
-        "writeOnly",
-        "$comment",
-    }
-)
+SCHEMA = ROOT / "schemas" / "case.schema.json"
+CASE_SCHEMA = Draft202012Validator(json.loads(SCHEMA.read_text(encoding="utf-8")))
 COLLECTIONS = sorted({case.collection for case in cases()})
 
 
@@ -62,32 +50,35 @@ def unresolved(node: Json, resolver: Resolver[Json], seen: set[int]) -> list[str
     return problems
 
 
-def problems_of(schema: Json, uri: str) -> list[str]:
-    problems = [
-        f"metaschema: {error.message[:160]}"
-        for error in METASCHEMA.iter_errors(schema)
-        if not (error.absolute_path and str(error.absolute_path[-1]) in ANNOTATIONS)
-    ]
+def unresolved_in(schema: Json, uri: str) -> list[str]:
+    """The references of a schema that resolve neither inside it nor to a metaschema."""
     if not isinstance(schema, dict):
-        return problems
+        return []
     identifier = schema.get("$id")
     base = identifier if isinstance(identifier, str) else uri
     resource = Resource.from_contents(schema, default_specification=DRAFT202012)
     resolver = METASCHEMAS.with_resource(base, resource).resolver(base_uri=base)
-    return problems + unresolved(schema, resolver, set())
+    return unresolved(schema, resolver, set())
 
 
 @pytest.mark.slow
 @pytest.mark.parametrize("collection", COLLECTIONS)
-def test_schemas_are_valid_and_resolve(collection: str) -> None:
+def test_cases_are_valid_and_their_schemas_resolve(collection: str) -> None:
     found = {}
     for case in cases():
         if case.collection != collection:
             continue
+        document = read(case.file)
+        assert isinstance(document, dict)
+        # The schema of a case says that ``a`` and ``b`` are valid under the metaschema.
         problems = [
-            f"{side}.json: {problem}"
-            for side, schema in (("a", case.a), ("b", case.b))
-            for problem in problems_of(schema, f"urn:subsumes-benchmark:{case.id}:{side}")
+            f"{'/'.join(map(str, error.absolute_path))}: {error.message[:160]}"
+            for error in CASE_SCHEMA.iter_errors(document)
+        ]
+        problems += [
+            f"{side}: {problem}"
+            for side in ("a", "b")
+            for problem in unresolved_in(document[side], f"urn:subsumes-benchmark:{case.id}:{side}")
         ]
         if problems:
             found[case.id] = problems
