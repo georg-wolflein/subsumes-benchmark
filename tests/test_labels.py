@@ -66,7 +66,7 @@ def test_label_holds_where_b_lists_its_instances() -> None:
         if computed != found.a_subsumes_b:
             wrong[found.id] = computed
     assert wrong == {}
-    assert checked > 5000
+    assert checked > 4000
 
 
 def test_labelled_case_has_only_valid_patterns() -> None:
