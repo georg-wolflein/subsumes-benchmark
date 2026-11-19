@@ -203,7 +203,9 @@ def suite(root: Path) -> Collection:
         use_case="tool-checking",
         description="Examples.",
     )
-    origin = OriginSpec(citation="Someone. Examples. 2026.", url="https://example.com/work")
+    origin = OriginSpec(
+        short="Someone, 2026", citation="Someone. Examples. 2026.", url="https://example.com/work"
+    )
     return Collection("suite", source, origin, spec)
 
 

@@ -17,7 +17,7 @@ MANIFEST = CORPUS / "collections.json"
 
 def test_every_file_is_a_case_or_a_shared_file() -> None:
     shared = (
-        {CORPUS / "case.schema.json", MANIFEST}
+        {CORPUS / "case.schema.json", MANIFEST, CORPUS / "README.md"}
         | {CORPUS / folder / "LICENSE" for folder in COLLECTIONS}
         | {case.file for case in cases()}
     )

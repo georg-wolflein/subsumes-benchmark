@@ -42,6 +42,7 @@ from urllib.parse import quote, urldefrag, urljoin
 
 from pydantic import model_validator
 
+from subsumes_benchmark import readme
 from subsumes_benchmark.config import ConfigError
 from subsumes_benchmark.convert import (
     ConversionError,
@@ -78,6 +79,9 @@ CASE_SCHEMA = Path("schemas/case.schema.json")
 
 # What the corpus says about its collections, by the folder of each, in one file at its root.
 MANIFEST_NAME = "collections.json"
+
+# The page of the corpus, which is written by hand and which a build leaves as it is.
+README_NAME = "README.md"
 
 # The licence of a collection, which is that of its source, in the folder of the collection.
 LICENSE_NAME = "LICENSE"
@@ -168,7 +172,11 @@ class Collection:
             "description": self.spec.description,
             "use_case": self.spec.use_case,
             "labels": self.spec.labels,
-            "origin": {"citation": self.origin.citation, "url": self.origin.url},
+            "origin": {
+                "short": self.origin.short,
+                "citation": self.origin.citation,
+                "url": self.origin.url,
+            },
             "license": self.source.spec.license,
             "license_file": f"{self.folder}/{LICENSE_NAME}",
             "source": {
@@ -596,7 +604,58 @@ def with_derived(cases: Sequence[Case], derived: Mapping[str, Derived]) -> list[
     return found
 
 
-def build(out: Path, collections_file: Path, overrides_file: Path, derived_file: Path) -> None:
+def clear(out: Path) -> None:
+    """Remove what a build wrote to the folder of the corpus: everything but its ``README.md``.
+
+    That page is the one file of the corpus that is written by hand.
+    """
+    if not out.exists():
+        return
+    for path in out.iterdir():
+        if path.is_dir():
+            shutil.rmtree(path)
+        elif path.name != README_NAME:
+            path.unlink()
+
+
+def collections_table(corpus: Path) -> str:
+    """The table of the collections of a corpus, as the README of the repository shows it.
+
+    A row has what ``collections.json`` of the corpus says about a collection, how many
+    cases it has, and how many of its tasks have a label: a case is two tasks, one for each
+    direction.
+    """
+    manifest = json.loads((corpus / MANIFEST_NAME).read_text(encoding="utf-8"))
+    lines = [
+        "| Collection | Cases | Tasks with a label | From | Content |",
+        "| --- | ---: | ---: | --- | --- |",
+    ]
+    cases = labelled = 0
+    for folder, collection in manifest.items():
+        files = sorted((corpus / folder).glob("*.json"))
+        known = 0
+        for file in files:
+            case = json.loads(file.read_text(encoding="utf-8"))
+            known += (case["a_subsumes_b"] is not None) + (case["b_subsumes_a"] is not None)
+        origin = collection["origin"]
+        lines.append(
+            f"| `{folder}` | {len(files):,} | {known:,} of {2 * len(files):,} "
+            f"| [{origin['short']}]({origin['url']}) | {collection['description']} |"
+        )
+        cases += len(files)
+        labelled += known
+    lines.append(f"| All | {cases:,} | {labelled:,} of {2 * cases:,} | | |")
+    return "\n".join(lines)
+
+
+def build(
+    out: Path,
+    collections_file: Path,
+    overrides_file: Path,
+    derived_file: Path,
+    page: Path | None = None,
+) -> None:
+    """Build the corpus, and write the table of its collections to a README if one is given."""
     collections = load_collections(collections_file)
     departures = Overrides.read(overrides_file)
     derived = Derivations.read(derived_file).cases
@@ -638,8 +697,7 @@ def build(out: Path, collections_file: Path, overrides_file: Path, derived_file:
     # An id is an origin, a collection and a name: no case lies deeper, whatever upstream calls it.
     if deeper := sorted(case.id for case in final if case.id.count("/") != 2):
         raise ConversionError(f"cases that do not lie in the folder of their collection: {deeper}")
-    if out.exists():
-        shutil.rmtree(out)
+    clear(out)
     print(f"writing {len(final)} cases")
     for case in final:
         write_case(out, case)
@@ -649,6 +707,9 @@ def build(out: Path, collections_file: Path, overrides_file: Path, derived_file:
     shutil.copyfile(CASE_SCHEMA, out / CASE_SCHEMA.name)
     for collection in collections:
         collection.source.license_file.copy(out / collection.folder / LICENSE_NAME)
+
+    if page is not None:
+        readme.update(page, "collections", collections_table(out))
 
     print(f"\n{'collection':40s} {'cases':>6s} {'true':>6s} {'false':>6s} {'null':>6s}")
     by_id = {case.id: case for case in final}
@@ -676,5 +737,8 @@ def main() -> None:
     parser.add_argument("--collections", type=Path, default=Path("collections.json"))
     parser.add_argument("--overrides", type=Path, default=Path("overrides.json"))
     parser.add_argument("--derived", type=Path, default=Path("derived.json"))
+    parser.add_argument(
+        "--readme", type=Path, help="a README to write the table of the collections to"
+    )
     args = parser.parse_args()
-    build(args.out, args.collections, args.overrides, args.derived)
+    build(args.out, args.collections, args.overrides, args.derived, args.readme)

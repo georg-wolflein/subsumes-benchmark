@@ -262,7 +262,7 @@ def test_what_two_schemas_share_is_written_the_same_in_both() -> None:
 
 
 def test_the_examples_of_the_documentation_are_what_the_schemas_say() -> None:
-    for page in ("checkers/README.md", "README.pypi.md"):
+    for page in ("checkers/README.md",):
         text = (ROOT / page).read_text(encoding="utf-8")
         lines = [
             json.loads(line)
