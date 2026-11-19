@@ -1,0 +1,231 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "maxLength",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o82149.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o82149.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_4",
+    "$defs": {
+      "repository": {
+        "$ref": "#/$defs/modern_3"
+      },
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "name": {
+                    "description": "Name of the repository owner",
+                    "maxLength": 100
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^name$": true
+                },
+                "additionalProperties": true
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "login": {
+                    "description": "Name of the repository owner",
+                    "maxLength": 100
+                  }
+                },
+                "required": [
+                  "login"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^login$": true
+                },
+                "additionalProperties": true
+              }
+            ]
+          }
+        ]
+      },
+      "modern_3": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "name": {
+                    "description": "Name of the repository",
+                    "maxLength": 100
+                  },
+                  "owner": {
+                    "$ref": "#/$defs/owner"
+                  }
+                },
+                "required": [
+                  "name",
+                  "owner"
+                ],
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^name$": true,
+                  "^owner$": true
+                },
+                "additionalProperties": true
+              }
+            ]
+          }
+        ]
+      },
+      "owner": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/modern_1"
+          },
+          {
+            "$ref": "#/$defs/modern_2"
+          }
+        ],
+        "type": "object"
+      },
+      "modern_4": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "deleted": {
+                    "default": false,
+                    "description": "Boolean value indicated if this is payload for delete hook",
+                    "type": "boolean"
+                  },
+                  "ref": {
+                    "description": "Github branch/tag",
+                    "maxLength": 255,
+                    "type": "string"
+                  },
+                  "repository": {
+                    "$ref": "#/$defs/repository"
+                  }
+                },
+                "required": [
+                  "repository"
+                ],
+                "title": "Schema for githook payload",
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^deleted$": true,
+                  "^ref$": true,
+                  "^repository$": true
+                },
+                "additionalProperties": true
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": true,
+    "properties": {
+      "deleted": {
+        "default": false,
+        "description": "Boolean value indicated if this is payload for delete hook",
+        "type": "boolean"
+      },
+      "ref": {
+        "description": "Github branch/tag",
+        "maxLength": 255,
+        "type": "string"
+      },
+      "repository": {
+        "$ref": "#/$defs/repository"
+      }
+    },
+    "required": [
+      "repository"
+    ],
+    "title": "Schema for githook payload",
+    "type": "object",
+    "$defs": {
+      "owner": {
+        "anyOf": [
+          {
+            "additionalProperties": true,
+            "properties": {
+              "name": {
+                "description": "Name of the repository owner",
+                "maxLength": 100
+              }
+            },
+            "required": [
+              "name"
+            ]
+          },
+          {
+            "additionalProperties": true,
+            "properties": {
+              "login": {
+                "description": "Name of the repository owner",
+                "maxLength": 100
+              }
+            },
+            "required": [
+              "login"
+            ]
+          }
+        ],
+        "type": "object"
+      },
+      "repository": {
+        "additionalProperties": true,
+        "properties": {
+          "name": {
+            "description": "Name of the repository",
+            "maxLength": 100
+          },
+          "owner": {
+            "$ref": "#/$defs/owner"
+          }
+        },
+        "required": [
+          "name",
+          "owner"
+        ],
+        "type": "object"
+      }
+    }
+  }
+}

@@ -1,0 +1,237 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "items",
+    "maxLength",
+    "minLength",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o6193.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o6193.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255
+                  },
+                  "masterId": {
+                    "type": "string",
+                    "pattern": "^[A-Fa-f\\d]{24}$"
+                  },
+                  "deviceClass": {
+                    "type": "string",
+                    "enum": [
+                      "standalone",
+                      "master",
+                      "owned",
+                      "floating",
+                      "virtual"
+                    ]
+                  },
+                  "attributes": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/modern_2"
+                    }
+                  },
+                  "description": {
+                    "type": "string",
+                    "maxLength": 32767
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/modern_3"
+                    }
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^description$": true,
+                  "^attributes$": true,
+                  "^deviceClass$": true,
+                  "^name$": true,
+                  "^masterId$": true,
+                  "^tags$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "pattern": "^[0-9a-zA-Z_-]{1,255}$"
+                  },
+                  "dataType": {
+                    "type": "string",
+                    "enum": [
+                      "string",
+                      "number",
+                      "gps",
+                      "boolean"
+                    ]
+                  }
+                },
+                "required": [
+                  "name",
+                  "dataType"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^name$": true,
+                  "^dataType$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_3": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "key": {
+                    "type": "string",
+                    "pattern": "^[0-9a-zA-Z_-]{1,255}$"
+                  },
+                  "value": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255
+                  }
+                },
+                "required": [
+                  "key",
+                  "value"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^key$": true,
+                  "^value$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 255
+      },
+      "description": {
+        "type": "string",
+        "maxLength": 32767
+      },
+      "tags": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string",
+              "pattern": "^[0-9a-zA-Z_-]{1,255}$"
+            },
+            "value": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            }
+          },
+          "required": [
+            "key",
+            "value"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "attributes": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "pattern": "^[0-9a-zA-Z_-]{1,255}$"
+            },
+            "dataType": {
+              "type": "string",
+              "enum": [
+                "string",
+                "number",
+                "gps",
+                "boolean"
+              ]
+            }
+          },
+          "required": [
+            "name",
+            "dataType"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "deviceClass": {
+        "type": "string",
+        "enum": [
+          "standalone",
+          "master",
+          "owned",
+          "floating",
+          "virtual"
+        ]
+      },
+      "masterId": {
+        "type": "string",
+        "pattern": "^[A-Fa-f\\d]{24}$"
+      }
+    },
+    "additionalProperties": false
+  }
+}

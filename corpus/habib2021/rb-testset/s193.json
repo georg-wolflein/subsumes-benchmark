@@ -1,0 +1,96 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": false,
+  "features": [
+    "additionalProperties",
+    "anyOf",
+    "items",
+    "maxItems",
+    "maximum",
+    "minItems",
+    "minimum",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/issta/sat/s193.json",
+  "derived": {
+    "b_subsumes_a": {
+      "counterexample": {
+        "X": []
+      }
+    }
+  },
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "Input data schema for training the TfidfVectorizer from scikit-learn.",
+    "type": "object",
+    "required": [
+      "X"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "X": {
+        "description": "Features; the outer array is over samples.",
+        "anyOf": [
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 1,
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "y": {
+        "description": "Target class labels; the array is over samples."
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "X",
+      "y"
+    ],
+    "properties": {
+      "X": {
+        "type": "array",
+        "items": {
+          "type": "array",
+          "minItems": 64,
+          "maxItems": 64,
+          "items": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 16
+          }
+        },
+        "minItems": 1437,
+        "maxItems": 1437
+      },
+      "y": {
+        "type": "array",
+        "minItems": 1437,
+        "maxItems": 1437,
+        "items": {
+          "description": "target",
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

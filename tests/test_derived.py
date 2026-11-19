@@ -31,7 +31,7 @@ OPTIONAL_NUMBER: dict[str, Json] = {"type": ["number", "null"]}
 
 
 def a_case(a: Json, b: Json, note: str | None = None) -> CaseSpec:
-    built = Case("one/case", a, b, None, None, "x.json", note)
+    built = Case("o/one/case", a, b, None, None, "x.json", note)
     return CaseSpec.model_validate_json(json.dumps(built.document))
 
 
@@ -158,8 +158,6 @@ def test_a_question_asked_the_other_way_swaps_the_schemas() -> None:
 def a_corpus(folder: Path, cases: Sequence[Case]) -> Path:
     for case in cases:
         write_case(folder, case)
-    for collection in {case.id.partition("/")[0] for case in cases}:
-        write_json(folder / collection / "collection.json", {})
     return folder
 
 
@@ -192,10 +190,10 @@ def test_runs_are_derived_into_the_file_and_a_later_run_adds_to_it(tmp_path: Pat
     corpus = a_corpus(
         tmp_path / "corpus",
         [
-            open_case("one/narrower", OPTIONAL, TEXT),
-            open_case("one/wider", NUMBER, OPTIONAL_NUMBER),
-            open_case("one/open", TEXT, True),
-            open_case("one/known", TEXT, TEXT, a_subsumes_b=True),
+            open_case("o/one/narrower", OPTIONAL, TEXT),
+            open_case("o/one/wider", NUMBER, OPTIONAL_NUMBER),
+            open_case("o/one/open", TEXT, True),
+            open_case("o/one/known", TEXT, TEXT, a_subsumes_b=True),
         ],
     )
     file = tmp_path / "derived.json"
@@ -203,32 +201,32 @@ def test_runs_are_derived_into_the_file_and_a_later_run_adds_to_it(tmp_path: Pat
         tmp_path / "first",
         "One",
         [
-            ("one/narrower", "a_subsumes_b", "yes", None),
-            ("one/narrower", "b_subsumes_a", "no", "null"),
-            ("one/wider", "a_subsumes_b", "no", "null"),
-            ("one/open", "a_subsumes_b", "yes", None),
+            ("o/one/narrower", "a_subsumes_b", "yes", None),
+            ("o/one/narrower", "b_subsumes_a", "no", "null"),
+            ("o/one/wider", "a_subsumes_b", "no", "null"),
+            ("o/one/open", "a_subsumes_b", "yes", None),
             # An answer to a question that has a label is not read.
-            ("one/known", "a_subsumes_b", "no", "12"),
+            ("o/one/known", "a_subsumes_b", "no", "12"),
         ],
     )
     second = write_answers(
-        tmp_path / "second", "Two", [("one/narrower", "a_subsumes_b", "yes", None)]
+        tmp_path / "second", "Two", [("o/one/narrower", "a_subsumes_b", "yes", None)]
     )
     derive(corpus, file, [first])
     refuted = {"counterexample": None}
     assert read(file) == {
         "$schema": "./schemas/derived.schema.json",
         "cases": {
-            "one/narrower": {"b_subsumes_a": refuted},
-            "one/wider": {"a_subsumes_b": refuted},
+            "o/one/narrower": {"b_subsumes_a": refuted},
+            "o/one/wider": {"a_subsumes_b": refuted},
         },
     }
     # The second checker makes an agreement of the first one's yes.
     derive(corpus, file, [first, second])
     agreed = {"checkers": ["One 1.0", "Two 1.0"]}
     expected = {
-        "one/narrower": {"a_subsumes_b": agreed, "b_subsumes_a": refuted},
-        "one/wider": {"a_subsumes_b": refuted},
+        "o/one/narrower": {"a_subsumes_b": agreed, "b_subsumes_a": refuted},
+        "o/one/wider": {"a_subsumes_b": refuted},
     }
     assert read(file) == {"$schema": "./schemas/derived.schema.json", "cases": expected}
     # What the file holds is kept when a run that showed it is not read again, and reading
@@ -241,16 +239,16 @@ def test_runs_are_derived_into_the_file_and_a_later_run_adds_to_it(tmp_path: Pat
 
 
 def test_a_counterexample_replaces_the_agreement_it_refutes(tmp_path: Path) -> None:
-    corpus = a_corpus(tmp_path / "corpus", [open_case("one/wider", TEXT, OPTIONAL)])
+    corpus = a_corpus(tmp_path / "corpus", [open_case("o/one/wider", TEXT, OPTIONAL)])
     file = tmp_path / "derived.json"
     entry = Derived(a_subsumes_b=Agreement(checkers=["One 1.0", "Two 1.0"]))
-    Derivations.write(file, {"one/wider": entry})
+    Derivations.write(file, {"o/one/wider": entry})
     later = write_answers(
-        tmp_path / "later", "Three", [("one/wider", "a_subsumes_b", "no", "null")]
+        tmp_path / "later", "Three", [("o/one/wider", "a_subsumes_b", "no", "null")]
     )
     derive(corpus, file, [later])
     assert Derivations.read(file).cases == {
-        "one/wider": Derived(a_subsumes_b=Counterexample(counterexample=None))
+        "o/one/wider": Derived(a_subsumes_b=Counterexample(counterexample=None))
     }
 
 
@@ -259,12 +257,12 @@ def test_a_counterexample_is_held_against_the_schemas_whatever_the_run_made_of_i
 ) -> None:
     corpus = a_corpus(
         tmp_path / "corpus",
-        [open_case("one/wider", TEXT, OPTIONAL), open_case("one/same", TEXT, TEXT)],
+        [open_case("o/one/wider", TEXT, OPTIONAL), open_case("o/one/same", TEXT, TEXT)],
     )
     file = tmp_path / "derived.json"
     answers: Sequence[tuple[str, Direction, Literal["yes", "no"], str | None]] = [
-        ("one/wider", "a_subsumes_b", "no", "null"),
-        ("one/same", "a_subsumes_b", "no", "null"),
+        ("o/one/wider", "a_subsumes_b", "no", "null"),
+        ("o/one/same", "a_subsumes_b", "no", "null"),
     ]
     # The validator of the run did not look at the first, and is recorded as confirming the
     # second, which is none: the two validators here are asked about both.
@@ -272,22 +270,22 @@ def test_a_counterexample_is_held_against_the_schemas_whatever_the_run_made_of_i
     confirmed = write_answers(tmp_path / "confirmed", "Two", answers[1:], "confirmed")
     derive(corpus, file, [unchecked, confirmed])
     assert Derivations.read(file).cases == {
-        "one/wider": Derived(a_subsumes_b=Counterexample(counterexample=None))
+        "o/one/wider": Derived(a_subsumes_b=Counterexample(counterexample=None))
     }
 
 
 def test_the_file_is_written_as_it_is_read(tmp_path: Path) -> None:
     file = tmp_path / "derived.json"
     cases = {
-        "one/b": Derived(a_subsumes_b=Counterexample(counterexample={"é": [None, 1.5]})),
-        "one/a/2": Derived(b_subsumes_a=Agreement(checkers=["One 1.0", "Two 1.0"])),
-        "one/a/10": Derived(a_subsumes_b=Counterexample(counterexample=None)),
+        "o/one/b": Derived(a_subsumes_b=Counterexample(counterexample={"é": [None, 1.5]})),
+        "o/one/a.2": Derived(b_subsumes_a=Agreement(checkers=["One 1.0", "Two 1.0"])),
+        "o/one/a.10": Derived(a_subsumes_b=Counterexample(counterexample=None)),
     }
     Derivations.write(file, cases)
     assert Derivations.read(file).cases == cases
     lines = file.read_text(encoding="utf-8").splitlines()
     # One case on a line, sorted as the cases of the corpus are, and nothing that is not ASCII.
-    assert [line.split('"')[1] for line in lines[3:6]] == ["one/a/10", "one/a/2", "one/b"]
+    assert [line.split('"')[1] for line in lines[3:6]] == ["o/one/a.10", "o/one/a.2", "o/one/b"]
     assert all(line.isascii() for line in lines)
     Derivations.write(file, {})
     assert Derivations.read(file).cases == {}
@@ -306,7 +304,7 @@ def test_the_file_is_written_as_it_is_read(tmp_path: Path) -> None:
 )
 def test_a_file_that_is_not_what_the_model_says_is_not_read(tmp_path: Path, entry: Json) -> None:
     file = tmp_path / "derived.json"
-    write_json(file, {"$schema": "./schemas/derived.schema.json", "cases": {"one/a": entry}})
+    write_json(file, {"$schema": "./schemas/derived.schema.json", "cases": {"o/one/a": entry}})
     with pytest.raises(ConfigError):
         Derivations.read(file)
 
@@ -315,13 +313,13 @@ def test_a_file_that_is_not_what_the_model_says_is_not_read(tmp_path: Path, entr
 
 
 def test_the_build_gives_a_case_its_derived_labels_and_what_shows_them() -> None:
-    cases = [open_case("one/a", TEXT, OPTIONAL), open_case("one/b", OPTIONAL, TEXT)]
+    cases = [open_case("o/one/a", TEXT, OPTIONAL), open_case("o/one/b", OPTIONAL, TEXT)]
     refuted = Derived(a_subsumes_b=Counterexample(counterexample=None))
     agreed = Derived(
         a_subsumes_b=Agreement(checkers=["One 1.0", "Two 1.0"]),
         b_subsumes_a=Counterexample(counterexample=None),
     )
-    first, second = with_derived(cases, {"one/a": refuted, "one/b": agreed})
+    first, second = with_derived(cases, {"o/one/a": refuted, "o/one/b": agreed})
     assert (first.a_subsumes_b, first.b_subsumes_a) == (False, None)
     assert (second.a_subsumes_b, second.b_subsumes_a) == (True, False)
     written = second.document
@@ -335,15 +333,15 @@ def test_the_build_gives_a_case_its_derived_labels_and_what_shows_them() -> None
 
 
 def test_a_derived_label_stands_only_where_a_case_has_none() -> None:
-    labelled = [open_case("one/a", TEXT, OPTIONAL, a_subsumes_b=False)]
+    labelled = [open_case("o/one/a", TEXT, OPTIONAL, a_subsumes_b=False)]
     refuted = Derived(a_subsumes_b=Counterexample(counterexample=None))
     with pytest.raises(ConfigError, match="has a label"):
-        with_derived(labelled, {"one/a": refuted})
+        with_derived(labelled, {"o/one/a": refuted})
     with pytest.raises(ConfigError, match="do not exist"):
-        with_derived(labelled, {"one/b": refuted})
-    overridden = [Case("one/a", TEXT, OPTIONAL, None, None, "x.json", note="Withdrawn.")]
+        with_derived(labelled, {"o/one/b": refuted})
+    overridden = [Case("o/one/a", TEXT, OPTIONAL, None, None, "x.json", note="Withdrawn.")]
     with pytest.raises(ConfigError, match=r"overrides\.json lists"):
-        with_derived(overridden, {"one/a": refuted})
+        with_derived(overridden, {"o/one/a": refuted})
 
 
 # --------------------------------------------------------------------------- the corpus

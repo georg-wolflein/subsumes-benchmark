@@ -1,0 +1,85 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "exclusiveMinimum",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/uneval_eliminated_as_additional_containment/unknown/unevaluatedProperties_518.translate_not_trivial.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/uneval_eliminated_as_additional_containment/unknown/unevaluatedProperties_518.trivial_not_translate.json"
+  ],
+  "a": {
+    "$id": "https://registry.hzdr.de/crp/picongpu/schema/picongpu.pypicongpu.species.operation.densityprofile.plasmaramp.exponential.Exponential",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "description": "Describes an exponential plasma ramp.",
+    "additionalProperties": false,
+    "required": [
+      "PlasmaLength",
+      "PlasmaCutoff"
+    ],
+    "properties": {
+      "PlasmaLength": {
+        "type": "number",
+        "description": "length scale of expoential decay of pre-foil plasma density",
+        "exclusiveMinimum": 0
+      },
+      "PlasmaCutoff": {
+        "type": "number",
+        "description": "cutoff length for exponential decay of pre-foil density",
+        "exclusiveMinimum": 0
+      }
+    }
+  },
+  "b": {
+    "$id": "https://registry.hzdr.de/crp/picongpu/schema/picongpu.pypicongpu.species.operation.densityprofile.plasmaramp.exponential.Exponential",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "description": "Describes an exponential plasma ramp.",
+                "required": [
+                  "PlasmaLength",
+                  "PlasmaCutoff"
+                ],
+                "properties": {
+                  "PlasmaLength": {
+                    "type": "number",
+                    "description": "length scale of expoential decay of pre-foil plasma density",
+                    "exclusiveMinimum": 0.0
+                  },
+                  "PlasmaCutoff": {
+                    "type": "number",
+                    "description": "cutoff length for exponential decay of pre-foil density",
+                    "exclusiveMinimum": 0.0
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^PlasmaLength$": true,
+                  "^PlasmaCutoff$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

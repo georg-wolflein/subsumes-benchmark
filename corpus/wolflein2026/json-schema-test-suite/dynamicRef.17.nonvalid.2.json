@@ -1,0 +1,85 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": false,
+  "features": [
+    "$dynamicRef",
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "const",
+    "items",
+    "not",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/dynamicRef.json#/tests/17/tests/2",
+  "derived": {
+    "b_subsumes_a": {
+      "counterexample": null
+    }
+  },
+  "a": {
+    "not": {
+      "$ref": "http://localhost:1234/strict-extendible-allof-ref-first.json"
+    },
+    "$defs": {
+      "http://localhost:1234/strict-extendible-allof-ref-first.json": {
+        "$id": "http://localhost:1234/strict-extendible-allof-ref-first.json",
+        "allOf": [
+          {
+            "$defs": {
+              "elements": {
+                "$dynamicAnchor": "elements",
+                "properties": {
+                  "a": true
+                },
+                "required": [
+                  "a"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "$ref": "extendible-dynamic-ref.json"
+          }
+        ],
+        "$defs": {
+          "http://localhost:1234/extendible-dynamic-ref.json": {
+            "$id": "http://localhost:1234/extendible-dynamic-ref.json",
+            "description": "extendible array",
+            "type": "object",
+            "properties": {
+              "elements": {
+                "type": "array",
+                "items": {
+                  "$dynamicRef": "#elements"
+                }
+              }
+            },
+            "required": [
+              "elements"
+            ],
+            "additionalProperties": false,
+            "$defs": {
+              "elements": {
+                "$dynamicAnchor": "elements"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "b": {
+    "const": {
+      "elements": [
+        {
+          "a": 1
+        }
+      ]
+    }
+  }
+}

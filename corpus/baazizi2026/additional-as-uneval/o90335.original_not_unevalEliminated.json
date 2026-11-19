@@ -1,0 +1,117 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o90335.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o90335.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "verticalOffset",
+                "type": "object",
+                "description": "Shifts the symbol along the vertical world axis by a given length. The length is set in screen space units.",
+                "properties": {
+                  "maxWorldLength": {
+                    "type": "number",
+                    "description": "The maximum vertical symbol lift in world units. It acts as an upper bound to avoid lift becoming too big."
+                  },
+                  "minWorldLength": {
+                    "type": "number",
+                    "description": "The minimum vertical symbol lift in world units. It acts as a lower bound to avoid lift becoming too small.",
+                    "default": 0
+                  },
+                  "screenLength": {
+                    "type": "number",
+                    "description": "Maximal screen length of lift in points."
+                  }
+                },
+                "required": [
+                  "screenLength"
+                ],
+                "esriDocumentation": {
+                  "examples": [
+                    {
+                      "title": "verticalOffset",
+                      "code": {
+                        "verticalOffset": {
+                          "screenLength": 100,
+                          "maxWorldLength": 600,
+                          "minWorldLength": 10
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "patternProperties": {
+                  "^maxWorldLength$": true,
+                  "^minWorldLength$": true,
+                  "^screenLength$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "verticalOffset",
+    "type": "object",
+    "description": "Shifts the symbol along the vertical world axis by a given length. The length is set in screen space units.",
+    "properties": {
+      "maxWorldLength": {
+        "type": "number",
+        "description": "The maximum vertical symbol lift in world units. It acts as an upper bound to avoid lift becoming too big."
+      },
+      "minWorldLength": {
+        "type": "number",
+        "description": "The minimum vertical symbol lift in world units. It acts as a lower bound to avoid lift becoming too small.",
+        "default": 0
+      },
+      "screenLength": {
+        "type": "number",
+        "description": "Maximal screen length of lift in points."
+      }
+    },
+    "required": [
+      "screenLength"
+    ],
+    "additionalProperties": false,
+    "esriDocumentation": {
+      "examples": [
+        {
+          "title": "verticalOffset",
+          "code": {
+            "verticalOffset": {
+              "screenLength": 100,
+              "maxWorldLength": 600,
+              "minWorldLength": 10
+            }
+          }
+        }
+      ]
+    }
+  }
+}

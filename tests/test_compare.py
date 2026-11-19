@@ -44,7 +44,7 @@ def a_result(
 def a_case(a: Json, b: Json, a_subsumes_b: bool | None = None) -> dict[str, Json]:
     """A case as its file has it, with nothing known about the other direction."""
     return {
-        "$schema": "../case.schema.json",
+        "$schema": "../../case.schema.json",
         "a_subsumes_b": a_subsumes_b,
         "b_subsumes_a": None,
         "features": [],
@@ -170,10 +170,9 @@ def test_a_checker_and_a_corpus_from_anywhere_are_run_by_their_paths(tmp_path: P
         "format": a_case({"format": "hostname"}, {"type": "string"}),
         "typo": a_case({"title": "a reply that is none"}, True),
     }
-    (corpus / "c").mkdir(parents=True)
-    (corpus / "c" / "collection.json").write_text("{}", encoding="utf-8")
+    (corpus / "o" / "c").mkdir(parents=True)
     for name, content in written.items():
-        (corpus / "c" / f"{name}.json").write_text(json.dumps(content), encoding="utf-8")
+        (corpus / "o" / "c" / f"{name}.json").write_text(json.dumps(content), encoding="utf-8")
 
     # The paths are taken from the working directory, the corpus and the results by default.
     command = [sys.executable, "-m", "subsumes_benchmark.compare", "run", "mine/fake"]
@@ -185,40 +184,40 @@ def test_a_checker_and_a_corpus_from_anywhere_are_run_by_their_paths(tmp_path: P
     results = {(r.case, r.direction): r for r in read_results(out)}
     assert len(results) == 8
     # `null` is a counterexample like any other, and is told from none by the key.
-    found = results["c/null", "a_subsumes_b"]
+    found = results["o/c/null", "a_subsumes_b"]
     assert isinstance(found, No)
     assert found.witness == Checked(counterexample=None, confirmation="confirmed")
     assert outcome(found) == "correct"
     # A no with a counterexample that is none is wrong, whatever the label says.
-    found = results["c/none", "a_subsumes_b"]
+    found = results["o/c/none", "a_subsumes_b"]
     assert isinstance(found, No)
     assert found.witness == Checked(counterexample=None, confirmation="accepted")
     assert outcome(found) == "wrong_no"
-    found = results["c/format", "a_subsumes_b"]
+    found = results["o/c/format", "a_subsumes_b"]
     assert isinstance(found, Unknown)
     assert (found.reason, found.message) == ("format", "no format")
     # A whole number of seconds is a number of seconds.
-    found = results["c/format", "b_subsumes_a"]
+    found = results["o/c/format", "b_subsumes_a"]
     assert isinstance(found, Yes)
     assert found.seconds == 0.0
     # A counterexample belongs to a no. A line with a key that its answer does not have is no
     # reply: the task counts as a crash, and the adapter is started again for the next.
-    found = results["c/typo", "a_subsumes_b"]
+    found = results["o/c/typo", "a_subsumes_b"]
     assert isinstance(found, Crash)
     assert found.message.startswith("not a reply (counterexample: Extra inputs are not permitted)")
-    assert ending(results["c/typo", "b_subsumes_a"]) == "yes"
+    assert ending(results["o/c/typo", "b_subsumes_a"]) == "yes"
     # A key that does not apply is left out of a line, and is not written as null.
     lines = (out / "results.jsonl").read_text(encoding="utf-8").splitlines()
     written = {(line["case"], line["direction"]): line for line in map(json.loads, lines)}
-    assert written["c/format", "b_subsumes_a"] == {
-        "case": "c/format",
+    assert written["o/c/format", "b_subsumes_a"] == {
+        "case": "o/c/format",
         "direction": "b_subsumes_a",
         "expected": None,
         "answer": True,
         "seconds": 0.0,
-        "wall_seconds": written["c/format", "b_subsumes_a"]["wall_seconds"],
+        "wall_seconds": written["o/c/format", "b_subsumes_a"]["wall_seconds"],
     }
-    assert set(written["c/typo", "a_subsumes_b"]) == {
+    assert set(written["o/c/typo", "a_subsumes_b"]) == {
         "case",
         "direction",
         "expected",
@@ -250,15 +249,15 @@ def test_a_checker_and_a_corpus_from_anywhere_are_run_by_their_paths(tmp_path: P
     ],
 )
 def test_how_a_task_counts(answer: Ending, expected: bool | None, counted: str) -> None:
-    assert outcome(a_result("c/1", answer, expected)) == counted
+    assert outcome(a_result("o/c/1", answer, expected)) == counted
 
 
 @pytest.mark.parametrize("expected", [True, False, None])
 def test_a_no_counts_by_its_counterexample_before_its_label(expected: bool | None) -> None:
     def no(confirmation: Confirmation) -> Result:
-        return runs.a_result("c/1", "no", expected, witness=a_witness(confirmation))
+        return runs.a_result("o/c/1", "no", expected, witness=a_witness(confirmation))
 
-    without = outcome(a_result("c/1", "no", expected))
+    without = outcome(a_result("o/c/1", "no", expected))
     assert outcome(no("not_an_instance")) == "wrong_no"
     assert outcome(no("accepted")) == "wrong_no"
     assert outcome(no("confirmed")) == without
@@ -269,34 +268,34 @@ def test_only_a_task_with_a_label_is_solved_and_the_shares_are_of_those() -> Non
     entry = Entry(
         a_run(),
         [
-            a_result("c/1", "yes", seconds=0.003),
-            a_result("c/2", "no", expected=False, seconds=0.001),
-            a_result("c/3", "no", seconds=0.0001),  # wrong, so not solved
-            a_result("c/4", "unknown", seconds=0.0002),
-            a_result("c/5", "no", expected=None, seconds=0.00001),  # answered, and no more
-            a_result("d/1", "yes", expected=None),
+            a_result("o/c/1", "yes", seconds=0.003),
+            a_result("o/c/2", "no", expected=False, seconds=0.001),
+            a_result("o/c/3", "no", seconds=0.0001),  # wrong, so not solved
+            a_result("o/c/4", "unknown", seconds=0.0002),
+            a_result("o/c/5", "no", expected=None, seconds=0.00001),  # answered, and no more
+            a_result("o/d/1", "yes", expected=None),
         ],
     )
-    assert [result.case for result in entry.labelled()] == ["c/1", "c/2", "c/3", "c/4"]
-    assert [result.case for result in entry.unlabelled()] == ["c/5", "d/1"]
+    assert [result.case for result in entry.labelled()] == ["o/c/1", "o/c/2", "o/c/3", "o/c/4"]
+    assert [result.case for result in entry.unlabelled()] == ["o/c/5", "o/d/1"]
     assert entry.solved() == 2
     assert entry.solved_seconds() == [0.001, 0.003]
     # Of the four tasks with a label; those that were not solved count as slower.
     assert entry.seconds_to_solve(0.25) == 0.001
     assert entry.seconds_to_solve(0.5) == 0.003
     assert entry.seconds_to_solve(0.75) is None
-    assert entry.collections() == {"c": (2, 4), "d": (0, 0)}
-    assert entry.solved(lambda result: result.case == "c/1") == 1
+    assert entry.collections() == {"o/c": (2, 4), "o/d": (0, 0)}
+    assert entry.solved(lambda result: result.case == "o/c/1") == 1
 
 
 def test_variants_of_a_checker_are_compared_answer_by_answer() -> None:
     first = Entry(
         a_run("one", variant="Rust"),
-        [a_result("c/1", "yes"), a_result("c/2", "no"), a_result("c/3", "unknown")],
+        [a_result("o/c/1", "yes"), a_result("o/c/2", "no"), a_result("o/c/3", "unknown")],
     )
     second = Entry(
         a_run("one-python", variant="Python"),
-        [a_result("c/1", "yes"), a_result("c/2", "timeout"), a_result("c/3", "no")],
+        [a_result("o/c/1", "yes"), a_result("o/c/2", "timeout"), a_result("o/c/3", "no")],
     )
     other = Entry(a_run("two", label="Two"), first.results)
     (found,) = agreements([first, second, other])
@@ -305,7 +304,7 @@ def test_variants_of_a_checker_are_compared_answer_by_answer() -> None:
 
 
 def test_runs_are_listed_by_label_and_must_be_over_the_same_tasks(tmp_path: Path) -> None:
-    results = [a_result("c/1", "yes")]
+    results = [a_result("o/c/1", "yes")]
     write(tmp_path / "b", a_run("zeta", label="alpha", variant="Python"), results)
     write(tmp_path / "a", a_run("beta", label="Beta"), results)
     write(tmp_path / "c", a_run("alpha", label="alpha", variant="Rust"), results)
@@ -315,7 +314,7 @@ def test_runs_are_listed_by_label_and_must_be_over_the_same_tasks(tmp_path: Path
         "alpha (Python)",
         "Beta",
     ]
-    write(tmp_path / "d", a_run("gamma", label="Gamma"), [a_result("c/2", "yes")])
+    write(tmp_path / "d", a_run("gamma", label="Gamma"), [a_result("o/c/2", "yes")])
     with pytest.raises(ReportError, match="did not run the tasks"):
         read_entries(tmp_path)
 
@@ -393,7 +392,7 @@ PINS = {
     "jsonsubschema": ("adapter.py", "jsonsubschema=={}"),
     # RWG is compiled from the submodule, whose commit the corpus records for every
     # collection that is built from it.
-    "rwg": ("../../corpus/rb-testset/collection.json", '"commit": "{}'),
+    "rwg": ("../../corpus/collections.json", '"commit": "{}'),
     "subsumes": ("Cargo.toml", 'subsumes = "={}"'),
     "subsumes-python": ("adapter.py", "subsumes=={}"),
 }

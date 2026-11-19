@@ -1,0 +1,140 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o68396.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o68396.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "stattype": {
+        "type": "string",
+        "enum": [
+          "CATEGORICAL",
+          "NUMERICAL",
+          "IGNORE"
+        ]
+      },
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "Schema for MML commands to CREATE GENERATOR",
+                "type": "object",
+                "required": [
+                  "metamodel",
+                  "columns"
+                ],
+                "properties": {
+                  "metamodel": {
+                    "type": "string"
+                  },
+                  "columns": {
+                    "$ref": "#/$defs/modern_2"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^metamodel$": true,
+                  "^columns$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object"
+              },
+              {
+                "additionalProperties": {
+                  "$ref": "#/$defs/column_def"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "column_def": {
+        "type": "object",
+        "required": [
+          "stattype"
+        ],
+        "properties": {
+          "stattype": {
+            "$ref": "#/$defs/stattype"
+          },
+          "guess": {
+            "$ref": "#/$defs/stattype"
+          }
+        }
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Schema for MML commands to CREATE GENERATOR",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "metamodel",
+      "columns"
+    ],
+    "properties": {
+      "metamodel": {
+        "type": "string"
+      },
+      "columns": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/$defs/column_def"
+        }
+      }
+    },
+    "$defs": {
+      "column_def": {
+        "type": "object",
+        "required": [
+          "stattype"
+        ],
+        "properties": {
+          "stattype": {
+            "$ref": "#/$defs/stattype"
+          },
+          "guess": {
+            "$ref": "#/$defs/stattype"
+          }
+        }
+      },
+      "stattype": {
+        "type": "string",
+        "enum": [
+          "CATEGORICAL",
+          "NUMERICAL",
+          "IGNORE"
+        ]
+      }
+    }
+  }
+}

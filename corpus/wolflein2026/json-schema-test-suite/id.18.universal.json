@@ -1,0 +1,36 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "anyOf",
+    "not",
+    "type"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/id.json#/tests/18",
+  "a": true,
+  "b": {
+    "anyOf": [
+      {
+        "$ref": "file:///folder/file.json"
+      },
+      {
+        "not": {
+          "$ref": "file:///folder/file.json"
+        }
+      }
+    ],
+    "$defs": {
+      "file:///folder/file.json": {
+        "$id": "file:///folder/file.json",
+        "$defs": {
+          "foo": {
+            "type": "number"
+          }
+        },
+        "$ref": "#/$defs/foo"
+      }
+    }
+  }
+}

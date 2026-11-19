@@ -1,0 +1,235 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "minimum",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o27402.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o27402.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "commandline": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string",
+        "default": ""
+      },
+      "stdout": {
+        "type": "string",
+        "pattern": "^gs://(.+)",
+        "default": ""
+      },
+      "outputs": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/pathpair"
+        }
+      },
+      "resources": {
+        "type": "object",
+        "properties": {
+          "memunit": {
+            "$ref": "#/$defs/bytesunit"
+          },
+          "disk": {
+            "type": "integer",
+            "minimum": 1.0
+          },
+          "diskunit": {
+            "$ref": "#/$defs/bytesunit"
+          },
+          "mem": {
+            "type": "integer",
+            "minimum": 1.0
+          },
+          "cpus": {
+            "type": "number",
+            "minimum": 0.1
+          }
+        },
+        "required": [
+          "cpus",
+          "mem",
+          "disk"
+        ]
+      },
+      "stderr": {
+        "type": "string",
+        "pattern": "^gs://(.+)",
+        "default": ""
+      },
+      "docker": {
+        "type": "string"
+      },
+      "inputs": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/pathpair"
+        }
+      }
+    },
+    "required": [
+      "inputs",
+      "commandline",
+      "outputs",
+      "resources",
+      "docker"
+    ],
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "cloud": {
+                    "type": "string",
+                    "pattern": "(^gs://(.+))|(^http://(.+))|(^https://(.+))"
+                  },
+                  "local": {
+                    "type": "string",
+                    "pattern": "^/(.*)"
+                  }
+                },
+                "required": [
+                  "cloud",
+                  "local"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^cloud$": true,
+                  "^local$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "bytesunit": {
+        "type": "string",
+        "pattern": "^BYTES|^KB|^MB|^GB|^TB",
+        "default": "MB"
+      },
+      "pathpair": {
+        "$ref": "#/$defs/modern_1"
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "default": ""
+      },
+      "inputs": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/pathpair"
+        }
+      },
+      "commandline": {
+        "type": "string"
+      },
+      "outputs": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/pathpair"
+        }
+      },
+      "stdout": {
+        "type": "string",
+        "pattern": "^gs://(.+)",
+        "default": ""
+      },
+      "stderr": {
+        "type": "string",
+        "pattern": "^gs://(.+)",
+        "default": ""
+      },
+      "resources": {
+        "type": "object",
+        "properties": {
+          "cpus": {
+            "type": "number",
+            "minimum": 0.1
+          },
+          "mem": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "memunit": {
+            "$ref": "#/$defs/bytesunit"
+          },
+          "disk": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "diskunit": {
+            "$ref": "#/$defs/bytesunit"
+          }
+        },
+        "required": [
+          "cpus",
+          "mem",
+          "disk"
+        ]
+      },
+      "docker": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "inputs",
+      "commandline",
+      "outputs",
+      "resources",
+      "docker"
+    ],
+    "$defs": {
+      "pathpair": {
+        "type": "object",
+        "properties": {
+          "cloud": {
+            "type": "string",
+            "pattern": "(^gs://(.+))|(^http://(.+))|(^https://(.+))"
+          },
+          "local": {
+            "type": "string",
+            "pattern": "^/(.*)"
+          }
+        },
+        "required": [
+          "cloud",
+          "local"
+        ],
+        "additionalProperties": false
+      },
+      "bytesunit": {
+        "type": "string",
+        "pattern": "^BYTES|^KB|^MB|^GB|^TB",
+        "default": "MB"
+      }
+    }
+  }
+}

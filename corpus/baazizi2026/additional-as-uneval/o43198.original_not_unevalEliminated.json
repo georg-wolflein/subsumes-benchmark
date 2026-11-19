@@ -1,0 +1,137 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "multipleOf",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o43198.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o43198.unevalEliminated_not_original.json",
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o5463.original_not_unevalEliminated.json",
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o5463.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "array",
+    "items": {
+      "$ref": "#/$defs/CampaignMission"
+    },
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "missionNumber": {
+                    "type": "integer",
+                    "multipleOf": 1.0
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "contentId": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "imageUrl": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "missionNumber",
+                  "name",
+                  "description",
+                  "imageUrl",
+                  "type",
+                  "id",
+                  "contentId"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^description$": true,
+                  "^missionNumber$": true,
+                  "^name$": true,
+                  "^type$": true,
+                  "^id$": true,
+                  "^imageUrl$": true,
+                  "^contentId$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "CampaignMission": {
+        "$ref": "#/$defs/modern_1"
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "array",
+    "items": {
+      "$ref": "#/$defs/CampaignMission"
+    },
+    "$defs": {
+      "CampaignMission": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "missionNumber": {
+            "type": "integer",
+            "multipleOf": 1
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "imageUrl": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "contentId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "missionNumber",
+          "name",
+          "description",
+          "imageUrl",
+          "type",
+          "id",
+          "contentId"
+        ]
+      }
+    }
+  }
+}

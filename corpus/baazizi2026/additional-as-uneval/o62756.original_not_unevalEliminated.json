@@ -1,0 +1,145 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "items",
+    "maxLength",
+    "minItems",
+    "minLength",
+    "pattern",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o62756.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o62756.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Ex",
+    "description": "An Ex organism",
+    "type": "object",
+    "properties": {
+      "modifier": {
+        "description": "A modifier",
+        "enum": [
+          "",
+          "blue"
+        ]
+      },
+      "title": {
+        "description": "Title of the pattern",
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 100
+      },
+      "links": {
+        "$ref": "#/$defs/modern_1"
+      },
+      "buttons": {
+        "description": "a boolean",
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "title",
+      "links"
+    ],
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "description": "An array of links",
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "uri": {
+                      "description": "the target uri",
+                      "type": "string",
+                      "pattern": "^[a-z]*$"
+                    },
+                    "text": {
+                      "description": "The link text",
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "uri",
+                  "text"
+                ]
+              },
+              {
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Ex",
+    "description": "An Ex organism",
+    "type": "object",
+    "properties": {
+      "modifier": {
+        "description": "A modifier",
+        "enum": [
+          "",
+          "blue"
+        ]
+      },
+      "title": {
+        "description": "Title of the pattern",
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 100
+      },
+      "links": {
+        "description": "An array of links",
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "object",
+          "properties": {
+            "uri": {
+              "description": "the target uri",
+              "type": "string",
+              "pattern": "^[a-z]*$"
+            },
+            "text": {
+              "description": "The link text",
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "uri",
+          "text"
+        ],
+        "additionalProperties": false
+      },
+      "buttons": {
+        "description": "a boolean",
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "title",
+      "links"
+    ]
+  }
+}

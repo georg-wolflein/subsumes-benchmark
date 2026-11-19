@@ -1,0 +1,36 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": false,
+  "features": [
+    "$ref",
+    "const",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/id.json#/tests/12/tests/1",
+  "derived": {
+    "b_subsumes_a": {
+      "counterexample": null
+    }
+  },
+  "a": {
+    "$comment": "URIs do not have to have HTTP(s) schemes",
+    "$id": "urn:uuid:deadbeef-1234-00ff-ff00-4321feebdaed",
+    "properties": {
+      "foo": {
+        "$ref": "#/$defs/bar"
+      }
+    },
+    "$defs": {
+      "bar": {
+        "type": "string"
+      }
+    }
+  },
+  "b": {
+    "const": {
+      "foo": 12
+    }
+  }
+}

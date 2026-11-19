@@ -1,0 +1,67 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "patternProperties",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/uneval_eliminated_as_additional_containment/unknown/unevaluatedProperties_775.translate_not_trivial.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/uneval_eliminated_as_additional_containment/unknown/unevaluatedProperties_775.trivial_not_translate.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "namespace-uri": {
+        "type": "string",
+        "description": "Full URI of the node namespace. If left out it is assumed to be the base namespace"
+      },
+      "node-id": {
+        "type": "string",
+        "description": "Identifier of the node id, on the form i=123, s=string, etc. See the OPC-UA standard"
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "namespace-uri": {
+                    "type": "string",
+                    "description": "Full URI of the node namespace. If left out it is assumed to be the base namespace"
+                  },
+                  "node-id": {
+                    "type": "string",
+                    "description": "Identifier of the node id, on the form i=123, s=string, etc. See the OPC-UA standard"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^namespace-uri$": true,
+                  "^node-id$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

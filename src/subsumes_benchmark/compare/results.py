@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Literal, assert_never, get_args
 
 from pydantic import TypeAdapter, ValidationError
 
+from subsumes_benchmark.compare.tasks import collection_of
 from subsumes_benchmark.config import ConfigError
 from subsumes_benchmark.generated.result import (
     Crash,
@@ -71,8 +72,8 @@ def ending(result: Result) -> Ending:
 
 
 def collection(result: Result) -> str:
-    """The collection of the task: the first folder of the id of its case."""
-    return result.case.partition("/")[0]
+    """The collection of the task: the folders of the id of its case, an origin and a name."""
+    return collection_of(result.case)
 
 
 def seconds(result: Result) -> float | None:

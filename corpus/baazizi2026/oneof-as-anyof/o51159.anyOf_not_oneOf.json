@@ -1,0 +1,115 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": true,
+  "features": [
+    "additionalProperties",
+    "anyOf",
+    "enum",
+    "oneOf",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/sat/o51159.anyOf_not_oneOf.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o51159.oneOf_not_anyOf.json"
+  ],
+  "derived": {
+    "b_subsumes_a": {
+      "checkers": [
+        "RWG 8064ad8",
+        "jsoncompat 0.6.0",
+        "subsumes 0.2.0"
+      ]
+    }
+  },
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "Credit card with or without security code",
+    "properties": {
+      "creditcard": {
+        "oneOf": [
+          {
+            "additionalProperties": false,
+            "properties": {
+              "provider": {
+                "enum": [
+                  "mastercard"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "provider"
+            ]
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "provider": {
+                "enum": [
+                  "visa"
+                ],
+                "type": "string"
+              },
+              "securitycode": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "provider",
+              "securitycode"
+            ]
+          }
+        ]
+      }
+    },
+    "title": "Credit card validation",
+    "type": "object"
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "Credit card with or without security code",
+    "properties": {
+      "creditcard": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "properties": {
+              "provider": {
+                "enum": [
+                  "mastercard"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "provider"
+            ]
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "provider": {
+                "enum": [
+                  "visa"
+                ],
+                "type": "string"
+              },
+              "securitycode": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "provider",
+              "securitycode"
+            ]
+          }
+        ]
+      }
+    },
+    "title": "Credit card validation",
+    "type": "object"
+  }
+}

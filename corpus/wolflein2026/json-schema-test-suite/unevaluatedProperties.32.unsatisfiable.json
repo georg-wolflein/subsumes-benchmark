@@ -1,0 +1,75 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "allOf",
+    "anyOf",
+    "not",
+    "properties",
+    "type",
+    "unevaluatedProperties"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/unevaluatedProperties.json#/tests/32",
+  "a": false,
+  "b": {
+    "allOf": [
+      {
+        "type": "object",
+        "properties": {
+          "foo": {
+            "type": "object",
+            "properties": {
+              "bar": {
+                "type": "string"
+              }
+            },
+            "unevaluatedProperties": false
+          }
+        },
+        "anyOf": [
+          {
+            "properties": {
+              "foo": {
+                "properties": {
+                  "faz": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "not": {
+          "type": "object",
+          "properties": {
+            "foo": {
+              "type": "object",
+              "properties": {
+                "bar": {
+                  "type": "string"
+                }
+              },
+              "unevaluatedProperties": false
+            }
+          },
+          "anyOf": [
+            {
+              "properties": {
+                "foo": {
+                  "properties": {
+                    "faz": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

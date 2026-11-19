@@ -1,0 +1,94 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "patternProperties",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/uneval_eliminated_as_additional_containment/sat/unevaluatedProperties_72.translate_not_trivial.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/uneval_eliminated_as_additional_containment/unknown/unevaluatedProperties_72.trivial_not_translate.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "anyOf": [
+      {
+        "$ref": "#/$defs/_AdaptiveValueInf_"
+      }
+    ],
+    "$defs": {
+      "_AdaptiveValueInf_": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/_AdaptiveValueInf_.propertyTypes"
+          }
+        ],
+        "description": "A registry type value_inf entry.",
+        "type": "object",
+        "additionalProperties": false
+      },
+      "_AdaptiveValueInf_.propertyTypes": {
+        "properties": {
+          "key": {
+            "description": "Key of entry.",
+            "title": "Key",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "anyOf": [
+      {
+        "$ref": "#/$defs/_AdaptiveValueInf_"
+      }
+    ],
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/_AdaptiveValueInf_.propertyTypes"
+                  }
+                ],
+                "description": "A registry type value_inf entry.",
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^key$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "_AdaptiveValueInf_.propertyTypes": {
+        "properties": {
+          "key": {
+            "description": "Key of entry.",
+            "title": "Key",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "_AdaptiveValueInf_": {
+        "$ref": "#/$defs/modern_1"
+      }
+    }
+  }
+}

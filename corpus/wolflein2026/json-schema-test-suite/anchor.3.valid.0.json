@@ -1,0 +1,39 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": false,
+  "features": [
+    "$ref",
+    "const",
+    "type"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/anchor.json#/tests/3/tests/0",
+  "derived": {
+    "b_subsumes_a": {
+      "counterexample": ""
+    }
+  },
+  "a": {
+    "$id": "http://localhost:1234/foobar",
+    "$defs": {
+      "A": {
+        "$id": "child1",
+        "allOf": [
+          {
+            "$id": "child2",
+            "$anchor": "my_anchor",
+            "type": "number"
+          },
+          {
+            "$anchor": "my_anchor",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "$ref": "child1#my_anchor"
+  },
+  "b": {
+    "const": "a"
+  }
+}

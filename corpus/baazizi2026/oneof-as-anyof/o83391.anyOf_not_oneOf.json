@@ -1,0 +1,327 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "anyOf",
+    "enum",
+    "items",
+    "oneOf",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o83391.anyOf_not_oneOf.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o83391.oneOf_not_anyOf.json"
+  ],
+  "derived": {
+    "a_subsumes_b": {
+      "counterexample": {
+        "fields": [
+          {
+            "type": "text"
+          }
+        ],
+        "label": "",
+        "name": "",
+        "version": 0
+      }
+    },
+    "b_subsumes_a": {
+      "checkers": [
+        "RWG 8064ad8",
+        "jsoncompat 0.6.0",
+        "subsumes 0.2.0"
+      ]
+    }
+  },
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "label": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "version": {
+        "type": "integer",
+        "default": 1
+      },
+      "info": {
+        "type": "string"
+      },
+      "fields": {
+        "$ref": "#/$defs/field"
+      }
+    },
+    "required": [
+      "name",
+      "label",
+      "version"
+    ],
+    "$defs": {
+      "field": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "label": {
+              "type": "string"
+            },
+            "info": {
+              "type": "string"
+            },
+            "placeholder": {
+              "type": "string"
+            },
+            "validation": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "anyOf": [
+            {
+              "properties": {
+                "type": {
+                  "enum": [
+                    "header",
+                    "paragraph"
+                  ]
+                }
+              },
+              "required": [
+                "type",
+                "name"
+              ]
+            },
+            {
+              "required": [
+                "type",
+                "name",
+                "label"
+              ]
+            }
+          ],
+          "oneOf": [
+            {
+              "properties": {
+                "type": {
+                  "enum": [
+                    "text",
+                    "textarea",
+                    "richtext",
+                    "link"
+                  ]
+                },
+                "default": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "properties": {
+                "type": {
+                  "enum": [
+                    "collection",
+                    "checkbox",
+                    "multiselect",
+                    "nested"
+                  ]
+                },
+                "default": {
+                  "type": "array"
+                }
+              }
+            },
+            {
+              "properties": {
+                "type": {
+                  "enum": [
+                    "switch"
+                  ]
+                },
+                "default": {
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "properties": {
+                "type": {
+                  "enum": [
+                    "image",
+                    "file"
+                  ]
+                },
+                "default": {
+                  "type": "object"
+                }
+              }
+            },
+            {
+              "properties": {
+                "type": {
+                  "enum": [
+                    "select",
+                    "radio",
+                    "buttongroup",
+                    "number",
+                    "slider",
+                    "date",
+                    "time",
+                    "datetime",
+                    "group",
+                    "header",
+                    "paragraph"
+                  ]
+                },
+                "default": {}
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "label": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "version": {
+        "type": "integer",
+        "default": 1
+      },
+      "info": {
+        "type": "string"
+      },
+      "fields": {
+        "$ref": "#/$defs/field"
+      }
+    },
+    "required": [
+      "name",
+      "label",
+      "version"
+    ],
+    "$defs": {
+      "field": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "label": {
+              "type": "string"
+            },
+            "info": {
+              "type": "string"
+            },
+            "placeholder": {
+              "type": "string"
+            },
+            "validation": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "anyOf": [
+            {
+              "properties": {
+                "type": {
+                  "enum": [
+                    "text",
+                    "textarea",
+                    "richtext",
+                    "link"
+                  ]
+                },
+                "default": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "properties": {
+                "type": {
+                  "enum": [
+                    "collection",
+                    "checkbox",
+                    "multiselect",
+                    "nested"
+                  ]
+                },
+                "default": {
+                  "type": "array"
+                }
+              }
+            },
+            {
+              "properties": {
+                "type": {
+                  "enum": [
+                    "switch"
+                  ]
+                },
+                "default": {
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "properties": {
+                "type": {
+                  "enum": [
+                    "image",
+                    "file"
+                  ]
+                },
+                "default": {
+                  "type": "object"
+                }
+              }
+            },
+            {
+              "properties": {
+                "type": {
+                  "enum": [
+                    "select",
+                    "radio",
+                    "buttongroup",
+                    "number",
+                    "slider",
+                    "date",
+                    "time",
+                    "datetime",
+                    "group",
+                    "header",
+                    "paragraph"
+                  ]
+                },
+                "default": {}
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

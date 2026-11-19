@@ -1,0 +1,56 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$dynamicRef",
+    "$ref",
+    "anyOf",
+    "items",
+    "not",
+    "type"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/dynamicRef.json#/tests/5",
+  "a": true,
+  "b": {
+    "anyOf": [
+      {
+        "$ref": "https://test.json-schema.org/dynamic-resolution-with-intermediate-scopes/root"
+      },
+      {
+        "not": {
+          "$ref": "https://test.json-schema.org/dynamic-resolution-with-intermediate-scopes/root"
+        }
+      }
+    ],
+    "$defs": {
+      "https://test.json-schema.org/dynamic-resolution-with-intermediate-scopes/root": {
+        "$id": "https://test.json-schema.org/dynamic-resolution-with-intermediate-scopes/root",
+        "$ref": "intermediate-scope",
+        "$defs": {
+          "foo": {
+            "$dynamicAnchor": "items",
+            "type": "string"
+          },
+          "intermediate-scope": {
+            "$id": "intermediate-scope",
+            "$ref": "list"
+          },
+          "list": {
+            "$id": "list",
+            "type": "array",
+            "items": {
+              "$dynamicRef": "#items"
+            },
+            "$defs": {
+              "items": {
+                "$comment": "This is only needed to satisfy the bookending requirement",
+                "$dynamicAnchor": "items"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "maxProperties",
+    "maximum",
+    "minimum",
+    "not",
+    "oneOf",
+    "patternProperties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/trickyschemas/unsat/obj.10.eq1.sub.eq2.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/trickyschemas/unsat/obj.10.eq2.sub.eq1.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "maxProperties": 1,
+    "type": "object",
+    "not": {
+      "patternProperties": {
+        "a": {
+          "not": {}
+        }
+      }
+    },
+    "patternProperties": {
+      "a": {
+        "oneOf": [
+          {
+            "type": "number",
+            "minimum": 5
+          },
+          {
+            "type": "number",
+            "maximum": 100
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "maxProperties": 1,
+    "oneOf": [
+      {
+        "patternProperties": {
+          "a": {
+            "type": "number",
+            "minimum": 5,
+            "minimumStrong": 3,
+            "minimumWeak": 7
+          }
+        }
+      },
+      {
+        "patternProperties": {
+          "a": {
+            "type": "number",
+            "maximum": 100
+          }
+        }
+      }
+    ]
+  }
+}

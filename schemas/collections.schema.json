@@ -1,9 +1,9 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/georg-wolflein/subsumes-benchmark/blob/main/schemas/collections.schema.json",
-  "description": "The collections of the corpus and the upstream sources they are built from.",
+  "description": "The collections of the corpus, the upstream sources they are built from and the works they are first published in.",
   "type": "object",
-  "required": ["$schema", "sources", "collections"],
+  "required": ["$schema", "sources", "origins", "collections"],
   "additionalProperties": false,
   "properties": {
     "$schema": {
@@ -16,8 +16,14 @@
       "propertyNames": { "$ref": "#/$defs/Name" },
       "additionalProperties": { "$ref": "#/$defs/SourceSpec" }
     },
+    "origins": {
+      "description": "The works that first published the pairs of a collection as inclusion questions, by citation key: the first author's last name and the year. An origin is a folder of the corpus, and it is not where a collection is fetched from, which is its source.",
+      "type": "object",
+      "propertyNames": { "$ref": "#/$defs/Name" },
+      "additionalProperties": { "$ref": "#/$defs/OriginSpec" }
+    },
     "collections": {
-      "description": "The collections, by name, in the order they are built. A collection is one dataset of a source, and its name is its folder in the corpus.",
+      "description": "The collections, by name, in the order they are built. A collection is one dataset of a source, and its name is its folder in the corpus, below the folder of its origin.",
       "type": "object",
       "propertyNames": { "$ref": "#/$defs/Name" },
       "additionalProperties": { "$ref": "#/$defs/CollectionSpec" }
@@ -25,7 +31,7 @@
   },
   "$defs": {
     "Name": {
-      "description": "The name of a source or of a collection, which is the name of a folder.",
+      "description": "The name of a source, of an origin or of a collection, which is the name of a folder.",
       "type": "string",
       "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
     },
@@ -34,12 +40,29 @@
       "enum": ["github", "gitlab"]
     },
     "LabelOrigin": {
-      "description": "Where the answers come from. by-construction: the pair was built so that the answer is known. witness-generator: the upstream authors' complete but timeout-bound tool, so an unlabelled case means that it gave up. upstream-tests: the expectations of the jsonsubschema tool's own tests.",
+      "description": "Where the answers come from. by-construction: the pair was built so that the answer is known. witness-generator: the upstream authors' complete but timeout-bound tool, so an unlabelled case means that it gave up. upstream-tests: the ground truth that the replication package of the jsonsubschema tool gives for its pairs.",
       "enum": ["by-construction", "witness-generator", "upstream-tests"]
     },
     "UseCase": {
       "description": "What the pairs of the collection are for.",
       "enum": ["tool-checking", "schema-evolution", "schema-analysis"]
+    },
+    "OriginSpec": {
+      "description": "An origin: the work that first published the pairs of its collections as inclusion questions.",
+      "type": "object",
+      "required": ["citation", "url"],
+      "additionalProperties": false,
+      "properties": {
+        "citation": {
+          "description": "The work, as a reference list gives it: authors, title, venue and year.",
+          "type": "string"
+        },
+        "url": {
+          "description": "Where the work is found, as a permanent link where it has one.",
+          "type": "string",
+          "format": "uri"
+        }
+      }
     },
     "SourceSpec": {
       "description": "An upstream source: a submodule under sources/, at the commit it pins.",
@@ -59,11 +82,15 @@
       }
     },
     "CollectionSpec": {
-      "description": "A collection: one dataset of a source.",
+      "description": "A collection: one dataset of a source, first published in the work of its origin.",
       "type": "object",
-      "required": ["source", "path", "labels", "use_case", "description"],
+      "required": ["origin", "source", "path", "labels", "use_case", "description"],
       "additionalProperties": false,
       "properties": {
+        "origin": {
+          "description": "The citation key of the work that first published these pairs, one of those under origins. Its folder holds the folder of the collection.",
+          "$ref": "#/$defs/Name"
+        },
         "source": {
           "description": "The name of the source the collection is built from, one of those under sources.",
           "$ref": "#/$defs/Name"

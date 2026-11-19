@@ -1,0 +1,392 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "additionalProperties",
+    "anyOf",
+    "enum",
+    "items",
+    "oneOf",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o41096.anyOf_not_oneOf.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o41096.oneOf_not_anyOf.json"
+  ],
+  "derived": {
+    "a_subsumes_b": {
+      "checkers": [
+        "RWG 8064ad8",
+        "jsoncompat 0.6.0",
+        "subsumes 0.2.0"
+      ]
+    },
+    "b_subsumes_a": {
+      "checkers": [
+        "RWG 8064ad8",
+        "jsoncompat 0.6.0",
+        "subsumes 0.2.0"
+      ]
+    }
+  },
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$comment": "This should be kept in sync with the validator in packages/flutter_tools/lib/src/flutter_manifest.dart",
+    "title": "pubspec.yaml",
+    "type": "object",
+    "additionalProperties": true,
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "flutter": {
+        "oneOf": [
+          {
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "uses-material-design": {
+            "type": "boolean"
+          },
+          "assets": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "services": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "fonts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "family": {
+                  "type": "string"
+                },
+                "fonts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "asset": {
+                        "type": "string"
+                      },
+                      "weight": {
+                        "enum": [
+                          100,
+                          200,
+                          300,
+                          400,
+                          500,
+                          600,
+                          700,
+                          800,
+                          900
+                        ]
+                      },
+                      "style": {
+                        "enum": [
+                          "normal",
+                          "italic"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "module": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "androidX": {
+                "type": "boolean"
+              },
+              "androidPackage": {
+                "type": "string"
+              },
+              "iosBundleIdentifier": {
+                "type": "string"
+              }
+            }
+          },
+          "plugin": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "platforms": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "android": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "package": {
+                        "type": "string"
+                      },
+                      "pluginClass": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "ios": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "pluginClass": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "linux": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "pluginClass": {
+                        "type": "string"
+                      },
+                      "dartPluginClass": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "macos": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "pluginClass": {
+                        "type": "string"
+                      },
+                      "dartPluginClass": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "windows": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "pluginClass": {
+                        "type": "string"
+                      },
+                      "dartPluginClass": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "androidPackage": {
+                "type": "string"
+              },
+              "iosPrefix": {
+                "type": "string"
+              },
+              "macosPrefix": {
+                "type": "string"
+              },
+              "pluginClass": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$comment": "This should be kept in sync with the validator in packages/flutter_tools/lib/src/flutter_manifest.dart",
+    "title": "pubspec.yaml",
+    "type": "object",
+    "additionalProperties": true,
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "flutter": {
+        "additionalProperties": false,
+        "properties": {
+          "uses-material-design": {
+            "type": "boolean"
+          },
+          "assets": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "services": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "fonts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "family": {
+                  "type": "string"
+                },
+                "fonts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "asset": {
+                        "type": "string"
+                      },
+                      "weight": {
+                        "enum": [
+                          100,
+                          200,
+                          300,
+                          400,
+                          500,
+                          600,
+                          700,
+                          800,
+                          900
+                        ]
+                      },
+                      "style": {
+                        "enum": [
+                          "normal",
+                          "italic"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "module": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "androidX": {
+                "type": "boolean"
+              },
+              "androidPackage": {
+                "type": "string"
+              },
+              "iosBundleIdentifier": {
+                "type": "string"
+              }
+            }
+          },
+          "plugin": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "platforms": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "android": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "package": {
+                        "type": "string"
+                      },
+                      "pluginClass": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "ios": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "pluginClass": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "linux": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "pluginClass": {
+                        "type": "string"
+                      },
+                      "dartPluginClass": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "macos": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "pluginClass": {
+                        "type": "string"
+                      },
+                      "dartPluginClass": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "windows": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "pluginClass": {
+                        "type": "string"
+                      },
+                      "dartPluginClass": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "androidPackage": {
+                "type": "string"
+              },
+              "iosPrefix": {
+                "type": "string"
+              },
+              "macosPrefix": {
+                "type": "string"
+              },
+              "pluginClass": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "anyOf": [
+          {
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    }
+  }
+}

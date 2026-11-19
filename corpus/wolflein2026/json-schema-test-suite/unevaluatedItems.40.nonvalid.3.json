@@ -1,0 +1,56 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": false,
+  "features": [
+    "const",
+    "contains",
+    "if",
+    "not",
+    "then",
+    "unevaluatedItems"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/unevaluatedItems.json#/tests/40/tests/3",
+  "derived": {
+    "b_subsumes_a": {
+      "counterexample": [
+        0,
+        0
+      ]
+    }
+  },
+  "a": {
+    "not": {
+      "if": {
+        "contains": {
+          "const": "a"
+        }
+      },
+      "then": {
+        "if": {
+          "contains": {
+            "const": "b"
+          }
+        },
+        "then": {
+          "if": {
+            "contains": {
+              "const": "c"
+            }
+          }
+        }
+      },
+      "unevaluatedItems": false
+    }
+  },
+  "b": {
+    "const": [
+      "c",
+      "a",
+      "c",
+      "c",
+      "b",
+      "a"
+    ]
+  }
+}

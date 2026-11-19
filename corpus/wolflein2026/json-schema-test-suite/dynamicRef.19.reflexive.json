@@ -1,0 +1,45 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$dynamicRef",
+    "$ref",
+    "type"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/dynamicRef.json#/tests/19",
+  "a": {
+    "$ref": "http://localhost:1234/detached-dynamicref.json#/$defs/foo",
+    "$defs": {
+      "http://localhost:1234/detached-dynamicref.json": {
+        "$id": "http://localhost:1234/detached-dynamicref.json",
+        "$defs": {
+          "foo": {
+            "$dynamicRef": "#detached"
+          },
+          "detached": {
+            "$dynamicAnchor": "detached",
+            "type": "integer"
+          }
+        }
+      }
+    }
+  },
+  "b": {
+    "$ref": "http://localhost:1234/detached-dynamicref.json#/$defs/foo",
+    "$defs": {
+      "http://localhost:1234/detached-dynamicref.json": {
+        "$id": "http://localhost:1234/detached-dynamicref.json",
+        "$defs": {
+          "foo": {
+            "$dynamicRef": "#detached"
+          },
+          "detached": {
+            "$dynamicAnchor": "detached",
+            "type": "integer"
+          }
+        }
+      }
+    }
+  }
+}

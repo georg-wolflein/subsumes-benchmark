@@ -1,0 +1,306 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "patternProperties",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o17133.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o17133.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "emailObj",
+                "description": "Used to content of an email",
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "description": "Status ot the email (queued, failed, sent)"
+                  },
+                  "hash": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Hash used to identify the email"
+                  },
+                  "content": {
+                    "type": "object",
+                    "description": "Size in bytes of all pictures captured (SUM storedJpgSize and storedRawSize)",
+                    "properties": {
+                      "FROM": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "description": "Full text name of the sender"
+                          },
+                          "email": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "description": "Email of the sender"
+                          }
+                        }
+                      },
+                      "BODY": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "description": "Body of the email"
+                      },
+                      "ATTACHMENTS": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "PATH": {
+                              "type": "string",
+                              "description": "Full text name of the sender"
+                            },
+                            "NAME": {
+                              "type": "string",
+                              "description": "Email of the sender"
+                            },
+                            "WIDTH": {
+                              "type": "number",
+                              "description": "Width of the attachment, height will be calculated automatically"
+                            }
+                          }
+                        }
+                      },
+                      "CC": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "description": "Full text name of the sender"
+                            },
+                            "email": {
+                              "type": "string",
+                              "description": "Email of the sender"
+                            }
+                          }
+                        }
+                      },
+                      "BCC": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "description": "Full text name of the sender"
+                            },
+                            "email": {
+                              "type": "string",
+                              "description": "Email of the sender"
+                            }
+                          }
+                        }
+                      },
+                      "SUBJECT": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "description": "Subject of the email"
+                      },
+                      "TO": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "description": "Full text name of the sender"
+                            },
+                            "email": {
+                              "type": "string",
+                              "description": "Email of the sender"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "logs": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^status$": true,
+                  "^hash$": true,
+                  "^content$": true,
+                  "^logs$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "emailObj",
+    "description": "Used to content of an email",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "status": {
+        "type": "string",
+        "description": "Status ot the email (queued, failed, sent)"
+      },
+      "hash": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Hash used to identify the email"
+      },
+      "content": {
+        "type": "object",
+        "description": "Size in bytes of all pictures captured (SUM storedJpgSize and storedRawSize)",
+        "properties": {
+          "FROM": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Full text name of the sender"
+              },
+              "email": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Email of the sender"
+              }
+            }
+          },
+          "TO": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Full text name of the sender"
+                },
+                "email": {
+                  "type": "string",
+                  "description": "Email of the sender"
+                }
+              }
+            }
+          },
+          "CC": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Full text name of the sender"
+                },
+                "email": {
+                  "type": "string",
+                  "description": "Email of the sender"
+                }
+              }
+            }
+          },
+          "BCC": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Full text name of the sender"
+                },
+                "email": {
+                  "type": "string",
+                  "description": "Email of the sender"
+                }
+              }
+            }
+          },
+          "BODY": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Body of the email"
+          },
+          "SUBJECT": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Subject of the email"
+          },
+          "ATTACHMENTS": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "PATH": {
+                  "type": "string",
+                  "description": "Full text name of the sender"
+                },
+                "NAME": {
+                  "type": "string",
+                  "description": "Email of the sender"
+                },
+                "WIDTH": {
+                  "type": "number",
+                  "description": "Width of the attachment, height will be calculated automatically"
+                }
+              }
+            }
+          }
+        }
+      },
+      "logs": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

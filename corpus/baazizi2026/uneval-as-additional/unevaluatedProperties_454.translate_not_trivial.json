@@ -1,0 +1,129 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "patternProperties",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/uneval_eliminated_as_additional_containment/sat/unevaluatedProperties_454.translate_not_trivial.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/uneval_eliminated_as_additional_containment/unknown/unevaluatedProperties_454.trivial_not_translate.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "anyOf": [
+      {
+        "$ref": "#/$defs/_AdaptiveTag_"
+      }
+    ],
+    "$defs": {
+      "_AdaptiveTag_": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/_AdaptiveTag_.propertyTypes"
+          }
+        ],
+        "description": "This defines the purpose of a tag id. Among other places, tags can be specified in object types and property types. All tags that begin with \"_Adaptive\" are reserved by Adaptive Framework. The requirement that other tags be defined is up to the application.",
+        "type": "object",
+        "additionalProperties": false
+      },
+      "_AdaptiveTag_.propertyTypes": {
+        "properties": {
+          "description": {
+            "contentMediaType": "text/plain",
+            "description": "Description of this tag.",
+            "title": "Description",
+            "type": "string"
+          },
+          "tagId": {
+            "description": "The id of this tag.",
+            "title": "Tag Id",
+            "type": "string"
+          },
+          "tags": {
+            "description": "Tags that can be used to query for this tag. One possible purpose is to use a tag to define a category of tags.",
+            "items": {
+              "description": "Tags that can be used to query for this tag. One possible purpose is to use a tag to define a category of tags.",
+              "title": "Tags that can be used to query for this tag",
+              "type": "string"
+            },
+            "title": "Tags",
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "anyOf": [
+      {
+        "$ref": "#/$defs/_AdaptiveTag_"
+      }
+    ],
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/_AdaptiveTag_.propertyTypes"
+                  }
+                ],
+                "description": "This defines the purpose of a tag id. Among other places, tags can be specified in object types and property types. All tags that begin with \"_Adaptive\" are reserved by Adaptive Framework. The requirement that other tags be defined is up to the application.",
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^description$": true,
+                  "^tagId$": true,
+                  "^tags$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "_AdaptiveTag_": {
+        "$ref": "#/$defs/modern_1"
+      },
+      "_AdaptiveTag_.propertyTypes": {
+        "properties": {
+          "description": {
+            "contentMediaType": "text/plain",
+            "description": "Description of this tag.",
+            "title": "Description",
+            "type": "string"
+          },
+          "tagId": {
+            "description": "The id of this tag.",
+            "title": "Tag Id",
+            "type": "string"
+          },
+          "tags": {
+            "description": "Tags that can be used to query for this tag. One possible purpose is to use a tag to define a category of tags.",
+            "items": {
+              "description": "Tags that can be used to query for this tag. One possible purpose is to use a tag to define a category of tags.",
+              "title": "Tags that can be used to query for this tag",
+              "type": "string"
+            },
+            "title": "Tags",
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  }
+}

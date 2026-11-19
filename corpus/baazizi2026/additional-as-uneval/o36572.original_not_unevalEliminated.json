@@ -1,0 +1,213 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/sat/o36572.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o36572.unevalEliminated_not_original.json"
+  ],
+  "note": "ECMA-262 with the u flag rejects the pattern ^[\\w-/_]+$ (a range that begins with \\w), so the schemas have no meaning.",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "$schema": {
+                    "type": "string"
+                  },
+                  "external": {
+                    "type": "array",
+                    "description": "list external types for use",
+                    "items": {
+                      "$ref": "#/$defs/modern_2"
+                    }
+                  },
+                  "vars": {
+                    "$ref": "#/$defs/modern_4"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^$schema$": true,
+                  "^external$": true,
+                  "^vars$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "description": "Source type in the selected language"
+                  },
+                  "langs": {
+                    "type": "object",
+                    "patternProperties": {
+                      "^.+$": {
+                        "$ref": "#/$defs/modern_3"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^type$": true,
+                  "^langs$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_3": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "description": "id template to use. * - for all template. Example: cs,ts,php,...",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "description": "Replacement type in the selected language"
+                  },
+                  "namespace": {
+                    "type": "string",
+                    "description": "Full namespace of type. Only delim: '/' ",
+                    "pattern": "^[\\w-/_]+$"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^type$": true,
+                  "^namespace$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_4": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "description": "vars see comman line '--id'",
+                "patternProperties": {
+                  "^.+$": {
+                    "type": "object",
+                    "description": "id template to use. * - for all template. Example: cs,ts,php,...",
+                    "patternProperties": {
+                      "^.+$": {
+                        "description": "key-val. see template dir. File _info.json->vars"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^.+$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "$schema": {
+        "type": "string"
+      },
+      "external": {
+        "type": "array",
+        "description": "list external types for use",
+        "items": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "description": "Source type in the selected language"
+            },
+            "langs": {
+              "type": "object",
+              "patternProperties": {
+                "^.+$": {
+                  "type": "object",
+                  "description": "id template to use. * - for all template. Example: cs,ts,php,...",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "description": "Replacement type in the selected language"
+                    },
+                    "namespace": {
+                      "type": "string",
+                      "description": "Full namespace of type. Only delim: '/' ",
+                      "pattern": "^[\\w-/_]+$"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "vars": {
+        "type": "object",
+        "description": "vars see comman line '--id'",
+        "patternProperties": {
+          "^.+$": {
+            "type": "object",
+            "description": "id template to use. * - for all template. Example: cs,ts,php,...",
+            "patternProperties": {
+              "^.+$": {
+                "description": "key-val. see template dir. File _info.json->vars"
+              }
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "additionalProperties": false
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": true,
+  "features": [
+    "anyOf",
+    "oneOf",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/sat/o68337.anyOf_not_oneOf.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o68337.oneOf_not_anyOf.json"
+  ],
+  "derived": {
+    "b_subsumes_a": {
+      "checkers": [
+        "RWG 8064ad8",
+        "jsoncompat 0.6.0",
+        "subsumes 0.2.0"
+      ]
+    }
+  },
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Sovrn Adapter Params",
+    "description": "A schema which validates params accepted by the Sovrn adapter",
+    "type": "object",
+    "properties": {
+      "tagid": {
+        "type": "string",
+        "description": "An ID which identifies the sovrn ad tag"
+      },
+      "tagId": {
+        "type": "string",
+        "description": "An ID which identifies the sovrn ad tag (DEPRECATED, use \"tagid\" instead)"
+      },
+      "bidfloor": {
+        "type": "number",
+        "description": "The minimium acceptable bid, in CPM, using US Dollars"
+      }
+    },
+    "oneOf": [
+      {
+        "required": [
+          "tagid"
+        ]
+      },
+      {
+        "required": [
+          "tagId"
+        ]
+      }
+    ]
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Sovrn Adapter Params",
+    "description": "A schema which validates params accepted by the Sovrn adapter",
+    "type": "object",
+    "properties": {
+      "tagid": {
+        "type": "string",
+        "description": "An ID which identifies the sovrn ad tag"
+      },
+      "tagId": {
+        "type": "string",
+        "description": "An ID which identifies the sovrn ad tag (DEPRECATED, use \"tagid\" instead)"
+      },
+      "bidfloor": {
+        "type": "number",
+        "description": "The minimium acceptable bid, in CPM, using US Dollars"
+      }
+    },
+    "anyOf": [
+      {
+        "required": [
+          "tagid"
+        ]
+      },
+      {
+        "required": [
+          "tagId"
+        ]
+      }
+    ]
+  }
+}

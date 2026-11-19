@@ -1,0 +1,239 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": true,
+  "features": [
+    "anyOf",
+    "enum",
+    "items",
+    "maxLength",
+    "minLength",
+    "oneOf",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/sat/o54613.anyOf_not_oneOf.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o54613.oneOf_not_anyOf.json"
+  ],
+  "derived": {
+    "b_subsumes_a": {
+      "checkers": [
+        "RWG 8064ad8",
+        "jsoncompat 0.6.0",
+        "subsumes 0.2.0"
+      ]
+    }
+  },
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+      "author": {
+        "properties": {
+          "email": {
+            "oneOf": [
+              {
+                "enum": [
+                  ""
+                ]
+              },
+              {
+                "_format": "email"
+              }
+            ],
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "email"
+        ],
+        "type": "object"
+      },
+      "documents": {
+        "items": {
+          "properties": {
+            "filetype": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "path": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "filetype",
+            "name",
+            "path"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "id": {
+        "type": "string"
+      },
+      "lastChanged": {
+        "type": "integer"
+      },
+      "lastChangedBy": {
+        "properties": {
+          "email": {
+            "oneOf": [
+              {
+                "enum": [
+                  ""
+                ]
+              },
+              {
+                "_format": "email"
+              }
+            ],
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 1000,
+            "minLength": 0,
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "email"
+        ],
+        "type": "object"
+      },
+      "text": {
+        "type": "string"
+      },
+      "title": {
+        "maxLength": 1000,
+        "minLength": 1,
+        "type": "string"
+      }
+    },
+    "required": [
+      "id",
+      "author",
+      "lastChangedBy",
+      "lastChanged",
+      "title",
+      "text",
+      "documents"
+    ],
+    "type": "object"
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+      "author": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "anyOf": [
+              {
+                "enum": [
+                  ""
+                ]
+              },
+              {
+                "_format": "email"
+              }
+            ]
+          },
+          "name": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "email"
+        ],
+        "type": "object"
+      },
+      "documents": {
+        "items": {
+          "properties": {
+            "filetype": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "path": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "filetype",
+            "name",
+            "path"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "id": {
+        "type": "string"
+      },
+      "lastChanged": {
+        "type": "integer"
+      },
+      "lastChangedBy": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "anyOf": [
+              {
+                "enum": [
+                  ""
+                ]
+              },
+              {
+                "_format": "email"
+              }
+            ]
+          },
+          "name": {
+            "maxLength": 1000,
+            "minLength": 0,
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "email"
+        ],
+        "type": "object"
+      },
+      "text": {
+        "type": "string"
+      },
+      "title": {
+        "maxLength": 1000,
+        "minLength": 1,
+        "type": "string"
+      }
+    },
+    "required": [
+      "id",
+      "author",
+      "lastChangedBy",
+      "lastChanged",
+      "title",
+      "text",
+      "documents"
+    ],
+    "type": "object"
+  }
+}

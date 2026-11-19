@@ -1,0 +1,39 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "allOf",
+    "minimum",
+    "not",
+    "properties",
+    "recursion"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/id.json#/tests/9",
+  "a": false,
+  "b": {
+    "allOf": [
+      {
+        "$ref": "urn:uuid:deadbeef-1234-ffff-ffff-4321feebdaed"
+      },
+      {
+        "not": {
+          "$ref": "urn:uuid:deadbeef-1234-ffff-ffff-4321feebdaed"
+        }
+      }
+    ],
+    "$defs": {
+      "urn:uuid:deadbeef-1234-ffff-ffff-4321feebdaed": {
+        "$id": "urn:uuid:deadbeef-1234-ffff-ffff-4321feebdaed",
+        "$comment": "URIs do not have to have HTTP(s) schemes",
+        "minimum": 30,
+        "properties": {
+          "foo": {
+            "$ref": "urn:uuid:deadbeef-1234-ffff-ffff-4321feebdaed"
+          }
+        }
+      }
+    }
+  }
+}

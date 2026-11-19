@@ -9,6 +9,7 @@ import pytest
 from subsumes_benchmark.build import (
     Collection,
     CollectionSpec,
+    OriginSpec,
     Source,
     SourceSpec,
     as_doubles,
@@ -195,13 +196,15 @@ def suite(root: Path) -> Collection:
         commit="0" * 40,
     )
     spec = CollectionSpec(
+        origin="origin",
         source="suite",
         path="tests",
         labels="by-construction",
         use_case="tool-checking",
         description="Examples.",
     )
-    return Collection("suite", source, spec)
+    origin = OriginSpec(citation="Someone. Examples. 2026.", url="https://example.com/work")
+    return Collection("suite", source, origin, spec)
 
 
 def test_the_test_cases_for_draft_2020_12_are_read(tmp_path: Path) -> None:
@@ -211,18 +214,18 @@ def test_the_test_cases_for_draft_2020_12_are_read(tmp_path: Path) -> None:
     (tmp_path / "tests" / "proposals" / "example.json").write_text(json.dumps(SUITE))
     found = {found.id: found for found in read_test_suite(suite(tmp_path), {})}
     assert list(found) == [
-        "suite/optional/example/0/reflexive",
-        "suite/optional/example/0/universal",
-        "suite/optional/example/0/unsatisfiable",
-        "suite/optional/example/3/valid/0",
-        "suite/optional/example/3/nonvalid/0",
-        "suite/optional/example/3/reflexive",
-        "suite/optional/example/3/universal",
-        "suite/optional/example/3/unsatisfiable",
+        "origin/suite/optional.example.0.reflexive",
+        "origin/suite/optional.example.0.universal",
+        "origin/suite/optional.example.0.unsatisfiable",
+        "origin/suite/optional.example.3.valid.0",
+        "origin/suite/optional.example.3.nonvalid.0",
+        "origin/suite/optional.example.3.reflexive",
+        "origin/suite/optional.example.3.universal",
+        "origin/suite/optional.example.3.unsatisfiable",
     ]
     file = f"https://example.com/suite/blob/{'0' * 40}/tests/optional/example.json"
-    assert found["suite/optional/example/0/reflexive"].upstream == f"{file}#/tests/0"
-    valid = found["suite/optional/example/3/valid/0"]
+    assert found["origin/suite/optional.example.0.reflexive"].upstream == f"{file}#/tests/0"
+    valid = found["origin/suite/optional.example.3.valid.0"]
     assert valid.upstream == f"{file}#/tests/3/tests/0"
     assert (valid.b, valid.a_subsumes_b, valid.b_subsumes_a) == ({"const": "x"}, False, None)
     # The external schema is embedded under its URL, which is its $id.
@@ -241,5 +244,13 @@ def test_a_number_that_a_double_does_not_hold_must_be_excluded(tmp_path: Path) -
     )
     with pytest.raises(ConversionError):
         list(read_test_suite(suite(tmp_path), {}))
-    assert list(read_test_suite(suite(tmp_path), {"suite/bignum/0/*": "too precise"}))
-    assert list(read_test_suite(suite(tmp_path), {"suite/bignum/*": "too precise"}))
+    assert list(read_test_suite(suite(tmp_path), {"origin/suite/bignum.0.*": "too precise"}))
+    assert list(read_test_suite(suite(tmp_path), {"origin/suite/bignum.*": "too precise"}))
+
+
+def test_a_file_of_the_suite_with_a_dot_in_its_name_is_refused(tmp_path: Path) -> None:
+    # The name of a case joins the file, the test case and the kind with dots.
+    (tmp_path / "tests").mkdir()
+    (tmp_path / "tests" / "draft.next.json").write_text(json.dumps(SUITE))
+    with pytest.raises(ConversionError, match="a dot"):
+        list(read_test_suite(suite(tmp_path), {}))

@@ -9,15 +9,16 @@ from subsumes_benchmark.build import Overrides, exclusion_of
 from subsumes_benchmark.generated.case import CaseSpec
 
 CONFIG = json.loads((ROOT / "collections.json").read_text(encoding="utf-8"))
-COLLECTIONS = CONFIG["collections"]
-LICENSES = {f"{name}.txt" for name in CONFIG["sources"]}
+ORIGINS = CONFIG["origins"]
+# The collections by their folder below the corpus: the origin and the name.
+COLLECTIONS = {f"{spec['origin']}/{name}": spec for name, spec in CONFIG["collections"].items()}
+MANIFEST = CORPUS / "collections.json"
 
 
 def test_every_file_is_a_case_or_a_shared_file() -> None:
     shared = (
-        {CORPUS / "case.schema.json"}
-        | {CORPUS / name / "collection.json" for name in COLLECTIONS}
-        | {CORPUS / "licenses" / name for name in LICENSES}
+        {CORPUS / "case.schema.json", MANIFEST}
+        | {CORPUS / origin / "LICENSE" for origin in ORIGINS}
         | {case.file for case in cases()}
     )
     stray = [
@@ -26,6 +27,14 @@ def test_every_file_is_a_case_or_a_shared_file() -> None:
         if path.is_file() and path not in shared
     ]
     assert stray == []
+
+
+def test_every_case_lies_in_the_folder_of_a_collection_of_an_origin() -> None:
+    # A folder of the corpus is an origin or a collection of one, and holds nothing deeper.
+    folders = {path.relative_to(CORPUS).as_posix() for path in CORPUS.rglob("*") if path.is_dir()}
+    assert folders == {*ORIGINS, *COLLECTIONS}
+    assert {case.collection for case in cases()} == set(COLLECTIONS)
+    assert [case.id for case in cases() if case.id.count("/") != 2] == []
 
 
 def test_every_case_matches_the_case_schema() -> None:
@@ -60,43 +69,59 @@ def test_every_case_is_read_by_the_model_of_a_case_and_names_its_schema() -> Non
 
 def test_every_upstream_is_a_permalink_into_the_dataset_of_its_collection() -> None:
     blob = {"github": "blob", "gitlab": "-/blob"}
+    manifest = read(MANIFEST)
+    assert isinstance(manifest, dict)
     datasets = {}
-    for name, spec in COLLECTIONS.items():
-        manifest = read(CORPUS / name / "collection.json")
-        assert isinstance(manifest, dict)
-        source = manifest["source"]
+    for folder, spec in COLLECTIONS.items():
+        collection = manifest[folder]
+        assert isinstance(collection, dict)
+        source = collection["source"]
         assert isinstance(source, dict)
         repository, commit, path = source["repository"], source["commit"], source["path"]
         assert isinstance(repository, str)
         forge = CONFIG["sources"][spec["source"]]["forge"]
-        datasets[name] = f"{repository.removesuffix('.git')}/{blob[forge]}/{commit}/{path}/"
+        datasets[folder] = f"{repository.removesuffix('.git')}/{blob[forge]}/{commit}/{path}/"
     elsewhere = [
         case.id for case in cases() if not case.upstream.startswith(datasets[case.collection])
     ]
     assert elsewhere == []
 
 
-def test_every_collection_has_its_manifest() -> None:
-    assert {path.name for path in CORPUS.iterdir() if path.is_dir()} == {*COLLECTIONS, "licenses"}
-    assert {case.collection for case in cases()} == set(COLLECTIONS)
-    for name, spec in COLLECTIONS.items():
-        manifest = read(CORPUS / name / "collection.json")
-        assert isinstance(manifest, dict)
-        source = manifest.pop("source")
+def test_the_manifest_says_of_every_collection_what_the_configuration_says() -> None:
+    manifest = read(MANIFEST)
+    assert isinstance(manifest, dict)
+    assert list(manifest) == list(COLLECTIONS)
+    for folder, spec in COLLECTIONS.items():
+        collection = manifest[folder]
+        assert isinstance(collection, dict)
+        source = collection.pop("source")
         assert isinstance(source, dict)
-        assert manifest == {
+        assert collection == {
             "description": spec["description"],
             "use_case": spec["use_case"],
             "labels": spec["labels"],
+            "origin": ORIGINS[spec["origin"]],
             "license": CONFIG["sources"][spec["source"]]["license"],
-            "license_file": f"licenses/{spec['source']}.txt",
+            "license_file": f"{spec['origin']}/LICENSE",
         }
         assert source["path"] == spec["path"]
         assert source.keys() == {"repository", "commit", "path"}
 
 
-def test_every_license_is_there() -> None:
-    assert {path.name for path in (CORPUS / "licenses").iterdir()} == LICENSES
+def test_every_origin_has_the_license_of_its_collections() -> None:
+    # The licence belongs to the source that a collection is read from, and the folder of
+    # an origin holds one text: the texts differ exactly where the licences do.
+    by_origin: dict[str, set[str]] = {}
+    for spec in CONFIG["collections"].values():
+        by_origin.setdefault(spec["origin"], set()).add(
+            CONFIG["sources"][spec["source"]]["license"]
+        )
+    assert all(len(found) == 1 for found in by_origin.values())
+    texts: dict[str, set[bytes]] = {}
+    for origin, (name,) in by_origin.items():
+        texts.setdefault(name, set()).add((CORPUS / origin / "LICENSE").read_bytes())
+    assert all(len(found) == 1 for found in texts.values())
+    assert len({text for found in texts.values() for text in found}) == len(texts)
 
 
 def test_every_override_is_applied() -> None:

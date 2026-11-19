@@ -1,0 +1,173 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "anyOf",
+    "enum",
+    "items",
+    "maxLength",
+    "minLength",
+    "oneOf",
+    "pattern",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o9798.anyOf_not_oneOf.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o9798.oneOf_not_anyOf.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "applicationId": {
+        "type": "string",
+        "pattern": "^[A-Fa-f\\d]{24}$"
+      },
+      "deviceId": {
+        "type": "string",
+        "pattern": "^[A-Fa-f\\d]{24}$"
+      },
+      "deviceClass": {
+        "type": "string",
+        "enum": [
+          "standalone",
+          "gateway",
+          "peripheral",
+          "floating",
+          "edgeCompute",
+          "system"
+        ]
+      },
+      "token": {
+        "type": "string",
+        "minLength": 1
+      },
+      "ownerType": {
+        "type": "string",
+        "enum": [
+          "user",
+          "organization"
+        ]
+      },
+      "filterType": {
+        "oneOf": [
+          {
+            "type": "string",
+            "enum": [
+              "all",
+              "whitelist",
+              "blacklist"
+            ]
+          },
+          {
+            "type": "string",
+            "enum": [
+              "none"
+            ]
+          }
+        ]
+      },
+      "pubTopics": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        }
+      },
+      "subTopics": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        }
+      }
+    },
+    "required": [
+      "applicationId",
+      "deviceId",
+      "deviceClass",
+      "token"
+    ]
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "applicationId": {
+        "type": "string",
+        "pattern": "^[A-Fa-f\\d]{24}$"
+      },
+      "deviceId": {
+        "type": "string",
+        "pattern": "^[A-Fa-f\\d]{24}$"
+      },
+      "deviceClass": {
+        "type": "string",
+        "enum": [
+          "standalone",
+          "gateway",
+          "peripheral",
+          "floating",
+          "edgeCompute",
+          "system"
+        ]
+      },
+      "token": {
+        "type": "string",
+        "minLength": 1
+      },
+      "ownerType": {
+        "type": "string",
+        "enum": [
+          "user",
+          "organization"
+        ]
+      },
+      "filterType": {
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "all",
+              "whitelist",
+              "blacklist"
+            ]
+          },
+          {
+            "type": "string",
+            "enum": [
+              "none"
+            ]
+          }
+        ]
+      },
+      "pubTopics": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        }
+      },
+      "subTopics": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        }
+      }
+    },
+    "required": [
+      "applicationId",
+      "deviceId",
+      "deviceClass",
+      "token"
+    ]
+  }
+}

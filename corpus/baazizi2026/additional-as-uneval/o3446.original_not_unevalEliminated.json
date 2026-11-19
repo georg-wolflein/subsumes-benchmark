@@ -1,0 +1,566 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "oneOf",
+    "patternProperties",
+    "properties",
+    "recursion",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o3446.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o3446.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Sparkplug B Payload",
+    "description": "A Sparkplug B payload",
+    "type": "object",
+    "properties": {
+      "body": {
+        "description": "A UTF-8 encoded string representing a byte array",
+        "type": "string"
+      },
+      "timestamp": {
+        "description": "A timestamp in milliseconds",
+        "type": "integer"
+      },
+      "uuid": {
+        "description": "A unique identifier",
+        "type": "string"
+      },
+      "seq": {
+        "description": "A sequence number",
+        "type": "integer"
+      },
+      "metrics": {
+        "description": "An array of metrics",
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/metric"
+        }
+      }
+    },
+    "$defs": {
+      "modern_5": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "reference": {
+                    "type": "string"
+                  },
+                  "version": {
+                    "type": "string"
+                  },
+                  "parameters": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/parameter"
+                    }
+                  },
+                  "isDefinition": {
+                    "type": "boolean"
+                  },
+                  "metrics": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/metric"
+                    }
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^metrics$": true,
+                  "^parameters$": true,
+                  "^reference$": true,
+                  "^isDefinition$": true,
+                  "^version$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "parameter": {
+        "$ref": "#/$defs/modern_1"
+      },
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": [
+                      "string",
+                      "number",
+                      "integer",
+                      "boolean"
+                    ]
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^name$": true,
+                  "^type$": true,
+                  "^value$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object"
+              },
+              {
+                "additionalProperties": {
+                  "$ref": "#/$defs/property"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "propertySet": {
+        "$ref": "#/$defs/modern_2"
+      },
+      "metric": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "isHistorical": {
+            "type": "boolean"
+          },
+          "alias": {
+            "type": "integer"
+          },
+          "properties": {
+            "$ref": "#/$defs/propertySet"
+          },
+          "value": {
+            "oneOf": [
+              {
+                "type": [
+                  "string",
+                  "number",
+                  "integer",
+                  "boolean",
+                  "null"
+                ]
+              },
+              {
+                "$ref": "#/$defs/dataset"
+              },
+              {
+                "$ref": "#/$defs/template"
+              }
+            ]
+          },
+          "isTransient": {
+            "type": "boolean"
+          },
+          "timestamp": {
+            "type": "integer"
+          },
+          "metadata": {
+            "$ref": "#/$defs/metadata"
+          },
+          "datatype": {
+            "type": "string"
+          }
+        }
+      },
+      "property": {
+        "$ref": "#/$defs/modern_3"
+      },
+      "modern_4": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "numberOfColumns": {
+                    "type": "integer"
+                  },
+                  "columnNames": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "types": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "rows": {
+                    "type": "array",
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": [
+                          "string",
+                          "number",
+                          "integer",
+                          "boolean"
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^numberOfColumns$": true,
+                  "^columnNames$": true,
+                  "^types$": true,
+                  "^rows$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "dataset": {
+        "$ref": "#/$defs/modern_4"
+      },
+      "modern_3": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "oneOf": [
+                      {
+                        "type": [
+                          "string",
+                          "number",
+                          "integer",
+                          "boolean",
+                          "null"
+                        ]
+                      },
+                      {
+                        "$ref": "#/$defs/propertySet"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/$defs/propertySet"
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^type$": true,
+                  "^value$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "metadata": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "type": "integer"
+          },
+          "description": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "fileType": {
+            "type": "string"
+          },
+          "isMultiPart": {
+            "type": "boolean"
+          },
+          "seq": {
+            "type": "integer"
+          },
+          "md5": {
+            "type": "string"
+          },
+          "contentType": {
+            "type": "string"
+          }
+        }
+      },
+      "template": {
+        "$ref": "#/$defs/modern_5"
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Sparkplug B Payload",
+    "description": "A Sparkplug B payload",
+    "type": "object",
+    "properties": {
+      "timestamp": {
+        "description": "A timestamp in milliseconds",
+        "type": "integer"
+      },
+      "seq": {
+        "description": "A sequence number",
+        "type": "integer"
+      },
+      "uuid": {
+        "description": "A unique identifier",
+        "type": "string"
+      },
+      "body": {
+        "description": "A UTF-8 encoded string representing a byte array",
+        "type": "string"
+      },
+      "metrics": {
+        "description": "An array of metrics",
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/metric"
+        }
+      }
+    },
+    "$defs": {
+      "parameter": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "value": {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "template": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "string"
+          },
+          "reference": {
+            "type": "string"
+          },
+          "isDefinition": {
+            "type": "boolean"
+          },
+          "parameters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/parameter"
+            }
+          },
+          "metrics": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/metric"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "dataset": {
+        "type": "object",
+        "properties": {
+          "numberOfColumns": {
+            "type": "integer"
+          },
+          "columnNames": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "types": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rows": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": [
+                  "string",
+                  "number",
+                  "integer",
+                  "boolean"
+                ]
+              }
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "property": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "value": {
+            "oneOf": [
+              {
+                "type": [
+                  "string",
+                  "number",
+                  "integer",
+                  "boolean",
+                  "null"
+                ]
+              },
+              {
+                "$ref": "#/$defs/propertySet"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/propertySet"
+                }
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "propertySet": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/$defs/property"
+        }
+      },
+      "metadata": {
+        "type": "object",
+        "properties": {
+          "contentType": {
+            "type": "string"
+          },
+          "isMultiPart": {
+            "type": "boolean"
+          },
+          "seq": {
+            "type": "integer"
+          },
+          "size": {
+            "type": "integer"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "fileType": {
+            "type": "string"
+          },
+          "md5": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "metric": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "alias": {
+            "type": "integer"
+          },
+          "timestamp": {
+            "type": "integer"
+          },
+          "datatype": {
+            "type": "string"
+          },
+          "isHistorical": {
+            "type": "boolean"
+          },
+          "isTransient": {
+            "type": "boolean"
+          },
+          "metadata": {
+            "$ref": "#/$defs/metadata"
+          },
+          "properties": {
+            "$ref": "#/$defs/propertySet"
+          },
+          "value": {
+            "oneOf": [
+              {
+                "type": [
+                  "string",
+                  "number",
+                  "integer",
+                  "boolean",
+                  "null"
+                ]
+              },
+              {
+                "$ref": "#/$defs/dataset"
+              },
+              {
+                "$ref": "#/$defs/template"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,562 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o65957.anyOf_not_oneOf.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o65957.oneOf_not_anyOf.json"
+  ],
+  "derived": {
+    "a_subsumes_b": {
+      "checkers": [
+        "RWG 8064ad8",
+        "jsoncompat 0.6.0",
+        "subsumes 0.2.0"
+      ]
+    },
+    "b_subsumes_a": {
+      "checkers": [
+        "RWG 8064ad8",
+        "jsoncompat 0.6.0",
+        "subsumes 0.2.0"
+      ]
+    }
+  },
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "description": "schema definitions3 for ONVIF profile S",
+    "onvif": {
+      "ptz": {
+        "AbsoluteMoveArg": {
+          "$ref": "#/onvif/ptz/moveArgs"
+        },
+        "AbsoluteMoveResult": {
+          "type": "object"
+        },
+        "RelativeMoveArg": {
+          "$ref": "#/onvif/ptz/moveArgs"
+        },
+        "RelativeMoveResult": {
+          "type": "object"
+        },
+        "ContinuousMoveArg": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number",
+              "maximum": 1,
+              "minimum": 0
+            },
+            "y": {
+              "type": "number",
+              "maximum": 1,
+              "minimum": 0
+            },
+            "zoom": {
+              "type": "number",
+              "maximum": 1,
+              "minimum": 0
+            },
+            "timeout": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "x",
+            "y"
+          ]
+        },
+        "ContinuousMoveResult": {
+          "type": "object"
+        },
+        "GetPresetsArg": {
+          "type": "object"
+        },
+        "GetPresetsResult": {
+          "type": "object"
+        },
+        "GetNodesArg": {
+          "type": "object"
+        },
+        "GetNodesResult": {
+          "type": "object"
+        },
+        "GotoPresetArg": {
+          "type": "object",
+          "properties": {
+            "preset": {
+              "type": "string"
+            },
+            "speed": {
+              "$ref": "#/onvif/ptz/speed"
+            }
+          },
+          "required": [
+            "preset"
+          ]
+        },
+        "GotoPresetResult": {
+          "type": "object"
+        },
+        "StopArg": {
+          "type": "object",
+          "properties": {
+            "panTilt": {
+              "type": "boolean"
+            },
+            "zoom": {
+              "type": "boolean"
+            }
+          }
+        },
+        "StopResult": {
+          "type": "object"
+        },
+        "PTZStatusArg": {
+          "type": "object"
+        },
+        "PTZStatusResult": {
+          "type": "object",
+          "properties": {
+            "position": {
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "number"
+                },
+                "y": {
+                  "type": "number"
+                },
+                "zoom": {
+                  "type": "number"
+                }
+              }
+            },
+            "moveStatus": {
+              "type": "object",
+              "properties": {
+                "PanTilt": {
+                  "type": "string",
+                  "enum": [
+                    "IDLE",
+                    "MOVING",
+                    "UNKNOWN"
+                  ]
+                },
+                "Zoom": {
+                  "type": "string",
+                  "enum": [
+                    "IDLE",
+                    "MOVING",
+                    "UNKNOWN"
+                  ]
+                }
+              }
+            },
+            "error": {
+              "type": "string"
+            },
+            "utcTime": {
+              "type": [
+                "string",
+                "number"
+              ]
+            }
+          }
+        },
+        "speed": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number",
+              "maximum": 1,
+              "minimum": 0
+            },
+            "y": {
+              "type": "number",
+              "maximum": 1,
+              "minimum": 0
+            },
+            "zoom": {
+              "type": "number",
+              "maximum": 1,
+              "minimum": 0
+            }
+          },
+          "required": [
+            "x",
+            "y"
+          ]
+        },
+        "moveArgs": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number",
+              "maximum": 1,
+              "minimum": -1
+            },
+            "y": {
+              "type": "number",
+              "maximum": 1,
+              "minimum": -1
+            },
+            "zoom": {
+              "type": "number",
+              "maximum": 1,
+              "minimum": 0
+            },
+            "speed": {
+              "$ref": "#/onvif/ptz/speed"
+            }
+          },
+          "required": [
+            "x",
+            "y"
+          ]
+        },
+        "SpaceSelector": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^http://www.onvif.org/ver10/tptz/PanTiltSpaces/PositionGenericSpace$"
+            },
+            {
+              "type": "string",
+              "pattern": "^http://www.onvif.org/ver10/tptz/PanTiltSpaces/VelocityGenericSpace$"
+            },
+            {
+              "type": "string",
+              "pattern": "^http://www.onvif.org/ver10/tptz/PanTiltSpaces/TranslationGenericSpace$"
+            },
+            {
+              "type": "string",
+              "pattern": "^http://www.onvif.org/ver10/tptz/PanTiltSpaces/GenericSpeedSpace$"
+            }
+          ]
+        }
+      },
+      "media": {
+        "getStreamUriArg": {
+          "type": "object",
+          "properties": {
+            "streamType": {
+              "type": "string",
+              "enum": [
+                "RTP-Unicast",
+                "RTP-Multicast",
+                "MPEG"
+              ],
+              "default": "MPEG"
+            },
+            "transport": {
+              "type": "string",
+              "enum": [
+                "UDP",
+                "TCP",
+                "RTSP",
+                "HTTP",
+                "WebSocket"
+              ],
+              "default": "WebSocket"
+            }
+          },
+          "required": [
+            "streamType",
+            "transport"
+          ]
+        },
+        "getStreamUriResult": {
+          "type": "object",
+          "properties": {
+            "streamUri": {
+              "type": "string"
+            }
+          }
+        },
+        "getSnapshotUriArg": {
+          "type": "object"
+        },
+        "getSnapshotUriResult": {
+          "type": "object",
+          "properties": {
+            "snapshotUri": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "description": "schema definitions4 for ONVIF profile S",
+    "onvif": {
+      "ptz": {
+        "AbsoluteMoveArg": {
+          "$ref": "#/onvif/ptz/moveArgs"
+        },
+        "AbsoluteMoveResult": {
+          "type": "object"
+        },
+        "RelativeMoveArg": {
+          "$ref": "#/onvif/ptz/moveArgs"
+        },
+        "RelativeMoveResult": {
+          "type": "object"
+        },
+        "ContinuousMoveArg": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number",
+              "maximum": 1,
+              "minimum": 0
+            },
+            "y": {
+              "type": "number",
+              "maximum": 1,
+              "minimum": 0
+            },
+            "zoom": {
+              "type": "number",
+              "maximum": 1,
+              "minimum": 0
+            },
+            "timeout": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "x",
+            "y"
+          ]
+        },
+        "ContinuousMoveResult": {
+          "type": "object"
+        },
+        "GetPresetsArg": {
+          "type": "object"
+        },
+        "GetPresetsResult": {
+          "type": "object"
+        },
+        "GetNodesArg": {
+          "type": "object"
+        },
+        "GetNodesResult": {
+          "type": "object"
+        },
+        "GotoPresetArg": {
+          "type": "object",
+          "properties": {
+            "preset": {
+              "type": "string"
+            },
+            "speed": {
+              "$ref": "#/onvif/ptz/speed"
+            }
+          },
+          "required": [
+            "preset"
+          ]
+        },
+        "GotoPresetResult": {
+          "type": "object"
+        },
+        "StopArg": {
+          "type": "object",
+          "properties": {
+            "panTilt": {
+              "type": "boolean"
+            },
+            "zoom": {
+              "type": "boolean"
+            }
+          }
+        },
+        "StopResult": {
+          "type": "object"
+        },
+        "PTZStatusArg": {
+          "type": "object"
+        },
+        "PTZStatusResult": {
+          "type": "object",
+          "properties": {
+            "position": {
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "number"
+                },
+                "y": {
+                  "type": "number"
+                },
+                "zoom": {
+                  "type": "number"
+                }
+              }
+            },
+            "moveStatus": {
+              "type": "object",
+              "properties": {
+                "PanTilt": {
+                  "type": "string",
+                  "enum": [
+                    "IDLE",
+                    "MOVING",
+                    "UNKNOWN"
+                  ]
+                },
+                "Zoom": {
+                  "type": "string",
+                  "enum": [
+                    "IDLE",
+                    "MOVING",
+                    "UNKNOWN"
+                  ]
+                }
+              }
+            },
+            "error": {
+              "type": "string"
+            },
+            "utcTime": {
+              "type": [
+                "string",
+                "number"
+              ]
+            }
+          }
+        },
+        "speed": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number",
+              "maximum": 1,
+              "minimum": 0
+            },
+            "y": {
+              "type": "number",
+              "maximum": 1,
+              "minimum": 0
+            },
+            "zoom": {
+              "type": "number",
+              "maximum": 1,
+              "minimum": 0
+            }
+          },
+          "required": [
+            "x",
+            "y"
+          ]
+        },
+        "moveArgs": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number",
+              "maximum": 1,
+              "minimum": -1
+            },
+            "y": {
+              "type": "number",
+              "maximum": 1,
+              "minimum": -1
+            },
+            "zoom": {
+              "type": "number",
+              "maximum": 1,
+              "minimum": 0
+            },
+            "speed": {
+              "$ref": "#/onvif/ptz/speed"
+            }
+          },
+          "required": [
+            "x",
+            "y"
+          ]
+        },
+        "SpaceSelector": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^http://www.onvif.org/ver10/tptz/PanTiltSpaces/PositionGenericSpace$"
+            },
+            {
+              "type": "string",
+              "pattern": "^http://www.onvif.org/ver10/tptz/PanTiltSpaces/VelocityGenericSpace$"
+            },
+            {
+              "type": "string",
+              "pattern": "^http://www.onvif.org/ver10/tptz/PanTiltSpaces/TranslationGenericSpace$"
+            },
+            {
+              "type": "string",
+              "pattern": "^http://www.onvif.org/ver10/tptz/PanTiltSpaces/GenericSpeedSpace$"
+            }
+          ]
+        }
+      },
+      "media": {
+        "getStreamUriArg": {
+          "type": "object",
+          "properties": {
+            "streamType": {
+              "type": "string",
+              "enum": [
+                "RTP-Unicast",
+                "RTP-Multicast",
+                "MPEG"
+              ],
+              "default": "MPEG"
+            },
+            "transport": {
+              "type": "string",
+              "enum": [
+                "UDP",
+                "TCP",
+                "RTSP",
+                "HTTP",
+                "WebSocket"
+              ],
+              "default": "WebSocket"
+            }
+          },
+          "required": [
+            "streamType",
+            "transport"
+          ]
+        },
+        "getStreamUriResult": {
+          "type": "object",
+          "properties": {
+            "streamUri": {
+              "type": "string"
+            }
+          }
+        },
+        "getSnapshotUriArg": {
+          "type": "object"
+        },
+        "getSnapshotUriResult": {
+          "type": "object",
+          "properties": {
+            "snapshotUri": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

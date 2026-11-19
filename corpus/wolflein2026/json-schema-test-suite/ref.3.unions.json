@@ -1,0 +1,61 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": false,
+  "features": [
+    "$ref",
+    "anyOf",
+    "const",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/ref.json#/tests/3",
+  "derived": {
+    "b_subsumes_a": {
+      "counterexample": null
+    }
+  },
+  "a": {
+    "$defs": {
+      "tilde~field": {
+        "type": "integer"
+      },
+      "slash/field": {
+        "type": "integer"
+      },
+      "percent%field": {
+        "type": "integer"
+      }
+    },
+    "properties": {
+      "tilde": {
+        "$ref": "#/$defs/tilde~0field"
+      },
+      "slash": {
+        "$ref": "#/$defs/slash~1field"
+      },
+      "percent": {
+        "$ref": "#/$defs/percent%25field"
+      }
+    }
+  },
+  "b": {
+    "anyOf": [
+      {
+        "const": {
+          "slash": 123
+        }
+      },
+      {
+        "const": {
+          "tilde": 123
+        }
+      },
+      {
+        "const": {
+          "percent": 123
+        }
+      }
+    ]
+  }
+}

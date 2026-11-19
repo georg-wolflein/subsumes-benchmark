@@ -1,0 +1,37 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": false,
+  "features": [
+    "$ref",
+    "const",
+    "maximum"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/id.json#/tests/7/tests/1",
+  "derived": {
+    "b_subsumes_a": {
+      "counterexample": null
+    }
+  },
+  "a": {
+    "$comment": "$id must be evaluated before $ref to get the proper $ref destination",
+    "$id": "https://example.com/ref-and-id2/base.json",
+    "$ref": "#bigint",
+    "$defs": {
+      "bigint": {
+        "$comment": "canonical uri: https://example.com/ref-and-id2/base.json#/$defs/bigint; another valid uri for this location: https://example.com/ref-and-id2/base.json#bigint",
+        "$anchor": "bigint",
+        "maximum": 10
+      },
+      "smallint": {
+        "$comment": "canonical uri: https://example.com/ref-and-id2/#/$defs/smallint; another valid uri for this location: https://example.com/ref-and-id2/#bigint",
+        "$id": "/ref-and-id2/",
+        "$anchor": "bigint",
+        "maximum": 2
+      }
+    }
+  },
+  "b": {
+    "const": 50
+  }
+}

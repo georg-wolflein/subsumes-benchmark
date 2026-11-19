@@ -1,0 +1,38 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": false,
+  "features": [
+    "anyOf",
+    "const",
+    "contains"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/contains.json#/tests/3",
+  "derived": {
+    "b_subsumes_a": {
+      "counterexample": true
+    }
+  },
+  "a": {
+    "contains": false
+  },
+  "b": {
+    "anyOf": [
+      {
+        "const": "contains does not apply to strings"
+      },
+      {
+        "const": {}
+      },
+      {
+        "const": 42
+      },
+      {
+        "const": false
+      },
+      {
+        "const": null
+      }
+    ]
+  }
+}

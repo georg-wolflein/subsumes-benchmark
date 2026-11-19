@@ -1,0 +1,233 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o70369.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o70369.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "ISO8601-Date": {
+        "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+        "type": "string"
+      },
+      "LISAManagerReferenceNumberType": {
+        "pattern": "^Z\\d{6}$",
+        "type": "string"
+      },
+      "paymentMethodType": {
+        "enum": [
+          "directDebit",
+          "BACS"
+        ],
+        "type": "string"
+      },
+      "IDType": {
+        "pattern": "^\\d{10}$",
+        "type": "string"
+      },
+      "paymentStatusType": {
+        "enum": [
+          "pending",
+          "submitted",
+          "completed"
+        ],
+        "type": "string"
+      },
+      "financialPeriodType": {
+        "properties": {
+          "endDate": {
+            "$ref": "#/$defs/ISO8601-Date"
+          },
+          "startDate": {
+            "$ref": "#/$defs/ISO8601-Date"
+          }
+        },
+        "type": "object"
+      },
+      "paymentDirectionType": {
+        "enum": [
+          "credit",
+          "debit"
+        ],
+        "type": "string"
+      },
+      "ISO8601-Timestamp": {
+        "pattern": "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}(:\\d{2})?(([+-]\\d{2}(:\\d{2})?)|Z)",
+        "type": "string"
+      },
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "method": {
+                    "$ref": "#/$defs/paymentMethodType"
+                  },
+                  "financialPeriod": {
+                    "$ref": "#/$defs/financialPeriodType"
+                  },
+                  "direction": {
+                    "$ref": "#/$defs/paymentDirectionType"
+                  },
+                  "paymentReference": {
+                    "$ref": "#/$defs/IDType"
+                  },
+                  "amount": {
+                    "type": "number"
+                  },
+                  "status": {
+                    "$ref": "#/$defs/paymentStatusType"
+                  },
+                  "paymentDate": {
+                    "$ref": "#/$defs/ISO8601-Date"
+                  },
+                  "LISAManagerReferenceNumber": {
+                    "$ref": "#/$defs/LISAManagerReferenceNumberType"
+                  },
+                  "_links": {
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "LISAManagerReferenceNumber",
+                  "paymentReference",
+                  "method",
+                  "direction",
+                  "paymentDate",
+                  "amount",
+                  "financialPeriod"
+                ],
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^financialPeriod$": true,
+                  "^method$": true,
+                  "^paymentReference$": true,
+                  "^LISAManagerReferenceNumber$": true,
+                  "^paymentDate$": true,
+                  "^_links$": true,
+                  "^status$": true,
+                  "^amount$": true,
+                  "^direction$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+      "LISAManagerReferenceNumber": {
+        "$ref": "#/$defs/LISAManagerReferenceNumberType"
+      },
+      "_links": {
+        "type": "object"
+      },
+      "amount": {
+        "type": "number"
+      },
+      "direction": {
+        "$ref": "#/$defs/paymentDirectionType"
+      },
+      "financialPeriod": {
+        "$ref": "#/$defs/financialPeriodType"
+      },
+      "method": {
+        "$ref": "#/$defs/paymentMethodType"
+      },
+      "paymentDate": {
+        "$ref": "#/$defs/ISO8601-Date"
+      },
+      "paymentReference": {
+        "$ref": "#/$defs/IDType"
+      },
+      "status": {
+        "$ref": "#/$defs/paymentStatusType"
+      }
+    },
+    "required": [
+      "LISAManagerReferenceNumber",
+      "paymentReference",
+      "method",
+      "direction",
+      "paymentDate",
+      "amount",
+      "financialPeriod"
+    ],
+    "type": "object",
+    "$defs": {
+      "IDType": {
+        "pattern": "^\\d{10}$",
+        "type": "string"
+      },
+      "ISO8601-Date": {
+        "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+        "type": "string"
+      },
+      "ISO8601-Timestamp": {
+        "pattern": "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}(:\\d{2})?(([+-]\\d{2}(:\\d{2})?)|Z)",
+        "type": "string"
+      },
+      "LISAManagerReferenceNumberType": {
+        "pattern": "^Z\\d{6}$",
+        "type": "string"
+      },
+      "financialPeriodType": {
+        "properties": {
+          "endDate": {
+            "$ref": "#/$defs/ISO8601-Date"
+          },
+          "startDate": {
+            "$ref": "#/$defs/ISO8601-Date"
+          }
+        },
+        "type": "object"
+      },
+      "paymentDirectionType": {
+        "enum": [
+          "credit",
+          "debit"
+        ],
+        "type": "string"
+      },
+      "paymentMethodType": {
+        "enum": [
+          "directDebit",
+          "BACS"
+        ],
+        "type": "string"
+      },
+      "paymentStatusType": {
+        "enum": [
+          "pending",
+          "submitted",
+          "completed"
+        ],
+        "type": "string"
+      }
+    }
+  }
+}

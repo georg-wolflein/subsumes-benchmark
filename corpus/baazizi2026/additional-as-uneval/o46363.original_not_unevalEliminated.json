@@ -1,0 +1,87 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "maximum",
+    "minimum",
+    "patternProperties",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o46363.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o46363.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "title": "UpdateDividendsIncome",
+                "properties": {
+                  "ukDividends": {
+                    "title": "Dividends from UK companies",
+                    "description": "The total dividends payments received from UK companies, including any dividends from employee share schemes. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "minimum": 0.0,
+                    "maximum": 99999999999.99,
+                    "example": "3000.55"
+                  },
+                  "otherUkDividends": {
+                    "title": "Other types of UK Dividends",
+                    "description": "Dividends received from these types of UK investment fund: Authorised unit trusts, Open-ended investment companies or Investment trusts. Include dividends from accumulation units or shares, which are automatically reinvested. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "minimum": 0.0,
+                    "maximum": 99999999999.99,
+                    "example": "3000.6"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^ukDividends$": true,
+                  "^otherUkDividends$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "title": "UpdateDividendsIncome",
+    "properties": {
+      "ukDividends": {
+        "title": "Dividends from UK companies",
+        "description": "The total dividends payments received from UK companies, including any dividends from employee share schemes. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+        "type": "number",
+        "minimum": 0,
+        "maximum": 99999999999.99,
+        "example": "3000.55"
+      },
+      "otherUkDividends": {
+        "title": "Other types of UK Dividends",
+        "description": "Dividends received from these types of UK investment fund: Authorised unit trusts, Open-ended investment companies or Investment trusts. Include dividends from accumulation units or shares, which are automatically reinvested. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+        "type": "number",
+        "minimum": 0,
+        "maximum": 99999999999.99,
+        "example": "3000.6"
+      }
+    },
+    "additionalProperties": false
+  }
+}

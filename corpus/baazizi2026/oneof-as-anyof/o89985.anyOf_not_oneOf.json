@@ -1,0 +1,112 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "anyOf",
+    "oneOf",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o89985.anyOf_not_oneOf.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o89985.oneOf_not_anyOf.json"
+  ],
+  "derived": {
+    "a_subsumes_b": {
+      "checkers": [
+        "RWG 8064ad8",
+        "jsoncompat 0.6.0",
+        "subsumes 0.2.0"
+      ]
+    },
+    "b_subsumes_a": {
+      "checkers": [
+        "RWG 8064ad8",
+        "jsoncompat 0.6.0",
+        "subsumes 0.2.0"
+      ]
+    }
+  },
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "A dependency points to a Package via a package name and a version constraint (such as \">= 3.4\"). The version is the effective version that has been picked and resolved.",
+    "properties": {
+      "name": {
+        "description": "Name of the package for this dependency.",
+        "title": "name",
+        "type": "string"
+      },
+      "version": {
+        "oneOf": [
+          {
+            "description": "Version of this dependent package: The effective or concrete resolved and used version.",
+            "title": "version",
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "version_constraint": {
+        "oneOf": [
+          {
+            "description": "The version constraints (aka. possible versions) for this dependent package: The meaning of this constraings is package type-specific. ",
+            "title": "version",
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "required": [
+      "name"
+    ],
+    "title": "dependency",
+    "type": "object"
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "A dependency points to a Package via a package name and a version constraint (such as \">= 3.4\"). The version is the effective version that has been picked and resolved.",
+    "properties": {
+      "name": {
+        "description": "Name of the package for this dependency.",
+        "title": "name",
+        "type": "string"
+      },
+      "version": {
+        "anyOf": [
+          {
+            "description": "Version of this dependent package: The effective or concrete resolved and used version.",
+            "title": "version",
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "version_constraint": {
+        "anyOf": [
+          {
+            "description": "The version constraints (aka. possible versions) for this dependent package: The meaning of this constraings is package type-specific. ",
+            "title": "version",
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "required": [
+      "name"
+    ],
+    "title": "dependency",
+    "type": "object"
+  }
+}

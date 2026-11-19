@@ -1,0 +1,42 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "anyOf",
+    "not",
+    "type"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/id.json#/tests/20",
+  "a": true,
+  "b": {
+    "anyOf": [
+      {
+        "$ref": "https://subsumes-benchmark.example/schema"
+      },
+      {
+        "not": {
+          "$ref": "https://subsumes-benchmark.example/schema"
+        }
+      }
+    ],
+    "$defs": {
+      "https://subsumes-benchmark.example/schema": {
+        "$id": "https://subsumes-benchmark.example/schema",
+        "$ref": "urn:uuid:deadbeef-4321-ffff-ffff-1234feebdaed",
+        "$defs": {
+          "foo": {
+            "$id": "urn:uuid:deadbeef-4321-ffff-ffff-1234feebdaed",
+            "$defs": {
+              "bar": {
+                "type": "string"
+              }
+            },
+            "$ref": "#/$defs/bar"
+          }
+        }
+      }
+    }
+  }
+}

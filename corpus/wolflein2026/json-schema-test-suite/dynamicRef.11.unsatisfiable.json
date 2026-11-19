@@ -1,0 +1,55 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$dynamicRef",
+    "$ref",
+    "allOf",
+    "items",
+    "not",
+    "properties",
+    "recursion",
+    "type",
+    "unevaluatedProperties"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/dynamicRef.json#/tests/11",
+  "a": false,
+  "b": {
+    "allOf": [
+      {
+        "$ref": "http://localhost:1234/strict-tree.json"
+      },
+      {
+        "not": {
+          "$ref": "http://localhost:1234/strict-tree.json"
+        }
+      }
+    ],
+    "$defs": {
+      "http://localhost:1234/strict-tree.json": {
+        "$id": "http://localhost:1234/strict-tree.json",
+        "$dynamicAnchor": "node",
+        "$ref": "tree.json",
+        "unevaluatedProperties": false,
+        "$defs": {
+          "http://localhost:1234/tree.json": {
+            "$id": "http://localhost:1234/tree.json",
+            "description": "tree schema, extensible",
+            "$dynamicAnchor": "node",
+            "type": "object",
+            "properties": {
+              "data": true,
+              "children": {
+                "type": "array",
+                "items": {
+                  "$dynamicRef": "#node"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -65,7 +65,7 @@ class DerivedSpec(Config):
     """
     The schema of this file, for an editor.
     """
-    cases: dict[Annotated[str, StringConstraints(pattern=r"^[^/]+(/[^/]+)+$")], Derived]
+    cases: dict[Annotated[str, StringConstraints(pattern=r"^[^/]+/[^/]+/[^/]+$")], Derived]
     """
     What shows the derived labels of each case, by the path of the case below corpus/.
     """

@@ -6,11 +6,11 @@ It holds 10,743 pairs of draft 2020-12 schemas, most of them with a known answer
 
 ## A case
 
-A case is one file, `corpus/schemastore-versions/agripparc-1.2_v1_not_v2.json`. It holds two schemas, `a` and `b`, and what is known about them:
+A case is one file, `corpus/attouche2026/schemastore-versions/agripparc-1.2_v1_not_v2.json`. It holds two schemas, `a` and `b`, and what is known about them:
 
 ```json
 {
-  "$schema": "../case.schema.json",
+  "$schema": "../../case.schema.json",
   "a_subsumes_b": true,
   "b_subsumes_a": false,
   "features": ["additionalProperties", "enum", "properties", "type"],
@@ -24,13 +24,13 @@ A case is one file, `corpus/schemastore-versions/agripparc-1.2_v1_not_v2.json`. 
 }
 ```
 
-Every case asks the same question: does `a` accept every instance valid under `b`? If it does, A subsumes B. Every JSON file below the folder of a collection is a case, except the collection's `collection.json`, and its path below `corpus/` without the `.json` is its id. A file is indented, with every non-ASCII character escaped so that none is invisible.
+Every case asks the same question: does `a` accept every instance valid under `b`? If it does, A subsumes B. Every JSON file in the folder of a collection is a case, and its path below `corpus/` without the `.json` is its id: [an origin, a collection](#collections) and the name of the case. A file is indented, with every non-ASCII character escaped so that none is invisible.
 
-- **`$schema`**: The path to [`corpus/case.schema.json`](corpus/case.schema.json), the schema of a case, for an editor or a validator. The schemas `a` and `b` are draft 2020-12 whatever this says.
+- **`$schema`**: The path to [`corpus/case.schema.json`](corpus/case.schema.json), the schema of a case, for an editor or a validator. It is `../../case.schema.json` in every case. The schemas `a` and `b` are draft 2020-12 whatever this says.
 - **`a_subsumes_b`**: `true` when `a` accepts every instance valid under `b`, `false` when some instance of `b` is not valid under `a`, `null` when the corpus claims nothing.
 - **`b_subsumes_a`**: The same question in the other direction. Upstream answers it for some cases built from the test suite and, as a test of its own, for most cases of the artifact; the other answers are [derived](#derived-labels).
 - **`features`**: What the two schemas use, so that cases can be selected and results broken down by it; see [Features](#features).
-- **`upstream`**: A permanent link to the file the case comes from, in the source repository at the commit that the collection's `collection.json` names. A case built from the test suite adds a JSON pointer to the test case or the test after a `#`.
+- **`upstream`**: A permanent link to the file the case comes from, in the source repository at the commit that [`corpus/collections.json`](corpus/collections.json) names for the collection. A case built from the test suite adds a JSON pointer to the test case or the test after a `#`.
 - **`duplicates`**: Present only when upstream has these two schemas in other files too, in either order: permanent links to those files, written like `upstream`. The corpus has [one case for all of them](#one-case-for-every-pair-of-schemas).
 - **`note`**: Present only when the labels depart from upstream's, and says why.
 - **`derived`**: Present only when the case has a label that upstream does not give. It names each such label with what shows it: a `counterexample` for `false`, the `checkers` that agree for `true`; see [Derived labels](#derived-labels).
@@ -98,22 +98,48 @@ Results measured on two versions are comparable exactly when their major and min
 
 ## Collections
 
+A collection is a folder of cases, and it lies in the folder of its origin: the work that first published its pairs as inclusion questions, named by its first author and the year. No folder lies deeper, so a case is always `corpus/<origin>/<collection>/<name>.json`.
+
+```
+corpus/
+├── case.schema.json
+├── collections.json
+├── habib2021/
+│   ├── LICENSE
+│   └── rb-testset/
+├── attouche2026/
+│   ├── LICENSE
+│   ├── handwritten-sc/
+│   ├── mergeallof/
+│   └── schemastore-versions/
+├── baazizi2026/
+│   ├── LICENSE
+│   ├── oneof-as-anyof/
+│   ├── additional-as-uneval/
+│   └── uneval-as-additional/
+└── wolflein2026/
+    ├── LICENSE
+    └── json-schema-test-suite/
+```
+
+The origin is not where the build reads a collection from. The first three origins are papers, and the build reads all of their collections from the artifact of the third; [Credits and licences](#credits-and-licences) has the references. `wolflein2026` is this repository, which builds its pairs from the official test suite.
+
 | Collection | Cases | A subsumes B: true / false / unknown | B subsumes A: true / false / unknown | Labels from | Content |
 | --- | --- | --- | --- | --- | --- |
-| `json-schema-test-suite` | 5,740 | 3,578 / 2,162 / 0 | 1,393 / 4,220 / 127 | construction | Pairs built from the official test suite for draft 2020-12 |
-| `handwritten-sc` | 138 | 90 / 48 / 0 | 66 / 72 / 0 | construction | Hand-written hard cases |
-| `rb-testset` | 292 | 104 / 188 / 0 | 61 / 209 / 22 | upstream tests | The tests of the jsonsubschema tool, some with the documents they reference embedded |
-| `mergeallof` | 86 | 83 / 3 / 0 | 79 / 6 / 1 | witness generator | Schemas against a rewriting that merges their `allOf` |
-| `schemastore-versions` | 469 | 297 / 76 / 96 | 169 / 71 / 229 | witness generator | Successive versions of real schemas |
-| `oneof-as-anyof` | 904 | 230 / 189 / 485 | 315 / 0 / 589 | witness generator | Is `oneOf` used where `anyOf` would be equivalent? |
-| `uneval-as-additional` | 297 | 43 / 158 / 96 | 43 / 24 / 230 | witness generator | `unevaluated*` against a translation to `additional*` |
-| `additional-as-uneval` | 2,817 | 2,631 / 106 / 80 | 2,682 / 36 / 99 | witness generator | `additional*` against a rewriting through `unevaluated*` |
+| `habib2021/rb-testset` | 292 | 104 / 188 / 0 | 61 / 209 / 22 | upstream tests | The pairs of the replication package of the jsonsubschema tool, some with the documents they reference embedded |
+| `attouche2026/handwritten-sc` | 138 | 90 / 48 / 0 | 66 / 72 / 0 | construction | Hand-written hard cases |
+| `attouche2026/mergeallof` | 86 | 83 / 3 / 0 | 79 / 6 / 1 | witness generator | Schemas against a rewriting that merges their `allOf` |
+| `attouche2026/schemastore-versions` | 469 | 297 / 76 / 96 | 169 / 71 / 229 | witness generator | Successive versions of real schemas |
+| `baazizi2026/oneof-as-anyof` | 904 | 230 / 189 / 485 | 315 / 0 / 589 | witness generator | Is `oneOf` used where `anyOf` would be equivalent? |
+| `baazizi2026/additional-as-uneval` | 2,817 | 2,631 / 106 / 80 | 2,682 / 36 / 99 | witness generator | `additional*` against a rewriting through `unevaluated*` |
+| `baazizi2026/uneval-as-additional` | 297 | 43 / 158 / 96 | 43 / 24 / 230 | witness generator | `unevaluated*` against a translation to `additional*` |
+| `wolflein2026/json-schema-test-suite` | 5,740 | 3,578 / 2,162 / 0 | 1,393 / 4,220 / 127 | construction | Pairs built from the official test suite for draft 2020-12 |
 
-The counts include the [derived labels](#derived-labels). Each collection folder has a `collection.json` with its description, the source repository and commit, the licence, and where upstream's labels come from:
+The counts include the [derived labels](#derived-labels). [`corpus/collections.json`](corpus/collections.json) has, for every collection, its description, the reference of its origin, the source repository and commit, the licence, and where upstream's labels come from:
 
 - **`by-construction`**: The pair was built so that the answer is known.
 - **`witness-generator`**: The answer is that of the upstream authors' tool, which is complete but bound by a timeout. Where it gave up, the label is [derived](#derived-labels) or unknown.
-- **`upstream-tests`**: The expectations of the jsonsubschema tool's own tests.
+- **`upstream-tests`**: The ground truth that the replication package of the jsonsubschema tool gives for its pairs.
 
 ### One case for every pair of schemas
 
@@ -137,7 +163,7 @@ A test case of the [official JSON Schema Test Suite](https://github.com/json-sch
 
 The last three answer both directions. The kinds are those of the [containment test suite](https://github.com/sdbs-uni-p/json-schema-containment-testsuite) of Attouche et al., which built such pairs from the suite as it was in 2021.
 
-The path of a case names the suite's file, the position of the test case in it, the kind, and for `valid` and `nonvalid` the position of the test: `minimum/0/valid/2` is built from the third test of the first test case of `minimum.json`, and `optional/bignum/3/reflexive` from the fourth test case of `optional/bignum.json`. Positions count from zero, like the JSON pointer in `upstream`.
+The name of a case joins with dots the suite's file, the position of the test case in it, the kind, and for `valid` and `nonvalid` the position of the test: `minimum.0.valid.2` is built from the third test of the first test case of `minimum.json`, and `optional.bignum.3.reflexive` from the fourth test case of `optional/bignum.json`. Positions count from zero, like the JSON pointer in `upstream`.
 
 Where S stands inside another schema, it is a copy of S if S neither names a location nor refers to one. Any other S stands under `$defs` once, as a schema resource with an `$id`, and is referenced by that `$id`. It keeps the `$id` it has, or gets `https://subsumes-benchmark.example/schema`.
 
@@ -238,7 +264,7 @@ Upstream leaves questions open. Its witness generator gave up on 3,188 of its te
 | `false` | A counterexample: an instance that is valid under the schema whose instances must be accepted and not valid under the other. Two validators that share no code must both say so: the one of the tests, which reads patterns as ECMA-262 does, and `jsonschema-rs`. That is a proof, whichever checker found the instance. | 4,483 |
 | `true` | Two or more checkers that say yes, where none says no and the schemas use neither a pattern nor a format, nor a number that a double does not hold. That is evidence and no proof. | 1,310 |
 
-For example, `corpus/additional-as-uneval/o21764.original_not_unevalEliminated.json` and `corpus/additional-as-uneval/o69207.original_not_unevalEliminated.json` have:
+For example, `corpus/baazizi2026/additional-as-uneval/o21764.original_not_unevalEliminated.json` and `corpus/baazizi2026/additional-as-uneval/o69207.original_not_unevalEliminated.json` have:
 
 ```json
 "derived": {"a_subsumes_b": {"counterexample": {"$schema": "", "encoding": {}, "mark": "box-plot"}}}
@@ -256,12 +282,12 @@ Of the derived labels, 630 say whether A subsumes B and 5,163 whether B subsumes
 
 | Collection | Open questions | Derived `true` | Derived `false` | Still open |
 | --- | ---: | ---: | ---: | ---: |
-| `additional-as-uneval` | 179 | 2 | 6 | 171 |
-| `json-schema-test-suite` | 4,499 | 154 | 4,218 | 127 |
-| `oneof-as-anyof` | 1,659 | 545 | 45 | 1,069 |
-| `rb-testset` | 269 | 57 | 206 | 6 |
-| `schemastore-versions` | 626 | 466 | 0 | 160 |
-| `uneval-as-additional` | 417 | 86 | 8 | 323 |
+| `habib2021/rb-testset` | 269 | 57 | 206 | 6 |
+| `attouche2026/schemastore-versions` | 626 | 466 | 0 | 160 |
+| `baazizi2026/oneof-as-anyof` | 1,659 | 545 | 45 | 1,069 |
+| `baazizi2026/additional-as-uneval` | 179 | 2 | 6 | 171 |
+| `baazizi2026/uneval-as-additional` | 417 | 86 | 8 | 323 |
+| `wolflein2026/json-schema-test-suite` | 4,499 | 154 | 4,218 | 127 |
 | All | 7,649 | 1,310 | 4,483 | 1,856 |
 
 The questions that are still open:
@@ -305,7 +331,7 @@ The artifact lists the narrower schema first, so `b` is its first schema and `a`
 | Path | Content |
 | --- | --- |
 | `corpus/` | The corpus: generated, committed, never edited by hand |
-| `collections.json` | The collections and the upstream dataset each is built from |
+| `collections.json` | The collections, the work that each was first published in and the upstream dataset that each is built from |
 | `overrides.json` | Every departure from upstream, with the reason: the cases left out and the labels changed |
 | `derived.json` | The labels that upstream does not give, each with what shows it; written by `subsumes-benchmark derive` |
 | `schemas/` | The schemas of a case, of `collections.json`, of `overrides.json`, of `derived.json` and of a checker's `checker.json`, of the three lines of the protocol between the runner and an adapter, and of the two files of a run. They say what each key means. The corpus carries a copy of the first |
@@ -354,8 +380,14 @@ A pull request of another type, such as `docs`, `ci` or `chore`, opens no releas
 
 ## Credits and licences
 
-The code in this repository is MIT licensed, except [`checkers/rwg/`](checkers/rwg), which is compiled together with RWG and is GPL-3.0 like it. The corpus keeps the licences of its sources, which each `collection.json` names; the licence texts are in [`corpus/licenses/`](corpus/licenses). The package on PyPI holds the code and the corpus, so it is licensed `MIT AND GPL-3.0-only` and carries those texts.
+The code in this repository is MIT licensed, except [`checkers/rwg/`](checkers/rwg), which is compiled together with RWG and is GPL-3.0 like it. The corpus keeps the licences of its sources, which [`corpus/collections.json`](corpus/collections.json) names for each collection; the folder of each origin holds the text as `LICENSE`. The package on PyPI holds the code and the corpus, so it is licensed `MIT AND GPL-3.0-only` and carries those texts.
 
 `json-schema-test-suite` is built from [json-schema-org/JSON-Schema-Test-Suite](https://github.com/json-schema-org/JSON-Schema-Test-Suite) (MIT, Julian Berman). The kinds of pairs are those of [sdbs-uni-p/json-schema-containment-testsuite](https://github.com/sdbs-uni-p/json-schema-containment-testsuite) (Stefanie Scherzinger, University of Passau), described in Lyes Attouche, Mohamed-Amine Baazizi, Dario Colazzo, Yunchen Ding, Michael Fruth, Giorgio Ghelli, Carlo Sartiani and Stefanie Scherzinger, *A Test Suite for JSON Schema Containment*, ER 2021 Demos and Posters, CEUR Workshop Proceedings 2958. Until version 0.4.0 the corpus took that suite's draft 2020-12 pairs as they were.
 
-The seven other collections come from the artifact of Mohamed-Amine Baazizi, Nour El Houda Ben Ali, Dario Colazzo, Giorgio Ghelli, Stefan Klessinger, Carlo Sartiani and Stefanie Scherzinger, *JSON Schema Inclusion through Refutational Normalization: Reconciling Efficiency and Completeness* ([arXiv:2603.25306](https://arxiv.org/abs/2603.25306), 2026), at [gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema](https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema), GPL-3.0. Four of them were assembled for *Witness Generation for JSON Schema* (Lyes Attouche, Mohamed-Amine Baazizi, Dario Colazzo, Giorgio Ghelli, Carlo Sartiani and Stefanie Scherzinger, PVLDB 15(13), 2022; reproduction package [sdbs-uni-p/JSONSchemaWitnessGeneration](https://github.com/sdbs-uni-p/JSONSchemaWitnessGeneration)) and *Witness Generation for Classical JSON Schema* (same authors, ACM TODS 51(4), 2026). The schemas inside come from [IBM/jsonsubschema](https://github.com/IBM/jsonsubschema)'s tests (Apache-2.0; Andrew Habib, Avraham Shinnar, Martin Hirzel and Michael Pradel, *Finding Data Compatibility Bugs with JSON Subschema Checking*, ISSTA 2021), from [SchemaStore](https://github.com/SchemaStore/schemastore) (Apache-2.0), from schemas found on GitHub, and from the authors' own hand-written cases. The documents that `rb-testset` references (Snowplow Iglu Central and Washington Post ANS schemas) come from the artifact's cache and are embedded in the schemas that reference them.
+The seven other collections are read from the artifact of Mohamed-Amine Baazizi, Nour El Houda Ben Ali, Dario Colazzo, Giorgio Ghelli, Stefan Klessinger, Carlo Sartiani and Stefanie Scherzinger, *JSON Schema Inclusion through Refutational Normalization: Reconciling Efficiency and Completeness* ([arXiv:2603.25306](https://arxiv.org/abs/2603.25306), 2026), at [gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema](https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema), GPL-3.0. Each lies in the folder of the work that first published its pairs:
+
+- **`baazizi2026`**: That paper, which introduces `oneof-as-anyof`, `additional-as-uneval` and `uneval-as-additional`, built from schemas found on GitHub.
+- **`attouche2026`**: Lyes Attouche, Mohamed-Amine Baazizi, Dario Colazzo, Giorgio Ghelli, Carlo Sartiani and Stefanie Scherzinger, *Witness Generation for Classical JSON Schema*, ACM TODS 51(4), 2026 ([doi:10.1145/3799416](https://doi.org/10.1145/3799416); reproduction package [sdbs-uni-p/JSONSchemaWitnessGeneration](https://github.com/sdbs-uni-p/JSONSchemaWitnessGeneration)). It builds `handwritten-sc` by hand, `mergeallof` from the unit tests of [json-schema-merge-allof](https://github.com/mokkabonna/json-schema-merge-allof) (Martin Hansen), and `schemastore-versions` from the history of [SchemaStore](https://github.com/SchemaStore/schemastore) (Apache-2.0).
+- **`habib2021`**: Andrew Habib, Avraham Shinnar, Martin Hirzel and Michael Pradel, *Finding Data Compatibility Bugs with JSON Subschema Checking*, ISSTA 2021 ([doi:10.1145/3460319.3464796](https://doi.org/10.1145/3460319.3464796)). `rb-testset` is the 300 pairs of its [replication package](https://zenodo.org/records/4729863), with schemas from Kubernetes, Snowplow and the Washington Post; the tool is [IBM/jsonsubschema](https://github.com/IBM/jsonsubschema) (Apache-2.0).
+
+The documents that `rb-testset` references (Snowplow Iglu Central and Washington Post ANS schemas) come from the artifact's cache and are embedded in the schemas that reference them.

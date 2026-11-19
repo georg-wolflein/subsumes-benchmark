@@ -1,0 +1,118 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o20473.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o20473.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "description": "authorization error response",
+                "properties": {
+                  "error": {
+                    "description": "The OAuth 2.0 error code, with values (additional codes are specified in OpenID Connect):",
+                    "enum": [
+                      "invalid_request",
+                      "unauthorized_client",
+                      "access_denied",
+                      "unsupported_response_type",
+                      "invalid_scope",
+                      "server_error",
+                      "temporarily_unavailable"
+                    ],
+                    "type": "string"
+                  },
+                  "error_description": {
+                    "description": "Optional parameter providing additional human-readable information about the error.",
+                    "type": "string"
+                  },
+                  "error_uri": {
+                    "description": "A human-readable web page with information about the error, typically intended for the client developer.",
+                    "type": "string"
+                  },
+                  "state": {
+                    "description": "The state value, if one was passed with the request. Clients must validate the value before proceeding.",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "error",
+                  "error_description"
+                ],
+                "title": "OAuth error response",
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^error$": true,
+                  "^error_description$": true,
+                  "^error_uri$": true,
+                  "^state$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$id": "http://localhost:3000/schemas/authorize-error-code.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "description": "authorization error response",
+    "properties": {
+      "error": {
+        "description": "The OAuth 2.0 error code, with values (additional codes are specified in OpenID Connect):",
+        "enum": [
+          "invalid_request",
+          "unauthorized_client",
+          "access_denied",
+          "unsupported_response_type",
+          "invalid_scope",
+          "server_error",
+          "temporarily_unavailable"
+        ],
+        "type": "string"
+      },
+      "error_description": {
+        "description": "Optional parameter providing additional human-readable information about the error.",
+        "type": "string"
+      },
+      "error_uri": {
+        "description": "A human-readable web page with information about the error, typically intended for the client developer.",
+        "type": "string"
+      },
+      "state": {
+        "description": "The state value, if one was passed with the request. Clients must validate the value before proceeding.",
+        "type": "string"
+      }
+    },
+    "required": [
+      "error",
+      "error_description"
+    ],
+    "title": "OAuth error response",
+    "type": "object"
+  }
+}

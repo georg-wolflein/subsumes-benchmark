@@ -1,0 +1,167 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "minimum",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o90783.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o90783.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+      "mysql": {
+        "$ref": "#/$defs/modern_1"
+      },
+      "service": {
+        "description": "DC/OS service configuration properties",
+        "properties": {
+          "name": {
+            "default": "mysql",
+            "description": "The name of the MySQL service instance",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "type": "object",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "description": "MySQL service configuration properties",
+                "properties": {
+                  "database": {
+                    "description": "The name of a database to be created on image startup, optional.",
+                    "type": "string"
+                  },
+                  "instances": {
+                    "default": 1.0,
+                    "description": "Number of instances we should have running by mesos.",
+                    "minimum": 1.0,
+                    "type": "number"
+                  },
+                  "mem": {
+                    "default": 128.0,
+                    "description": "Memory to allocate to each MySQL node.",
+                    "minimum": 128.0,
+                    "type": "number"
+                  },
+                  "host_volume": {
+                    "default": "/tmp",
+                    "description": "The location of a volume on the host to be used for persisting MySQL data. The final location will be derived from this value plus the name set in `name` (e.g. `/mnt/host_volume/mysql`). Note that this path must be the same on all DCOS agents.",
+                    "type": "string"
+                  },
+                  "root_password": {
+                    "description": "Specifies the password that will be set for the MySQL root superuser account, required.",
+                    "type": "string"
+                  },
+                  "cpus": {
+                    "default": 0.1,
+                    "description": "CPU shares to allocate to each MySQL node.",
+                    "minimum": 0.1,
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "cpus",
+                  "mem",
+                  "instances",
+                  "host_volume",
+                  "root_password"
+                ],
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^host_volume$": true,
+                  "^cpus$": true,
+                  "^instances$": true,
+                  "^database$": true,
+                  "^mem$": true,
+                  "^root_password$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+      "mysql": {
+        "additionalProperties": false,
+        "description": "MySQL service configuration properties",
+        "properties": {
+          "cpus": {
+            "default": 0.1,
+            "description": "CPU shares to allocate to each MySQL node.",
+            "minimum": 0.1,
+            "type": "number"
+          },
+          "database": {
+            "description": "The name of a database to be created on image startup, optional.",
+            "type": "string"
+          },
+          "host_volume": {
+            "default": "/tmp",
+            "description": "The location of a volume on the host to be used for persisting MySQL data. The final location will be derived from this value plus the name set in `name` (e.g. `/mnt/host_volume/mysql`). Note that this path must be the same on all DCOS agents.",
+            "type": "string"
+          },
+          "instances": {
+            "default": 1.0,
+            "description": "Number of instances we should have running by mesos.",
+            "minimum": 1.0,
+            "type": "number"
+          },
+          "mem": {
+            "default": 128.0,
+            "description": "Memory to allocate to each MySQL node.",
+            "minimum": 128.0,
+            "type": "number"
+          },
+          "root_password": {
+            "description": "Specifies the password that will be set for the MySQL root superuser account, required.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "cpus",
+          "mem",
+          "instances",
+          "host_volume",
+          "root_password"
+        ],
+        "type": "object"
+      },
+      "service": {
+        "description": "DC/OS service configuration properties",
+        "properties": {
+          "name": {
+            "default": "mysql",
+            "description": "The name of the MySQL service instance",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "type": "object"
+  }
+}

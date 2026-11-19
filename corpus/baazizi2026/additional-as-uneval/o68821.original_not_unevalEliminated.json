@@ -1,0 +1,182 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o68821.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o68821.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_3",
+    "$defs": {
+      "modern_5": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object"
+              },
+              {
+                "additionalProperties": {
+                  "$ref": "#/$defs/Item"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "new": {
+                    "description": "New value"
+                  },
+                  "old": {
+                    "description": "Old value"
+                  }
+                },
+                "required": [
+                  "new",
+                  "old"
+                ],
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^new$": true,
+                  "^old$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "Change": {
+        "$ref": "#/$defs/modern_1"
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object"
+              },
+              {
+                "additionalProperties": {
+                  "$ref": "#/$defs/Change"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "modern_3": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "description": "Changes to state made by client",
+                "properties": {
+                  "context": {
+                    "$ref": "#/$defs/modern_4"
+                  },
+                  "plugins": {
+                    "$ref": "#/$defs/modern_5"
+                  }
+                },
+                "title": "Changes",
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^context$": true,
+                  "^plugins$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "Item": {
+        "$ref": "#/$defs/modern_2"
+      },
+      "modern_4": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object"
+              },
+              {
+                "additionalProperties": {
+                  "$ref": "#/$defs/Item"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "description": "Changes to state made by client",
+    "properties": {
+      "context": {
+        "additionalProperties": {
+          "$ref": "#/$defs/Item"
+        },
+        "type": "object"
+      },
+      "plugins": {
+        "additionalProperties": {
+          "$ref": "#/$defs/Item"
+        },
+        "type": "object"
+      }
+    },
+    "title": "Changes",
+    "type": "object",
+    "$defs": {
+      "Change": {
+        "additionalProperties": false,
+        "properties": {
+          "new": {
+            "description": "New value"
+          },
+          "old": {
+            "description": "Old value"
+          }
+        },
+        "required": [
+          "new",
+          "old"
+        ],
+        "type": "object"
+      },
+      "Item": {
+        "additionalProperties": {
+          "$ref": "#/$defs/Change"
+        },
+        "type": "object"
+      }
+    }
+  }
+}

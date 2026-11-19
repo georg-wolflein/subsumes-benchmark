@@ -1,0 +1,131 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "minLength",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o26296.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o26296.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "email": {
+                    "_format": "email",
+                    "type": "string"
+                  },
+                  "username": {
+                    "minLength": 3,
+                    "type": "string"
+                  },
+                  "roles": {
+                    "type": "array"
+                  },
+                  "first": {
+                    "type": "string"
+                  },
+                  "verified": {
+                    "type": "boolean"
+                  },
+                  "password": {
+                    "minLength": 8,
+                    "type": "string"
+                  },
+                  "verification": {
+                    "type": "string"
+                  },
+                  "last": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "first",
+                  "last",
+                  "username",
+                  "verified",
+                  "roles"
+                ],
+                "title": "user schema",
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^verified$": true,
+                  "^roles$": true,
+                  "^username$": true,
+                  "^last$": true,
+                  "^first$": true,
+                  "^email$": true,
+                  "^verification$": true,
+                  "^password$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+      "email": {
+        "_format": "email",
+        "type": "string"
+      },
+      "first": {
+        "type": "string"
+      },
+      "last": {
+        "type": "string"
+      },
+      "password": {
+        "minLength": 8,
+        "type": "string"
+      },
+      "roles": {
+        "type": "array"
+      },
+      "username": {
+        "minLength": 3,
+        "type": "string"
+      },
+      "verification": {
+        "type": "string"
+      },
+      "verified": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "email",
+      "first",
+      "last",
+      "username",
+      "verified",
+      "roles"
+    ],
+    "title": "user schema",
+    "type": "object"
+  }
+}

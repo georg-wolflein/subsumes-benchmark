@@ -1,0 +1,85 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "minimum",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o55578.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o55578.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$id": "https://github.com/kloiasoft/eventapis/blob/master/spec/schema/event-key.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "EventApis Event Key",
+                "description": "EventApis Event Key Schema",
+                "type": "object",
+                "properties": {
+                  "entityId": {
+                    "type": "string",
+                    "description": "Aggregation Id of related Default Entity, UUIDs can be used but not mandatory"
+                  },
+                  "version": {
+                    "type": "integer",
+                    "minimum": 0.0,
+                    "description": "Aggregation Version of related Default Entity"
+                  }
+                },
+                "required": [
+                  "entityId",
+                  "version"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^entityId$": true,
+                  "^version$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$id": "https://github.com/kloiasoft/eventapis/blob/master/spec/schema/event-key.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "EventApis Event Key",
+    "description": "EventApis Event Key Schema",
+    "type": "object",
+    "properties": {
+      "entityId": {
+        "type": "string",
+        "description": "Aggregation Id of related Default Entity, UUIDs can be used but not mandatory"
+      },
+      "version": {
+        "type": "integer",
+        "minimum": 0,
+        "description": "Aggregation Version of related Default Entity"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "entityId",
+      "version"
+    ]
+  }
+}

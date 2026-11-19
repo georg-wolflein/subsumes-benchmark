@@ -23,13 +23,16 @@ CATEGORIES = frozenset({"valid", "nonvalid", "unions", "reflexive", "universal",
 # cases where the narrower schema does not list its instances. A case that stands for two
 # upstream cases has the label of the other one as the label of its other direction.
 COUNTEREXAMPLES: dict[tuple[str, Direction], Json] = {
-    ("handwritten-sc/bool.7.eq1.sub.eq2", "a_subsumes_b"): "aa\nbb",
-    ("handwritten-sc/bool.7.eq2.notsub.strong", "b_subsumes_a"): "aaa\nbb",
-    ("mergeallof/items_merges_additionalItems.merge_not_orig", "b_subsumes_a"): [
+    ("attouche2026/handwritten-sc/bool.7.eq1.sub.eq2", "a_subsumes_b"): "aa\nbb",
+    ("attouche2026/handwritten-sc/bool.7.eq2.notsub.strong", "b_subsumes_a"): "aaa\nbb",
+    ("attouche2026/mergeallof/items_merges_additionalItems.merge_not_orig", "b_subsumes_a"): [
         {},
         {"name": "foo\nbar"},
     ],
-    ("mergeallof/module_merges_pattern_using_allOf.merge_not_orig", "b_subsumes_a"): "fdsaf\nabba",
+    (
+        "attouche2026/mergeallof/module_merges_pattern_using_allOf.merge_not_orig",
+        "b_subsumes_a",
+    ): "fdsaf\nabba",
 }
 
 
@@ -84,11 +87,12 @@ def suite_cases() -> dict[str, dict[str, Case]]:
     """The cases built from the test suite, by test case of the suite and then by kind."""
     groups: dict[str, dict[str, Case]] = {}
     for found in cases():
-        if found.collection != "json-schema-test-suite":
+        if found.collection != "wolflein2026/json-schema-test-suite":
             continue
-        parts = found.id.split("/")
+        # A name is the file of the suite, the test case, the kind and, for some, the test.
+        parts = found.name.split(".")
         at = next(i for i, part in enumerate(parts) if part in CATEGORIES)
-        groups.setdefault("/".join(parts[:at]), {})["/".join(parts[at:])] = found
+        groups.setdefault(".".join(parts[:at]), {})[".".join(parts[at:])] = found
     return groups
 
 
@@ -120,7 +124,7 @@ def test_a_schema_with_its_negation_accepts_everything_or_nothing() -> None:
         instances = [
             constant["const"]
             for kind, found in group.items()
-            if kind.startswith("valid/") and isinstance(constant := found.b, dict)
+            if kind.startswith("valid.") and isinstance(constant := found.b, dict)
         ]
         for kind, expected in (("universal", True), ("unsatisfiable", False)):
             found = group.get(kind)

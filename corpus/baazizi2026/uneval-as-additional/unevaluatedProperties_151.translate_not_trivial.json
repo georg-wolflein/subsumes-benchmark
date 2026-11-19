@@ -1,0 +1,107 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "patternProperties",
+    "properties",
+    "type",
+    "uniqueItems"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/uneval_eliminated_as_additional_containment/unknown/unevaluatedProperties_151.translate_not_trivial.json",
+  "a": {
+    "$id": "https://schemas.2sxc.org/app/v14/app.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "App_Data/app.json Configuration Recipe",
+    "type": "object",
+    "properties": {
+      "$schema": {
+        "type": "string",
+        "description": "The schema - really recommended",
+        "default": "https://schemas.2sxc.org/app/v14/app.json"
+      },
+      "export": {
+        "type": "object",
+        "description": "Settings which affect the normal app export functionality.",
+        "properties": {
+          "exclude": {
+            "description": "Exclude certain folders/file beginning with the values specified below. \n Note that it may look like glob, but ATM it's a simpler starts-with mechanism.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "examples": [
+                ".git/",
+                ".github/",
+                ".temp_cache/",
+                "node_modules/"
+              ]
+            },
+            "uniqueItems": true
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "additionalProperties": false
+  },
+  "b": {
+    "$id": "https://schemas.2sxc.org/app/v14/app.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "App_Data/app.json Configuration Recipe",
+                "type": "object",
+                "properties": {
+                  "$schema": {
+                    "type": "string",
+                    "description": "The schema - really recommended",
+                    "default": "https://schemas.2sxc.org/app/v14/app.json"
+                  },
+                  "export": {
+                    "type": "object",
+                    "description": "Settings which affect the normal app export functionality.",
+                    "properties": {
+                      "exclude": {
+                        "description": "Exclude certain folders/file beginning with the values specified below. \n Note that it may look like glob, but ATM it's a simpler starts-with mechanism.",
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "examples": [
+                            ".git/",
+                            ".github/",
+                            ".temp_cache/",
+                            "node_modules/"
+                          ]
+                        },
+                        "uniqueItems": true
+                      }
+                    }
+                  },
+                  "unevaluatedProperties": false
+                }
+              },
+              {
+                "patternProperties": {
+                  "^\\$schema$": true,
+                  "^export$": true,
+                  "^unevaluatedProperties$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
