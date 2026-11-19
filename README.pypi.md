@@ -46,4 +46,4 @@ The first line is the adapter's when it has started, the second a request, and t
 
 ## Licences
 
-The code is MIT licensed. The corpus keeps the licences of its sources, which its `collections.json` names for each collection: GPL-3.0 for the collections built from the artifact of *JSON Schema Inclusion through Refutational Normalization*, and MIT for the one built from the official JSON Schema Test Suite. The package carries the texts, and so does the corpus: the folder of each origin has the `LICENSE` of its collections.
+The code is MIT licensed. The corpus keeps the licences of its sources, which its `collections.json` names for each collection: GPL-3.0 for the collections built from the artifact of *JSON Schema Inclusion through Refutational Normalization*, and MIT for the one built from the official JSON Schema Test Suite. The package carries the texts, and so does the corpus: the folder of each collection has its `LICENSE`.

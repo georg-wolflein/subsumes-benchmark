@@ -18,7 +18,7 @@ MANIFEST = CORPUS / "collections.json"
 def test_every_file_is_a_case_or_a_shared_file() -> None:
     shared = (
         {CORPUS / "case.schema.json", MANIFEST}
-        | {CORPUS / origin / "LICENSE" for origin in ORIGINS}
+        | {CORPUS / folder / "LICENSE" for folder in COLLECTIONS}
         | {case.file for case in cases()}
     )
     stray = [
@@ -102,24 +102,19 @@ def test_the_manifest_says_of_every_collection_what_the_configuration_says() -> 
             "labels": spec["labels"],
             "origin": ORIGINS[spec["origin"]],
             "license": CONFIG["sources"][spec["source"]]["license"],
-            "license_file": f"{spec['origin']}/LICENSE",
+            "license_file": f"{folder}/LICENSE",
         }
         assert source["path"] == spec["path"]
         assert source.keys() == {"repository", "commit", "path"}
 
 
-def test_every_origin_has_the_license_of_its_collections() -> None:
-    # The licence belongs to the source that a collection is read from, and the folder of
-    # an origin holds one text: the texts differ exactly where the licences do.
-    by_origin: dict[str, set[str]] = {}
-    for spec in CONFIG["collections"].values():
-        by_origin.setdefault(spec["origin"], set()).add(
-            CONFIG["sources"][spec["source"]]["license"]
-        )
-    assert all(len(found) == 1 for found in by_origin.values())
+def test_every_collection_has_the_license_of_its_source() -> None:
+    # A collection folder holds its cases and the licence they are under, and nothing else.
+    # Two collections have the same text exactly where their sources have the same licence.
     texts: dict[str, set[bytes]] = {}
-    for origin, (name,) in by_origin.items():
-        texts.setdefault(name, set()).add((CORPUS / origin / "LICENSE").read_bytes())
+    for folder, spec in COLLECTIONS.items():
+        name = CONFIG["sources"][spec["source"]]["license"]
+        texts.setdefault(name, set()).add((CORPUS / folder / "LICENSE").read_bytes())
     assert all(len(found) == 1 for found in texts.values())
     assert len({text for found in texts.values() for text in found}) == len(texts)
 

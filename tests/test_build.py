@@ -7,15 +7,11 @@ import pytest
 
 from subsumes_benchmark.build import (
     Case,
-    Collection,
-    CollectionSpec,
     ConfigError,
-    OriginSpec,
     Overrides,
     Source,
     SourceSpec,
     bundled,
-    licenses,
     without_duplicates,
     without_excluded,
     write_json,
@@ -138,43 +134,6 @@ def test_a_permalink_names_the_commit_in_the_way_of_the_forge(forge: Forge, link
         commit="abc123",
     )
     assert source.permalink(root / "tests" / "a b" / "c.json") == link
-
-
-def a_collection(root: Path, name: str, origin: str, license_text: str) -> Collection:
-    (root / name).mkdir(parents=True)
-    (root / name / "LICENSE").write_text(license_text, encoding="utf-8")
-    source = Source(
-        name=name,
-        spec=SourceSpec(forge="github", license="MIT", license_file="LICENSE"),
-        root=root / name,
-        repository="https://example.com/group/suite.git",
-        commit="abc123",
-    )
-    spec = CollectionSpec(
-        origin=origin,
-        source=name,
-        path="tests",
-        labels="by-construction",
-        use_case="tool-checking",
-        description="Examples.",
-    )
-    work = OriginSpec(citation="Someone. Examples. 2026.", url="https://example.com/work")
-    return Collection(name, source, work, spec)
-
-
-def test_the_collections_of_an_origin_have_one_licence(tmp_path: Path) -> None:
-    one = a_collection(tmp_path, "one", "someone2026", "a licence")
-    same = a_collection(tmp_path, "same", "someone2026", "a licence")
-    other = a_collection(tmp_path, "other", "another2026", "another licence")
-    assert one.folder == "someone2026/one"
-    assert licenses([one, same, other]) == {
-        "someone2026": one.source.license_file,
-        "another2026": other.source.license_file,
-    }
-    # The folder of an origin holds one text, so its collections cannot need two.
-    differing = a_collection(tmp_path, "differing", "someone2026", "another licence")
-    with pytest.raises(ConfigError, match="more than one licence"):
-        licenses([one, differing])
 
 
 def test_a_case_names_its_schema_and_says_what_is_known_before_the_schemas() -> None:

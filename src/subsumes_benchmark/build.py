@@ -79,7 +79,7 @@ CASE_SCHEMA = Path("schemas/case.schema.json")
 # What the corpus says about its collections, by the folder of each, in one file at its root.
 MANIFEST_NAME = "collections.json"
 
-# The licence of the collections of an origin, in the folder of the origin.
+# The licence of a collection, which is that of its source, in the folder of the collection.
 LICENSE_NAME = "LICENSE"
 
 
@@ -170,7 +170,7 @@ class Collection:
             "labels": self.spec.labels,
             "origin": {"citation": self.origin.citation, "url": self.origin.url},
             "license": self.source.spec.license,
-            "license_file": f"{self.spec.origin}/{LICENSE_NAME}",
+            "license_file": f"{self.folder}/{LICENSE_NAME}",
             "source": {
                 "repository": self.source.repository,
                 "commit": self.source.commit,
@@ -233,20 +233,6 @@ class Case:
         if self.derived is not None:
             out["derived"] = document(self.derived)
         return {**out, "a": self.a, "b": self.b}
-
-
-def licenses(collections: Sequence[Collection]) -> Mapping[str, Path]:
-    """The licence file of every origin: that of the sources its collections are read from.
-
-    A licence belongs to a source, and the folder of an origin holds one text. So the
-    collections of an origin must come from sources with the same text.
-    """
-    found: dict[str, Path] = {}
-    for collection in collections:
-        origin, text = collection.spec.origin, collection.source.license_file
-        if found.setdefault(origin, text).read_bytes() != text.read_bytes():
-            raise ConfigError(f"the collections of {origin} are under more than one licence")
-    return found
 
 
 def load_collections(path: Path) -> list[Collection]:
@@ -661,8 +647,8 @@ def build(out: Path, collections_file: Path, overrides_file: Path, derived_file:
         out / MANIFEST_NAME, {collection.folder: collection.manifest for collection in collections}
     )
     shutil.copyfile(CASE_SCHEMA, out / CASE_SCHEMA.name)
-    for origin, license_file in licenses(collections).items():
-        license_file.copy(out / origin / LICENSE_NAME)
+    for collection in collections:
+        collection.source.license_file.copy(out / collection.folder / LICENSE_NAME)
 
     print(f"\n{'collection':40s} {'cases':>6s} {'true':>6s} {'false':>6s} {'null':>6s}")
     by_id = {case.id: case for case in final}
