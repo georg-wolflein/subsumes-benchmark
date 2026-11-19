@@ -1,0 +1,89 @@
+name: subsumes release
+
+# A release of https://github.com/georg-wolflein/subsumes sends this repository the event
+# `subsumes-released`, with its version, once the crate is on crates.io and the package on
+# PyPI. This workflow then pins both adapters of subsumes to that version, with their lock
+# files and the version in their checker.json, in a pull request on the branch
+# build/subsumes: it opens the pull request, or replaces what the one that is open pins. A
+# version that is not newer than the one on main changes nothing. Started by hand, it takes
+# the version as an input.
+#
+# It acts as a GitHub App: a pull request opened with this workflow's own token would not
+# start the checks, and CI compiles and typechecks the adapters against the new version.
+on:
+  repository_dispatch:
+    types: [subsumes-released]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: The version of subsumes to pin, such as 0.5.0
+        required: true
+        type: string
+
+permissions: {}
+
+concurrency: subsumes-release
+
+jobs:
+  pin:
+    if: vars.PR_BOT_CLIENT_ID != ''
+    runs-on: ubuntu-latest
+    permissions: {}
+    env:
+      VERSION: ${{ github.event.client_payload.version || inputs.version }}
+      BRANCH: build/subsumes
+    steps:
+      - name: Check the version
+        run: |
+          if ! printf '%s\n' "$VERSION" | grep --quiet --extended-regexp '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "::error::'$VERSION' is no version"
+            exit 1
+          fi
+      - uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        id: app
+        with:
+          client-id: ${{ vars.PR_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.PR_BOT_PRIVATE_KEY }}
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          token: ${{ steps.app.outputs.token }}
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          python-version: "3.14"
+      - name: Pin the adapters to the release
+        id: pin
+        run: |
+          current="$(sed -n 's/^subsumes = "=\(.*\)"$/\1/p' checkers/subsumes/Cargo.toml)"
+          newest="$(printf '%s\n%s\n' "$current" "$VERSION" | sort --version-sort | tail -n 1)"
+          if [ "$current" = "$VERSION" ] || [ "$newest" != "$VERSION" ]; then
+            echo "main pins subsumes $current already, which is not older than $VERSION"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          sed -i "s/^subsumes = \"=.*\"$/subsumes = \"=$VERSION\"/" checkers/subsumes/Cargo.toml
+          cargo update --manifest-path checkers/subsumes/Cargo.toml --package subsumes
+          sed -i "s/\"subsumes==[^\"]*\"/\"subsumes==$VERSION\"/" checkers/subsumes-python/adapter.py
+          uv lock --script checkers/subsumes-python/adapter.py
+          sed -i "s/^  \"version\": \".*\",$/  \"version\": \"$VERSION\",/" \
+            checkers/subsumes/checker.json checkers/subsumes-python/checker.json
+          git diff --stat
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+      - name: Open the pull request, or update the one that is open
+        if: steps.pin.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+          BOT: ${{ steps.app.outputs.app-slug }}[bot]
+        run: |
+          title="build: pin the adapters of subsumes to $VERSION"
+          body="Pins \`checkers/subsumes\` and \`checkers/subsumes-python\` to [subsumes $VERSION](https://github.com/$GITHUB_REPOSITORY_OWNER/subsumes/releases/tag/v$VERSION), which sent this repository an event when it was released. Opened by the [subsumes release]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID) workflow."
+          git config user.name "$BOT"
+          git config user.email "$(gh api "/users/$BOT" --jq .id)+$BOT@users.noreply.github.com"
+          git switch --create "$BRANCH"
+          git commit --all --message "$title"
+          git push --force origin "$BRANCH"
+          number="$(gh pr list --head "$BRANCH" --state open --json number --jq '.[].number')"
+          if [ -n "$number" ]; then
+            gh pr edit "$number" --title "$title" --body "$body"
+          else
+            gh pr create --head "$BRANCH" --title "$title" --body "$body"
+          fi

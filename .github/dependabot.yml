@@ -22,14 +22,10 @@ updates:
   # The checkers that the comparison pins. No check on the pull request runs them: CI
   # compiles the Rust adapters against a new version, and what else a version breaks
   # shows in the comparison of the next release. The adapters written in Python pin
-  # theirs inside adapter.py, which is updated by hand.
+  # theirs inside adapter.py, which is updated by hand. subsumes is not here: a release
+  # of it pins both its adapters, with .github/workflows/subsumes-release.yml.
   - package-ecosystem: cargo
     directory: /checkers/jsoncompat
-    schedule:
-      interval: weekly
-      day: monday
-  - package-ecosystem: cargo
-    directory: /checkers/subsumes
     schedule:
       interval: weekly
       day: monday

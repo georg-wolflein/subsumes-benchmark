@@ -136,3 +136,26 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ needs.release-please.outputs.tag }}
         run: gh workflow run comparison.yml --repo "$GITHUB_REPOSITORY" --ref "$TAG"
+
+  # Tells subsumes that the corpus can be downloaded, with the event `benchmark-released`.
+  # Its workflow benchmark-release.yml then pins its Makefile to the release.
+  notify:
+    needs: [release-please, publish]
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        id: app
+        with:
+          client-id: ${{ vars.PR_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.PR_BOT_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: subsumes
+          permission-contents: write # to send the event
+      - name: Tell subsumes about the release
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+          TAG: ${{ needs.release-please.outputs.tag }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY_OWNER/subsumes/dispatches" \
+            -f event_type=benchmark-released -f "client_payload[version]=${TAG#v}"
