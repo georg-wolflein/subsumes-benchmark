@@ -79,6 +79,9 @@ CASE_SCHEMA = Path("schemas/case.schema.json")
 # What the corpus says about its collections, by the folder of each, in one file at its root.
 MANIFEST_NAME = "collections.json"
 
+# The page of the corpus, which is written by hand and which a build leaves as it is.
+README_NAME = "README.md"
+
 # The licence of a collection, which is that of its source, in the folder of the collection.
 LICENSE_NAME = "LICENSE"
 
@@ -168,7 +171,11 @@ class Collection:
             "description": self.spec.description,
             "use_case": self.spec.use_case,
             "labels": self.spec.labels,
-            "origin": {"citation": self.origin.citation, "url": self.origin.url},
+            "origin": {
+                "short": self.origin.short,
+                "citation": self.origin.citation,
+                "url": self.origin.url,
+            },
             "license": self.source.spec.license,
             "license_file": f"{self.folder}/{LICENSE_NAME}",
             "source": {
@@ -596,7 +603,27 @@ def with_derived(cases: Sequence[Case], derived: Mapping[str, Derived]) -> list[
     return found
 
 
-def build(out: Path, collections_file: Path, overrides_file: Path, derived_file: Path) -> None:
+def clear(out: Path) -> None:
+    """Remove what a build wrote to the folder of the corpus: everything but its ``README.md``.
+
+    That page is the one file of the corpus that is written by hand.
+    """
+    if not out.exists():
+        return
+    for path in out.iterdir():
+        if path.is_dir():
+            shutil.rmtree(path)
+        elif path.name != README_NAME:
+            path.unlink()
+
+
+def build(
+    out: Path,
+    collections_file: Path,
+    overrides_file: Path,
+    derived_file: Path,
+) -> None:
+    """Build the corpus."""
     collections = load_collections(collections_file)
     departures = Overrides.read(overrides_file)
     derived = Derivations.read(derived_file).cases
@@ -638,8 +665,7 @@ def build(out: Path, collections_file: Path, overrides_file: Path, derived_file:
     # An id is an origin, a collection and a name: no case lies deeper, whatever upstream calls it.
     if deeper := sorted(case.id for case in final if case.id.count("/") != 2):
         raise ConversionError(f"cases that do not lie in the folder of their collection: {deeper}")
-    if out.exists():
-        shutil.rmtree(out)
+    clear(out)
     print(f"writing {len(final)} cases")
     for case in final:
         write_case(out, case)

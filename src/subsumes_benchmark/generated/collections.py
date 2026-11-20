@@ -38,6 +38,10 @@ class OriginSpec(Config):
         extra="forbid",
         use_attribute_docstrings=True,
     )
+    short: str
+    """
+    The work as a text names it in passing: the authors and the year, as in 'Habib et al., 2021', or what it is where it is no publication.
+    """
     citation: str
     """
     The work, as a reference list gives it: authors, title, venue and year.
@@ -89,7 +93,7 @@ class CollectionSpec(Config):
     use_case: UseCase
     description: str
     """
-    What the collection holds, in a sentence or two.
+    What the collection holds, in one sentence that fits a row of a table.
     """
 
 

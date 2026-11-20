@@ -60,11 +60,16 @@ def _main() -> None:
     running.add_argument("--jobs", type=int, default=1, help="adapter processes side by side")
     running.add_argument("--no-build", action="store_true", help="the adapter is built already")
 
-    reporting = commands.add_parser("report", help="report on the runs in a folder")
+    reporting = commands.add_parser(
+        "report",
+        help="draw how fast the checkers of the runs in a folder are, and table their results",
+        description="Writes a plot for light and for dark pages to --out, and a table with a "
+        "row for every checker as results.md, which it prints too.",
+    )
     reporting.add_argument("results", type=Path, help="a folder with one folder per checker")
-    reporting.add_argument("--out", type=Path, default=Path("comparison"), help="where it goes")
-    reporting.add_argument("--corpus", type=Path, default=CORPUS, help="the folder of the corpus")
-    reporting.add_argument("--readme", type=Path, help="a README whose marked part to rewrite")
+    reporting.add_argument(
+        "--out", type=Path, default=Path("comparison"), help="where the plots and the table go"
+    )
 
     differing = commands.add_parser(
         "diff",
@@ -118,6 +123,13 @@ def _main() -> None:
         if found.failures or (found.lost and not args.allow_lost):
             sys.exit(1)
         return
+    if args.command == "report":
+        # The report draws a plot, which needs matplotlib; a run does not. It reads the
+        # runs and nothing of the corpus.
+        from subsumes_benchmark.compare.report import report  # noqa: PLC0415
+
+        print(report(args.results, args.out))
+        return
     if not args.corpus.is_dir():
         sys.exit(
             f"there is no corpus at {args.corpus}; `subsumes-benchmark corpus {args.corpus}` "
@@ -144,11 +156,6 @@ def _main() -> None:
             seed=args.seed,
             jobs=args.jobs,
         )
-    elif args.command == "report":
-        # The report draws charts, which needs matplotlib; a run does not.
-        from subsumes_benchmark.compare.report import report  # noqa: PLC0415
-
-        report(args.results, args.out, args.corpus, args.readme)
     else:
         # Deriving validates instances as the labels read a schema, which needs the
         # validators of the `validation` group; a run does not.

@@ -67,7 +67,7 @@ class Unknown(Config):
     """
     reason: Annotated[str | None, Field(min_length=1)] = None
     """
-    What kind of reason the checker had, in a word or two that are the same for every task declined for it, such as the keyword that it does not support. A report counts the declined tasks by it.
+    What kind of reason the checker had, in a word or two that are the same for every task declined for it, such as the keyword that it does not support. `diff` counts the declined tasks by it.
     """
     message: str | None = None
     """

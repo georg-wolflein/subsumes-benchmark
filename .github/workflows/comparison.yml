@@ -1,9 +1,9 @@
 name: Comparison
 
-# Runs every checker under checkers/ over the corpus and reports on them. It is started by
+# Runs every checker under checkers/ over the corpus, and plots and tables the results. It is started by
 # hand, and by the release workflow after it published a release.
 #
-# A run over every task opens a pull request with the report, where the PR_BOT_CLIENT_ID
+# A run over every task opens a pull request with the plot and the table, where the PR_BOT_CLIENT_ID
 # variable and the PR_BOT_PRIVATE_KEY secret name a GitHub App that may do so. A run with
 # a limit publishes nothing: it shows that every adapter still builds and answers.
 on:
@@ -75,8 +75,9 @@ jobs:
           path: results/${{ matrix.checker }}
           if-no-files-found: error
 
-  # The report on the runs: a summary of this workflow run and an artifact, and for a
-  # release a file of the release.
+  # The plot and the table of the runs, each a file under comparison/: the table as the
+  # summary of this workflow run, both with the results as an artifact, and for a release as
+  # a file of the release.
   report:
     needs: run
     runs-on: ubuntu-latest
@@ -93,10 +94,8 @@ jobs:
         with:
           pattern: results-*
           path: results
-      - name: Write the report
-        run: |
-          uv run subsumes-benchmark report results --out comparison
-          cat comparison/report.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Draw the plot and write the table
+        run: uv run subsumes-benchmark report results --out comparison >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: comparison
@@ -112,9 +111,9 @@ jobs:
             | zstd -19 -T0 -o comparison.tar.zst
           gh release upload "$GITHUB_REF_NAME" comparison.tar.zst --clobber
 
-  # A pull request that puts the report into the repository, where the README shows it. It
-  # is opened by a GitHub App: a pull request opened with this workflow's own token would
-  # not start the checks that a merge requires.
+  # A pull request that puts the plot and the table of the report into the repository, and
+  # the table into the README, which shows both. It is opened by a GitHub App: a pull request
+  # opened with this workflow's own token would not start the checks that a merge requires.
   publish:
     needs: report
     if: inputs.limit == '' && vars.PR_BOT_CLIENT_ID != ''
@@ -131,23 +130,26 @@ jobs:
           fetch-depth: 0
           token: ${{ steps.app.outputs.token }}
       - name: Check that main still has the corpus that was measured
-        # The report is written here again, next to main's README, and reads the corpus for
-        # what each case uses. A run on a commit whose corpus main has left behind is not
-        # published; its report is in the artifact.
+        # The table goes into main's README, next to the table of the collections of main's
+        # corpus. A run on a commit whose corpus main has left behind is not published; its
+        # plot and its results are in the artifact.
         run: |
           git fetch --quiet origin "$GITHUB_SHA"
           test "$(git rev-parse "$GITHUB_SHA:corpus")" = "$(git rev-parse HEAD:corpus)"
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: comparison
+          path: ${{ runner.temp }}/report
+      - name: Take the plot and the table of the report
+        run: |
+          rm -rf comparison
+          cp -R "$RUNNER_TEMP/report/comparison" comparison
       - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
         with:
           python-version: "3.14"
-          enable-cache: true
-      - run: uv sync --extra report
-      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
-        with:
-          pattern: results-*
-          path: ${{ runner.temp }}/results
-      - name: Write the report and show it in the README
-        run: uv run subsumes-benchmark report "$RUNNER_TEMP/results" --out comparison --readme README.md
+      - name: Put the table into the README
+        # The script needs Python and nothing of the project.
+        run: uv run --no-project scripts/readme_part.py comparison comparison/results.md
       - name: Open or update the pull request
         env:
           GH_TOKEN: ${{ steps.app.outputs.token }}
@@ -157,7 +159,7 @@ jobs:
             echo "The report did not change." >> "$GITHUB_STEP_SUMMARY"
             exit 0
           fi
-          corpus="$(jq -r .corpus "$(ls "$RUNNER_TEMP"/results/*/run.json | head -n 1)")"
+          corpus="$(jq -r .corpus "$(ls "$RUNNER_TEMP"/report/results/*/run.json | head -n 1)")"
           title="docs: update the checker comparison for $corpus"
           git config user.name "$SLUG[bot]"
           git config user.email "$(gh api "/users/$SLUG[bot]" --jq .id)+$SLUG[bot]@users.noreply.github.com"

@@ -9,16 +9,15 @@ from typing import TYPE_CHECKING
 import pytest
 
 import runs
-from reading import CORPUS, ROOT, Case, case, cases
+from reading import CORPUS, ROOT, case, cases
 from runs import Confirmation, a_run, a_witness, write
 from subsumes_benchmark.compare.checkers import Checker
-from subsumes_benchmark.compare.report import README_END, README_START, report, update_readme
+from subsumes_benchmark.compare.report import report
 from subsumes_benchmark.compare.results import Ending, Result, ending, read_results, read_run
 from subsumes_benchmark.compare.run import prepare
 from subsumes_benchmark.compare.summary import (
     Entry,
     ReportError,
-    agreements,
     outcome,
     read_entries,
 )
@@ -277,30 +276,13 @@ def test_only_a_task_with_a_label_is_solved_and_the_shares_are_of_those() -> Non
         ],
     )
     assert [result.case for result in entry.labelled()] == ["o/c/1", "o/c/2", "o/c/3", "o/c/4"]
-    assert [result.case for result in entry.unlabelled()] == ["o/c/5", "o/d/1"]
     assert entry.solved() == 2
     assert entry.solved_seconds() == [0.001, 0.003]
     # Of the four tasks with a label; those that were not solved count as slower.
     assert entry.seconds_to_solve(0.25) == 0.001
     assert entry.seconds_to_solve(0.5) == 0.003
     assert entry.seconds_to_solve(0.75) is None
-    assert entry.collections() == {"o/c": (2, 4), "o/d": (0, 0)}
     assert entry.solved(lambda result: result.case == "o/c/1") == 1
-
-
-def test_variants_of_a_checker_are_compared_answer_by_answer() -> None:
-    first = Entry(
-        a_run("one", variant="Rust"),
-        [a_result("o/c/1", "yes"), a_result("o/c/2", "no"), a_result("o/c/3", "unknown")],
-    )
-    second = Entry(
-        a_run("one-python", variant="Python"),
-        [a_result("o/c/1", "yes"), a_result("o/c/2", "timeout"), a_result("o/c/3", "no")],
-    )
-    other = Entry(a_run("two", label="Two"), first.results)
-    (found,) = agreements([first, second, other])
-    assert (found.first, found.second) == ("One (Rust)", "One (Python)")
-    assert (found.tasks, found.same, found.unstable) == (3, 1, 1)
 
 
 def test_runs_are_listed_by_label_and_must_be_over_the_same_tasks(tmp_path: Path) -> None:
@@ -319,66 +301,42 @@ def test_runs_are_listed_by_label_and_must_be_over_the_same_tasks(tmp_path: Path
         read_entries(tmp_path)
 
 
-def _derived_forward(case: Case) -> bool:
-    """Whether the label of the case for ``a_subsumes_b`` is a derived one."""
-    return isinstance(case.derived, dict) and "a_subsumes_b" in case.derived
-
-
-def test_a_report_is_written_and_shown_in_the_readme(tmp_path: Path) -> None:
-    labelled = [case for case in cases() if case.a_subsumes_b is not None]
-    from_upstream = [case for case in labelled if not _derived_forward(case)]
-    case = next(case for case in from_upstream if "format" not in case.features)
-    with_format = next(case for case in from_upstream if "format" in case.features)
+def test_a_report_draws_the_plots_and_gives_the_table(tmp_path: Path) -> None:
+    holds = next(case for case in cases() if case.a_subsumes_b is True)
+    fails = next(case for case in cases() if case.a_subsumes_b is False)
+    declined = next(case for case in cases() if case.b_subsumes_a is True)
     without_label = next(case for case in cases() if case.b_subsumes_a is None)
-    derived = next(
-        case for case in labelled if _derived_forward(case) and "format" not in case.features
-    )
     results = [
-        a_result(case.id, "yes", case.a_subsumes_b, 0.002),
-        a_result(with_format.id, "no", with_format.a_subsumes_b, 0.5),
+        a_result(holds.id, "yes", True, 0.002),
+        a_result(fails.id, "no", False, 0.5),
         runs.a_result(
             without_label.id, "no", None, direction="b_subsumes_a", witness=a_witness("accepted")
         ),
-        a_result(derived.id, "yes", derived.a_subsumes_b, 0.01),
+        runs.a_result(declined.id, "unknown", True, direction="b_subsumes_a", seconds=0.01),
     ]
     write(tmp_path / "results" / "one", a_run("one", variant="Rust"), results)
     write(tmp_path / "results" / "two", a_run("two", variant="Python"), results[::-1])
-    readme = tmp_path / "README.md"
-    readme.write_text(f"before\n{README_START}\nold\n{README_END}\nafter\n", encoding="utf-8")
 
-    report(tmp_path / "results", tmp_path / "comparison", CORPUS, readme)
+    text = report(tmp_path / "results", tmp_path / "comparison")
 
-    text = (tmp_path / "comparison" / "report.md").read_text(encoding="utf-8")
-    assert "a sample of 4 of the" in text
-    assert "of which 3 have a label" in text
-    assert "The 1 tasks without a label." in text
-    assert "The 1 whose schemas use `format`" in text
-    assert "The 2 whose label is upstream's" in text
-    assert "The 1 whose label is derived" in text
-    # Said no, with a counterexample, and what the validator made of it.
-    assert "| One (Rust) | 2 | 1 | 0 | 0 | 1 | 0 |" in text
-    assert "One (Rust) and One (Python) gave the same answer on 4 of 4 tasks." in text
+    # A row for every run, named by a link to where the checker lives.
+    rows = [line for line in text.splitlines() if line.startswith("| [")]
+    assert [row.split(" | ")[0] for row in rows] == [
+        "| [One (Rust)](https://example.com)",
+        "| [One (Python)](https://example.com)",
+    ]
+    # Two of the three tasks with a label are solved. The no with a counterexample that is
+    # none is wrong, though its task has no label.
+    assert rows[0].split(" | ")[1:5] == ["1.0", "66.7%", "0", "1"]
+    assert "Measured on corpus `v1.0.0`: 4 tasks, of which 3 have a label, with" in text
+    assert sorted(path.name for path in (tmp_path / "comparison").iterdir()) == [
+        "chart-dark.svg",
+        "chart-light.svg",
+        "results.md",
+    ]
     for name in ("chart-light.svg", "chart-dark.svg"):
         assert (tmp_path / "comparison" / name).read_text(encoding="utf-8").startswith("<?xml")
-    shown = readme.read_text(encoding="utf-8")
-    assert shown.startswith(f"before\n{README_START}\n\n<picture>")
-    assert shown.endswith(f"{README_END}\nafter\n")
-    assert 'src="comparison/chart-light.svg"' in shown
-    assert "old" not in shown
-
-
-def test_a_readme_without_the_markers_is_left_alone(tmp_path: Path) -> None:
-    readme = tmp_path / "README.md"
-    readme.write_text("nothing to replace\n", encoding="utf-8")
-    with pytest.raises(ValueError, match="markers"):
-        update_readme(readme, "a block")
-    assert readme.read_text(encoding="utf-8") == "nothing to replace\n"
-
-
-def test_the_readme_has_the_place_for_the_report() -> None:
-    text = (ROOT / "README.md").read_text(encoding="utf-8")
-    assert text.count(README_START) == 1
-    assert text.count(README_END) == 1
+    assert (tmp_path / "comparison" / "results.md").read_text(encoding="utf-8") == f"{text}\n"
 
 
 # --------------------------------------------------------------------------- the folders

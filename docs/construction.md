@@ -1,0 +1,123 @@
+# How the corpus is built
+
+The build reads two upstream sources at pinned commits and writes [`corpus/`](../corpus/README.md). This page says what it does to them: how it builds pairs from the official test suite, which cases it keeps, where it departs from upstream, how it gets a label that upstream does not give, and how it converts older drafts.
+
+## Pairs built from the test suite
+
+A test case of the [official JSON Schema Test Suite](https://github.com/json-schema-org/JSON-Schema-Test-Suite) is a schema S with instances that are valid under it or not. The build turns each test case that holds for draft 2020-12 into pairs of six kinds:
+
+- **`valid`**: S against the `const` of one instance. S subsumes it exactly when the instance is valid.
+- **`nonvalid`**: `not S` against the same `const`. The answer is the opposite.
+- **`unions`**: S against an `anyOf` of the `const` of every valid instance, when there are several.
+- **`reflexive`**: S against itself.
+- **`universal`**: `true` against `anyOf: [S, not S]`.
+- **`unsatisfiable`**: `false` against `allOf: [S, not S]`.
+
+The last three answer both directions. The kinds are those of the [containment test suite](https://github.com/sdbs-uni-p/json-schema-containment-testsuite) of Attouche et al., which built such pairs from the suite as it was in 2021.
+
+The name of a case joins with dots the suite's file, the position of the test case in it, the kind, and for `valid` and `nonvalid` the position of the test: `minimum.0.valid.2` is built from the third test of the first test case of `minimum.json`, and `optional.bignum.3.reflexive` from the fourth test case of `optional/bignum.json`. Positions count from zero, like the JSON pointer in `upstream`.
+
+Where S stands inside another schema, it is a copy of S if S neither names a location nor refers to one. Any other S stands under `$defs` once, as a schema resource with an `$id`, and is referenced by that `$id`. It keeps the `$id` it has, or gets `https://subsumes-benchmark.example/schema`.
+
+A test case is not used when it is for other drafts, when it belongs to a proposal, or when it expects `format` to be an annotation. A pair that repeats both schemas of another one is one case, [like every pair of the corpus](#one-case-for-every-pair-of-schemas).
+
+The artifact holds such pairs for drafts 4, 6 and 2019-09 too, which that test suite built. The corpus leaves them out, because they largely repeat the pairs that it builds itself.
+
+## One case for every pair of schemas
+
+Upstream asks many questions twice. The artifact asks most of its questions in both directions, as two tests such as `…_v1_not_v2` and `…_v2_not_v1`, and the suite tests some schemas with the same instance twice. The corpus has one case for every pair of schemas, whichever of the two is `a`, which leaves out about a third of the cases that upstream gives:
+
+- **Which case is kept.** Of the upstream cases with the same two schemas, the one whose id sorts first. A rebuild keeps the same one.
+- **Its labels.** It answers each direction with what any of them says about it. So many a label of `b_subsumes_a` is upstream's answer to the test that asks the other way. No two of them contradict each other, and the build fails if two ever do.
+- **Its notes and `duplicates`.** It has the notes of all of them and lists the upstream files of the others.
+- **The same schema twice.** A case whose `a` and `b` are the same schema is a duplicate only of the cases with that schema. Its two directions are one question, and each keeps the label it has.
+
+## Departures from upstream
+
+The corpus leaves out 12 cases of the inclusion artifact and 23 test cases of the test suite. [`overrides.json`](../overrides.json) lists them with the reason:
+
+| Reason | Left out |
+| --- | --- |
+| A schema is not valid draft 2020-12, also where only a keyword that asserts nothing has a value of the wrong type, such as `deprecated` | 6 cases of `additional-as-uneval`, 2 of `oneof-as-anyof` and 4 of `schemastore-versions` |
+| The schema declares another dialect, or references a schema of an older draft | 6 test cases |
+| The schema references a document by a URL other than the document's `$id`, which a schema that stands on its own cannot express | 2 test cases |
+| The expected results are not those of draft 2020-12 with `format` asserted: `dependencies` still working, an unknown format | 8 test cases |
+| The test case tells numbers apart by digits that a double does not hold | 7 test cases |
+
+Every schema that is in the corpus is therefore valid, and every reference in it resolves. The schema of a case says the first: it requires `a` and `b` to be valid under the metaschema of draft 2020-12.
+
+The same file lists every case whose labels differ from upstream's, with the reason, which is copied into the case's `note`. For a case built from the test suite, upstream's label is what the suite's expected result gives. There are 72 such upstream cases, which are 50 cases of the corpus:
+
+| Reason | Cases | What the corpus does |
+| --- | --- | --- |
+| A pattern is not valid in ECMA-262 with the `u` flag | 60 | Claims nothing |
+| Upstream's label does not hold | 2 | Claims nothing |
+| Upstream's label holds only if `format` is an annotation | 6 | Claims nothing |
+| Upstream's label holds only if `.` matches a line terminator | 4 | Corrects all 4 |
+
+Two limits remain:
+
+- **Patterns.** Where `b` only lists its instances, a label can be checked by validating those instances against `a`, and the tests do that with an ECMA-262 engine and `format` asserted. A schema of the test suite against itself or its negation holds in any dialect. Every other label of upstream's on schemas with patterns comes from a tool that reads patterns in its own dialect. Such labels are kept as they are until a checker disagrees and the dialect turns out to be the reason. A derived label does not have this limit: it is `false` by a counterexample that the same engine confirms, or the schemas use no pattern.
+- **Formats.** Upstream's witness generator asserts only a few formats. A label of a `witness-generator` collection that hinges on a format may therefore not hold with every format asserted; six such cases are known and listed.
+
+## Derived labels
+
+Upstream leaves questions open. Its witness generator gave up on many of its tests, and for many pairs upstream asks one direction only. Where checkers settle such a question, the corpus has a label for it. [`derived.json`](../derived.json) lists these labels, each with what shows it, and the case repeats that under `derived`:
+
+| Label | Shown by | Labels |
+| --- | --- | ---: |
+| `false` | A counterexample: an instance that is valid under the schema whose instances must be accepted and not valid under the other. Two validators that share no code must both say so: the one of the tests, which reads patterns as ECMA-262 does, and `jsonschema-rs`. That is a proof, whichever checker found the instance. | 4,483 |
+| `true` | Two or more checkers that say yes, where none says no and the schemas use neither a pattern nor a format, nor a number that a double does not hold. That is evidence and no proof. | 1,310 |
+
+For example, `corpus/baazizi2026/additional-as-uneval/o21764.original_not_unevalEliminated.json` and `corpus/baazizi2026/additional-as-uneval/o69207.original_not_unevalEliminated.json` have:
+
+```json
+"derived": {"a_subsumes_b": {"counterexample": {"$schema": "", "encoding": {}, "mark": "box-plot"}}}
+"derived": {"a_subsumes_b": {"checkers": ["jsoncompat 0.6.0", "subsumes 0.2.0"]}}
+```
+
+- **No label rests on one checker.** One checker's yes is never a label, and neither is a no without an instance that proves it.
+- **Patterns and formats.** Checkers read these in their own ways: subsumes 0.2.0, whose answers these are, read a pattern in the dialect of the Rust `regex` crate, in which `\d` matches every digit of Unicode, and RWG takes `format` for an annotation. Their yes is then the answer to another question, so no `true` is derived for schemas that use either. A counterexample is held against the schemas as the corpus reads them, so a `false` is derived for those too.
+- **Numbers.** A question that hinges on digits that a double does not hold is not in the corpus. So a counterexample holds only numbers that a double holds, and it must refute the schemas also as someone reads them who reads every number as a double.
+- **Overrides.** A case that `overrides.json` lists keeps the labels that the override states, also where it claims nothing.
+- **The same schema twice.** The two directions of a case whose `a` and `b` are the same schema are one question, so the other direction is not asked again and keeps the label it has.
+- **A proof replaces an agreement.** `derive` reads the file as it reads a run, so a later run adds labels, and a counterexample for a label that is `true` makes it `false`.
+
+Of the derived labels, 630 say whether A subsumes B and 5,163 whether B subsumes A. What became of the open questions of each collection:
+
+| Collection | Open questions | Derived `true` | Derived `false` | Still open |
+| --- | ---: | ---: | ---: | ---: |
+| `habib2021/rb-testset` | 269 | 57 | 206 | 6 |
+| `attouche2026/schemastore-versions` | 626 | 466 | 0 | 160 |
+| `baazizi2026/oneof-as-anyof` | 1,659 | 545 | 45 | 1,069 |
+| `baazizi2026/additional-as-uneval` | 179 | 2 | 6 | 171 |
+| `baazizi2026/uneval-as-additional` | 417 | 86 | 8 | 323 |
+| `wolflein2026/json-schema-test-suite` | 4,499 | 154 | 4,218 | 127 |
+| All | 7,649 | 1,310 | 4,483 | 1,856 |
+
+The questions that are still open:
+
+| Why | Questions |
+| --- | ---: |
+| Two checkers say yes, and the schemas use a pattern, a format or a number that a double does not hold | 1,252 |
+| The corpus cannot say what a schema accepts: a pattern is not valid, or a format is none of draft 2020-12 | 309 |
+| No checker says yes or no | 145 |
+| One checker says yes and no other does | 137 |
+| An override states the labels of the case, also where it claims nothing | 8 |
+| A checker says no, and no instance it gave proves it | 5 |
+
+The labels come from three runs: subsumes 0.2.0 with 100 times its default work budget and jsoncompat 0.6.0, both over every open question, and the answers of RWG in the comparison of v0.8.0, which asked A subsumes B only. [Contributing](../CONTRIBUTING.md#derive-labels) has the commands that derive labels again.
+
+## How the sources are converted
+
+The pairs of `json-schema-test-suite` are built as [described above](#pairs-built-from-the-test-suite). The suite gives the documents that a schema references next to it, by URL; they are embedded like those of the artifact. The inclusion artifact stores each test as one fused document, `{"allOf": [S1, {"not": S2}]}`, with both sides' definitions hoisted to the top level, every other pointer prefixed with its path in the fused document, and the answer given by the directory (`sat`, `unsat` or `unknown`). The build undoes each step and then converts each side to draft 2020-12:
+
+- `definitions` and the hoisted groups become one `$defs`.
+- Array-form `items` becomes `prefixItems`, and `additionalItems` becomes `items`.
+- `dependencies` splits into `dependentRequired` and `dependentSchemas`.
+- A draft-04 `id: "#name"` becomes `$anchor`; other identifiers are dropped, except an absolute root `$id`. Both upstream tools resolve `#/...` pointers against the document root, which is what a draft 2020-12 document without embedded resources does.
+- Every JSON-pointer reference is mapped to where its target moved, so `#/items/0` becomes `#/prefixItems/0`.
+- A document that a schema references is embedded in it under `$defs`, named by its URL and with that URL as its `$id`, together with the documents that it references in turn. No reference changes. A reference to the URL of the schema itself stays a reference to the schema.
+- Unknown keywords and `format` are kept as written.
+
+The artifact lists the narrower schema first, so `b` is its first schema and `a` its second. In `agripparc-1.2_v1_not_v2`, `b` is version 1 and `a` is version 2.
