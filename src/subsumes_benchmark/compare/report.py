@@ -124,7 +124,7 @@ def _speed(ax: Axes, entries: Sequence[Entry], theme: Theme) -> None:
     ax.tick_params(labelcolor=theme.muted, labelsize=9)
     ax.tick_params(axis="x", pad=6)
     ax.set_xlabel("time for one task", color=theme.secondary, fontsize=9.5)
-    ax.set_ylabel("tasks with a label that are solved", color=theme.secondary, fontsize=9.5,
+    ax.set_ylabel("correctly solved tasks", color=theme.secondary, fontsize=9.5,
                   labelpad=8)  # fmt: skip
 
 
