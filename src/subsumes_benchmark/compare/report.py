@@ -1,9 +1,9 @@
 """Reporting on a set of runs: a plot for light and dark pages, and a table.
 
-The plot shows how fast each checker solves the tasks, and the table has a row for each
-checker with what it solved, where it was wrong and how fast it was. Each is a file of its
-own, so that a page can show them where it likes. The plot is drawn with matplotlib, which
-the ``report`` extra brings; a run does not need it.
+The plot shows how fast each checker solves the tasks, with one curve per checker, and the
+table has a row for each run with what it solved, where it was wrong and how fast it was.
+Each is a file of its own, so that a page can show them where it likes. The plot is drawn
+with matplotlib, which the ``report`` extra brings; a run does not need it.
 """
 
 from dataclasses import dataclass
@@ -26,11 +26,10 @@ CHART_FILES = {"light": "chart-light.svg", "dark": "chart-dark.svg"}
 # The table of the checkers, as Markdown.
 TABLE_FILE = "results.md"
 
-LINE_STYLES = ("solid", (0, (4, 2)), (0, (1, 2)))
 # How many steps a curve of the plot keeps; more would only make the file larger.
 STEPS = 250
 # The least distance between the names of two checkers at the right of the plot, in inches.
-NAME_GAP = 0.2
+NAME_GAP = 0.19
 
 
 @dataclass(frozen=True)
@@ -43,7 +42,7 @@ class Theme:
     muted: str
     grid: str
     axis: str
-    # One per checker label, in the order the labels are listed; never cycled.
+    # One per checker, in the order the checkers are listed; never cycled.
     series: Sequence[str]
 
 
@@ -90,7 +89,7 @@ def _thinned(seconds: Sequence[float], total: int) -> tuple[list[float], list[fl
     return [seconds[i] for i in kept], [(i + 1) / total for i in kept]
 
 
-def _speed(ax: Axes, entries: Sequence[Entry], theme: Theme, styles: Mapping[str, tuple]) -> None:
+def _speed(ax: Axes, entries: Sequence[Entry], theme: Theme) -> None:
     """For every checker, the share of the tasks with a label it solved within a time."""
     timeout = entries[0].run.timeout
     # The axis starts at the power of ten below all but the very fastest tasks.
@@ -101,14 +100,13 @@ def _speed(ax: Axes, entries: Sequence[Entry], theme: Theme, styles: Mapping[str
     lowest = 10.0**-6
     while lowest * 10 <= early:
         lowest *= 10
-    for entry in entries:
+    for entry, colour in zip(entries, theme.series, strict=False):
         seconds = [max(s, lowest) for s in entry.solved_seconds()]
         # Nothing is solved where nothing has a label, so the curve then stays at zero.
         total = len(entry.labelled()) or 1
         xs, ys = _thinned(seconds, total)
-        colour, line = styles[entry.name]
         ax.step([lowest, *xs, timeout], [0.0, *ys, len(seconds) / total], where="post",
-                color=colour, lw=2, ls=line)  # fmt: skip
+                color=colour, lw=2)  # fmt: skip
     ax.set_xscale("log")
     ax.set_xlim(lowest, timeout)
     ax.set_ylim(0, 1)
@@ -166,20 +164,21 @@ def _apart(wanted: Sequence[float], gap: float) -> list[float]:
 def draw(entries: Sequence[Entry], theme: Theme, path: Path) -> None:
     """Draw the plot of a report: how fast each checker solves the tasks.
 
-    Every curve is named at its right end, in place of a legend. The file is an SVG, or
-    what the suffix of ``path`` names.
+    A checker has one curve, that of the first of its variants, since the variants of a
+    checker differ in how they are called and hardly in what they solve; the table has a row
+    for each. A curve is named at its right end, with the share of the tasks it solved. The
+    file is an SVG, or what the suffix of ``path`` names.
     """
-    labels = list(dict.fromkeys(entry.run.checker.label for entry in entries))
-    if len(labels) > len(theme.series):
-        raise ValueError(
-            f"the plot has colours for {len(theme.series)} checkers, not {len(labels)}"
-        )
-    # A colour per label and a line per variant, so that variants of a checker look alike.
-    styles: dict[str, tuple] = {}
-    for label, colour in zip(labels, theme.series, strict=False):
-        variants = [entry for entry in entries if entry.run.checker.label == label]
-        for variant, line in zip(variants, LINE_STYLES, strict=False):
-            styles[variant.name] = (colour, line)
+    checkers: dict[str, Entry] = {}
+    for entry in entries:
+        checkers.setdefault(entry.run.checker.label, entry)
+    drawn = list(checkers.values())
+    if len(drawn) > len(theme.series):
+        raise ValueError(f"the plot has colours for {len(theme.series)} checkers, not {len(drawn)}")
+    names = [
+        f"{label}  {share(entry.solved(), len(entry.labelled()))}"
+        for label, entry in checkers.items()
+    ]
 
     settings: dict[str, object] = {
         # Text stays text, so the file is small and is set in the reader's own sans-serif.
@@ -196,24 +195,24 @@ def draw(entries: Sequence[Entry], theme: Theme, path: Path) -> None:
     # longest of them decides how wide the plot is; a letter is taken to be this wide.
     width, height = 8.5, 4.6
     left, top, bottom = 0.95, 0.25, 0.8
-    lead, sample, space, letter = 0.2, 0.34, 0.08, 0.068
-    right = lead + sample + space + letter * max(len(entry.name) for entry in entries) + 0.15
+    space, letter = 0.12, 0.068
+    right = space + letter * max(len(name) for name in names) + 0.15
     wide, tall = width - left - right, height - top - bottom
     with mpl.rc_context(settings):  # ty: ignore[invalid-argument-type]
         fig = plt.figure(figsize=(width, height))
         speed = fig.add_axes((left / width, bottom / height, wide / width, tall / height))
-        _speed(speed, entries, theme, styles)
-        # Each name stands at the height where its curve ends, or as close to it as the
-        # other names leave room. A line in the colour and the dashes of the curve leads
-        # from the end of the curve to the name, and tells the variants of a checker apart.
-        ends = [len(entry.solved_seconds()) / (len(entry.labelled()) or 1) for entry in entries]
-        for entry, end, at in zip(entries, ends, _apart(ends, NAME_GAP / tall), strict=True):
-            colour, line = styles[entry.name]
-            speed.plot([1, 1 + lead / wide, 1 + (lead + sample) / wide], [end, at, at],
-                       color=colour, lw=2, ls=line, transform=speed.transAxes, clip_on=False,
-                       solid_capstyle="round", solid_joinstyle="round")  # fmt: skip
-            speed.text(1 + (lead + sample + space) / wide, at, entry.name, va="center",
-                       fontsize=9, color=theme.secondary, transform=speed.transAxes)  # fmt: skip
+        _speed(speed, drawn, theme)
+        # A dot marks where a curve ends, and its name stands next to the dot, or as close
+        # to it as the other names leave room. Both are placed in the coordinates of the
+        # plot, where 1 is its right edge.
+        ends = [len(entry.solved_seconds()) / (len(entry.labelled()) or 1) for entry in drawn]
+        heights = _apart(ends, NAME_GAP / tall)
+        across = speed.transAxes
+        for name, colour, end, at in zip(names, theme.series, ends, heights, strict=False):
+            speed.plot([1], [end], marker="o", ms=4.5, color=colour, zorder=3,
+                       transform=across, clip_on=False)  # fmt: skip
+            speed.text(1 + space / wide, at, name, va="center", fontsize=9, color=theme.ink,
+                       transform=across)  # fmt: skip
         path.parent.mkdir(parents=True, exist_ok=True)
         fig.savefig(path, format=path.suffix[1:], metadata={"Date": None, "Creator": None}
                     if path.suffix == ".svg" else None, dpi=150)  # fmt: skip

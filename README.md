@@ -25,7 +25,7 @@ Measured on corpus `v0.9.0`: 24,078 tasks, of which 21,867 have a label, with 10
 
 <!-- comparison:end -->
 
-A task is one pair of schemas asked in one direction. It is solved when the checker gives the answer that the corpus has, and a wrong yes or a wrong no is an answer that the corpus contradicts. [How a run is measured](https://github.com/georg-wolflein/subsumes-benchmark/blob/main/checkers/README.md#how-a-run-is-measured) has the rest.
+A task is one pair of schemas asked in one direction. It is solved when the checker gives the answer that the corpus has, and a wrong yes or a wrong no is an answer that the corpus contradicts. The plot has one curve for each checker, that of its first variant in the table. [How a run is measured](https://github.com/georg-wolflein/subsumes-benchmark/blob/main/checkers/README.md#how-a-run-is-measured) has the rest.
 
 - **Labels.** Most labels of five collections come from the witness generator that RWG succeeds, so they favour RWG by construction.
 - **subsumes.** subsumes is by the author of this benchmark and is developed against it, so it does not meet these tasks for the first time as the other checkers do.
