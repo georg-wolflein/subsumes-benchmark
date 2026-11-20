@@ -25,15 +25,15 @@ uvx subsumes-benchmark corpus ./corpus
 uvx subsumes-benchmark run path/to/checker
 # Hold the run against an earlier one, as a comment for a pull request.
 uvx subsumes-benchmark diff results/checker --base base/checker
-# Plot how fast the checkers under results/ are, and write their results as a table.
+# Compare the checkers under results/: plot how fast they are, and write their results as a table.
 uvx --from 'subsumes-benchmark[report]' subsumes-benchmark report results
 ```
 
 - **`run`** takes the folder of a checker, which can be anywhere, and writes a run to `results/<name of the folder>/`: `results.jsonl` with one line per task and `run.json` with what ran, as [`result.schema.json`](../schemas/result.schema.json) and [`run.schema.json`](../schemas/run.schema.json) describe them.
 - **`diff`** lists the answers by collection with what changed, the wrong answers, and the tasks that the base answered and the change does not. It fails when an answer is wrong, when a task ended in an error, a crash or a timeout, and when a task of the base is no longer answered, unless `--allow-lost` accepts that.
-- **`report`** writes four files to `comparison/`, or to the folder that `--out` names: the plot for light and for dark pages, the table as `results.md`, which it prints too, and what the checkers ran on as `summary.json`, which [`summary.schema.json`](../schemas/summary.schema.json) describes: the version of the corpus, how many collections, cases and tasks the runs are over, how many of the tasks have a label, and the timeout. The table lists the run that solved most first and has the best value of every column in bold, and the plot has one curve per checker, that of the variant that solved most.
+- **`report`** writes four files to `comparison/`, or to the folder that `--out` names. The first is `comparison.json`, which [`comparison.schema.json`](../schemas/comparison.schema.json) describes: what the runs are over, and for each run how its tasks ended and the times within which it solved each thousandth of the tasks with a label. The others are made from that file alone: the plot for light and for dark pages, and the table as `results.md`, which `report` prints too. The table lists the run that solved most first and has the best value of every column in bold, and the plot has one curve per checker, that of the variant that solved most. Given a `comparison.json` in place of the folder of the runs, `report` makes the plots and the table from it again.
 
-The `Comparison` workflow runs every checker here over every task after each release, and opens a pull request with the plot and the table. It also puts the table into the main README, and from `summary.json` the version of the corpus and the two counts that the page states.
+The `Comparison` workflow runs every checker here over every task after each release, and opens a pull request with the comparison, the plot and the table. It also writes the table and the version of the corpus into the main README. The raw runs are a file of the release, `comparison.tar.zst`.
 
 ## How a run is measured
 

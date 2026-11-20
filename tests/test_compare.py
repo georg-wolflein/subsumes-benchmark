@@ -12,10 +12,11 @@ import runs
 from reading import CORPUS, ROOT, case, cases
 from runs import Confirmation, a_run, a_witness, write
 from subsumes_benchmark.compare.checkers import Checker
-from subsumes_benchmark.compare.report import report
+from subsumes_benchmark.compare.report import block, report
 from subsumes_benchmark.compare.results import Ending, Result, ending, read_results, read_run
 from subsumes_benchmark.compare.run import prepare
 from subsumes_benchmark.compare.summary import (
+    Comparison,
     Entry,
     ReportError,
     outcome,
@@ -278,10 +279,19 @@ def test_only_a_task_with_a_label_is_solved_and_the_shares_are_of_those() -> Non
     assert [result.case for result in entry.labelled()] == ["o/c/1", "o/c/2", "o/c/3", "o/c/4"]
     assert entry.solved() == 2
     assert entry.solved_seconds() == [0.001, 0.003]
-    # Of the four tasks with a label; those that were not solved count as slower.
-    assert entry.seconds_to_solve(0.25) == 0.001
-    assert entry.seconds_to_solve(0.5) == 0.003
-    assert entry.seconds_to_solve(0.75) is None
+    # The time for each thousandth of the four tasks with a label: a quarter of them is one
+    # task and half of them two, and no more were solved, so the list ends there. Those that
+    # were not solved count as slower.
+    times = entry.seconds_to_solve()
+    assert len(times) == 500
+    assert set(times[:250]) == {0.001}
+    assert set(times[250:]) == {0.003}
+    compared = entry.compared()
+    assert compared.seconds_to_solve == times
+    assert compared.outcomes.model_dump() == {
+        "correct": 2, "unlabelled": 2, "wrong_no": 1, "wrong_yes": 0, "no_answer": 1,
+        "timeout": 0,
+    }  # fmt: skip
     assert entry.solved(lambda result: result.case == "o/c/1") == 1
 
 
@@ -349,8 +359,8 @@ def test_a_report_draws_the_plots_and_gives_the_table(tmp_path: Path) -> None:
     assert sorted(path.name for path in (tmp_path / "comparison").iterdir()) == [
         "chart-dark.svg",
         "chart-light.svg",
+        "comparison.json",
         "results.md",
-        "summary.json",
     ]
     for name in ("chart-light.svg", "chart-dark.svg"):
         chart = (tmp_path / "comparison" / name).read_text(encoding="utf-8")
@@ -358,18 +368,43 @@ def test_a_report_draws_the_plots_and_gives_the_table(tmp_path: Path) -> None:
         # One curve per checker, and the name of the one that solved most is bold.
         assert chart.count("font-weight: 700") == 1
     assert (tmp_path / "comparison" / "results.md").read_text(encoding="utf-8") == f"{table}\n"
-    # What the runs are over: the four tasks are of four cases, which lie in so many
-    # collections.
-    summary = json.loads((tmp_path / "comparison" / "summary.json").read_text(encoding="utf-8"))
-    chosen = {case.id for case in (holds, fails, declined, without_label)}
-    assert summary == {
+    # The comparison says what the runs are over, and of each run as much as the report
+    # shows. A checker without a variant has no such key.
+    file = tmp_path / "comparison" / "comparison.json"
+    comparison = json.loads(file.read_text(encoding="utf-8"))
+    assert {key: value for key, value in comparison.items() if key != "runs"} == {
         "corpus": "v1.0.0",
-        "collections": len({case.rsplit("/", 1)[0] for case in chosen}),
-        "cases": len(chosen),
+        "timeout": a_run("one").timeout,
         "tasks": 4,
         "labelled_tasks": 3,
-        "timeout": a_run("one").timeout,
     }
+    assert [run["name"] for run in comparison["runs"]] == ["worse", "one", "two"]
+    assert comparison["runs"][0]["checker"] == {
+        "label": "Another", "version": "1.0", "homepage": "https://example.com",
+    }  # fmt: skip
+    assert comparison["runs"][1]["checker"]["variant"] == "Rust"
+    assert comparison["runs"][1]["outcomes"] == {
+        "correct": 2, "unlabelled": 0, "wrong_no": 1, "wrong_yes": 0, "no_answer": 1,
+        "timeout": 0,
+    }  # fmt: skip
+
+    # The plots and the table are made from the comparison alone: given the file in place of
+    # the runs, the report writes the same ones again.
+    again = tmp_path / "again"
+    assert report(file, again) == text
+    assert sorted(path.name for path in again.iterdir()) == [
+        "chart-dark.svg",
+        "chart-light.svg",
+        "results.md",
+    ]
+    for path in again.iterdir():
+        assert path.read_bytes() == (tmp_path / "comparison" / path.name).read_bytes(), path.name
+
+
+def test_the_committed_table_is_what_the_committed_comparison_gives() -> None:
+    comparison = Comparison.read(ROOT / "comparison" / "comparison.json")
+    table = (ROOT / "comparison" / "results.md").read_text(encoding="utf-8")
+    assert table == f"{block(comparison)}\n", "`make readme` writes the table again"
 
 
 # --------------------------------------------------------------------------- the folders

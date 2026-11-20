@@ -10,7 +10,7 @@ make sources   # fetches the two upstream repositories, about 900 MB
 make corpus    # about 15 seconds
 ```
 
-`corpus/` is generated, except its `README.md`: change `collections.json`, `overrides.json` or the code under `src/`, run `make corpus` and commit the result. `make corpus` also puts the list of the collections into the main README, with `scripts/readme_part.py`. The numbers in the sentences of that page are those of the latest comparison, and change with the next one.
+`corpus/` is generated, except its `README.md`: change `collections.json`, `overrides.json` or the code under `src/`, run `make corpus` and commit the result. `make corpus` also writes the parts of the main README that the corpus decides: the list of the collections, their number and the number of tasks with a label.
 
 The submodules under `sources/` are marked `update = none`, so cloning this repository does not fetch them; `make sources` does. Their commits pin what the corpus is built from. The build reads `derived.json` as it is and runs no checker.
 
@@ -20,9 +20,10 @@ The submodules under `sources/` are marked `update = none`, so cloning this repo
 make ci       # what CI runs on a pull request
 make format   # apply the fixes and the formatting of ruff and cargo fmt
 make models   # rewrite the generated models after a change to a schema
+make readme   # make the plots and the table again, and write the parts of the README that are written from data
 ```
 
-`make ci` lints and type-checks the code and the adapters under `checkers/`, so it needs `cargo`. It holds every configuration file against its schema, and it runs the tests, which read every case of the committed corpus in under a minute.
+`make ci` lints and type-checks the code and the adapters under `checkers/`, so it needs `cargo`. It holds every configuration file against its schema, checks that the README is what the corpus and the comparison give, and it runs the tests, which read every case of the committed corpus in under a minute.
 
 ## Pull requests
 
@@ -59,13 +60,13 @@ make corpus
 | `collections.json` | The collections, the work that each was first published in and the upstream dataset that each is built from |
 | `overrides.json` | Every departure from upstream, with the reason: the cases left out and the labels changed |
 | `derived.json` | The labels that upstream does not give, each with what shows it |
-| `schemas/` | The schemas of a case, of the configuration files, of the protocol between the runner and an adapter, of the files of a run and of the summary of a report. They say what each key means |
+| `schemas/` | The schemas of a case, of the configuration files, of the protocol between the runner and an adapter, of the files of a run and of the comparison of a report. They say what each key means |
 | `src/subsumes_benchmark/` | The build, and `validation`, which validates an instance the way the corpus reads a schema |
 | `src/subsumes_benchmark/generated/` | The models that read what the schemas describe: generated from them, never edited by hand |
 | `src/subsumes_benchmark/compare/` | Running a checker over the tasks, the report on runs, and deriving labels |
-| `scripts/` | `readme_part.py`, which puts Markdown between the two markers of a part of the README |
+| `scripts/` | `readme.py`, which writes the parts of the README that are written from data, each between its two markers |
 | `sources/` | The upstream repositories as submodules, fetched only to rebuild |
 | `checkers/` | One folder per checker of the comparison, with the adapter that makes it answer |
-| `comparison/` | The plot and the table of the latest comparison and what it ran on, written by the `Comparison` workflow |
+| `comparison/` | The latest comparison: `comparison.json`, written by the `Comparison` workflow, and the plot and the table that `subsumes-benchmark report` makes from it |
 | `docs/` | How the corpus is built |
 | `tests/` | The layout of the corpus, the validity of its schemas, the labels that can be checked, the runner and the report |

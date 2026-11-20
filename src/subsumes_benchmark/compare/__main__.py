@@ -63,11 +63,16 @@ def _main() -> None:
     reporting = commands.add_parser(
         "report",
         help="draw how fast the checkers of the runs in a folder are, and table their results",
-        description="Writes a plot for light and for dark pages to --out, a table with a row "
-        "for every checker as results.md, which it prints too, and what the checkers ran on "
-        "as summary.json.",
+        description="Writes the comparison of the runs to --out as comparison.json, and from "
+        "it a plot for light and for dark pages and a table with a row for every checker as "
+        "results.md, which it prints too. Given the comparison.json of an earlier report in "
+        "place of the runs, it makes the plots and the table from that file again.",
     )
-    reporting.add_argument("results", type=Path, help="a folder with one folder per checker")
+    reporting.add_argument(
+        "source",
+        type=Path,
+        help="a folder with one folder per checker, or the comparison.json of an earlier report",
+    )
     reporting.add_argument(
         "--out", type=Path, default=Path("comparison"), help="where the files of the report go"
     )
@@ -129,7 +134,7 @@ def _main() -> None:
         # runs and nothing of the corpus.
         from subsumes_benchmark.compare.report import report  # noqa: PLC0415
 
-        print(report(args.results, args.out))
+        print(report(args.source, args.out))
         return
     if not args.corpus.is_dir():
         sys.exit(
