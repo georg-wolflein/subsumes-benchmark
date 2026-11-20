@@ -6,7 +6,6 @@ own, so that a page can show them where it likes. The plot is drawn with matplot
 the ``report`` extra brings; a run does not need it.
 """
 
-import math
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
@@ -29,8 +28,8 @@ TABLE_FILE = "results.md"
 LINE_STYLES = ("solid", (0, (4, 2)), (0, (1, 2)))
 # How many steps a curve of the plot keeps; more would only make the file larger.
 STEPS = 250
-# How many checkers the legend names in a row.
-LEGEND_COLUMNS = 3
+# The least distance between the names of two checkers at the right of the plot, in inches.
+NAME_GAP = 0.2
 
 
 @dataclass(frozen=True)
@@ -108,7 +107,7 @@ def _speed(ax: Axes, entries: Sequence[Entry], theme: Theme, styles: Mapping[str
         xs, ys = _thinned(seconds, total)
         colour, line = styles[entry.name]
         ax.step([lowest, *xs, timeout], [0.0, *ys, len(seconds) / total], where="post",
-                color=colour, lw=2, ls=line, label=entry.name)  # fmt: skip
+                color=colour, lw=2, ls=line)  # fmt: skip
     ax.set_xscale("log")
     ax.set_xlim(lowest, timeout)
     ax.set_ylim(0, 1)
@@ -126,12 +125,48 @@ def _speed(ax: Axes, entries: Sequence[Entry], theme: Theme, styles: Mapping[str
     ax.tick_params(labelcolor=theme.muted, labelsize=9)
     ax.tick_params(axis="x", pad=6)
     ax.set_xlabel("time for one task", color=theme.secondary, fontsize=9.5)
+    ax.set_ylabel("tasks with a label that are solved", color=theme.secondary, fontsize=9.5,
+                  labelpad=8)  # fmt: skip
 
 
-def draw(entries: Sequence[Entry], theme: Theme, caption: str, path: Path) -> None:
+def _apart(wanted: Sequence[float], gap: float) -> list[float]:
+    """Heights between 0 and 1 as close to the wanted ones as they get while ``gap`` apart.
+
+    Heights that are too close move apart together, around their middle, so that each stays
+    near where it is wanted. Of equal ones, the earlier is the higher.
+    """
+    order = sorted(range(len(wanted)), key=lambda i: (wanted[i], -i))
+    # Each group is the heights that have to be placed together, lowest first.
+    groups = [[i] for i in order]
+
+    def span(group: Sequence[int]) -> tuple[float, float]:
+        half = gap * (len(group) - 1) / 2
+        middle = sum(wanted[i] for i in group) / len(group)
+        middle = min(max(middle, half), max(1 - half, half))
+        return middle - half, middle + half
+
+    merged = True
+    while merged:
+        merged = False
+        for lower, upper in zip(groups, groups[1:], strict=False):
+            if span(lower)[1] + gap > span(upper)[0] + 1e-9:
+                lower.extend(upper)
+                groups.remove(upper)
+                merged = True
+                break
+    heights = [0.0] * len(wanted)
+    for group in groups:
+        lowest = span(group)[0]
+        for place, i in enumerate(group):
+            heights[i] = lowest + gap * place
+    return heights
+
+
+def draw(entries: Sequence[Entry], theme: Theme, path: Path) -> None:
     """Draw the plot of a report: how fast each checker solves the tasks.
 
-    The file is an SVG, or what the suffix of ``path`` names.
+    Every curve is named at its right end, in place of a legend. The file is an SVG, or
+    what the suffix of ``path`` names.
     """
     labels = list(dict.fromkeys(entry.run.checker.label for entry in entries))
     if len(labels) > len(theme.series):
@@ -156,33 +191,28 @@ def draw(entries: Sequence[Entry], theme: Theme, caption: str, path: Path) -> No
         "figure.facecolor": theme.surface,
         "savefig.facecolor": theme.surface,
     }
-    # Everything is placed in inches from the top left corner, so that a plot of more
-    # checkers grows downwards and nothing else moves.
-    width = 8.5
-    legend = 0.95  # where the legend starts
-    plot = legend + 0.24 * math.ceil(len(entries) / LEGEND_COLUMNS) + 0.25
-    tall = 3.6
-    height = plot + tall + 1.15
+    # Everything is placed in inches. The names stand to the right of the plot, so the
+    # longest of them decides how wide the plot is; a letter is taken to be this wide.
+    width, height = 8.5, 4.6
+    left, top, bottom = 0.95, 0.25, 0.8
+    lead, sample, space, letter = 0.2, 0.34, 0.08, 0.068
+    right = lead + sample + space + letter * max(len(entry.name) for entry in entries) + 0.15
+    wide, tall = width - left - right, height - top - bottom
     with mpl.rc_context(settings):  # ty: ignore[invalid-argument-type]
         fig = plt.figure(figsize=(width, height))
-
-        def text(left: float, top: float, words: str, **style: object) -> None:
-            fig.text(left / width, 1 - top / height, words, va="top", **style)  # ty: ignore[invalid-argument-type]
-
-        text(0.3, 0.3, "How fast the tasks are solved", fontsize=12, fontweight="bold",
-             color=theme.ink)  # fmt: skip
-        text(0.3, 0.57, "Share of the tasks with a label solved within a time", fontsize=9.5,
-             color=theme.secondary)  # fmt: skip
-        speed = fig.add_axes(
-            (0.85 / width, 1 - (plot + tall) / height, (width - 0.85 - 0.4) / width, tall / height)
-        )
+        speed = fig.add_axes((left / width, bottom / height, wide / width, tall / height))
         _speed(speed, entries, theme, styles)
-        fig.legend(handles=speed.get_legend_handles_labels()[0], loc="upper left",
-                   ncol=LEGEND_COLUMNS, frameon=False,
-                   bbox_to_anchor=(0.85 / width, 1 - legend / height), fontsize=9,
-                   labelcolor=theme.secondary, handlelength=2.2, handleheight=1.0,
-                   columnspacing=1.6, handletextpad=0.6, borderpad=0, borderaxespad=0)  # fmt: skip
-        text(0.3, height - 0.32, caption, fontsize=8.5, color=theme.muted)
+        # Each name stands at the height where its curve ends, or as close to it as the
+        # other names leave room. A line in the colour and the dashes of the curve leads
+        # from the end of the curve to the name, and tells the variants of a checker apart.
+        ends = [len(entry.solved_seconds()) / (len(entry.labelled()) or 1) for entry in entries]
+        for entry, end, at in zip(entries, ends, _apart(ends, NAME_GAP / tall), strict=True):
+            colour, line = styles[entry.name]
+            speed.plot([1, 1 + lead / wide, 1 + (lead + sample) / wide], [end, at, at],
+                       color=colour, lw=2, ls=line, transform=speed.transAxes, clip_on=False,
+                       solid_capstyle="round", solid_joinstyle="round")  # fmt: skip
+            speed.text(1 + (lead + sample + space) / wide, at, entry.name, va="center",
+                       fontsize=9, color=theme.secondary, transform=speed.transAxes)  # fmt: skip
         path.parent.mkdir(parents=True, exist_ok=True)
         fig.savefig(path, format=path.suffix[1:], metadata={"Date": None, "Creator": None}
                     if path.suffix == ".svg" else None, dpi=150)  # fmt: skip
@@ -235,14 +265,9 @@ def report(results: Path, out: Path) -> str:
         The table and the line on what the checkers ran on, as Markdown.
     """
     entries = read_entries(results)
-    first = entries[0].run
-    caption = (
-        f"Corpus {first.corpus}, {count(len(entries[0].results))} tasks, {first.timeout:g} s per "
-        f"task. Solved: the answer is the label. Times are measured inside each checker's process."
-    )
     out.mkdir(parents=True, exist_ok=True)
     for name, theme in THEMES.items():
-        draw(entries, theme, caption, out / CHART_FILES[name])
+        draw(entries, theme, out / CHART_FILES[name])
     text = block(entries)
     (out / TABLE_FILE).write_text(f"{text}\n", encoding="utf-8")
     return text
