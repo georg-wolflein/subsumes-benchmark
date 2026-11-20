@@ -58,13 +58,15 @@ jobs:
           uv run check-jsonschema --schemafile schemas/overrides.schema.json overrides.json || status=1
           uv run check-jsonschema --schemafile schemas/derived.schema.json derived.json || status=1
           uv run check-jsonschema --schemafile schemas/checker.schema.json checkers/*/checker.json || status=1
+          uv run check-jsonschema --schemafile schemas/summary.schema.json comparison/summary.json || status=1
           exit "$status"
       - name: datamodel-codegen, the generated models are current
         if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
         run: |
           status=0
           for model in collections:CollectionsSpec overrides:OverridesSpec derived:DerivedSpec checker:CheckerSpec \
-              case:CaseSpec ready:ReadySpec request:RequestSpec reply:ReplySpec result:ResultSpec run:RunSpec; do
+              case:CaseSpec ready:ReadySpec request:RequestSpec reply:ReplySpec result:ResultSpec run:RunSpec \
+              summary:SummarySpec; do
             uv run datamodel-codegen --check --input "schemas/${model%%:*}.schema.json" \
               --output "src/subsumes_benchmark/generated/${model%%:*}.py" --class-name "${model##*:}" || status=1
           done

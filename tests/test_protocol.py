@@ -1,4 +1,4 @@
-"""The protocol between the runner and an adapter, and the files of a run: what their schemas say.
+"""The protocol between the runner and an adapter, and the files of a run and of a report.
 
 The schemas under ``schemas/`` are written by hand and decide what a line or a file is. The
 runner reads and writes with models that are generated from them, which read a little more
@@ -18,6 +18,7 @@ from pydantic import TypeAdapter, ValidationError
 from reading import ROOT, read
 from runs import a_result, a_run, a_witness, write
 from subsumes_benchmark.compare.results import ENDINGS, Run, read_results, read_run
+from subsumes_benchmark.compare.summary import Summary, read_entries
 from subsumes_benchmark.generated.ready import ReadySpec
 from subsumes_benchmark.generated.reply import ReplySpec
 from subsumes_benchmark.generated.request import RequestSpec
@@ -34,6 +35,7 @@ READERS: dict[str, TypeAdapter] = {
     "reply": TypeAdapter(ReplySpec),
     "result": TypeAdapter(ResultSpec),
     "run": TypeAdapter(Run),
+    "summary": TypeAdapter(Summary),
 }
 
 
@@ -63,6 +65,10 @@ def reads(name: str, document: Json) -> bool:
 TASK: dict[str, Json] = {"case": "c/1", "direction": "a_subsumes_b", "expected": None}
 TIMED: dict[str, Json] = {"seconds": 0.001, "wall_seconds": 0.002}
 A_RUN = json.loads(a_run(variant="Rust").model_dump_json(by_alias=True, exclude_unset=True))
+A_SUMMARY: dict[str, Json] = {
+    "corpus": "v1.0.0", "collections": 2, "cases": 3, "tasks": 6, "labelled_tasks": 5,
+    "timeout": 10.0,
+}  # fmt: skip
 
 VALID: dict[str, list[Json]] = {
     "ready": [{"ready": True}],
@@ -95,6 +101,11 @@ VALID: dict[str, list[Json]] = {
         {**TASK, "failure": "crash", "message": "the adapter died", "wall_seconds": 0.0},
     ],
     "run": [A_RUN, {**A_RUN, "timeout": 10, "wall_seconds": 0, "jobs": 8}],
+    "summary": [
+        A_SUMMARY,
+        {**A_SUMMARY, "corpus": "v1.0.0-3-gabc1234", "timeout": 1},
+        {**A_SUMMARY, "collections": 0, "cases": 0, "tasks": 0, "labelled_tasks": 0},
+    ],
 }  # fmt: skip
 
 # What is none, each with whether the runner reads it all the same.
@@ -170,6 +181,15 @@ INVALID: dict[str, list[tuple[Json, bool]]] = {
         ({**A_RUN, "label": "One"}, False),
         ({key: value for key, value in A_RUN.items() if key != "jobs"}, False),
     ],
+    "summary": [
+        ({**A_SUMMARY, "timeout": 0}, False),
+        ({**A_SUMMARY, "tasks": -1}, False),
+        ({**A_SUMMARY, "labelled_tasks": 2.5}, False),
+        ({**A_SUMMARY, "collections": "2"}, False),
+        ({**A_SUMMARY, "corpus": None}, False),
+        ({**A_SUMMARY, "checkers": 7}, False),
+        ({key: value for key, value in A_SUMMARY.items() if key != "cases"}, False),
+    ],
 }  # fmt: skip
 
 
@@ -235,6 +255,22 @@ def test_what_the_runner_writes_is_what_the_schemas_say(tmp_path: Path) -> None:
         assert "variant" in run["checker"] or folder == "two"
         assert read_run(tmp_path / folder).started.isoformat() == "2026-01-01T00:00:00+00:00"
 
+    # The summary of a report, as the report writes it: every key, and a whole number where
+    # the timeout is one.
+    write(tmp_path / "three" / "one", a_run(), full)
+    summary = Summary.of(read_entries(tmp_path / "three"))
+    text = summary.model_dump_json(indent=2)
+    assert schema("summary").is_valid(json.loads(text)), text
+    assert Summary.model_validate_json(text) == summary
+    assert json.loads(text) == {
+        "corpus": "v1.0.0",
+        "collections": 1,
+        "cases": len({result.case for result in full}),
+        "tasks": len(full),
+        "labelled_tasks": 2,
+        "timeout": 10.0,
+    }
+
 
 def test_what_two_schemas_share_is_written_the_same_in_both() -> None:
     reply, result = definitions("reply"), definitions("result")
@@ -248,6 +284,10 @@ def test_what_two_schemas_share_is_written_the_same_in_both() -> None:
         assert set(of_reply) - set(of_result) == moved, ended
         for key in set(of_reply) - moved:
             assert of_result[key] == of_reply[key], (ended, key)
+    # A summary says of the corpus and of the timeout what a run says of them.
+    run_keys, summary_keys = written("run")["properties"], written("summary")["properties"]
+    for key in ("corpus", "timeout"):
+        assert cast("dict[str, Json]", summary_keys)[key] == cast("dict[str, Json]", run_keys)[key]
     # A run holds the checker as its file describes it.
     checker, run = written("checker"), definitions("run")
     for key in ("description", "type", "required", "additionalProperties", "properties"):

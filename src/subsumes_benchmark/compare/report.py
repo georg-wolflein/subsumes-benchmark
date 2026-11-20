@@ -1,23 +1,24 @@
 """Reporting on a set of runs: a plot for light and dark pages, and a table.
 
-The plot shows how fast each checker solves the tasks, and the table has a row for each
-checker with what it solved, where it was wrong and how fast it was. Each is a file of its
-own, so that a page can show them where it likes. The plot is drawn with matplotlib, which
-the ``report`` extra brings; a run does not need it.
+The plot shows how fast each checker solves the tasks, with one curve per checker, and the
+table has a row for each run with what it solved, where it was wrong and how fast it was.
+Each is a file of its own, and so is what the runs are over, as JSON, so that a page can
+show them where it likes. The plot is drawn with matplotlib, which the ``report`` extra
+brings; a run does not need it.
 """
 
-import math
 from dataclasses import dataclass
+from itertools import pairwise
 from typing import TYPE_CHECKING
 
 import matplotlib as mpl
 from matplotlib import pyplot as plt
 
-from subsumes_benchmark.compare.summary import Entry, read_entries
-from subsumes_benchmark.compare.words import count, duration, share, table
+from subsumes_benchmark.compare.summary import Entry, Summary, read_entries
+from subsumes_benchmark.compare.words import NOTHING, bold, duration, share, table
 
 if TYPE_CHECKING:
-    from collections.abc import Mapping, Sequence
+    from collections.abc import Callable, Mapping, Sequence
     from pathlib import Path
 
     from matplotlib.axes import Axes
@@ -25,12 +26,13 @@ if TYPE_CHECKING:
 CHART_FILES = {"light": "chart-light.svg", "dark": "chart-dark.svg"}
 # The table of the checkers, as Markdown.
 TABLE_FILE = "results.md"
+# What the checkers ran on, as JSON: ``schemas/summary.schema.json`` says what it holds.
+SUMMARY_FILE = "summary.json"
 
-LINE_STYLES = ("solid", (0, (4, 2)), (0, (1, 2)))
 # How many steps a curve of the plot keeps; more would only make the file larger.
 STEPS = 250
-# How many checkers the legend names in a row.
-LEGEND_COLUMNS = 3
+# The least distance between the names of two checkers at the right of the plot, in inches.
+NAME_GAP = 0.19
 
 
 @dataclass(frozen=True)
@@ -43,7 +45,7 @@ class Theme:
     muted: str
     grid: str
     axis: str
-    # One per checker label, in the order the labels are listed; never cycled.
+    # One per checker, in the order that ``read_entries`` gives; never cycled.
     series: Sequence[str]
 
 
@@ -90,7 +92,7 @@ def _thinned(seconds: Sequence[float], total: int) -> tuple[list[float], list[fl
     return [seconds[i] for i in kept], [(i + 1) / total for i in kept]
 
 
-def _speed(ax: Axes, entries: Sequence[Entry], theme: Theme, styles: Mapping[str, tuple]) -> None:
+def _speed(ax: Axes, entries: Sequence[Entry], theme: Theme) -> None:
     """For every checker, the share of the tasks with a label it solved within a time."""
     timeout = entries[0].run.timeout
     # The axis starts at the power of ten below all but the very fastest tasks.
@@ -101,14 +103,13 @@ def _speed(ax: Axes, entries: Sequence[Entry], theme: Theme, styles: Mapping[str
     lowest = 10.0**-6
     while lowest * 10 <= early:
         lowest *= 10
-    for entry in entries:
+    for entry, colour in zip(entries, theme.series, strict=False):
         seconds = [max(s, lowest) for s in entry.solved_seconds()]
         # Nothing is solved where nothing has a label, so the curve then stays at zero.
         total = len(entry.labelled()) or 1
         xs, ys = _thinned(seconds, total)
-        colour, line = styles[entry.name]
         ax.step([lowest, *xs, timeout], [0.0, *ys, len(seconds) / total], where="post",
-                color=colour, lw=2, ls=line, label=entry.name)  # fmt: skip
+                color=colour, lw=2)  # fmt: skip
     ax.set_xscale("log")
     ax.set_xlim(lowest, timeout)
     ax.set_ylim(0, 1)
@@ -126,24 +127,65 @@ def _speed(ax: Axes, entries: Sequence[Entry], theme: Theme, styles: Mapping[str
     ax.tick_params(labelcolor=theme.muted, labelsize=9)
     ax.tick_params(axis="x", pad=6)
     ax.set_xlabel("time for one task", color=theme.secondary, fontsize=9.5)
+    ax.set_ylabel("correctly solved tasks", color=theme.secondary, fontsize=9.5,
+                  labelpad=8)  # fmt: skip
 
 
-def draw(entries: Sequence[Entry], theme: Theme, caption: str, path: Path) -> None:
+def _apart(wanted: Sequence[float], gap: float) -> list[float]:
+    """Heights between 0 and 1 as close to the wanted ones as they get while ``gap`` apart.
+
+    Heights that are too close move apart together, around their middle, so that each stays
+    near where it is wanted. Of equal ones, the earlier is the higher.
+    """
+    order = sorted(range(len(wanted)), key=lambda i: (wanted[i], -i))
+    # Each group is the heights that have to be placed together, lowest first.
+    groups = [[i] for i in order]
+
+    def span(group: Sequence[int]) -> tuple[float, float]:
+        half = gap * (len(group) - 1) / 2
+        middle = sum(wanted[i] for i in group) / len(group)
+        middle = min(max(middle, half), max(1 - half, half))
+        return middle - half, middle + half
+
+    merged = True
+    while merged:
+        merged = False
+        for lower, upper in pairwise(groups):
+            if span(lower)[1] + gap > span(upper)[0] + 1e-9:
+                lower.extend(upper)
+                groups.remove(upper)
+                merged = True
+                break
+    heights = [0.0] * len(wanted)
+    for group in groups:
+        lowest = span(group)[0]
+        for place, i in enumerate(group):
+            heights[i] = lowest + gap * place
+    return heights
+
+
+def draw(entries: Sequence[Entry], theme: Theme, path: Path) -> None:
     """Draw the plot of a report: how fast each checker solves the tasks.
 
-    The file is an SVG, or what the suffix of ``path`` names.
+    A checker has one curve, that of the variant that solved most, since the variants of a
+    checker differ in how they are called and hardly in what they solve; the table has a row
+    for each. A curve is named at its right end, with the share of the tasks it solved, and
+    the name with the highest share is bold. The file is an SVG, or what the suffix of
+    ``path`` names.
     """
-    labels = list(dict.fromkeys(entry.run.checker.label for entry in entries))
-    if len(labels) > len(theme.series):
-        raise ValueError(
-            f"the plot has colours for {len(theme.series)} checkers, not {len(labels)}"
-        )
-    # A colour per label and a line per variant, so that variants of a checker look alike.
-    styles: dict[str, tuple] = {}
-    for label, colour in zip(labels, theme.series, strict=False):
-        variants = [entry for entry in entries if entry.run.checker.label == label]
-        for variant, line in zip(variants, LINE_STYLES, strict=False):
-            styles[variant.name] = (colour, line)
+    checkers: dict[str, Entry] = {}
+    for entry in entries:
+        best = checkers.setdefault(entry.run.checker.label, entry)
+        if entry.solved() > best.solved():
+            checkers[entry.run.checker.label] = entry
+    drawn = list(checkers.values())
+    if len(drawn) > len(theme.series):
+        raise ValueError(f"the plot has colours for {len(theme.series)} checkers, not {len(drawn)}")
+    shares = [share(entry.solved(), len(entry.labelled())) for entry in drawn]
+    names = [f"{label}  {solved}" for label, solved in zip(checkers, shares, strict=True)]
+    # The best is whoever shows the share of the checker that solved most.
+    highest = shares[max(range(len(drawn)), key=lambda i: drawn[i].solved())]
+    weights = ["bold" if solved == highest else "normal" for solved in shares]
 
     settings: dict[str, object] = {
         # Text stays text, so the file is small and is set in the reader's own sans-serif.
@@ -156,33 +198,29 @@ def draw(entries: Sequence[Entry], theme: Theme, caption: str, path: Path) -> No
         "figure.facecolor": theme.surface,
         "savefig.facecolor": theme.surface,
     }
-    # Everything is placed in inches from the top left corner, so that a plot of more
-    # checkers grows downwards and nothing else moves.
-    width = 8.5
-    legend = 0.95  # where the legend starts
-    plot = legend + 0.24 * math.ceil(len(entries) / LEGEND_COLUMNS) + 0.25
-    tall = 3.6
-    height = plot + tall + 1.15
+    # Everything is placed in inches. The names stand to the right of the plot, so the
+    # longest of them decides how wide the plot is; a letter is taken to be this wide.
+    width, height = 8.5, 4.6
+    left, top, bottom = 0.95, 0.25, 0.8
+    space, letter = 0.12, 0.068
+    right = space + letter * max(len(name) for name in names) + 0.15
+    wide, tall = width - left - right, height - top - bottom
     with mpl.rc_context(settings):  # ty: ignore[invalid-argument-type]
         fig = plt.figure(figsize=(width, height))
-
-        def text(left: float, top: float, words: str, **style: object) -> None:
-            fig.text(left / width, 1 - top / height, words, va="top", **style)  # ty: ignore[invalid-argument-type]
-
-        text(0.3, 0.3, "How fast the tasks are solved", fontsize=12, fontweight="bold",
-             color=theme.ink)  # fmt: skip
-        text(0.3, 0.57, "Share of the tasks with a label solved within a time", fontsize=9.5,
-             color=theme.secondary)  # fmt: skip
-        speed = fig.add_axes(
-            (0.85 / width, 1 - (plot + tall) / height, (width - 0.85 - 0.4) / width, tall / height)
-        )
-        _speed(speed, entries, theme, styles)
-        fig.legend(handles=speed.get_legend_handles_labels()[0], loc="upper left",
-                   ncol=LEGEND_COLUMNS, frameon=False,
-                   bbox_to_anchor=(0.85 / width, 1 - legend / height), fontsize=9,
-                   labelcolor=theme.secondary, handlelength=2.2, handleheight=1.0,
-                   columnspacing=1.6, handletextpad=0.6, borderpad=0, borderaxespad=0)  # fmt: skip
-        text(0.3, height - 0.32, caption, fontsize=8.5, color=theme.muted)
+        speed = fig.add_axes((left / width, bottom / height, wide / width, tall / height))
+        _speed(speed, drawn, theme)
+        # A dot marks where a curve ends, and its name stands next to the dot, or as close
+        # to it as the other names leave room. Both are placed in the coordinates of the
+        # plot, where 1 is its right edge.
+        ends = [len(entry.solved_seconds()) / (len(entry.labelled()) or 1) for entry in drawn]
+        heights = _apart(ends, NAME_GAP / tall)
+        across = speed.transAxes
+        named = zip(names, weights, theme.series, ends, heights, strict=False)
+        for name, weight, colour, end, at in named:
+            speed.plot([1], [end], marker="o", ms=4.5, color=colour, zorder=3,
+                       transform=across, clip_on=False)  # fmt: skip
+            speed.text(1 + space / wide, at, name, va="center", fontsize=9, color=theme.ink,
+                       fontweight=weight, transform=across)  # fmt: skip
         path.parent.mkdir(parents=True, exist_ok=True)
         fig.savefig(path, format=path.suffix[1:], metadata={"Date": None, "Creator": None}
                     if path.suffix == ".svg" else None, dpi=150)  # fmt: skip
@@ -197,52 +235,66 @@ def _linked(entry: Entry) -> str:
     return f"[{entry.name}]({entry.run.checker.homepage})"
 
 
+def _marked[T: (int, float)](
+    values: Sequence[T | None], words: Callable[[T], str], best: Callable[[Sequence[T]], T]
+) -> list[str]:
+    """A column of the table, with the best of its values in bold.
+
+    Every cell that reads as the best one does is bold, so that two checkers that the table
+    shows the same number for are marked alike.
+    """
+    cells = [NOTHING if value is None else words(value) for value in values]
+    known = [value for value in values if value is not None]
+    if not known:
+        return cells
+    winner = words(best(known))
+    return [bold(cell) if cell == winner else cell for cell in cells]
+
+
 def block(entries: Sequence[Entry]) -> str:
-    """The table of the runs: a row for every checker, and a line on what they ran on."""
-    first = entries[0]
-    rows = []
-    for entry in entries:
-        counts = entry.counts()
-        rows.append(
-            [
-                _linked(entry),
-                entry.run.checker.version,
-                share(entry.solved(), len(entry.labelled())),
-                count(counts["wrong_yes"]),
-                count(counts["wrong_no"]),
-                duration(entry.seconds_to_solve(0.5)),
-                duration(entry.seconds_to_solve(0.9)),
-            ]
-        )
-    headers = ["Checker", "Version", "Solved", "Wrong yes", "Wrong no",
+    """The table of the runs: a row for every run, the one that solved most first.
+
+    Runs that solved equally many keep the order they came in. A correct result is a task
+    that the checker solved and an incorrect one an answer that is wrong, both as a share of
+    the tasks with a label. The best value of every column is bold: the most correct results,
+    the fewest incorrect ones and the shortest times.
+    """
+    ranked = sorted(entries, key=lambda entry: -entry.solved())
+    labelled = len(ranked[0].labelled())
+
+    def of_labelled(part: int) -> str:
+        return share(part, labelled)
+
+    wrong = [(counts := entry.counts())["wrong_yes"] + counts["wrong_no"] for entry in ranked]
+    columns = [
+        [_linked(entry) for entry in ranked],
+        [entry.run.checker.version for entry in ranked],
+        _marked([entry.solved() for entry in ranked], of_labelled, max),
+        _marked(wrong, of_labelled, min),
+        _marked([entry.seconds_to_solve(0.5) for entry in ranked], duration, min),
+        _marked([entry.seconds_to_solve(0.9) for entry in ranked], duration, min),
+    ]
+    headers = ["Checker", "Version", "Correct results", "Incorrect results",
                "Fastest 50% within", "Fastest 90% within"]  # fmt: skip
-    scope = (
-        f"Measured on corpus `{first.run.corpus}`: {count(len(first.results))} tasks, of which "
-        f"{count(len(first.labelled()))} have a label, with {first.run.timeout:g} seconds per "
-        f"task."
-    )
-    return f"{table(headers, rows)}\n\n{scope}"
+    return table(headers, [list(row) for row in zip(*columns, strict=True)])
 
 
 def report(results: Path, out: Path) -> str:
-    """Write the two plots and the table for the runs under ``results``.
+    """Write the two plots and the table for the runs under ``results``, and what they are over.
 
     Args:
         results: A folder with one folder per checker, as ``run`` wrote them.
-        out: The folder for the plots and the table.
+        out: The folder for the plots, the table and the summary.
 
     Returns:
-        The table and the line on what the checkers ran on, as Markdown.
+        The table and a line on what the checkers ran on, as Markdown.
     """
     entries = read_entries(results)
-    first = entries[0].run
-    caption = (
-        f"Corpus {first.corpus}, {count(len(entries[0].results))} tasks, {first.timeout:g} s per "
-        f"task. Solved: the answer is the label. Times are measured inside each checker's process."
-    )
+    summary = Summary.of(entries)
     out.mkdir(parents=True, exist_ok=True)
     for name, theme in THEMES.items():
-        draw(entries, theme, caption, out / CHART_FILES[name])
+        draw(entries, theme, out / CHART_FILES[name])
     text = block(entries)
     (out / TABLE_FILE).write_text(f"{text}\n", encoding="utf-8")
-    return text
+    (out / SUMMARY_FILE).write_text(f"{summary.model_dump_json(indent=2)}\n", encoding="utf-8")
+    return f"{text}\n\n{summary.line()}"

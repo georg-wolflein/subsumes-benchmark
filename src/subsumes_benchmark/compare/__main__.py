@@ -63,12 +63,13 @@ def _main() -> None:
     reporting = commands.add_parser(
         "report",
         help="draw how fast the checkers of the runs in a folder are, and table their results",
-        description="Writes a plot for light and for dark pages to --out, and a table with a "
-        "row for every checker as results.md, which it prints too.",
+        description="Writes a plot for light and for dark pages to --out, a table with a row "
+        "for every checker as results.md, which it prints too, and what the checkers ran on "
+        "as summary.json.",
     )
     reporting.add_argument("results", type=Path, help="a folder with one folder per checker")
     reporting.add_argument(
-        "--out", type=Path, default=Path("comparison"), help="where the plots and the table go"
+        "--out", type=Path, default=Path("comparison"), help="where the files of the report go"
     )
 
     differing = commands.add_parser(

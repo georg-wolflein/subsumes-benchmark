@@ -314,29 +314,62 @@ def test_a_report_draws_the_plots_and_gives_the_table(tmp_path: Path) -> None:
         ),
         runs.a_result(declined.id, "unknown", True, direction="b_subsumes_a", seconds=0.01),
     ]
+    # The second checker is slower on the task that decides the time of the fastest half, and
+    # the third solves one task only.
+    slower = [results[0], a_result(fails.id, "no", False, 0.7), *results[2:]]
+    worse = [runs.a_result(holds.id, "unknown", True, seconds=0.01), *results[1:]]
     write(tmp_path / "results" / "one", a_run("one", variant="Rust"), results)
-    write(tmp_path / "results" / "two", a_run("two", variant="Python"), results[::-1])
+    write(tmp_path / "results" / "two", a_run("two", variant="Python"), slower[::-1])
+    write(tmp_path / "results" / "worse", a_run("worse", label="Another"), worse)
 
     text = report(tmp_path / "results", tmp_path / "comparison")
 
-    # A row for every run, named by a link to where the checker lives.
-    rows = [line for line in text.splitlines() if line.startswith("| [")]
-    assert [row.split(" | ")[0] for row in rows] == [
-        "| [One (Rust)](https://example.com)",
-        "| [One (Python)](https://example.com)",
+    # A row for every run, named by a link to where the checker lives. The run that solved
+    # most is first, though its checker is not the first by name, and runs that solved
+    # equally many keep their order.
+    table, scope = text.split("\n\n")
+    rows = [line.strip("| ").split(" | ") for line in table.splitlines()]
+    assert rows[0] == ["Checker", "Version", "Correct results", "Incorrect results",
+                       "Fastest 50% within", "Fastest 90% within"]  # fmt: skip
+    assert [row[0] for row in rows[2:]] == [
+        "[One (Rust)](https://example.com)",
+        "[One (Python)](https://example.com)",
+        "[Another](https://example.com)",
     ]
     # Two of the three tasks with a label are solved. The no with a counterexample that is
-    # none is wrong, though its task has no label.
-    assert rows[0].split(" | ")[1:5] == ["1.0", "66.7%", "0", "1"]
-    assert "Measured on corpus `v1.0.0`: 4 tasks, of which 3 have a label, with" in text
+    # none is wrong, though its task has no label. The best of a column is bold wherever it
+    # stands, a column where every checker has the same has all of it bold, and one where
+    # none has a value has nothing bold.
+    assert [row[2:] for row in rows[2:]] == [
+        ["**66.7%**", "**33.3%**", "**500 ms**", "—"],
+        ["**66.7%**", "**33.3%**", "700 ms", "—"],
+        ["33.3%", "**33.3%**", "—", "—"],
+    ]
+    assert scope.startswith("Measured on corpus `v1.0.0`: 4 tasks, of which 3 have a label, with")
     assert sorted(path.name for path in (tmp_path / "comparison").iterdir()) == [
         "chart-dark.svg",
         "chart-light.svg",
         "results.md",
+        "summary.json",
     ]
     for name in ("chart-light.svg", "chart-dark.svg"):
-        assert (tmp_path / "comparison" / name).read_text(encoding="utf-8").startswith("<?xml")
-    assert (tmp_path / "comparison" / "results.md").read_text(encoding="utf-8") == f"{text}\n"
+        chart = (tmp_path / "comparison" / name).read_text(encoding="utf-8")
+        assert chart.startswith("<?xml")
+        # One curve per checker, and the name of the one that solved most is bold.
+        assert chart.count("font-weight: 700") == 1
+    assert (tmp_path / "comparison" / "results.md").read_text(encoding="utf-8") == f"{table}\n"
+    # What the runs are over: the four tasks are of four cases, which lie in so many
+    # collections.
+    summary = json.loads((tmp_path / "comparison" / "summary.json").read_text(encoding="utf-8"))
+    chosen = {case.id for case in (holds, fails, declined, without_label)}
+    assert summary == {
+        "corpus": "v1.0.0",
+        "collections": len({case.rsplit("/", 1)[0] for case in chosen}),
+        "cases": len(chosen),
+        "tasks": 4,
+        "labelled_tasks": 3,
+        "timeout": a_run("one").timeout,
+    }
 
 
 # --------------------------------------------------------------------------- the folders

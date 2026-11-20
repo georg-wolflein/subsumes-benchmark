@@ -20,7 +20,7 @@ The command is the package [`subsumes-benchmark`](https://pypi.org/project/subsu
 
 ```bash
 # Unpack the corpus into corpus/.
-uvx subsumes-benchmark corpus corpus
+uvx subsumes-benchmark corpus ./corpus
 # Run a checker over every task; --limit 300 runs a sample.
 uvx subsumes-benchmark run path/to/checker
 # Hold the run against an earlier one, as a comment for a pull request.
@@ -31,15 +31,15 @@ uvx --from 'subsumes-benchmark[report]' subsumes-benchmark report results
 
 - **`run`** takes the folder of a checker, which can be anywhere, and writes a run to `results/<name of the folder>/`: `results.jsonl` with one line per task and `run.json` with what ran, as [`result.schema.json`](../schemas/result.schema.json) and [`run.schema.json`](../schemas/run.schema.json) describe them.
 - **`diff`** lists the answers by collection with what changed, the wrong answers, and the tasks that the base answered and the change does not. It fails when an answer is wrong, when a task ended in an error, a crash or a timeout, and when a task of the base is no longer answered, unless `--allow-lost` accepts that.
-- **`report`** writes three files to `comparison/`, or to the folder that `--out` names: the plot for light and for dark pages, and the table as `results.md`, which it prints too.
+- **`report`** writes four files to `comparison/`, or to the folder that `--out` names: the plot for light and for dark pages, the table as `results.md`, which it prints too, and what the checkers ran on as `summary.json`, which [`summary.schema.json`](../schemas/summary.schema.json) describes: the version of the corpus, how many collections, cases and tasks the runs are over, how many of the tasks have a label, and the timeout. The table lists the run that solved most first and has the best value of every column in bold, and the plot has one curve per checker, that of the variant that solved most.
 
-The `Comparison` workflow runs every checker here over every task after each release, and opens a pull request with the plot and the table, which it also puts into the main README.
+The `Comparison` workflow runs every checker here over every task after each release, and opens a pull request with the plot and the table. It also puts the table into the main README, and from `summary.json` the version of the corpus and the two counts that the page states.
 
 ## How a run is measured
 
 - **A task** is one question of the corpus, and every case is two: whether A subsumes B, and whether B subsumes A.
-- **Solved** is a task where the checker gave the answer that the label gives. Only a task with a label can be solved, and the share of solved tasks is a share of those.
-- **Wrong** is an answer that the label contradicts. A no with a counterexample that is none is wrong too, with a label or without: the runner asks [jsonschema-rs](https://github.com/Stranger6667/jsonschema), with `format` asserted, whether the instance is valid under `b` and invalid under `a`.
+- **Solved** is a task where the checker gave the answer that the label gives. Only a task with a label can be solved, and the share of solved tasks is a share of those. The table calls it a correct result.
+- **Wrong** is an answer that the label contradicts. A no with a counterexample that is none is wrong too, with a label or without: the runner asks [jsonschema-rs](https://github.com/Stranger6667/jsonschema), with `format` asserted, whether the instance is valid under `b` and invalid under `a`. The table calls it an incorrect result, and gives the wrong answers as a share of the tasks with a label too.
 - **Time** is measured inside the checker's process, from the two schemas as text to the answer. A checker runs alone on its machine, as one process that answers 200 tasks before anything is measured.
 - **A timeout** is 10 seconds per task unless `--timeout` says otherwise. The runner waits two seconds longer, then kills the adapter and starts it again.
 - **An older draft** is what a checker gets that does not read draft 2020-12: the runner rewrites every schema to its `dialect`, with references resolved and keywords renamed. Where the older draft cannot express a schema, the checker is not asked and the task counts as `unsupported`.
