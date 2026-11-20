@@ -39,7 +39,7 @@ The results were measured on <!-- version:start -->[`v0.10.0`](https://github.co
 
 ## Collections
 
-The benchmark brings together <!-- num_collections:start -->8<!-- num_collections:end --> collections of tasks from the sources listed below:
+The benchmark brings together <!-- num_collections:start -->8<!-- num_collections:end --> collections of tasks from the sources listed below (see the [corpus documentation](https://github.com/georg-wolflein/subsumes-benchmark/blob/main/corpus/README.md) for more information):
 
 <!-- collections:start -->
 
@@ -56,11 +56,9 @@ In all: 10,743 cases, 19,432 of 21,486 tasks with a label.
 
 <!-- collections:end -->
 
-A collection lies in the folder of the work that first published its pairs, and a case is one JSON file in it. [The page of the corpus](https://github.com/georg-wolflein/subsumes-benchmark/blob/main/corpus/README.md) describes a case and says what its labels mean.
-
 ## Use
 
-The command needs Python 3.14, which [uv](https://docs.astral.sh/uv/) fetches by itself. To get the latest corpus:
+To get the latest corpus (requires [`uv`](https://docs.astral.sh/uv/)):
 
 ```bash
 uvx subsumes-benchmark corpus ./corpus   # unpacks into corpus/
@@ -79,9 +77,7 @@ To run a checker over it:
 uvx subsumes-benchmark run path/to/checker   # writes results/<folder of the checker>/
 ```
 
-A checker is a folder with a `checker.json` and an adapter, a program that answers one question per line. [The page of the checkers](https://github.com/georg-wolflein/subsumes-benchmark/blob/main/checkers/README.md) says how to write one.
-
-The package of a version holds the corpus of that version, so `uvx subsumes-benchmark==<version>` pins both. Results measured on two versions are comparable exactly when their major and minor numbers match.
+A checker is a folder with a `checker.json` and an adapter (a program that answers one question per line). The [documentation](https://github.com/georg-wolflein/subsumes-benchmark/blob/main/checkers/README.md) describes how to create one yourself.
 
 ## Documentation
 
