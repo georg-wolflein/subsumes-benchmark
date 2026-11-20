@@ -20,7 +20,7 @@ The command is the package [`subsumes-benchmark`](https://pypi.org/project/subsu
 
 ```bash
 # Unpack the corpus into corpus/.
-uvx subsumes-benchmark corpus corpus
+uvx subsumes-benchmark corpus ./corpus
 # Run a checker over every task; --limit 300 runs a sample.
 uvx subsumes-benchmark run path/to/checker
 # Hold the run against an earlier one, as a comment for a pull request.

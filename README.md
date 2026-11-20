@@ -63,7 +63,7 @@ A collection lies in the folder of the work that first published its pairs, and 
 The command needs Python 3.14, which [uv](https://docs.astral.sh/uv/) fetches by itself. To get the latest corpus:
 
 ```bash
-uvx subsumes-benchmark corpus corpus   # unpacks into corpus/
+uvx subsumes-benchmark corpus ./corpus   # unpacks into corpus/
 ```
 
 The same corpus is a file of every [release](https://github.com/georg-wolflein/subsumes-benchmark/releases), for whoever has no Python at hand:
