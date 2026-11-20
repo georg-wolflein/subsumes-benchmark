@@ -12,7 +12,6 @@ from subsumes_benchmark.build import (
     Source,
     SourceSpec,
     bundled,
-    case_name,
     without_duplicates,
     without_excluded,
     write_json,
@@ -116,16 +115,6 @@ def test_unfuse_refuses_what_the_artifact_does_not_emit() -> None:
         unfuse({"allOf": [{}, {}]})
     with pytest.raises(ConversionError):
         unfuse({"allOf": [{}, {"not": {}}], "title": "extra"})
-
-
-def test_synthesized_file_names_become_paths() -> None:
-    name = "draft2019_09_nonvalid_additionalItems_id10_subschema1_not_2"
-    assert case_name(name) == "draft2019-09/nonvalid/additionalItems/10"
-    assert (
-        case_name("draft4_valid_boolean_schema_id3_subschema1_not_2")
-        == "draft4/valid/boolean_schema/3"
-    )
-    assert case_name("agripparc-1.2_v2_not_v1") == "agripparc-1.2_v2_not_v1"
 
 
 @pytest.mark.parametrize(

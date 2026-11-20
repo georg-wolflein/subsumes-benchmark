@@ -566,9 +566,7 @@ def markdown(
         "- **Labels.** Most labels of five collections come from the witness generator that "
         "RWG succeeds, so they favour RWG by construction.\n"
         "- **subsumes.** subsumes is by the author of the corpus and is developed against it, "
-        "so it does not meet these tasks for the first time as the other checkers do.\n"
-        "- **Duplicates.** `synthesized` largely repeats `json-schema-test-suite`, so the two "
-        "should not be read as independent evidence.",
+        "so it does not meet these tasks for the first time as the other checkers do.",
     ]
     return "\n\n".join(parts) + "\n"
 
