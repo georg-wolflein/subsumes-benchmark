@@ -2,15 +2,15 @@
 
 The plot shows how fast each checker solves the tasks, with one curve per checker, and the
 table has a row for each run with what it solved, where it was wrong and how fast it was.
-Each is a file of its own, and so is the version of the corpus that the runs are over, so
-that a page can show them where it likes. The plot is drawn with matplotlib, which the
-``report`` extra brings; a run does not need it.
+Each is a file of its own, and so is what the runs are over, as JSON, so that a page can
+show them where it likes. The plot is drawn with matplotlib, which the ``report`` extra
+brings; a run does not need it.
 """
 
-import re
-from dataclasses import dataclass
+import json
+from dataclasses import asdict, dataclass
 from itertools import pairwise
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Self
 
 import matplotlib as mpl
 from matplotlib import pyplot as plt
@@ -27,11 +27,8 @@ if TYPE_CHECKING:
 CHART_FILES = {"light": "chart-light.svg", "dark": "chart-dark.svg"}
 # The table of the checkers, as Markdown.
 TABLE_FILE = "results.md"
-# The version of the corpus that the checkers ran on, as Markdown.
-VERSION_FILE = "version.md"
-# Where the releases of the corpus are. A page that shows the version may be anywhere, so the
-# link is a full URL.
-RELEASES_URL = "https://github.com/georg-wolflein/subsumes-benchmark/releases/tag"
+# What the checkers ran on, as JSON.
+SUMMARY_FILE = "summary.json"
 
 # How many steps a curve of the plot keeps; more would only make the file larger.
 STEPS = 250
@@ -283,43 +280,58 @@ def block(entries: Sequence[Entry]) -> str:
     return table(headers, [list(row) for row in zip(*columns, strict=True)])
 
 
-def scope(entries: Sequence[Entry]) -> str:
-    """A line on what the runs are over: the corpus, its tasks and the time for each."""
-    first = entries[0]
-    return (
-        f"Measured on corpus `{first.run.corpus}`: {count(len(first.results))} tasks, of which "
-        f"{count(len(first.labelled()))} have a label, with {first.run.timeout:g} seconds per "
-        f"task."
-    )
+@dataclass(frozen=True)
+class Summary:
+    """What the runs of a report are over. The keys of ``summary.json`` are its fields."""
 
+    # The version of the corpus, as ``run.json`` has it.
+    corpus: str
+    collections: int
+    cases: int
+    # A case is two tasks, one for each direction, and a run over a sample has fewer.
+    tasks: int
+    labelled_tasks: int
+    # The seconds that a checker had for one task.
+    timeout: float
 
-def version(entries: Sequence[Entry]) -> str:
-    """The version of the corpus that the runs are over, as a link to its release.
+    @classmethod
+    def of(cls, entries: Sequence[Entry]) -> Self:
+        """What the runs are over, which ``read_entries`` has checked is the same for all."""
+        first = entries[0]
+        cases = {result.case for result in first.results}
+        return cls(
+            corpus=first.run.corpus,
+            collections=len({case.rsplit("/", 1)[0] for case in cases}),
+            cases=len(cases),
+            tasks=len(first.results),
+            labelled_tasks=len(first.labelled()),
+            timeout=first.run.timeout,
+        )
 
-    A corpus that is no release, as in a checkout between two of them, has no page to link
-    to, so its version stands alone.
-    """
-    corpus = entries[0].run.corpus
-    if re.fullmatch(r"v\d+\.\d+\.\d+", corpus):
-        return f"[`{corpus}`]({RELEASES_URL}/{corpus})"
-    return f"`{corpus}`"
+    def line(self) -> str:
+        """A line for a person: the corpus, its tasks and the time for each."""
+        return (
+            f"Measured on corpus `{self.corpus}`: {count(self.tasks)} tasks, of which "
+            f"{count(self.labelled_tasks)} have a label, with {self.timeout:g} seconds per task."
+        )
 
 
 def report(results: Path, out: Path) -> str:
-    """Write the two plots, the table and the version of the corpus for the runs under ``results``.
+    """Write the two plots and the table for the runs under ``results``, and what they are over.
 
     Args:
         results: A folder with one folder per checker, as ``run`` wrote them.
-        out: The folder for the plots, the table and the version.
+        out: The folder for the plots, the table and the summary.
 
     Returns:
         The table and a line on what the checkers ran on, as Markdown.
     """
     entries = read_entries(results)
+    summary = Summary.of(entries)
     out.mkdir(parents=True, exist_ok=True)
     for name, theme in THEMES.items():
         draw(entries, theme, out / CHART_FILES[name])
     text = block(entries)
     (out / TABLE_FILE).write_text(f"{text}\n", encoding="utf-8")
-    (out / VERSION_FILE).write_text(f"{version(entries)}\n", encoding="utf-8")
-    return f"{text}\n\n{scope(entries)}"
+    (out / SUMMARY_FILE).write_text(f"{json.dumps(asdict(summary), indent=2)}\n", encoding="utf-8")
+    return f"{text}\n\n{summary.line()}"

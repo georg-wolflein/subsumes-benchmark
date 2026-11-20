@@ -350,7 +350,7 @@ def test_a_report_draws_the_plots_and_gives_the_table(tmp_path: Path) -> None:
         "chart-dark.svg",
         "chart-light.svg",
         "results.md",
-        "version.md",
+        "summary.json",
     ]
     for name in ("chart-light.svg", "chart-dark.svg"):
         chart = (tmp_path / "comparison" / name).read_text(encoding="utf-8")
@@ -358,10 +358,18 @@ def test_a_report_draws_the_plots_and_gives_the_table(tmp_path: Path) -> None:
         # One curve per checker, and the name of the one that solved most is bold.
         assert chart.count("font-weight: 700") == 1
     assert (tmp_path / "comparison" / "results.md").read_text(encoding="utf-8") == f"{table}\n"
-    # The corpus of the runs is a release, so its version links to it.
-    assert (tmp_path / "comparison" / "version.md").read_text(encoding="utf-8") == (
-        "[`v1.0.0`](https://github.com/georg-wolflein/subsumes-benchmark/releases/tag/v1.0.0)\n"
-    )
+    # What the runs are over: the four tasks are of four cases, which lie in so many
+    # collections.
+    summary = json.loads((tmp_path / "comparison" / "summary.json").read_text(encoding="utf-8"))
+    chosen = {case.id for case in (holds, fails, declined, without_label)}
+    assert summary == {
+        "corpus": "v1.0.0",
+        "collections": len({case.rsplit("/", 1)[0] for case in chosen}),
+        "cases": len(chosen),
+        "tasks": 4,
+        "labelled_tasks": 3,
+        "timeout": a_run("one").timeout,
+    }
 
 
 # --------------------------------------------------------------------------- the folders

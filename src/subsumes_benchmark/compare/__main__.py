@@ -64,8 +64,8 @@ def _main() -> None:
         "report",
         help="draw how fast the checkers of the runs in a folder are, and table their results",
         description="Writes a plot for light and for dark pages to --out, a table with a row "
-        "for every checker as results.md, which it prints too, and the version of the corpus "
-        "as version.md.",
+        "for every checker as results.md, which it prints too, and what the checkers ran on "
+        "as summary.json.",
     )
     reporting.add_argument("results", type=Path, help="a folder with one folder per checker")
     reporting.add_argument(
