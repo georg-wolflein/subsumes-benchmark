@@ -7,6 +7,7 @@ the ``report`` extra brings; a run does not need it.
 """
 
 from dataclasses import dataclass
+from itertools import pairwise
 from typing import TYPE_CHECKING
 
 import matplotlib as mpl
@@ -148,7 +149,7 @@ def _apart(wanted: Sequence[float], gap: float) -> list[float]:
     merged = True
     while merged:
         merged = False
-        for lower, upper in zip(groups, groups[1:], strict=False):
+        for lower, upper in pairwise(groups):
             if span(lower)[1] + gap > span(upper)[0] + 1e-9:
                 lower.extend(upper)
                 groups.remove(upper)
