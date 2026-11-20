@@ -144,8 +144,12 @@ jobs:
         run: |
           rm -rf comparison
           cp -R "$RUNNER_TEMP/report/comparison" comparison
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          python-version: "3.14"
       - name: Put the table into the README
-        run: scripts/readme-part.sh comparison comparison/results.md
+        # The script needs Python and nothing of the project.
+        run: uv run --no-project scripts/readme_part.py comparison comparison/results.md
       - name: Open or update the pull request
         env:
           GH_TOKEN: ${{ steps.app.outputs.token }}

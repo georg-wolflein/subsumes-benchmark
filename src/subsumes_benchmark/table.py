@@ -1,7 +1,7 @@
 """The table of the collections of a corpus, as Markdown.
 
 ``python -m subsumes_benchmark.table <corpus>`` prints it. ``make corpus`` puts it into the
-README of the repository, with ``scripts/readme-part.sh``.
+README of the repository, with ``scripts/readme_part.py``.
 """
 
 import json
