@@ -2,10 +2,12 @@
 
 The plot shows how fast each checker solves the tasks, with one curve per checker, and the
 table has a row for each run with what it solved, where it was wrong and how fast it was.
-Each is a file of its own, so that a page can show them where it likes. The plot is drawn
-with matplotlib, which the ``report`` extra brings; a run does not need it.
+Each is a file of its own, and so is the version of the corpus that the runs are over, so
+that a page can show them where it likes. The plot is drawn with matplotlib, which the
+``report`` extra brings; a run does not need it.
 """
 
+import re
 from dataclasses import dataclass
 from itertools import pairwise
 from typing import TYPE_CHECKING
@@ -14,10 +16,10 @@ import matplotlib as mpl
 from matplotlib import pyplot as plt
 
 from subsumes_benchmark.compare.summary import Entry, read_entries
-from subsumes_benchmark.compare.words import count, duration, share, table
+from subsumes_benchmark.compare.words import NOTHING, bold, count, duration, share, table
 
 if TYPE_CHECKING:
-    from collections.abc import Mapping, Sequence
+    from collections.abc import Callable, Mapping, Sequence
     from pathlib import Path
 
     from matplotlib.axes import Axes
@@ -25,6 +27,11 @@ if TYPE_CHECKING:
 CHART_FILES = {"light": "chart-light.svg", "dark": "chart-dark.svg"}
 # The table of the checkers, as Markdown.
 TABLE_FILE = "results.md"
+# The version of the corpus that the checkers ran on, as Markdown.
+VERSION_FILE = "version.md"
+# Where the releases of the corpus are. A page that shows the version may be anywhere, so the
+# link is a full URL.
+RELEASES_URL = "https://github.com/georg-wolflein/subsumes-benchmark/releases/tag"
 
 # How many steps a curve of the plot keeps; more would only make the file larger.
 STEPS = 250
@@ -42,7 +49,7 @@ class Theme:
     muted: str
     grid: str
     axis: str
-    # One per checker, in the order the checkers are listed; never cycled.
+    # One per checker, in the order that ``read_entries`` gives; never cycled.
     series: Sequence[str]
 
 
@@ -164,21 +171,25 @@ def _apart(wanted: Sequence[float], gap: float) -> list[float]:
 def draw(entries: Sequence[Entry], theme: Theme, path: Path) -> None:
     """Draw the plot of a report: how fast each checker solves the tasks.
 
-    A checker has one curve, that of the first of its variants, since the variants of a
+    A checker has one curve, that of the variant that solved most, since the variants of a
     checker differ in how they are called and hardly in what they solve; the table has a row
-    for each. A curve is named at its right end, with the share of the tasks it solved. The
-    file is an SVG, or what the suffix of ``path`` names.
+    for each. A curve is named at its right end, with the share of the tasks it solved, and
+    the name with the highest share is bold. The file is an SVG, or what the suffix of
+    ``path`` names.
     """
     checkers: dict[str, Entry] = {}
     for entry in entries:
-        checkers.setdefault(entry.run.checker.label, entry)
+        best = checkers.setdefault(entry.run.checker.label, entry)
+        if entry.solved() > best.solved():
+            checkers[entry.run.checker.label] = entry
     drawn = list(checkers.values())
     if len(drawn) > len(theme.series):
         raise ValueError(f"the plot has colours for {len(theme.series)} checkers, not {len(drawn)}")
-    names = [
-        f"{label}  {share(entry.solved(), len(entry.labelled()))}"
-        for label, entry in checkers.items()
-    ]
+    shares = [share(entry.solved(), len(entry.labelled())) for entry in drawn]
+    names = [f"{label}  {solved}" for label, solved in zip(checkers, shares, strict=True)]
+    # The best is whoever shows the share of the checker that solved most.
+    highest = shares[max(range(len(drawn)), key=lambda i: drawn[i].solved())]
+    weights = ["bold" if solved == highest else "normal" for solved in shares]
 
     settings: dict[str, object] = {
         # Text stays text, so the file is small and is set in the reader's own sans-serif.
@@ -208,11 +219,12 @@ def draw(entries: Sequence[Entry], theme: Theme, path: Path) -> None:
         ends = [len(entry.solved_seconds()) / (len(entry.labelled()) or 1) for entry in drawn]
         heights = _apart(ends, NAME_GAP / tall)
         across = speed.transAxes
-        for name, colour, end, at in zip(names, theme.series, ends, heights, strict=False):
+        named = zip(names, weights, theme.series, ends, heights, strict=False)
+        for name, weight, colour, end, at in named:
             speed.plot([1], [end], marker="o", ms=4.5, color=colour, zorder=3,
                        transform=across, clip_on=False)  # fmt: skip
             speed.text(1 + space / wide, at, name, va="center", fontsize=9, color=theme.ink,
-                       transform=across)  # fmt: skip
+                       fontweight=weight, transform=across)  # fmt: skip
         path.parent.mkdir(parents=True, exist_ok=True)
         fig.savefig(path, format=path.suffix[1:], metadata={"Date": None, "Creator": None}
                     if path.suffix == ".svg" else None, dpi=150)  # fmt: skip
@@ -227,42 +239,81 @@ def _linked(entry: Entry) -> str:
     return f"[{entry.name}]({entry.run.checker.homepage})"
 
 
+def _marked[T: (int, float)](
+    values: Sequence[T | None], words: Callable[[T], str], best: Callable[[Sequence[T]], T]
+) -> list[str]:
+    """A column of the table, with the best of its values in bold.
+
+    Every cell that reads as the best one does is bold, so that two checkers that the table
+    shows the same number for are marked alike.
+    """
+    cells = [NOTHING if value is None else words(value) for value in values]
+    known = [value for value in values if value is not None]
+    if not known:
+        return cells
+    winner = words(best(known))
+    return [bold(cell) if cell == winner else cell for cell in cells]
+
+
 def block(entries: Sequence[Entry]) -> str:
-    """The table of the runs: a row for every checker, and a line on what they ran on."""
-    first = entries[0]
-    rows = []
-    for entry in entries:
-        counts = entry.counts()
-        rows.append(
-            [
-                _linked(entry),
-                entry.run.checker.version,
-                share(entry.solved(), len(entry.labelled())),
-                count(counts["wrong_yes"]),
-                count(counts["wrong_no"]),
-                duration(entry.seconds_to_solve(0.5)),
-                duration(entry.seconds_to_solve(0.9)),
-            ]
-        )
-    headers = ["Checker", "Version", "Solved", "Wrong yes", "Wrong no",
+    """The table of the runs: a row for every run, the one that solved most first.
+
+    Runs that solved equally many keep the order they came in. A correct result is a task
+    that the checker solved and an incorrect one an answer that is wrong, both as a share of
+    the tasks with a label. The best value of every column is bold: the most correct results,
+    the fewest incorrect ones and the shortest times.
+    """
+    ranked = sorted(entries, key=lambda entry: -entry.solved())
+    labelled = len(ranked[0].labelled())
+
+    def of_labelled(part: int) -> str:
+        return share(part, labelled)
+
+    wrong = [(counts := entry.counts())["wrong_yes"] + counts["wrong_no"] for entry in ranked]
+    columns = [
+        [_linked(entry) for entry in ranked],
+        [entry.run.checker.version for entry in ranked],
+        _marked([entry.solved() for entry in ranked], of_labelled, max),
+        _marked(wrong, of_labelled, min),
+        _marked([entry.seconds_to_solve(0.5) for entry in ranked], duration, min),
+        _marked([entry.seconds_to_solve(0.9) for entry in ranked], duration, min),
+    ]
+    headers = ["Checker", "Version", "Correct results", "Incorrect results",
                "Fastest 50% within", "Fastest 90% within"]  # fmt: skip
-    scope = (
+    return table(headers, [list(row) for row in zip(*columns, strict=True)])
+
+
+def scope(entries: Sequence[Entry]) -> str:
+    """A line on what the runs are over: the corpus, its tasks and the time for each."""
+    first = entries[0]
+    return (
         f"Measured on corpus `{first.run.corpus}`: {count(len(first.results))} tasks, of which "
         f"{count(len(first.labelled()))} have a label, with {first.run.timeout:g} seconds per "
         f"task."
     )
-    return f"{table(headers, rows)}\n\n{scope}"
+
+
+def version(entries: Sequence[Entry]) -> str:
+    """The version of the corpus that the runs are over, as a link to its release.
+
+    A corpus that is no release, as in a checkout between two of them, has no page to link
+    to, so its version stands alone.
+    """
+    corpus = entries[0].run.corpus
+    if re.fullmatch(r"v\d+\.\d+\.\d+", corpus):
+        return f"[`{corpus}`]({RELEASES_URL}/{corpus})"
+    return f"`{corpus}`"
 
 
 def report(results: Path, out: Path) -> str:
-    """Write the two plots and the table for the runs under ``results``.
+    """Write the two plots, the table and the version of the corpus for the runs under ``results``.
 
     Args:
         results: A folder with one folder per checker, as ``run`` wrote them.
-        out: The folder for the plots and the table.
+        out: The folder for the plots, the table and the version.
 
     Returns:
-        The table and the line on what the checkers ran on, as Markdown.
+        The table and a line on what the checkers ran on, as Markdown.
     """
     entries = read_entries(results)
     out.mkdir(parents=True, exist_ok=True)
@@ -270,4 +321,5 @@ def report(results: Path, out: Path) -> str:
         draw(entries, theme, out / CHART_FILES[name])
     text = block(entries)
     (out / TABLE_FILE).write_text(f"{text}\n", encoding="utf-8")
-    return text
+    (out / VERSION_FILE).write_text(f"{version(entries)}\n", encoding="utf-8")
+    return f"{text}\n\n{scope(entries)}"

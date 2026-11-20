@@ -18,7 +18,15 @@ def plural(n: int, noun: str) -> str:
 
 
 def share(part: int, whole: int) -> str:
-    return f"{100 * part / whole:.1f}%" if whole else NOTHING
+    """A share as a percentage. A share that is not zero never reads as zero."""
+    if not whole:
+        return NOTHING
+    text = f"{100 * part / whole:.1f}%"
+    return "<0.1%" if part and text == "0.0%" else text
+
+
+def bold(text: str) -> str:
+    return f"**{text}**"
 
 
 def duration(seconds: float | None) -> str:

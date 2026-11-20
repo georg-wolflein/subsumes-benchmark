@@ -75,9 +75,9 @@ jobs:
           path: results/${{ matrix.checker }}
           if-no-files-found: error
 
-  # The plot and the table of the runs, each a file under comparison/: the table as the
-  # summary of this workflow run, both with the results as an artifact, and for a release as
-  # a file of the release.
+  # The plot and the table of the runs and the version of the corpus they are over, each a
+  # file under comparison/: the table as the summary of this workflow run, all with the
+  # results as an artifact, and for a release as a file of the release.
   report:
     needs: run
     runs-on: ubuntu-latest
@@ -111,9 +111,10 @@ jobs:
             | zstd -19 -T0 -o comparison.tar.zst
           gh release upload "$GITHUB_REF_NAME" comparison.tar.zst --clobber
 
-  # A pull request that puts the plot and the table of the report into the repository, and
-  # the table into the README, which shows both. It is opened by a GitHub App: a pull request
-  # opened with this workflow's own token would not start the checks that a merge requires.
+  # A pull request that puts the files of the report into the repository, and the table and
+  # the version of the corpus into the README, which shows the plot too. It is opened by a
+  # GitHub App: a pull request opened with this workflow's own token would not start the
+  # checks that a merge requires.
   publish:
     needs: report
     if: inputs.limit == '' && vars.PR_BOT_CLIENT_ID != ''
@@ -140,16 +141,18 @@ jobs:
         with:
           name: comparison
           path: ${{ runner.temp }}/report
-      - name: Take the plot and the table of the report
+      - name: Take the files of the report
         run: |
           rm -rf comparison
           cp -R "$RUNNER_TEMP/report/comparison" comparison
       - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
         with:
           python-version: "3.14"
-      - name: Put the table into the README
+      - name: Put the table and the version of the corpus into the README
         # The script needs Python and nothing of the project.
-        run: uv run --no-project scripts/readme_part.py comparison comparison/results.md
+        run: |
+          uv run --no-project scripts/readme_part.py comparison comparison/results.md
+          uv run --no-project scripts/readme_part.py version comparison/version.md
       - name: Open or update the pull request
         env:
           GH_TOKEN: ${{ steps.app.outputs.token }}

@@ -1,11 +1,9 @@
-| Checker | Version | Solved | Wrong yes | Wrong no | Fastest 50% within | Fastest 90% within |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| [Confluent Schema Registry](https://github.com/confluentinc/schema-registry) | 8.4.1 | 55.9% | 547 | 8,879 | 1.6 ms | — |
-| [jsoncompat (Rust)](https://github.com/ostrowr/jsoncompat) | 0.6.0 | 78.5% | 0 | 0 | 365 µs | — |
-| [jsoncompat (Python)](https://github.com/ostrowr/jsoncompat) | 0.6.0 | 78.5% | 0 | 0 | 399 µs | — |
-| [jsonsubschema](https://github.com/IBM/jsonsubschema) | 0.0.8 | 39.4% | 691 | 2,458 | — | — |
-| [RWG](https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema) | 8064ad8 | 81.2% | 1,332 | 503 | 958 µs | — |
-| [subsumes (Rust)](https://github.com/georg-wolflein/subsumes) | 0.4.0 | 94.2% | 0 | 0 | 87 µs | 2.3 ms |
-| [subsumes (Python)](https://github.com/georg-wolflein/subsumes) | 0.4.0 | 94.2% | 0 | 0 | 81 µs | 1.8 ms |
-
-Measured on corpus `v0.9.0`: 24,078 tasks, of which 21,867 have a label, with 10 seconds per task.
+| Checker | Version | Correct results | Incorrect results | Fastest 50% within | Fastest 90% within |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| [subsumes (Rust)](https://github.com/georg-wolflein/subsumes) | 0.4.0 | **93.4%** | **0.0%** | **81 µs** | **2.2 ms** |
+| [subsumes (Python)](https://github.com/georg-wolflein/subsumes) | 0.4.0 | **93.4%** | **0.0%** | 135 µs | 3.1 ms |
+| [RWG](https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema) | 8064ad8 | 79.2% | 9.4% | 1.1 ms | — |
+| [jsoncompat (Rust)](https://github.com/ostrowr/jsoncompat) | 0.6.0 | 76.9% | **0.0%** | 331 µs | — |
+| [jsoncompat (Python)](https://github.com/ostrowr/jsoncompat) | 0.6.0 | 76.9% | **0.0%** | 667 µs | — |
+| [Confluent Schema Registry](https://github.com/confluentinc/schema-registry) | 8.4.1 | 54.5% | 44.4% | 2.6 ms | — |
+| [jsonsubschema](https://github.com/IBM/jsonsubschema) | 0.0.8 | 38.6% | 15.5% | — | — |

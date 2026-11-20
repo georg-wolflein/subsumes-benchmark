@@ -10,7 +10,7 @@ make sources   # fetches the two upstream repositories, about 900 MB
 make corpus    # about 15 seconds
 ```
 
-`corpus/` is generated, except its `README.md`: change `collections.json`, `overrides.json` or the code under `src/`, run `make corpus` and commit the result. `make corpus` also puts the list of the collections into the main README, with `scripts/readme_part.py`.
+`corpus/` is generated, except its `README.md`: change `collections.json`, `overrides.json` or the code under `src/`, run `make corpus` and commit the result. `make corpus` also puts the list of the collections, their number and the number of tasks with a label into the main README, with `scripts/readme_part.py`.
 
 The submodules under `sources/` are marked `update = none`, so cloning this repository does not fetch them; `make sources` does. Their commits pin what the corpus is built from. The build reads `derived.json` as it is and runs no checker.
 
@@ -63,9 +63,9 @@ make corpus
 | `src/subsumes_benchmark/` | The build, and `validation`, which validates an instance the way the corpus reads a schema |
 | `src/subsumes_benchmark/generated/` | The models that read what the schemas describe: generated from them, never edited by hand |
 | `src/subsumes_benchmark/compare/` | Running a checker over the tasks, the report on runs, and deriving labels |
-| `scripts/` | `readme_part.py`, which puts a Markdown file between the two marker lines of a part of the README |
+| `scripts/` | `readme_part.py`, which puts Markdown between the two markers of a part of the README |
 | `sources/` | The upstream repositories as submodules, fetched only to rebuild |
 | `checkers/` | One folder per checker of the comparison, with the adapter that makes it answer |
-| `comparison/` | The plot and the table of the latest comparison, written by the `Comparison` workflow |
+| `comparison/` | The plot and the table of the latest comparison and the version of the corpus it ran on, written by the `Comparison` workflow |
 | `docs/` | How the corpus is built |
 | `tests/` | The layout of the corpus, the validity of its schemas, the labels that can be checked, the runner and the report |

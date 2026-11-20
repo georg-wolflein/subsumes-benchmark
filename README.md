@@ -2,7 +2,7 @@
 
 A benchmark for JSON Schema subsumption checkers: programs that decide whether a schema _A_ accepts every instance that is valid under a schema _B_.
 This problem is also known as schema _inclusion_ or _containment_.
-The benchmark is a corpus of **<!-- num_labelled_tasks:start --> 21,867 <!-- num_labelled_tasks:end -->** pairs of [draft 2020-12](https://json-schema.org/draft/2020-12) schemas with known answers, collected from four works.
+The benchmark is a corpus of **<!-- num_labelled_tasks:start -->19,432<!-- num_labelled_tasks:end -->** pairs of [draft 2020-12](https://json-schema.org/draft/2020-12) schemas with known answers, collected from four works.
 
 ## Results
 
@@ -23,23 +23,23 @@ The plot and results table below show the proportion of tasks solved within a gi
 
 <!-- comparison:start -->
 
-| Checker                                                                      | Version | Solved | Wrong yes | Wrong no | Fastest 50% within | Fastest 90% within |
-| ---------------------------------------------------------------------------- | ------: | -----: | --------: | -------: | -----------------: | -----------------: |
-| [Confluent Schema Registry](https://github.com/confluentinc/schema-registry) |   8.4.1 |  55.9% |       547 |    8,879 |             1.6 ms |                  — |
-| [jsoncompat (Rust)](https://github.com/ostrowr/jsoncompat)                   |   0.6.0 |  78.5% |         0 |        0 |             365 µs |                  — |
-| [jsoncompat (Python)](https://github.com/ostrowr/jsoncompat)                 |   0.6.0 |  78.5% |         0 |        0 |             399 µs |                  — |
-| [jsonsubschema](https://github.com/IBM/jsonsubschema)                        |   0.0.8 |  39.4% |       691 |    2,458 |                  — |                  — |
-| [RWG](https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema) | 8064ad8 |  81.2% |     1,332 |      503 |             958 µs |                  — |
-| [subsumes (Rust)](https://github.com/georg-wolflein/subsumes)                |   0.4.0 |  94.2% |         0 |        0 |              87 µs |             2.3 ms |
-| [subsumes (Python)](https://github.com/georg-wolflein/subsumes)              |   0.4.0 |  94.2% |         0 |        0 |              81 µs |             1.8 ms |
+| Checker | Version | Correct results | Incorrect results | Fastest 50% within | Fastest 90% within |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| [subsumes (Rust)](https://github.com/georg-wolflein/subsumes) | 0.4.0 | **93.4%** | **0.0%** | **81 µs** | **2.2 ms** |
+| [subsumes (Python)](https://github.com/georg-wolflein/subsumes) | 0.4.0 | **93.4%** | **0.0%** | 135 µs | 3.1 ms |
+| [RWG](https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema) | 8064ad8 | 79.2% | 9.4% | 1.1 ms | — |
+| [jsoncompat (Rust)](https://github.com/ostrowr/jsoncompat) | 0.6.0 | 76.9% | **0.0%** | 331 µs | — |
+| [jsoncompat (Python)](https://github.com/ostrowr/jsoncompat) | 0.6.0 | 76.9% | **0.0%** | 667 µs | — |
+| [Confluent Schema Registry](https://github.com/confluentinc/schema-registry) | 8.4.1 | 54.5% | 44.4% | 2.6 ms | — |
+| [jsonsubschema](https://github.com/IBM/jsonsubschema) | 0.0.8 | 38.6% | 15.5% | — | — |
 
 <!-- comparison:end -->
 
-The results were measured on <!-- version:start -->[`v0.9.0`](https://github.com/georg-wolflein/subsumes-benchmark/releases/tag/v0.10.0)<!--version:end--> of the corpus.
+The results were measured on <!-- version:start -->[`v0.10.0`](https://github.com/georg-wolflein/subsumes-benchmark/releases/tag/v0.10.0)<!-- version:end --> of the corpus.
 
 ## Collections
 
-The benchmark brings together <!--num_collections-->8<!--num_collections:end--> collections of tasks from the sources listed below:
+The benchmark brings together <!-- num_collections:start -->8<!-- num_collections:end --> collections of tasks from the sources listed below:
 
 <!-- collections:start -->
 
