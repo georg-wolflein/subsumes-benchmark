@@ -7,7 +7,8 @@ PYTHON_ADAPTERS := $(wildcard checkers/*/adapter.py)
 
 # The schemas under schemas/ that a model is generated from, each with the name of its model.
 MODELS := collections:CollectionsSpec overrides:OverridesSpec derived:DerivedSpec checker:CheckerSpec \
-	case:CaseSpec ready:ReadySpec request:RequestSpec reply:ReplySpec result:ResultSpec run:RunSpec
+	case:CaseSpec ready:ReadySpec request:RequestSpec reply:ReplySpec result:ResultSpec run:RunSpec \
+	summary:SummarySpec
 
 ci: lint format-check typecheck config test  ## what CI runs on every change
 
@@ -39,6 +40,7 @@ config:  ## the schemas are valid, every configuration file is valid under its s
 	uv run check-jsonschema --schemafile schemas/overrides.schema.json overrides.json
 	uv run check-jsonschema --schemafile schemas/derived.schema.json derived.json
 	uv run check-jsonschema --schemafile schemas/checker.schema.json checkers/*/checker.json
+	uv run check-jsonschema --schemafile schemas/summary.schema.json comparison/summary.json
 	for model in $(MODELS); do \
 		uv run datamodel-codegen --check --input schemas/$${model%%:*}.schema.json \
 			--output src/subsumes_benchmark/generated/$${model%%:*}.py --class-name $${model##*:} || exit 1; \

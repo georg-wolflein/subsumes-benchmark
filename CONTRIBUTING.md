@@ -59,7 +59,7 @@ make corpus
 | `collections.json` | The collections, the work that each was first published in and the upstream dataset that each is built from |
 | `overrides.json` | Every departure from upstream, with the reason: the cases left out and the labels changed |
 | `derived.json` | The labels that upstream does not give, each with what shows it |
-| `schemas/` | The schemas of a case, of the configuration files, of the protocol between the runner and an adapter, and of the files of a run. They say what each key means |
+| `schemas/` | The schemas of a case, of the configuration files, of the protocol between the runner and an adapter, of the files of a run and of the summary of a report. They say what each key means |
 | `src/subsumes_benchmark/` | The build, and `validation`, which validates an instance the way the corpus reads a schema |
 | `src/subsumes_benchmark/generated/` | The models that read what the schemas describe: generated from them, never edited by hand |
 | `src/subsumes_benchmark/compare/` | Running a checker over the tasks, the report on runs, and deriving labels |

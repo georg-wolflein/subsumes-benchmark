@@ -3,7 +3,7 @@
 import math
 from collections import Counter
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Literal, assert_never
+from typing import TYPE_CHECKING, Literal, Self, assert_never
 
 from subsumes_benchmark.compare.results import (
     RUN_FILE,
@@ -14,6 +14,7 @@ from subsumes_benchmark.compare.results import (
     seconds,
 )
 from subsumes_benchmark.compare.witness import refuted
+from subsumes_benchmark.compare.words import count
 from subsumes_benchmark.generated.result import (
     Crash,
     Error,
@@ -23,6 +24,7 @@ from subsumes_benchmark.generated.result import (
     Unsupported,
     Yes,
 )
+from subsumes_benchmark.generated.summary import SummarySpec
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Sequence
@@ -139,3 +141,28 @@ def read_entries(folder: Path) -> Sequence[Entry]:
         if (entry.run.corpus, entry.run.timeout) != (entries[0].run.corpus, entries[0].run.timeout):
             raise ReportError(f"{entry.name} ran on another corpus or with another timeout")
     return entries
+
+
+class Summary(SummarySpec):
+    """What the runs of a report are over: the ``summary.json`` of a report."""
+
+    @classmethod
+    def of(cls, entries: Sequence[Entry]) -> Self:
+        """What the runs are over, which ``read_entries`` has checked is the same for all."""
+        first = entries[0]
+        cases = {result.case for result in first.results}
+        return cls(
+            corpus=first.run.corpus,
+            collections=len({case.rsplit("/", 1)[0] for case in cases}),
+            cases=len(cases),
+            tasks=len(first.results),
+            labelled_tasks=len(first.labelled()),
+            timeout=first.run.timeout,
+        )
+
+    def line(self) -> str:
+        """A line for a person: the corpus, its tasks and the time for each."""
+        return (
+            f"Measured on corpus `{self.corpus}`: {count(self.tasks)} tasks, of which "
+            f"{count(self.labelled_tasks)} have a label, with {self.timeout:g} seconds per task."
+        )

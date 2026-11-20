@@ -7,16 +7,15 @@ show them where it likes. The plot is drawn with matplotlib, which the ``report`
 brings; a run does not need it.
 """
 
-import json
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 from itertools import pairwise
-from typing import TYPE_CHECKING, Self
+from typing import TYPE_CHECKING
 
 import matplotlib as mpl
 from matplotlib import pyplot as plt
 
-from subsumes_benchmark.compare.summary import Entry, read_entries
-from subsumes_benchmark.compare.words import NOTHING, bold, count, duration, share, table
+from subsumes_benchmark.compare.summary import Entry, Summary, read_entries
+from subsumes_benchmark.compare.words import NOTHING, bold, duration, share, table
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Mapping, Sequence
@@ -27,7 +26,7 @@ if TYPE_CHECKING:
 CHART_FILES = {"light": "chart-light.svg", "dark": "chart-dark.svg"}
 # The table of the checkers, as Markdown.
 TABLE_FILE = "results.md"
-# What the checkers ran on, as JSON.
+# What the checkers ran on, as JSON: ``schemas/summary.schema.json`` says what it holds.
 SUMMARY_FILE = "summary.json"
 
 # How many steps a curve of the plot keeps; more would only make the file larger.
@@ -280,42 +279,6 @@ def block(entries: Sequence[Entry]) -> str:
     return table(headers, [list(row) for row in zip(*columns, strict=True)])
 
 
-@dataclass(frozen=True)
-class Summary:
-    """What the runs of a report are over. The keys of ``summary.json`` are its fields."""
-
-    # The version of the corpus, as ``run.json`` has it.
-    corpus: str
-    collections: int
-    cases: int
-    # A case is two tasks, one for each direction, and a run over a sample has fewer.
-    tasks: int
-    labelled_tasks: int
-    # The seconds that a checker had for one task.
-    timeout: float
-
-    @classmethod
-    def of(cls, entries: Sequence[Entry]) -> Self:
-        """What the runs are over, which ``read_entries`` has checked is the same for all."""
-        first = entries[0]
-        cases = {result.case for result in first.results}
-        return cls(
-            corpus=first.run.corpus,
-            collections=len({case.rsplit("/", 1)[0] for case in cases}),
-            cases=len(cases),
-            tasks=len(first.results),
-            labelled_tasks=len(first.labelled()),
-            timeout=first.run.timeout,
-        )
-
-    def line(self) -> str:
-        """A line for a person: the corpus, its tasks and the time for each."""
-        return (
-            f"Measured on corpus `{self.corpus}`: {count(self.tasks)} tasks, of which "
-            f"{count(self.labelled_tasks)} have a label, with {self.timeout:g} seconds per task."
-        )
-
-
 def report(results: Path, out: Path) -> str:
     """Write the two plots and the table for the runs under ``results``, and what they are over.
 
@@ -333,5 +296,5 @@ def report(results: Path, out: Path) -> str:
         draw(entries, theme, out / CHART_FILES[name])
     text = block(entries)
     (out / TABLE_FILE).write_text(f"{text}\n", encoding="utf-8")
-    (out / SUMMARY_FILE).write_text(f"{json.dumps(asdict(summary), indent=2)}\n", encoding="utf-8")
+    (out / SUMMARY_FILE).write_text(f"{summary.model_dump_json(indent=2)}\n", encoding="utf-8")
     return f"{text}\n\n{summary.line()}"
