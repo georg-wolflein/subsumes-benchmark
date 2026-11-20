@@ -1,8 +1,20 @@
-# subsumes-benchmark
+# JSON schema subsumption benchmark
 
-A benchmark for JSON Schema subsumption checkers: programs that decide whether a schema A accepts every instance that is valid under a schema B. The question is also called schema inclusion or containment. The benchmark is a corpus of pairs of draft 2020-12 schemas with known answers, collected from four works, and a command that runs a checker over it.
+A benchmark for JSON Schema subsumption checkers: programs that decide whether a schema _A_ accepts every instance that is valid under a schema _B_.
+This problem is also known as schema _inclusion_ or _containment_.
+The benchmark is a corpus of **<!-- num_labelled_tasks:start --> 21,867 <!-- num_labelled_tasks:end -->** pairs of [draft 2020-12](https://json-schema.org/draft/2020-12) schemas with known answers, collected from four works.
 
 ## Results
+
+Each task asks whether schema _A_ subsumes schema _B_. A checker can:
+
+- Answer **yes**: _A_ accepts everything that _B_ accepts.
+- Answer **no**: at least one instance is accepted by _B_ but rejected by _A_. Some checkers provide such an instance as a counterexample.
+- **Decline to answer**: the checker cannot decide, for example because it reaches a resource limit.
+
+Reference answers come from the source collections or are known by construction. Where an answer is missing, we establish **no** by validating a checker-generated counterexample against both schemas, or infer **yes** when at least two checkers agree and none disagrees, excluding schemas with patterns or formats. These inferred yes answers rest on consensus rather than proof.
+
+The plot and results table below show the proportion of tasks solved within a given time, with one curve per checker. See [How a run is measured](https://github.com/georg-wolflein/subsumes-benchmark/blob/main/checkers/README.md#how-a-run-is-measured) for details.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/georg-wolflein/subsumes-benchmark/main/comparison/chart-dark.svg">
@@ -11,26 +23,23 @@ A benchmark for JSON Schema subsumption checkers: programs that decide whether a
 
 <!-- comparison:start -->
 
-| Checker | Version | Solved | Wrong yes | Wrong no | Fastest 50% within | Fastest 90% within |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| [Confluent Schema Registry](https://github.com/confluentinc/schema-registry) | 8.4.1 | 55.9% | 547 | 8,879 | 1.6 ms | — |
-| [jsoncompat (Rust)](https://github.com/ostrowr/jsoncompat) | 0.6.0 | 78.5% | 0 | 0 | 365 µs | — |
-| [jsoncompat (Python)](https://github.com/ostrowr/jsoncompat) | 0.6.0 | 78.5% | 0 | 0 | 399 µs | — |
-| [jsonsubschema](https://github.com/IBM/jsonsubschema) | 0.0.8 | 39.4% | 691 | 2,458 | — | — |
-| [RWG](https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema) | 8064ad8 | 81.2% | 1,332 | 503 | 958 µs | — |
-| [subsumes (Rust)](https://github.com/georg-wolflein/subsumes) | 0.4.0 | 94.2% | 0 | 0 | 87 µs | 2.3 ms |
-| [subsumes (Python)](https://github.com/georg-wolflein/subsumes) | 0.4.0 | 94.2% | 0 | 0 | 81 µs | 1.8 ms |
-
-Measured on corpus `v0.9.0`: 24,078 tasks, of which 21,867 have a label, with 10 seconds per task.
+| Checker                                                                      | Version | Solved | Wrong yes | Wrong no | Fastest 50% within | Fastest 90% within |
+| ---------------------------------------------------------------------------- | ------: | -----: | --------: | -------: | -----------------: | -----------------: |
+| [Confluent Schema Registry](https://github.com/confluentinc/schema-registry) |   8.4.1 |  55.9% |       547 |    8,879 |             1.6 ms |                  — |
+| [jsoncompat (Rust)](https://github.com/ostrowr/jsoncompat)                   |   0.6.0 |  78.5% |         0 |        0 |             365 µs |                  — |
+| [jsoncompat (Python)](https://github.com/ostrowr/jsoncompat)                 |   0.6.0 |  78.5% |         0 |        0 |             399 µs |                  — |
+| [jsonsubschema](https://github.com/IBM/jsonsubschema)                        |   0.0.8 |  39.4% |       691 |    2,458 |                  — |                  — |
+| [RWG](https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema) | 8064ad8 |  81.2% |     1,332 |      503 |             958 µs |                  — |
+| [subsumes (Rust)](https://github.com/georg-wolflein/subsumes)                |   0.4.0 |  94.2% |         0 |        0 |              87 µs |             2.3 ms |
+| [subsumes (Python)](https://github.com/georg-wolflein/subsumes)              |   0.4.0 |  94.2% |         0 |        0 |              81 µs |             1.8 ms |
 
 <!-- comparison:end -->
 
-A task is one pair of schemas asked in one direction. It is solved when the checker gives the answer that the corpus has, and a wrong yes or a wrong no is an answer that the corpus contradicts. The plot has one curve for each checker, that of its first variant in the table. [How a run is measured](https://github.com/georg-wolflein/subsumes-benchmark/blob/main/checkers/README.md#how-a-run-is-measured) has the rest.
-
-- **Labels.** Most labels of five collections come from the witness generator that RWG succeeds, so they favour RWG by construction.
-- **subsumes.** subsumes is by the author of this benchmark and is developed against it, so it does not meet these tasks for the first time as the other checkers do.
+The results were measured on <!-- version:start -->[`v0.9.0`](https://github.com/georg-wolflein/subsumes-benchmark/releases/tag/v0.10.0)<!--version:end--> of the corpus.
 
 ## Collections
+
+The benchmark brings together <!--num_collections-->8<!--num_collections:end--> collections of tasks from the sources listed below:
 
 <!-- collections:start -->
 
