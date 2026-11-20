@@ -1,0 +1,130 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o45307.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o45307.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "url": {
+                    "pattern": "^https?://",
+                    "type": "string"
+                  },
+                  "ssh": {
+                    "pattern": "^.+@.+$",
+                    "type": "string"
+                  },
+                  "port": {
+                    "type": "number"
+                  },
+                  "exclude": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "writable": {
+                    "type": "boolean"
+                  },
+                  "vagrant": {
+                    "type": "string"
+                  },
+                  "readable": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "name",
+                  "url",
+                  "readable",
+                  "writable"
+                ],
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^url$": true,
+                  "^name$": true,
+                  "^readable$": true,
+                  "^vagrant$": true,
+                  "^exclude$": true,
+                  "^writable$": true,
+                  "^port$": true,
+                  "^ssh$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+      "exclude": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "name": {
+        "type": "string"
+      },
+      "port": {
+        "type": "number"
+      },
+      "readable": {
+        "type": "boolean"
+      },
+      "ssh": {
+        "pattern": "^.+@.+$",
+        "type": "string"
+      },
+      "url": {
+        "pattern": "^https?://",
+        "type": "string"
+      },
+      "vagrant": {
+        "type": "string"
+      },
+      "writable": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "name",
+      "url",
+      "readable",
+      "writable"
+    ],
+    "type": "object"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "allOf",
+    "not",
+    "type"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/anchor.json#/tests/3",
+  "a": false,
+  "b": {
+    "allOf": [
+      {
+        "$ref": "http://localhost:1234/foobar"
+      },
+      {
+        "not": {
+          "$ref": "http://localhost:1234/foobar"
+        }
+      }
+    ],
+    "$defs": {
+      "http://localhost:1234/foobar": {
+        "$id": "http://localhost:1234/foobar",
+        "$defs": {
+          "A": {
+            "$id": "child1",
+            "allOf": [
+              {
+                "$id": "child2",
+                "$anchor": "my_anchor",
+                "type": "number"
+              },
+              {
+                "$anchor": "my_anchor",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "$ref": "child1#my_anchor"
+      }
+    }
+  }
+}

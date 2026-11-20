@@ -7,9 +7,9 @@ from pydantic import ConfigDict, Field
 
 from subsumes_benchmark.config import Config
 
-type CasePath = Annotated[str, Field(pattern="^[^/]+(/[^/]+)+$")]
+type CasePath = Annotated[str, Field(pattern="^[^/]+/[^/]+/[^/]+$")]
 """
-The path of a case below corpus/, starting with its collection.
+The path of a case below corpus/: its origin, its collection and its name.
 """
 
 
@@ -29,7 +29,7 @@ class Exclusion(Config):
     """
     cases: Cases
     """
-    What is left out. An entry is a case id, or a folder followed by /* for every case below it. For the test suite a folder is one test case, or one file.
+    What is left out. An entry is a case id, or the beginning of a name up to a dot, followed by .* for every case of the collection whose name begins so. For the test suite that is one test case, or one file.
     """
 
 

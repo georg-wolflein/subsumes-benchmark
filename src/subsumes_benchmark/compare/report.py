@@ -203,11 +203,15 @@ def _collections(ax: Axes, entries: Sequence[Entry], theme: Theme) -> None:
     """A cell per checker and collection: the share solved of its tasks with a label.
 
     A collection of a sample that has no such task gets cells of the surface, without a share.
+    A row is named by the collection without its origin, which the rows are sorted by, as long
+    as no two collections have the same name.
     """
     _bare(ax)
     shades = LinearSegmentedColormap.from_list("solved", list(theme.ramp))
     by_entry = [entry.collections() for entry in entries]
     names = list(by_entry[0])
+    short = {name: name.rpartition("/")[2] for name in names}
+    shown = short if len(set(short.values())) == len(names) else {name: name for name in names}
     for row, name in enumerate(names):
         for column, solved in enumerate(by_entry):
             done, tasks = solved[name]
@@ -228,7 +232,7 @@ def _collections(ax: Axes, entries: Sequence[Entry], theme: Theme) -> None:
     )
     ax.set_yticks(
         [row + 0.5 for row in range(len(names))],
-        [f"{name}  ({count(by_entry[0][name][1])})" for name in names],
+        [f"{shown[name]}  ({count(by_entry[0][name][1])})" for name in names],
     )
     ax.tick_params(axis="x", labelcolor=theme.secondary, labelsize=8.5, pad=4)
     ax.tick_params(axis="y", labelcolor=theme.ink, labelsize=9.5, pad=6)

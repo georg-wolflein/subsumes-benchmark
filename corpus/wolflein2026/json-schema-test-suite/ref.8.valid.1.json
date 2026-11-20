@@ -1,0 +1,34 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": false,
+  "features": [
+    "const",
+    "enum"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/ref.json#/tests/8/tests/1",
+  "derived": {
+    "b_subsumes_a": {
+      "counterexample": {
+        "$ref": "#/$defs/a_string"
+      }
+    }
+  },
+  "a": {
+    "$defs": {
+      "a_string": {
+        "type": "string"
+      }
+    },
+    "enum": [
+      {
+        "$ref": "#/$defs/a_string"
+      }
+    ]
+  },
+  "b": {
+    "const": {
+      "type": "string"
+    }
+  }
+}

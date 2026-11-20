@@ -1,0 +1,99 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "minimum",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o90351.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o90351.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "$$target": "autoScalingConfig.json",
+                "title": "AutoScaling configurations",
+                "description": "Describes the autoScaling configuration for a nodePool.",
+                "properties": {
+                  "minNodes": {
+                    "description": "Minimum number of nodes the cluster auto-scaler should scale down to.",
+                    "minimum": 1.0,
+                    "type": "number"
+                  },
+                  "maxNodes": {
+                    "description": "Maximum number of nodes the cluster auto-scaler should scale up to.",
+                    "minimum": 2.0,
+                    "type": "number"
+                  },
+                  "enabled": {
+                    "description": "Enable or disable the cluster auto-scaler addon.",
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "minNodes",
+                  "maxNodes",
+                  "enabled"
+                ],
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^minNodes$": true,
+                  "^maxNodes$": true,
+                  "^enabled$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$id": "http://judkins.house/apis/k2/v1/autoScalingConfig.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$$target": "autoScalingConfig.json",
+    "title": "AutoScaling configurations",
+    "description": "Describes the autoScaling configuration for a nodePool.",
+    "properties": {
+      "minNodes": {
+        "description": "Minimum number of nodes the cluster auto-scaler should scale down to.",
+        "minimum": 1,
+        "type": "number"
+      },
+      "maxNodes": {
+        "description": "Maximum number of nodes the cluster auto-scaler should scale up to.",
+        "minimum": 2,
+        "type": "number"
+      },
+      "enabled": {
+        "description": "Enable or disable the cluster auto-scaler addon.",
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "minNodes",
+      "maxNodes",
+      "enabled"
+    ],
+    "additionalProperties": false,
+    "type": "object"
+  }
+}

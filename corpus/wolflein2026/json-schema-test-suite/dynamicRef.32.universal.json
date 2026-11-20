@@ -1,0 +1,43 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$dynamicRef",
+    "$ref",
+    "anyOf",
+    "not",
+    "properties"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/dynamicRef.json#/tests/32",
+  "a": true,
+  "b": {
+    "anyOf": [
+      {
+        "$ref": "https://subsumes-benchmark.example/schema"
+      },
+      {
+        "not": {
+          "$ref": "https://subsumes-benchmark.example/schema"
+        }
+      }
+    ],
+    "$defs": {
+      "https://subsumes-benchmark.example/schema": {
+        "$id": "https://subsumes-benchmark.example/schema",
+        "$defs": {
+          "true": true,
+          "false": false
+        },
+        "properties": {
+          "true": {
+            "$dynamicRef": "#/$defs/true"
+          },
+          "false": {
+            "$dynamicRef": "#/$defs/false"
+          }
+        }
+      }
+    }
+  }
+}

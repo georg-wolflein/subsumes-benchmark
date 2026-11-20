@@ -1,0 +1,44 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "maximum"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/id.json#/tests/6",
+  "a": {
+    "$comment": "$id must be evaluated before $ref to get the proper $ref destination",
+    "$id": "https://example.com/ref-and-id1/base.json",
+    "$ref": "int.json",
+    "$defs": {
+      "bigint": {
+        "$comment": "canonical uri: https://example.com/ref-and-id1/int.json",
+        "$id": "int.json",
+        "maximum": 10
+      },
+      "smallint": {
+        "$comment": "canonical uri: https://example.com/ref-and-id1-int.json",
+        "$id": "/ref-and-id1-int.json",
+        "maximum": 2
+      }
+    }
+  },
+  "b": {
+    "$comment": "$id must be evaluated before $ref to get the proper $ref destination",
+    "$id": "https://example.com/ref-and-id1/base.json",
+    "$ref": "int.json",
+    "$defs": {
+      "bigint": {
+        "$comment": "canonical uri: https://example.com/ref-and-id1/int.json",
+        "$id": "int.json",
+        "maximum": 10
+      },
+      "smallint": {
+        "$comment": "canonical uri: https://example.com/ref-and-id1-int.json",
+        "$id": "/ref-and-id1-int.json",
+        "maximum": 2
+      }
+    }
+  }
+}

@@ -1,0 +1,370 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "maximum",
+    "minimum",
+    "patternProperties",
+    "properties",
+    "recursion",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/uneval_eliminated_as_additional_containment/sat/unevaluatedProperties_23.translate_not_trivial.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/uneval_eliminated_as_additional_containment/unknown/unevaluatedProperties_23.trivial_not_translate.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "allOf": [
+      {
+        "$ref": "#/$defs/Root"
+      }
+    ],
+    "additionalProperties": false,
+    "$defs": {
+      "Root": {
+        "type": "object",
+        "properties": {
+          "_templates": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "enforce-admins": {
+            "type": "boolean"
+          },
+          "deletion": {
+            "type": "boolean"
+          },
+          "linear-history": {
+            "type": "boolean"
+          },
+          "signed-commits": {
+            "type": "boolean"
+          },
+          "pushes": {
+            "$ref": "#/$defs/Pushes"
+          },
+          "status-checks": {
+            "$ref": "#/$defs/StatusChecks"
+          },
+          "pull-request-reviews": {
+            "$ref": "#/$defs/PullRequestReviews"
+          }
+        },
+        "title": "Root"
+      },
+      "StatusChecks": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "strict": {
+            "type": "boolean"
+          },
+          "required": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "title": "StatusChecks"
+      },
+      "Pushes": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "force-push": {
+            "type": "boolean"
+          },
+          "restrict-to": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "title": "Pushes"
+      },
+      "PullRequestReviews": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "bypassers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "resolved-conversations": {
+            "type": "boolean"
+          },
+          "codeowner-approvals": {
+            "type": "boolean"
+          },
+          "approval-count": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 6
+          },
+          "pull-request-reviews": {
+            "$ref": "#/$defs/PullRequestReviews"
+          },
+          "dismissals": {
+            "$ref": "#/$defs/Dismissals"
+          }
+        },
+        "title": "PullRequestReviews"
+      },
+      "Dismissals": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "staled": {
+            "type": "boolean"
+          },
+          "restrict": {
+            "type": "boolean"
+          },
+          "restrict-to": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "title": "Dismissals"
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_5",
+    "$defs": {
+      "modern_5": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/Root"
+                  }
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^signed-commits$": true,
+                  "^enforce-admins$": true,
+                  "^pull-request-reviews$": true,
+                  "^_templates$": true,
+                  "^deletion$": true,
+                  "^linear-history$": true,
+                  "^status-checks$": true,
+                  "^pushes$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "Root": {
+        "type": "object",
+        "properties": {
+          "_templates": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "linear-history": {
+            "type": "boolean"
+          },
+          "pull-request-reviews": {
+            "$ref": "#/$defs/PullRequestReviews"
+          },
+          "enforce-admins": {
+            "type": "boolean"
+          },
+          "signed-commits": {
+            "type": "boolean"
+          },
+          "pushes": {
+            "$ref": "#/$defs/Pushes"
+          },
+          "status-checks": {
+            "$ref": "#/$defs/StatusChecks"
+          },
+          "deletion": {
+            "type": "boolean"
+          }
+        },
+        "title": "Root"
+      },
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "force-push": {
+                    "type": "boolean"
+                  },
+                  "restrict-to": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "title": "Pushes"
+              },
+              {
+                "patternProperties": {
+                  "^force-push$": true,
+                  "^restrict-to$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "Pushes": {
+        "$ref": "#/$defs/modern_1"
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "staled": {
+                    "type": "boolean"
+                  },
+                  "restrict": {
+                    "type": "boolean"
+                  },
+                  "restrict-to": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "title": "Dismissals"
+              },
+              {
+                "patternProperties": {
+                  "^staled$": true,
+                  "^restrict$": true,
+                  "^restrict-to$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_3": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "strict": {
+                    "type": "boolean"
+                  },
+                  "required": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "title": "StatusChecks"
+              },
+              {
+                "patternProperties": {
+                  "^strict$": true,
+                  "^required$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "Dismissals": {
+        "$ref": "#/$defs/modern_2"
+      },
+      "StatusChecks": {
+        "$ref": "#/$defs/modern_3"
+      },
+      "PullRequestReviews": {
+        "$ref": "#/$defs/modern_4"
+      },
+      "modern_4": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "codeowner-approvals": {
+                    "type": "boolean"
+                  },
+                  "approval-count": {
+                    "type": "integer",
+                    "minimum": 0.0,
+                    "maximum": 6.0
+                  },
+                  "resolved-conversations": {
+                    "type": "boolean"
+                  },
+                  "dismissals": {
+                    "$ref": "#/$defs/Dismissals"
+                  },
+                  "bypassers": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "pull-request-reviews": {
+                    "$ref": "#/$defs/PullRequestReviews"
+                  }
+                },
+                "title": "PullRequestReviews"
+              },
+              {
+                "patternProperties": {
+                  "^bypassers$": true,
+                  "^pull-request-reviews$": true,
+                  "^codeowner-approvals$": true,
+                  "^resolved-conversations$": true,
+                  "^approval-count$": true,
+                  "^dismissals$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,175 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "anyOf",
+    "enum",
+    "format",
+    "items",
+    "oneOf",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/sat/o58478.anyOf_not_oneOf.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o58478.oneOf_not_anyOf.json"
+  ],
+  "note": "Upstream's label holds only if format is an annotation: a uri and a hostname are disjoint.",
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+      "all": {
+        "default": false,
+        "description": "When true, update all packages in `package.json`.",
+        "type": "boolean"
+      },
+      "force": {
+        "default": false,
+        "description": "When false (the default), reports an error if installed packages are incompatible with the update.",
+        "type": "boolean"
+      },
+      "from": {
+        "description": "When using `--migrateOnly` for a single package, the version of that package from which to migrate.",
+        "type": "string"
+      },
+      "migrateExternal": {
+        "default": false,
+        "hidden": true,
+        "type": "boolean"
+      },
+      "migrateOnly": {
+        "default": false,
+        "description": "Perform a migration, but do not update the installed version.",
+        "type": "boolean"
+      },
+      "next": {
+        "default": false,
+        "description": "Update to the latest version, including beta and RCs.",
+        "type": "boolean"
+      },
+      "packageManager": {
+        "default": "npm",
+        "description": "The preferred package manager configuration files to use for registry settings.",
+        "enum": [
+          "npm",
+          "yarn",
+          "cnpm",
+          "pnpm"
+        ],
+        "type": "string"
+      },
+      "packages": {
+        "$default": {
+          "$source": "argv"
+        },
+        "description": "The package or packages to update.",
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "registry": {
+        "description": "The npm registry to use.",
+        "oneOf": [
+          {
+            "format": "uri"
+          },
+          {
+            "format": "hostname"
+          }
+        ],
+        "type": "string"
+      },
+      "to": {
+        "description": "When using `--migrateOnly` for a single package, the version of that package to which to migrate.",
+        "type": "string"
+      },
+      "verbose": {
+        "description": "When true, display additional details during the update process.",
+        "type": "boolean"
+      }
+    },
+    "_required": [],
+    "title": "Schematic Options Schema",
+    "type": "object"
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+      "all": {
+        "default": false,
+        "description": "When true, update all packages in `package.json`.",
+        "type": "boolean"
+      },
+      "force": {
+        "default": false,
+        "description": "When false (the default), reports an error if installed packages are incompatible with the update.",
+        "type": "boolean"
+      },
+      "from": {
+        "description": "When using `--migrateOnly` for a single package, the version of that package from which to migrate.",
+        "type": "string"
+      },
+      "migrateExternal": {
+        "default": false,
+        "hidden": true,
+        "type": "boolean"
+      },
+      "migrateOnly": {
+        "default": false,
+        "description": "Perform a migration, but do not update the installed version.",
+        "type": "boolean"
+      },
+      "next": {
+        "default": false,
+        "description": "Update to the latest version, including beta and RCs.",
+        "type": "boolean"
+      },
+      "packageManager": {
+        "default": "npm",
+        "description": "The preferred package manager configuration files to use for registry settings.",
+        "enum": [
+          "npm",
+          "yarn",
+          "cnpm",
+          "pnpm"
+        ],
+        "type": "string"
+      },
+      "packages": {
+        "$default": {
+          "$source": "argv"
+        },
+        "description": "The package or packages to update.",
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "registry": {
+        "description": "The npm registry to use.",
+        "type": "string",
+        "anyOf": [
+          {
+            "format": "uri"
+          },
+          {
+            "format": "hostname"
+          }
+        ]
+      },
+      "to": {
+        "description": "When using `--migrateOnly` for a single package, the version of that package to which to migrate.",
+        "type": "string"
+      },
+      "verbose": {
+        "description": "When true, display additional details during the update process.",
+        "type": "boolean"
+      }
+    },
+    "_required": [],
+    "title": "Schematic Options Schema",
+    "type": "object"
+  }
+}

@@ -1,0 +1,206 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "items",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o72192.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o72192.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "Program Validation Response Schema",
+                "description": "Defines the validation results returned by the program when requested for program requirements",
+                "type": "object",
+                "properties": {
+                  "validationResults": {
+                    "type": "array",
+                    "title": "Validation Results",
+                    "description": "A list of errors or success messages in response to validating the requirements",
+                    "items": {
+                      "$ref": "#/$defs/modern_2"
+                    }
+                  }
+                },
+                "required": [
+                  "validationResults"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^validationResults$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "key": {
+                    "type": "string",
+                    "title": "Requirement Key",
+                    "description": "The key of the requirement associated with the listed validation results"
+                  },
+                  "results": {
+                    "type": "array",
+                    "title": "Requirement Validation Results",
+                    "description": "The results associated with the validation requirement key",
+                    "items": {
+                      "$ref": "#/$defs/validationResult"
+                    },
+                    "required": [
+                      "status",
+                      "message"
+                    ]
+                  }
+                },
+                "required": [
+                  "key",
+                  "results"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^key$": true,
+                  "^results$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "validationResult": {
+        "type": "object",
+        "title": "Requirement Validation Result",
+        "description": "A result of validating a requirement",
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Validation Status",
+            "description": "A status indicating whether the validation was successful or the severity of the error",
+            "enum": [
+              "SUCCESS",
+              "WARN",
+              "ERROR"
+            ]
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "A message indicating why the validation was successful or not"
+          },
+          "longDescription": {
+            "type": "string",
+            "title": "Long Description",
+            "description": "A more detailed description of why the validation was not successful and what can be done to resolve it"
+          }
+        },
+        "required": [
+          "status",
+          "message"
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Program Validation Response Schema",
+    "description": "Defines the validation results returned by the program when requested for program requirements",
+    "type": "object",
+    "properties": {
+      "validationResults": {
+        "type": "array",
+        "title": "Validation Results",
+        "description": "A list of errors or success messages in response to validating the requirements",
+        "items": {
+          "properties": {
+            "key": {
+              "type": "string",
+              "title": "Requirement Key",
+              "description": "The key of the requirement associated with the listed validation results"
+            },
+            "results": {
+              "type": "array",
+              "title": "Requirement Validation Results",
+              "description": "The results associated with the validation requirement key",
+              "items": {
+                "$ref": "#/$defs/validationResult"
+              },
+              "required": [
+                "status",
+                "message"
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "key",
+            "results"
+          ]
+        }
+      }
+    },
+    "required": [
+      "validationResults"
+    ],
+    "additionalProperties": false,
+    "$defs": {
+      "validationResult": {
+        "type": "object",
+        "title": "Requirement Validation Result",
+        "description": "A result of validating a requirement",
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Validation Status",
+            "description": "A status indicating whether the validation was successful or the severity of the error",
+            "enum": [
+              "SUCCESS",
+              "WARN",
+              "ERROR"
+            ]
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "A message indicating why the validation was successful or not"
+          },
+          "longDescription": {
+            "type": "string",
+            "title": "Long Description",
+            "description": "A more detailed description of why the validation was not successful and what can be done to resolve it"
+          }
+        },
+        "required": [
+          "status",
+          "message"
+        ]
+      }
+    }
+  }
+}

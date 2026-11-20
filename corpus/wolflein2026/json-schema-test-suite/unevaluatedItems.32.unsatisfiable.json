@@ -1,0 +1,63 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$dynamicRef",
+    "$ref",
+    "allOf",
+    "not",
+    "prefixItems",
+    "type",
+    "unevaluatedItems"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/unevaluatedItems.json#/tests/32",
+  "a": false,
+  "b": {
+    "allOf": [
+      {
+        "$ref": "https://example.com/unevaluated-items-with-dynamic-ref/derived"
+      },
+      {
+        "not": {
+          "$ref": "https://example.com/unevaluated-items-with-dynamic-ref/derived"
+        }
+      }
+    ],
+    "$defs": {
+      "https://example.com/unevaluated-items-with-dynamic-ref/derived": {
+        "$id": "https://example.com/unevaluated-items-with-dynamic-ref/derived",
+        "$ref": "./baseSchema",
+        "$defs": {
+          "derived": {
+            "$dynamicAnchor": "addons",
+            "prefixItems": [
+              true,
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "baseSchema": {
+            "$id": "./baseSchema",
+            "$comment": "unevaluatedItems comes first so it's more likely to catch bugs with implementations that are sensitive to keyword ordering",
+            "unevaluatedItems": false,
+            "type": "array",
+            "prefixItems": [
+              {
+                "type": "string"
+              }
+            ],
+            "$dynamicRef": "#addons",
+            "$defs": {
+              "defaultAddons": {
+                "$comment": "Needed to satisfy the bookending requirement",
+                "$dynamicAnchor": "addons"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

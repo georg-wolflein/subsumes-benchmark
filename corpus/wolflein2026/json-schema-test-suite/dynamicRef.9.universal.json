@@ -1,0 +1,67 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$dynamicRef",
+    "$ref",
+    "anyOf",
+    "if",
+    "not",
+    "then",
+    "type"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/dynamicRef.json#/tests/9",
+  "a": true,
+  "b": {
+    "anyOf": [
+      {
+        "$ref": "https://test.json-schema.org/dynamic-ref-leaving-dynamic-scope/main"
+      },
+      {
+        "not": {
+          "$ref": "https://test.json-schema.org/dynamic-ref-leaving-dynamic-scope/main"
+        }
+      }
+    ],
+    "$defs": {
+      "https://test.json-schema.org/dynamic-ref-leaving-dynamic-scope/main": {
+        "$id": "https://test.json-schema.org/dynamic-ref-leaving-dynamic-scope/main",
+        "if": {
+          "$id": "first_scope",
+          "$defs": {
+            "thingy": {
+              "$comment": "this is first_scope#thingy",
+              "$dynamicAnchor": "thingy",
+              "type": "number"
+            }
+          }
+        },
+        "then": {
+          "$id": "second_scope",
+          "$ref": "start",
+          "$defs": {
+            "thingy": {
+              "$comment": "this is second_scope#thingy, the final destination of the $dynamicRef",
+              "$dynamicAnchor": "thingy",
+              "type": "null"
+            }
+          }
+        },
+        "$defs": {
+          "start": {
+            "$comment": "this is the landing spot from $ref",
+            "$id": "start",
+            "$dynamicRef": "inner_scope#thingy"
+          },
+          "thingy": {
+            "$comment": "this is the first stop for the $dynamicRef",
+            "$id": "inner_scope",
+            "$dynamicAnchor": "thingy",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

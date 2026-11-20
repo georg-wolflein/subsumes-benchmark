@@ -1,0 +1,200 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "minItems",
+    "minLength",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o76473.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o76473.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "datastore entity properties",
+                "description": "datastore entity properties",
+                "type": "object",
+                "properties": {
+                  "hashedPassword": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "email": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "lastUpdated": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "dockerImageName": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "credentials": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "$ref": "#/$defs/modern_2"
+                    }
+                  }
+                },
+                "required": [
+                  "email",
+                  "hashedPassword",
+                  "dockerImageName",
+                  "credentials",
+                  "lastUpdated"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^lastUpdated$": true,
+                  "^dockerImageName$": true,
+                  "^credentials$": true,
+                  "^hashedPassword$": true,
+                  "^email$": true
+                },
+                "additionalProperties": true
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "createdOn": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "hashedSecret": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "revokedOn": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "expiresOn": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "key": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "key",
+                  "hashedSecret",
+                  "createdOn",
+                  "expiresOn"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^hashedSecret$": true,
+                  "^expiresOn$": true,
+                  "^revokedOn$": true,
+                  "^createdOn$": true,
+                  "^key$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "datastore entity properties",
+    "description": "datastore entity properties",
+    "type": "object",
+    "properties": {
+      "email": {
+        "type": "string",
+        "minLength": 1
+      },
+      "hashedPassword": {
+        "type": "string",
+        "minLength": 1
+      },
+      "dockerImageName": {
+        "type": "string",
+        "minLength": 1
+      },
+      "credentials": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string",
+              "minLength": 1
+            },
+            "hashedSecret": {
+              "type": "string",
+              "minLength": 1
+            },
+            "createdOn": {
+              "type": "string",
+              "minLength": 1
+            },
+            "expiresOn": {
+              "type": "string",
+              "minLength": 1
+            },
+            "revokedOn": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "key",
+            "hashedSecret",
+            "createdOn",
+            "expiresOn"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "lastUpdated": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required": [
+      "email",
+      "hashedPassword",
+      "dockerImageName",
+      "credentials",
+      "lastUpdated"
+    ],
+    "additionalProperties": true
+  }
+}

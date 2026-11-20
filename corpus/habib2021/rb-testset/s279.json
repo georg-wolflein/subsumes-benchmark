@@ -1,0 +1,96 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": false,
+  "features": [
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/issta/sat/s279.json",
+  "derived": {
+    "b_subsumes_a": {
+      "counterexample": {
+        "continue": true,
+        "kubeletConfigKey": null,
+        "name": null,
+        "namespace": null
+      }
+    }
+  },
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "ConfigMapNodeConfigSource contains the information to reference a ConfigMap as a config source for the Node.",
+    "required": [
+      "namespace",
+      "name",
+      "kubeletConfigKey"
+    ],
+    "properties": {
+      "kubeletConfigKey": {
+        "description": "KubeletConfigKey declares which key of the referenced ConfigMap corresponds to the KubeletConfiguration structure This field is required in all cases.",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "name": {
+        "description": "Name is the metadata.name of the referenced ConfigMap. This field is required in all cases.",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "namespace": {
+        "description": "Namespace is the metadata.namespace of the referenced ConfigMap. This field is required in all cases.",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "resourceVersion": {
+        "description": "ResourceVersion is the metadata.ResourceVersion of the referenced ConfigMap. This field is forbidden in Node.Spec, and required in Node.Status.",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "uid": {
+        "description": "UID is the metadata.UID of the referenced ConfigMap. This field is forbidden in Node.Spec, and required in Node.Status.",
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "type": "object"
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "ListMeta describes metadata that synthetic resources must have, including lists and various status objects. A resource may have only one of {ObjectMeta, ListMeta}.",
+    "properties": {
+      "continue": {
+        "description": "continue may be set if the user set a limit on the number of items returned, and indicates that the server has more data available. The value is opaque and may be used to issue another request to the endpoint that served this list to retrieve the next set of available objects. Continuing a list may not be possible if the server configuration has changed or more than a few minutes have passed. The resourceVersion field returned when using this continue value will be identical to the value in the first response.",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "resourceVersion": {
+        "description": "String that identifies the server's internal version of this object that can be used by clients to determine when objects have changed. Value must be treated as opaque by clients and passed unmodified back to the server. Populated by the system. Read-only. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#concurrency-control-and-consistency",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "selfLink": {
+        "description": "selfLink is a URL representing this object. Populated by the system. Read-only.",
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "type": "object"
+  }
+}

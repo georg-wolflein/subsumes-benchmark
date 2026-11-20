@@ -1,0 +1,84 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "anyOf",
+    "not",
+    "oneOf",
+    "required"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/trickyschemas/unsat/obj.24.eq1.sub.eq2.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/trickyschemas/unsat/obj.24.eq2.sub.eq1.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "required": [
+      "A",
+      "AA"
+    ],
+    "not": {
+      "required": [
+        "b"
+      ]
+    },
+    "oneOf": [
+      {
+        "required": [
+          "a"
+        ]
+      },
+      {
+        "required": [
+          "c"
+        ]
+      }
+    ]
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "required": [
+      "A",
+      "AA"
+    ],
+    "requiredStrong": [
+      "A",
+      "AA",
+      "AAA"
+    ],
+    "requiredWeak": [
+      "A"
+    ],
+    "oneOf": [
+      {
+        "anyOf": [
+          {
+            "required": [
+              "a"
+            ]
+          },
+          {
+            "required": [
+              "b"
+            ]
+          }
+        ]
+      },
+      {
+        "anyOf": [
+          {
+            "required": [
+              "b"
+            ]
+          },
+          {
+            "required": [
+              "c"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

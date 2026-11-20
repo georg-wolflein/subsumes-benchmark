@@ -1,0 +1,121 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o79539.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o79539.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/$defs/id"
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "phase": {
+                    "description": "Buckets have a phase, which represents the approximate part of the recruitment process this bucket is for - for example the phase 'interview' might have several buckets (e.g. 'line manager interview', etc.).",
+                    "enum": [
+                      "new",
+                      "screening",
+                      "interview",
+                      "selection",
+                      "offer",
+                      "approval",
+                      "hire",
+                      "onboard",
+                      "decline",
+                      "other"
+                    ]
+                  },
+                  "key": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "label",
+                  "phase"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^id$": true,
+                  "^label$": true,
+                  "^phase$": true,
+                  "^key$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "id": {
+        "type": "integer"
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "id": {
+        "$ref": "#/$defs/id"
+      },
+      "label": {
+        "type": "string"
+      },
+      "phase": {
+        "description": "Buckets have a phase, which represents the approximate part of the recruitment process this bucket is for - for example the phase 'interview' might have several buckets (e.g. 'line manager interview', etc.).",
+        "enum": [
+          "new",
+          "screening",
+          "interview",
+          "selection",
+          "offer",
+          "approval",
+          "hire",
+          "onboard",
+          "decline",
+          "other"
+        ]
+      },
+      "key": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "id",
+      "label",
+      "phase"
+    ],
+    "additionalProperties": false,
+    "$defs": {
+      "id": {
+        "type": "integer"
+      }
+    }
+  }
+}

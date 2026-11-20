@@ -114,9 +114,9 @@ class CaseSpec(Config):
         extra="forbid",
         use_attribute_docstrings=True,
     )
-    field_schema: Annotated[str, Field(alias="$schema", pattern="^(\\.\\./)+case\\.schema\\.json$")]
+    field_schema: Annotated[Literal["../../case.schema.json"], Field(alias="$schema")]
     """
-    The path from this file to case.schema.json, which is at the root of the corpus.
+    The path from this file to case.schema.json, which is at the root of the corpus: above the folder of the collection and the folder of its origin.
     """
     a_subsumes_b: bool | None
     """
@@ -132,7 +132,7 @@ class CaseSpec(Config):
     """
     upstream: str
     """
-    A permanent link to the file this case comes from, in the source repository at the commit that collection.json names; the test suite's cases add a JSON pointer to the test case or the test after a '#'.
+    A permanent link to the file this case comes from, in the source repository at the commit that collections.json names for the collection; the test suite's cases add a JSON pointer to the test case or the test after a '#'.
     """
     duplicates: Annotated[list[str] | None, Field(min_length=1)] = None
     """

@@ -1,0 +1,155 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "minLength",
+    "minimum",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o60879.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o60879.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$id": "http://mindsnacks.github.io/Zinc/schemas/v1/catalog.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "required": [
+      "id",
+      "format"
+    ],
+    "properties": {
+      "bundles": {
+        "$ref": "#/$defs/modern_1"
+      },
+      "versions": {
+        "type": "array",
+        "items": {
+          "type": "integer",
+          "minimum": 1.0
+        }
+      },
+      "id": {
+        "type": "string",
+        "minLength": 1
+      },
+      "next_version": {
+        "type": "integer"
+      },
+      "format": {
+        "type": "string",
+        "pattern": "1"
+      }
+    },
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "patternProperties": {
+                  ".+": {
+                    "type": "object",
+                    "properties": {
+                      "distributions": {
+                        "$ref": "#/$defs/modern_2"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  ".+": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "patternProperties": {
+                  ".+": {
+                    "type": "integer"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  ".+": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$id": "http://mindsnacks.github.io/Zinc/schemas/v1/catalog.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "required": [
+      "id",
+      "format"
+    ],
+    "properties": {
+      "id": {
+        "type": "string",
+        "minLength": 1
+      },
+      "format": {
+        "type": "string",
+        "pattern": "1"
+      },
+      "bundles": {
+        "type": "object",
+        "additionalProperties": false,
+        "patternProperties": {
+          ".+": {
+            "type": "object",
+            "properties": {
+              "distributions": {
+                "type": "object",
+                "additionalProperties": false,
+                "patternProperties": {
+                  ".+": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "next_version": {
+        "type": "integer"
+      },
+      "versions": {
+        "type": "array",
+        "items": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    }
+  }
+}

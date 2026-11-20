@@ -31,21 +31,23 @@ class Task:
 
     @property
     def collection(self) -> str:
-        return self.case.partition("/")[0]
+        return collection_of(self.case)
+
+
+def collection_of(case: str) -> str:
+    """The collection of a case, as its folder below the corpus: its origin and its name."""
+    return case.rpartition("/")[0]
 
 
 def case_files(corpus: Path) -> Mapping[str, Path]:
     """The file of every case by its id, sorted by the folders and the name of the case.
 
-    A case is every JSON file below the folder of a collection, except the ``collection.json``
-    that makes the folder one. Its id is its path below the corpus without the extension.
+    A case is every JSON file in the folder of a collection, which is a folder in the folder
+    of an origin. Its id is its path below the corpus without the extension.
     """
     found = {
         path.relative_to(corpus).as_posix().removesuffix(".json"): path
-        for collection in corpus.iterdir()
-        if (collection / "collection.json").is_file()
-        for path in collection.rglob("*.json")
-        if path != collection / "collection.json"
+        for path in corpus.glob("*/*/*.json")
     }
     return {case: found[case] for case in sorted(found, key=lambda case: case.split("/"))}
 

@@ -8,9 +8,8 @@
   "additionalProperties": false,
   "properties": {
     "$schema": {
-      "description": "The path from this file to case.schema.json, which is at the root of the corpus.",
-      "type": "string",
-      "pattern": "^(\\.\\./)+case\\.schema\\.json$"
+      "description": "The path from this file to case.schema.json, which is at the root of the corpus: above the folder of the collection and the folder of its origin.",
+      "const": "../../case.schema.json"
     },
     "a_subsumes_b": {
       "description": "Whether a accepts every instance valid under b; null when the corpus claims nothing.",
@@ -27,7 +26,7 @@
       "items": { "$ref": "#/$defs/Feature" }
     },
     "upstream": {
-      "description": "A permanent link to the file this case comes from, in the source repository at the commit that collection.json names; the test suite's cases add a JSON pointer to the test case or the test after a '#'.",
+      "description": "A permanent link to the file this case comes from, in the source repository at the commit that collections.json names for the collection; the test suite's cases add a JSON pointer to the test case or the test after a '#'.",
       "type": "string",
       "format": "uri"
     },

@@ -1,0 +1,98 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o32736.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o32736.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "Schema for template meta data (aka front matter)",
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "title": "Target path to write the configuration file to (defaults to template name minus extension)",
+                    "description": "Can be an abolute or relative path that will be resolved relative to the directory confgen is called in (i.e. not relative to the template file).",
+                    "type": "string"
+                  },
+                  "chmod": {
+                    "title": "File permissions to apply to target file (chmod mode)",
+                    "description": "Permissions must be given in decimal notation (common values are '644', '755', '700' etc.).\nInternally, they will be converted to their octal representation, which means that decimal '777' will actually apply octal '0777'.",
+                    "type": "number",
+                    "min": 0,
+                    "max": 777
+                  },
+                  "reload": {
+                    "title": "A command string to execute after writing the configuration file",
+                    "type": "string"
+                  },
+                  "description": {
+                    "title": "An optional descriptive text for template authors",
+                    "type": "string"
+                  }
+                },
+                "required": []
+              },
+              {
+                "patternProperties": {
+                  "^target$": true,
+                  "^chmod$": true,
+                  "^reload$": true,
+                  "^description$": true
+                },
+                "additionalProperties": true
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Schema for template meta data (aka front matter)",
+    "type": "object",
+    "properties": {
+      "target": {
+        "title": "Target path to write the configuration file to (defaults to template name minus extension)",
+        "description": "Can be an abolute or relative path that will be resolved relative to the directory confgen is called in (i.e. not relative to the template file).",
+        "type": "string"
+      },
+      "chmod": {
+        "title": "File permissions to apply to target file (chmod mode)",
+        "description": "Permissions must be given in decimal notation (common values are '644', '755', '700' etc.).\nInternally, they will be converted to their octal representation, which means that decimal '777' will actually apply octal '0777'.",
+        "type": "number",
+        "min": 0,
+        "max": 777
+      },
+      "reload": {
+        "title": "A command string to execute after writing the configuration file",
+        "type": "string"
+      },
+      "description": {
+        "title": "An optional descriptive text for template authors",
+        "type": "string"
+      }
+    },
+    "required": [],
+    "additionalProperties": true
+  }
+}

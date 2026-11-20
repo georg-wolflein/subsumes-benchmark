@@ -1,0 +1,131 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o89671.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o89671.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "envscript": {
+                    "default": "",
+                    "title": "Env Script",
+                    "type": "string"
+                  },
+                  "image": {
+                    "title": "Image",
+                    "type": "string"
+                  },
+                  "resources": {
+                    "default": [],
+                    "title": "Resources",
+                    "type": "array"
+                  },
+                  "environment_type": {
+                    "default": "docker-encapsulated",
+                    "enum": [
+                      "docker-encapsulated"
+                    ],
+                    "type": "string"
+                  },
+                  "imagetag": {
+                    "default": "latest",
+                    "title": "Tag",
+                    "type": "string"
+                  },
+                  "env": {
+                    "default": {},
+                    "properties": {},
+                    "title": "Env Vars",
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "environment_type",
+                  "image"
+                ],
+                "title": "Docker Encapsulated Environment",
+                "type": "object"
+              },
+              {
+                "patternProperties": {
+                  "^env$": true,
+                  "^image$": true,
+                  "^imagetag$": true,
+                  "^resources$": true,
+                  "^envscript$": true,
+                  "^environment_type$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+      "env": {
+        "default": {},
+        "properties": {},
+        "title": "Env Vars",
+        "type": "object"
+      },
+      "environment_type": {
+        "default": "docker-encapsulated",
+        "enum": [
+          "docker-encapsulated"
+        ],
+        "type": "string"
+      },
+      "envscript": {
+        "default": "",
+        "title": "Env Script",
+        "type": "string"
+      },
+      "image": {
+        "title": "Image",
+        "type": "string"
+      },
+      "imagetag": {
+        "default": "latest",
+        "title": "Tag",
+        "type": "string"
+      },
+      "resources": {
+        "default": [],
+        "title": "Resources",
+        "type": "array"
+      }
+    },
+    "required": [
+      "environment_type",
+      "image"
+    ],
+    "title": "Docker Encapsulated Environment",
+    "type": "object"
+  }
+}

@@ -1,0 +1,339 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "maxLength",
+    "minLength",
+    "minimum",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o76440.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o76440.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_5": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "version": {
+                    "type": "string",
+                    "pattern": "^sha256:[a-f0-9]{64}$"
+                  }
+                },
+                "required": [
+                  "version",
+                  "name"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^name$": true,
+                  "^version$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_6": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "crawlLog": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 512
+                  },
+                  "chromeDriverLog": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 512
+                  },
+                  "screenshot": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 512
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^crawlLog$": true,
+                  "^chromeDriverLog$": true,
+                  "^screenshot$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "validate spider output",
+                "description": "validate spider output",
+                "type": "object",
+                "properties": {
+                  "_metadata": {
+                    "$ref": "#/$defs/modern_2"
+                  },
+                  "_debug": {
+                    "$ref": "#/$defs/modern_6"
+                  }
+                },
+                "required": [
+                  "_metadata"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^_metadata$": true,
+                  "^_debug$": true
+                },
+                "additionalProperties": true
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "$ref": "#/$defs/modern_3"
+                  },
+                  "crawlTime": {
+                    "$ref": "#/$defs/modern_4"
+                  },
+                  "spider": {
+                    "$ref": "#/$defs/modern_5"
+                  },
+                  "crawlArgs": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^sha256:[a-f0-9]{64}$"
+                    },
+                    "_uniqueItems": false
+                  }
+                },
+                "required": [
+                  "status",
+                  "crawlTime",
+                  "spider",
+                  "crawlArgs"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^status$": true,
+                  "^crawlTime$": true,
+                  "^spider$": true,
+                  "^crawlArgs$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_3": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "integer",
+                    "minimum": 0.0
+                  },
+                  "message": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "code",
+                  "message"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^code$": true,
+                  "^message$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_4": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "started": {
+                    "type": "string"
+                  },
+                  "durationInMs": {
+                    "type": "integer",
+                    "minimum": 0.0
+                  }
+                },
+                "required": [
+                  "started",
+                  "durationInMs"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^started$": true,
+                  "^durationInMs$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "validate spider output",
+    "description": "validate spider output",
+    "type": "object",
+    "properties": {
+      "_metadata": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "message": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "code",
+              "message"
+            ],
+            "additionalProperties": false
+          },
+          "crawlTime": {
+            "type": "object",
+            "properties": {
+              "started": {
+                "type": "string"
+              },
+              "durationInMs": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "started",
+              "durationInMs"
+            ],
+            "additionalProperties": false
+          },
+          "spider": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string",
+                "pattern": "^sha256:[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "version",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          "crawlArgs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^sha256:[a-f0-9]{64}$"
+            },
+            "_uniqueItems": false
+          }
+        },
+        "required": [
+          "status",
+          "crawlTime",
+          "spider",
+          "crawlArgs"
+        ],
+        "additionalProperties": false
+      },
+      "_debug": {
+        "type": "object",
+        "properties": {
+          "crawlLog": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "chromeDriverLog": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "screenshot": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "required": [
+      "_metadata"
+    ],
+    "additionalProperties": true
+  }
+}

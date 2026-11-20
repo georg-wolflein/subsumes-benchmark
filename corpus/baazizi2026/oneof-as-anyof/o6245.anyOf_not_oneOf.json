@@ -1,0 +1,260 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "anyOf",
+    "enum",
+    "items",
+    "minLength",
+    "oneOf",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o6245.anyOf_not_oneOf.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o6245.oneOf_not_anyOf.json"
+  ],
+  "derived": {
+    "a_subsumes_b": {
+      "checkers": [
+        "RWG 8064ad8",
+        "subsumes 0.2.0"
+      ]
+    },
+    "b_subsumes_a": {
+      "checkers": [
+        "RWG 8064ad8",
+        "jsoncompat 0.6.0",
+        "subsumes 0.2.0"
+      ]
+    }
+  },
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "oneOf": [
+      {
+        "properties": {
+          "method": {
+            "$ref": "#/$defs/_methodNoBody"
+          },
+          "responsePath": {
+            "$ref": "#/$defs/responsePath"
+          },
+          "uriTemplate": {
+            "$ref": "#/$defs/uriTemplate"
+          },
+          "headerInfo": {
+            "$ref": "#/$defs/headerInfo"
+          }
+        },
+        "required": [
+          "method",
+          "uriTemplate"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "properties": {
+          "method": {
+            "$ref": "#/$defs/_methodWithBody"
+          },
+          "responsePath": {
+            "$ref": "#/$defs/responsePath"
+          },
+          "uriTemplate": {
+            "$ref": "#/$defs/uriTemplate"
+          },
+          "bodyTemplate": {
+            "$ref": "#/$defs/bodyTemplate"
+          },
+          "headerInfo": {
+            "$ref": "#/$defs/headerInfo"
+          }
+        },
+        "required": [
+          "method",
+          "uriTemplate",
+          "bodyTemplate"
+        ],
+        "additionalProperties": false
+      }
+    ],
+    "$defs": {
+      "_methodNoBody": {
+        "title": "HTTP Method",
+        "description": "GET, DELETE, POST, PATCH or PUT",
+        "enum": [
+          "GET",
+          "DELETE"
+        ]
+      },
+      "_methodWithBody": {
+        "title": "HTTP Method",
+        "description": "GET, DELETE, POST, PATCH or PUT",
+        "enum": [
+          "POST",
+          "PATCH",
+          "PUT"
+        ]
+      },
+      "responsePath": {
+        "title": "Response Path",
+        "description": "JSON path for where to store response",
+        "type": "string",
+        "minLength": 1
+      },
+      "uriTemplate": {
+        "title": "URI Template",
+        "minLength": 1,
+        "type": "string",
+        "messages": {
+          "required": "URI Template is required"
+        }
+      },
+      "bodyTemplate": {
+        "title": "Request Body",
+        "type": "string"
+      },
+      "headerInfo": {
+        "type": "array",
+        "items": {
+          "additionalProperties": false,
+          "type": "object",
+          "properties": {
+            "key": {
+              "title": "Name",
+              "type": "string",
+              "minLength": 1
+            },
+            "valueTemplate": {
+              "title": "Value Template",
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "key",
+            "valueTemplate"
+          ]
+        }
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "anyOf": [
+      {
+        "properties": {
+          "method": {
+            "$ref": "#/$defs/_methodNoBody"
+          },
+          "responsePath": {
+            "$ref": "#/$defs/responsePath"
+          },
+          "uriTemplate": {
+            "$ref": "#/$defs/uriTemplate"
+          },
+          "headerInfo": {
+            "$ref": "#/$defs/headerInfo"
+          }
+        },
+        "required": [
+          "method",
+          "uriTemplate"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "properties": {
+          "method": {
+            "$ref": "#/$defs/_methodWithBody"
+          },
+          "responsePath": {
+            "$ref": "#/$defs/responsePath"
+          },
+          "uriTemplate": {
+            "$ref": "#/$defs/uriTemplate"
+          },
+          "bodyTemplate": {
+            "$ref": "#/$defs/bodyTemplate"
+          },
+          "headerInfo": {
+            "$ref": "#/$defs/headerInfo"
+          }
+        },
+        "required": [
+          "method",
+          "uriTemplate",
+          "bodyTemplate"
+        ],
+        "additionalProperties": false
+      }
+    ],
+    "$defs": {
+      "_methodNoBody": {
+        "title": "HTTP Method",
+        "description": "GET, DELETE, POST, PATCH or PUT",
+        "enum": [
+          "GET",
+          "DELETE"
+        ]
+      },
+      "_methodWithBody": {
+        "title": "HTTP Method",
+        "description": "GET, DELETE, POST, PATCH or PUT",
+        "enum": [
+          "POST",
+          "PATCH",
+          "PUT"
+        ]
+      },
+      "responsePath": {
+        "title": "Response Path",
+        "description": "JSON path for where to store response",
+        "type": "string",
+        "minLength": 1
+      },
+      "uriTemplate": {
+        "title": "URI Template",
+        "minLength": 1,
+        "type": "string",
+        "messages": {
+          "required": "URI Template is required"
+        }
+      },
+      "bodyTemplate": {
+        "title": "Request Body",
+        "type": "string"
+      },
+      "headerInfo": {
+        "type": "array",
+        "items": {
+          "additionalProperties": false,
+          "type": "object",
+          "properties": {
+            "key": {
+              "title": "Name",
+              "type": "string",
+              "minLength": 1
+            },
+            "valueTemplate": {
+              "title": "Value Template",
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "key",
+            "valueTemplate"
+          ]
+        }
+      }
+    }
+  }
+}

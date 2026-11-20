@@ -1,0 +1,76 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": true,
+  "features": [
+    "additionalProperties",
+    "allOf",
+    "maxLength",
+    "minLength",
+    "pattern",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/trickyschemas/sat/obj.14.eq2.notsub.strong.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/trickyschemas/unsat/obj.14.strong.sub.eq2.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "a": {
+        "type": "string",
+        "_pattern": "a|b|c",
+        "pattern": "c|aa",
+        "_patternWeak": "a|b?|c"
+      }
+    },
+    "additionalProperties": {
+      "allOf": [
+        {
+          "type": "string",
+          "pattern": "(a|b)c",
+          "maxLength": 3
+        },
+        {
+          "type": "string",
+          "pattern": "z",
+          "minLength": 2
+        }
+      ]
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "allOf": [
+      {
+        "properties": {
+          "a": {
+            "type": "string",
+            "pattern": "a|b|c"
+          }
+        },
+        "additionalProperties": {
+          "type": "string",
+          "pattern": "(a|b)c",
+          "maxLength": 3
+        }
+      },
+      {
+        "properties": {
+          "a": {
+            "type": "string",
+            "pattern": "a|b|c"
+          }
+        },
+        "additionalProperties": {
+          "type": "string",
+          "pattern": "z",
+          "minLength": 2
+        }
+      }
+    ]
+  }
+}

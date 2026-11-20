@@ -1,0 +1,577 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": false,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "items",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "recursion",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/sat/o9969.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/sat/o9969.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_4",
+    "$defs": {
+      "modern_5": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "patternProperties": {
+                  "^[a-z][a-z0-9_]*$": {
+                    "$ref": "#/$defs/part"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^[a-z][a-z0-9_]*$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "x": {
+                    "type": "number"
+                  },
+                  "y": {
+                    "type": "number"
+                  },
+                  "order": {
+                    "type": "string",
+                    "enum": [
+                      "xyz",
+                      "xzy",
+                      "yxz",
+                      "yzx",
+                      "zxy",
+                      "zyx"
+                    ]
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "euler"
+                    ]
+                  },
+                  "z": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "type",
+                  "order",
+                  "x",
+                  "y",
+                  "z"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^order$": true,
+                  "^x$": true,
+                  "^type$": true,
+                  "^z$": true,
+                  "^y$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "euler": {
+        "$ref": "#/$defs/modern_1"
+      },
+      "quaternion": {
+        "$ref": "#/$defs/modern_2"
+      },
+      "part": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/transformable"
+          },
+          {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/data"
+              },
+              {
+                "$ref": "#/$defs/use"
+              },
+              {
+                "$ref": "#/$defs/group"
+              }
+            ]
+          }
+        ]
+      },
+      "vector3": {
+        "$ref": "#/$defs/modern_3"
+      },
+      "group": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "group"
+            ]
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/part"
+            }
+          }
+        },
+        "required": [
+          "type",
+          "children"
+        ]
+      },
+      "modern_4": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "format": {
+                    "type": "string",
+                    "enum": [
+                      "assembled-1.0.0"
+                    ]
+                  },
+                  "definitions4": {
+                    "$ref": "#/$defs/modern_5"
+                  },
+                  "children": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/part"
+                    }
+                  }
+                },
+                "required": [
+                  "format",
+                  "children"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^format$": true,
+                  "^definitions4$": true,
+                  "^children$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "transformable": {
+        "type": "object",
+        "properties": {
+          "translation": {
+            "$ref": "#/$defs/vector3"
+          },
+          "rotation": {
+            "$ref": "#/$defs/rotation"
+          }
+        }
+      },
+      "data": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "data"
+            ]
+          },
+          "spriteId": {
+            "type": "integer"
+          },
+          "centerX": {
+            "type": "integer"
+          },
+          "centerY": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "type",
+          "spriteId",
+          "centerX",
+          "centerY"
+        ]
+      },
+      "rotation": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/euler"
+          },
+          {
+            "$ref": "#/$defs/quaternion"
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "x": {
+                    "type": "number"
+                  },
+                  "y": {
+                    "type": "number"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "quaternion"
+                    ]
+                  },
+                  "w": {
+                    "type": "number"
+                  },
+                  "z": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "type",
+                  "w",
+                  "x",
+                  "y",
+                  "z"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^x$": true,
+                  "^type$": true,
+                  "^w$": true,
+                  "^z$": true,
+                  "^y$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_3": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "x": {
+                    "type": "number"
+                  },
+                  "y": {
+                    "type": "number"
+                  },
+                  "z": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "x",
+                  "y",
+                  "z"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^x$": true,
+                  "^y$": true,
+                  "^z$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "use": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "use"
+            ]
+          },
+          "reference": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          }
+        },
+        "required": [
+          "type",
+          "reference"
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "format": {
+        "type": "string",
+        "enum": [
+          "assembled-1.0.0"
+        ]
+      },
+      "definitions3": {
+        "type": "object",
+        "patternProperties": {
+          "^[a-z][a-z0-9_]*$": {
+            "$ref": "#/$defs/part"
+          }
+        },
+        "additionalProperties": false
+      },
+      "children": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/part"
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "format",
+      "children"
+    ],
+    "$defs": {
+      "vector3": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          },
+          "z": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "x",
+          "y",
+          "z"
+        ]
+      },
+      "quaternion": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "quaternion"
+            ]
+          },
+          "w": {
+            "type": "number"
+          },
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          },
+          "z": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "type",
+          "w",
+          "x",
+          "y",
+          "z"
+        ]
+      },
+      "euler": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "euler"
+            ]
+          },
+          "order": {
+            "type": "string",
+            "enum": [
+              "xyz",
+              "xzy",
+              "yxz",
+              "yzx",
+              "zxy",
+              "zyx"
+            ]
+          },
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          },
+          "z": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "type",
+          "order",
+          "x",
+          "y",
+          "z"
+        ]
+      },
+      "rotation": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/euler"
+          },
+          {
+            "$ref": "#/$defs/quaternion"
+          }
+        ]
+      },
+      "transformable": {
+        "type": "object",
+        "properties": {
+          "translation": {
+            "$ref": "#/$defs/vector3"
+          },
+          "rotation": {
+            "$ref": "#/$defs/rotation"
+          }
+        }
+      },
+      "data": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "data"
+            ]
+          },
+          "spriteId": {
+            "type": "integer"
+          },
+          "centerX": {
+            "type": "integer"
+          },
+          "centerY": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "type",
+          "spriteId",
+          "centerX",
+          "centerY"
+        ]
+      },
+      "use": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "use"
+            ]
+          },
+          "reference": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          }
+        },
+        "required": [
+          "type",
+          "reference"
+        ]
+      },
+      "group": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "group"
+            ]
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/part"
+            }
+          }
+        },
+        "required": [
+          "type",
+          "children"
+        ]
+      },
+      "part": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/transformable"
+          },
+          {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/data"
+              },
+              {
+                "$ref": "#/$defs/use"
+              },
+              {
+                "$ref": "#/$defs/group"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

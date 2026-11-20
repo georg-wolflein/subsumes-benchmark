@@ -1,0 +1,170 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "maxItems",
+    "minItems",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o53025.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o53025.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "3D data upload",
+                "type": "object",
+                "properties": {
+                  "vertices": {
+                    "type": "array",
+                    "items": {
+                      "type": "array",
+                      "maxItems": 3,
+                      "minItems": 3,
+                      "items": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  "facets": {
+                    "type": "array",
+                    "items": {
+                      "type": "array",
+                      "maxItems": 3,
+                      "minItems": 3,
+                      "items": {
+                        "type": "integer"
+                      }
+                    }
+                  },
+                  "camera": {
+                    "$ref": "#/$defs/modern_2"
+                  }
+                },
+                "required": [
+                  "vertices",
+                  "facets",
+                  "camera"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^vertices$": true,
+                  "^facets$": true,
+                  "^camera$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "x": {
+                    "type": "number"
+                  },
+                  "y": {
+                    "type": "number"
+                  },
+                  "z": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "x",
+                  "y",
+                  "z"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^x$": true,
+                  "^y$": true,
+                  "^z$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "3D data upload",
+    "type": "object",
+    "properties": {
+      "vertices": {
+        "type": "array",
+        "items": {
+          "type": "array",
+          "maxItems": 3,
+          "minItems": 3,
+          "items": {
+            "type": "number"
+          }
+        }
+      },
+      "facets": {
+        "type": "array",
+        "items": {
+          "type": "array",
+          "maxItems": 3,
+          "minItems": 3,
+          "items": {
+            "type": "integer"
+          }
+        }
+      },
+      "camera": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          },
+          "z": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "x",
+          "y",
+          "z"
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "vertices",
+      "facets",
+      "camera"
+    ]
+  }
+}

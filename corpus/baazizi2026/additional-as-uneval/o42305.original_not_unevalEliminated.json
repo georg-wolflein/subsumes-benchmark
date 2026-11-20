@@ -1,0 +1,261 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "patternProperties",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o42305.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o42305.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "org.eclipse.persistence.testing.jaxb.xmlidref.object.Root",
+    "type": "object",
+    "properties": {
+      "root": {
+        "$ref": "#/$defs/modern_4"
+      }
+    },
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "address-id": {
+                    "type": "string"
+                  },
+                  "phone-id": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^id$": true,
+                  "^name$": true,
+                  "^address-id$": true,
+                  "^phone-id$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "Address": {
+        "$ref": "#/$defs/modern_2"
+      },
+      "PhoneNumber": {
+        "$ref": "#/$defs/modern_3"
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "city": {
+                    "type": "string"
+                  },
+                  "zip": {
+                    "type": "string"
+                  },
+                  "aid": {
+                    "type": "string"
+                  },
+                  "country": {
+                    "type": "string"
+                  },
+                  "street": {
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^city$": true,
+                  "^aid$": true,
+                  "^country$": true,
+                  "^street$": true,
+                  "^zip$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "modern_3": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "number": {
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^id$": true,
+                  "^number$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      },
+      "Employee": {
+        "$ref": "#/$defs/modern_1"
+      },
+      "modern_4": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "employee": {
+                    "$ref": "#/$defs/Employee"
+                  },
+                  "address": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/Address"
+                    }
+                  },
+                  "phone-number": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/PhoneNumber"
+                    }
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^employee$": true,
+                  "^address$": true,
+                  "^phone-number$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "org.eclipse.persistence.testing.jaxb.xmlidref.object.Root",
+    "type": "object",
+    "properties": {
+      "root": {
+        "type": "object",
+        "properties": {
+          "employee": {
+            "$ref": "#/$defs/Employee"
+          },
+          "address": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Address"
+            }
+          },
+          "phone-number": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/PhoneNumber"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "$defs": {
+      "Employee": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "address-id": {
+            "type": "string"
+          },
+          "phone-id": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "Address": {
+        "type": "object",
+        "properties": {
+          "aid": {
+            "type": "string"
+          },
+          "street": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "zip": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PhoneNumber": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "number": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

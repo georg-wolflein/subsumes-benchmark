@@ -1,0 +1,53 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": false,
+  "features": [
+    "const",
+    "not",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/properties.json#/tests/3/tests/1",
+  "derived": {
+    "b_subsumes_a": {
+      "counterexample": {
+        "foo\tbar": null
+      }
+    }
+  },
+  "a": {
+    "not": {
+      "properties": {
+        "foo\nbar": {
+          "type": "number"
+        },
+        "foo\"bar": {
+          "type": "number"
+        },
+        "foo\\bar": {
+          "type": "number"
+        },
+        "foo\rbar": {
+          "type": "number"
+        },
+        "foo\tbar": {
+          "type": "number"
+        },
+        "foo\fbar": {
+          "type": "number"
+        }
+      }
+    }
+  },
+  "b": {
+    "const": {
+      "foo\nbar": "1",
+      "foo\"bar": "1",
+      "foo\\bar": "1",
+      "foo\rbar": "1",
+      "foo\tbar": "1",
+      "foo\fbar": "1"
+    }
+  }
+}

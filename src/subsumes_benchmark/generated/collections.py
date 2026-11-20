@@ -9,7 +9,7 @@ from subsumes_benchmark.config import Config
 
 type Name = Annotated[str, Field(pattern="^[a-z0-9]+(-[a-z0-9]+)*$")]
 """
-The name of a source or of a collection, which is the name of a folder.
+The name of a source, of an origin or of a collection, which is the name of a folder.
 """
 
 
@@ -21,7 +21,7 @@ Where the source is hosted, which decides how the permanent link to one of its f
 
 type LabelOrigin = Literal["by-construction", "witness-generator", "upstream-tests"]
 """
-Where the answers come from. by-construction: the pair was built so that the answer is known. witness-generator: the upstream authors' complete but timeout-bound tool, so an unlabelled case means that it gave up. upstream-tests: the expectations of the jsonsubschema tool's own tests.
+Where the answers come from. by-construction: the pair was built so that the answer is known. witness-generator: the upstream authors' complete but timeout-bound tool, so an unlabelled case means that it gave up. upstream-tests: the ground truth that the replication package of the jsonsubschema tool gives for its pairs.
 """
 
 
@@ -29,6 +29,23 @@ type UseCase = Literal["tool-checking", "schema-evolution", "schema-analysis"]
 """
 What the pairs of the collection are for.
 """
+
+
+class OriginSpec(Config):
+    """An origin: the work that first published the pairs of its collections as inclusion questions."""
+
+    model_config = ConfigDict(
+        extra="forbid",
+        use_attribute_docstrings=True,
+    )
+    citation: str
+    """
+    The work, as a reference list gives it: authors, title, venue and year.
+    """
+    url: str
+    """
+    Where the work is found, as a permanent link where it has one.
+    """
 
 
 class SourceSpec(Config):
@@ -50,12 +67,16 @@ class SourceSpec(Config):
 
 
 class CollectionSpec(Config):
-    """A collection: one dataset of a source."""
+    """A collection: one dataset of a source, first published in the work of its origin."""
 
     model_config = ConfigDict(
         extra="forbid",
         use_attribute_docstrings=True,
     )
+    origin: Name
+    """
+    The citation key of the work that first published these pairs, one of those under origins. Its folder holds the folder of the collection.
+    """
     source: Name
     """
     The name of the source the collection is built from, one of those under sources.
@@ -73,7 +94,7 @@ class CollectionSpec(Config):
 
 
 class CollectionsSpec(Config):
-    """The collections of the corpus and the upstream sources they are built from."""
+    """The collections of the corpus, the upstream sources they are built from and the works they are first published in."""
 
     model_config = ConfigDict(
         extra="forbid",
@@ -87,7 +108,11 @@ class CollectionsSpec(Config):
     """
     The upstream sources, by name. A source is a submodule under sources/ with that name; its repository URL and commit are read from git.
     """
+    origins: dict[Name, OriginSpec]
+    """
+    The works that first published the pairs of a collection as inclusion questions, by citation key: the first author's last name and the year. An origin is a folder of the corpus, and it is not where a collection is fetched from, which is its source.
+    """
     collections: dict[Name, CollectionSpec]
     """
-    The collections, by name, in the order they are built. A collection is one dataset of a source, and its name is its folder in the corpus.
+    The collections, by name, in the order they are built. A collection is one dataset of a source, and its name is its folder in the corpus, below the folder of its origin.
     """

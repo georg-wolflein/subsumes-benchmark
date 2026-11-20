@@ -1,0 +1,140 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "patternProperties",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o90280.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o90280.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "popupExpressionInfo",
+                "description": "Arcade expression added to the pop-up.",
+                "properties": {
+                  "expression": {
+                    "type": "string",
+                    "description": "The Arcade expression."
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Unique identifier for the expression."
+                  },
+                  "returnType": {
+                    "type": "string",
+                    "description": "Return type of the Arcade expression, can be number or string. Defaults to string value. Number values are assumed to be `double`. This can be determined by the authoring client by executing the expression using a sample feature(s), although it can be corrected by the user. Knowing the returnType allows the authoring client to present fields in relevant contexts. For example, numeric fields in numeric contexts such as charts.",
+                    "enum": [
+                      "number",
+                      "string"
+                    ]
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "Title of the expression."
+                  }
+                },
+                "esriDocumentation": {
+                  "examples": [
+                    {
+                      "code": {
+                        "expressionInfos": [
+                          {
+                            "name": "expr1",
+                            "title": "Population (Expr)",
+                            "expression": "$feature.pop2000",
+                            "returnType": "number"
+                          },
+                          {
+                            "name": "expr2",
+                            "title": "Name (Abbr) (Expr)",
+                            "expression": "$feature.state_name + ' (' + $feature.state_abbr + ')'",
+                            "returnType": "string"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "patternProperties": {
+                  "^expression$": true,
+                  "^name$": true,
+                  "^returnType$": true,
+                  "^title$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "popupExpressionInfo",
+    "description": "Arcade expression added to the pop-up.",
+    "properties": {
+      "expression": {
+        "type": "string",
+        "description": "The Arcade expression."
+      },
+      "name": {
+        "type": "string",
+        "description": "Unique identifier for the expression."
+      },
+      "returnType": {
+        "type": "string",
+        "description": "Return type of the Arcade expression, can be number or string. Defaults to string value. Number values are assumed to be `double`. This can be determined by the authoring client by executing the expression using a sample feature(s), although it can be corrected by the user. Knowing the returnType allows the authoring client to present fields in relevant contexts. For example, numeric fields in numeric contexts such as charts.",
+        "enum": [
+          "number",
+          "string"
+        ]
+      },
+      "title": {
+        "type": "string",
+        "description": "Title of the expression."
+      }
+    },
+    "additionalProperties": false,
+    "esriDocumentation": {
+      "examples": [
+        {
+          "code": {
+            "expressionInfos": [
+              {
+                "name": "expr1",
+                "title": "Population (Expr)",
+                "expression": "$feature.pop2000",
+                "returnType": "number"
+              },
+              {
+                "name": "expr2",
+                "title": "Name (Abbr) (Expr)",
+                "expression": "$feature.state_name + ' (' + $feature.state_abbr + ')'",
+                "returnType": "string"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

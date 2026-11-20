@@ -1,0 +1,375 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "anyOf",
+    "enum",
+    "items",
+    "minItems",
+    "oneOf",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o5837.anyOf_not_oneOf.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o5837.oneOf_not_anyOf.json"
+  ],
+  "derived": {
+    "a_subsumes_b": {
+      "checkers": [
+        "RWG 8064ad8",
+        "jsoncompat 0.6.0",
+        "subsumes 0.2.0"
+      ]
+    },
+    "b_subsumes_a": {
+      "checkers": [
+        "RWG 8064ad8",
+        "jsoncompat 0.6.0",
+        "subsumes 0.2.0"
+      ]
+    }
+  },
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "sireg test case",
+    "description": "A test case definition that is understood by https://github.com/FaKeller/sireg",
+    "type": "object",
+    "properties": {
+      "testSuite": {
+        "type": "string"
+      },
+      "loaders": {
+        "type": "array",
+        "items": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/FileLoader"
+            },
+            {
+              "$ref": "#/$defs/CsvLoader"
+            },
+            {
+              "$ref": "#/$defs/SitemapLoader"
+            }
+          ]
+        },
+        "minItems": 1
+      },
+      "replacers": {
+        "type": "array",
+        "items": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/StaticReplacer"
+            }
+          ]
+        },
+        "minItems": 1
+      },
+      "settings": {
+        "type": "object",
+        "properties": {
+          "concurrentRequests": {
+            "type": "number"
+          },
+          "requestTimeout": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "testSuite"
+    ],
+    "$defs": {
+      "FileLoader": {
+        "type": "object",
+        "properties": {
+          "loader": {
+            "enum": [
+              "file"
+            ]
+          },
+          "options": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "loader",
+          "options"
+        ],
+        "additionalProperties": false
+      },
+      "CsvLoader": {
+        "type": "object",
+        "properties": {
+          "loader": {
+            "enum": [
+              "csv"
+            ]
+          },
+          "options": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "loader",
+          "options"
+        ],
+        "additionalProperties": false
+      },
+      "SitemapLoader": {
+        "type": "object",
+        "properties": {
+          "loader": {
+            "enum": [
+              "sitemap"
+            ]
+          },
+          "options": {
+            "type": "object",
+            "properties": {
+              "sitemap": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "sitemap"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "loader",
+          "options"
+        ],
+        "additionalProperties": false
+      },
+      "StaticReplacer": {
+        "type": "object",
+        "properties": {
+          "replacer": {
+            "enum": [
+              "static"
+            ]
+          },
+          "options": {
+            "type": "object",
+            "properties": {
+              "replace": {
+                "type": "string"
+              },
+              "with": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "replace",
+              "with"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "replacer",
+          "options"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "sireg test case",
+    "description": "A test case definition that is understood by https://github.com/FaKeller/sireg",
+    "type": "object",
+    "properties": {
+      "testSuite": {
+        "type": "string"
+      },
+      "loaders": {
+        "type": "array",
+        "items": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FileLoader"
+            },
+            {
+              "$ref": "#/$defs/CsvLoader"
+            },
+            {
+              "$ref": "#/$defs/SitemapLoader"
+            }
+          ]
+        },
+        "minItems": 1
+      },
+      "replacers": {
+        "type": "array",
+        "items": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/StaticReplacer"
+            }
+          ]
+        },
+        "minItems": 1
+      },
+      "settings": {
+        "type": "object",
+        "properties": {
+          "concurrentRequests": {
+            "type": "number"
+          },
+          "requestTimeout": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "testSuite"
+    ],
+    "$defs": {
+      "FileLoader": {
+        "type": "object",
+        "properties": {
+          "loader": {
+            "enum": [
+              "file"
+            ]
+          },
+          "options": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "loader",
+          "options"
+        ],
+        "additionalProperties": false
+      },
+      "CsvLoader": {
+        "type": "object",
+        "properties": {
+          "loader": {
+            "enum": [
+              "csv"
+            ]
+          },
+          "options": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "loader",
+          "options"
+        ],
+        "additionalProperties": false
+      },
+      "SitemapLoader": {
+        "type": "object",
+        "properties": {
+          "loader": {
+            "enum": [
+              "sitemap"
+            ]
+          },
+          "options": {
+            "type": "object",
+            "properties": {
+              "sitemap": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "sitemap"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "loader",
+          "options"
+        ],
+        "additionalProperties": false
+      },
+      "StaticReplacer": {
+        "type": "object",
+        "properties": {
+          "replacer": {
+            "enum": [
+              "static"
+            ]
+          },
+          "options": {
+            "type": "object",
+            "properties": {
+              "replace": {
+                "type": "string"
+              },
+              "with": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "replace",
+              "with"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "replacer",
+          "options"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

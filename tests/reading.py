@@ -79,7 +79,12 @@ class Case:
 
     @property
     def collection(self) -> str:
-        return self.id.partition("/")[0]
+        """The folder of the collection below the corpus: its origin and its name."""
+        return self.id.rpartition("/")[0]
+
+    @property
+    def name(self) -> str:
+        return self.id.rpartition("/")[2]
 
     @property
     def claims_nothing(self) -> bool:
@@ -103,19 +108,12 @@ def _case_id(path: Path) -> str:
 
 @cache
 def cases() -> Sequence[Case]:
-    """Every case of the corpus: the JSON files of a collection, but its ``collection.json``.
+    """Every case of the corpus: the JSON files in the folder of a collection of an origin.
 
     They are sorted by the folders and the name of the case.
     """
-    files = [
-        path
-        for collection in CORPUS.iterdir()
-        if (collection / "collection.json").is_file()
-        for path in collection.rglob("*.json")
-        if path != collection / "collection.json"
-    ]
     found = []
-    for path in sorted(files, key=lambda path: _case_id(path).split("/")):
+    for path in sorted(CORPUS.glob("*/*/*.json"), key=lambda path: _case_id(path).split("/")):
         metadata = _document(path)
         upstream, note = metadata["upstream"], metadata.get("note")
         used = metadata["features"]

@@ -9,14 +9,16 @@ Two sources are read at the commits their submodules pin:
    (2026): seven datasets of fused tests in older drafts, which are split back into their two
    schemas (``unfuse``) and converted to draft 2020-12 (``convert``).
 
-Every case becomes one file ``corpus/<collection>/.../<name>.json`` holding the labels, what
+Every case becomes one file ``corpus/<origin>/<collection>/<name>.json`` holding the labels, what
 the two schemas use (``features``) and the two schemas, ``a`` and ``b``. The question a case
 asks is always whether ``a`` accepts every instance valid under ``b``. The artifact lists the
 narrower schema first, so ``b`` is its first schema and ``a`` its second. A schema that
 references other documents carries them embedded (``bundled``), so every schema stands on its
 own.
 
-``collections.json`` names the collections and where each comes from; ``overrides.json``
+The origin is the work that first published the pairs of a collection, by its citation key,
+and not the source that the build reads them from. ``collections.json`` names the
+collections, the origin of each and the source it is read from; ``overrides.json``
 lists the cases that are left out and the cases whose label departs from upstream's;
 ``derived.json`` holds the labels of questions that upstream leaves open, each with what
 shows it. Run from the repository root::
@@ -49,7 +51,12 @@ from subsumes_benchmark.convert import (
 )
 from subsumes_benchmark.derived import Derivations, by_label, document, label
 from subsumes_benchmark.features import features
-from subsumes_benchmark.generated.collections import CollectionSpec, CollectionsSpec, SourceSpec
+from subsumes_benchmark.generated.collections import (
+    CollectionSpec,
+    CollectionsSpec,
+    OriginSpec,
+    SourceSpec,
+)
 from subsumes_benchmark.generated.overrides import Override, OverridesSpec
 from subsumes_benchmark.testsuite import SuiteCase, pairs
 from subsumes_benchmark.unfuse import unfuse
@@ -69,6 +76,12 @@ VERDICT_DIRS: Mapping[str, bool | None] = {"sat": False, "unsat": True, "unknown
 # The schema of a case, written by hand. The corpus carries a copy of it.
 CASE_SCHEMA = Path("schemas/case.schema.json")
 
+# What the corpus says about its collections, by the folder of each, in one file at its root.
+MANIFEST_NAME = "collections.json"
+
+# The licence of a collection, which is that of its source, in the folder of the collection.
+LICENSE_NAME = "LICENSE"
+
 
 def git(*args: str) -> str:
     return subprocess.run(["git", *args], check=True, capture_output=True, text=True).stdout.strip()
@@ -82,6 +95,15 @@ class Collections(CollectionsSpec):
         named = {collection.source for collection in self.collections.values()}
         if unknown := sorted(named - self.sources.keys()):
             raise ValueError(f"collections are built from sources that are not listed: {unknown}")
+        return self
+
+    @model_validator(mode="after")
+    def _the_origins_are_those_of_the_collections(self) -> Self:
+        named = {collection.origin for collection in self.collections.values()}
+        if unknown := sorted(named - self.origins.keys()):
+            raise ValueError(f"collections have origins that are not listed: {unknown}")
+        if unused := sorted(self.origins.keys() - named):
+            raise ValueError(f"origins without a collection: {unused}")
         return self
 
 
@@ -131,16 +153,24 @@ class Collection:
 
     name: str
     source: Source
+    origin: OriginSpec
     spec: CollectionSpec
 
     @property
+    def folder(self) -> str:
+        """The folder of the collection below ``corpus/``: what the id of its cases starts with."""
+        return f"{self.spec.origin}/{self.name}"
+
+    @property
     def manifest(self) -> Json:
+        """What ``corpus/collections.json`` says about the collection."""
         return {
             "description": self.spec.description,
             "use_case": self.spec.use_case,
             "labels": self.spec.labels,
+            "origin": {"citation": self.origin.citation, "url": self.origin.url},
             "license": self.source.spec.license,
-            "license_file": f"licenses/{self.source.name}.txt",
+            "license_file": f"{self.folder}/{LICENSE_NAME}",
             "source": {
                 "repository": self.source.repository,
                 "commit": self.source.commit,
@@ -163,7 +193,8 @@ class Overrides(OverridesSpec):
     def exclusions(self) -> dict[str, str]:
         """The reason of everything that is left out.
 
-        A key is a case id, or a folder followed by ``/*`` for every case below it.
+        A key is a case id, or the beginning of a name up to a dot followed by ``.*``, for
+        every case of the collection whose name begins so.
         """
         return {case: entry.reason for entry in self.exclude for case in entry.cases}
 
@@ -189,7 +220,7 @@ class Case:
     def document(self) -> Json:
         """What the file of the case holds: what is known first, the two schemas last."""
         out: dict[str, Json] = {
-            "$schema": "../" * self.id.count("/") + "case.schema.json",
+            "$schema": f"../../{CASE_SCHEMA.name}",
             "a_subsumes_b": self.a_subsumes_b,
             "b_subsumes_a": self.b_subsumes_a,
             "features": list(features(self.a, self.b)),
@@ -208,7 +239,8 @@ def load_collections(path: Path) -> list[Collection]:
     config = Collections.read(path)
     sources = {name: Source.create(name, spec) for name, spec in config.sources.items()}
     return [
-        Collection(name, sources[spec.source], spec) for name, spec in config.collections.items()
+        Collection(name, sources[spec.source], config.origins[spec.origin], spec)
+        for name, spec in config.collections.items()
     ]
 
 
@@ -328,7 +360,7 @@ def read_inclusion(
                 raise ConversionError(f"{path}: {exc}") from exc
             notes.update(applied)
             yield Case(
-                id=f"{collection.name}/{path.stem}",
+                id=f"{collection.folder}/{path.stem}",
                 a=sides[1],
                 b=sides[0],
                 a_subsumes_b=included,
@@ -384,9 +416,14 @@ def read_test_suite(collection: Collection, exclusions: Mapping[str, str]) -> It
     """
     tests_dir = collection.source.root / collection.spec.path
     for path in sorted(tests_dir.rglob("*.json")):
-        name = path.relative_to(tests_dir).with_suffix("").as_posix()
-        if name.startswith("proposals/"):
+        file = path.relative_to(tests_dir).with_suffix("")
+        if file.parts[0] == "proposals":
             continue
+        if any("." in part for part in file.parts):
+            raise ConversionError(
+                f"{path}: a dot in the name would read as a part of a case's name"
+            )
+        name = ".".join(file.parts)
         document = json.loads(path.read_text(encoding="utf-8"), parse_float=Decimal)
         for index, exact in enumerate(document["tests"]):
             lost: set[str] = set()
@@ -394,8 +431,8 @@ def read_test_suite(collection: Collection, exclusions: Mapping[str, str]) -> It
             if not test_case.holds_for_the_corpus:
                 continue
             upstream = f"{collection.source.permalink(path)}#/tests/{index}"
-            folder = f"{collection.name}/{name}/{index}"
-            if lost and exclusion_of(f"{folder}/reflexive", exclusions) is None:
+            test_case_name = f"{collection.folder}/{name}.{index}"
+            if lost and exclusion_of(f"{test_case_name}.reflexive", exclusions) is None:
                 raise ConversionError(f"{upstream}: a double does not hold {sorted(lost)}")
             try:
                 schema = bundled(test_case.schema, external_schemas(test_case.external_schemas))
@@ -405,7 +442,7 @@ def read_test_suite(collection: Collection, exclusions: Mapping[str, str]) -> It
             for pair in built:
                 of_test = pair.test is not None
                 yield Case(
-                    id=f"{folder}/{pair.category}" + (f"/{pair.test}" if of_test else ""),
+                    id=f"{test_case_name}.{pair.category}" + (f".{pair.test}" if of_test else ""),
                     a=pair.a,
                     b=pair.b,
                     a_subsumes_b=pair.a_subsumes_b,
@@ -488,13 +525,18 @@ def write_case(out: Path, case: Case) -> None:
 
 
 def exclusion_of(case_id: str, exclusions: Mapping[str, str]) -> str | None:
-    """The entry of ``overrides.json`` that leaves the case out: its id, or a folder above it."""
+    """The entry of ``overrides.json`` that leaves the case out: its id, or how its name begins.
+
+    Such a beginning ends at a dot of the name and is followed by ``.*``, so
+    ``.../minimum.3.*`` leaves out every pair built from one test case of the suite.
+    """
     if case_id in exclusions:
         return case_id
-    parts = case_id.split("/")
+    collection, _, name = case_id.rpartition("/")
+    parts = name.split(".")
     for length in range(len(parts) - 1, 0, -1):
-        if (folder := "/".join(parts[:length]) + "/*") in exclusions:
-            return folder
+        if (beginning := f"{collection}/{'.'.join(parts[:length])}.*") in exclusions:
+            return beginning
     return None
 
 
@@ -569,12 +611,12 @@ def build(out: Path, collections_file: Path, overrides_file: Path, derived_file:
     dialects: Counter[str] = Counter()
     cases: dict[str, list[Case]] = {}
     for collection in collections:
-        print(f"reading {collection.name}")
+        print(f"reading {collection.folder}")
         match collection.source.name:
             case "json-schema-test-suite":
-                cases[collection.name] = list(read_test_suite(collection, exclusions))
+                cases[collection.folder] = list(read_test_suite(collection, exclusions))
             case "inclusion-artifact":
-                cases[collection.name] = list(
+                cases[collection.folder] = list(
                     read_inclusion(collection, pointer_maps, notes, dialects)
                 )
             case other:
@@ -593,28 +635,27 @@ def build(out: Path, collections_file: Path, overrides_file: Path, derived_file:
     distinct = without_duplicates(whole)
     final = with_derived(distinct, derived)
 
-    # A collection keeps its manifest next to its cases, so no case may have that name.
-    if taken := sorted(case.id for case in final if case.id.split("/")[1:] == ["collection"]):
-        raise ConversionError(f"cases named like the manifest of their collection: {taken}")
+    # An id is an origin, a collection and a name: no case lies deeper, whatever upstream calls it.
+    if deeper := sorted(case.id for case in final if case.id.count("/") != 2):
+        raise ConversionError(f"cases that do not lie in the folder of their collection: {deeper}")
     if out.exists():
         shutil.rmtree(out)
     print(f"writing {len(final)} cases")
     for case in final:
         write_case(out, case)
-    for collection in collections:
-        write_json(out / collection.name / "collection.json", collection.manifest)
+    write_json(
+        out / MANIFEST_NAME, {collection.folder: collection.manifest for collection in collections}
+    )
     shutil.copyfile(CASE_SCHEMA, out / CASE_SCHEMA.name)
-    for name, source in sources.items():
-        target = out / "licenses" / f"{name}.txt"
-        target.parent.mkdir(parents=True, exist_ok=True)
-        source.license_file.copy(target)
+    for collection in collections:
+        collection.source.license_file.copy(out / collection.folder / LICENSE_NAME)
 
-    print(f"\n{'collection':24s} {'cases':>6s} {'true':>6s} {'false':>6s} {'null':>6s}")
+    print(f"\n{'collection':40s} {'cases':>6s} {'true':>6s} {'false':>6s} {'null':>6s}")
     by_id = {case.id: case for case in final}
     for name, group in cases.items():
         kept = [by_id[case.id] for case in group if case.id in by_id]
         labels = Counter(case.a_subsumes_b for case in kept)
-        print(f"{name:24s} {len(kept):6d} {labels[True]:6d} {labels[False]:6d} {labels[None]:6d}")
+        print(f"{name:40s} {len(kept):6d} {labels[True]:6d} {labels[False]:6d} {labels[None]:6d}")
     print(
         f"\n{len(documents)} external documents embedded in the {bundles} schemas that "
         f"reference them, {len(overrides)} overridden cases, {len(upstream) - len(included)} "

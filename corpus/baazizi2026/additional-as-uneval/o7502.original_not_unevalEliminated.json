@@ -1,0 +1,171 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "items",
+    "maxItems",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o7502.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o7502.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "properties": {
+                  "arr": {
+                    "description": "An array of different items.",
+                    "items": {
+                      "anyOf": [
+                        {
+                          "description": "A nested object.",
+                          "properties": {
+                            "item1": {
+                              "description": "A required property.",
+                              "title": "Item1",
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "item1"
+                          ],
+                          "title": "Obj",
+                          "type": "object"
+                        },
+                        {
+                          "description": "A numeric value.",
+                          "title": "Num",
+                          "type": "number"
+                        }
+                      ],
+                      "description": "An array item.",
+                      "title": "Item"
+                    },
+                    "maxItems": 3,
+                    "title": "Arr",
+                    "type": "array"
+                  },
+                  "obj": {
+                    "$ref": "#/$defs/modern_2"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^arr$": true,
+                  "^obj$": true
+                },
+                "additionalProperties": {
+                  "description": "An additional property.",
+                  "properties": {
+                    "primitive": {
+                      "description": "A primitive value.",
+                      "title": "Primitive",
+                      "type": "number"
+                    }
+                  },
+                  "title": "Optional",
+                  "type": "object"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "modern_2": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "description": "An object with optional props.",
+                "title": "Obj",
+                "type": "object"
+              },
+              {
+                "additionalProperties": {
+                  "description": "An optional value.",
+                  "title": "Key",
+                  "type": "string"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": {
+      "description": "An additional property.",
+      "properties": {
+        "primitive": {
+          "description": "A primitive value.",
+          "title": "Primitive",
+          "type": "number"
+        }
+      },
+      "title": "Optional",
+      "type": "object"
+    },
+    "properties": {
+      "arr": {
+        "description": "An array of different items.",
+        "items": {
+          "anyOf": [
+            {
+              "description": "A nested object.",
+              "properties": {
+                "item1": {
+                  "description": "A required property.",
+                  "title": "Item1",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "item1"
+              ],
+              "title": "Obj",
+              "type": "object"
+            },
+            {
+              "description": "A numeric value.",
+              "title": "Num",
+              "type": "number"
+            }
+          ],
+          "description": "An array item.",
+          "title": "Item"
+        },
+        "maxItems": 3,
+        "title": "Arr",
+        "type": "array"
+      },
+      "obj": {
+        "additionalProperties": {
+          "description": "An optional value.",
+          "title": "Key",
+          "type": "string"
+        },
+        "description": "An object with optional props.",
+        "title": "Obj",
+        "type": "object"
+      }
+    }
+  }
+}

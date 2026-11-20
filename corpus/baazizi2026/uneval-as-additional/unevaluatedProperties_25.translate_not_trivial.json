@@ -1,0 +1,98 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/uneval_eliminated_as_additional_containment/unknown/unevaluatedProperties_25.translate_not_trivial.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/uneval_eliminated_as_additional_containment/unknown/unevaluatedProperties_25.trivial_not_translate.json"
+  ],
+  "a": {
+    "$id": "https://raw.githubusercontent.com/microsoft/MLOS/main/mlos_bench/mlos_bench/config/schemas/services/remote/mock/mock-remote-exec-service-subschema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "mlos_bench Mock FileShare Service config",
+    "description": "config for an mlos_bench Mock FileShare Service",
+    "type": "object",
+    "properties": {
+      "class": {
+        "enum": [
+          "mlos_bench.tests.services.remote.mock.mock_remote_exec_service.MockRemoteExecService"
+        ]
+      },
+      "config": {
+        "type": "object",
+        "properties": {
+          "vmName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "vmName"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "required": [
+      "class",
+      "config"
+    ]
+  },
+  "b": {
+    "$id": "https://raw.githubusercontent.com/microsoft/MLOS/main/mlos_bench/mlos_bench/config/schemas/services/remote/mock/mock-remote-exec-service-subschema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "mlos_bench Mock FileShare Service config",
+    "description": "config for an mlos_bench Mock FileShare Service",
+    "type": "object",
+    "properties": {
+      "class": {
+        "enum": [
+          "mlos_bench.tests.services.remote.mock.mock_remote_exec_service.MockRemoteExecService"
+        ]
+      },
+      "config": {
+        "$ref": "#/$defs/modern_1"
+      }
+    },
+    "required": [
+      "class",
+      "config"
+    ],
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "vmName": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "vmName"
+                ]
+              },
+              {
+                "patternProperties": {
+                  "^vmName$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

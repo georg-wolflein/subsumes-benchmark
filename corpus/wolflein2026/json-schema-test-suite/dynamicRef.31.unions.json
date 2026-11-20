@@ -1,0 +1,101 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": false,
+  "features": [
+    "$dynamicRef",
+    "$ref",
+    "anyOf",
+    "const",
+    "else",
+    "if",
+    "items",
+    "properties",
+    "required",
+    "then",
+    "type"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/dynamicRef.json#/tests/31",
+  "derived": {
+    "b_subsumes_a": {
+      "counterexample": null
+    }
+  },
+  "a": {
+    "$id": "https://test.json-schema.org/dynamic-ref-with-multiple-paths/main",
+    "if": {
+      "properties": {
+        "kindOfList": {
+          "const": "numbers"
+        }
+      },
+      "required": [
+        "kindOfList"
+      ]
+    },
+    "then": {
+      "$ref": "numberList"
+    },
+    "else": {
+      "$ref": "stringList"
+    },
+    "$defs": {
+      "genericList": {
+        "$id": "genericList",
+        "properties": {
+          "list": {
+            "items": {
+              "$dynamicRef": "#itemType"
+            }
+          }
+        },
+        "$defs": {
+          "defaultItemType": {
+            "$comment": "Only needed to satisfy bookending requirement",
+            "$dynamicAnchor": "itemType"
+          }
+        }
+      },
+      "numberList": {
+        "$id": "numberList",
+        "$defs": {
+          "itemType": {
+            "$dynamicAnchor": "itemType",
+            "type": "number"
+          }
+        },
+        "$ref": "genericList"
+      },
+      "stringList": {
+        "$id": "stringList",
+        "$defs": {
+          "itemType": {
+            "$dynamicAnchor": "itemType",
+            "type": "string"
+          }
+        },
+        "$ref": "genericList"
+      }
+    }
+  },
+  "b": {
+    "anyOf": [
+      {
+        "const": {
+          "kindOfList": "numbers",
+          "list": [
+            1.1
+          ]
+        }
+      },
+      {
+        "const": {
+          "kindOfList": "strings",
+          "list": [
+            "foo"
+          ]
+        }
+      }
+    ]
+  }
+}

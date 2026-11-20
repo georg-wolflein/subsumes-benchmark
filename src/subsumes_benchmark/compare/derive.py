@@ -30,7 +30,7 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING, Literal, assert_never
 
 from subsumes_benchmark.compare.results import read_results, read_run
-from subsumes_benchmark.compare.tasks import case_files, read_unlabelled
+from subsumes_benchmark.compare.tasks import case_files, collection_of, read_unlabelled
 from subsumes_benchmark.derived import Derivations, by_label
 from subsumes_benchmark.generated.case import CaseSpec
 from subsumes_benchmark.generated.derived import Agreement, Counterexample, Derived, Evidence
@@ -275,7 +275,7 @@ def derive(corpus: Path, derived_file: Path, runs: Sequence[Path]) -> None:
     for case, direction in sorted(asked, key=lambda question: question[0].split("/")):
         found = votes.get((case, direction), [])
         decided = decide(CaseSpec.read(files[case]), direction, found)
-        collection = case.partition("/")[0]
+        collection = collection_of(case)
         match decided:
             case Counterexample():
                 outcomes[collection, "false"] += 1
@@ -289,12 +289,12 @@ def derive(corpus: Path, derived_file: Path, runs: Sequence[Path]) -> None:
         after.setdefault(case, {})[direction] = decided
     Derivations.write(derived_file, {case: Derived(**entry) for case, entry in after.items()})
 
-    print(f"{'collection':24s}" + "".join(f"{outcome:>19s}" for outcome in OUTCOMES))
+    print(f"{'collection':40s}" + "".join(f"{outcome:>19s}" for outcome in OUTCOMES))
     for collection in sorted({collection for collection, _ in outcomes}):
         counts = (outcomes[collection, outcome] for outcome in OUTCOMES)
-        print(f"{collection:24s}" + "".join(f"{count:19d}" for count in counts))
+        print(f"{collection:40s}" + "".join(f"{count:19d}" for count in counts))
     totals = (sum(n for (_, o), n in outcomes.items() if o == outcome) for outcome in OUTCOMES)
-    print(f"{'all':24s}" + "".join(f"{total:19d}" for total in totals))
+    print(f"{'all':40s}" + "".join(f"{total:19d}" for total in totals))
     if refuted:
         print(f"\na checker says yes where a counterexample proves no, on {len(refuted)}:")
         for line in refuted:

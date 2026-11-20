@@ -1,0 +1,72 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o4845.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o4845.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "BioSamples curation link",
+                "description": "Link together a curation object with a sample using a specific AAP domain as reference for the curation",
+                "type": "object",
+                "required": [
+                  "sample",
+                  "curation",
+                  "domain"
+                ],
+                "properties": {
+                  "sample": {
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^sample$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$id": "https://www.ebi.ac.uk/biosamples/schemas/core/curation_link.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "BioSamples curation link",
+    "description": "Link together a curation object with a sample using a specific AAP domain as reference for the curation",
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+      "sample",
+      "curation",
+      "domain"
+    ],
+    "properties": {
+      "sample": {
+        "type": "string"
+      }
+    }
+  }
+}

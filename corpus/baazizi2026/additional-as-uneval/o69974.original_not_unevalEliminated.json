@@ -1,0 +1,168 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "minLength",
+    "pattern",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/sat/o69974.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o69974.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object",
+                "title": "Organisation",
+                "description": "JSON schema for an organisation",
+                "required": [
+                  "$schema",
+                  "pid",
+                  "name",
+                  "code",
+                  "default_currency"
+                ],
+                "properties": {
+                  "online_harvested_source": {
+                    "title": "Online harvested source",
+                    "description": "Online harvested source as configured in ebooks server.",
+                    "type": "string"
+                  },
+                  "name": {
+                    "title": "Name",
+                    "description": "Required. Name of the organisation.",
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "code": {
+                    "title": "Code",
+                    "description": "Code of the organisation.",
+                    "type": "string",
+                    "minLength": 2
+                  },
+                  "current_budget_pid": {
+                    "title": "Current ID of the budget",
+                    "description": "The ID of the current budget of the organisation",
+                    "type": "string"
+                  },
+                  "address": {
+                    "title": "Address",
+                    "description": "Address of the organisation.",
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "$schema": {
+                    "title": "Schema",
+                    "description": "Schema to validate organisation records against.",
+                    "type": "string",
+                    "minLength": 9,
+                    "default": "https://ils.rero.ch/schemas/organisations/organisation-v0.0.1.json"
+                  },
+                  "default_currency": {
+                    "title": "Default currency",
+                    "description": "The default currency of the organisation",
+                    "type": "string",
+                    "pattern": "^[A-Z]{3}$"
+                  },
+                  "pid": {
+                    "title": "Organisation ID",
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^code$": true,
+                  "^current_budget_pid$": true,
+                  "^name$": true,
+                  "^$schema$": true,
+                  "^pid$": true,
+                  "^online_harvested_source$": true,
+                  "^default_currency$": true,
+                  "^address$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "title": "Organisation",
+    "description": "JSON schema for an organisation",
+    "additionalProperties": false,
+    "required": [
+      "$schema",
+      "pid",
+      "name",
+      "code",
+      "default_currency"
+    ],
+    "properties": {
+      "$schema": {
+        "title": "Schema",
+        "description": "Schema to validate organisation records against.",
+        "type": "string",
+        "minLength": 9,
+        "default": "https://ils.rero.ch/schemas/organisations/organisation-v0.0.1.json"
+      },
+      "pid": {
+        "title": "Organisation ID",
+        "type": "string"
+      },
+      "name": {
+        "title": "Name",
+        "description": "Required. Name of the organisation.",
+        "type": "string",
+        "minLength": 1
+      },
+      "address": {
+        "title": "Address",
+        "description": "Address of the organisation.",
+        "type": "string",
+        "minLength": 1
+      },
+      "code": {
+        "title": "Code",
+        "description": "Code of the organisation.",
+        "type": "string",
+        "minLength": 2
+      },
+      "current_budget_pid": {
+        "title": "Current ID of the budget",
+        "description": "The ID of the current budget of the organisation",
+        "type": "string"
+      },
+      "default_currency": {
+        "title": "Default currency",
+        "description": "The default currency of the organisation",
+        "type": "string",
+        "pattern": "^[A-Z]{3}$"
+      },
+      "online_harvested_source": {
+        "title": "Online harvested source",
+        "description": "Online harvested source as configured in ebooks server.",
+        "type": "string"
+      }
+    }
+  }
+}

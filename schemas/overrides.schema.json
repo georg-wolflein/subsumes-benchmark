@@ -23,9 +23,9 @@
   },
   "$defs": {
     "CasePath": {
-      "description": "The path of a case below corpus/, starting with its collection.",
+      "description": "The path of a case below corpus/: its origin, its collection and its name.",
       "type": "string",
-      "pattern": "^[^/]+(/[^/]+)+$"
+      "pattern": "^[^/]+/[^/]+/[^/]+$"
     },
     "Cases": {
       "type": "array",
@@ -44,7 +44,7 @@
           "type": "string"
         },
         "cases": {
-          "description": "What is left out. An entry is a case id, or a folder followed by /* for every case below it. For the test suite a folder is one test case, or one file.",
+          "description": "What is left out. An entry is a case id, or the beginning of a name up to a dot, followed by .* for every case of the collection whose name begins so. For the test suite that is one test case, or one file.",
           "$ref": "#/$defs/Cases"
         }
       }

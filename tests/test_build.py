@@ -163,31 +163,37 @@ def test_a_case_names_its_schema_and_says_what_is_known_before_the_schemas() -> 
 def test_excluded_cases_are_left_out_and_must_exist() -> None:
     cases = [
         Case(id=case_id, a=True, b=True, a_subsumes_b=True, b_subsumes_a=None, upstream="x.json")
-        for case_id in ("one/a", "one/b")
+        for case_id in ("o/one/a", "o/one/b")
     ]
-    assert [case.id for case in without_excluded(cases, {"one/a": "broken"})] == ["one/b"]
+    assert [case.id for case in without_excluded(cases, {"o/one/a": "broken"})] == ["o/one/b"]
     assert without_excluded(cases, {}) == cases
     with pytest.raises(ConfigError):
-        without_excluded(cases, {"one/c": "broken"})
+        without_excluded(cases, {"o/one/c": "broken"})
 
 
-def test_a_folder_excludes_every_case_below_it() -> None:
+def test_the_beginning_of_a_name_excludes_every_case_whose_name_begins_so() -> None:
+    ids = (
+        "o/one/a.3.valid.0",
+        "o/one/a.3.reflexive",
+        "o/one/a.30.reflexive",
+        "o/one/ab.3.reflexive",
+        "o/two/a.3.reflexive",
+    )
     cases = [
         Case(id=case_id, a=True, b=True, a_subsumes_b=True, b_subsumes_a=None, upstream="x.json")
-        for case_id in ("one/a/valid/0", "one/a/reflexive", "one/ab/reflexive", "two/a/reflexive")
+        for case_id in ids
     ]
-    assert [case.id for case in without_excluded(cases, {"one/a/*": "broken"})] == [
-        "one/ab/reflexive",
-        "two/a/reflexive",
-    ]
-    assert [case.id for case in without_excluded(cases, {"one/*": "broken"})] == ["two/a/reflexive"]
+    assert [case.id for case in without_excluded(cases, {"o/one/a.3.*": "broken"})] == list(ids[2:])
+    assert [case.id for case in without_excluded(cases, {"o/one/a.*": "broken"})] == list(ids[3:])
     with pytest.raises(ConfigError):
-        without_excluded(cases, {"three/*": "broken"})
-    # A folder is not a prefix of a name, and a case is no folder.
+        without_excluded(cases, {"o/three/a.*": "broken"})
+    # A beginning ends at a dot of the name, and neither a whole name nor a folder is one.
     with pytest.raises(ConfigError):
-        without_excluded(cases, {"one/a/refl/*": "broken"})
+        without_excluded(cases, {"o/one/a.3.refl.*": "broken"})
     with pytest.raises(ConfigError):
-        without_excluded(cases, {"one/a/reflexive/*": "broken"})
+        without_excluded(cases, {"o/one/a.3.reflexive.*": "broken"})
+    with pytest.raises(ConfigError):
+        without_excluded(cases, {"o/one/*": "broken"})
 
 
 def a_case(
@@ -209,20 +215,20 @@ NUMBER: Json = {"type": "number"}
 def test_cases_with_the_same_two_schemas_are_one_case_that_says_what_each_says() -> None:
     cases = [
         # Asked in both directions, as two cases: the second is the first one the other way.
-        a_case("one/x_v2_not_v1", OPTIONAL, TEXT, True),
-        a_case("one/x_v1_not_v2", TEXT, OPTIONAL, False),
+        a_case("o/one/x_v2_not_v1", OPTIONAL, TEXT, True),
+        a_case("o/one/x_v1_not_v2", TEXT, OPTIONAL, False),
         # Asked twice the same way; only the one that is not kept knows the answer.
-        a_case("one/b", TEXT, NUMBER, None, None),
-        a_case("two/b", TEXT, NUMBER, False, False, note="Corrected."),
-        a_case("one/alone", NUMBER, OPTIONAL, False),
+        a_case("o/one/b", TEXT, NUMBER, None, None),
+        a_case("o/two/b", TEXT, NUMBER, False, False, note="Corrected."),
+        a_case("o/one/alone", NUMBER, OPTIONAL, False),
     ]
     kept = without_duplicates(cases)
-    assert [case.id for case in kept] == ["one/x_v1_not_v2", "one/b", "one/alone"]
+    assert [case.id for case in kept] == ["o/one/x_v1_not_v2", "o/one/b", "o/one/alone"]
     both, twice, alone = kept
     assert (both.a_subsumes_b, both.b_subsumes_a) == (False, True)
-    assert both.duplicates == ("one/x_v2_not_v1.json",)
+    assert both.duplicates == ("o/one/x_v2_not_v1.json",)
     assert (twice.a_subsumes_b, twice.b_subsumes_a, twice.note) == (False, False, "Corrected.")
-    assert twice.duplicates == ("two/b.json",)
+    assert twice.duplicates == ("o/two/b.json",)
     assert alone is cases[4]
     written = both.document
     assert isinstance(written, dict)
@@ -232,30 +238,33 @@ def test_cases_with_the_same_two_schemas_are_one_case_that_says_what_each_says()
 
 
 def test_the_case_whose_id_sorts_first_is_kept() -> None:
-    cases = [a_case(case_id, TEXT, NUMBER) for case_id in ("two/a", "one/b/2", "one/b/10", "one/c")]
+    cases = [
+        a_case(case_id, TEXT, NUMBER)
+        for case_id in ("o/two/a", "o/one/b.2", "o/one/b.10", "o/one/c")
+    ]
     (kept,) = without_duplicates(cases)
     # Sorted as the cases of the corpus are: by folder, then by name.
-    assert kept.id == "one/b/10"
-    assert kept.duplicates == ("one/b/2.json", "one/c.json", "two/a.json")
+    assert kept.id == "o/one/b.10"
+    assert kept.duplicates == ("o/one/b.2.json", "o/one/c.json", "o/two/a.json")
 
 
 def test_a_case_whose_two_schemas_are_the_same_keeps_the_label_of_each_direction() -> None:
-    cases = [a_case("one/a", TEXT, TEXT, True), a_case("one/b", TEXT, TEXT, None, True)]
+    cases = [a_case("o/one/a", TEXT, TEXT, True), a_case("o/one/b", TEXT, TEXT, None, True)]
     (kept,) = without_duplicates(cases)
     assert (kept.a_subsumes_b, kept.b_subsumes_a) == (True, True)
     # Its own label for one direction is not taken for the other, though they are one question.
     (alone,) = without_duplicates([cases[0]])
     assert (alone.a_subsumes_b, alone.b_subsumes_a) == (True, None)
-    (still,) = without_duplicates([cases[0], a_case("one/c", TEXT, TEXT, True)])
+    (still,) = without_duplicates([cases[0], a_case("o/one/c", TEXT, TEXT, True)])
     assert (still.a_subsumes_b, still.b_subsumes_a) == (True, None)
 
 
 def test_duplicates_that_come_from_one_upstream_file_list_it_once_and_not_their_own() -> None:
     same_file = [
-        Case("one/a", TEXT, NUMBER, None, None, "x.json#/0"),
-        Case("one/b", TEXT, NUMBER, None, None, "x.json#/0"),
-        Case("one/c", NUMBER, TEXT, None, None, "x.json#/1"),
-        Case("one/d", NUMBER, TEXT, None, None, "x.json#/1"),
+        Case("o/one/a", TEXT, NUMBER, None, None, "x.json#/0"),
+        Case("o/one/b", TEXT, NUMBER, None, None, "x.json#/0"),
+        Case("o/one/c", NUMBER, TEXT, None, None, "x.json#/1"),
+        Case("o/one/d", NUMBER, TEXT, None, None, "x.json#/1"),
     ]
     (kept,) = without_duplicates(same_file)
     assert kept.duplicates == ("x.json#/1",)
@@ -264,17 +273,17 @@ def test_duplicates_that_come_from_one_upstream_file_list_it_once_and_not_their_
 def test_duplicates_must_not_contradict_each_other() -> None:
     with pytest.raises(ConversionError, match="two answers"):
         without_duplicates(
-            [a_case("one/a", TEXT, NUMBER, True), a_case("one/b", TEXT, NUMBER, False)]
+            [a_case("o/one/a", TEXT, NUMBER, True), a_case("o/one/b", TEXT, NUMBER, False)]
         )
     with pytest.raises(ConversionError, match="two answers"):
         without_duplicates(
-            [a_case("one/a", TEXT, NUMBER, True), a_case("one/b", NUMBER, TEXT, None, False)]
+            [a_case("o/one/a", TEXT, NUMBER, True), a_case("o/one/b", NUMBER, TEXT, None, False)]
         )
     # Two notes are both kept.
     (kept,) = without_duplicates(
         [
-            a_case("one/a", TEXT, NUMBER, note="First."),
-            a_case("one/b", NUMBER, TEXT, note="Second."),
+            a_case("o/one/a", TEXT, NUMBER, note="First."),
+            a_case("o/one/b", NUMBER, TEXT, note="Second."),
         ]
     )
     assert kept.note == "First. Second."
@@ -292,13 +301,13 @@ def test_exclusions_and_overrides_are_read_by_case(tmp_path: Path) -> None:
     departures = Overrides.read(
         overrides_file(
             tmp_path,
-            [{"reason": "broken", "cases": ["one/a", "one/b/*"]}],
-            [{**corrected, "cases": ["one/c"]}],
+            [{"reason": "broken", "cases": ["o/one/a", "o/one/b.*"]}],
+            [{**corrected, "cases": ["o/one/c"]}],
         )
     )
-    assert departures.exclusions == {"one/a": "broken", "one/b/*": "broken"}
-    assert departures.overrides.keys() == {"one/c"}
-    override = departures.overrides["one/c"]
+    assert departures.exclusions == {"o/one/a": "broken", "o/one/b.*": "broken"}
+    assert departures.overrides.keys() == {"o/one/c"}
+    override = departures.overrides["o/one/c"]
     assert (override.note, override.a_subsumes_b, override.b_subsumes_a) == (
         "corrected",
         False,
@@ -310,16 +319,17 @@ def test_exclusions_and_overrides_are_read_by_case(tmp_path: Path) -> None:
     ("exclude", "override"),
     [
         # A case is listed once: not twice in an entry, and not left out and overridden.
-        ([{"reason": "broken", "cases": ["one/a", "one/a"]}], []),
+        ([{"reason": "broken", "cases": ["o/one/a", "o/one/a"]}], []),
         (
-            [{"reason": "broken", "cases": ["one/a"]}],
-            [{"note": "x", "a_subsumes_b": None, "b_subsumes_a": None, "cases": ["one/a"]}],
+            [{"reason": "broken", "cases": ["o/one/a"]}],
+            [{"note": "x", "a_subsumes_b": None, "b_subsumes_a": None, "cases": ["o/one/a"]}],
         ),
         # An override states both labels, and nothing has a key that is not known.
-        ([], [{"note": "x", "a_subsumes_b": None, "cases": ["one/a"]}]),
-        ([{"reason": "broken", "note": "x", "cases": ["one/a"]}], []),
-        # A case is a path below its collection, and an entry lists at least one.
-        ([{"reason": "broken", "cases": ["one"]}], []),
+        ([], [{"note": "x", "a_subsumes_b": None, "cases": ["o/one/a"]}]),
+        ([{"reason": "broken", "note": "x", "cases": ["o/one/a"]}], []),
+        # A case is a name in the folder of a collection of an origin, and an entry lists one.
+        ([{"reason": "broken", "cases": ["one/a"]}], []),
+        ([{"reason": "broken", "cases": ["o/one/a/b"]}], []),
         ([{"reason": "broken", "cases": []}], []),
     ],
 )

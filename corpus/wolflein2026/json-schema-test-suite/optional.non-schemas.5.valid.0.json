@@ -1,0 +1,54 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": false,
+  "features": [
+    "$ref",
+    "anyOf",
+    "const",
+    "enum",
+    "type"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/optional/non-schemas.json#/tests/5/tests/0",
+  "derived": {
+    "b_subsumes_a": {
+      "counterexample": ""
+    }
+  },
+  "a": {
+    "$defs": {
+      "anchor_in_enum": {
+        "enum": [
+          {
+            "$anchor": "my_anchor",
+            "type": "null"
+          }
+        ]
+      },
+      "real_identifier_in_schema": {
+        "$anchor": "my_anchor",
+        "type": "string"
+      },
+      "zzz_anchor_in_const": {
+        "const": {
+          "$anchor": "my_anchor",
+          "type": "null"
+        }
+      }
+    },
+    "anyOf": [
+      {
+        "$ref": "#/$defs/anchor_in_enum"
+      },
+      {
+        "$ref": "#my_anchor"
+      }
+    ]
+  },
+  "b": {
+    "const": {
+      "$anchor": "my_anchor",
+      "type": "null"
+    }
+  }
+}

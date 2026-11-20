@@ -1,0 +1,391 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "anyOf",
+    "enum",
+    "oneOf",
+    "pattern",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/sat/o66069.anyOf_not_oneOf.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/oneOf_as_anyOf_containment/unknown/o66069.oneOf_not_anyOf.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "oneOf": [
+      {
+        "$ref": "#/$defs/setConfigValue"
+      },
+      {
+        "$ref": "#/$defs/setConfigValueResult"
+      },
+      {
+        "$ref": "#/$defs/getConfigValue"
+      },
+      {
+        "$ref": "#/$defs/getConfigValueResult"
+      },
+      {
+        "$ref": "#/$defs/errorResult"
+      }
+    ],
+    "$defs": {
+      "setConfigValue": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "enum": [
+              "set-configvalue"
+            ]
+          },
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "pid": {
+                "type": "string"
+              },
+              "key": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "pid",
+              "key",
+              "value"
+            ]
+          }
+        }
+      },
+      "setConfigValueResult": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "enum": [
+              "set-configvalue-result"
+            ]
+          },
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "pid": {
+                "type": "string"
+              },
+              "key": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              },
+              "status": {
+                "pattern": "OK"
+              }
+            },
+            "required": [
+              "pid",
+              "key",
+              "value",
+              "status"
+            ]
+          }
+        }
+      },
+      "getConfigValue": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "enum": [
+              "get-configvalue"
+            ]
+          },
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "pid": {
+                "type": "string"
+              },
+              "key": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "pid",
+              "key"
+            ]
+          }
+        }
+      },
+      "getConfigValueResult": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "enum": [
+              "get-configvalue-result"
+            ]
+          },
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "pid": {
+                "type": "string"
+              },
+              "key": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "pid",
+              "key",
+              "value"
+            ]
+          }
+        }
+      },
+      "errorResult": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "enum": [
+              "error"
+            ]
+          },
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "command": {
+                "enum": [
+                  "get-configvalue",
+                  "set-configvalue"
+                ]
+              },
+              "cause": {
+                "enum": [
+                  "missing-parameter",
+                  "unknown-configvalue",
+                  "exception"
+                ]
+              },
+              "missing-parameter": {
+                "type": "string"
+              },
+              "unknown-configvalue": {
+                "type": "string"
+              },
+              "exception-cause": {
+                "type": "string"
+              },
+              "exception-message": {
+                "type": "string"
+              },
+              "exception-stacktrace": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "command",
+              "cause"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "anyOf": [
+      {
+        "$ref": "#/$defs/setConfigValue"
+      },
+      {
+        "$ref": "#/$defs/setConfigValueResult"
+      },
+      {
+        "$ref": "#/$defs/getConfigValue"
+      },
+      {
+        "$ref": "#/$defs/getConfigValueResult"
+      },
+      {
+        "$ref": "#/$defs/errorResult"
+      }
+    ],
+    "$defs": {
+      "setConfigValue": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "enum": [
+              "set-configvalue"
+            ]
+          },
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "pid": {
+                "type": "string"
+              },
+              "key": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "pid",
+              "key",
+              "value"
+            ]
+          }
+        }
+      },
+      "setConfigValueResult": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "enum": [
+              "set-configvalue-result"
+            ]
+          },
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "pid": {
+                "type": "string"
+              },
+              "key": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              },
+              "status": {
+                "pattern": "OK"
+              }
+            },
+            "required": [
+              "pid",
+              "key",
+              "value",
+              "status"
+            ]
+          }
+        }
+      },
+      "getConfigValue": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "enum": [
+              "get-configvalue"
+            ]
+          },
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "pid": {
+                "type": "string"
+              },
+              "key": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "pid",
+              "key"
+            ]
+          }
+        }
+      },
+      "getConfigValueResult": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "enum": [
+              "get-configvalue-result"
+            ]
+          },
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "pid": {
+                "type": "string"
+              },
+              "key": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "pid",
+              "key",
+              "value"
+            ]
+          }
+        }
+      },
+      "errorResult": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "enum": [
+              "error"
+            ]
+          },
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "command": {
+                "enum": [
+                  "get-configvalue",
+                  "set-configvalue"
+                ]
+              },
+              "cause": {
+                "enum": [
+                  "missing-parameter",
+                  "unknown-configvalue",
+                  "exception"
+                ]
+              },
+              "missing-parameter": {
+                "type": "string"
+              },
+              "unknown-configvalue": {
+                "type": "string"
+              },
+              "exception-cause": {
+                "type": "string"
+              },
+              "exception-message": {
+                "type": "string"
+              },
+              "exception-stacktrace": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "command",
+              "cause"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

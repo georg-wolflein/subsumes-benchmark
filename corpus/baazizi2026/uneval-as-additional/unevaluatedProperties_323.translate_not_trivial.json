@@ -1,0 +1,103 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": null,
+  "b_subsumes_a": null,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "maxLength",
+    "minLength",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/uneval_eliminated_as_additional_containment/unknown/unevaluatedProperties_323.translate_not_trivial.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/uneval_eliminated_as_additional_containment/unknown/unevaluatedProperties_323.trivial_not_translate.json"
+  ],
+  "a": {
+    "$id": "std:alpha3CountryCode",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Standard Alpha3 Country Code",
+    "description": "This extension allows to model if data should be deleted inside or outside to a country. The extension here refers to the physical location of the data. The DCA must be able to determine the physical location of the data.",
+    "$comment": "The Interpreter must be able to locate data physically. There may be special cases where parts of the data are located in different countries. Here you have to use the extension several times to cover all possible countries.",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "code",
+      "scope"
+    ],
+    "properties": {
+      "code": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 3,
+        "examples": [
+          "JPN"
+        ]
+      },
+      "scope": {
+        "type": "string",
+        "description": "Time at which the interval stops.",
+        "enum": [
+          "inside",
+          "outside"
+        ]
+      }
+    }
+  },
+  "b": {
+    "$id": "std:alpha3CountryCode",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "title": "Standard Alpha3 Country Code",
+                "description": "This extension allows to model if data should be deleted inside or outside to a country. The extension here refers to the physical location of the data. The DCA must be able to determine the physical location of the data.",
+                "$comment": "The Interpreter must be able to locate data physically. There may be special cases where parts of the data are located in different countries. Here you have to use the extension several times to cover all possible countries.",
+                "type": "object",
+                "required": [
+                  "code",
+                  "scope"
+                ],
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 3,
+                    "examples": [
+                      "JPN"
+                    ]
+                  },
+                  "scope": {
+                    "type": "string",
+                    "description": "Time at which the interval stops.",
+                    "enum": [
+                      "inside",
+                      "outside"
+                    ]
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^code$": true,
+                  "^scope$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

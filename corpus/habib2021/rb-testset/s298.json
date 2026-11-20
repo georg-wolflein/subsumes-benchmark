@@ -1,0 +1,75 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": false,
+  "features": [
+    "additionalProperties",
+    "oneOf",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/issta/sat/s298.json",
+  "derived": {
+    "b_subsumes_a": {
+      "counterexample": {
+        "limits": null
+      }
+    }
+  },
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "RollingUpdateStatefulSetStrategy is used to communicate parameter for RollingUpdateStatefulSetStrategyType.",
+    "properties": {
+      "partition": {
+        "description": "Partition indicates the ordinal at which the StatefulSet should be partitioned.",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "_format": "int32"
+      }
+    },
+    "type": "object"
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "ResourceRequirements describes the compute resource requirements.",
+    "properties": {
+      "limits": {
+        "description": "Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/",
+        "type": "object",
+        "additionalProperties": {
+          "oneOf": [
+            {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        }
+      },
+      "requests": {
+        "description": "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/",
+        "type": "object",
+        "additionalProperties": {
+          "oneOf": [
+            {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        }
+      }
+    },
+    "type": "object"
+  }
+}

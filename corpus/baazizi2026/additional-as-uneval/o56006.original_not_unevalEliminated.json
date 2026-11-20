@@ -1,0 +1,135 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": true,
+  "features": [
+    "$ref",
+    "additionalProperties",
+    "allOf",
+    "anyOf",
+    "enum",
+    "maxLength",
+    "patternProperties",
+    "properties",
+    "type"
+  ],
+  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o56006.original_not_unevalEliminated.json",
+  "duplicates": [
+    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/additional_as_uneval_eliminated_containment/unsat/o56006.unevalEliminated_not_original.json"
+  ],
+  "a": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$ref": "#/$defs/modern_1",
+    "$defs": {
+      "modern_1": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "description": "Fibaro Home Center Event JSON Schema",
+                "name": "event",
+                "type": "object",
+                "properties": {
+                  "timestamp": {
+                    "description": "Event timestamp epoch",
+                    "type": "integer"
+                  },
+                  "deviceType": {
+                    "description": "Device Type",
+                    "type": "string",
+                    "maxLength": 20
+                  },
+                  "oldValue": {
+                    "description": "Old value",
+                    "type": "number"
+                  },
+                  "newValue": {
+                    "description": "New value",
+                    "type": "number"
+                  },
+                  "deviceID": {
+                    "description": "Device ID",
+                    "type": "integer"
+                  },
+                  "id": {
+                    "description": "Event ID",
+                    "type": "integer"
+                  },
+                  "propertyName": {
+                    "description": "Updated property name",
+                    "type": "string",
+                    "maxLength": 20
+                  },
+                  "type": {
+                    "description": "Event Type",
+                    "enum": [
+                      "DEVICE_EVENT"
+                    ]
+                  }
+                }
+              },
+              {
+                "patternProperties": {
+                  "^propertyName$": true,
+                  "^deviceID$": true,
+                  "^timestamp$": true,
+                  "^deviceType$": true,
+                  "^type$": true,
+                  "^id$": true,
+                  "^newValue$": true,
+                  "^oldValue$": true
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "b": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "Fibaro Home Center Event JSON Schema",
+    "name": "event",
+    "type": "object",
+    "properties": {
+      "id": {
+        "description": "Event ID",
+        "type": "integer"
+      },
+      "type": {
+        "description": "Event Type",
+        "enum": [
+          "DEVICE_EVENT"
+        ]
+      },
+      "timestamp": {
+        "description": "Event timestamp epoch",
+        "type": "integer"
+      },
+      "deviceID": {
+        "description": "Device ID",
+        "type": "integer"
+      },
+      "deviceType": {
+        "description": "Device Type",
+        "type": "string",
+        "maxLength": 20
+      },
+      "propertyName": {
+        "description": "Updated property name",
+        "type": "string",
+        "maxLength": 20
+      },
+      "oldValue": {
+        "description": "Old value",
+        "type": "number"
+      },
+      "newValue": {
+        "description": "New value",
+        "type": "number"
+      }
+    },
+    "additionalProperties": false
+  }
+}

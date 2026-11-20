@@ -1,0 +1,47 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": true,
+  "b_subsumes_a": false,
+  "features": [
+    "anyOf",
+    "const",
+    "properties",
+    "required",
+    "type"
+  ],
+  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/anyOf.json#/tests/5/tests/1",
+  "derived": {
+    "b_subsumes_a": {
+      "counterexample": null
+    }
+  },
+  "a": {
+    "anyOf": [
+      {
+        "properties": {
+          "bar": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "bar"
+        ]
+      },
+      {
+        "properties": {
+          "foo": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "foo"
+        ]
+      }
+    ]
+  },
+  "b": {
+    "const": {
+      "foo": "baz"
+    }
+  }
+}

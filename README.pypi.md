@@ -24,7 +24,7 @@ uvx subsumes-benchmark==<version> diff results/checker --base base/checker
 uvx --from 'subsumes-benchmark[report]==<version>' subsumes-benchmark report results
 ```
 
-- **`corpus`** unpacks the corpus into a new or empty folder: one JSON file per case, in a folder per collection. The [repository](https://github.com/georg-wolflein/subsumes-benchmark#a-case) describes a case and the collections.
+- **`corpus`** unpacks the corpus into a new or empty folder: one JSON file per case, in a folder per collection, below a folder per work that first published its pairs. The [repository](https://github.com/georg-wolflein/subsumes-benchmark#a-case) describes a case and the collections.
 
 - **`run`** asks the checker both directions of every case, one task after the other, and writes one line per task to `results.jsonl`. Where the checker gives a counterexample with a no, a validator is asked whether it is one. [`result.schema.json`](https://github.com/georg-wolflein/subsumes-benchmark/blob/main/schemas/result.schema.json) and [`run.schema.json`](https://github.com/georg-wolflein/subsumes-benchmark/blob/main/schemas/run.schema.json) describe the two files of a run.
 - **`diff`** holds one run against another of the same checker. It fails when an answer is wrong, when a task ended in an error, a crash or a timeout, and when a task that the other run answered is no longer answered.
@@ -46,4 +46,4 @@ The first line is the adapter's when it has started, the second a request, and t
 
 ## Licences
 
-The code is MIT licensed. The corpus keeps the licences of its sources, which the `collection.json` of each collection names: GPL-3.0 for the collections built from the artifact of *JSON Schema Inclusion through Refutational Normalization*, and MIT for the one built from the official JSON Schema Test Suite. The package carries the texts, and so does the corpus, under `licenses/`.
+The code is MIT licensed. The corpus keeps the licences of its sources, which its `collections.json` names for each collection: GPL-3.0 for the collections built from the artifact of *JSON Schema Inclusion through Refutational Normalization*, and MIT for the one built from the official JSON Schema Test Suite. The package carries the texts, and so does the corpus: the folder of each collection has its `LICENSE`.
