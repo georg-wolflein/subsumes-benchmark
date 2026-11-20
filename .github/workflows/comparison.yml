@@ -75,8 +75,9 @@ jobs:
           path: results/${{ matrix.checker }}
           if-no-files-found: error
 
-  # The plot and the table of the runs: the table as the summary of this workflow run, both
-  # with the results as an artifact, and for a release as a file of the release.
+  # The plot and the table of the runs, each a file under comparison/: the table as the
+  # summary of this workflow run, both with the results as an artifact, and for a release as
+  # a file of the release.
   report:
     needs: run
     runs-on: ubuntu-latest
@@ -110,9 +111,9 @@ jobs:
             | zstd -19 -T0 -o comparison.tar.zst
           gh release upload "$GITHUB_REF_NAME" comparison.tar.zst --clobber
 
-  # A pull request that puts the plot and the table into the repository, where the README
-  # shows them. It is opened by a GitHub App: a pull request opened with this workflow's own
-  # token would not start the checks that a merge requires.
+  # A pull request that puts the plot and the table of the report into the repository, and
+  # the table into the README, which shows both. It is opened by a GitHub App: a pull request
+  # opened with this workflow's own token would not start the checks that a merge requires.
   publish:
     needs: report
     if: inputs.limit == '' && vars.PR_BOT_CLIENT_ID != ''
@@ -135,17 +136,26 @@ jobs:
         run: |
           git fetch --quiet origin "$GITHUB_SHA"
           test "$(git rev-parse "$GITHUB_SHA:corpus")" = "$(git rev-parse HEAD:corpus)"
-      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
-        with:
-          python-version: "3.14"
-          enable-cache: true
-      - run: uv sync --extra report
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
-          pattern: results-*
-          path: ${{ runner.temp }}/results
-      - name: Draw the plot and write the table to the README
-        run: uv run subsumes-benchmark report "$RUNNER_TEMP/results" --out comparison --readme README.md
+          name: comparison
+          path: ${{ runner.temp }}/report
+      - name: Take the plot and the table of the report
+        run: |
+          rm -rf comparison
+          cp -R "$RUNNER_TEMP/report/comparison" comparison
+      - name: Put the table into the README
+        # Between the two marker lines, with an empty line on either side of it.
+        run: |
+          grep -qx '<!-- comparison:start -->' README.md
+          grep -qx '<!-- comparison:end -->' README.md
+          awk '
+            FNR == NR { table = table $0 "\n"; next }
+            $0 == "<!-- comparison:start -->" { print; printf "\n%s\n", table; inside = 1; next }
+            $0 == "<!-- comparison:end -->" { inside = 0 }
+            !inside
+          ' comparison/results.md README.md > "$RUNNER_TEMP/README.md"
+          mv "$RUNNER_TEMP/README.md" README.md
       - name: Open or update the pull request
         env:
           GH_TOKEN: ${{ steps.app.outputs.token }}
@@ -155,7 +165,7 @@ jobs:
             echo "The report did not change." >> "$GITHUB_STEP_SUMMARY"
             exit 0
           fi
-          corpus="$(jq -r .corpus "$(ls "$RUNNER_TEMP"/results/*/run.json | head -n 1)")"
+          corpus="$(jq -r .corpus "$(ls "$RUNNER_TEMP"/report/results/*/run.json | head -n 1)")"
           title="docs: update the checker comparison for $corpus"
           git config user.name "$SLUG[bot]"
           git config user.email "$(gh api "/users/$SLUG[bot]" --jq .id)+$SLUG[bot]@users.noreply.github.com"

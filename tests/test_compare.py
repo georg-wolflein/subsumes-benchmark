@@ -1,8 +1,10 @@
 """The comparison of checkers: the tasks, what a report counts, and the folders under ``checkers/``."""
 
 import json
+import os
 import subprocess
 import sys
+import textwrap
 from importlib.metadata import version
 from typing import TYPE_CHECKING
 
@@ -317,11 +319,8 @@ def test_a_report_draws_the_plots_and_gives_the_table(tmp_path: Path) -> None:
     ]
     write(tmp_path / "results" / "one", a_run("one", variant="Rust"), results)
     write(tmp_path / "results" / "two", a_run("two", variant="Python"), results[::-1])
-    page = tmp_path / "README.md"
-    start, end = readme.markers("comparison")
-    page.write_text(f"before\n{start}\nold\n{end}\nafter\n", encoding="utf-8")
 
-    text = report(tmp_path / "results", tmp_path / "comparison", page)
+    text = report(tmp_path / "results", tmp_path / "comparison")
 
     # A row for every run, named by a link to where the checker lives.
     rows = [line for line in text.splitlines() if line.startswith("| [")]
@@ -336,19 +335,63 @@ def test_a_report_draws_the_plots_and_gives_the_table(tmp_path: Path) -> None:
     assert sorted(path.name for path in (tmp_path / "comparison").iterdir()) == [
         "chart-dark.svg",
         "chart-light.svg",
+        "results.md",
     ]
     for name in ("chart-light.svg", "chart-dark.svg"):
         assert (tmp_path / "comparison" / name).read_text(encoding="utf-8").startswith("<?xml")
-    assert page.read_text(encoding="utf-8") == f"before\n{start}\n\n{text}\n\n{end}\nafter\n"
-    # Without a page the report is the same and writes nothing else.
-    assert report(tmp_path / "results", tmp_path / "again") == text
+    assert (tmp_path / "comparison" / "results.md").read_text(encoding="utf-8") == f"{text}\n"
+
+
+def step(name: str) -> str:
+    """The script of a step of the ``Comparison`` workflow."""
+    workflow = (ROOT / ".github" / "workflows" / "comparison.yml").read_text(encoding="utf-8")
+    _, _, rest = workflow.partition(f"      - name: {name}\n")
+    _, _, script = rest.partition("        run: |\n")
+    lines = script.split("\n")
+    end = next(i for i, line in enumerate(lines) if line and not line.startswith(" " * 10))
+    return textwrap.dedent("\n".join(lines[:end]))
+
+
+def test_the_workflow_puts_the_table_between_the_markers(tmp_path: Path) -> None:
+    # The step is a shell script, which nothing else runs before a release does.
+    start, end = readme.markers("comparison")
+    page = tmp_path / "README.md"
+    page.write_text(f"before\n{start}\n\nold\nolder\n\n{end}\nafter\n", encoding="utf-8")
+    table = "| a | 50% of \\n |\n\nMeasured on `v1`."
+    (tmp_path / "comparison").mkdir()
+    (tmp_path / "comparison" / "results.md").write_text(f"{table}\n", encoding="utf-8")
+    (tmp_path / "temp").mkdir()
+    script = step("Put the table into the README")
+
+    def run() -> subprocess.CompletedProcess[str]:
+        return subprocess.run(
+            ["bash", "-e", "-c", script],
+            cwd=tmp_path,
+            env={**os.environ, "RUNNER_TEMP": str(tmp_path / "temp")},
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+
+    assert run().returncode == 0
+    assert page.read_text(encoding="utf-8") == f"before\n{start}\n\n{table}\n\n{end}\nafter\n"
+    # It puts the table where the build would put it, so that a second time changes nothing.
+    assert readme.written(page.read_text(encoding="utf-8"), "comparison", table) == page.read_text(
+        encoding="utf-8"
+    )
+    assert run().returncode == 0
+    assert page.read_text(encoding="utf-8") == f"before\n{start}\n\n{table}\n\n{end}\nafter\n"
+    # A README without the markers fails the step and stays as it is.
+    page.write_text("nothing to replace\n", encoding="utf-8")
+    assert run().returncode != 0
+    assert page.read_text(encoding="utf-8") == "nothing to replace\n"
 
 
 def test_a_readme_without_the_markers_is_left_alone(tmp_path: Path) -> None:
     page = tmp_path / "README.md"
     page.write_text("nothing to replace\n", encoding="utf-8")
     with pytest.raises(readme.ReadmeError, match="markers"):
-        readme.update(page, "comparison", "a block")
+        readme.update(page, "collections", "a block")
     assert page.read_text(encoding="utf-8") == "nothing to replace\n"
 
 

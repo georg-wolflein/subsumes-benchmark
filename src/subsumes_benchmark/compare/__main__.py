@@ -62,14 +62,13 @@ def _main() -> None:
 
     reporting = commands.add_parser(
         "report",
-        help="draw how fast the checkers of the runs in a folder are, and print their results",
-        description="Writes a plot for light and for dark pages to --out, and prints a table "
-        "with a row for every checker.",
+        help="draw how fast the checkers of the runs in a folder are, and table their results",
+        description="Writes a plot for light and for dark pages to --out, and a table with a "
+        "row for every checker as results.md, which it prints too.",
     )
     reporting.add_argument("results", type=Path, help="a folder with one folder per checker")
-    reporting.add_argument("--out", type=Path, default=Path("comparison"), help="where plots go")
     reporting.add_argument(
-        "--readme", type=Path, help="a README to write the table to, between its markers"
+        "--out", type=Path, default=Path("comparison"), help="where the plots and the table go"
     )
 
     differing = commands.add_parser(
@@ -129,7 +128,7 @@ def _main() -> None:
         # runs and nothing of the corpus.
         from subsumes_benchmark.compare.report import report  # noqa: PLC0415
 
-        print(report(args.results, args.out, args.readme))
+        print(report(args.results, args.out))
         return
     if not args.corpus.is_dir():
         sys.exit(

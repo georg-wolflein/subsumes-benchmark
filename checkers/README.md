@@ -25,15 +25,15 @@ uvx subsumes-benchmark corpus corpus
 uvx subsumes-benchmark run path/to/checker
 # Hold the run against an earlier one, as a comment for a pull request.
 uvx subsumes-benchmark diff results/checker --base base/checker
-# Plot how fast the checkers under results/ are, and print their results as a table.
+# Plot how fast the checkers under results/ are, and write their results as a table.
 uvx --from 'subsumes-benchmark[report]' subsumes-benchmark report results
 ```
 
 - **`run`** takes the folder of a checker, which can be anywhere, and writes a run to `results/<name of the folder>/`: `results.jsonl` with one line per task and `run.json` with what ran, as [`result.schema.json`](../schemas/result.schema.json) and [`run.schema.json`](../schemas/run.schema.json) describe them.
 - **`diff`** lists the answers by collection with what changed, the wrong answers, and the tasks that the base answered and the change does not. It fails when an answer is wrong, when a task ended in an error, a crash or a timeout, and when a task of the base is no longer answered, unless `--allow-lost` accepts that.
-- **`report`** writes the plot for light and for dark pages to `comparison/`, and `--readme` puts the table between the `comparison` markers of a README.
+- **`report`** writes three files to `comparison/`, or to the folder that `--out` names: the plot for light and for dark pages, and the table as `results.md`, which it prints too.
 
-The `Comparison` workflow runs every checker here over every task after each release, and opens a pull request with the plot and the table of the main README.
+The `Comparison` workflow runs every checker here over every task after each release, and opens a pull request with the plot and the table, which it also puts into the main README.
 
 ## How a run is measured
 

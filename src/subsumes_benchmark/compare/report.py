@@ -1,8 +1,9 @@
 """Reporting on a set of runs: a plot for light and dark pages, and a table.
 
 The plot shows how fast each checker solves the tasks, and the table has a row for each
-checker with what it solved, where it was wrong and how fast it was. The plot is drawn with
-matplotlib, which the ``report`` extra brings; a run does not need it.
+checker with what it solved, where it was wrong and how fast it was. Each is a file of its
+own, so that a page can show them where it likes. The plot is drawn with matplotlib, which
+the ``report`` extra brings; a run does not need it.
 """
 
 import math
@@ -12,7 +13,6 @@ from typing import TYPE_CHECKING
 import matplotlib as mpl
 from matplotlib import pyplot as plt
 
-from subsumes_benchmark import readme
 from subsumes_benchmark.compare.summary import Entry, read_entries
 from subsumes_benchmark.compare.words import count, duration, share, table
 
@@ -23,6 +23,8 @@ if TYPE_CHECKING:
     from matplotlib.axes import Axes
 
 CHART_FILES = {"light": "chart-light.svg", "dark": "chart-dark.svg"}
+# The table of the checkers, as Markdown.
+TABLE_FILE = "results.md"
 
 LINE_STYLES = ("solid", (0, (4, 2)), (0, (1, 2)))
 # How many steps a curve of the plot keeps; more would only make the file larger.
@@ -196,7 +198,7 @@ def _linked(entry: Entry) -> str:
 
 
 def block(entries: Sequence[Entry]) -> str:
-    """What a README shows of the runs: a row for every checker, and what they ran on."""
+    """The table of the runs: a row for every checker, and a line on what they ran on."""
     first = entries[0]
     rows = []
     for entry in entries:
@@ -222,13 +224,12 @@ def block(entries: Sequence[Entry]) -> str:
     return f"{table(headers, rows)}\n\n{scope}"
 
 
-def report(results: Path, out: Path, page: Path | None = None) -> str:
-    """Draw the two plots for the runs under ``results`` and give the table of the checkers.
+def report(results: Path, out: Path) -> str:
+    """Write the two plots and the table for the runs under ``results``.
 
     Args:
         results: A folder with one folder per checker, as ``run`` wrote them.
-        out: The folder for the plots.
-        page: A README whose ``comparison`` part is to be the table, if any.
+        out: The folder for the plots and the table.
 
     Returns:
         The table and the line on what the checkers ran on, as Markdown.
@@ -243,6 +244,5 @@ def report(results: Path, out: Path, page: Path | None = None) -> str:
     for name, theme in THEMES.items():
         draw(entries, theme, caption, out / CHART_FILES[name])
     text = block(entries)
-    if page is not None:
-        readme.update(page, "comparison", text)
+    (out / TABLE_FILE).write_text(f"{text}\n", encoding="utf-8")
     return text

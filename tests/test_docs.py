@@ -33,6 +33,12 @@ def test_the_table_of_the_collections_is_that_of_the_corpus() -> None:
     assert readme.read(ROOT / "README.md", "collections") == collections_table(CORPUS)
 
 
+def test_the_table_of_the_checkers_is_that_of_the_report() -> None:
+    # The `Comparison` workflow puts the file of the report into the README.
+    table = (ROOT / "comparison" / "results.md").read_text(encoding="utf-8")
+    assert readme.read(ROOT / "README.md", "comparison") == table.strip("\n")
+
+
 def test_the_readme_links_by_full_urls_only() -> None:
     # It is the page of the package on PyPI too, where a path leads nowhere.
     assert [link for link in links("README.md") if not link.startswith("https://")] == []

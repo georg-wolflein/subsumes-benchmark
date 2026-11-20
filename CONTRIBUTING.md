@@ -65,6 +65,6 @@ make corpus
 | `src/subsumes_benchmark/compare/` | Running a checker over the tasks, the report on runs, and deriving labels |
 | `sources/` | The upstream repositories as submodules, fetched only to rebuild |
 | `checkers/` | One folder per checker of the comparison, with the adapter that makes it answer |
-| `comparison/` | The plot of the latest comparison, written by the `Comparison` workflow |
+| `comparison/` | The plot and the table of the latest comparison, written by the `Comparison` workflow |
 | `docs/` | How the corpus is built |
 | `tests/` | The layout of the corpus, the validity of its schemas, the labels that can be checked, the runner and the report |

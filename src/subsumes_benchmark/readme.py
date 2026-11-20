@@ -14,7 +14,8 @@ type Part = Literal["collections", "comparison"]
 """A part of the README that is written from data.
 
 - ``collections``: the table of the collections, which the build writes from the corpus.
-- ``comparison``: the table of the checkers with their results, which a report writes.
+- ``comparison``: the table of the checkers with their results. A report writes it as a file,
+  and the ``Comparison`` workflow puts that file here.
 """
 
 
