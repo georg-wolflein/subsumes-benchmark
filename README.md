@@ -21,6 +21,9 @@ The plot and results table below show the proportion of tasks solved within a gi
   <img alt="For each checker, the share of the tasks with a label that it solved within a time" src="https://raw.githubusercontent.com/georg-wolflein/subsumes-benchmark/main/comparison/chart-light.svg">
 </picture>
 
+<details>
+<summary>Results table</summary>
+
 <!-- comparison:start -->
 
 | Checker | Version | Correct results | Incorrect results | Fastest 50% within | Fastest 90% within |
@@ -34,6 +37,8 @@ The plot and results table below show the proportion of tasks solved within a gi
 | [jsonsubschema](https://github.com/IBM/jsonsubschema) | 0.0.8 | 38.6% | 15.5% | — | — |
 
 <!-- comparison:end -->
+
+</details>
 
 The results were measured on <!-- version:start -->[`v0.10.0`](https://github.com/georg-wolflein/subsumes-benchmark/releases/tag/v0.10.0)<!-- version:end --> of the corpus.
 
