@@ -1,10 +1,11 @@
-"""Reporting on a set of runs: a plot for light and dark pages, and a table.
+"""Reporting on a set of runs: a comparison as JSON, a plot for light and dark pages, and a table.
 
-The plot shows how fast each checker solves the tasks, with one curve per checker, and the
-table has a row for each run with what it solved, where it was wrong and how fast it was.
-Each is a file of its own, and so is what the runs are over, as JSON, so that a page can
-show them where it likes. The plot is drawn with matplotlib, which the ``report`` extra
-brings; a run does not need it.
+The comparison holds as much of the runs as a report shows, and the plot and the table are
+made from it alone, so that both can be made again from the file. The plot shows how fast
+each checker solves the tasks, with one curve per checker, and the table has a row for each
+run with what it solved, where it was wrong and how fast it was. Each is a file of its own,
+so that a page can show them where it likes. The plot is drawn with matplotlib, which the
+``report`` extra brings; a run does not need it.
 """
 
 from dataclasses import dataclass
@@ -14,7 +15,7 @@ from typing import TYPE_CHECKING
 import matplotlib as mpl
 from matplotlib import pyplot as plt
 
-from subsumes_benchmark.compare.summary import Entry, Summary, read_entries
+from subsumes_benchmark.compare.summary import THOUSANDTHS, Comparison, read_entries
 from subsumes_benchmark.compare.words import NOTHING, bold, duration, share, table
 
 if TYPE_CHECKING:
@@ -23,11 +24,13 @@ if TYPE_CHECKING:
 
     from matplotlib.axes import Axes
 
+    from subsumes_benchmark.generated.comparison import ComparedRun
+
 CHART_FILES = {"light": "chart-light.svg", "dark": "chart-dark.svg"}
 # The table of the checkers, as Markdown.
 TABLE_FILE = "results.md"
-# What the checkers ran on, as JSON: ``schemas/summary.schema.json`` says what it holds.
-SUMMARY_FILE = "summary.json"
+# The comparison, as JSON: ``schemas/comparison.schema.json`` says what it holds.
+COMPARISON_FILE = "comparison.json"
 
 # How many steps a curve of the plot keeps; more would only make the file larger.
 STEPS = 250
@@ -85,30 +88,33 @@ def _tick(seconds: float) -> str:
     return f"{seconds * 1e3:g} ms" if seconds < 1 else f"{seconds:g} s"
 
 
-def _thinned(seconds: Sequence[float], total: int) -> tuple[list[float], list[float]]:
-    """The steps of a cumulative curve, a few hundred of them however many tasks there are."""
+def _thinned(seconds: Sequence[float]) -> tuple[list[float], list[float]]:
+    """The steps of the curve of a run, a few hundred of them: the times and the shares."""
     stride = max(1, len(seconds) // STEPS)
     kept = sorted({*range(stride - 1, len(seconds), stride), len(seconds) - 1} - {-1})
-    return [seconds[i] for i in kept], [(i + 1) / total for i in kept]
+    return [seconds[i] for i in kept], [(i + 1) / THOUSANDTHS for i in kept]
 
 
-def _speed(ax: Axes, entries: Sequence[Entry], theme: Theme) -> None:
-    """For every checker, the share of the tasks with a label it solved within a time."""
-    timeout = entries[0].run.timeout
+def _solved(run: ComparedRun, comparison: Comparison) -> float:
+    """The share of the tasks with a label that a run solved."""
+    # Nothing is solved where nothing has a label.
+    return run.outcomes.correct / (comparison.labelled_tasks or 1)
+
+
+def _speed(ax: Axes, runs: Sequence[ComparedRun], comparison: Comparison, theme: Theme) -> None:
+    """For every run, the share of the tasks with a label it solved within a time."""
+    timeout = comparison.timeout
     # The axis starts at the power of ten below all but the very fastest tasks.
     early = min(
-        (seconds[len(seconds) // 100] for e in entries if (seconds := e.solved_seconds())),
+        (seconds[len(seconds) // 100] for run in runs if (seconds := run.seconds_to_solve)),
         default=timeout / 10,
     )
     lowest = 10.0**-6
     while lowest * 10 <= early:
         lowest *= 10
-    for entry, colour in zip(entries, theme.series, strict=False):
-        seconds = [max(s, lowest) for s in entry.solved_seconds()]
-        # Nothing is solved where nothing has a label, so the curve then stays at zero.
-        total = len(entry.labelled()) or 1
-        xs, ys = _thinned(seconds, total)
-        ax.step([lowest, *xs, timeout], [0.0, *ys, len(seconds) / total], where="post",
+    for run, colour in zip(runs, theme.series, strict=False):
+        xs, ys = _thinned([max(s, lowest) for s in run.seconds_to_solve])
+        ax.step([lowest, *xs, timeout], [0.0, *ys, _solved(run, comparison)], where="post",
                 color=colour, lw=2)  # fmt: skip
     ax.set_xscale("log")
     ax.set_xlim(lowest, timeout)
@@ -164,7 +170,7 @@ def _apart(wanted: Sequence[float], gap: float) -> list[float]:
     return heights
 
 
-def draw(entries: Sequence[Entry], theme: Theme, path: Path) -> None:
+def draw(comparison: Comparison, theme: Theme, path: Path) -> None:
     """Draw the plot of a report: how fast each checker solves the tasks.
 
     A checker has one curve, that of the variant that solved most, since the variants of a
@@ -173,18 +179,18 @@ def draw(entries: Sequence[Entry], theme: Theme, path: Path) -> None:
     the name with the highest share is bold. The file is an SVG, or what the suffix of
     ``path`` names.
     """
-    checkers: dict[str, Entry] = {}
-    for entry in entries:
-        best = checkers.setdefault(entry.run.checker.label, entry)
-        if entry.solved() > best.solved():
-            checkers[entry.run.checker.label] = entry
+    checkers: dict[str, ComparedRun] = {}
+    for run in comparison.runs:
+        best = checkers.setdefault(run.checker.label, run)
+        if run.outcomes.correct > best.outcomes.correct:
+            checkers[run.checker.label] = run
     drawn = list(checkers.values())
     if len(drawn) > len(theme.series):
         raise ValueError(f"the plot has colours for {len(theme.series)} checkers, not {len(drawn)}")
-    shares = [share(entry.solved(), len(entry.labelled())) for entry in drawn]
+    shares = [share(run.outcomes.correct, comparison.labelled_tasks) for run in drawn]
     names = [f"{label}  {solved}" for label, solved in zip(checkers, shares, strict=True)]
     # The best is whoever shows the share of the checker that solved most.
-    highest = shares[max(range(len(drawn)), key=lambda i: drawn[i].solved())]
+    highest = shares[max(range(len(drawn)), key=lambda i: drawn[i].outcomes.correct)]
     weights = ["bold" if solved == highest else "normal" for solved in shares]
 
     settings: dict[str, object] = {
@@ -208,11 +214,11 @@ def draw(entries: Sequence[Entry], theme: Theme, path: Path) -> None:
     with mpl.rc_context(settings):  # ty: ignore[invalid-argument-type]
         fig = plt.figure(figsize=(width, height))
         speed = fig.add_axes((left / width, bottom / height, wide / width, tall / height))
-        _speed(speed, drawn, theme)
+        _speed(speed, drawn, comparison, theme)
         # A dot marks where a curve ends, and its name stands next to the dot, or as close
         # to it as the other names leave room. Both are placed in the coordinates of the
         # plot, where 1 is its right edge.
-        ends = [len(entry.solved_seconds()) / (len(entry.labelled()) or 1) for entry in drawn]
+        ends = [_solved(run, comparison) for run in drawn]
         heights = _apart(ends, NAME_GAP / tall)
         across = speed.transAxes
         named = zip(names, weights, theme.series, ends, heights, strict=False)
@@ -230,9 +236,17 @@ def draw(entries: Sequence[Entry], theme: Theme, path: Path) -> None:
 # --------------------------------------------------------------------------- the table
 
 
-def _linked(entry: Entry) -> str:
-    """The name of a checker as a link to where it lives."""
-    return f"[{entry.name}]({entry.run.checker.homepage})"
+def _linked(run: ComparedRun) -> str:
+    """The name of a checker, with its variant, as a link to where it lives."""
+    checker = run.checker
+    name = checker.label if checker.variant is None else f"{checker.label} ({checker.variant})"
+    return f"[{name}]({checker.homepage})"
+
+
+def _within(run: ComparedRun, thousandths: int) -> float | None:
+    """The time within which a run solved so many thousandths of the labelled tasks, if it did."""
+    times = run.seconds_to_solve
+    return times[thousandths - 1] if thousandths <= len(times) else None
 
 
 def _marked[T: (int, float)](
@@ -251,7 +265,7 @@ def _marked[T: (int, float)](
     return [bold(cell) if cell == winner else cell for cell in cells]
 
 
-def block(entries: Sequence[Entry]) -> str:
+def block(comparison: Comparison) -> str:
     """The table of the runs: a row for every run, the one that solved most first.
 
     Runs that solved equally many keep the order they came in. A correct result is a task
@@ -259,42 +273,49 @@ def block(entries: Sequence[Entry]) -> str:
     the tasks with a label. The best value of every column is bold: the most correct results,
     the fewest incorrect ones and the shortest times.
     """
-    ranked = sorted(entries, key=lambda entry: -entry.solved())
-    labelled = len(ranked[0].labelled())
+    ranked = sorted(comparison.runs, key=lambda run: -run.outcomes.correct)
 
     def of_labelled(part: int) -> str:
-        return share(part, labelled)
+        return share(part, comparison.labelled_tasks)
 
-    wrong = [(counts := entry.counts())["wrong_yes"] + counts["wrong_no"] for entry in ranked]
+    wrong = [run.outcomes.wrong_yes + run.outcomes.wrong_no for run in ranked]
     columns = [
-        [_linked(entry) for entry in ranked],
-        [entry.run.checker.version for entry in ranked],
-        _marked([entry.solved() for entry in ranked], of_labelled, max),
+        [_linked(run) for run in ranked],
+        [run.checker.version for run in ranked],
+        _marked([run.outcomes.correct for run in ranked], of_labelled, max),
         _marked(wrong, of_labelled, min),
-        _marked([entry.seconds_to_solve(0.5) for entry in ranked], duration, min),
-        _marked([entry.seconds_to_solve(0.9) for entry in ranked], duration, min),
+        _marked([_within(run, 500) for run in ranked], duration, min),
+        _marked([_within(run, 900) for run in ranked], duration, min),
     ]
     headers = ["Checker", "Version", "Correct results", "Incorrect results",
                "Fastest 50% within", "Fastest 90% within"]  # fmt: skip
     return table(headers, [list(row) for row in zip(*columns, strict=True)])
 
 
-def report(results: Path, out: Path) -> str:
-    """Write the two plots and the table for the runs under ``results``, and what they are over.
+def report(source: Path, out: Path) -> str:
+    """Write the report on some runs: their comparison, the two plots and the table.
 
     Args:
-        results: A folder with one folder per checker, as ``run`` wrote them.
-        out: The folder for the plots, the table and the summary.
+        source: A folder with one folder per checker, as ``run`` wrote them, or the
+            ``comparison.json`` of an earlier report, which the plots and the table are
+            then made from again.
+        out: The folder for the files of the report.
 
     Returns:
         The table and a line on what the checkers ran on, as Markdown.
+
+    Raises:
+        ReportError: The folder holds no runs, or runs that are not over the same tasks.
+        ConfigError: The file is not what the schema of a comparison says.
     """
-    entries = read_entries(results)
-    summary = Summary.of(entries)
     out.mkdir(parents=True, exist_ok=True)
+    if source.is_dir():
+        comparison = Comparison.of(read_entries(source))
+        comparison.write(out / COMPARISON_FILE)
+    else:
+        comparison = Comparison.read(source)
     for name, theme in THEMES.items():
-        draw(entries, theme, out / CHART_FILES[name])
-    text = block(entries)
+        draw(comparison, theme, out / CHART_FILES[name])
+    text = block(comparison)
     (out / TABLE_FILE).write_text(f"{text}\n", encoding="utf-8")
-    (out / SUMMARY_FILE).write_text(f"{summary.model_dump_json(indent=2)}\n", encoding="utf-8")
-    return f"{text}\n\n{summary.line()}"
+    return f"{text}\n\n{comparison.line()}"

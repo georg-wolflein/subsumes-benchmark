@@ -1,6 +1,5 @@
 """What a report says about the runs, as numbers: outcomes, solved shares and times."""
 
-import math
 from collections import Counter
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Literal, Self, assert_never
@@ -15,6 +14,12 @@ from subsumes_benchmark.compare.results import (
 )
 from subsumes_benchmark.compare.witness import refuted
 from subsumes_benchmark.compare.words import count
+from subsumes_benchmark.generated.comparison import (
+    ComparedChecker,
+    ComparedRun,
+    ComparisonSpec,
+    Outcomes,
+)
 from subsumes_benchmark.generated.result import (
     Crash,
     Error,
@@ -24,7 +29,6 @@ from subsumes_benchmark.generated.result import (
     Unsupported,
     Yes,
 )
-from subsumes_benchmark.generated.summary import SummarySpec
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Sequence
@@ -42,6 +46,11 @@ type Outcome = Literal["correct", "unlabelled", "wrong_no", "wrong_yes", "no_ans
 - ``no_answer``: the checker declined, failed, or cannot read the schemas.
 - ``timeout``: the checker did not answer in time.
 """
+
+
+# How many points the curve of a run has at most: one for each thousandth of the tasks with a
+# label, which is finer than a plot shows.
+THOUSANDTHS = 1000
 
 
 class ReportError(Exception):
@@ -99,15 +108,47 @@ class Entry:
         solved = (seconds(r) for r in self.results if outcome(r) == "correct")
         return sorted(taken for taken in solved if taken is not None)
 
-    def seconds_to_solve(self, share: float) -> float | None:
-        """The time within which the checker solved this share of the labelled tasks, if it did.
+    def seconds_to_solve(self) -> Sequence[float]:
+        """The time within which the checker solved each thousandth of the labelled tasks.
 
-        This is the time of the slowest task among the fastest ones that make up the share,
-        so tasks that were not solved count as slower than every task that was.
+        The first is the time within which it solved one thousandth of them, and the list
+        ends with the last thousandth that it solved in full. A time is that of the slowest
+        task among the fastest ones that make up the share, so tasks that were not solved
+        count as slower than every task that was.
         """
         solved = self.solved_seconds()
-        needed = math.ceil(share * len(self.labelled()))
-        return solved[needed - 1] if 0 < needed <= len(solved) else None
+        labelled = len(self.labelled())
+        times = []
+        for thousandths in range(1, THOUSANDTHS + 1):
+            # The tasks that make up the share, rounded up, in whole numbers.
+            needed = -(-thousandths * labelled // THOUSANDTHS)
+            if not 0 < needed <= len(solved):
+                break
+            times.append(solved[needed - 1])
+        return times
+
+    def compared(self) -> ComparedRun:
+        """As much of the run as a report shows."""
+        checker = self.run.checker
+        counts = self.counts()
+        return ComparedRun(
+            name=self.run.name,
+            checker=ComparedChecker(
+                label=checker.label,
+                variant=checker.variant,
+                version=checker.version,
+                homepage=checker.homepage,
+            ),
+            outcomes=Outcomes(
+                correct=counts["correct"],
+                unlabelled=counts["unlabelled"],
+                wrong_no=counts["wrong_no"],
+                wrong_yes=counts["wrong_yes"],
+                no_answer=counts["no_answer"],
+                timeout=counts["timeout"],
+            ),
+            seconds_to_solve=list(self.seconds_to_solve()),
+        )
 
 
 def read_entry(folder: Path) -> Entry:
@@ -143,22 +184,24 @@ def read_entries(folder: Path) -> Sequence[Entry]:
     return entries
 
 
-class Summary(SummarySpec):
-    """What the runs of a report are over: the ``summary.json`` of a report."""
+class Comparison(ComparisonSpec):
+    """The runs of a report, as much of them as it shows: the ``comparison.json`` of a report."""
 
     @classmethod
     def of(cls, entries: Sequence[Entry]) -> Self:
-        """What the runs are over, which ``read_entries`` has checked is the same for all."""
+        """The comparison of some runs, which ``read_entries`` has checked are over the same."""
         first = entries[0]
-        cases = {result.case for result in first.results}
         return cls(
             corpus=first.run.corpus,
-            collections=len({case.rsplit("/", 1)[0] for case in cases}),
-            cases=len(cases),
+            timeout=first.run.timeout,
             tasks=len(first.results),
             labelled_tasks=len(first.labelled()),
-            timeout=first.run.timeout,
+            runs=[entry.compared() for entry in entries],
         )
+
+    def write(self, path: Path) -> None:
+        # A key that does not apply is left out: a checker without a variant has none.
+        path.write_text(f"{self.model_dump_json(indent=2, exclude_none=True)}\n", encoding="utf-8")
 
     def line(self) -> str:
         """A line for a person: the corpus, its tasks and the time for each."""

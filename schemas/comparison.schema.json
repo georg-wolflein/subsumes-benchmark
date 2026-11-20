@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/georg-wolflein/subsumes-benchmark/blob/main/schemas/comparison.schema.json",
+  "description": "The runs of several checkers over the same tasks, as much of them as a report shows: what the runs are over, and for each run how its tasks ended and how fast the checker solved them. It is the comparison.json of a report, and the plots and the table of the report are drawn from it alone.",
+  "type": "object",
+  "required": [
+    "corpus",
+    "timeout",
+    "tasks",
+    "labelled_tasks",
+    "runs"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "corpus": {
+      "description": "The release that the corpus is of, as v0.5.0, or for a run from a checkout of the repository what git describe says about its commit, as v0.5.0-3-gabc1234.",
+      "type": "string"
+    },
+    "timeout": {
+      "description": "The seconds that the checker had for one task.",
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "tasks": {
+      "description": "How many tasks each run has.",
+      "type": "integer",
+      "minimum": 0
+    },
+    "labelled_tasks": {
+      "description": "How many of the tasks have a label. The shares of a report are shares of these.",
+      "type": "integer",
+      "minimum": 0
+    },
+    "runs": {
+      "description": "The runs, ordered by the label of the checker and then by the name of the run, whatever the results are.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/ComparedRun"
+      }
+    }
+  },
+  "$defs": {
+    "ComparedRun": {
+      "description": "One checker's run, as much of it as a report shows.",
+      "type": "object",
+      "required": [
+        "name",
+        "checker",
+        "outcomes",
+        "seconds_to_solve"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The name of the run, which is the name of the folder of the checker.",
+          "type": "string"
+        },
+        "checker": {
+          "$ref": "#/$defs/ComparedChecker"
+        },
+        "outcomes": {
+          "$ref": "#/$defs/Outcomes"
+        },
+        "seconds_to_solve": {
+          "description": "The time within which the checker solved each thousandth of the tasks with a label: the first is the time within which it solved one thousandth of them, the second two thousandths, and so on. A time is that of the slowest task among the fastest ones that make up the share, so tasks that were not solved count as slower than every task that was. The list ends with the last thousandth that the checker solved in full.",
+          "type": "array",
+          "maxItems": 1000,
+          "items": {
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "ComparedChecker": {
+      "description": "A checker of the comparison, as much of the checker.json in its folder as a report shows.",
+      "type": "object",
+      "required": [
+        "label",
+        "version",
+        "homepage"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "description": "The checker's name in a report. Folders with the same label are variants of one checker.",
+          "type": "string"
+        },
+        "variant": {
+          "description": "What tells this folder from another one with the same label, such as the language of the package the checker is used through.",
+          "type": "string"
+        },
+        "version": {
+          "description": "The version the folder pins, as the report states it.",
+          "type": "string"
+        },
+        "homepage": {
+          "description": "Where the checker lives.",
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "Outcomes": {
+      "description": "How many tasks of a run ended each way. Every task ends one way, so the six add up to the tasks of the run.",
+      "type": "object",
+      "required": [
+        "correct",
+        "unlabelled",
+        "wrong_no",
+        "wrong_yes",
+        "no_answer",
+        "timeout"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "correct": {
+          "description": "The checker answered what the corpus says. The task is solved.",
+          "type": "integer",
+          "minimum": 0
+        },
+        "unlabelled": {
+          "description": "The checker answered and the corpus claims nothing, so the answer can be held against nothing.",
+          "type": "integer",
+          "minimum": 0
+        },
+        "wrong_no": {
+          "description": "The checker said no where A subsumes B, or gave a counterexample with its no that is none. The second needs no label.",
+          "type": "integer",
+          "minimum": 0
+        },
+        "wrong_yes": {
+          "description": "The checker said yes where A does not subsume B.",
+          "type": "integer",
+          "minimum": 0
+        },
+        "no_answer": {
+          "description": "The checker declined, failed, or cannot read the schemas.",
+          "type": "integer",
+          "minimum": 0
+        },
+        "timeout": {
+          "description": "The checker did not answer in time.",
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

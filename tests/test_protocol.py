@@ -18,7 +18,7 @@ from pydantic import TypeAdapter, ValidationError
 from reading import ROOT, read
 from runs import a_result, a_run, a_witness, write
 from subsumes_benchmark.compare.results import ENDINGS, Run, read_results, read_run
-from subsumes_benchmark.compare.summary import Summary, read_entries
+from subsumes_benchmark.compare.summary import Comparison, read_entries
 from subsumes_benchmark.generated.ready import ReadySpec
 from subsumes_benchmark.generated.reply import ReplySpec
 from subsumes_benchmark.generated.request import RequestSpec
@@ -35,7 +35,7 @@ READERS: dict[str, TypeAdapter] = {
     "reply": TypeAdapter(ReplySpec),
     "result": TypeAdapter(ResultSpec),
     "run": TypeAdapter(Run),
-    "summary": TypeAdapter(Summary),
+    "comparison": TypeAdapter(Comparison),
 }
 
 
@@ -65,10 +65,21 @@ def reads(name: str, document: Json) -> bool:
 TASK: dict[str, Json] = {"case": "c/1", "direction": "a_subsumes_b", "expected": None}
 TIMED: dict[str, Json] = {"seconds": 0.001, "wall_seconds": 0.002}
 A_RUN = json.loads(a_run(variant="Rust").model_dump_json(by_alias=True, exclude_unset=True))
-A_SUMMARY: dict[str, Json] = {
-    "corpus": "v1.0.0", "collections": 2, "cases": 3, "tasks": 6, "labelled_tasks": 5,
-    "timeout": 10.0,
+A_COMPARED: dict[str, Json] = {
+    "name": "one",
+    "checker": {"label": "One", "variant": "Rust", "version": "1.0", "homepage": "https://example.com"},
+    "outcomes": {"correct": 3, "unlabelled": 1, "wrong_no": 0, "wrong_yes": 1, "no_answer": 1, "timeout": 0},
+    "seconds_to_solve": [0.001, 0.001, 0.25],
 }  # fmt: skip
+A_COMPARISON: dict[str, Json] = {
+    "corpus": "v1.0.0", "timeout": 10.0, "tasks": 6, "labelled_tasks": 5, "runs": [A_COMPARED],
+}  # fmt: skip
+
+
+def compared(**changed: Json) -> dict[str, Json]:
+    """A comparison whose one run has some keys changed."""
+    return {**A_COMPARISON, "runs": [{**A_COMPARED, **changed}]}
+
 
 VALID: dict[str, list[Json]] = {
     "ready": [{"ready": True}],
@@ -101,10 +112,13 @@ VALID: dict[str, list[Json]] = {
         {**TASK, "failure": "crash", "message": "the adapter died", "wall_seconds": 0.0},
     ],
     "run": [A_RUN, {**A_RUN, "timeout": 10, "wall_seconds": 0, "jobs": 8}],
-    "summary": [
-        A_SUMMARY,
-        {**A_SUMMARY, "corpus": "v1.0.0-3-gabc1234", "timeout": 1},
-        {**A_SUMMARY, "collections": 0, "cases": 0, "tasks": 0, "labelled_tasks": 0},
+    "comparison": [
+        A_COMPARISON,
+        {**A_COMPARISON, "corpus": "v1.0.0-3-gabc1234", "timeout": 1, "tasks": 0, "labelled_tasks": 0},
+        {**A_COMPARISON, "runs": [A_COMPARED, A_COMPARED]},
+        compared(seconds_to_solve=[]),
+        compared(seconds_to_solve=[0, 1]),
+        compared(checker={"label": "One", "version": "1.0", "homepage": "https://example.com"}),
     ],
 }  # fmt: skip
 
@@ -181,14 +195,24 @@ INVALID: dict[str, list[tuple[Json, bool]]] = {
         ({**A_RUN, "label": "One"}, False),
         ({key: value for key, value in A_RUN.items() if key != "jobs"}, False),
     ],
-    "summary": [
-        ({**A_SUMMARY, "timeout": 0}, False),
-        ({**A_SUMMARY, "tasks": -1}, False),
-        ({**A_SUMMARY, "labelled_tasks": 2.5}, False),
-        ({**A_SUMMARY, "collections": "2"}, False),
-        ({**A_SUMMARY, "corpus": None}, False),
-        ({**A_SUMMARY, "checkers": 7}, False),
-        ({key: value for key, value in A_SUMMARY.items() if key != "cases"}, False),
+    "comparison": [
+        ({**A_COMPARISON, "timeout": 0}, False),
+        ({**A_COMPARISON, "tasks": -1}, False),
+        ({**A_COMPARISON, "labelled_tasks": 2.5}, False),
+        ({**A_COMPARISON, "corpus": None}, False),
+        ({**A_COMPARISON, "collections": 7}, False),
+        ({**A_COMPARISON, "runs": []}, False),
+        ({key: value for key, value in A_COMPARISON.items() if key != "tasks"}, False),
+        (compared(seconds_to_solve=[-0.001]), False),
+        (compared(seconds_to_solve=[0.001] * 1001), False),
+        (compared(seconds_to_solve=None), False),
+        (compared(outcomes={"correct": 3}), False),
+        (compared(outcomes={**cast("dict[str, Json]", A_COMPARED["outcomes"]), "error": 1}), False),
+        (compared(checker={"label": "One", "version": "1.0"}), False),
+        (compared(checker={**cast("dict[str, Json]", A_COMPARED["checker"]), "dialect": "2020-12"}), False),
+        (compared(wall_seconds=1.5), False),
+        # What the model reads all the same: null for a key left out.
+        (compared(checker={**cast("dict[str, Json]", A_COMPARED["checker"]), "variant": None}), True),
     ],
 }  # fmt: skip
 
@@ -255,21 +279,17 @@ def test_what_the_runner_writes_is_what_the_schemas_say(tmp_path: Path) -> None:
         assert "variant" in run["checker"] or folder == "two"
         assert read_run(tmp_path / folder).started.isoformat() == "2026-01-01T00:00:00+00:00"
 
-    # The summary of a report, as the report writes it: every key, and a whole number where
-    # the timeout is one.
-    write(tmp_path / "three" / "one", a_run(), full)
-    summary = Summary.of(read_entries(tmp_path / "three"))
-    text = summary.model_dump_json(indent=2)
-    assert schema("summary").is_valid(json.loads(text)), text
-    assert Summary.model_validate_json(text) == summary
-    assert json.loads(text) == {
-        "corpus": "v1.0.0",
-        "collections": 1,
-        "cases": len({result.case for result in full}),
-        "tasks": len(full),
-        "labelled_tasks": 2,
-        "timeout": 10.0,
-    }
+    # The comparison of a report, as the report writes it: of a checker with a variant and
+    # of one without, where the key is left out and nothing is null.
+    write(tmp_path / "both" / "one", a_run("one", variant="Rust"), full)
+    write(tmp_path / "both" / "two", a_run("two"), full)
+    comparison = Comparison.of(read_entries(tmp_path / "both"))
+    comparison.write(tmp_path / "comparison.json")
+    text = (tmp_path / "comparison.json").read_text(encoding="utf-8")
+    assert schema("comparison").is_valid(json.loads(text)), text
+    assert "null" not in text
+    assert Comparison.read(tmp_path / "comparison.json") == comparison
+    assert ["variant" in run["checker"] for run in json.loads(text)["runs"]] == [True, False]
 
 
 def test_what_two_schemas_share_is_written_the_same_in_both() -> None:
@@ -284,10 +304,17 @@ def test_what_two_schemas_share_is_written_the_same_in_both() -> None:
         assert set(of_reply) - set(of_result) == moved, ended
         for key in set(of_reply) - moved:
             assert of_result[key] == of_reply[key], (ended, key)
-    # A summary says of the corpus and of the timeout what a run says of them.
-    run_keys, summary_keys = written("run")["properties"], written("summary")["properties"]
+    # A comparison says of the corpus, of the timeout and of the name of a run what a run
+    # says of them, and of a checker what its file says.
+    of_run = cast("dict[str, Json]", written("run")["properties"])
+    of_comparison = cast("dict[str, Json]", written("comparison")["properties"])
     for key in ("corpus", "timeout"):
-        assert cast("dict[str, Json]", summary_keys)[key] == cast("dict[str, Json]", run_keys)[key]
+        assert of_comparison[key] == of_run[key], key
+    compared_run = definitions("comparison")
+    assert compared_run["ComparedRun"]["properties"]["name"] == of_run["name"]
+    of_checker = cast("dict[str, Json]", written("checker")["properties"])
+    for key, definition in compared_run["ComparedChecker"]["properties"].items():
+        assert definition == of_checker[key], key
     # A run holds the checker as its file describes it.
     checker, run = written("checker"), definitions("run")
     for key in ("description", "type", "required", "additionalProperties", "properties"):

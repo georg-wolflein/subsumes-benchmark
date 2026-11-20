@@ -1,4 +1,4 @@
-.PHONY: ci lint format format-check typecheck config test sources corpus models compare report archive
+.PHONY: ci lint format format-check typecheck config readme-check test sources corpus models compare report readme archive
 
 # The adapters under checkers/ that are checked like the code under src/: each Rust one is
 # a crate of its own, and each Python one a script with an environment of its own.
@@ -8,9 +8,9 @@ PYTHON_ADAPTERS := $(wildcard checkers/*/adapter.py)
 # The schemas under schemas/ that a model is generated from, each with the name of its model.
 MODELS := collections:CollectionsSpec overrides:OverridesSpec derived:DerivedSpec checker:CheckerSpec \
 	case:CaseSpec ready:ReadySpec request:RequestSpec reply:ReplySpec result:ResultSpec run:RunSpec \
-	summary:SummarySpec
+	comparison:ComparisonSpec
 
-ci: lint format-check typecheck config test  ## what CI runs on every change
+ci: lint format-check typecheck config readme-check test  ## what CI runs on every change
 
 lint:
 	uv run ruff check .
@@ -40,11 +40,14 @@ config:  ## the schemas are valid, every configuration file is valid under its s
 	uv run check-jsonschema --schemafile schemas/overrides.schema.json overrides.json
 	uv run check-jsonschema --schemafile schemas/derived.schema.json derived.json
 	uv run check-jsonschema --schemafile schemas/checker.schema.json checkers/*/checker.json
-	uv run check-jsonschema --schemafile schemas/summary.schema.json comparison/summary.json
+	uv run check-jsonschema --schemafile schemas/comparison.schema.json comparison/comparison.json
 	for model in $(MODELS); do \
 		uv run datamodel-codegen --check --input schemas/$${model%%:*}.schema.json \
 			--output src/subsumes_benchmark/generated/$${model%%:*}.py --class-name $${model##*:} || exit 1; \
 	done
+
+readme-check:  ## the parts of the README that are written from data are what corpus/ and comparison/ give
+	uv run scripts/readme.py --check
 
 test:
 	uv run pytest
@@ -52,9 +55,9 @@ test:
 sources:  ## fetch the upstream sources; they are opt-in submodules and only needed to rebuild
 	git submodule update --init --checkout sources/json-schema-test-suite sources/inclusion-artifact
 
-corpus:  ## rebuild corpus/ from the upstream sources, and the list of the collections in the README
+corpus:  ## rebuild corpus/ from the upstream sources, and the parts of the README that the corpus decides
 	uv run python -m subsumes_benchmark
-	uv run python -m subsumes_benchmark.collections_list corpus | uv run scripts/readme_part.py collections
+	uv run scripts/readme.py
 
 archive:  ## pack corpus/ into the file that a built package holds, so that `uv build` after it builds a package with the corpus
 	uv run python -m subsumes_benchmark.archive corpus src/subsumes_benchmark/corpus.tar.zst
@@ -70,3 +73,7 @@ compare:  ## run every checker under checkers/ over the corpus into results/; ho
 
 report:  ## write the report on the runs in results/ to comparison/
 	uv run --extra report subsumes-benchmark report results
+
+readme:  ## make the plots and the table again from comparison/comparison.json, and write the parts of the README that are written from data
+	uv run --extra report subsumes-benchmark report comparison/comparison.json > /dev/null
+	uv run scripts/readme.py
