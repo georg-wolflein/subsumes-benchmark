@@ -1,10 +1,8 @@
 """The comparison of checkers: the tasks, what a report counts, and the folders under ``checkers/``."""
 
 import json
-import os
 import subprocess
 import sys
-import textwrap
 from importlib.metadata import version
 from typing import TYPE_CHECKING
 
@@ -13,7 +11,6 @@ import pytest
 import runs
 from reading import CORPUS, ROOT, case, cases
 from runs import Confirmation, a_run, a_witness, write
-from subsumes_benchmark import readme
 from subsumes_benchmark.compare.checkers import Checker
 from subsumes_benchmark.compare.report import report
 from subsumes_benchmark.compare.results import Ending, Result, ending, read_results, read_run
@@ -340,65 +337,6 @@ def test_a_report_draws_the_plots_and_gives_the_table(tmp_path: Path) -> None:
     for name in ("chart-light.svg", "chart-dark.svg"):
         assert (tmp_path / "comparison" / name).read_text(encoding="utf-8").startswith("<?xml")
     assert (tmp_path / "comparison" / "results.md").read_text(encoding="utf-8") == f"{text}\n"
-
-
-def step(name: str) -> str:
-    """The script of a step of the ``Comparison`` workflow."""
-    workflow = (ROOT / ".github" / "workflows" / "comparison.yml").read_text(encoding="utf-8")
-    _, _, rest = workflow.partition(f"      - name: {name}\n")
-    _, _, script = rest.partition("        run: |\n")
-    lines = script.split("\n")
-    end = next(i for i, line in enumerate(lines) if line and not line.startswith(" " * 10))
-    return textwrap.dedent("\n".join(lines[:end]))
-
-
-def test_the_workflow_puts_the_table_between_the_markers(tmp_path: Path) -> None:
-    # The step is a shell script, which nothing else runs before a release does.
-    start, end = readme.markers("comparison")
-    page = tmp_path / "README.md"
-    page.write_text(f"before\n{start}\n\nold\nolder\n\n{end}\nafter\n", encoding="utf-8")
-    table = "| a | 50% of \\n |\n\nMeasured on `v1`."
-    (tmp_path / "comparison").mkdir()
-    (tmp_path / "comparison" / "results.md").write_text(f"{table}\n", encoding="utf-8")
-    (tmp_path / "temp").mkdir()
-    script = step("Put the table into the README")
-
-    def run() -> subprocess.CompletedProcess[str]:
-        return subprocess.run(
-            ["bash", "-e", "-c", script],
-            cwd=tmp_path,
-            env={**os.environ, "RUNNER_TEMP": str(tmp_path / "temp")},
-            capture_output=True,
-            text=True,
-            check=False,
-        )
-
-    assert run().returncode == 0
-    assert page.read_text(encoding="utf-8") == f"before\n{start}\n\n{table}\n\n{end}\nafter\n"
-    # It puts the table where the build would put it, so that a second time changes nothing.
-    assert readme.written(page.read_text(encoding="utf-8"), "comparison", table) == page.read_text(
-        encoding="utf-8"
-    )
-    assert run().returncode == 0
-    assert page.read_text(encoding="utf-8") == f"before\n{start}\n\n{table}\n\n{end}\nafter\n"
-    # A README without the markers fails the step and stays as it is.
-    page.write_text("nothing to replace\n", encoding="utf-8")
-    assert run().returncode != 0
-    assert page.read_text(encoding="utf-8") == "nothing to replace\n"
-
-
-def test_a_readme_without_the_markers_is_left_alone(tmp_path: Path) -> None:
-    page = tmp_path / "README.md"
-    page.write_text("nothing to replace\n", encoding="utf-8")
-    with pytest.raises(readme.ReadmeError, match="markers"):
-        readme.update(page, "collections", "a block")
-    assert page.read_text(encoding="utf-8") == "nothing to replace\n"
-
-
-@pytest.mark.parametrize("part", ["collections", "comparison"])
-def test_the_readme_has_the_place_for_what_is_written_from_data(part: readme.Part) -> None:
-    text = (ROOT / "README.md").read_text(encoding="utf-8")
-    assert all(text.count(marker) == 1 for marker in readme.markers(part))
 
 
 # --------------------------------------------------------------------------- the folders

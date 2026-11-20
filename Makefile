@@ -51,7 +51,8 @@ sources:  ## fetch the upstream sources; they are opt-in submodules and only nee
 	git submodule update --init --checkout sources/json-schema-test-suite sources/inclusion-artifact
 
 corpus:  ## rebuild corpus/ from the upstream sources, and the table of the collections in the README
-	uv run python -m subsumes_benchmark --readme README.md
+	uv run python -m subsumes_benchmark
+	uv run python -m subsumes_benchmark.table corpus | scripts/readme-part.sh collections
 
 archive:  ## pack corpus/ into the file that a built package holds, so that `uv build` after it builds a package with the corpus
 	uv run python -m subsumes_benchmark.archive corpus src/subsumes_benchmark/corpus.tar.zst

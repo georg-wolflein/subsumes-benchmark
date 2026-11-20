@@ -145,17 +145,7 @@ jobs:
           rm -rf comparison
           cp -R "$RUNNER_TEMP/report/comparison" comparison
       - name: Put the table into the README
-        # Between the two marker lines, with an empty line on either side of it.
-        run: |
-          grep -qx '<!-- comparison:start -->' README.md
-          grep -qx '<!-- comparison:end -->' README.md
-          awk '
-            FNR == NR { table = table $0 "\n"; next }
-            $0 == "<!-- comparison:start -->" { print; printf "\n%s\n", table; inside = 1; next }
-            $0 == "<!-- comparison:end -->" { inside = 0 }
-            !inside
-          ' comparison/results.md README.md > "$RUNNER_TEMP/README.md"
-          mv "$RUNNER_TEMP/README.md" README.md
+        run: scripts/readme-part.sh comparison comparison/results.md
       - name: Open or update the pull request
         env:
           GH_TOKEN: ${{ steps.app.outputs.token }}

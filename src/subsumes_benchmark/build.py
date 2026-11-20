@@ -42,7 +42,6 @@ from urllib.parse import quote, urldefrag, urljoin
 
 from pydantic import model_validator
 
-from subsumes_benchmark import readme
 from subsumes_benchmark.config import ConfigError
 from subsumes_benchmark.convert import (
     ConversionError,
@@ -618,44 +617,13 @@ def clear(out: Path) -> None:
             path.unlink()
 
 
-def collections_table(corpus: Path) -> str:
-    """The table of the collections of a corpus, as the README of the repository shows it.
-
-    A row has what ``collections.json`` of the corpus says about a collection, how many
-    cases it has, and how many of its tasks have a label: a case is two tasks, one for each
-    direction.
-    """
-    manifest = json.loads((corpus / MANIFEST_NAME).read_text(encoding="utf-8"))
-    lines = [
-        "| Collection | Cases | Tasks with a label | From | Content |",
-        "| --- | ---: | ---: | --- | --- |",
-    ]
-    cases = labelled = 0
-    for folder, collection in manifest.items():
-        files = sorted((corpus / folder).glob("*.json"))
-        known = 0
-        for file in files:
-            case = json.loads(file.read_text(encoding="utf-8"))
-            known += (case["a_subsumes_b"] is not None) + (case["b_subsumes_a"] is not None)
-        origin = collection["origin"]
-        lines.append(
-            f"| `{folder}` | {len(files):,} | {known:,} of {2 * len(files):,} "
-            f"| [{origin['short']}]({origin['url']}) | {collection['description']} |"
-        )
-        cases += len(files)
-        labelled += known
-    lines.append(f"| All | {cases:,} | {labelled:,} of {2 * cases:,} | | |")
-    return "\n".join(lines)
-
-
 def build(
     out: Path,
     collections_file: Path,
     overrides_file: Path,
     derived_file: Path,
-    page: Path | None = None,
 ) -> None:
-    """Build the corpus, and write the table of its collections to a README if one is given."""
+    """Build the corpus."""
     collections = load_collections(collections_file)
     departures = Overrides.read(overrides_file)
     derived = Derivations.read(derived_file).cases
@@ -708,9 +676,6 @@ def build(
     for collection in collections:
         collection.source.license_file.copy(out / collection.folder / LICENSE_NAME)
 
-    if page is not None:
-        readme.update(page, "collections", collections_table(out))
-
     print(f"\n{'collection':40s} {'cases':>6s} {'true':>6s} {'false':>6s} {'null':>6s}")
     by_id = {case.id: case for case in final}
     for name, group in cases.items():
@@ -737,8 +702,5 @@ def main() -> None:
     parser.add_argument("--collections", type=Path, default=Path("collections.json"))
     parser.add_argument("--overrides", type=Path, default=Path("overrides.json"))
     parser.add_argument("--derived", type=Path, default=Path("derived.json"))
-    parser.add_argument(
-        "--readme", type=Path, help="a README to write the table of the collections to"
-    )
     args = parser.parse_args()
-    build(args.out, args.collections, args.overrides, args.derived, args.readme)
+    build(args.out, args.collections, args.overrides, args.derived)
