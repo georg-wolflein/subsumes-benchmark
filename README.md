@@ -34,17 +34,16 @@ A task is one pair of schemas asked in one direction. It is solved when the chec
 
 <!-- collections:start -->
 
-| Collection | Cases | Tasks with a label | From | Content |
-| --- | ---: | ---: | --- | --- |
-| `habib2021/rb-testset` | 292 | 562 of 584 | [Habib et al., 2021](https://doi.org/10.1145/3460319.3464796) | The pairs of the replication package of the jsonsubschema tool, with schemas from Kubernetes, Snowplow and the Washington Post. |
-| `attouche2026/handwritten-sc` | 138 | 276 of 276 | [Attouche et al., 2026](https://doi.org/10.1145/3799416) | Hand-written hard cases. |
-| `attouche2026/mergeallof` | 86 | 171 of 172 | [Attouche et al., 2026](https://doi.org/10.1145/3799416) | Schemas against the output of a rewriter that merges their allOf, built from the unit tests of json-schema-merge-allof. |
-| `attouche2026/schemastore-versions` | 469 | 613 of 938 | [Attouche et al., 2026](https://doi.org/10.1145/3799416) | Successive versions of real schemas from SchemaStore. |
-| `baazizi2026/oneof-as-anyof` | 904 | 734 of 1,808 | [Baazizi et al., 2026](https://arxiv.org/abs/2603.25306) | Real schemas against themselves with oneOf replaced by anyOf: is oneOf used where anyOf would be equivalent? |
-| `baazizi2026/additional-as-uneval` | 2,817 | 5,455 of 5,634 | [Baazizi et al., 2026](https://arxiv.org/abs/2603.25306) | Real schemas against themselves with additionalProperties and items rewritten through unevaluatedProperties and unevaluatedItems. |
-| `baazizi2026/uneval-as-additional` | 297 | 268 of 594 | [Baazizi et al., 2026](https://arxiv.org/abs/2603.25306) | Schemas using unevaluatedProperties or unevaluatedItems against a translation to additionalProperties and items. |
-| `wolflein2026/json-schema-test-suite` | 5,740 | 11,353 of 11,480 | [This repository](https://github.com/georg-wolflein/subsumes-benchmark) | Pairs built from the test cases of the official JSON Schema Test Suite for draft 2020-12: each schema against its instances, its negation and itself. |
-| All | 10,743 | 19,432 of 21,486 | | |
+- **[`habib2021/rb-testset`](https://github.com/georg-wolflein/subsumes-benchmark/tree/main/corpus/habib2021/rb-testset)**: The pairs of the replication package of the jsonsubschema tool, with schemas from Kubernetes, Snowplow and the Washington Post. From [Habib et al., 2021](https://doi.org/10.1145/3460319.3464796). 292 cases, 562 of 584 tasks with a label.
+- **[`attouche2026/handwritten-sc`](https://github.com/georg-wolflein/subsumes-benchmark/tree/main/corpus/attouche2026/handwritten-sc)**: Hand-written hard cases. From [Attouche et al., 2026](https://doi.org/10.1145/3799416). 138 cases, 276 of 276 tasks with a label.
+- **[`attouche2026/mergeallof`](https://github.com/georg-wolflein/subsumes-benchmark/tree/main/corpus/attouche2026/mergeallof)**: Schemas against the output of a rewriter that merges their allOf, built from the unit tests of json-schema-merge-allof. From [Attouche et al., 2026](https://doi.org/10.1145/3799416). 86 cases, 171 of 172 tasks with a label.
+- **[`attouche2026/schemastore-versions`](https://github.com/georg-wolflein/subsumes-benchmark/tree/main/corpus/attouche2026/schemastore-versions)**: Successive versions of real schemas from SchemaStore. From [Attouche et al., 2026](https://doi.org/10.1145/3799416). 469 cases, 613 of 938 tasks with a label.
+- **[`baazizi2026/oneof-as-anyof`](https://github.com/georg-wolflein/subsumes-benchmark/tree/main/corpus/baazizi2026/oneof-as-anyof)**: Real schemas against themselves with oneOf replaced by anyOf: is oneOf used where anyOf would be equivalent? From [Baazizi et al., 2026](https://arxiv.org/abs/2603.25306). 904 cases, 734 of 1,808 tasks with a label.
+- **[`baazizi2026/additional-as-uneval`](https://github.com/georg-wolflein/subsumes-benchmark/tree/main/corpus/baazizi2026/additional-as-uneval)**: Real schemas against themselves with additionalProperties and items rewritten through unevaluatedProperties and unevaluatedItems. From [Baazizi et al., 2026](https://arxiv.org/abs/2603.25306). 2,817 cases, 5,455 of 5,634 tasks with a label.
+- **[`baazizi2026/uneval-as-additional`](https://github.com/georg-wolflein/subsumes-benchmark/tree/main/corpus/baazizi2026/uneval-as-additional)**: Schemas using unevaluatedProperties or unevaluatedItems against a translation to additionalProperties and items. From [Baazizi et al., 2026](https://arxiv.org/abs/2603.25306). 297 cases, 268 of 594 tasks with a label.
+- **[`wolflein2026/json-schema-test-suite`](https://github.com/georg-wolflein/subsumes-benchmark/tree/main/corpus/wolflein2026/json-schema-test-suite)**: Pairs built from the test cases of the official JSON Schema Test Suite for draft 2020-12: each schema against its instances, its negation and itself. From [This repository](https://github.com/georg-wolflein/subsumes-benchmark). 5,740 cases, 11,353 of 11,480 tasks with a label.
+
+In all: 10,743 cases, 19,432 of 21,486 tasks with a label.
 
 <!-- collections:end -->
 

@@ -10,7 +10,7 @@ make sources   # fetches the two upstream repositories, about 900 MB
 make corpus    # about 15 seconds
 ```
 
-`corpus/` is generated, except its `README.md`: change `collections.json`, `overrides.json` or the code under `src/`, run `make corpus` and commit the result. `make corpus` also puts the table of the collections into the main README, with `scripts/readme_part.py`.
+`corpus/` is generated, except its `README.md`: change `collections.json`, `overrides.json` or the code under `src/`, run `make corpus` and commit the result. `make corpus` also puts the list of the collections into the main README, with `scripts/readme_part.py`.
 
 The submodules under `sources/` are marked `update = none`, so cloning this repository does not fetch them; `make sources` does. Their commits pin what the corpus is built from. The build reads `derived.json` as it is and runs no checker.
 
