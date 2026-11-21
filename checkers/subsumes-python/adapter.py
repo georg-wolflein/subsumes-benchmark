@@ -1,6 +1,6 @@
 # /// script
 # requires-python = "==3.14.*"
-# dependencies = ["subsumes==0.4.0"]
+# dependencies = ["subsumes==0.5.0"]
 # ///
 """The adapter for subsumes's Python package: answers the runner's requests, one JSON line each.
 
