@@ -33,7 +33,7 @@ A title follows [Conventional Commits](https://www.conventionalcommits.org/), an
 | --- | --- | --- |
 | `feat!:`, or another type with `!` | Major, or minor before 1.0.0 | A change that a reader has to follow |
 | `feat:` | Minor | A change to a label, a schema or the set of cases, also where it corrects a mistake |
-| `fix:`, `perf:`, `revert:` | Patch | Anything else that is worth a release |
+| `fix:`, `perf:`, `revert:`, `build:` | Patch | Anything else that is worth a release |
 
 A pull request of another type, such as `docs`, `ci` or `chore`, goes out with the next release.
 
