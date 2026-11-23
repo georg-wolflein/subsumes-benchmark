@@ -192,6 +192,7 @@ def suite(root: Path) -> Collection:
         commit="0" * 40,
     )
     spec = SourceCollection(
+        kind="source",
         origin="origin",
         source="suite",
         path="tests",

@@ -7,8 +7,8 @@ PYTHON_ADAPTERS := $(wildcard checkers/*/adapter.py)
 
 # The schemas under schemas/ that a model is generated from, each with the name of its model.
 MODELS := collections:CollectionsSpec overrides:OverridesSpec derived:DerivedSpec checker:CheckerSpec \
-	case:CaseSpec ready:ReadySpec request:RequestSpec reply:ReplySpec result:ResultSpec run:RunSpec \
-	comparison:ComparisonSpec
+	case:CaseSpec manifest:ManifestSpec ready:ReadySpec request:RequestSpec reply:ReplySpec \
+	result:ResultSpec run:RunSpec comparison:ComparisonSpec
 
 ci: lint format-check typecheck config readme-check test  ## what CI runs on every change
 

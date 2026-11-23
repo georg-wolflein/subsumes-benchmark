@@ -95,6 +95,10 @@ class SourceCollection(Config):
         extra="forbid",
         use_attribute_docstrings=True,
     )
+    kind: Literal["source"]
+    """
+    That the collection is read from a source.
+    """
     origin: Origin
     source: Name
     """
@@ -116,6 +120,10 @@ class GeneratedCollection(Config):
         extra="forbid",
         use_attribute_docstrings=True,
     )
+    kind: Literal["generated"]
+    """
+    That the collection is generated.
+    """
     origin: Origin
     generator: Generator
     labels: LabelOrigin
@@ -123,7 +131,7 @@ class GeneratedCollection(Config):
     description: Description
 
 
-type CollectionSpec = SourceCollection | GeneratedCollection
+type CollectionSpec = Annotated[SourceCollection | GeneratedCollection, Field(discriminator="kind")]
 """
 A collection, first published in the work of its origin: one dataset of a source, or what a generator of this repository builds.
 """

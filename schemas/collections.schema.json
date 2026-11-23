@@ -91,14 +91,19 @@
     },
     "CollectionSpec": {
       "description": "A collection, first published in the work of its origin: one dataset of a source, or what a generator of this repository builds.",
-      "oneOf": [{ "$ref": "#/$defs/SourceCollection" }, { "$ref": "#/$defs/GeneratedCollection" }]
+      "oneOf": [{ "$ref": "#/$defs/SourceCollection" }, { "$ref": "#/$defs/GeneratedCollection" }],
+      "discriminator": { "propertyName": "kind" }
     },
     "SourceCollection": {
       "description": "A collection that is one dataset of a source.",
       "type": "object",
-      "required": ["origin", "source", "path", "labels", "use_case", "description"],
+      "required": ["kind", "origin", "source", "path", "labels", "use_case", "description"],
       "additionalProperties": false,
       "properties": {
+        "kind": {
+          "description": "That the collection is read from a source.",
+          "const": "source"
+        },
         "origin": { "$ref": "#/$defs/Origin" },
         "source": {
           "description": "The name of the source the collection is built from, one of those under sources.",
@@ -116,9 +121,13 @@
     "GeneratedCollection": {
       "description": "A collection that a generator of this repository builds. What it builds is under the licence of this repository.",
       "type": "object",
-      "required": ["origin", "generator", "labels", "use_case", "description"],
+      "required": ["kind", "origin", "generator", "labels", "use_case", "description"],
       "additionalProperties": false,
       "properties": {
+        "kind": {
+          "description": "That the collection is generated.",
+          "const": "generated"
+        },
         "origin": { "$ref": "#/$defs/Origin" },
         "generator": { "$ref": "#/$defs/Generator" },
         "labels": { "$ref": "#/$defs/LabelOrigin" },

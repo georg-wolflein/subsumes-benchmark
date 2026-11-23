@@ -1,23 +1,30 @@
 """The committed corpus has the layout the README describes."""
 
 import json
+from typing import assert_never
 
 import jsonschema_rs
 
 from reading import CORPUS, ROOT, cases, read
 from subsumes_benchmark.build import Overrides, exclusion_of
 from subsumes_benchmark.generated.case import CaseSpec
+from subsumes_benchmark.generated.manifest import (
+    GeneratedCollection,
+    ManifestSpec,
+    SourceCollection,
+)
 
 CONFIG = json.loads((ROOT / "collections.json").read_text(encoding="utf-8"))
 ORIGINS = CONFIG["origins"]
 # The collections by their folder below the corpus: the origin and the name.
 COLLECTIONS = {f"{spec['origin']}/{name}": spec for name, spec in CONFIG["collections"].items()}
-MANIFEST = CORPUS / "collections.json"
+MANIFEST = CORPUS / "manifest.json"
 
 
 def test_every_file_is_a_case_or_a_shared_file() -> None:
     shared = (
-        {CORPUS / "case.schema.json", MANIFEST, CORPUS / "README.md"}
+        {CORPUS / "case.schema.json", CORPUS / "manifest.schema.json", MANIFEST}
+        | {CORPUS / "README.md"}
         | {CORPUS / folder / "LICENSE" for folder in COLLECTIONS}
         | {case.file for case in cases()}
     )
@@ -67,22 +74,32 @@ def test_every_case_is_read_by_the_model_of_a_case_and_names_its_schema() -> Non
     assert elsewhere == []
 
 
+def test_the_manifest_matches_its_schema_and_names_it() -> None:
+    schema = read(ROOT / "schemas" / "manifest.schema.json")
+    assert isinstance(schema, dict)
+    validator = jsonschema_rs.Draft202012Validator(schema, offline=True, validate_formats=True)
+    errors = [
+        f"{'/'.join(map(str, error.instance_path))}: {error.message[:160]}"
+        for error in validator.iter_errors(read(MANIFEST))
+    ]
+    assert errors == []
+    copy = CORPUS / "manifest.schema.json"
+    assert copy.read_bytes() == (ROOT / "schemas" / "manifest.schema.json").read_bytes()
+    assert (CORPUS / ManifestSpec.read(MANIFEST).field_schema).resolve() == copy.resolve()
+
+
 def test_every_upstream_is_a_permalink_into_the_dataset_of_its_collection() -> None:
     blob = {"github": "blob", "gitlab": "-/blob"}
-    manifest = read(MANIFEST)
-    assert isinstance(manifest, dict)
     datasets = {}
-    for folder, spec in COLLECTIONS.items():
-        if "generator" in spec:
-            continue
-        collection = manifest[folder]
-        assert isinstance(collection, dict)
-        source = collection["source"]
-        assert isinstance(source, dict)
-        repository, commit, path = source["repository"], source["commit"], source["path"]
-        assert isinstance(repository, str)
-        forge = CONFIG["sources"][spec["source"]]["forge"]
-        datasets[folder] = f"{repository.removesuffix('.git')}/{blob[forge]}/{commit}/{path}/"
+    for folder, collection in ManifestSpec.read(MANIFEST).collections.items():
+        if isinstance(collection, SourceCollection):
+            repository, commit, path = (
+                collection.source.repository,
+                collection.source.commit,
+                collection.source.path,
+            )
+            forge = CONFIG["sources"][COLLECTIONS[folder]["source"]]["forge"]
+            datasets[folder] = f"{repository.removesuffix('.git')}/{blob[forge]}/{commit}/{path}/"
     # A case of a generated collection says what it was generated from in place of a link.
     elsewhere = [
         case.id
@@ -95,34 +112,26 @@ def test_every_upstream_is_a_permalink_into_the_dataset_of_its_collection() -> N
 
 
 def test_the_manifest_says_of_every_collection_what_the_configuration_says() -> None:
-    manifest = read(MANIFEST)
-    assert isinstance(manifest, dict)
-    assert list(manifest) == list(COLLECTIONS)
+    listed = ManifestSpec.read(MANIFEST).collections
+    assert list(listed) == list(COLLECTIONS)
     for folder, spec in COLLECTIONS.items():
-        collection = manifest[folder]
-        assert isinstance(collection, dict)
-        if "generator" in spec:
-            # What a generator builds is under the licence of this repository, and the
-            # manifest names the file of the generator in it.
-            generator = collection.pop("generator")
-            assert isinstance(generator, dict)
-            assert generator.keys() == {"repository", "path"}
-            assert (ROOT / str(generator["path"])).is_file()
-            licence = "MIT"
-        else:
-            source = collection.pop("source")
-            assert isinstance(source, dict)
-            assert source["path"] == spec["path"]
-            assert source.keys() == {"repository", "commit", "path"}
-            licence = CONFIG["sources"][spec["source"]]["license"]
-        assert collection == {
-            "description": spec["description"],
-            "use_case": spec["use_case"],
-            "labels": spec["labels"],
-            "origin": ORIGINS[spec["origin"]],
-            "license": licence,
-            "license_file": f"{folder}/LICENSE",
-        }
+        collection = listed[folder]
+        assert collection.kind == spec["kind"]
+        match collection:
+            case GeneratedCollection(generator=generator):
+                # What a generator builds is under the licence of this repository, and the
+                # manifest names the file of the generator in it.
+                assert (ROOT / generator.path).is_file()
+                licence = "MIT"
+            case SourceCollection(source=source):
+                assert source.path == spec["path"]
+                licence = CONFIG["sources"][spec["source"]]["license"]
+            case _:
+                assert_never(collection)
+        assert collection.description == spec["description"]
+        assert (collection.use_case, collection.labels) == (spec["use_case"], spec["labels"])
+        assert collection.origin.model_dump() == ORIGINS[spec["origin"]]
+        assert (collection.license, collection.license_file) == (licence, f"{folder}/LICENSE")
 
 
 def test_every_collection_has_the_license_of_its_source() -> None:

@@ -418,7 +418,7 @@ PINS = {
     "jsonsubschema": ("adapter.py", "jsonsubschema=={}"),
     # RWG is compiled from the submodule, whose commit the corpus records for every
     # collection that is built from it.
-    "rwg": ("../../corpus/collections.json", '"commit": "{}'),
+    "rwg": ("../../corpus/manifest.json", '"commit": "{}'),
     "subsumes": ("Cargo.toml", 'subsumes = "={}"'),
     "subsumes-python": ("adapter.py", "subsumes=={}"),
 }

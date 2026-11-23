@@ -8,7 +8,8 @@ Pairs of draft 2020-12 schemas, each with what is known about one question: does
 corpus/
 ├── README.md
 ├── case.schema.json
-├── collections.json
+├── manifest.json
+├── manifest.schema.json
 ├── habib2021/
 │   └── rb-testset/
 │       ├── LICENSE
@@ -30,8 +31,8 @@ corpus/
 - **An origin** is the work that first published the pairs of its collections as subsumption questions, named by its first author and the year. [References](#references) has the four.
 - **A collection** is a folder of cases in the folder of its origin, with the `LICENSE` they are under.
 - **A case** is `<origin>/<collection>/<name>.json`, and that path without the `.json` is its id. No file lies deeper.
-- **[`collections.json`](collections.json)** says of every collection what it holds, the reference of its origin, the repository and commit it is read from or, for a generated collection, the generator that builds it, its licence, and where its labels come from.
-- **[`case.schema.json`](case.schema.json)** is the schema of a case.
+- **[`manifest.json`](manifest.json)** lists the collections under `collections`, by folder. It says of each what it holds, the reference of its origin, its licence and where its labels come from, and under its `kind` whether it is read from a `source`, at a repository, commit and path, or `generated`, by a generator of this repository.
+- **[`case.schema.json`](case.schema.json)** is the schema of a case, and **[`manifest.schema.json`](manifest.schema.json)** that of the manifest.
 
 ## A case
 
@@ -86,7 +87,7 @@ A file is indented, with every non-ASCII character escaped so that none is invis
   - **`override`**: The corpus departs from the source, or answers where the source does not, for the reason in `note`.
 - **`note`**: Present only when the labels depart from upstream's, and says why. Where the corpus then claims nothing, the label is `null`.
 - **`built_from`**: What the case is built from, which its `kind` says:
-  - **`"kind": "source"`**: A file of a source. `link` is a permanent link to it, in the repository and at the commit that `collections.json` names for the collection; a case built from the test suite adds a JSON pointer to the test case or the test after a `#`. `duplicates` is present only when upstream has these two schemas in other files too, in either order, and lists permanent links to those files. The corpus has one case for all of them.
+  - **`"kind": "source"`**: A file of a source. `link` is a permanent link to it, in the repository and at the commit that `manifest.json` names for the collection; a case built from the test suite adds a JSON pointer to the test case or the test after a `#`. `duplicates` is present only when upstream has these two schemas in other files too, in either order, and lists permanent links to those files. The corpus has one case for all of them.
   - **`"kind": "generator"`**: A generator of this repository: the `family` the case belongs to, the `sizes` it was built with, by name, and whether it is the `twin` of the member of those sizes. See [Collections](#collections).
 - **`features`**: What the two schemas use; see [Features](#features).
 - **`a`** and **`b`**: The two schemas, last in the file, so that what is known is at the top however long they are.
@@ -122,7 +123,7 @@ Ask every question whose label is not `null`, `a_subsumes_b` and `b_subsumes_a` 
 
 ## Collections
 
-`collections.json` says where the labels of a collection come from:
+`manifest.json` says where the labels of a collection come from:
 
 - **`by-construction`**: The pair was built so that the answer is known.
 - **`witness-generator`**: The answer is that of the upstream authors' tool, which is complete but bound by a timeout. Where it gave up, the label is derived or `null`.

@@ -22,7 +22,9 @@ own.
 
 The origin is the work that first published the pairs of a collection, by its citation key,
 and not the source that the build reads them from. ``collections.json`` names the
-collections, the origin of each and the source it is read from; ``overrides.json``
+collections, the origin of each and the source it is read from or the generator that builds
+it, and the build writes what a reader of the corpus needs of that to ``manifest.json`` at the
+root of the corpus, with the citation, the commit and the licence; ``overrides.json``
 lists the cases that are left out and the cases whose label departs from upstream's;
 ``derived.json`` holds the labels of questions that upstream leaves open, each with what
 shows it. Run from the repository root::
@@ -59,6 +61,7 @@ from subsumes_benchmark.convert import (
 from subsumes_benchmark.derived import Derivations, as_label, by_label
 from subsumes_benchmark.families import PATH as FAMILIES_PATH, Sizes, members
 from subsumes_benchmark.features import features
+from subsumes_benchmark.generated import manifest
 from subsumes_benchmark.generated.case import (
     ConstructionLabel,
     CounterexampleLabel,
@@ -89,7 +92,9 @@ VERDICT_DIRS: Mapping[str, bool | None] = {"sat": False, "unsat": True, "unknown
 CASE_SCHEMA = Path("schemas/case.schema.json")
 
 # What the corpus says about its collections, by the folder of each, in one file at its root.
-MANIFEST_NAME = "collections.json"
+# Its schema is written by hand, and the corpus carries a copy of it too.
+MANIFEST_NAME = "manifest.json"
+MANIFEST_SCHEMA = Path("schemas/manifest.schema.json")
 
 # The page of the corpus, which is written by hand and which a build leaves as it is.
 README_NAME = "README.md"
@@ -199,37 +204,41 @@ class Collection:
         return OWN_LICENSE_FILE if self.source is None else self.source.license_file
 
     @property
-    def manifest(self) -> Json:
-        """What ``corpus/collections.json`` says about the collection.
+    def entry(self) -> manifest.SourceCollection | manifest.GeneratedCollection:
+        """What the manifest of the corpus says about the collection.
 
         A collection read from a source names the repository, the commit and the path it is
         read from. A generated one names the generator in this repository instead, which the
         package of the same version as the corpus holds.
         """
-        about: dict[str, Json] = {
-            "description": self.spec.description,
-            "use_case": self.spec.use_case,
-            "labels": self.spec.labels,
-            "origin": {
-                "short": self.origin.short,
-                "citation": self.origin.citation,
-                "url": self.origin.url,
-            },
-            "license": OWN_LICENSE if self.source is None else self.source.spec.license,
-            "license_file": f"{self.folder}/{LICENSE_NAME}",
-        }
+        origin = manifest.OriginSpec.model_validate(self.origin.model_dump())
+        license_file = f"{self.folder}/{LICENSE_NAME}"
         match self.spec:
             case GeneratedCollection():
-                return about | {"generator": {"repository": REPOSITORY, "path": FAMILIES_PATH}}
+                return manifest.GeneratedCollection(
+                    kind="generated",
+                    description=self.spec.description,
+                    use_case=self.spec.use_case,
+                    labels=self.spec.labels,
+                    origin=origin,
+                    license=OWN_LICENSE,
+                    license_file=license_file,
+                    generator=manifest.GeneratorLocation(repository=REPOSITORY, path=FAMILIES_PATH),
+                )
             case SourceCollection(path=path):
                 source, _ = self.read_from()
-                return about | {
-                    "source": {
-                        "repository": source.repository,
-                        "commit": source.commit,
-                        "path": path,
-                    }
-                }
+                return manifest.SourceCollection(
+                    kind="source",
+                    description=self.spec.description,
+                    use_case=self.spec.use_case,
+                    labels=self.spec.labels,
+                    origin=origin,
+                    license=source.spec.license,
+                    license_file=license_file,
+                    source=manifest.SourceLocation(
+                        repository=source.repository, commit=source.commit, path=path
+                    ),
+                )
             case _:
                 assert_never(self.spec)
 
@@ -816,10 +825,15 @@ def build(
     print(f"writing {len(final)} cases")
     for case in final:
         write_case(out, case)
-    write_json(
-        out / MANIFEST_NAME, {collection.folder: collection.manifest for collection in collections}
+    listed = manifest.ManifestSpec.model_validate(
+        {
+            "$schema": f"./{MANIFEST_SCHEMA.name}",
+            "collections": {collection.folder: collection.entry for collection in collections},
+        }
     )
+    write_json(out / MANIFEST_NAME, listed.model_dump(mode="json", by_alias=True))
     shutil.copyfile(CASE_SCHEMA, out / CASE_SCHEMA.name)
+    shutil.copyfile(MANIFEST_SCHEMA, out / MANIFEST_SCHEMA.name)
     for collection in collections:
         collection.license_file.copy(out / collection.folder / LICENSE_NAME)
 
