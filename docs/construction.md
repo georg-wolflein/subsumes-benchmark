@@ -36,18 +36,18 @@ The artifact holds such pairs for drafts 4, 6 and 2019-09 too, which that test s
 
 ### The sizes
 
-The largest size of every family is beyond every checker of the comparison but subsumes within its 10 seconds, and that of `nth-from-end`, `tagged-unions` and `pigeonhole` beyond subsumes 0.5.0 too. subsumes answers `split-order` with 26 shapes in 0.1 seconds and `product-of-choices` with 64 choices in 0.2 seconds, and the product of two counters is small for it, so sizes that stop it would make the corpus large for little. A size beyond subsumes costs the CI of subsumes, which runs the corpus on every change: subsumes declines when its budget runs out, after half a second to two seconds on these families, and it fails its CI on a timeout. So a family goes on a few sizes beyond subsumes and no further. Over the whole collection subsumes 0.5.0 takes 27 seconds, 20 of them in the 17 questions on which it runs out of budget, and none takes it longer than 2 seconds.
+The largest size of every family but `coprime-counters` is beyond every checker of the comparison but subsumes within its 10 seconds, and that of `nth-from-end`, `tagged-unions` and `pigeonhole` beyond subsumes 0.5.0 too. subsumes answers `split-order` with 26 shapes in 0.1 seconds and `product-of-choices` with 64 choices in 0.2 seconds, and subsumes and RWG answer `coprime-counters` at every size, since the product of two counters is small for a checker that intersects patterns; sizes that stop them would make the corpus large for little. A size beyond subsumes costs the CI of subsumes, which runs the corpus on every change: subsumes declines when its budget runs out, after half a second to two seconds on these families, and it fails its CI on a timeout. So a family goes on a few sizes beyond subsumes and no further. Over the whole collection subsumes 0.5.0 takes 27 seconds, 20 of them in the 17 questions on which it runs out of budget, and none takes it longer than 2 seconds.
 
-| Family | Sizes | Tasks | subsumes 0.5.0 | jsoncompat 0.6.0 | Confluent 8.4.1 | jsonsubschema 0.0.8 |
-| --- | --- | ---: | --- | --- | --- | --- |
-| `split-order` | `shapes` 2, 4, 6, 8, 12, 16 by `depth` 1 to 4 | 96 | 96 | 43 | 42 (54 wrong) | 0 |
-| `product-of-choices` | `choices` 4, 8, 12, 16, 24, 32, 48, 64 | 32 | 32 | 24 | 8 (24 wrong) | 0 (14 timeouts) |
-| `nth-from-end` | `n` 2 to 20 by 2 | 40 | 34 (all to 16) | 20 | 20 (20 wrong) | 9 (31 timeouts) |
-| `coprime-counters` | `p` and `q` 2 and 3, 3 and 5, 5 and 7, 7 and 11, 11 and 13, 13 and 17 | 24 | 24 | 2 | 6 (18 wrong) | 16 (all to 5, 8 timeouts) |
-| `tagged-unions` | `kinds` 5, 10, 20, 40, 80 by `fields` 5, 10, 30 | 60 | 54 (all to 40) | 44 | 45 (15 wrong) | 0 (3 timeouts) |
-| `pigeonhole` | `holes` 2 to 8 | 28 | 23 (all to 3) | 15 | 21 (7 wrong) | 0 |
+| Family | Sizes | Tasks | subsumes 0.5.0 | jsoncompat 0.6.0 | RWG 8064ad8 | Confluent 8.4.1 | jsonsubschema 0.0.8 |
+| --- | --- | ---: | --- | --- | --- | --- | --- |
+| `split-order` | `shapes` 2, 4, 6, 8, 12, 16 by `depth` 1 to 4 | 96 | 96 | 43 | 48 (all to 6, 48 timeouts) | 42 (54 wrong) | 0 |
+| `product-of-choices` | `choices` 4, 8, 12, 16, 24, 32, 48, 64 | 32 | 32 | 24 | 12 (all to 12, 20 timeouts) | 8 (24 wrong) | 0 (14 timeouts) |
+| `nth-from-end` | `n` 2 to 20 by 2 | 40 | 34 (all to 16) | 20 | 28 (all to 14, 12 timeouts) | 20 (20 wrong) | 9 (31 timeouts) |
+| `coprime-counters` | `p` and `q` 2 and 3, 3 and 5, 5 and 7, 7 and 11, 11 and 13, 13 and 17 | 24 | 24 | 2 | 24 | 6 (18 wrong) | 16 (all to 5, 8 timeouts) |
+| `tagged-unions` | `kinds` 5, 10, 20, 40, 80 by `fields` 5, 10, 30 | 60 | 54 (all to 40) | 44 | 32 (28 timeouts) | 45 (15 wrong) | 0 (3 timeouts) |
+| `pigeonhole` | `holes` 2 to 8 | 28 | 23 (all to 3) | 15 | 18 (all to 3, 10 timeouts) | 21 (7 wrong) | 0 |
 
-A cell is the number of tasks that a checker solved, with the size up to which it solved every task where it did not solve them all, its wrong answers and its timeouts; it declined the rest. jsoncompat declines every `b_subsumes_a` of `split-order`, the members of `nth-from-end`, nearly all of `coprime-counters`, and every `a_subsumes_b` of `pigeonhole` from 3 holes on. jsonsubschema fails with an error on nearly every schema of objects.
+A cell is the number of tasks that a checker solved, with the size up to which it solved every task where it did not solve them all, its wrong answers and its timeouts; it declined the rest. jsoncompat declines every `b_subsumes_a` of `split-order`, the members of `nth-from-end`, nearly all of `coprime-counters`, and every `a_subsumes_b` of `pigeonhole` from 3 holes on. jsonsubschema fails with an error on nearly every schema of objects. In the comparison a timeout costs 12 seconds, so the 118 of RWG add about 24 minutes to its job, and the 56 of jsonsubschema about 11.
 
 The counts are of one run of each checker over the collection, on a laptop with the comparison's timeout of 10 seconds; the comparison of the next release measures them again.
 
