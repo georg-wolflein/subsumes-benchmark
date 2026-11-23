@@ -114,12 +114,15 @@ def cases() -> Sequence[Case]:
     found = []
     for path in sorted(CORPUS.glob("*/*/*.json"), key=lambda path: _case_id(path).split("/")):
         metadata = _document(path)
-        upstream, note = metadata.get("upstream"), metadata.get("note")
+        built_from, note = metadata["built_from"], metadata.get("note")
         used = metadata["features"]
-        assert isinstance(upstream, str) == (metadata["kind"] == "upstream")
+        assert isinstance(built_from, dict)
         assert note is None or isinstance(note, str)
         assert isinstance(used, list)
-        also = metadata.get("duplicates", [])
+        sourced = built_from["kind"] == "source"
+        upstream = built_from["link"] if sourced else None
+        assert upstream is None or isinstance(upstream, str)
+        also = built_from.get("duplicates", [])
         assert isinstance(also, list)
         found.append(
             Case(
@@ -127,8 +130,8 @@ def cases() -> Sequence[Case]:
                 file=path,
                 a_subsumes_b=_label(metadata["a_subsumes_b"]),
                 b_subsumes_a=_label(metadata["b_subsumes_a"]),
-                upstream=upstream if isinstance(upstream, str) else None,
-                generated=metadata.get("generated"),
+                upstream=upstream,
+                generated=None if sourced else built_from,
                 note=note,
                 duplicates=[str(link) for link in also],
                 derived=metadata.get("derived"),

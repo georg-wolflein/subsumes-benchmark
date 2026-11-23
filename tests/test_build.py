@@ -135,7 +135,7 @@ def test_a_permalink_names_the_commit_in_the_way_of_the_forge(forge: Forge, link
     assert source.permalink(root / "tests" / "a b" / "c.json") == link
 
 
-def test_a_case_names_its_schema_and_kind_and_says_what_is_known_before_the_schemas() -> None:
+def test_a_case_names_its_schema_and_says_what_is_known_before_the_schemas() -> None:
     case = Case(
         id="one/two/three",
         a=True,
@@ -148,14 +148,14 @@ def test_a_case_names_its_schema_and_kind_and_says_what_is_known_before_the_sche
     assert isinstance(document, dict)
     assert list(document) == [
         "$schema",
-        "kind",
         "a_subsumes_b",
         "b_subsumes_a",
         "features",
-        "upstream",
+        "built_from",
         "a",
         "b",
     ]
+    assert document["built_from"] == {"kind": "source", "link": "x.json"}
     assert document["$schema"] == "../../case.schema.json"
     assert (document["a"], document["b"], document["features"]) == (True, case.b, ["type"])
 
@@ -232,8 +232,11 @@ def test_cases_with_the_same_two_schemas_are_one_case_that_says_what_each_says()
     assert alone is cases[4]
     written = both.document
     assert isinstance(written, dict)
-    assert written["kind"] == "upstream"
-    assert list(written)[5:7] == ["upstream", "duplicates"]
+    assert written["built_from"] == {
+        "kind": "source",
+        "link": both.upstream,
+        "duplicates": ["o/one/x_v2_not_v1.json"],
+    }
     # The order the cases come in decides nothing.
     assert without_duplicates(cases[::-1]) == kept[::-1]
 
@@ -290,20 +293,26 @@ def test_duplicates_must_not_contradict_each_other() -> None:
     assert kept.note == "First. Second."
 
 
-def test_a_generated_case_says_what_it_was_generated_from_in_place_of_upstream() -> None:
+def test_a_generated_case_says_what_it_was_generated_from_in_place_of_a_link() -> None:
     (member, _) = pigeonhole(2)
     case = Case("o/families/x", member.a, member.b, True, True, None, generated=member.generated)
     document = case.document
     assert isinstance(document, dict)
-    assert document["kind"] == "generated"
-    assert list(document)[5:6] == ["generated"]
-    assert "upstream" not in document
-    assert document["generated"] == {"family": "pigeonhole", "sizes": {"holes": 2}, "twin": False}
+    assert document["built_from"] == {
+        "kind": "generator",
+        "family": "pigeonhole",
+        "sizes": {"holes": 2},
+        "twin": False,
+    }
     # A case comes from upstream or is generated, and not both or neither.
     with pytest.raises(ValueError, match="upstream or is generated"):
         Case("o/one/x", TEXT, NUMBER, None, None, None)
     with pytest.raises(ValueError, match="upstream or is generated"):
         replace(case, upstream="x.json")
+    # What the schema of a case no longer says of a generated case, the build holds to.
+    for departure in ({"b_subsumes_a": None}, {"note": "Corrected."}, {"duplicates": ("y",)}):
+        with pytest.raises(ValueError, match="both labels and nothing else"):
+            replace(case, **departure)
 
 
 def test_a_generated_case_has_no_duplicate() -> None:

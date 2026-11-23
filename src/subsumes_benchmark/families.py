@@ -32,7 +32,7 @@ from itertools import combinations
 from typing import Self
 
 from subsumes_benchmark import Json
-from subsumes_benchmark.generated.case import Family, Generated
+from subsumes_benchmark.generated.case import Family, FromGenerator
 from subsumes_benchmark.generated.result import Direction
 
 # Where the generator lives in the repository, for the manifest of the corpus.
@@ -74,9 +74,11 @@ class Member:
             raise ValueError(f"{self.name}: a twin flips a label, and a member flips none")
 
     @property
-    def generated(self) -> Generated:
-        """What a case of the corpus says it was generated from."""
-        return Generated(family=self.family, sizes=dict(self.sizes), twin=self.twin)
+    def generated(self) -> FromGenerator:
+        """What a case of the corpus says it was built from."""
+        return FromGenerator(
+            kind="generator", family=self.family, sizes=dict(self.sizes), twin=self.twin
+        )
 
     @property
     def name(self) -> str:

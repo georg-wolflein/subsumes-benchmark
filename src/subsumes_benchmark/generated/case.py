@@ -7,16 +7,26 @@ from pydantic import ConfigDict, Field, StringConstraints
 
 from subsumes_benchmark.config import Config
 
-type CaseSchema = Literal["../../case.schema.json"]
-"""
-The path from the file of a case to case.schema.json, which is at the root of the corpus: above the folder of the collection and the folder of its origin.
-"""
 
+class FromSource(Config):
+    """The upstream file that a case is read from, in a dataset of a source."""
 
-type Schema = dict[str, Any] | bool
-"""
-A schema of draft 2020-12.
-"""
+    model_config = ConfigDict(
+        extra="forbid",
+        use_attribute_docstrings=True,
+    )
+    kind: Literal["source"]
+    """
+    That the case is read from a source.
+    """
+    link: str
+    """
+    A permanent link to the file this case comes from, in the source repository at the commit that collections.json names for the collection; the test suite's cases add a JSON pointer to the test case or the test after a '#'.
+    """
+    duplicates: Annotated[list[str] | None, Field(min_length=1)] = None
+    """
+    Permanent links to the other upstream files that hold these two schemas, in either order, each written like link. The corpus has one case for all of them, and its labels are what any of them says; absent when there is no other.
+    """
 
 
 type SizesAdditionalProperty = Annotated[int, Field(ge=1)]
@@ -32,6 +42,12 @@ type Family = Literal[
 ]
 """
 A family of generated cases, which the documentation of the corpus describes.
+"""
+
+
+type Schema = dict[str, Any] | bool
+"""
+A schema of draft 2020-12.
 """
 
 
@@ -112,19 +128,17 @@ A keyword of draft 2020-12 that decides what a schema accepts, or 'recursion'.
 """
 
 
-type Features = list[Feature]
-"""
-What the two schemas use, in the order of the list of features: every keyword that validation can reach and that decides what a schema accepts, and 'recursion' when a schema is reached again from itself through a reference.
-"""
-
-
-class Generated(Config):
-    """What the generator of the collection built a case from: the family, the sizes that it was built with, and whether it is the twin of the member of those sizes."""
+class FromGenerator(Config):
+    """What the generator of the collection built a case from: the family, the sizes that it was built with, and whether it is the twin of the member of those sizes. The labels of such a case are known by construction: neither is null, and the case has no note and nothing derived."""
 
     model_config = ConfigDict(
         extra="forbid",
         use_attribute_docstrings=True,
     )
+    kind: Literal["generator"]
+    """
+    That a generator of this repository built the case.
+    """
     family: Family
     sizes: Annotated[
         dict[Annotated[str, StringConstraints(pattern=r"^[a-z]+$")], SizesAdditionalProperty],
@@ -145,36 +159,10 @@ What shows one label: a counterexample for false, an agreement of checkers for t
 """
 
 
-class GeneratedCase(Config):
-    """A case that a generator of this repository builds, which says what it was built from in place of a link to an upstream file. Its labels are known by construction."""
-
-    model_config = ConfigDict(
-        extra="forbid",
-        use_attribute_docstrings=True,
-    )
-    field_schema: Annotated[CaseSchema, Field(alias="$schema")]
-    kind: Literal["generated"]
-    """
-    That the case is generated.
-    """
-    a_subsumes_b: bool
-    """
-    Whether a accepts every instance valid under b.
-    """
-    b_subsumes_a: bool
-    """
-    The same question in the other direction.
-    """
-    features: Features
-    generated: Generated
-    a: Schema
-    """
-    The schema that should accept everything.
-    """
-    b: Schema
-    """
-    The schema whose instances must be accepted.
-    """
+type BuiltFrom = Annotated[FromSource | FromGenerator, Field(discriminator="kind")]
+"""
+What a case is built from: a file of a source, or a generator of this repository.
+"""
 
 
 class Derived(Config):
@@ -188,34 +176,32 @@ class Derived(Config):
     b_subsumes_a: Evidence | None = None
 
 
-class UpstreamCase(Config):
-    """A case read from an upstream source, which links to the file it comes from."""
+class CaseSpec(Config):
+    """Two schemas and what is known about them: does a accept every instance valid under b? The labels hold for draft 2020-12 with format asserted and patterns read as ECMA-262 regular expressions with the u flag."""
 
     model_config = ConfigDict(
         extra="forbid",
         use_attribute_docstrings=True,
     )
-    field_schema: Annotated[CaseSchema, Field(alias="$schema")]
-    kind: Literal["upstream"]
+    field_schema: Annotated[Literal["../../case.schema.json"], Field(alias="$schema")]
     """
-    That the case is read from an upstream source.
+    The path from this file to case.schema.json, which is at the root of the corpus: above the folder of the collection and the folder of its origin.
     """
     a_subsumes_b: bool | None
     """
-    Whether a accepts every instance valid under b; null when the corpus claims nothing.
+    Whether a accepts every instance valid under b; null when the corpus claims nothing, which it does of every generated case.
     """
     b_subsumes_a: bool | None
     """
     The same question in the other direction.
     """
-    features: Features
-    upstream: str
+    features: list[Feature]
     """
-    A permanent link to the file this case comes from, in the source repository at the commit that collections.json names for the collection; the test suite's cases add a JSON pointer to the test case or the test after a '#'.
+    What the two schemas use, in the order of the list of features: every keyword that validation can reach and that decides what a schema accepts, and 'recursion' when a schema is reached again from itself through a reference.
     """
-    duplicates: Annotated[list[str] | None, Field(min_length=1)] = None
+    built_from: BuiltFrom
     """
-    Permanent links to the other upstream files that hold these two schemas, in either order, each written like upstream. The corpus has one case for all of them, and its labels are what any of them says; absent when there is no other.
+    What the case is built from: a file of a source, or a generator of this repository.
     """
     note: str | None = None
     """
@@ -233,12 +219,3 @@ class UpstreamCase(Config):
     """
     The schema whose instances must be accepted.
     """
-
-
-type CaseSpec = Annotated[
-    UpstreamCase | GeneratedCase,
-    Field(discriminator="kind", title="A JSON Schema inclusion benchmark case"),
-]
-"""
-Two schemas and what is known about them: does a accept every instance valid under b? The labels hold for draft 2020-12 with format asserted and patterns read as ECMA-262 regular expressions with the u flag.
-"""

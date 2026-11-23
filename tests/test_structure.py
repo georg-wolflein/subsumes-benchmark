@@ -6,7 +6,7 @@ import jsonschema_rs
 
 from reading import CORPUS, ROOT, cases, read
 from subsumes_benchmark.build import Overrides, exclusion_of
-from subsumes_benchmark.cases import read_case
+from subsumes_benchmark.generated.case import CaseSpec
 
 CONFIG = json.loads((ROOT / "collections.json").read_text(encoding="utf-8"))
 ORIGINS = CONFIG["origins"]
@@ -62,7 +62,7 @@ def test_every_case_is_read_by_the_model_of_a_case_and_names_its_schema() -> Non
     elsewhere = [
         case.id
         for case in cases()
-        if (case.file.parent / read_case(case.file).field_schema).resolve() != schema
+        if (case.file.parent / CaseSpec.read(case.file).field_schema).resolve() != schema
     ]
     assert elsewhere == []
 

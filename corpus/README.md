@@ -40,43 +40,43 @@ corpus/
 ```json
 {
   "$schema": "../../case.schema.json",
-  "kind": "upstream",
   "a_subsumes_b": true,
   "b_subsumes_a": false,
   "features": ["additionalProperties", "enum", "properties", "type"],
-  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/schemastore_containment/unknown/agripparc-1.2_v1_not_v2.json",
-  "duplicates": [
-    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/schemastore_containment/sat/agripparc-1.2_v2_not_v1.json"
-  ],
+  "built_from": {
+    "kind": "source",
+    "link": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/schemastore_containment/unknown/agripparc-1.2_v1_not_v2.json",
+    "duplicates": [
+      "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/schemastore_containment/sat/agripparc-1.2_v2_not_v1.json"
+    ]
+  },
   "derived": { "a_subsumes_b": { "checkers": ["RWG 8064ad8", "jsoncompat 0.6.0", "subsumes 0.2.0"] } },
   "a": { "type": "object", "additionalProperties": false, "properties": { "…": {} } },
   "b": { "type": "object", "additionalProperties": false, "properties": { "…": {} } }
 }
 ```
 
-A file is indented, with every non-ASCII character escaped so that none is invisible. A case is one of two kinds, which its `kind` names. A case read from a source is `upstream` and links to its file, as this one does. A generated case says what it was `generated` from in place of that link, and has none of `duplicates`, `note` and `derived`:
+A file is indented, with every non-ASCII character escaped so that none is invisible. A case says what it is `built_from`: a file of a source, which it links to, as this one does, or a generator of this repository. A generated case has both labels, and no `note` and nothing `derived`:
 
 ```json
 {
   "$schema": "../../case.schema.json",
-  "kind": "generated",
   "a_subsumes_b": false,
   "b_subsumes_a": true,
   "features": ["allOf", "anyOf", "const", "not", "properties", "required", "type"],
-  "generated": { "family": "pigeonhole", "sizes": { "holes": 5 }, "twin": true },
+  "built_from": { "kind": "generator", "family": "pigeonhole", "sizes": { "holes": 5 }, "twin": true },
   "a": false,
   "b": { "type": "object", "allOf": ["…"] }
 }
 ```
 
 - **`$schema`**: The path to `case.schema.json`, the same in every case. The schemas `a` and `b` are draft 2020-12 whatever this says.
-- **`kind`**: `upstream` for a case read from a source, `generated` for a generated one. What else a case holds depends on it.
 - **`a_subsumes_b`**: `true` when `a` accepts every instance valid under `b`, `false` when some instance of `b` is not valid under `a`, `null` when the corpus claims nothing.
 - **`b_subsumes_a`**: The same question in the other direction.
 - **`features`**: What the two schemas use; see [Features](#features).
-- **`upstream`**: A case read from a source only: a permanent link to the file the case comes from, in the repository and at the commit that `collections.json` names for the collection. A case built from the test suite adds a JSON pointer to the test case or the test after a `#`.
-- **`generated`**: A generated case only: the `family` it belongs to, the `sizes` it was built with, by name, and whether it is the `twin` of the member of those sizes. See [Collections](#collections).
-- **`duplicates`**: Present only when upstream has these two schemas in other files too, in either order: permanent links to those files. The corpus has one case for all of them.
+- **`built_from`**: What the case is built from, which its `kind` says:
+  - **`"kind": "source"`**: A file of a source. `link` is a permanent link to it, in the repository and at the commit that `collections.json` names for the collection; a case built from the test suite adds a JSON pointer to the test case or the test after a `#`. `duplicates` is present only when upstream has these two schemas in other files too, in either order, and lists permanent links to those files. The corpus has one case for all of them.
+  - **`"kind": "generator"`**: A generator of this repository: the `family` the case belongs to, the `sizes` it was built with, by name, and whether it is the `twin` of the member of those sizes. See [Collections](#collections).
 - **`note`**: Present only when the labels depart from upstream's, and says why.
 - **`derived`**: Present only when the case has a label that upstream does not give. It names each such label with what shows it: a `counterexample` for `false`, the `checkers` that agree for `true`.
 - **`a`** and **`b`**: The two schemas, last in the file, so that what is known is at the top however long they are.

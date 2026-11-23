@@ -25,7 +25,7 @@ from subsumes_benchmark.compare.summary import (
 )
 from subsumes_benchmark.compare.tasks import read_tasks, select
 from subsumes_benchmark.compare.witness import confirm, refuted
-from subsumes_benchmark.generated.case import UpstreamCase
+from subsumes_benchmark.generated.case import CaseSpec
 from subsumes_benchmark.generated.result import Checked, Crash, No, Unchecked, Unknown, Yes
 
 CHECKERS = sorted(path.parent for path in (ROOT / "checkers").glob("*/checker.json"))
@@ -41,11 +41,10 @@ def a_case(a: Json, b: Json, a_subsumes_b: bool | None = None) -> dict[str, Json
     """A case as its file has it, with nothing known about the other direction."""
     return {
         "$schema": "../../case.schema.json",
-        "kind": "upstream",
         "a_subsumes_b": a_subsumes_b,
         "b_subsumes_a": None,
         "features": [],
-        "upstream": "https://example.com",
+        "built_from": {"kind": "source", "link": "https://example.com"},
         "a": a,
         "b": b,
     }
@@ -100,15 +99,15 @@ def test_a_sample_is_the_same_for_every_checker() -> None:
 def test_a_validator_says_whether_a_counterexample_is_one(
     a: Json, b: Json, instance: Json, confirmation: Confirmation
 ) -> None:
-    case = UpstreamCase.model_validate(a_case(a, b))
+    case = CaseSpec.model_validate(a_case(a, b))
     assert confirm(case, "a_subsumes_b", instance).confirmation == confirmation
     # Asked the other way, the two schemas swap.
-    other = UpstreamCase.model_validate(a_case(b, a))
+    other = CaseSpec.model_validate(a_case(b, a))
     assert confirm(other, "b_subsumes_a", instance).confirmation == confirmation
 
 
 def test_a_counterexample_that_was_not_checked_says_why() -> None:
-    case = UpstreamCase.model_validate(a_case({"pattern": "^[^\\0]+$"}, True))
+    case = CaseSpec.model_validate(a_case({"pattern": "^[^\\0]+$"}, True))
     witness = confirm(case, "a_subsumes_b", "x")
     assert isinstance(witness, Unchecked)
     assert witness.counterexample == "x"
