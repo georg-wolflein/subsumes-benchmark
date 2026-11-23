@@ -193,4 +193,5 @@ def test_the_corpus_holds_every_member_and_nothing_else() -> None:
             member.b_subsumes_a,
         )
         assert case["generated"] == member.generated.model_dump()
+        assert case["kind"] == "generated"
         assert "upstream" not in case

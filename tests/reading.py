@@ -116,7 +116,7 @@ def cases() -> Sequence[Case]:
         metadata = _document(path)
         upstream, note = metadata.get("upstream"), metadata.get("note")
         used = metadata["features"]
-        assert isinstance(upstream, str) or "generated" in metadata
+        assert isinstance(upstream, str) == (metadata["kind"] == "upstream")
         assert note is None or isinstance(note, str)
         assert isinstance(used, list)
         also = metadata.get("duplicates", [])

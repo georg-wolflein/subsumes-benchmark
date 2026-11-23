@@ -4,14 +4,19 @@
   "title": "A JSON Schema inclusion benchmark case",
   "description": "Two schemas and what is known about them: does a accept every instance valid under b? The labels hold for draft 2020-12 with format asserted and patterns read as ECMA-262 regular expressions with the u flag.",
   "oneOf": [{ "$ref": "#/$defs/UpstreamCase" }, { "$ref": "#/$defs/GeneratedCase" }],
+  "discriminator": { "propertyName": "kind" },
   "$defs": {
     "UpstreamCase": {
       "description": "A case read from an upstream source, which links to the file it comes from.",
       "type": "object",
-      "required": ["$schema", "a_subsumes_b", "b_subsumes_a", "features", "upstream", "a", "b"],
+      "required": ["$schema", "kind", "a_subsumes_b", "b_subsumes_a", "features", "upstream", "a", "b"],
       "additionalProperties": false,
       "properties": {
         "$schema": { "$ref": "#/$defs/CaseSchema" },
+        "kind": {
+          "description": "That the case is read from an upstream source.",
+          "const": "upstream"
+        },
         "a_subsumes_b": {
           "description": "Whether a accepts every instance valid under b; null when the corpus claims nothing.",
           "type": ["boolean", "null"]
@@ -54,10 +59,14 @@
     "GeneratedCase": {
       "description": "A case that a generator of this repository builds, which says what it was built from in place of a link to an upstream file. Its labels are known by construction.",
       "type": "object",
-      "required": ["$schema", "a_subsumes_b", "b_subsumes_a", "features", "generated", "a", "b"],
+      "required": ["$schema", "kind", "a_subsumes_b", "b_subsumes_a", "features", "generated", "a", "b"],
       "additionalProperties": false,
       "properties": {
         "$schema": { "$ref": "#/$defs/CaseSchema" },
+        "kind": {
+          "description": "That the case is generated.",
+          "const": "generated"
+        },
         "a_subsumes_b": {
           "description": "Whether a accepts every instance valid under b.",
           "type": "boolean"

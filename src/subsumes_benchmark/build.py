@@ -276,6 +276,7 @@ class Case:
         """What the file of the case holds: what is known first, the two schemas last."""
         out: dict[str, Json] = {
             "$schema": f"../../{CASE_SCHEMA.name}",
+            "kind": "generated" if self.generated is not None else "upstream",
             "a_subsumes_b": self.a_subsumes_b,
             "b_subsumes_a": self.b_subsumes_a,
             "features": list(features(self.a, self.b)),

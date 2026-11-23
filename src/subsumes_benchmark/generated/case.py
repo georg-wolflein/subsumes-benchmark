@@ -153,6 +153,10 @@ class GeneratedCase(Config):
         use_attribute_docstrings=True,
     )
     field_schema: Annotated[CaseSchema, Field(alias="$schema")]
+    kind: Literal["generated"]
+    """
+    That the case is generated.
+    """
     a_subsumes_b: bool
     """
     Whether a accepts every instance valid under b.
@@ -192,6 +196,10 @@ class UpstreamCase(Config):
         use_attribute_docstrings=True,
     )
     field_schema: Annotated[CaseSchema, Field(alias="$schema")]
+    kind: Literal["upstream"]
+    """
+    That the case is read from an upstream source.
+    """
     a_subsumes_b: bool | None
     """
     Whether a accepts every instance valid under b; null when the corpus claims nothing.
@@ -228,7 +236,8 @@ class UpstreamCase(Config):
 
 
 type CaseSpec = Annotated[
-    UpstreamCase | GeneratedCase, Field(title="A JSON Schema inclusion benchmark case")
+    UpstreamCase | GeneratedCase,
+    Field(discriminator="kind", title="A JSON Schema inclusion benchmark case"),
 ]
 """
 Two schemas and what is known about them: does a accept every instance valid under b? The labels hold for draft 2020-12 with format asserted and patterns read as ECMA-262 regular expressions with the u flag.

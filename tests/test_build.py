@@ -135,7 +135,7 @@ def test_a_permalink_names_the_commit_in_the_way_of_the_forge(forge: Forge, link
     assert source.permalink(root / "tests" / "a b" / "c.json") == link
 
 
-def test_a_case_names_its_schema_and_says_what_is_known_before_the_schemas() -> None:
+def test_a_case_names_its_schema_and_kind_and_says_what_is_known_before_the_schemas() -> None:
     case = Case(
         id="one/two/three",
         a=True,
@@ -148,6 +148,7 @@ def test_a_case_names_its_schema_and_says_what_is_known_before_the_schemas() -> 
     assert isinstance(document, dict)
     assert list(document) == [
         "$schema",
+        "kind",
         "a_subsumes_b",
         "b_subsumes_a",
         "features",
@@ -231,7 +232,8 @@ def test_cases_with_the_same_two_schemas_are_one_case_that_says_what_each_says()
     assert alone is cases[4]
     written = both.document
     assert isinstance(written, dict)
-    assert list(written)[4:6] == ["upstream", "duplicates"]
+    assert written["kind"] == "upstream"
+    assert list(written)[5:7] == ["upstream", "duplicates"]
     # The order the cases come in decides nothing.
     assert without_duplicates(cases[::-1]) == kept[::-1]
 
@@ -293,7 +295,8 @@ def test_a_generated_case_says_what_it_was_generated_from_in_place_of_upstream()
     case = Case("o/families/x", member.a, member.b, True, True, None, generated=member.generated)
     document = case.document
     assert isinstance(document, dict)
-    assert list(document)[4:5] == ["generated"]
+    assert document["kind"] == "generated"
+    assert list(document)[5:6] == ["generated"]
     assert "upstream" not in document
     assert document["generated"] == {"family": "pigeonhole", "sizes": {"holes": 2}, "twin": False}
     # A case comes from upstream or is generated, and not both or neither.

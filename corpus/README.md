@@ -40,6 +40,7 @@ corpus/
 ```json
 {
   "$schema": "../../case.schema.json",
+  "kind": "upstream",
   "a_subsumes_b": true,
   "b_subsumes_a": false,
   "features": ["additionalProperties", "enum", "properties", "type"],
@@ -53,11 +54,12 @@ corpus/
 }
 ```
 
-A file is indented, with every non-ASCII character escaped so that none is invisible. A case is one of two kinds. A case read from a source links to its file under `upstream`, as this one does. A generated case has `generated` in place of `upstream`, and none of `duplicates`, `note` and `derived`:
+A file is indented, with every non-ASCII character escaped so that none is invisible. A case is one of two kinds, which its `kind` names. A case read from a source is `upstream` and links to its file, as this one does. A generated case says what it was `generated` from in place of that link, and has none of `duplicates`, `note` and `derived`:
 
 ```json
 {
   "$schema": "../../case.schema.json",
+  "kind": "generated",
   "a_subsumes_b": false,
   "b_subsumes_a": true,
   "features": ["allOf", "anyOf", "const", "not", "properties", "required", "type"],
@@ -68,6 +70,7 @@ A file is indented, with every non-ASCII character escaped so that none is invis
 ```
 
 - **`$schema`**: The path to `case.schema.json`, the same in every case. The schemas `a` and `b` are draft 2020-12 whatever this says.
+- **`kind`**: `upstream` for a case read from a source, `generated` for a generated one. What else a case holds depends on it.
 - **`a_subsumes_b`**: `true` when `a` accepts every instance valid under `b`, `false` when some instance of `b` is not valid under `a`, `null` when the corpus claims nothing.
 - **`b_subsumes_a`**: The same question in the other direction.
 - **`features`**: What the two schemas use; see [Features](#features).
