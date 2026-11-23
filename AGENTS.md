@@ -36,4 +36,4 @@ Use `uv` for Python commands. Run `make ci` for the CI checks and `make format` 
 - `match` for closed-set dispatch on a `Literal` or a sealed class hierarchy, with a `case _: assert_never(x)` arm, so exhaustiveness is a typecheck failure rather than a silent fall-through.
 - Classmethod factories over module-level constructors: `ClassName.create(...) -> Self`, not `_create_class_name(...)`.
 - Docstrings use Google style. Omit types from `Args`/`Returns` and skip `Raises` unless crucial.
-- Import at the top of the module, also what only an annotation names: Python evaluates an annotation only when something asks for it, so there is no `if TYPE_CHECKING:`. What only the `validation` group or the extra `report` installs, and the modules that need it, are imported with `lazy` (PEP 810), so that the command runs from a plain install. Ruff enforces both.
+- Put all `import` statements at the top of the module.
