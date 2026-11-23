@@ -13,20 +13,24 @@ The folder of a collection below the root of the corpus: the folder of its origi
 """
 
 
-class SourceLocation(Config):
-    """Where a collection is read from. The upstream link of each of its cases is a permanent link into this repository at this commit."""
+class FromSource(Config):
+    """A dataset of a source, which the cases are read from. The upstream link of each case is a permanent link into this repository at this commit."""
 
     model_config = ConfigDict(
         extra="forbid",
         use_attribute_docstrings=True,
     )
+    kind: Literal["source"]
+    """
+    That the cases are read from a source.
+    """
     repository: str
     """
     The URL of the git repository of the source.
     """
     commit: Annotated[str, Field(pattern="^[0-9a-f]{40}$")]
     """
-    The commit of the source that the collection is read at.
+    The commit of the source that the cases are read at.
     """
     path: str
     """
@@ -34,13 +38,17 @@ class SourceLocation(Config):
     """
 
 
-class GeneratorLocation(Config):
-    """The generator that builds a collection: a file of this repository, as the package of the same version as the corpus holds it."""
+class FromGenerator(Config):
+    """A generator of this repository, which builds the cases: a file of the repository, as the package of the same version as the corpus holds it."""
 
     model_config = ConfigDict(
         extra="forbid",
         use_attribute_docstrings=True,
     )
+    kind: Literal["generator"]
+    """
+    That a generator builds the cases.
+    """
     repository: str
     """
     The URL of this repository.
@@ -102,50 +110,26 @@ What the collection holds, in one sentence that fits a row of a table.
 """
 
 
-class SourceCollection(Config):
-    """A collection that is one dataset of a source, read at a commit of its repository."""
+type BuiltFrom = Annotated[FromSource | FromGenerator, Field(discriminator="kind")]
+"""
+What the cases of a collection are built from: one dataset of a source at a commit of its repository, or a generator of this repository.
+"""
+
+
+class Collection(Config):
+    """A collection: one dataset of a source, or what a generator of this repository builds."""
 
     model_config = ConfigDict(
         extra="forbid",
         use_attribute_docstrings=True,
     )
-    kind: Literal["source"]
-    """
-    That the collection is read from a source.
-    """
     description: Description
     use_case: UseCase
     labels: LabelOrigin
     origin: OriginSpec
     license: License
     license_file: LicenseFile
-    source: SourceLocation
-
-
-class GeneratedCollection(Config):
-    """A collection that a generator of this repository builds. What it builds is under the licence of this repository."""
-
-    model_config = ConfigDict(
-        extra="forbid",
-        use_attribute_docstrings=True,
-    )
-    kind: Literal["generated"]
-    """
-    That the collection is generated.
-    """
-    description: Description
-    use_case: UseCase
-    labels: LabelOrigin
-    origin: OriginSpec
-    license: License
-    license_file: LicenseFile
-    generator: GeneratorLocation
-
-
-type Collection = Annotated[SourceCollection | GeneratedCollection, Field(discriminator="kind")]
-"""
-A collection: one dataset of a source, or what a generator of this repository builds.
-"""
+    built_from: BuiltFrom
 
 
 class ManifestSpec(Config):

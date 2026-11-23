@@ -31,7 +31,7 @@ corpus/
 - **An origin** is the work that first published the pairs of its collections as subsumption questions, named by its first author and the year. [References](#references) has the four.
 - **A collection** is a folder of cases in the folder of its origin, with the `LICENSE` they are under.
 - **A case** is `<origin>/<collection>/<name>.json`, and that path without the `.json` is its id. No file lies deeper.
-- **[`manifest.json`](manifest.json)** lists the collections under `collections`, by folder. It says of each what it holds, the reference of its origin, its licence and where its labels come from, and under its `kind` whether it is read from a `source`, at a repository, commit and path, or `generated`, by a generator of this repository.
+- **[`manifest.json`](manifest.json)** lists the collections under `collections`, by folder. It says of each what it holds, the reference of its origin, its licence, where its labels come from and what it is `built_from`: a dataset of a source, at a repository, commit and path (`"kind": "source"`), or a generator of this repository (`"kind": "generator"`).
 - **[`case.schema.json`](case.schema.json)** is the schema of a case, and **[`manifest.schema.json`](manifest.schema.json)** that of the manifest.
 
 ## A case

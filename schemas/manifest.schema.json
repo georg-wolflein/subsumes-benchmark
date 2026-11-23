@@ -26,60 +26,41 @@
     },
     "Collection": {
       "description": "A collection: one dataset of a source, or what a generator of this repository builds.",
-      "oneOf": [{ "$ref": "#/$defs/SourceCollection" }, { "$ref": "#/$defs/GeneratedCollection" }],
+      "type": "object",
+      "required": ["description", "use_case", "labels", "origin", "license", "license_file", "built_from"],
+      "additionalProperties": false,
+      "properties": {
+        "description": { "$ref": "#/$defs/Description" },
+        "use_case": { "$ref": "#/$defs/UseCase" },
+        "labels": { "$ref": "#/$defs/LabelOrigin" },
+        "origin": { "$ref": "#/$defs/OriginSpec" },
+        "license": { "$ref": "#/$defs/License" },
+        "license_file": { "$ref": "#/$defs/LicenseFile" },
+        "built_from": { "$ref": "#/$defs/BuiltFrom" }
+      }
+    },
+    "BuiltFrom": {
+      "description": "What the cases of a collection are built from: one dataset of a source at a commit of its repository, or a generator of this repository.",
+      "oneOf": [{ "$ref": "#/$defs/FromSource" }, { "$ref": "#/$defs/FromGenerator" }],
       "discriminator": { "propertyName": "kind" }
     },
-    "SourceCollection": {
-      "description": "A collection that is one dataset of a source, read at a commit of its repository.",
+    "FromSource": {
+      "description": "A dataset of a source, which the cases are read from. The upstream link of each case is a permanent link into this repository at this commit.",
       "type": "object",
-      "required": ["kind", "description", "use_case", "labels", "origin", "license", "license_file", "source"],
+      "required": ["kind", "repository", "commit", "path"],
       "additionalProperties": false,
       "properties": {
         "kind": {
-          "description": "That the collection is read from a source.",
+          "description": "That the cases are read from a source.",
           "const": "source"
         },
-        "description": { "$ref": "#/$defs/Description" },
-        "use_case": { "$ref": "#/$defs/UseCase" },
-        "labels": { "$ref": "#/$defs/LabelOrigin" },
-        "origin": { "$ref": "#/$defs/OriginSpec" },
-        "license": { "$ref": "#/$defs/License" },
-        "license_file": { "$ref": "#/$defs/LicenseFile" },
-        "source": { "$ref": "#/$defs/SourceLocation" }
-      }
-    },
-    "GeneratedCollection": {
-      "description": "A collection that a generator of this repository builds. What it builds is under the licence of this repository.",
-      "type": "object",
-      "required": ["kind", "description", "use_case", "labels", "origin", "license", "license_file", "generator"],
-      "additionalProperties": false,
-      "properties": {
-        "kind": {
-          "description": "That the collection is generated.",
-          "const": "generated"
-        },
-        "description": { "$ref": "#/$defs/Description" },
-        "use_case": { "$ref": "#/$defs/UseCase" },
-        "labels": { "$ref": "#/$defs/LabelOrigin" },
-        "origin": { "$ref": "#/$defs/OriginSpec" },
-        "license": { "$ref": "#/$defs/License" },
-        "license_file": { "$ref": "#/$defs/LicenseFile" },
-        "generator": { "$ref": "#/$defs/GeneratorLocation" }
-      }
-    },
-    "SourceLocation": {
-      "description": "Where a collection is read from. The upstream link of each of its cases is a permanent link into this repository at this commit.",
-      "type": "object",
-      "required": ["repository", "commit", "path"],
-      "additionalProperties": false,
-      "properties": {
         "repository": {
           "description": "The URL of the git repository of the source.",
           "type": "string",
           "format": "uri"
         },
         "commit": {
-          "description": "The commit of the source that the collection is read at.",
+          "description": "The commit of the source that the cases are read at.",
           "type": "string",
           "pattern": "^[0-9a-f]{40}$"
         },
@@ -89,12 +70,16 @@
         }
       }
     },
-    "GeneratorLocation": {
-      "description": "The generator that builds a collection: a file of this repository, as the package of the same version as the corpus holds it.",
+    "FromGenerator": {
+      "description": "A generator of this repository, which builds the cases: a file of the repository, as the package of the same version as the corpus holds it.",
       "type": "object",
-      "required": ["repository", "path"],
+      "required": ["kind", "repository", "path"],
       "additionalProperties": false,
       "properties": {
+        "kind": {
+          "description": "That a generator builds the cases.",
+          "const": "generator"
+        },
         "repository": {
           "description": "The URL of this repository.",
           "type": "string",

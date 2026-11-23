@@ -9,9 +9,10 @@ import pytest
 from subsumes_benchmark import Json
 from subsumes_benchmark.build import (
     Collection,
+    CollectionSpec,
+    FromSource,
     OriginSpec,
     Source,
-    SourceCollection,
     SourceSpec,
     as_doubles,
     read_test_suite,
@@ -191,11 +192,9 @@ def suite(root: Path) -> Collection:
         repository="https://example.com/suite.git",
         commit="0" * 40,
     )
-    spec = SourceCollection(
-        kind="source",
+    spec = CollectionSpec(
         origin="origin",
-        source="suite",
-        path="tests",
+        built_from=FromSource(kind="source", name="suite", path="tests"),
         labels="by-construction",
         use_case="tool-checking",
         description="Examples.",
