@@ -2,10 +2,11 @@
 
 import json
 from decimal import Decimal
-from typing import TYPE_CHECKING
+from pathlib import Path
 
 import pytest
 
+from subsumes_benchmark import Json
 from subsumes_benchmark.build import (
     Collection,
     CollectionSpec,
@@ -26,11 +27,6 @@ from subsumes_benchmark.testsuite import (
     self_contained,
 )
 from subsumes_benchmark.validation import is_valid
-
-if TYPE_CHECKING:
-    from pathlib import Path
-
-    from subsumes_benchmark import Json
 
 
 def test_compatibility_follows_the_algorithm_of_the_suite() -> None:

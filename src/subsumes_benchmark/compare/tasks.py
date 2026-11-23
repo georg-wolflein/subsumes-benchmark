@@ -3,16 +3,12 @@
 import hashlib
 import json
 import random
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
+from pathlib import Path
 
 from subsumes_benchmark.generated.case import CaseSpec, Schema
-
-if TYPE_CHECKING:
-    from collections.abc import Mapping, Sequence
-    from pathlib import Path
-
-    from subsumes_benchmark.generated.result import Direction
+from subsumes_benchmark.generated.result import Direction
 
 
 @dataclass(frozen=True)

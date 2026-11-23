@@ -1,10 +1,10 @@
 """The two transformations of the build: splitting a fused test and converting to 2020-12."""
 
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 import pytest
 
+from subsumes_benchmark import Json
 from subsumes_benchmark.build import (
     Case,
     ConfigError,
@@ -17,11 +17,8 @@ from subsumes_benchmark.build import (
     write_json,
 )
 from subsumes_benchmark.convert import DRAFT_2020_12, ConversionError, Converter
+from subsumes_benchmark.generated.collections import Forge
 from subsumes_benchmark.unfuse import unfuse
-
-if TYPE_CHECKING:
-    from subsumes_benchmark import Json
-    from subsumes_benchmark.generated.collections import Forge
 
 
 def convert(schema: Json) -> Json:

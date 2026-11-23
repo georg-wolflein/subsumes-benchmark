@@ -1,8 +1,10 @@
 """What a report says about the runs, as numbers: outcomes, solved shares and times."""
 
 from collections import Counter
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Literal, Self, assert_never
+from pathlib import Path
+from typing import Literal, Self, assert_never
 
 from subsumes_benchmark.compare.results import (
     RUN_FILE,
@@ -29,10 +31,6 @@ from subsumes_benchmark.generated.result import (
     Unsupported,
     Yes,
 )
-
-if TYPE_CHECKING:
-    from collections.abc import Callable, Sequence
-    from pathlib import Path
 
 type Outcome = Literal["correct", "unlabelled", "wrong_no", "wrong_yes", "no_answer", "timeout"]
 """How a task counts.

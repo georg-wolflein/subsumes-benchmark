@@ -14,9 +14,10 @@ import selectors
 import signal
 import subprocess
 import time
+from collections.abc import Sequence
 from dataclasses import dataclass
 from pathlib import Path
-from typing import IO, TYPE_CHECKING, Self, get_args
+from typing import IO, Self, get_args
 
 from pydantic import PrivateAttr, TypeAdapter, ValidationError
 
@@ -24,9 +25,6 @@ from subsumes_benchmark.generated.checker import CheckerSpec, Dialect
 from subsumes_benchmark.generated.ready import ReadySpec
 from subsumes_benchmark.generated.reply import ReplySpec, Timeout
 from subsumes_benchmark.generated.request import RequestSpec, Schema
-
-if TYPE_CHECKING:
-    from collections.abc import Sequence
 
 DIALECTS: Sequence[Dialect] = get_args(Dialect.__value__)
 

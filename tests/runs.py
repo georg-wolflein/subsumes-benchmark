@@ -1,19 +1,15 @@
 """Runs and results as the tests make them."""
 
 import json
-from typing import TYPE_CHECKING, Literal, assert_never
+from collections.abc import Sequence
+from pathlib import Path
+from typing import Literal, assert_never
 
 from pydantic import TypeAdapter
 
+from subsumes_benchmark import Json
 from subsumes_benchmark.compare.results import Ending, Result, Run, result_line, write_run
-from subsumes_benchmark.generated.result import Checked, ResultSpec, Unchecked, Witness
-
-if TYPE_CHECKING:
-    from collections.abc import Sequence
-    from pathlib import Path
-
-    from subsumes_benchmark import Json
-    from subsumes_benchmark.generated.result import Direction
+from subsumes_benchmark.generated.result import Checked, Direction, ResultSpec, Unchecked, Witness
 
 type Confirmation = Literal["confirmed", "not_an_instance", "accepted", "unchecked"]
 

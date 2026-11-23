@@ -1,13 +1,13 @@
 """The ``features`` of a case: what its two schemas use."""
 
-from typing import TYPE_CHECKING
-
 import pytest
 from jsonschema_specifications import REGISTRY as METASCHEMAS
 from referencing import Resource
+from referencing._core import Resolver
 from referencing.jsonschema import DRAFT202012
 
 from reading import cases
+from subsumes_benchmark import Json
 from subsumes_benchmark.features import (
     FEATURES,
     METASCHEMAS as METASCHEMA_URL,
@@ -16,11 +16,6 @@ from subsumes_benchmark.features import (
     UnresolvedReferenceError,
     features,
 )
-
-if TYPE_CHECKING:
-    from referencing._core import Resolver
-
-    from subsumes_benchmark import Json
 
 
 def test_the_keywords_are_those_that_decide_what_a_schema_accepts() -> None:

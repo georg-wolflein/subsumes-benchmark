@@ -1,17 +1,12 @@
 """The rewriting of a schema for a checker that reads an older draft."""
 
-from typing import TYPE_CHECKING
-
 import pytest
 from jsonschema import Draft4Validator, Draft7Validator, Draft202012Validator
+from jsonschema.protocols import Validator
 
 from reading import cases, constants
+from subsumes_benchmark import Json
 from subsumes_benchmark.compare.downgrade import OlderDraft, UnsupportedError, downgrade
-
-if TYPE_CHECKING:
-    from jsonschema.protocols import Validator
-
-    from subsumes_benchmark import Json
 
 
 def test_references_become_pointers_from_the_root() -> None:

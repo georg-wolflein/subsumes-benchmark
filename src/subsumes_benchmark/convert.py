@@ -1,13 +1,10 @@
 """Converting a schema written for an older draft to draft 2020-12."""
 
 import re
-from typing import TYPE_CHECKING
+from collections.abc import Callable, Iterator
 from urllib.parse import unquote, urldefrag, urljoin
 
-if TYPE_CHECKING:
-    from collections.abc import Callable, Iterator
-
-    from subsumes_benchmark import Json
+from subsumes_benchmark import Json
 
 DRAFT_2020_12 = "https://json-schema.org/draft/2020-12/schema"
 

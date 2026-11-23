@@ -2,16 +2,13 @@
 
 import subprocess
 import sys
-from typing import TYPE_CHECKING
+from pathlib import Path
 
 import runs
 from runs import Confirmation, a_run, a_witness
 from subsumes_benchmark.compare.diff import LIST_LIMIT, diff
 from subsumes_benchmark.compare.results import Ending, Result, result_line, write_run
 from subsumes_benchmark.compare.summary import Entry
-
-if TYPE_CHECKING:
-    from pathlib import Path
 
 
 def a_result(

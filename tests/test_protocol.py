@@ -9,7 +9,8 @@ refuses what is plainly something else, and writes nothing that a schema does no
 
 import json
 import re
-from typing import TYPE_CHECKING, cast
+from pathlib import Path
+from typing import cast
 
 import pytest
 from jsonschema_rs import Draft202012Validator
@@ -17,17 +18,13 @@ from pydantic import TypeAdapter, ValidationError
 
 from reading import ROOT, read
 from runs import a_result, a_run, a_witness, write
+from subsumes_benchmark import Json
 from subsumes_benchmark.compare.results import ENDINGS, Run, read_results, read_run
 from subsumes_benchmark.compare.summary import Comparison, read_entries
 from subsumes_benchmark.generated.ready import ReadySpec
 from subsumes_benchmark.generated.reply import ReplySpec
 from subsumes_benchmark.generated.request import RequestSpec
 from subsumes_benchmark.generated.result import ResultSpec
-
-if TYPE_CHECKING:
-    from pathlib import Path
-
-    from subsumes_benchmark import Json
 
 READERS: dict[str, TypeAdapter] = {
     "ready": TypeAdapter(ReadySpec),

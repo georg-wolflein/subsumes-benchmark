@@ -1,11 +1,7 @@
 r"""The validator the tests use reads patterns as ECMA-262 does with the ``u`` flag."""
 
-from typing import TYPE_CHECKING
-
+from subsumes_benchmark import Json
 from subsumes_benchmark.validation import is_valid, pattern_error, search
-
-if TYPE_CHECKING:
-    from subsumes_benchmark import Json
 
 
 def test_a_pattern_matches_anywhere_in_the_string() -> None:

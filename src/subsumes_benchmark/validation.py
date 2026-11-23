@@ -15,25 +15,21 @@ The tests need it, and so does deriving a label from a counterexample; the build
 What it imports is in the ``validation`` dependency group.
 """
 
+from collections.abc import Iterator
 from functools import cache
-from typing import TYPE_CHECKING, Protocol
+from typing import Protocol
 
 import jsonschema_rs
 from jsonschema import Draft202012Validator
 from jsonschema.exceptions import ValidationError
+from jsonschema.protocols import Validator
 from jsonschema.validators import extend
 from jsonschema_specifications import REGISTRY as METASCHEMAS
+from referencing._core import Resolver
 from regress import Regex, RegressError
 
-if TYPE_CHECKING:
-    from collections.abc import Iterator
-
-    from jsonschema.protocols import Validator
-    from referencing._core import Resolver
-
-    from subsumes_benchmark import Json
-    from subsumes_benchmark.generated.case import Schema
-
+from subsumes_benchmark import Json
+from subsumes_benchmark.generated.case import Schema
 
 # The formats that draft 2020-12 defines. With ``format`` asserted, it does not say what any
 # other format accepts.
