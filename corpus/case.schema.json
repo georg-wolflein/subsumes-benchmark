@@ -3,61 +3,125 @@
   "$id": "https://github.com/georg-wolflein/subsumes-benchmark/blob/main/corpus/case.schema.json",
   "title": "A JSON Schema inclusion benchmark case",
   "description": "Two schemas and what is known about them: does a accept every instance valid under b? The labels hold for draft 2020-12 with format asserted and patterns read as ECMA-262 regular expressions with the u flag.",
-  "type": "object",
-  "required": ["$schema", "a_subsumes_b", "b_subsumes_a", "features", "upstream", "a", "b"],
-  "additionalProperties": false,
-  "properties": {
-    "$schema": {
-      "description": "The path from this file to case.schema.json, which is at the root of the corpus: above the folder of the collection and the folder of its origin.",
+  "oneOf": [{ "$ref": "#/$defs/UpstreamCase" }, { "$ref": "#/$defs/GeneratedCase" }],
+  "$defs": {
+    "UpstreamCase": {
+      "description": "A case read from an upstream source, which links to the file it comes from.",
+      "type": "object",
+      "required": ["$schema", "a_subsumes_b", "b_subsumes_a", "features", "upstream", "a", "b"],
+      "additionalProperties": false,
+      "properties": {
+        "$schema": { "$ref": "#/$defs/CaseSchema" },
+        "a_subsumes_b": {
+          "description": "Whether a accepts every instance valid under b; null when the corpus claims nothing.",
+          "type": ["boolean", "null"]
+        },
+        "b_subsumes_a": {
+          "description": "The same question in the other direction.",
+          "type": ["boolean", "null"]
+        },
+        "features": { "$ref": "#/$defs/Features" },
+        "upstream": {
+          "description": "A permanent link to the file this case comes from, in the source repository at the commit that collections.json names for the collection; the test suite's cases add a JSON pointer to the test case or the test after a '#'.",
+          "type": "string",
+          "format": "uri"
+        },
+        "duplicates": {
+          "description": "Permanent links to the other upstream files that hold these two schemas, in either order, each written like upstream. The corpus has one case for all of them, and its labels are what any of them says; absent when there is no other.",
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "format": "uri" }
+        },
+        "note": {
+          "description": "Why the labels depart from upstream's; absent when they do not.",
+          "type": "string"
+        },
+        "derived": {
+          "description": "What shows each label that upstream does not give and that was derived from the answers of checkers; absent when the case has no such label.",
+          "$ref": "#/$defs/Derived"
+        },
+        "a": {
+          "description": "The schema that should accept everything.",
+          "$ref": "#/$defs/Schema"
+        },
+        "b": {
+          "description": "The schema whose instances must be accepted.",
+          "$ref": "#/$defs/Schema"
+        }
+      }
+    },
+    "GeneratedCase": {
+      "description": "A case that a generator of this repository builds, which says what it was built from in place of a link to an upstream file. Its labels are known by construction.",
+      "type": "object",
+      "required": ["$schema", "a_subsumes_b", "b_subsumes_a", "features", "generated", "a", "b"],
+      "additionalProperties": false,
+      "properties": {
+        "$schema": { "$ref": "#/$defs/CaseSchema" },
+        "a_subsumes_b": {
+          "description": "Whether a accepts every instance valid under b.",
+          "type": "boolean"
+        },
+        "b_subsumes_a": {
+          "description": "The same question in the other direction.",
+          "type": "boolean"
+        },
+        "features": { "$ref": "#/$defs/Features" },
+        "generated": { "$ref": "#/$defs/Generated" },
+        "a": {
+          "description": "The schema that should accept everything.",
+          "$ref": "#/$defs/Schema"
+        },
+        "b": {
+          "description": "The schema whose instances must be accepted.",
+          "$ref": "#/$defs/Schema"
+        }
+      }
+    },
+    "CaseSchema": {
+      "description": "The path from the file of a case to case.schema.json, which is at the root of the corpus: above the folder of the collection and the folder of its origin.",
       "const": "../../case.schema.json"
     },
-    "a_subsumes_b": {
-      "description": "Whether a accepts every instance valid under b; null when the corpus claims nothing.",
-      "type": ["boolean", "null"]
-    },
-    "b_subsumes_a": {
-      "description": "The same question in the other direction.",
-      "type": ["boolean", "null"]
-    },
-    "features": {
+    "Features": {
       "description": "What the two schemas use, in the order of the list of features: every keyword that validation can reach and that decides what a schema accepts, and 'recursion' when a schema is reached again from itself through a reference.",
       "type": "array",
       "uniqueItems": true,
       "items": { "$ref": "#/$defs/Feature" }
     },
-    "upstream": {
-      "description": "A permanent link to the file this case comes from, in the source repository at the commit that collections.json names for the collection; the test suite's cases add a JSON pointer to the test case or the test after a '#'.",
-      "type": "string",
-      "format": "uri"
-    },
-    "duplicates": {
-      "description": "Permanent links to the other upstream files that hold these two schemas, in either order, each written like upstream. The corpus has one case for all of them, and its labels are what any of them says; absent when there is no other.",
-      "type": "array",
-      "minItems": 1,
-      "uniqueItems": true,
-      "items": { "type": "string", "format": "uri" }
-    },
-    "note": {
-      "description": "Why the labels depart from upstream's; absent when they do not.",
-      "type": "string"
-    },
-    "derived": {
-      "description": "What shows each label that upstream does not give and that was derived from the answers of checkers; absent when the case has no such label.",
-      "$ref": "#/$defs/Derived"
-    },
-    "a": {
-      "description": "The schema that should accept everything.",
-      "$ref": "#/$defs/Schema"
-    },
-    "b": {
-      "description": "The schema whose instances must be accepted.",
-      "$ref": "#/$defs/Schema"
-    }
-  },
-  "$defs": {
     "Schema": {
       "description": "A schema that is valid draft 2020-12 and stands on its own: every document it references is embedded in it.",
       "$ref": "https://json-schema.org/draft/2020-12/schema"
+    },
+    "Generated": {
+      "description": "What the generator of the collection built a case from: the family, the sizes that it was built with, and whether it is the twin of the member of those sizes.",
+      "type": "object",
+      "required": ["family", "sizes", "twin"],
+      "additionalProperties": false,
+      "properties": {
+        "family": { "$ref": "#/$defs/Family" },
+        "sizes": {
+          "description": "The sizes of the member by the name of each, in the order that the name of the case gives them.",
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": { "pattern": "^[a-z]+$" },
+          "additionalProperties": { "type": "integer", "minimum": 1 }
+        },
+        "twin": {
+          "description": "Whether the case is the twin of the member of these sizes: a near-copy of it whose answer is false in at least one direction where the member's is true in both.",
+          "type": "boolean"
+        }
+      }
+    },
+    "Family": {
+      "description": "A family of generated cases, which the documentation of the corpus describes.",
+      "enum": [
+        "split-order",
+        "product-of-choices",
+        "nth-from-end",
+        "coprime-counters",
+        "tagged-unions",
+        "pigeonhole"
+      ]
     },
     "Derived": {
       "description": "What shows the labels of a case that upstream does not give, by label.",

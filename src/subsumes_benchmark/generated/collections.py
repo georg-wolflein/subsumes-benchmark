@@ -70,17 +70,32 @@ class SourceSpec(Config):
     """
 
 
-class CollectionSpec(Config):
-    """A collection: one dataset of a source, first published in the work of its origin."""
+type Generator = Literal["families"]
+"""
+A generator of this repository, which builds the cases of a collection rather than reading them from a source. families: the families of cases with a size knob in subsumes_benchmark.families.
+"""
+
+
+type Origin = Name
+"""
+The citation key of the work that first published the pairs of a collection, one of those under origins. Its folder holds the folder of the collection.
+"""
+
+
+type Description = str
+"""
+What the collection holds, in one sentence that fits a row of a table.
+"""
+
+
+class SourceCollection(Config):
+    """A collection that is one dataset of a source."""
 
     model_config = ConfigDict(
         extra="forbid",
         use_attribute_docstrings=True,
     )
-    origin: Name
-    """
-    The citation key of the work that first published these pairs, one of those under origins. Its folder holds the folder of the collection.
-    """
+    origin: Origin
     source: Name
     """
     The name of the source the collection is built from, one of those under sources.
@@ -91,10 +106,27 @@ class CollectionSpec(Config):
     """
     labels: LabelOrigin
     use_case: UseCase
-    description: str
-    """
-    What the collection holds, in one sentence that fits a row of a table.
-    """
+    description: Description
+
+
+class GeneratedCollection(Config):
+    """A collection that a generator of this repository builds. What it builds is under the licence of this repository."""
+
+    model_config = ConfigDict(
+        extra="forbid",
+        use_attribute_docstrings=True,
+    )
+    origin: Origin
+    generator: Generator
+    labels: LabelOrigin
+    use_case: UseCase
+    description: Description
+
+
+type CollectionSpec = SourceCollection | GeneratedCollection
+"""
+A collection, first published in the work of its origin: one dataset of a source, or what a generator of this repository builds.
+"""
 
 
 class CollectionsSpec(Config):
@@ -118,5 +150,5 @@ class CollectionsSpec(Config):
     """
     collections: dict[Name, CollectionSpec]
     """
-    The collections, by name, in the order they are built. A collection is one dataset of a source, and its name is its folder in the corpus, below the folder of its origin.
+    The collections, by name, in the order they are built. A collection is one dataset of a source, or what a generator of this repository builds, and its name is its folder in the corpus, below the folder of its origin.
     """

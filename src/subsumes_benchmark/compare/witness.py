@@ -20,7 +20,7 @@ from jsonschema_rs import Draft202012Validator, ValidationError
 
 from subsumes_benchmark import Json
 from subsumes_benchmark.compare.tasks import Direction
-from subsumes_benchmark.generated.case import CaseSpec, Schema
+from subsumes_benchmark.generated.case import GeneratedCase, Schema, UpstreamCase
 from subsumes_benchmark.generated.result import Checked, Unchecked, Witness
 
 
@@ -71,7 +71,7 @@ def _read(value: Json) -> Json:
             return value
 
 
-def confirm(case: CaseSpec, direction: Direction, instance: Json) -> Witness:
+def confirm(case: UpstreamCase | GeneratedCase, direction: Direction, instance: Json) -> Witness:
     """Ask the validator about the counterexample of a no to one task of the case."""
     match direction:
         case "a_subsumes_b":

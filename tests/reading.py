@@ -58,7 +58,9 @@ class Case:
     file: Path
     a_subsumes_b: bool | None
     b_subsumes_a: bool | None
-    upstream: str
+    # The link to the upstream file of a case read from a source; a generated case has none.
+    upstream: str | None
+    generated: Json
     note: str | None
     duplicates: Sequence[str]
     derived: Json
@@ -112,9 +114,9 @@ def cases() -> Sequence[Case]:
     found = []
     for path in sorted(CORPUS.glob("*/*/*.json"), key=lambda path: _case_id(path).split("/")):
         metadata = _document(path)
-        upstream, note = metadata["upstream"], metadata.get("note")
+        upstream, note = metadata.get("upstream"), metadata.get("note")
         used = metadata["features"]
-        assert isinstance(upstream, str)
+        assert isinstance(upstream, str) or "generated" in metadata
         assert note is None or isinstance(note, str)
         assert isinstance(used, list)
         also = metadata.get("duplicates", [])
@@ -125,7 +127,8 @@ def cases() -> Sequence[Case]:
                 file=path,
                 a_subsumes_b=_label(metadata["a_subsumes_b"]),
                 b_subsumes_a=_label(metadata["b_subsumes_a"]),
-                upstream=upstream,
+                upstream=upstream if isinstance(upstream, str) else None,
+                generated=metadata.get("generated"),
                 note=note,
                 duplicates=[str(link) for link in also],
                 derived=metadata.get("derived"),

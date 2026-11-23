@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import assert_never, cast
 
 from subsumes_benchmark import Json
+from subsumes_benchmark.cases import read_case
 from subsumes_benchmark.compare.checkers import Checker, Crashed, Dialect, Worker
 from subsumes_benchmark.compare.downgrade import UnsupportedError, downgrade
 from subsumes_benchmark.compare.results import (
@@ -28,7 +29,6 @@ from subsumes_benchmark.compare.results import (
 from subsumes_benchmark.compare.tasks import Task
 from subsumes_benchmark.compare.witness import confirm
 from subsumes_benchmark.generated import reply as replies, result as results
-from subsumes_benchmark.generated.case import CaseSpec
 from subsumes_benchmark.generated.reply import ReplySpec
 from subsumes_benchmark.generated.request import Schema
 from subsumes_benchmark.generated.run import Checker as CheckerOfRun
@@ -49,7 +49,7 @@ def prepare(task: Task, dialect: Dialect) -> tuple[Schema, Schema]:
     Raises:
         UnsupportedError: The dialect cannot express one of the schemas.
     """
-    case = CaseSpec.read(task.file)
+    case = read_case(task.file)
     match task.direction:
         case "a_subsumes_b":
             schemas = {"a": case.a, "b": case.b}
@@ -127,7 +127,7 @@ def result(task: Task, came: ReplySpec | Crashed | NotAsked, wall_seconds: float
             # The key and not its value says whether there is one: ``null`` is an instance.
             if "counterexample" not in came.model_fields_set:
                 return no
-            witness = confirm(CaseSpec.read(task.file), task.direction, came.counterexample)
+            witness = confirm(read_case(task.file), task.direction, came.counterexample)
             return no.model_copy(update={"witness": witness})
         case _:
             assert_never(came)

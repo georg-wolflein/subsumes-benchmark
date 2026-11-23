@@ -32,10 +32,11 @@ from pathlib import Path
 from typing import Literal, assert_never
 
 from subsumes_benchmark import Json
+from subsumes_benchmark.cases import read_case
 from subsumes_benchmark.compare.results import read_results, read_run
 from subsumes_benchmark.compare.tasks import case_files, collection_of, read_unlabelled
 from subsumes_benchmark.derived import Derivations, by_label
-from subsumes_benchmark.generated.case import CaseSpec, Feature, Schema
+from subsumes_benchmark.generated.case import Feature, GeneratedCase, Schema, UpstreamCase
 from subsumes_benchmark.generated.derived import Agreement, Counterexample, Derived, Evidence
 from subsumes_benchmark.generated.result import (
     Crash,
@@ -217,7 +218,9 @@ def refutes(instance: Json, accepting: Schema, narrower: Schema) -> bool:
         return False
 
 
-def decide(case: CaseSpec, direction: Direction, votes: Sequence[Vote]) -> Evidence | Open:
+def decide(
+    case: UpstreamCase | GeneratedCase, direction: Direction, votes: Sequence[Vote]
+) -> Evidence | Open:
     """What the votes show about one question of a case, or why it stays open."""
     match direction:
         case "a_subsumes_b":
@@ -228,7 +231,7 @@ def decide(case: CaseSpec, direction: Direction, votes: Sequence[Vote]) -> Evide
             assert_never(direction)
     if meaningless(case.a) is not None or meaningless(case.b) is not None:
         return "no meaning"
-    if case.note is not None:
+    if isinstance(case, UpstreamCase) and case.note is not None:
         return "overridden"
     for instance in _instances(votes):
         if refutes(instance, accepting, narrower):
@@ -270,7 +273,7 @@ def derive(corpus: Path, derived_file: Path, runs: Sequence[Path]) -> None:
     refuted: list[str] = []
     for case, direction in sorted(asked, key=lambda question: question[0].split("/")):
         found = votes.get((case, direction), [])
-        decided = decide(CaseSpec.read(files[case]), direction, found)
+        decided = decide(read_case(files[case]), direction, found)
         collection = collection_of(case)
         match decided:
             case Counterexample():

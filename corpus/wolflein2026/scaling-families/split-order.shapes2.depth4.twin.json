@@ -1,0 +1,133 @@
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": true,
+  "features": [
+    "additionalProperties",
+    "allOf",
+    "oneOf",
+    "patternProperties",
+    "properties",
+    "required",
+    "type"
+  ],
+  "generated": {
+    "family": "split-order",
+    "sizes": {
+      "shapes": 2,
+      "depth": 4
+    },
+    "twin": true
+  },
+  "a": {
+    "oneOf": [
+      {
+        "allOf": [
+          {
+            "allOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "object"
+                  },
+                  {
+                    "properties": {
+                      "a": {
+                        "type": "string"
+                      },
+                      "extra": {
+                        "type": "boolean"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "required": [
+                  "a"
+                ]
+              }
+            ]
+          },
+          {
+            "patternProperties": {
+              "^a$": true,
+              "^extra$": true
+            },
+            "additionalProperties": false
+          }
+        ]
+      },
+      {
+        "allOf": [
+          {
+            "allOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "object"
+                  },
+                  {
+                    "properties": {
+                      "b": {
+                        "type": "string"
+                      },
+                      "extra": {
+                        "type": "boolean"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "required": [
+                  "b"
+                ]
+              }
+            ]
+          },
+          {
+            "patternProperties": {
+              "^b$": true
+            },
+            "additionalProperties": false
+          }
+        ]
+      }
+    ]
+  },
+  "b": {
+    "oneOf": [
+      {
+        "type": "object",
+        "properties": {
+          "a": {
+            "type": "string"
+          },
+          "extra": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "a"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "b": {
+            "type": "string"
+          },
+          "extra": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "b"
+        ],
+        "additionalProperties": false
+      }
+    ]
+  }
+}

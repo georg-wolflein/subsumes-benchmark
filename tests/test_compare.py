@@ -12,6 +12,7 @@ import runs
 from reading import CORPUS, ROOT, case, cases
 from runs import Confirmation, a_run, a_witness, write
 from subsumes_benchmark import Json
+from subsumes_benchmark.cases import parse_case
 from subsumes_benchmark.compare.checkers import Checker
 from subsumes_benchmark.compare.report import block, report
 from subsumes_benchmark.compare.results import Ending, Result, ending, read_results, read_run
@@ -25,7 +26,6 @@ from subsumes_benchmark.compare.summary import (
 )
 from subsumes_benchmark.compare.tasks import read_tasks, select
 from subsumes_benchmark.compare.witness import confirm, refuted
-from subsumes_benchmark.generated.case import CaseSpec
 from subsumes_benchmark.generated.result import Checked, Crash, No, Unchecked, Unknown, Yes
 
 CHECKERS = sorted(path.parent for path in (ROOT / "checkers").glob("*/checker.json"))
@@ -99,15 +99,15 @@ def test_a_sample_is_the_same_for_every_checker() -> None:
 def test_a_validator_says_whether_a_counterexample_is_one(
     a: Json, b: Json, instance: Json, confirmation: Confirmation
 ) -> None:
-    case = CaseSpec.model_validate(a_case(a, b))
+    case = parse_case(a_case(a, b))
     assert confirm(case, "a_subsumes_b", instance).confirmation == confirmation
     # Asked the other way, the two schemas swap.
-    other = CaseSpec.model_validate(a_case(b, a))
+    other = parse_case(a_case(b, a))
     assert confirm(other, "b_subsumes_a", instance).confirmation == confirmation
 
 
 def test_a_counterexample_that_was_not_checked_says_why() -> None:
-    case = CaseSpec.model_validate(a_case({"pattern": "^[^\\0]+$"}, True))
+    case = parse_case(a_case({"pattern": "^[^\\0]+$"}, True))
     witness = confirm(case, "a_subsumes_b", "x")
     assert isinstance(witness, Unchecked)
     assert witness.counterexample == "x"

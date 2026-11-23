@@ -2,7 +2,7 @@
 
 A benchmark for JSON Schema subsumption checkers: programs that decide whether a schema _A_ accepts every instance that is valid under a schema _B_.
 This problem is also known as schema _inclusion_ or _containment_.
-The benchmark is a corpus of **<!-- num_labelled_tasks:start -->19,432<!-- num_labelled_tasks:end -->** pairs of [draft 2020-12](https://json-schema.org/draft/2020-12) schemas with known answers, collected from four works.
+The benchmark is a corpus of **<!-- num_labelled_tasks:start -->19,712<!-- num_labelled_tasks:end -->** pairs of [draft 2020-12](https://json-schema.org/draft/2020-12) schemas with known answers, collected from four works.
 
 ## Results
 
@@ -44,7 +44,7 @@ The results were measured on <!-- version:start -->[`v0.10.1`](https://github.co
 
 ## Collections
 
-The benchmark brings together <!-- num_collections:start -->8<!-- num_collections:end --> collections of tasks from the sources listed below (see the [corpus documentation](https://github.com/georg-wolflein/subsumes-benchmark/blob/main/corpus/README.md) for more information):
+The benchmark brings together <!-- num_collections:start -->9<!-- num_collections:end --> collections of tasks from the sources listed below (see the [corpus documentation](https://github.com/georg-wolflein/subsumes-benchmark/blob/main/corpus/README.md) for more information):
 
 <!-- collections:start -->
 
@@ -56,8 +56,9 @@ The benchmark brings together <!-- num_collections:start -->8<!-- num_collection
 - **[`baazizi2026/additional-as-uneval`](https://github.com/georg-wolflein/subsumes-benchmark/tree/main/corpus/baazizi2026/additional-as-uneval)**: Real schemas against themselves with additionalProperties and items rewritten through unevaluatedProperties and unevaluatedItems. From [Baazizi et al., 2026](https://arxiv.org/abs/2603.25306). 2,817 cases, 5,455 of 5,634 tasks with a label.
 - **[`baazizi2026/uneval-as-additional`](https://github.com/georg-wolflein/subsumes-benchmark/tree/main/corpus/baazizi2026/uneval-as-additional)**: Schemas using unevaluatedProperties or unevaluatedItems against a translation to additionalProperties and items. From [Baazizi et al., 2026](https://arxiv.org/abs/2603.25306). 297 cases, 268 of 594 tasks with a label.
 - **[`wolflein2026/json-schema-test-suite`](https://github.com/georg-wolflein/subsumes-benchmark/tree/main/corpus/wolflein2026/json-schema-test-suite)**: Pairs built from the test cases of the official JSON Schema Test Suite for draft 2020-12: each schema against its instances, its negation and itself. From [This repository](https://github.com/georg-wolflein/subsumes-benchmark). 5,740 cases, 11,353 of 11,480 tasks with a label.
+- **[`wolflein2026/scaling-families`](https://github.com/georg-wolflein/subsumes-benchmark/tree/main/corpus/wolflein2026/scaling-families)**: Six families of generated cases that grow with a size, each member with a twin whose answer flips, to show where a checker stops or goes wrong as the cases grow. From [This repository](https://github.com/georg-wolflein/subsumes-benchmark). 140 cases, 280 of 280 tasks with a label.
 
-In all: 10,743 cases, 19,432 of 21,486 tasks with a label.
+In all: 10,883 cases, 19,712 of 21,766 tasks with a label.
 
 <!-- collections:end -->
 
@@ -93,4 +94,4 @@ A checker is a folder with a `checker.json` and an adapter (a program that answe
 
 ## Licence
 
-The code is MIT licensed, except [`checkers/rwg/`](https://github.com/georg-wolflein/subsumes-benchmark/tree/main/checkers/rwg), which is compiled together with RWG and is GPL-3.0 like it. The corpus keeps the licences of its sources: GPL-3.0 for the collections read from the artifact of Baazizi et al., and MIT for the one built from the official JSON Schema Test Suite. The folder of each collection holds the text as `LICENSE`. The package on PyPI holds the code and the corpus, so it is licensed `MIT AND GPL-3.0-only`.
+The code is MIT licensed, except [`checkers/rwg/`](https://github.com/georg-wolflein/subsumes-benchmark/tree/main/checkers/rwg), which is compiled together with RWG and is GPL-3.0 like it. The corpus keeps the licences of its sources: GPL-3.0 for the collections read from the artifact of Baazizi et al., and MIT for the one built from the official JSON Schema Test Suite and for the one generated here. The folder of each collection holds the text as `LICENSE`. The package on PyPI holds the code and the corpus, so it is licensed `MIT AND GPL-3.0-only`.

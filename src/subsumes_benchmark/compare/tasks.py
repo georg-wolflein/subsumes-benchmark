@@ -7,7 +7,8 @@ from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from pathlib import Path
 
-from subsumes_benchmark.generated.case import CaseSpec, Schema
+from subsumes_benchmark.cases import read_case
+from subsumes_benchmark.generated.case import Schema
 from subsumes_benchmark.generated.result import Direction
 
 
@@ -56,7 +57,7 @@ def read_tasks(corpus: Path) -> Sequence[Task]:
     """
     found = []
     for case, path in case_files(corpus).items():
-        known = CaseSpec.read(path)
+        known = read_case(path)
         found.append(Task(case, "a_subsumes_b", path, known.a_subsumes_b))
         found.append(Task(case, "b_subsumes_a", path, known.b_subsumes_a))
     return found
@@ -71,7 +72,7 @@ def read_unlabelled(corpus: Path) -> Sequence[Task]:
     case when its two schemas are the same.
     """
     files = case_files(corpus)
-    cases = {case: CaseSpec.read(path) for case, path in files.items()}
+    cases = {case: read_case(path) for case, path in files.items()}
     asked = {(_digest(known.a), _digest(known.b)) for known in cases.values()}
     found = []
     for case, known in cases.items():

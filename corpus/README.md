@@ -23,13 +23,14 @@ corpus/
 │   ├── additional-as-uneval/
 │   └── uneval-as-additional/
 └── wolflein2026/
-    └── json-schema-test-suite/
+    ├── json-schema-test-suite/
+    └── scaling-families/
 ```
 
 - **An origin** is the work that first published the pairs of its collections as subsumption questions, named by its first author and the year. [References](#references) has the four.
 - **A collection** is a folder of cases in the folder of its origin, with the `LICENSE` they are under.
 - **A case** is `<origin>/<collection>/<name>.json`, and that path without the `.json` is its id. No file lies deeper.
-- **[`collections.json`](collections.json)** says of every collection what it holds, the reference of its origin, the repository and commit it is read from, its licence, and where its labels come from.
+- **[`collections.json`](collections.json)** says of every collection what it holds, the reference of its origin, the repository and commit it is read from or, for a generated collection, the generator that builds it, its licence, and where its labels come from.
 - **[`case.schema.json`](case.schema.json)** is the schema of a case.
 
 ## A case
@@ -52,13 +53,26 @@ corpus/
 }
 ```
 
-A file is indented, with every non-ASCII character escaped so that none is invisible.
+A file is indented, with every non-ASCII character escaped so that none is invisible. A case is one of two kinds. A case read from a source links to its file under `upstream`, as this one does. A generated case has `generated` in place of `upstream`, and none of `duplicates`, `note` and `derived`:
+
+```json
+{
+  "$schema": "../../case.schema.json",
+  "a_subsumes_b": false,
+  "b_subsumes_a": true,
+  "features": ["allOf", "anyOf", "const", "not", "properties", "required", "type"],
+  "generated": { "family": "pigeonhole", "sizes": { "holes": 5 }, "twin": true },
+  "a": false,
+  "b": { "type": "object", "allOf": ["…"] }
+}
+```
 
 - **`$schema`**: The path to `case.schema.json`, the same in every case. The schemas `a` and `b` are draft 2020-12 whatever this says.
 - **`a_subsumes_b`**: `true` when `a` accepts every instance valid under `b`, `false` when some instance of `b` is not valid under `a`, `null` when the corpus claims nothing.
 - **`b_subsumes_a`**: The same question in the other direction.
 - **`features`**: What the two schemas use; see [Features](#features).
-- **`upstream`**: A permanent link to the file the case comes from, in the repository and at the commit that `collections.json` names for the collection. A case built from the test suite adds a JSON pointer to the test case or the test after a `#`.
+- **`upstream`**: A case read from a source only: a permanent link to the file the case comes from, in the repository and at the commit that `collections.json` names for the collection. A case built from the test suite adds a JSON pointer to the test case or the test after a `#`.
+- **`generated`**: A generated case only: the `family` it belongs to, the `sizes` it was built with, by name, and whether it is the `twin` of the member of those sizes. See [Collections](#collections).
 - **`duplicates`**: Present only when upstream has these two schemas in other files too, in either order: permanent links to those files. The corpus has one case for all of them.
 - **`note`**: Present only when the labels depart from upstream's, and says why.
 - **`derived`**: Present only when the case has a label that upstream does not give. It names each such label with what shows it: a `counterexample` for `false`, the `checkers` that agree for `true`.
@@ -112,6 +126,19 @@ The collection `wolflein2026/json-schema-test-suite` is built from the [official
 | `universal` | `true` | `anyOf: [S, not S]` |
 | `unsatisfiable` | `false` | `allOf: [S, not S]` |
 
+The collection `wolflein2026/scaling-families` is generated, from no source. It holds families of cases that grow with a size, so that a checker can be measured on where it stops, or answers wrongly, as the cases grow. Every member of a family has a twin: a near-copy whose answer is `false` in at least one direction, so that a checker that always says yes does not solve a family. Every label is known by construction, in both directions. The name of a case joins with dots the family, each size after its name, and `twin` for a twin: `pigeonhole.holes5.twin`.
+
+| Family | `b` | `a` | The twin | Sizes |
+| --- | --- | --- | --- | --- |
+| `split-order` | A `oneOf` of closed object shapes, each with a required string named for it and an optional boolean `extra` | The same shapes with their keywords spread over `depth` levels of `allOf` | `a`'s last shape does not allow `extra` | `shapes` 2 to 16, `depth` 1 to 4 |
+| `product-of-choices` | Requires `x_i` or `y_i`, for each of the `choices` | The same through De Morgan's laws, in the reverse order | `a` requires `x0` | `choices` 4 to 64 |
+| `nth-from-end` | Strings of `a` and `b` whose (n+1)-th character from the end is `a`, as `^[ab]*a[ab]{n}$` | The same as `^(a\|b)*a(a\|b){n-1}(a\|b)$` | `a` has `{n}` for `{n-1}` | `n` 2 to 20 |
+| `coprime-counters` | Strings of `a` whose length is a multiple of `p` and of `q`, as two patterns | Strings of `a` whose length is a multiple of pq | `a` takes multiples of 2pq | `p` and `q` from 2 and 3 to 13 and 17 |
+| `tagged-unions` | A `oneOf` of `kinds` objects told apart by the `const` of `kind`, each with `fields` string fields | The `anyOf` of the same kinds | The first field of `a`'s last kind is an integer | `kinds` 5 to 80, `fields` 5 to 30 |
+| `pigeonhole` | `holes` + 1 pigeons, each in one of `holes` holes and no two in one, as boolean properties | `false` | `b` has as many pigeons as holes | `holes` 2 to 8 |
+
+Each member says yes in both directions. Its twin says no to `a_subsumes_b`, and for `nth-from-end` and `tagged-unions`, where neither schema of the twin subsumes the other, to `b_subsumes_a` too. The pigeons of a `pigeonhole` member do not fit, so its `b` accepts nothing and `false` subsumes it; those of the twin fit, so `false` does not. [How the corpus is built](https://github.com/georg-wolflein/subsumes-benchmark/blob/main/docs/construction.md#generated-families) says what each family stresses and why the sizes are these. A result on this collection says most by family and size.
+
 The other collections keep the file names of their source. [How the corpus is built](https://github.com/georg-wolflein/subsumes-benchmark/blob/main/docs/construction.md) says which upstream cases are left out, which labels are corrected and how a label is derived.
 
 ## Versions
@@ -129,6 +156,6 @@ Results measured on two versions are comparable exactly when their major and min
 - **`habib2021`**: Andrew Habib, Avraham Shinnar, Martin Hirzel and Michael Pradel. *Finding Data Compatibility Bugs with JSON Subschema Checking*. ISSTA 2021. [doi:10.1145/3460319.3464796](https://doi.org/10.1145/3460319.3464796). `rb-testset` is the pairs of its [replication package](https://zenodo.org/records/4729863); the tool is [IBM/jsonsubschema](https://github.com/IBM/jsonsubschema) (Apache-2.0).
 - **`attouche2026`**: Lyes Attouche, Mohamed-Amine Baazizi, Dario Colazzo, Giorgio Ghelli, Carlo Sartiani and Stefanie Scherzinger. *Witness Generation for Classical JSON Schema*. ACM Transactions on Database Systems 51(4), 2026. [doi:10.1145/3799416](https://doi.org/10.1145/3799416). It builds `handwritten-sc` by hand, `mergeallof` from the unit tests of [json-schema-merge-allof](https://github.com/mokkabonna/json-schema-merge-allof) (Martin Hansen), and `schemastore-versions` from the history of [SchemaStore](https://github.com/SchemaStore/schemastore) (Apache-2.0).
 - **`baazizi2026`**: Mohamed-Amine Baazizi, Nour El Houda Ben Ali, Dario Colazzo, Giorgio Ghelli, Stefan Klessinger, Carlo Sartiani and Stefanie Scherzinger. *JSON Schema Inclusion through Refutational Normalization: Reconciling Efficiency and Completeness*. [arXiv:2603.25306](https://arxiv.org/abs/2603.25306), 2026. It introduces `oneof-as-anyof`, `additional-as-uneval` and `uneval-as-additional`, built from schemas found on GitHub.
-- **`wolflein2026`**: [subsumes-benchmark](https://github.com/georg-wolflein/subsumes-benchmark) builds `json-schema-test-suite` from [json-schema-org/JSON-Schema-Test-Suite](https://github.com/json-schema-org/JSON-Schema-Test-Suite) (MIT, Julian Berman). The six kinds of pairs are those of [sdbs-uni-p/json-schema-containment-testsuite](https://github.com/sdbs-uni-p/json-schema-containment-testsuite), described in Lyes Attouche, Mohamed-Amine Baazizi, Dario Colazzo, Yunchen Ding, Michael Fruth, Giorgio Ghelli, Carlo Sartiani and Stefanie Scherzinger. *A Test Suite for JSON Schema Containment*. ER 2021 Demos and Posters, CEUR Workshop Proceedings 2958.
+- **`wolflein2026`**: [subsumes-benchmark](https://github.com/georg-wolflein/subsumes-benchmark) generates `scaling-families`, and builds `json-schema-test-suite` from [json-schema-org/JSON-Schema-Test-Suite](https://github.com/json-schema-org/JSON-Schema-Test-Suite) (MIT, Julian Berman). The six kinds of pairs are those of [sdbs-uni-p/json-schema-containment-testsuite](https://github.com/sdbs-uni-p/json-schema-containment-testsuite), described in Lyes Attouche, Mohamed-Amine Baazizi, Dario Colazzo, Yunchen Ding, Michael Fruth, Giorgio Ghelli, Carlo Sartiani and Stefanie Scherzinger. *A Test Suite for JSON Schema Containment*. ER 2021 Demos and Posters, CEUR Workshop Proceedings 2958.
 
-The collections of the first three origins are read from the [artifact of Baazizi et al.](https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema), which is GPL-3.0, and are converted to draft 2020-12. The collection built from the test suite is MIT.
+The collections of the first three origins are read from the [artifact of Baazizi et al.](https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema), which is GPL-3.0, and are converted to draft 2020-12. The collection built from the test suite is MIT, and so is the generated one, under the licence of this repository.

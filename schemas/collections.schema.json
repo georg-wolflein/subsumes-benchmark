@@ -23,7 +23,7 @@
       "additionalProperties": { "$ref": "#/$defs/OriginSpec" }
     },
     "collections": {
-      "description": "The collections, by name, in the order they are built. A collection is one dataset of a source, and its name is its folder in the corpus, below the folder of its origin.",
+      "description": "The collections, by name, in the order they are built. A collection is one dataset of a source, or what a generator of this repository builds, and its name is its folder in the corpus, below the folder of its origin.",
       "type": "object",
       "propertyNames": { "$ref": "#/$defs/Name" },
       "additionalProperties": { "$ref": "#/$defs/CollectionSpec" }
@@ -85,16 +85,21 @@
         }
       }
     },
+    "Generator": {
+      "description": "A generator of this repository, which builds the cases of a collection rather than reading them from a source. families: the families of cases with a size knob in subsumes_benchmark.families.",
+      "enum": ["families"]
+    },
     "CollectionSpec": {
-      "description": "A collection: one dataset of a source, first published in the work of its origin.",
+      "description": "A collection, first published in the work of its origin: one dataset of a source, or what a generator of this repository builds.",
+      "oneOf": [{ "$ref": "#/$defs/SourceCollection" }, { "$ref": "#/$defs/GeneratedCollection" }]
+    },
+    "SourceCollection": {
+      "description": "A collection that is one dataset of a source.",
       "type": "object",
       "required": ["origin", "source", "path", "labels", "use_case", "description"],
       "additionalProperties": false,
       "properties": {
-        "origin": {
-          "description": "The citation key of the work that first published these pairs, one of those under origins. Its folder holds the folder of the collection.",
-          "$ref": "#/$defs/Name"
-        },
+        "origin": { "$ref": "#/$defs/Origin" },
         "source": {
           "description": "The name of the source the collection is built from, one of those under sources.",
           "$ref": "#/$defs/Name"
@@ -105,11 +110,29 @@
         },
         "labels": { "$ref": "#/$defs/LabelOrigin" },
         "use_case": { "$ref": "#/$defs/UseCase" },
-        "description": {
-          "description": "What the collection holds, in one sentence that fits a row of a table.",
-          "type": "string"
-        }
+        "description": { "$ref": "#/$defs/Description" }
       }
+    },
+    "GeneratedCollection": {
+      "description": "A collection that a generator of this repository builds. What it builds is under the licence of this repository.",
+      "type": "object",
+      "required": ["origin", "generator", "labels", "use_case", "description"],
+      "additionalProperties": false,
+      "properties": {
+        "origin": { "$ref": "#/$defs/Origin" },
+        "generator": { "$ref": "#/$defs/Generator" },
+        "labels": { "$ref": "#/$defs/LabelOrigin" },
+        "use_case": { "$ref": "#/$defs/UseCase" },
+        "description": { "$ref": "#/$defs/Description" }
+      }
+    },
+    "Origin": {
+      "description": "The citation key of the work that first published the pairs of a collection, one of those under origins. Its folder holds the folder of the collection.",
+      "$ref": "#/$defs/Name"
+    },
+    "Description": {
+      "description": "What the collection holds, in one sentence that fits a row of a table.",
+      "type": "string"
     }
   }
 }

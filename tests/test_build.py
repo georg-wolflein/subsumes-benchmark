@@ -1,5 +1,6 @@
 """The two transformations of the build: splitting a fused test and converting to 2020-12."""
 
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
@@ -17,6 +18,7 @@ from subsumes_benchmark.build import (
     write_json,
 )
 from subsumes_benchmark.convert import DRAFT_2020_12, ConversionError, Converter
+from subsumes_benchmark.families import pigeonhole
 from subsumes_benchmark.generated.collections import Forge
 from subsumes_benchmark.unfuse import unfuse
 
@@ -284,6 +286,28 @@ def test_duplicates_must_not_contradict_each_other() -> None:
         ]
     )
     assert kept.note == "First. Second."
+
+
+def test_a_generated_case_says_what_it_was_generated_from_in_place_of_upstream() -> None:
+    (member, _) = pigeonhole(2)
+    case = Case("o/families/x", member.a, member.b, True, True, None, generated=member.generated)
+    document = case.document
+    assert isinstance(document, dict)
+    assert list(document)[4:5] == ["generated"]
+    assert "upstream" not in document
+    assert document["generated"] == {"family": "pigeonhole", "sizes": {"holes": 2}, "twin": False}
+    # A case comes from upstream or is generated, and not both or neither.
+    with pytest.raises(ValueError, match="upstream or is generated"):
+        Case("o/one/x", TEXT, NUMBER, None, None, None)
+    with pytest.raises(ValueError, match="upstream or is generated"):
+        replace(case, upstream="x.json")
+
+
+def test_a_generated_case_has_no_duplicate() -> None:
+    (member, _) = pigeonhole(2)
+    generated = Case("o/families/x", TEXT, NUMBER, True, False, None, generated=member.generated)
+    with pytest.raises(ConversionError, match="generated cases have the schemas of others"):
+        without_duplicates([generated, a_case("o/one/a", NUMBER, TEXT)])
 
 
 def overrides_file(folder: Path, exclude: Json, override: Json) -> Path:

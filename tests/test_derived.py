@@ -12,10 +12,11 @@ from reading import CORPUS, ROOT, cases, read
 from runs import Confirmation, a_witness
 from subsumes_benchmark import Json
 from subsumes_benchmark.build import Case, ConfigError, with_derived, write_case, write_json
+from subsumes_benchmark.cases import read_case
 from subsumes_benchmark.compare.derive import READ_DIFFERENTLY, Vote, decide, derive, refutes
 from subsumes_benchmark.compare.tasks import read_unlabelled
 from subsumes_benchmark.derived import Derivations, by_label, document, label
-from subsumes_benchmark.generated.case import CaseSpec
+from subsumes_benchmark.generated.case import UpstreamCase
 from subsumes_benchmark.generated.derived import Agreement, Counterexample, Derived
 from subsumes_benchmark.generated.result import Direction
 from subsumes_benchmark.validation import meaningless
@@ -26,9 +27,9 @@ NUMBER: dict[str, Json] = {"type": "number"}
 OPTIONAL_NUMBER: dict[str, Json] = {"type": ["number", "null"]}
 
 
-def a_case(a: Json, b: Json, note: str | None = None) -> CaseSpec:
+def a_case(a: Json, b: Json, note: str | None = None) -> UpstreamCase:
     built = Case("o/one/case", a, b, None, None, "x.json", note)
-    return CaseSpec.model_validate_json(json.dumps(built.document))
+    return UpstreamCase.model_validate_json(json.dumps(built.document))
 
 
 def yes(name: str, version: str = "1.0") -> Vote:
@@ -380,7 +381,7 @@ def test_a_derived_counterexample_refutes_the_inclusion() -> None:
     checked = 0
     wrong = []
     for case, entry in Derivations.read(ROOT / "derived.json").cases.items():
-        found = CaseSpec.read(CORPUS / f"{case}.json")
+        found = read_case(CORPUS / f"{case}.json")
         for direction, evidence in by_label(entry):
             if not isinstance(evidence, Counterexample):
                 continue
