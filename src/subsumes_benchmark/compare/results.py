@@ -6,7 +6,9 @@ one for each way that a task can end, and is told apart with ``match``. Here is 
 schema cannot say.
 """
 
-from typing import TYPE_CHECKING, Literal, assert_never, get_args
+from collections.abc import Sequence
+from pathlib import Path
+from typing import Literal, assert_never, get_args
 
 from pydantic import TypeAdapter, ValidationError
 
@@ -23,10 +25,6 @@ from subsumes_benchmark.generated.result import (
     Yes,
 )
 from subsumes_benchmark.generated.run import RunSpec
-
-if TYPE_CHECKING:
-    from collections.abc import Sequence
-    from pathlib import Path
 
 type Result = ResultSpec
 """How one checker did on one task: a line of ``results.jsonl``."""

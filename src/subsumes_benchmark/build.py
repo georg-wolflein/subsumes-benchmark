@@ -34,18 +34,21 @@ import re
 import shutil
 import subprocess
 from collections import Counter
+from collections.abc import Iterator, Mapping, Sequence
 from dataclasses import dataclass, replace
 from decimal import Decimal
 from pathlib import Path
-from typing import TYPE_CHECKING, Self, assert_never
+from typing import Self, assert_never
 from urllib.parse import quote, urldefrag, urljoin
 
 from pydantic import model_validator
 
+from subsumes_benchmark import Json
 from subsumes_benchmark.config import ConfigError
 from subsumes_benchmark.convert import (
     ConversionError,
     Converter,
+    PointerMap,
     dialect_of,
     nested,
 )
@@ -57,16 +60,10 @@ from subsumes_benchmark.generated.collections import (
     OriginSpec,
     SourceSpec,
 )
+from subsumes_benchmark.generated.derived import Derived
 from subsumes_benchmark.generated.overrides import Override, OverridesSpec
 from subsumes_benchmark.testsuite import SuiteCase, pairs
 from subsumes_benchmark.unfuse import unfuse
-
-if TYPE_CHECKING:
-    from collections.abc import Iterator, Mapping, Sequence
-
-    from subsumes_benchmark import Json
-    from subsumes_benchmark.convert import PointerMap
-    from subsumes_benchmark.generated.derived import Derived
 
 SOURCES = Path("sources")
 

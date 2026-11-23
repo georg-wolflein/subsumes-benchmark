@@ -6,16 +6,14 @@ patterns matched as ECMA-262 does with the ``u`` flag and ``format`` asserted.
 """
 
 import json
-from typing import TYPE_CHECKING, assert_never
+from typing import assert_never
 
 import pytest
 
 from reading import Case, case, cases, constants, patterns
+from subsumes_benchmark import Json
+from subsumes_benchmark.compare.tasks import Direction
 from subsumes_benchmark.validation import is_valid, pattern_error
-
-if TYPE_CHECKING:
-    from subsumes_benchmark import Json
-    from subsumes_benchmark.compare.tasks import Direction
 
 CATEGORIES = frozenset({"valid", "nonvalid", "unions", "reflexive", "universal", "unsatisfiable"})
 

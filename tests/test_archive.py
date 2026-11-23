@@ -3,14 +3,11 @@
 import subprocess
 import sys
 import tarfile
-from typing import TYPE_CHECKING
+from pathlib import Path
 
 import pytest
 
 from subsumes_benchmark.archive import ARCHIVE, ArchiveError, pack, unpack
-
-if TYPE_CHECKING:
-    from pathlib import Path
 
 FILES = {
     "case.schema.json": "{}",

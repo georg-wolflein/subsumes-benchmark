@@ -8,11 +8,13 @@ newly. Without a base it says how the run went and no more.
 
 import json
 from collections import Counter
+from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Literal, assert_never
+from typing import Literal, assert_never
 
-from subsumes_benchmark.compare.results import collection, ending, seconds
-from subsumes_benchmark.compare.summary import outcome
+from subsumes_benchmark.compare.results import Result, collection, ending, seconds
+from subsumes_benchmark.compare.summary import Entry, outcome
+from subsumes_benchmark.compare.tasks import Direction
 from subsumes_benchmark.compare.witness import refuted
 from subsumes_benchmark.compare.words import count, duration, plural, table
 from subsumes_benchmark.generated.result import (
@@ -26,13 +28,6 @@ from subsumes_benchmark.generated.result import (
     Unsupported,
     Yes,
 )
-
-if TYPE_CHECKING:
-    from collections.abc import Sequence
-
-    from subsumes_benchmark.compare.results import Result
-    from subsumes_benchmark.compare.summary import Entry
-    from subsumes_benchmark.compare.tasks import Direction
 
 # At most this many entries in a list and rows in a table of tasks: GitHub caps a comment at
 # 65,536 characters.

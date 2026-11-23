@@ -36,3 +36,4 @@ Use `uv` for Python commands. Run `make ci` for the CI checks and `make format` 
 - `match` for closed-set dispatch on a `Literal` or a sealed class hierarchy, with a `case _: assert_never(x)` arm, so exhaustiveness is a typecheck failure rather than a silent fall-through.
 - Classmethod factories over module-level constructors: `ClassName.create(...) -> Self`, not `_create_class_name(...)`.
 - Docstrings use Google style. Omit types from `Args`/`Returns` and skip `Raises` unless crucial.
+- Put all `import` statements at the top of the module.

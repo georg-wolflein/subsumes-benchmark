@@ -1,28 +1,24 @@
 """The labels that upstream does not give: how they are derived, and that the corpus's hold."""
 
 import json
-from typing import TYPE_CHECKING, Literal
+from collections.abc import Sequence
+from pathlib import Path
+from typing import Literal
 
 import pytest
 
 import runs
 from reading import CORPUS, ROOT, cases, read
-from runs import a_witness
+from runs import Confirmation, a_witness
+from subsumes_benchmark import Json
 from subsumes_benchmark.build import Case, ConfigError, with_derived, write_case, write_json
 from subsumes_benchmark.compare.derive import READ_DIFFERENTLY, Vote, decide, derive, refutes
 from subsumes_benchmark.compare.tasks import read_unlabelled
 from subsumes_benchmark.derived import Derivations, by_label, document, label
 from subsumes_benchmark.generated.case import CaseSpec
 from subsumes_benchmark.generated.derived import Agreement, Counterexample, Derived
+from subsumes_benchmark.generated.result import Direction
 from subsumes_benchmark.validation import meaningless
-
-if TYPE_CHECKING:
-    from collections.abc import Sequence
-    from pathlib import Path
-
-    from runs import Confirmation
-    from subsumes_benchmark import Json
-    from subsumes_benchmark.generated.result import Direction
 
 TEXT: dict[str, Json] = {"type": "string"}
 OPTIONAL: dict[str, Json] = {"type": ["string", "null"]}

@@ -6,19 +6,14 @@ and ``test_structure.py`` holds every case against it. Upstream cases that fail 
 left out of the corpus; ``overrides.json`` lists them.
 """
 
-from typing import TYPE_CHECKING
-
 import pytest
 from jsonschema_specifications import REGISTRY as METASCHEMAS
 from referencing import Resource
+from referencing._core import Resolver
 from referencing.jsonschema import DRAFT202012
 
 from reading import cases, nested, read
-
-if TYPE_CHECKING:
-    from referencing._core import Resolver
-
-    from subsumes_benchmark import Json
+from subsumes_benchmark import Json
 
 COLLECTIONS = sorted({case.collection for case in cases()})
 

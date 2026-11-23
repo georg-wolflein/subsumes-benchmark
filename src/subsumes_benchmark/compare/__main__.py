@@ -17,6 +17,12 @@ from subsumes_benchmark.compare.summary import ReportError, read_entry
 from subsumes_benchmark.compare.tasks import read_tasks, read_unlabelled, select
 from subsumes_benchmark.config import ConfigError
 
+# Deriving validates instances as the labels read a schema, which needs the validators of the
+# `validation` group, and the report draws a plot, which needs matplotlib. A run needs neither,
+# so each is imported only where its command is run.
+lazy from subsumes_benchmark.compare.derive import derive
+lazy from subsumes_benchmark.compare.report import report
+
 CORPUS = Path("corpus")
 
 
@@ -130,10 +136,6 @@ def _main() -> None:
             sys.exit(1)
         return
     if args.command == "report":
-        # The report draws a plot, which needs matplotlib; a run does not. It reads the
-        # runs and nothing of the corpus.
-        from subsumes_benchmark.compare.report import report  # noqa: PLC0415
-
         print(report(args.source, args.out))
         return
     if not args.corpus.is_dir():
@@ -163,10 +165,6 @@ def _main() -> None:
             jobs=args.jobs,
         )
     else:
-        # Deriving validates instances as the labels read a schema, which needs the
-        # validators of the `validation` group; a run does not.
-        from subsumes_benchmark.compare.derive import derive  # noqa: PLC0415
-
         derive(args.corpus, args.derived, args.runs)
 
 

@@ -5,12 +5,10 @@ models that read the files are generated from the schemas into ``subsumes_benchm
 (``make models``), so a file that is not what its schema says does not get read.
 """
 
-from typing import TYPE_CHECKING, Self
+from pathlib import Path
+from typing import Self
 
 from pydantic import BaseModel, ConfigDict, ValidationError
-
-if TYPE_CHECKING:
-    from pathlib import Path
 
 
 class ConfigError(Exception):

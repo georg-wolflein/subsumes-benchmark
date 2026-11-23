@@ -21,15 +21,12 @@ inside it then resolve as they did, and no identifier exists twice.
 """
 
 import json
+from collections.abc import Iterator, Mapping, Sequence
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Literal, Self
+from typing import Literal, Self
 
+from subsumes_benchmark import Json
 from subsumes_benchmark.convert import ABSOLUTE_URI_RE, ConversionError, nested
-
-if TYPE_CHECKING:
-    from collections.abc import Iterator, Mapping, Sequence
-
-    from subsumes_benchmark import Json
 
 type Category = Literal["valid", "nonvalid", "unions", "reflexive", "universal", "unsatisfiable"]
 

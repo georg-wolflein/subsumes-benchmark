@@ -14,16 +14,14 @@ turns on digits that a double does not hold.
 """
 
 import math
-from typing import TYPE_CHECKING, assert_never, cast
+from typing import assert_never, cast
 
 from jsonschema_rs import Draft202012Validator, ValidationError
 
+from subsumes_benchmark import Json
+from subsumes_benchmark.compare.tasks import Direction
+from subsumes_benchmark.generated.case import CaseSpec, Schema
 from subsumes_benchmark.generated.result import Checked, Unchecked, Witness
-
-if TYPE_CHECKING:
-    from subsumes_benchmark import Json
-    from subsumes_benchmark.compare.tasks import Direction
-    from subsumes_benchmark.generated.case import CaseSpec, Schema
 
 
 def refuted(witness: Witness) -> bool:

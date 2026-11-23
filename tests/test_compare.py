@@ -4,13 +4,14 @@ import json
 import subprocess
 import sys
 from importlib.metadata import version
-from typing import TYPE_CHECKING
+from pathlib import Path
 
 import pytest
 
 import runs
 from reading import CORPUS, ROOT, case, cases
 from runs import Confirmation, a_run, a_witness, write
+from subsumes_benchmark import Json
 from subsumes_benchmark.compare.checkers import Checker
 from subsumes_benchmark.compare.report import block, report
 from subsumes_benchmark.compare.results import Ending, Result, ending, read_results, read_run
@@ -26,11 +27,6 @@ from subsumes_benchmark.compare.tasks import read_tasks, select
 from subsumes_benchmark.compare.witness import confirm, refuted
 from subsumes_benchmark.generated.case import CaseSpec
 from subsumes_benchmark.generated.result import Checked, Crash, No, Unchecked, Unknown, Yes
-
-if TYPE_CHECKING:
-    from pathlib import Path
-
-    from subsumes_benchmark import Json
 
 CHECKERS = sorted(path.parent for path in (ROOT / "checkers").glob("*/checker.json"))
 

@@ -12,16 +12,13 @@ followed. The list says what is written in the schemas, not what the answer depe
 saying that would take an inclusion checker.
 """
 
-from typing import TYPE_CHECKING, get_args
+from collections.abc import Iterator, Mapping, Sequence
+from typing import get_args
 from urllib.parse import unquote, urldefrag, urljoin
 
+from subsumes_benchmark import Json
 from subsumes_benchmark.convert import parse_pointer
 from subsumes_benchmark.generated.case import Feature
-
-if TYPE_CHECKING:
-    from collections.abc import Iterator, Mapping, Sequence
-
-    from subsumes_benchmark import Json
 
 # In the order a list of features is written in: that of the code points. The list itself is
 # in ``schemas/case.schema.json``.

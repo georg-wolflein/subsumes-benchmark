@@ -1,9 +1,6 @@
 """Words and numbers as a report writes them."""
 
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from collections.abc import Sequence
+from collections.abc import Sequence
 
 NOTHING = "—"
 

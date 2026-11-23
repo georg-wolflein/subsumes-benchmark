@@ -22,13 +22,11 @@ draft-04 lets an implementation take ``1.0`` for a number that is not an integer
 
 import json
 import re
-from typing import TYPE_CHECKING, Literal, assert_never
+from typing import Literal, assert_never
 from urllib.parse import quote, unquote, urldefrag, urljoin
 
+from subsumes_benchmark import Json
 from subsumes_benchmark.convert import Pointer, PointerMap, format_pointer, map_pointer
-
-if TYPE_CHECKING:
-    from subsumes_benchmark import Json
 
 type OlderDraft = Literal["draft-04", "draft-07"]
 

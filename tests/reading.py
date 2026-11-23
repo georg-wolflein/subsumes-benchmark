@@ -1,15 +1,12 @@
 """Reading the committed corpus, for the tests."""
 
 import json
+from collections.abc import Iterator, Sequence
 from dataclasses import dataclass
 from functools import cache
 from pathlib import Path
-from typing import TYPE_CHECKING
 
-if TYPE_CHECKING:
-    from collections.abc import Iterator, Sequence
-
-    from subsumes_benchmark import Json
+from subsumes_benchmark import Json
 
 ROOT = Path(__file__).parent.parent
 CORPUS = ROOT / "corpus"

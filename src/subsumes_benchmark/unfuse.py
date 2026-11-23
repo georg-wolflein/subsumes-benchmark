@@ -10,12 +10,9 @@ definition so that none is unreachable. This is the inverse of
 """
 
 import re
-from typing import TYPE_CHECKING
 
+from subsumes_benchmark import Json
 from subsumes_benchmark.convert import HOISTED_GROUPS, ConversionError, map_refs, nested
-
-if TYPE_CHECKING:
-    from subsumes_benchmark import Json
 
 # The older pipeline hoisted a shared, un-renamed "definitions" instead.
 FUSED_GROUPS = (*HOISTED_GROUPS, "definitions")

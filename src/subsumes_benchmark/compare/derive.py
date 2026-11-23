@@ -26,16 +26,20 @@ refutes.
 
 import json
 from collections import Counter
+from collections.abc import Iterator, Mapping, Sequence
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Literal, assert_never
+from pathlib import Path
+from typing import Literal, assert_never
 
+from subsumes_benchmark import Json
 from subsumes_benchmark.compare.results import read_results, read_run
 from subsumes_benchmark.compare.tasks import case_files, collection_of, read_unlabelled
 from subsumes_benchmark.derived import Derivations, by_label
-from subsumes_benchmark.generated.case import CaseSpec
+from subsumes_benchmark.generated.case import CaseSpec, Feature, Schema
 from subsumes_benchmark.generated.derived import Agreement, Counterexample, Derived, Evidence
 from subsumes_benchmark.generated.result import (
     Crash,
+    Direction,
     Error,
     No,
     Timeout,
@@ -44,14 +48,6 @@ from subsumes_benchmark.generated.result import (
     Yes,
 )
 from subsumes_benchmark.validation import is_valid, is_valid_to_another, meaningless
-
-if TYPE_CHECKING:
-    from collections.abc import Iterator, Mapping, Sequence
-    from pathlib import Path
-
-    from subsumes_benchmark import Json
-    from subsumes_benchmark.generated.case import Feature, Schema
-    from subsumes_benchmark.generated.result import Direction
 
 type Question = tuple[str, Direction]
 """A case and the direction asked."""

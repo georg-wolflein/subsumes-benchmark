@@ -11,11 +11,11 @@ readme = "README.md"
 license = "MIT AND GPL-3.0-only"
 license-files = ["LICENSE", "corpus/*/*/LICENSE"]
 authors = [{ name = "Georg Wölflein", email = "georgw7777@gmail.com" }]
-requires-python = ">=3.14"
+requires-python = ">=3.15"
 keywords = ["json-schema", "subschema", "inclusion", "containment", "benchmark"]
 classifiers = [
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3.15",
   "Typing :: Typed",
 ]
 # The build needs Pydantic, which reads the configuration files, and otherwise the standard
@@ -47,7 +47,7 @@ build-backend = "uv_build"
 
 [tool.ruff]
 line-length = 100
-target-version = "py314"
+target-version = "py315"
 src = ["src", "tests"]
 extend-exclude = ["corpus/**", "sources/**"]
 
@@ -75,7 +75,6 @@ select = [
   "FURB",    # refurb
   "RUF",     # Ruff rules
   "PT",      # pytest style
-  "TC",      # imports only needed for type checking
   "PLC0415", # import-outside-top-level
 ]
 ignore = [
@@ -86,21 +85,29 @@ ignore = [
 pydocstyle = { convention = "google" }
 isort = { combine-as-imports = true }
 
-[tool.ruff.lint.flake8-type-checking]
-# Pydantic reads the annotations of a model when the class is created, so what they name must
-# be imported for real.
-runtime-evaluated-base-classes = [
-  "pydantic.BaseModel",
-  "subsumes_benchmark.config.Config",
-  "subsumes_benchmark.generated.checker.CheckerSpec",
-  "subsumes_benchmark.generated.collections.CollectionsSpec",
-  "subsumes_benchmark.generated.derived.DerivedSpec",
-  "subsumes_benchmark.generated.overrides.OverridesSpec",
-  "subsumes_benchmark.generated.run.RunSpec",
+[tool.ruff.lint.flake8-tidy-imports]
+# Python evaluates an annotation only when something asks for it, so what an annotation names
+# is imported like anything else.
+banned-api = { "typing.TYPE_CHECKING".msg = "Import what an annotation names at the top, like anything else." }
+# What only the validation group or the extra `report` installs is imported lazily, so that the
+# command runs from a plain install. Only the modules that need it, and the tests, import it
+# for real.
+require-lazy = [
+  "jsonschema",
+  "jsonschema_specifications",
+  "matplotlib",
+  "referencing",
+  "regress",
+  "subsumes_benchmark.compare.derive",
+  "subsumes_benchmark.compare.report",
+  "subsumes_benchmark.validation",
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/*" = ["E501"]
+"tests/*" = ["E501", "TID254"]
+"src/subsumes_benchmark/compare/derive.py" = ["TID254"]
+"src/subsumes_benchmark/compare/report.py" = ["TID254"]
+"src/subsumes_benchmark/validation.py" = ["TID254"]
 # Generated code: a description from a schema is one long line.
 "src/subsumes_benchmark/generated/*" = ["E501"]
 
@@ -108,7 +115,7 @@ runtime-evaluated-base-classes = [
 [tool.datamodel-codegen]
 input-file-type = "jsonschema"
 output-model-type = "pydantic_v2.BaseModel"
-target-python-version = "3.14"
+target-python-version = "3.15"
 base-class = "subsumes_benchmark.config.Config"
 enum-field-as-literal = "all"
 use-type-alias-type = true

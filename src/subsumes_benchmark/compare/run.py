@@ -7,12 +7,14 @@ import sys
 import threading
 import time
 from collections import Counter
+from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from importlib.metadata import version
 from pathlib import Path
-from typing import TYPE_CHECKING, assert_never, cast
+from typing import assert_never, cast
 
+from subsumes_benchmark import Json
 from subsumes_benchmark.compare.checkers import Checker, Crashed, Dialect, Worker
 from subsumes_benchmark.compare.downgrade import UnsupportedError, downgrade
 from subsumes_benchmark.compare.results import (
@@ -23,18 +25,13 @@ from subsumes_benchmark.compare.results import (
     result_line,
     write_run,
 )
+from subsumes_benchmark.compare.tasks import Task
 from subsumes_benchmark.compare.witness import confirm
 from subsumes_benchmark.generated import reply as replies, result as results
 from subsumes_benchmark.generated.case import CaseSpec
+from subsumes_benchmark.generated.reply import ReplySpec
+from subsumes_benchmark.generated.request import Schema
 from subsumes_benchmark.generated.run import Checker as CheckerOfRun
-
-if TYPE_CHECKING:
-    from collections.abc import Sequence
-
-    from subsumes_benchmark import Json
-    from subsumes_benchmark.compare.tasks import Task
-    from subsumes_benchmark.generated.reply import ReplySpec
-    from subsumes_benchmark.generated.request import Schema
 
 # At most this many characters of what an adapter says for a person are kept.
 MESSAGE_LENGTH = 500

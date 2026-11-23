@@ -8,23 +8,18 @@ so that a page can show them where it likes. The plot is drawn with matplotlib, 
 ``report`` extra brings; a run does not need it.
 """
 
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
 from itertools import pairwise
-from typing import TYPE_CHECKING
+from pathlib import Path
 
 import matplotlib as mpl
 from matplotlib import pyplot as plt
+from matplotlib.axes import Axes
 
 from subsumes_benchmark.compare.summary import THOUSANDTHS, Comparison, read_entries
 from subsumes_benchmark.compare.words import NOTHING, bold, duration, share, table
-
-if TYPE_CHECKING:
-    from collections.abc import Callable, Mapping, Sequence
-    from pathlib import Path
-
-    from matplotlib.axes import Axes
-
-    from subsumes_benchmark.generated.comparison import ComparedRun
+from subsumes_benchmark.generated.comparison import ComparedRun
 
 CHART_FILES = {"light": "chart-light.svg", "dark": "chart-dark.svg"}
 # The table of the checkers, as Markdown.

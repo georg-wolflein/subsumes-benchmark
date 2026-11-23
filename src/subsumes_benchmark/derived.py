@@ -7,10 +7,14 @@ a counterexample shows false, and an agreement of checkers true.
 
 import json
 from collections import Counter
-from typing import TYPE_CHECKING, Self, assert_never
+from collections.abc import Iterator, Mapping
+from pathlib import Path
+from typing import Self, assert_never
 
 from pydantic import model_validator
 
+from subsumes_benchmark import Json
+from subsumes_benchmark.compare.tasks import Direction
 from subsumes_benchmark.generated.derived import (
     Agreement,
     Counterexample,
@@ -18,13 +22,6 @@ from subsumes_benchmark.generated.derived import (
     DerivedSpec,
     Evidence,
 )
-
-if TYPE_CHECKING:
-    from collections.abc import Iterator, Mapping
-    from pathlib import Path
-
-    from subsumes_benchmark import Json
-    from subsumes_benchmark.compare.tasks import Direction
 
 
 def label(evidence: Evidence) -> bool:
