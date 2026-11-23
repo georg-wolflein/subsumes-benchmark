@@ -56,10 +56,17 @@ from subsumes_benchmark.convert import (
     dialect_of,
     nested,
 )
-from subsumes_benchmark.derived import Derivations, by_label, document, label
+from subsumes_benchmark.derived import Derivations, as_label, by_label
 from subsumes_benchmark.families import PATH as FAMILIES_PATH, Sizes, members
 from subsumes_benchmark.features import features
-from subsumes_benchmark.generated.case import FromGenerator
+from subsumes_benchmark.generated.case import (
+    ConstructionLabel,
+    CounterexampleLabel,
+    FromGenerator,
+    Label,
+    OverrideLabel,
+    SourceLabel,
+)
 from subsumes_benchmark.generated.collections import (
     CollectionSpec,
     CollectionsSpec,
@@ -256,30 +263,39 @@ class Overrides(OverridesSpec):
 class Case:
     """A case: one read from a source has ``upstream``, a generated one ``generated``.
 
-    A generated case has both labels, and no duplicate, note or derived label.
+    A label says what shows it, and is ``None`` where the corpus claims nothing. A generated
+    case has both labels, by construction or by a counterexample, and no duplicate or note.
     """
 
     id: str
     a: Json
     b: Json
-    a_subsumes_b: bool | None
-    b_subsumes_a: bool | None
+    a_subsumes_b: Label | None
+    b_subsumes_a: Label | None
     upstream: str | None
     note: str | None = None
-    derived: Derived | None = None
     duplicates: Sequence[str] = ()
     generated: FromGenerator | None = None
 
     def __post_init__(self) -> None:
         if (self.upstream is None) == (self.generated is None):
             raise ValueError(f"{self.id}: a case comes from upstream or is generated")
+        built = (ConstructionLabel, CounterexampleLabel)
         if self.generated is not None and (
-            None in (self.a_subsumes_b, self.b_subsumes_a)
+            not all(isinstance(label, built) for label in (self.a_subsumes_b, self.b_subsumes_a))
             or self.duplicates
             or self.note is not None
-            or self.derived is not None
         ):
-            raise ValueError(f"{self.id}: a generated case has both labels and nothing else")
+            raise ValueError(f"{self.id}: a generated case has both labels as it built them")
+
+    @property
+    def answers(self) -> tuple[bool | None, bool | None]:
+        """The answers of the two labels, ``a_subsumes_b`` first; ``None`` where there is none."""
+        forward, backward = self.a_subsumes_b, self.b_subsumes_a
+        return (
+            None if forward is None else forward.answer,
+            None if backward is None else backward.answer,
+        )
 
     @property
     def built_from(self) -> Json:
@@ -294,18 +310,30 @@ class Case:
     @property
     def document(self) -> Json:
         """What the file of the case holds: what is known first, the two schemas last."""
-        out: dict[str, Json] = {
-            "$schema": f"../../{CASE_SCHEMA.name}",
-            "a_subsumes_b": self.a_subsumes_b,
-            "b_subsumes_a": self.b_subsumes_a,
-            "features": list(features(self.a, self.b)),
-            "built_from": self.built_from,
+        labels: dict[str, Json] = {
+            "a_subsumes_b": written(self.a_subsumes_b),
+            "b_subsumes_a": written(self.b_subsumes_a),
         }
+        out: dict[str, Json] = {"$schema": f"../../{CASE_SCHEMA.name}", "labels": labels}
         if self.note is not None:
             out["note"] = self.note
-        if self.derived is not None:
-            out["derived"] = document(self.derived)
-        return {**out, "a": self.a, "b": self.b}
+        return out | {
+            "built_from": self.built_from,
+            "features": list(features(self.a, self.b)),
+            "a": self.a,
+            "b": self.b,
+        }
+
+
+def written(label: Label | None) -> Json:
+    """A label as the file of a case holds it, or ``None`` where the corpus claims nothing."""
+    # An instance may be null, so a key is left out for not being given, not for being null.
+    return None if label is None else label.model_dump(exclude_unset=True)
+
+
+def source_label(answer: bool | None) -> SourceLabel | None:
+    """The label that a source gives with its answer, or ``None`` where it gives none."""
+    return None if answer is None else SourceLabel(kind="source", answer=answer)
 
 
 def load_collections(path: Path) -> list[Collection]:
@@ -442,7 +470,7 @@ def read_inclusion(
                 id=f"{collection.folder}/{path.stem}",
                 a=sides[1],
                 b=sides[0],
-                a_subsumes_b=included,
+                a_subsumes_b=source_label(included),
                 b_subsumes_a=None,
                 upstream=source.permalink(path),
             )
@@ -524,8 +552,8 @@ def read_test_suite(collection: Collection, exclusions: Mapping[str, str]) -> It
                     id=f"{test_case_name}.{pair.category}" + (f".{pair.test}" if of_test else ""),
                     a=pair.a,
                     b=pair.b,
-                    a_subsumes_b=pair.a_subsumes_b,
-                    b_subsumes_a=pair.b_subsumes_a,
+                    a_subsumes_b=source_label(pair.a_subsumes_b),
+                    b_subsumes_a=source_label(pair.b_subsumes_a),
                     upstream=upstream + (f"/tests/{pair.test}" if of_test else ""),
                 )
 
@@ -540,8 +568,8 @@ def read_families(collection: Collection) -> Iterator[Case]:
             id=f"{collection.folder}/{member.name}",
             a=member.a,
             b=member.b,
-            a_subsumes_b=member.a_subsumes_b,
-            b_subsumes_a=member.b_subsumes_a,
+            a_subsumes_b=member.label("a_subsumes_b"),
+            b_subsumes_a=member.label("b_subsumes_a"),
             upstream=None,
             generated=member.generated,
         )
@@ -552,15 +580,25 @@ def _digest(schema: Json) -> bytes:
     return hashlib.sha256(json.dumps(schema, sort_keys=True).encode()).digest()
 
 
-def _one(case: Case, name: str, answers: Sequence[tuple[Case, bool | None]]) -> bool | None:
-    """The one answer that cases give to a question of ``case``, or ``None`` if none gives one."""
-    given = {answer: other for other, answer in answers if answer is not None}
-    if len(given) > 1:
+def _one(case: Case, name: str, labels: Sequence[tuple[Case, Label | None]]) -> Label | None:
+    """The one answer that cases give to a question of ``case``, or ``None`` if none gives one.
+
+    It is the label of the first case that gives one, ``case`` itself coming first. A label of
+    the source that another upstream file gives links to that file.
+    """
+    given = [(other, label) for other, label in labels if label is not None]
+    first = {label.answer: other for other, label in reversed(given)}
+    if len(first) > 1:
         raise ConversionError(
-            f"{given[True].id} and {given[False].id} hold the same two schemas and give "
+            f"{first[True].id} and {first[False].id} hold the same two schemas and give "
             f"{name} of {case.id} two answers"
         )
-    return next(iter(given), None)
+    if not given:
+        return None
+    other, label = given[0]
+    if isinstance(label, SourceLabel) and other.upstream not in (None, case.upstream):
+        return SourceLabel(kind="source", answer=label.answer, link=other.upstream)
+    return label
 
 
 def without_duplicates(cases: Sequence[Case]) -> list[Case]:
@@ -665,14 +703,23 @@ def overridden(cases: Sequence[Case], overrides: Mapping[str, Override]) -> list
     return [
         replace(
             case,
-            a_subsumes_b=override.a_subsumes_b,
-            b_subsumes_a=override.b_subsumes_a,
+            a_subsumes_b=_overriding(case.a_subsumes_b, override.a_subsumes_b),
+            b_subsumes_a=_overriding(case.b_subsumes_a, override.b_subsumes_a),
             note=override.note,
         )
         if (override := overrides.get(case.id))
         else case
         for case in cases
     ]
+
+
+def _overriding(label: Label | None, answer: bool | None) -> Label | None:
+    """The label of a question that an override states: the one it has where they agree."""
+    if answer is None:
+        return None
+    if label is not None and label.answer == answer:
+        return label
+    return OverrideLabel(kind="override", answer=answer)
 
 
 def with_derived(cases: Sequence[Case], derived: Mapping[str, Derived]) -> list[Case]:
@@ -692,8 +739,8 @@ def with_derived(cases: Sequence[Case], derived: Mapping[str, Derived]) -> list[
         if case.note is not None:
             # An override states both labels of its cases, also where it claims nothing.
             raise ConfigError(f"derived.json labels {case.id}, which overrides.json lists")
-        shown = {name: label(evidence) for name, evidence in by_label(entry)}
-        found.append(replace(case, derived=entry, **shown))
+        shown = {name: as_label(evidence) for name, evidence in by_label(entry)}
+        found.append(replace(case, **shown))
     return found
 
 
@@ -778,7 +825,7 @@ def build(
     by_id = {case.id: case for case in final}
     for name, group in cases.items():
         kept = [by_id[case.id] for case in group if case.id in by_id]
-        labels = Counter(case.a_subsumes_b for case in kept)
+        labels = Counter(case.answers[0] for case in kept)
         print(f"{name:40s} {len(kept):6d} {labels[True]:6d} {labels[False]:6d} {labels[None]:6d}")
     print(
         f"\n{len(documents)} external documents embedded in the {bundles} schemas that "

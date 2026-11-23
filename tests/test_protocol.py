@@ -319,10 +319,7 @@ def test_what_two_schemas_share_is_written_the_same_in_both() -> None:
     for key, definition in definitions("checker").items():
         assert run[key] == definition, key
     # The directions of a result are the two labels of a case.
-    labels = [
-        key for key in cast("dict[str, Json]", written("case")["properties"]) if "_subsumes_" in key
-    ]
-    assert result["Direction"]["enum"] == labels
+    assert result["Direction"]["enum"] == list(definitions("case")["Labels"]["properties"])
 
 
 def test_the_examples_of_the_documentation_are_what_the_schemas_say() -> None:

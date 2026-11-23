@@ -51,14 +51,60 @@ A schema of draft 2020-12.
 """
 
 
-class Counterexample(Config):
-    """The label is false, and an instance proves it."""
+class SourceLabel(Config):
+    """What the source says: the expected result of the test suite, the verdict of the inclusion artifact, or the ground truth of the replication package of the jsonsubschema tool."""
 
     model_config = ConfigDict(
         extra="forbid",
         use_attribute_docstrings=True,
     )
-    counterexample: Any
+    kind: Literal["source"]
+    """
+    That the source of the case gives the answer.
+    """
+    answer: bool
+    """
+    Whether the schema that should accept everything does.
+    """
+    link: str | None = None
+    """
+    The other upstream file that gives the answer, one of the duplicates of the case; absent when the case's own file gives it.
+    """
+
+
+class ConstructionLabel(Config):
+    """The answer is true because the case was built so: a generated case."""
+
+    model_config = ConfigDict(
+        extra="forbid",
+        use_attribute_docstrings=True,
+    )
+    kind: Literal["construction"]
+    """
+    That the generator of the case built it so that the answer is true.
+    """
+    answer: Literal[True]
+    """
+    Whether the schema that should accept everything does: it does.
+    """
+
+
+class CounterexampleLabel(Config):
+    """The answer is false, and an instance proves it, which both validators of the corpus confirm. The generator of the case gave it, or a checker did and derived.json holds it."""
+
+    model_config = ConfigDict(
+        extra="forbid",
+        use_attribute_docstrings=True,
+    )
+    kind: Literal["counterexample"]
+    """
+    That a counterexample shows the answer.
+    """
+    answer: Literal[False]
+    """
+    Whether the schema that should accept everything does: it does not.
+    """
+    instance: Any
     """
     An instance that is valid under the schema whose instances must be accepted and not valid under the schema that should accept everything.
     """
@@ -67,16 +113,41 @@ class Counterexample(Config):
 type Checker = Annotated[str, Field(pattern="^\\S.* \\S+$")]
 
 
-class Agreement(Config):
-    """The label is true as far as checkers can tell: at least two of them say so and none that was asked says otherwise. This is evidence and no proof."""
+class AgreementLabel(Config):
+    """The answer is true as far as checkers can tell: at least two of them say so and none that was asked says otherwise. This is evidence and no proof; derived.json holds it."""
 
     model_config = ConfigDict(
         extra="forbid",
         use_attribute_docstrings=True,
     )
+    kind: Literal["agreement"]
+    """
+    That checkers agree on the answer.
+    """
+    answer: Literal[True]
+    """
+    Whether the schema that should accept everything does: it does.
+    """
     checkers: Annotated[list[Checker], Field(min_length=2)]
     """
     The checkers that say so, each with its version, sorted.
+    """
+
+
+class OverrideLabel(Config):
+    """The corpus departs from the answer of the source, or gives one where the source gives none, for the reason in the note of the case."""
+
+    model_config = ConfigDict(
+        extra="forbid",
+        use_attribute_docstrings=True,
+    )
+    kind: Literal["override"]
+    """
+    That overrides.json gives the answer.
+    """
+    answer: bool
+    """
+    Whether the schema that should accept everything does.
     """
 
 
@@ -153,9 +224,12 @@ class FromGenerator(Config):
     """
 
 
-type Evidence = Counterexample | Agreement
+type Label = Annotated[
+    SourceLabel | ConstructionLabel | CounterexampleLabel | AgreementLabel | OverrideLabel,
+    Field(discriminator="kind"),
+]
 """
-What shows one label: a counterexample for false, an agreement of checkers for true.
+The answer to a question and what shows it, which its kind names.
 """
 
 
@@ -165,15 +239,21 @@ What a case is built from: a file of a source, or a generator of this repository
 """
 
 
-class Derived(Config):
-    """What shows the labels of a case that upstream does not give, by label."""
+class Labels(Config):
+    """What is known of the question in each direction: a label with what shows it, or null where the corpus claims nothing. A generated case has both."""
 
     model_config = ConfigDict(
         extra="forbid",
         use_attribute_docstrings=True,
     )
-    a_subsumes_b: Evidence | None = None
-    b_subsumes_a: Evidence | None = None
+    a_subsumes_b: Label | None
+    """
+    Whether a accepts every instance valid under b, and what shows it; null when the corpus claims nothing.
+    """
+    b_subsumes_a: Label | None
+    """
+    The same question in the other direction.
+    """
 
 
 class CaseSpec(Config):
@@ -187,29 +267,18 @@ class CaseSpec(Config):
     """
     The path from this file to case.schema.json, which is at the root of the corpus: above the folder of the collection and the folder of its origin.
     """
-    a_subsumes_b: bool | None
+    labels: Labels
+    note: str | None = None
     """
-    Whether a accepts every instance valid under b; null when the corpus claims nothing, which it does of every generated case.
-    """
-    b_subsumes_a: bool | None
-    """
-    The same question in the other direction.
-    """
-    features: list[Feature]
-    """
-    What the two schemas use, in the order of the list of features: every keyword that validation can reach and that decides what a schema accepts, and 'recursion' when a schema is reached again from itself through a reference.
+    Why the labels depart from upstream's; absent when they do not. A label that it changes is of the kind override.
     """
     built_from: BuiltFrom
     """
     What the case is built from: a file of a source, or a generator of this repository.
     """
-    note: str | None = None
+    features: list[Feature]
     """
-    Why the labels depart from upstream's; absent when they do not.
-    """
-    derived: Derived | None = None
-    """
-    What shows each label that upstream does not give and that was derived from the answers of checkers; absent when the case has no such label.
+    What the two schemas use, in the order of the list of features: every keyword that validation can reach and that decides what a schema accepts, and 'recursion' when a schema is reached again from itself through a reference.
     """
     a: Schema
     """

@@ -40,9 +40,14 @@ corpus/
 ```json
 {
   "$schema": "../../case.schema.json",
-  "a_subsumes_b": true,
-  "b_subsumes_a": false,
-  "features": ["additionalProperties", "enum", "properties", "type"],
+  "labels": {
+    "a_subsumes_b": { "kind": "agreement", "answer": true, "checkers": ["RWG 8064ad8", "jsoncompat 0.6.0", "subsumes 0.2.0"] },
+    "b_subsumes_a": {
+      "kind": "source",
+      "answer": false,
+      "link": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/schemastore_containment/sat/agripparc-1.2_v2_not_v1.json"
+    }
+  },
   "built_from": {
     "kind": "source",
     "link": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/schemastore_containment/unknown/agripparc-1.2_v1_not_v2.json",
@@ -50,35 +55,40 @@ corpus/
       "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/schemastore_containment/sat/agripparc-1.2_v2_not_v1.json"
     ]
   },
-  "derived": { "a_subsumes_b": { "checkers": ["RWG 8064ad8", "jsoncompat 0.6.0", "subsumes 0.2.0"] } },
+  "features": ["additionalProperties", "enum", "properties", "type"],
   "a": { "type": "object", "additionalProperties": false, "properties": { "…": {} } },
   "b": { "type": "object", "additionalProperties": false, "properties": { "…": {} } }
 }
 ```
 
-A file is indented, with every non-ASCII character escaped so that none is invisible. A case says what it is `built_from`: a file of a source, which it links to, as this one does, or a generator of this repository. A generated case has both labels, and no `note` and nothing `derived`:
+A file is indented, with every non-ASCII character escaped so that none is invisible. Upstream's own file leaves `a_subsumes_b` open, and checkers agree on it; the file of its duplicate answers `b_subsumes_a`, so that label links to it. A generated case is `built_from` a generator of this repository. It has both labels and no `note`, and its `false` holds the counterexample that the generator gave, as `wolflein2026/scaling-families/pigeonhole.holes2.twin.json` does:
 
 ```json
 {
   "$schema": "../../case.schema.json",
-  "a_subsumes_b": false,
-  "b_subsumes_a": true,
+  "labels": {
+    "a_subsumes_b": { "kind": "counterexample", "answer": false, "instance": { "p0h0": true, "p1h1": true } },
+    "b_subsumes_a": { "kind": "construction", "answer": true }
+  },
+  "built_from": { "kind": "generator", "family": "pigeonhole", "sizes": { "holes": 2 }, "twin": true },
   "features": ["allOf", "anyOf", "const", "not", "properties", "required", "type"],
-  "built_from": { "kind": "generator", "family": "pigeonhole", "sizes": { "holes": 5 }, "twin": true },
   "a": false,
   "b": { "type": "object", "allOf": ["…"] }
 }
 ```
 
 - **`$schema`**: The path to `case.schema.json`, the same in every case. The schemas `a` and `b` are draft 2020-12 whatever this says.
-- **`a_subsumes_b`**: `true` when `a` accepts every instance valid under `b`, `false` when some instance of `b` is not valid under `a`, `null` when the corpus claims nothing.
-- **`b_subsumes_a`**: The same question in the other direction.
-- **`features`**: What the two schemas use; see [Features](#features).
+- **`labels`**: What is known of the question in each direction: `a_subsumes_b`, whether `a` accepts every instance valid under `b`, and `b_subsumes_a`, the same question the other way. Each is `null` where the corpus claims nothing, or a label: its `answer`, `true` or `false`, and what shows it, which its `kind` names:
+  - **`source`**: What the source says: the suite's expected result, the verdict of the inclusion artifact, or the ground truth of the replication package of jsonsubschema. `link` is present only when another upstream file gives the answer, one of the case's `duplicates`.
+  - **`construction`**: `true`, because the generator built the case so.
+  - **`counterexample`**: `false`, and the `instance` proves it: it is valid under the schema whose instances must be accepted and not valid under the other, by two validators. The generator gave it, or a checker did.
+  - **`agreement`**: `true` as far as checkers can tell: the `checkers` that say so, two or more, and none that was asked says otherwise. This is evidence and no proof.
+  - **`override`**: The corpus departs from the source, or answers where the source does not, for the reason in `note`.
+- **`note`**: Present only when the labels depart from upstream's, and says why. Where the corpus then claims nothing, the label is `null`.
 - **`built_from`**: What the case is built from, which its `kind` says:
   - **`"kind": "source"`**: A file of a source. `link` is a permanent link to it, in the repository and at the commit that `collections.json` names for the collection; a case built from the test suite adds a JSON pointer to the test case or the test after a `#`. `duplicates` is present only when upstream has these two schemas in other files too, in either order, and lists permanent links to those files. The corpus has one case for all of them.
   - **`"kind": "generator"`**: A generator of this repository: the `family` the case belongs to, the `sizes` it was built with, by name, and whether it is the `twin` of the member of those sizes. See [Collections](#collections).
-- **`note`**: Present only when the labels depart from upstream's, and says why.
-- **`derived`**: Present only when the case has a label that upstream does not give. It names each such label with what shows it: a `counterexample` for `false`, the `checkers` that agree for `true`.
+- **`features`**: What the two schemas use; see [Features](#features).
 - **`a`** and **`b`**: The two schemas, last in the file, so that what is known is at the top however long they are.
 
 Every schema stands on its own: a reference resolves inside the schema or to a meta-schema of draft 2020-12, so a checker needs no other document. Every schema is valid draft 2020-12, which the schema of a case requires.
@@ -104,11 +114,11 @@ So a checker that treats `format` as an annotation can be measured on the cases 
 
 ## Scoring
 
-Ask every question whose label is not `null`: `a_subsumes_b`, and `b_subsumes_a` likewise.
+Ask every question whose label is not `null`, `a_subsumes_b` and `b_subsumes_a` likewise, and hold the answer against the label's `answer`.
 
 - **Wrong** is a yes where the label is `false`, or a no where the label is `true`.
 - **Declining to answer is never wrong.** How often a checker declines, and how long it takes, can be measured on every case, including those labelled `null`.
-- **A derived label is weaker than upstream's where it is `true`.** A derived `false` is proven by its counterexample. A derived `true` rests on checkers that agree, so a result on upstream's labels alone leaves out the labels that a case names under `derived`.
+- **An `agreement` is weaker than every other label.** It rests on checkers that agree, where every other kind is a proof or what the source or the construction says, so a result on proven labels alone leaves out the labels of the kind `agreement`.
 
 ## Collections
 

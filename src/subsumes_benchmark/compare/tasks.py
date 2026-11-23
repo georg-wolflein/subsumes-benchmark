@@ -6,6 +6,7 @@ import random
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from pathlib import Path
+from typing import assert_never
 
 from subsumes_benchmark.generated.case import CaseSpec, Schema
 from subsumes_benchmark.generated.result import Direction
@@ -48,6 +49,18 @@ def case_files(corpus: Path) -> Mapping[str, Path]:
     return {case: found[case] for case in sorted(found, key=lambda case: case.split("/"))}
 
 
+def answer(case: CaseSpec, direction: Direction) -> bool | None:
+    """The answer that the label of a case gives in one direction, or ``None`` where it has none."""
+    match direction:
+        case "a_subsumes_b":
+            label = case.labels.a_subsumes_b
+        case "b_subsumes_a":
+            label = case.labels.b_subsumes_a
+        case _:
+            assert_never(direction)
+    return None if label is None else label.answer
+
+
 def read_tasks(corpus: Path) -> Sequence[Task]:
     """Every task of the corpus, sorted by case: two for each case, one in each direction.
 
@@ -57,8 +70,8 @@ def read_tasks(corpus: Path) -> Sequence[Task]:
     found = []
     for case, path in case_files(corpus).items():
         known = CaseSpec.read(path)
-        found.append(Task(case, "a_subsumes_b", path, known.a_subsumes_b))
-        found.append(Task(case, "b_subsumes_a", path, known.b_subsumes_a))
+        found.append(Task(case, "a_subsumes_b", path, answer(known, "a_subsumes_b")))
+        found.append(Task(case, "b_subsumes_a", path, answer(known, "b_subsumes_a")))
     return found
 
 
@@ -75,9 +88,10 @@ def read_unlabelled(corpus: Path) -> Sequence[Task]:
     asked = {(_digest(known.a), _digest(known.b)) for known in cases.values()}
     found = []
     for case, known in cases.items():
-        if known.a_subsumes_b is None:
+        if known.labels.a_subsumes_b is None:
             found.append(Task(case, "a_subsumes_b", files[case], None))
-        if known.b_subsumes_a is None and (_digest(known.b), _digest(known.a)) not in asked:
+        mirrored = (_digest(known.b), _digest(known.a))
+        if known.labels.b_subsumes_a is None and mirrored not in asked:
             found.append(Task(case, "b_subsumes_a", files[case], None))
     return found
 

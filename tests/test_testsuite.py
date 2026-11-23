@@ -225,7 +225,7 @@ def test_the_test_cases_for_draft_2020_12_are_read(tmp_path: Path) -> None:
     assert found["origin/suite/optional.example.0.reflexive"].upstream == f"{file}#/tests/0"
     valid = found["origin/suite/optional.example.3.valid.0"]
     assert valid.upstream == f"{file}#/tests/3/tests/0"
-    assert (valid.b, valid.a_subsumes_b, valid.b_subsumes_a) == ({"const": "x"}, False, None)
+    assert (valid.b, *valid.answers) == ({"const": "x"}, False, None)
     # The external schema is embedded under its URL, which is its $id.
     document: Json = {"$id": "http://localhost:1234/integer.json", "type": "integer"}
     assert valid.a == {

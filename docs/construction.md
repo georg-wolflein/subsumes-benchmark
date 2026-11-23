@@ -55,7 +55,7 @@ The counts are of one run of each checker over the collection, on a laptop with 
 
 [`tests/test_families.py`](../tests/test_families.py) checks the labels without an inclusion checker:
 
-- **Every label that is `false`**: the twin's counterexample is valid under the schema whose instances must be accepted and not valid under the other, by both validators of `subsumes_benchmark.validation`.
+- **Every label that is `false`**: the twin's counterexample, which the case holds as the `instance` of a label of the kind `counterexample`, is valid under the schema whose instances must be accepted and not valid under the other, by both validators of `subsumes_benchmark.validation`. A label that is `true` is of the kind `construction`.
 - **Every label of the small members of each family**: from a finite set of instances with one of every class that the two schemas tell apart. The schemas of a family look only at which names an object has and of what type each value is, or only at the characters of a string, so a schema accepts all of such a class or none of it.
 - **The corpus**: it holds every member at the sizes of the corpus, as the generator gives it, and nothing else; and the runner can rewrite every schema for a checker of draft-04 or draft-07.
 
@@ -82,7 +82,7 @@ The corpus leaves out 12 cases of the inclusion artifact and 23 test cases of th
 
 Every schema that is in the corpus is therefore valid, and every reference in it resolves. The schema of a case says the first: it requires `a` and `b` to be valid under the metaschema of draft 2020-12.
 
-The same file lists every case whose labels differ from upstream's, with the reason, which is copied into the case's `note`. For a case built from the test suite, upstream's label is what the suite's expected result gives. There are 72 such upstream cases, which are 50 cases of the corpus:
+The same file lists every case whose labels differ from upstream's, with the reason, which is copied into the case's `note`. A label that the override changes or adds is of the kind `override`, one that it removes is `null`, and one that it states as upstream does stays upstream's. For a case built from the test suite, upstream's label is what the suite's expected result gives. There are 72 such upstream cases, which are 50 cases of the corpus:
 
 | Reason | Cases | What the corpus does |
 | --- | --- | --- |
@@ -98,7 +98,7 @@ Two limits remain:
 
 ## Derived labels
 
-Upstream leaves questions open. Its witness generator gave up on many of its tests, and for many pairs upstream asks one direction only. Where checkers settle such a question, the corpus has a label for it. [`derived.json`](../derived.json) lists these labels, each with what shows it, and the case repeats that under `derived`:
+Upstream leaves questions open. Its witness generator gave up on many of its tests, and for many pairs upstream asks one direction only. Where checkers settle such a question, the corpus has a label for it. [`derived.json`](../derived.json) lists these labels, each with what shows it, and the case holds each as a label of the kind `counterexample` or `agreement`:
 
 | Label | Shown by | Labels |
 | --- | --- | ---: |
@@ -108,8 +108,8 @@ Upstream leaves questions open. Its witness generator gave up on many of its tes
 For example, `corpus/baazizi2026/additional-as-uneval/o21764.original_not_unevalEliminated.json` and `corpus/baazizi2026/additional-as-uneval/o69207.original_not_unevalEliminated.json` have:
 
 ```json
-"derived": {"a_subsumes_b": {"counterexample": {"$schema": "", "encoding": {}, "mark": "box-plot"}}}
-"derived": {"a_subsumes_b": {"checkers": ["jsoncompat 0.6.0", "subsumes 0.2.0"]}}
+"a_subsumes_b": {"kind": "counterexample", "answer": false, "instance": {"$schema": "", "encoding": {}, "mark": "box-plot"}}
+"a_subsumes_b": {"kind": "agreement", "answer": true, "checkers": ["jsoncompat 0.6.0", "subsumes 0.2.0"]}
 ```
 
 - **No label rests on one checker.** One checker's yes is never a label, and neither is a no without an instance that proves it.

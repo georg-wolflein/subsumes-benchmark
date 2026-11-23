@@ -20,6 +20,7 @@ import pytest
 
 from reading import CORPUS, read
 from subsumes_benchmark import Json
+from subsumes_benchmark.build import written
 from subsumes_benchmark.compare.downgrade import OlderDraft, downgrade
 from subsumes_benchmark.compare.tasks import Direction
 from subsumes_benchmark.families import (
@@ -188,8 +189,8 @@ def test_the_corpus_holds_every_member_and_nothing_else() -> None:
         assert isinstance(case, dict)
         assert case["a"] == member.a
         assert case["b"] == member.b
-        assert (case["a_subsumes_b"], case["b_subsumes_a"]) == (
-            member.a_subsumes_b,
-            member.b_subsumes_a,
-        )
+        assert case["labels"] == {
+            direction: written(member.label(direction))
+            for direction in ("a_subsumes_b", "b_subsumes_a")
+        }
         assert case["built_from"] == member.generated.model_dump()

@@ -4,38 +4,27 @@
   "title": "A JSON Schema inclusion benchmark case",
   "description": "Two schemas and what is known about them: does a accept every instance valid under b? The labels hold for draft 2020-12 with format asserted and patterns read as ECMA-262 regular expressions with the u flag.",
   "type": "object",
-  "required": ["$schema", "a_subsumes_b", "b_subsumes_a", "features", "built_from", "a", "b"],
+  "required": ["$schema", "labels", "built_from", "features", "a", "b"],
   "additionalProperties": false,
   "properties": {
     "$schema": {
       "description": "The path from this file to case.schema.json, which is at the root of the corpus: above the folder of the collection and the folder of its origin.",
       "const": "../../case.schema.json"
     },
-    "a_subsumes_b": {
-      "description": "Whether a accepts every instance valid under b; null when the corpus claims nothing, which it does of every generated case.",
-      "type": ["boolean", "null"]
+    "labels": { "$ref": "#/$defs/Labels" },
+    "note": {
+      "description": "Why the labels depart from upstream's; absent when they do not. A label that it changes is of the kind override.",
+      "type": "string"
     },
-    "b_subsumes_a": {
-      "description": "The same question in the other direction.",
-      "type": ["boolean", "null"]
+    "built_from": {
+      "description": "What the case is built from: a file of a source, or a generator of this repository.",
+      "$ref": "#/$defs/BuiltFrom"
     },
     "features": {
       "description": "What the two schemas use, in the order of the list of features: every keyword that validation can reach and that decides what a schema accepts, and 'recursion' when a schema is reached again from itself through a reference.",
       "type": "array",
       "uniqueItems": true,
       "items": { "$ref": "#/$defs/Feature" }
-    },
-    "built_from": {
-      "description": "What the case is built from: a file of a source, or a generator of this repository.",
-      "$ref": "#/$defs/BuiltFrom"
-    },
-    "note": {
-      "description": "Why the labels depart from upstream's; absent when they do not.",
-      "type": "string"
-    },
-    "derived": {
-      "description": "What shows each label that upstream does not give and that was derived from the answers of checkers; absent when the case has no such label.",
-      "$ref": "#/$defs/Derived"
     },
     "a": {
       "description": "The schema that should accept everything.",
@@ -115,43 +104,125 @@
       "description": "A schema that is valid draft 2020-12 and stands on its own: every document it references is embedded in it.",
       "$ref": "https://json-schema.org/draft/2020-12/schema"
     },
-    "Derived": {
-      "description": "What shows the labels of a case that upstream does not give, by label.",
+    "Labels": {
+      "description": "What is known of the question in each direction: a label with what shows it, or null where the corpus claims nothing. A generated case has both.",
       "type": "object",
-      "minProperties": 1,
+      "required": ["a_subsumes_b", "b_subsumes_a"],
       "additionalProperties": false,
       "properties": {
-        "a_subsumes_b": { "$ref": "#/$defs/Evidence" },
-        "b_subsumes_a": { "$ref": "#/$defs/Evidence" }
+        "a_subsumes_b": {
+          "description": "Whether a accepts every instance valid under b, and what shows it; null when the corpus claims nothing.",
+          "anyOf": [{ "$ref": "#/$defs/Label" }, { "type": "null" }]
+        },
+        "b_subsumes_a": {
+          "description": "The same question in the other direction.",
+          "anyOf": [{ "$ref": "#/$defs/Label" }, { "type": "null" }]
+        }
       }
     },
-    "Evidence": {
-      "description": "What shows one label: a counterexample for false, an agreement of checkers for true.",
-      "oneOf": [{ "$ref": "#/$defs/Counterexample" }, { "$ref": "#/$defs/Agreement" }]
+    "Label": {
+      "description": "The answer to a question and what shows it, which its kind names.",
+      "oneOf": [
+        { "$ref": "#/$defs/SourceLabel" },
+        { "$ref": "#/$defs/ConstructionLabel" },
+        { "$ref": "#/$defs/CounterexampleLabel" },
+        { "$ref": "#/$defs/AgreementLabel" },
+        { "$ref": "#/$defs/OverrideLabel" }
+      ],
+      "discriminator": { "propertyName": "kind" }
     },
-    "Counterexample": {
-      "description": "The label is false, and an instance proves it.",
+    "SourceLabel": {
+      "description": "What the source says: the expected result of the test suite, the verdict of the inclusion artifact, or the ground truth of the replication package of the jsonsubschema tool.",
       "type": "object",
-      "required": ["counterexample"],
+      "required": ["kind", "answer"],
       "additionalProperties": false,
       "properties": {
-        "counterexample": {
+        "kind": {
+          "description": "That the source of the case gives the answer.",
+          "const": "source"
+        },
+        "answer": {
+          "description": "Whether the schema that should accept everything does.",
+          "type": "boolean"
+        },
+        "link": {
+          "description": "The other upstream file that gives the answer, one of the duplicates of the case; absent when the case's own file gives it.",
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "ConstructionLabel": {
+      "description": "The answer is true because the case was built so: a generated case.",
+      "type": "object",
+      "required": ["kind", "answer"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "description": "That the generator of the case built it so that the answer is true.",
+          "const": "construction"
+        },
+        "answer": {
+          "description": "Whether the schema that should accept everything does: it does.",
+          "const": true
+        }
+      }
+    },
+    "CounterexampleLabel": {
+      "description": "The answer is false, and an instance proves it, which both validators of the corpus confirm. The generator of the case gave it, or a checker did and derived.json holds it.",
+      "type": "object",
+      "required": ["kind", "answer", "instance"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "description": "That a counterexample shows the answer.",
+          "const": "counterexample"
+        },
+        "answer": {
+          "description": "Whether the schema that should accept everything does: it does not.",
+          "const": false
+        },
+        "instance": {
           "description": "An instance that is valid under the schema whose instances must be accepted and not valid under the schema that should accept everything."
         }
       }
     },
-    "Agreement": {
-      "description": "The label is true as far as checkers can tell: at least two of them say so and none that was asked says otherwise. This is evidence and no proof.",
+    "AgreementLabel": {
+      "description": "The answer is true as far as checkers can tell: at least two of them say so and none that was asked says otherwise. This is evidence and no proof; derived.json holds it.",
       "type": "object",
-      "required": ["checkers"],
+      "required": ["kind", "answer", "checkers"],
       "additionalProperties": false,
       "properties": {
+        "kind": {
+          "description": "That checkers agree on the answer.",
+          "const": "agreement"
+        },
+        "answer": {
+          "description": "Whether the schema that should accept everything does: it does.",
+          "const": true
+        },
         "checkers": {
           "description": "The checkers that say so, each with its version, sorted.",
           "type": "array",
           "minItems": 2,
           "uniqueItems": true,
           "items": { "type": "string", "pattern": "^\\S.* \\S+$" }
+        }
+      }
+    },
+    "OverrideLabel": {
+      "description": "The corpus departs from the answer of the source, or gives one where the source gives none, for the reason in the note of the case.",
+      "type": "object",
+      "required": ["kind", "answer"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "description": "That overrides.json gives the answer.",
+          "const": "override"
+        },
+        "answer": {
+          "description": "Whether the schema that should accept everything does.",
+          "type": "boolean"
         }
       }
     },

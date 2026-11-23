@@ -32,7 +32,12 @@ from itertools import combinations
 from typing import Self
 
 from subsumes_benchmark import Json
-from subsumes_benchmark.generated.case import Family, FromGenerator
+from subsumes_benchmark.generated.case import (
+    ConstructionLabel,
+    CounterexampleLabel,
+    Family,
+    FromGenerator,
+)
 from subsumes_benchmark.generated.result import Direction
 
 # Where the generator lives in the repository, for the manifest of the corpus.
@@ -79,6 +84,13 @@ class Member:
         return FromGenerator(
             kind="generator", family=self.family, sizes=dict(self.sizes), twin=self.twin
         )
+
+    def label(self, direction: Direction) -> ConstructionLabel | CounterexampleLabel:
+        """The label of a case of the corpus in one direction, with what shows it."""
+        if direction in self.counterexamples:
+            instance = self.counterexamples[direction]
+            return CounterexampleLabel(kind="counterexample", answer=False, instance=instance)
+        return ConstructionLabel(kind="construction", answer=True)
 
     @property
     def name(self) -> str:

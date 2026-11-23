@@ -11,7 +11,14 @@ import runs
 from reading import CORPUS, ROOT, cases, read
 from runs import Confirmation, a_witness
 from subsumes_benchmark import Json
-from subsumes_benchmark.build import Case, ConfigError, with_derived, write_case, write_json
+from subsumes_benchmark.build import (
+    Case,
+    ConfigError,
+    source_label,
+    with_derived,
+    write_case,
+    write_json,
+)
 from subsumes_benchmark.compare.derive import READ_DIFFERENTLY, Vote, decide, derive, refutes
 from subsumes_benchmark.compare.tasks import read_unlabelled
 from subsumes_benchmark.derived import Derivations, by_label, document, label
@@ -179,7 +186,7 @@ def write_answers(
 
 
 def open_case(case_id: str, a: Json, b: Json, a_subsumes_b: bool | None = None) -> Case:
-    return Case(case_id, a, b, a_subsumes_b, None, "x.json")
+    return Case(case_id, a, b, source_label(a_subsumes_b), None, "x.json")
 
 
 def test_runs_are_derived_into_the_file_and_a_later_run_adds_to_it(tmp_path: Path) -> None:
@@ -316,14 +323,15 @@ def test_the_build_gives_a_case_its_derived_labels_and_what_shows_them() -> None
         b_subsumes_a=Counterexample(counterexample=None),
     )
     first, second = with_derived(cases, {"o/one/a": refuted, "o/one/b": agreed})
-    assert (first.a_subsumes_b, first.b_subsumes_a) == (False, None)
-    assert (second.a_subsumes_b, second.b_subsumes_a) == (True, False)
+    assert first.answers == (False, None)
+    assert second.answers == (True, False)
     written = second.document
     assert isinstance(written, dict)
-    assert list(written)[-3:] == ["derived", "a", "b"]
-    assert written["derived"] == {
-        "a_subsumes_b": {"checkers": ["One 1.0", "Two 1.0"]},
-        "b_subsumes_a": {"counterexample": None},
+    # A derived label is a label like any other, which says what shows it.
+    assert "derived" not in written
+    assert written["labels"] == {
+        "a_subsumes_b": {"kind": "agreement", "answer": True, "checkers": ["One 1.0", "Two 1.0"]},
+        "b_subsumes_a": {"kind": "counterexample", "answer": False, "instance": None},
     }
     assert with_derived(cases, {}) == cases
 
@@ -410,4 +418,10 @@ def test_the_schema_of_a_case_says_what_the_schema_of_the_file_says() -> None:
         json.loads((ROOT / "schemas" / name).read_text(encoding="utf-8"))["$defs"]
         for name in ("case.schema.json", "derived.schema.json")
     )
-    assert of_file == {name: of_case[name] for name in of_file}
+    # A case holds what shows a derived label as the file does, under its own names.
+    agreement, counterexample = of_case["AgreementLabel"], of_case["CounterexampleLabel"]
+    assert agreement["properties"]["checkers"] == of_file["Agreement"]["properties"]["checkers"]
+    assert (
+        counterexample["properties"]["instance"]
+        == of_file["Counterexample"]["properties"]["counterexample"]
+    )
