@@ -770,12 +770,14 @@ def build(
     derived = Derivations.read(derived_file).cases
     overrides = departures.overrides
     exclusions = departures.exclusions
-    sources = {c.source.name: c.source for c in collections if c.source is not None}
     artifact = [
         c for c in collections if c.source is not None and c.source.name == "inclusion-artifact"
     ]
-
-    documents, pointer_maps = read_external_documents(sources["inclusion-artifact"], artifact)
+    if artifact:
+        source, _ = artifact[0].read_from()
+        documents, pointer_maps = read_external_documents(source, artifact)
+    else:
+        documents, pointer_maps = {}, {}
 
     notes: Counter[str] = Counter()
     dialects: Counter[str] = Counter()

@@ -139,7 +139,7 @@ The collection `wolflein2026/json-schema-test-suite` is built from the [official
 | `universal` | `true` | `anyOf: [S, not S]` |
 | `unsatisfiable` | `false` | `allOf: [S, not S]` |
 
-The collection `wolflein2026/scaling-families` is generated, from no source. It holds families of cases that grow with a size, so that a checker can be measured on where it stops, or answers wrongly, as the cases grow. Every member of a family has a twin: a near-copy whose answer is `false` in at least one direction, so that a checker that always says yes does not solve a family. Every label is known by construction, in both directions. The name of a case joins with dots the family, each size after its name, and `twin` for a twin: `pigeonhole.holes5.twin`.
+The collection `wolflein2026/scaling-families` is generated, from no source. It holds families of cases that grow with a size, so that a checker can be measured on where it stops, or answers wrongly, as the cases grow. Every member of a family has a twin: a near-copy whose answer is `false` in at least one direction. Every label is known by construction, in both directions. The name of a case joins with dots the family, each size after its name, and `twin` for a twin: `pigeonhole.holes5.twin`.
 
 | Family | `b` | `a` | The twin | Sizes |
 | --- | --- | --- | --- | --- |

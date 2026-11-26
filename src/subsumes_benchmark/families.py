@@ -3,7 +3,7 @@
 A family is a way to build two schemas from one or two sizes, so that a checker can be
 measured on where it stops, or answers wrongly, as the cases grow, and not only on whether
 it solves one of them. Every member has a twin: a near-copy whose answer flips in at least
-one direction, so that a checker that always says yes does not solve a family.
+one direction.
 
 - ``split-order``: the ``oneOf`` of closed object shapes against the same shapes with the
   keywords of each spread over nested ``allOf``. A checker that splits a disjunction in a

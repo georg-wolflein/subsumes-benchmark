@@ -12,6 +12,7 @@ from subsumes_benchmark.build import (
     Overrides,
     Source,
     SourceSpec,
+    build,
     bundled,
     overridden,
     source_label,
@@ -30,6 +31,42 @@ from subsumes_benchmark.unfuse import unfuse
 def convert(schema: Json) -> Json:
     converter = Converter()
     return converter.rewrite_refs(converter.convert(schema), {})
+
+
+def test_building_a_generated_collection_needs_no_source(tmp_path: Path) -> None:
+    collections = tmp_path / "collections.json"
+    overrides = tmp_path / "overrides.json"
+    derived = tmp_path / "derived.json"
+    write_json(
+        collections,
+        {
+            "$schema": "./schemas/collections.schema.json",
+            "sources": {},
+            "origins": {
+                "example": {"short": "Example", "citation": "Example", "url": "https://example.org"}
+            },
+            "collections": {
+                "scaling-families": {
+                    "origin": "example",
+                    "generator": "families",
+                    "labels": "by-construction",
+                    "use_case": "tool-checking",
+                    "description": "Generated scaling cases.",
+                }
+            },
+        },
+    )
+    write_json(
+        overrides, {"$schema": "./schemas/overrides.schema.json", "exclude": [], "override": []}
+    )
+    write_json(derived, {"$schema": "./schemas/derived.schema.json", "cases": {}})
+
+    corpus = tmp_path / "corpus"
+    build(corpus, collections, overrides, derived)
+
+    generated = corpus / "example" / "scaling-families"
+    assert (generated / "pigeonhole.holes2.json").is_file()
+    assert (generated / "pigeonhole.holes2.twin.json").is_file()
 
 
 def test_array_items_become_prefix_items_and_references_follow() -> None:
