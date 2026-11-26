@@ -67,8 +67,8 @@ jobs:
         run: |
           status=0
           for model in collections:CollectionsSpec overrides:OverridesSpec derived:DerivedSpec checker:CheckerSpec \
-              case:CaseSpec ready:ReadySpec request:RequestSpec reply:ReplySpec result:ResultSpec run:RunSpec \
-              comparison:ComparisonSpec; do
+              case:CaseSpec manifest:ManifestSpec ready:ReadySpec request:RequestSpec reply:ReplySpec \
+              result:ResultSpec run:RunSpec comparison:ComparisonSpec; do
             uv run datamodel-codegen --check --input "schemas/${model%%:*}.schema.json" \
               --output "src/subsumes_benchmark/generated/${model%%:*}.py" --class-name "${model##*:}" || status=1
           done
