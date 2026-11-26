@@ -76,6 +76,41 @@ A generator of this repository, which builds the cases of a collection rather th
 """
 
 
+class FromSource(Config):
+    """A dataset of a source, which the cases are read from."""
+
+    model_config = ConfigDict(
+        extra="forbid",
+        use_attribute_docstrings=True,
+    )
+    kind: Literal["source"]
+    """
+    That the cases are read from a source.
+    """
+    name: Name
+    """
+    The name of the source, one of those under sources.
+    """
+    path: str
+    """
+    Where the dataset lives inside the source.
+    """
+
+
+class FromGenerator(Config):
+    """A generator of this repository, which builds the cases. What it builds is under the licence of this repository."""
+
+    model_config = ConfigDict(
+        extra="forbid",
+        use_attribute_docstrings=True,
+    )
+    kind: Literal["generator"]
+    """
+    That a generator builds the cases.
+    """
+    name: Generator
+
+
 type Origin = Name
 """
 The citation key of the work that first published the pairs of a collection, one of those under origins. Its folder holds the folder of the collection.
@@ -88,45 +123,24 @@ What the collection holds, in one sentence that fits a row of a table.
 """
 
 
-class SourceCollection(Config):
-    """A collection that is one dataset of a source."""
+type BuiltFrom = Annotated[FromSource | FromGenerator, Field(discriminator="kind")]
+"""
+What the cases of a collection are built from: one dataset of a source, or a generator of this repository.
+"""
+
+
+class CollectionSpec(Config):
+    """A collection, first published in the work of its origin: one dataset of a source, or what a generator of this repository builds."""
 
     model_config = ConfigDict(
         extra="forbid",
         use_attribute_docstrings=True,
     )
     origin: Origin
-    source: Name
-    """
-    The name of the source the collection is built from, one of those under sources.
-    """
-    path: str
-    """
-    Where the dataset lives inside the source.
-    """
+    built_from: BuiltFrom
     labels: LabelOrigin
     use_case: UseCase
     description: Description
-
-
-class GeneratedCollection(Config):
-    """A collection that a generator of this repository builds. What it builds is under the licence of this repository."""
-
-    model_config = ConfigDict(
-        extra="forbid",
-        use_attribute_docstrings=True,
-    )
-    origin: Origin
-    generator: Generator
-    labels: LabelOrigin
-    use_case: UseCase
-    description: Description
-
-
-type CollectionSpec = SourceCollection | GeneratedCollection
-"""
-A collection, first published in the work of its origin: one dataset of a source, or what a generator of this repository builds.
-"""
 
 
 class CollectionsSpec(Config):

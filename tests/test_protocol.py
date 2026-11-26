@@ -318,6 +318,13 @@ def test_what_two_schemas_share_is_written_the_same_in_both() -> None:
         assert run["Checker"][key] == checker[key], key
     for key, definition in definitions("checker").items():
         assert run[key] == definition, key
+    # The manifest of the corpus says of a collection what the configuration says, in the same
+    # words, and tells the same two kinds of collection apart.
+    configured, listed = definitions("collections"), definitions("manifest")
+    for key in ("LabelOrigin", "UseCase", "OriginSpec", "Description"):
+        assert listed[key] == configured[key], key
+    for kind in ("FromSource", "FromGenerator"):
+        assert listed[kind]["properties"]["kind"] == configured[kind]["properties"]["kind"], kind
     # The directions of a result are the two labels of a case.
     assert result["Direction"]["enum"] == list(definitions("case")["Labels"]["properties"])
 

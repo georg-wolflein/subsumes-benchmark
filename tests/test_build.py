@@ -48,7 +48,7 @@ def test_building_a_generated_collection_needs_no_source(tmp_path: Path) -> None
             "collections": {
                 "scaling-families": {
                     "origin": "example",
-                    "generator": "families",
+                    "built_from": {"kind": "generator", "name": "families"},
                     "labels": "by-construction",
                     "use_case": "tool-checking",
                     "description": "Generated scaling cases.",

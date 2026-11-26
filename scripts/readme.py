@@ -59,10 +59,10 @@ class Collection:
 
 
 def read_collections(corpus: Path) -> list[Collection]:
-    """The collections of a corpus, in the order of its ``collections.json``."""
-    manifest = json.loads((corpus / "collections.json").read_text(encoding="utf-8"))
+    """The collections of a corpus, in the order of its ``manifest.json``."""
+    manifest = json.loads((corpus / "manifest.json").read_text(encoding="utf-8"))
     collections = []
-    for folder, collection in manifest.items():
+    for folder, collection in manifest["collections"].items():
         files = sorted((corpus / folder).glob("*.json"))
         labelled = 0
         for file in files:

@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/georg-wolflein/subsumes-benchmark/blob/main/corpus/manifest.schema.json",
+  "title": "The manifest of a JSON Schema inclusion benchmark corpus",
+  "description": "What the corpus says about its collections: what each holds, the work it was first published in, where it is read from or what generates it, its licence, and where its labels come from. The build writes it from collections.json and the sources, for a reader who has the corpus and not the repository.",
+  "type": "object",
+  "required": ["$schema", "collections"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "description": "The path from this file to manifest.schema.json, which is next to it at the root of the corpus.",
+      "const": "./manifest.schema.json"
+    },
+    "collections": {
+      "description": "The collections, by their folder below the root of the corpus, in the order they are built.",
+      "type": "object",
+      "propertyNames": { "$ref": "#/$defs/Folder" },
+      "additionalProperties": { "$ref": "#/$defs/Collection" }
+    }
+  },
+  "$defs": {
+    "Folder": {
+      "description": "The folder of a collection below the root of the corpus: the folder of its origin, then its own. The id of every case of the collection starts with it.",
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*/[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "Collection": {
+      "description": "A collection: one dataset of a source, or what a generator of this repository builds.",
+      "type": "object",
+      "required": ["description", "use_case", "labels", "origin", "license", "license_file", "built_from"],
+      "additionalProperties": false,
+      "properties": {
+        "description": { "$ref": "#/$defs/Description" },
+        "use_case": { "$ref": "#/$defs/UseCase" },
+        "labels": { "$ref": "#/$defs/LabelOrigin" },
+        "origin": { "$ref": "#/$defs/OriginSpec" },
+        "license": { "$ref": "#/$defs/License" },
+        "license_file": { "$ref": "#/$defs/LicenseFile" },
+        "built_from": { "$ref": "#/$defs/BuiltFrom" }
+      }
+    },
+    "BuiltFrom": {
+      "description": "What the cases of a collection are built from: one dataset of a source at a commit of its repository, or a generator of this repository.",
+      "oneOf": [{ "$ref": "#/$defs/FromSource" }, { "$ref": "#/$defs/FromGenerator" }],
+      "discriminator": { "propertyName": "kind" }
+    },
+    "FromSource": {
+      "description": "A dataset of a source, which the cases are read from. The upstream link of each case is a permanent link into this repository at this commit.",
+      "type": "object",
+      "required": ["kind", "repository", "commit", "path"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "description": "That the cases are read from a source.",
+          "const": "source"
+        },
+        "repository": {
+          "description": "The URL of the git repository of the source.",
+          "type": "string",
+          "format": "uri"
+        },
+        "commit": {
+          "description": "The commit of the source that the cases are read at.",
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "path": {
+          "description": "Where the dataset lives inside the source.",
+          "type": "string"
+        }
+      }
+    },
+    "FromGenerator": {
+      "description": "A generator of this repository, which builds the cases: a file of the repository, as the package of the same version as the corpus holds it.",
+      "type": "object",
+      "required": ["kind", "repository", "path"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "description": "That a generator builds the cases.",
+          "const": "generator"
+        },
+        "repository": {
+          "description": "The URL of this repository.",
+          "type": "string",
+          "format": "uri"
+        },
+        "path": {
+          "description": "The file of the generator inside the repository.",
+          "type": "string"
+        }
+      }
+    },
+    "License": {
+      "description": "The SPDX identifier of the licence that the cases of the collection are under: that of its source, or that of this repository for a generated collection.",
+      "type": "string"
+    },
+    "LicenseFile": {
+      "description": "The text of that licence, as a path from the root of the corpus: the LICENSE file in the folder of the collection.",
+      "type": "string"
+    },
+    "LabelOrigin": {
+      "description": "Where the answers come from. by-construction: the pair was built so that the answer is known. witness-generator: the upstream authors' complete but timeout-bound tool, so an unlabelled case means that it gave up. upstream-tests: the ground truth that the replication package of the jsonsubschema tool gives for its pairs.",
+      "enum": ["by-construction", "witness-generator", "upstream-tests"]
+    },
+    "UseCase": {
+      "description": "What the pairs of the collection are for.",
+      "enum": ["tool-checking", "schema-evolution", "schema-analysis"]
+    },
+    "OriginSpec": {
+      "description": "An origin: the work that first published the pairs of its collections as inclusion questions.",
+      "type": "object",
+      "required": ["short", "citation", "url"],
+      "additionalProperties": false,
+      "properties": {
+        "short": {
+          "description": "The work as a text names it in passing: the authors and the year, as in 'Habib et al., 2021', or what it is where it is no publication.",
+          "type": "string"
+        },
+        "citation": {
+          "description": "The work, as a reference list gives it: authors, title, venue and year.",
+          "type": "string"
+        },
+        "url": {
+          "description": "Where the work is found, as a permanent link where it has one.",
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "Description": {
+      "description": "What the collection holds, in one sentence that fits a row of a table.",
+      "type": "string"
+    }
+  }
+}

@@ -21,7 +21,7 @@ class FromSource(Config):
     """
     link: str
     """
-    A permanent link to the file this case comes from, in the source repository at the commit that collections.json names for the collection; the test suite's cases add a JSON pointer to the test case or the test after a '#'.
+    A permanent link to the file this case comes from, in the source repository at the commit that manifest.json names for the collection; the test suite's cases add a JSON pointer to the test case or the test after a '#'.
     """
     duplicates: Annotated[list[str] | None, Field(min_length=1)] = None
     """
