@@ -3,9 +3,47 @@
 
 from typing import Annotated, Any, Literal
 
-from pydantic import ConfigDict, Field
+from pydantic import ConfigDict, Field, StringConstraints
 
 from subsumes_benchmark.config import Config
+
+
+class FromSource(Config):
+    """The upstream file that a case is read from, in a dataset of a source."""
+
+    model_config = ConfigDict(
+        extra="forbid",
+        use_attribute_docstrings=True,
+    )
+    kind: Literal["source"]
+    """
+    That the case is read from a source.
+    """
+    link: str
+    """
+    A permanent link to the file this case comes from, in the source repository at the commit that collections.json names for the collection; the test suite's cases add a JSON pointer to the test case or the test after a '#'.
+    """
+    duplicates: Annotated[list[str] | None, Field(min_length=1)] = None
+    """
+    Permanent links to the other upstream files that hold these two schemas, in either order, each written like link. The corpus has one case for all of them, and its labels are what any of them says; absent when there is no other.
+    """
+
+
+type SizesAdditionalProperty = Annotated[int, Field(ge=1)]
+
+
+type Family = Literal[
+    "split-order",
+    "product-of-choices",
+    "nth-from-end",
+    "coprime-counters",
+    "tagged-unions",
+    "pigeonhole",
+]
+"""
+A family of generated cases, which the documentation of the corpus describes.
+"""
+
 
 type Schema = dict[str, Any] | bool
 """
@@ -13,14 +51,60 @@ A schema of draft 2020-12.
 """
 
 
-class Counterexample(Config):
-    """The label is false, and an instance proves it."""
+class SourceLabel(Config):
+    """What the source says: the expected result of the test suite, the verdict of the inclusion artifact, or the ground truth of the replication package of the jsonsubschema tool."""
 
     model_config = ConfigDict(
         extra="forbid",
         use_attribute_docstrings=True,
     )
-    counterexample: Any
+    kind: Literal["source"]
+    """
+    That the source of the case gives the answer.
+    """
+    answer: bool
+    """
+    Whether the schema that should accept everything does.
+    """
+    link: str | None = None
+    """
+    The other upstream file that gives the answer, one of the duplicates of the case; absent when the case's own file gives it.
+    """
+
+
+class ConstructionLabel(Config):
+    """The answer is true because the case was built so: a generated case."""
+
+    model_config = ConfigDict(
+        extra="forbid",
+        use_attribute_docstrings=True,
+    )
+    kind: Literal["construction"]
+    """
+    That the generator of the case built it so that the answer is true.
+    """
+    answer: Literal[True]
+    """
+    Whether the schema that should accept everything does: it does.
+    """
+
+
+class CounterexampleLabel(Config):
+    """The answer is false, and an instance proves it, which both validators of the corpus confirm. The generator of the case gave it, or a checker did and derived.json holds it."""
+
+    model_config = ConfigDict(
+        extra="forbid",
+        use_attribute_docstrings=True,
+    )
+    kind: Literal["counterexample"]
+    """
+    That a counterexample shows the answer.
+    """
+    answer: Literal[False]
+    """
+    Whether the schema that should accept everything does: it does not.
+    """
+    instance: Any
     """
     An instance that is valid under the schema whose instances must be accepted and not valid under the schema that should accept everything.
     """
@@ -29,16 +113,41 @@ class Counterexample(Config):
 type Checker = Annotated[str, Field(pattern="^\\S.* \\S+$")]
 
 
-class Agreement(Config):
-    """The label is true as far as checkers can tell: at least two of them say so and none that was asked says otherwise. This is evidence and no proof."""
+class AgreementLabel(Config):
+    """The answer is true as far as checkers can tell: at least two of them say so and none that was asked says otherwise. This is evidence and no proof; derived.json holds it."""
 
     model_config = ConfigDict(
         extra="forbid",
         use_attribute_docstrings=True,
     )
+    kind: Literal["agreement"]
+    """
+    That checkers agree on the answer.
+    """
+    answer: Literal[True]
+    """
+    Whether the schema that should accept everything does: it does.
+    """
     checkers: Annotated[list[Checker], Field(min_length=2)]
     """
     The checkers that say so, each with its version, sorted.
+    """
+
+
+class OverrideLabel(Config):
+    """The corpus departs from the answer of the source, or gives one where the source gives none, for the reason in the note of the case."""
+
+    model_config = ConfigDict(
+        extra="forbid",
+        use_attribute_docstrings=True,
+    )
+    kind: Literal["override"]
+    """
+    That overrides.json gives the answer.
+    """
+    answer: bool
+    """
+    Whether the schema that should accept everything does.
     """
 
 
@@ -90,21 +199,61 @@ A keyword of draft 2020-12 that decides what a schema accepts, or 'recursion'.
 """
 
 
-type Evidence = Counterexample | Agreement
-"""
-What shows one label: a counterexample for false, an agreement of checkers for true.
-"""
-
-
-class Derived(Config):
-    """What shows the labels of a case that upstream does not give, by label."""
+class FromGenerator(Config):
+    """What the generator of the collection built a case from: the family, the sizes that it was built with, and whether it is the twin of the member of those sizes. The labels of such a case are known by construction: neither is null, and the case has no note and nothing derived."""
 
     model_config = ConfigDict(
         extra="forbid",
         use_attribute_docstrings=True,
     )
-    a_subsumes_b: Evidence | None = None
-    b_subsumes_a: Evidence | None = None
+    kind: Literal["generator"]
+    """
+    That a generator of this repository built the case.
+    """
+    family: Family
+    sizes: Annotated[
+        dict[Annotated[str, StringConstraints(pattern=r"^[a-z]+$")], SizesAdditionalProperty],
+        Field(min_length=1),
+    ]
+    """
+    The sizes of the member by the name of each, in the order that the name of the case gives them.
+    """
+    twin: bool
+    """
+    Whether the case is the twin of the member of these sizes: a near-copy of it whose answer is false in at least one direction where the member's is true in both.
+    """
+
+
+type Label = Annotated[
+    SourceLabel | ConstructionLabel | CounterexampleLabel | AgreementLabel | OverrideLabel,
+    Field(discriminator="kind"),
+]
+"""
+The answer to a question and what shows it, which its kind names.
+"""
+
+
+type BuiltFrom = Annotated[FromSource | FromGenerator, Field(discriminator="kind")]
+"""
+What a case is built from: a file of a source, or a generator of this repository.
+"""
+
+
+class Labels(Config):
+    """What is known of the question in each direction: a label with what shows it, or null where the corpus claims nothing. A generated case has both."""
+
+    model_config = ConfigDict(
+        extra="forbid",
+        use_attribute_docstrings=True,
+    )
+    a_subsumes_b: Label | None
+    """
+    Whether a accepts every instance valid under b, and what shows it; null when the corpus claims nothing.
+    """
+    b_subsumes_a: Label | None
+    """
+    The same question in the other direction.
+    """
 
 
 class CaseSpec(Config):
@@ -118,33 +267,18 @@ class CaseSpec(Config):
     """
     The path from this file to case.schema.json, which is at the root of the corpus: above the folder of the collection and the folder of its origin.
     """
-    a_subsumes_b: bool | None
+    labels: Labels
+    note: str | None = None
     """
-    Whether a accepts every instance valid under b; null when the corpus claims nothing.
+    Why the labels depart from upstream's; absent when they do not. A label that it changes is of the kind override.
     """
-    b_subsumes_a: bool | None
+    built_from: BuiltFrom
     """
-    The same question in the other direction.
+    What the case is built from: a file of a source, or a generator of this repository.
     """
     features: list[Feature]
     """
     What the two schemas use, in the order of the list of features: every keyword that validation can reach and that decides what a schema accepts, and 'recursion' when a schema is reached again from itself through a reference.
-    """
-    upstream: str
-    """
-    A permanent link to the file this case comes from, in the source repository at the commit that collections.json names for the collection; the test suite's cases add a JSON pointer to the test case or the test after a '#'.
-    """
-    duplicates: Annotated[list[str] | None, Field(min_length=1)] = None
-    """
-    Permanent links to the other upstream files that hold these two schemas, in either order, each written like upstream. The corpus has one case for all of them, and its labels are what any of them says; absent when there is no other.
-    """
-    note: str | None = None
-    """
-    Why the labels depart from upstream's; absent when they do not.
-    """
-    derived: Derived | None = None
-    """
-    What shows each label that upstream does not give and that was derived from the answers of checkers; absent when the case has no such label.
     """
     a: Schema
     """

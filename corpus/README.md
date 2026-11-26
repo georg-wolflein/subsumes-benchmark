@@ -23,13 +23,14 @@ corpus/
 │   ├── additional-as-uneval/
 │   └── uneval-as-additional/
 └── wolflein2026/
-    └── json-schema-test-suite/
+    ├── json-schema-test-suite/
+    └── scaling-families/
 ```
 
 - **An origin** is the work that first published the pairs of its collections as subsumption questions, named by its first author and the year. [References](#references) has the four.
 - **A collection** is a folder of cases in the folder of its origin, with the `LICENSE` they are under.
 - **A case** is `<origin>/<collection>/<name>.json`, and that path without the `.json` is its id. No file lies deeper.
-- **[`collections.json`](collections.json)** says of every collection what it holds, the reference of its origin, the repository and commit it is read from, its licence, and where its labels come from.
+- **[`collections.json`](collections.json)** says of every collection what it holds, the reference of its origin, the repository and commit it is read from or, for a generated collection, the generator that builds it, its licence, and where its labels come from.
 - **[`case.schema.json`](case.schema.json)** is the schema of a case.
 
 ## A case
@@ -39,29 +40,55 @@ corpus/
 ```json
 {
   "$schema": "../../case.schema.json",
-  "a_subsumes_b": true,
-  "b_subsumes_a": false,
+  "labels": {
+    "a_subsumes_b": { "kind": "agreement", "answer": true, "checkers": ["RWG 8064ad8", "jsoncompat 0.6.0", "subsumes 0.2.0"] },
+    "b_subsumes_a": {
+      "kind": "source",
+      "answer": false,
+      "link": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/schemastore_containment/sat/agripparc-1.2_v2_not_v1.json"
+    }
+  },
+  "built_from": {
+    "kind": "source",
+    "link": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/schemastore_containment/unknown/agripparc-1.2_v1_not_v2.json",
+    "duplicates": [
+      "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/schemastore_containment/sat/agripparc-1.2_v2_not_v1.json"
+    ]
+  },
   "features": ["additionalProperties", "enum", "properties", "type"],
-  "upstream": "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/schemastore_containment/unknown/agripparc-1.2_v1_not_v2.json",
-  "duplicates": [
-    "https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema/-/blob/8064ad83a0dbdb4b02c0ce1632d273f7cbf736cf/src/test/resources/inclusion/schemastore_containment/sat/agripparc-1.2_v2_not_v1.json"
-  ],
-  "derived": { "a_subsumes_b": { "checkers": ["RWG 8064ad8", "jsoncompat 0.6.0", "subsumes 0.2.0"] } },
   "a": { "type": "object", "additionalProperties": false, "properties": { "…": {} } },
   "b": { "type": "object", "additionalProperties": false, "properties": { "…": {} } }
 }
 ```
 
-A file is indented, with every non-ASCII character escaped so that none is invisible.
+A file is indented, with every non-ASCII character escaped so that none is invisible. Upstream's own file leaves `a_subsumes_b` open, and checkers agree on it; the file of its duplicate answers `b_subsumes_a`, so that label links to it. A generated case is `built_from` a generator of this repository. It has both labels and no `note`, and its `false` holds the counterexample that the generator gave, as `wolflein2026/scaling-families/pigeonhole.holes2.twin.json` does:
+
+```json
+{
+  "$schema": "../../case.schema.json",
+  "labels": {
+    "a_subsumes_b": { "kind": "counterexample", "answer": false, "instance": { "p0h0": true, "p1h1": true } },
+    "b_subsumes_a": { "kind": "construction", "answer": true }
+  },
+  "built_from": { "kind": "generator", "family": "pigeonhole", "sizes": { "holes": 2 }, "twin": true },
+  "features": ["allOf", "anyOf", "const", "not", "properties", "required", "type"],
+  "a": false,
+  "b": { "type": "object", "allOf": ["…"] }
+}
+```
 
 - **`$schema`**: The path to `case.schema.json`, the same in every case. The schemas `a` and `b` are draft 2020-12 whatever this says.
-- **`a_subsumes_b`**: `true` when `a` accepts every instance valid under `b`, `false` when some instance of `b` is not valid under `a`, `null` when the corpus claims nothing.
-- **`b_subsumes_a`**: The same question in the other direction.
+- **`labels`**: What is known of the question in each direction: `a_subsumes_b`, whether `a` accepts every instance valid under `b`, and `b_subsumes_a`, the same question the other way. Each is `null` where the corpus claims nothing, or a label: its `answer`, `true` or `false`, and what shows it, which its `kind` names:
+  - **`source`**: What the source says: the suite's expected result, the verdict of the inclusion artifact, or the ground truth of the replication package of jsonsubschema. `link` is present only when another upstream file gives the answer, one of the case's `duplicates`.
+  - **`construction`**: `true`, because the generator built the case so.
+  - **`counterexample`**: `false`, and the `instance` proves it: it is valid under the schema whose instances must be accepted and not valid under the other, by two validators. The generator gave it, or a checker did.
+  - **`agreement`**: `true` as far as checkers can tell: the `checkers` that say so, two or more, and none that was asked says otherwise. This is evidence and no proof.
+  - **`override`**: The corpus departs from the source, or answers where the source does not, for the reason in `note`.
+- **`note`**: Present only when the labels depart from upstream's, and says why. Where the corpus then claims nothing, the label is `null`.
+- **`built_from`**: What the case is built from, which its `kind` says:
+  - **`"kind": "source"`**: A file of a source. `link` is a permanent link to it, in the repository and at the commit that `collections.json` names for the collection; a case built from the test suite adds a JSON pointer to the test case or the test after a `#`. `duplicates` is present only when upstream has these two schemas in other files too, in either order, and lists permanent links to those files. The corpus has one case for all of them.
+  - **`"kind": "generator"`**: A generator of this repository: the `family` the case belongs to, the `sizes` it was built with, by name, and whether it is the `twin` of the member of those sizes. See [Collections](#collections).
 - **`features`**: What the two schemas use; see [Features](#features).
-- **`upstream`**: A permanent link to the file the case comes from, in the repository and at the commit that `collections.json` names for the collection. A case built from the test suite adds a JSON pointer to the test case or the test after a `#`.
-- **`duplicates`**: Present only when upstream has these two schemas in other files too, in either order: permanent links to those files. The corpus has one case for all of them.
-- **`note`**: Present only when the labels depart from upstream's, and says why.
-- **`derived`**: Present only when the case has a label that upstream does not give. It names each such label with what shows it: a `counterexample` for `false`, the `checkers` that agree for `true`.
 - **`a`** and **`b`**: The two schemas, last in the file, so that what is known is at the top however long they are.
 
 Every schema stands on its own: a reference resolves inside the schema or to a meta-schema of draft 2020-12, so a checker needs no other document. Every schema is valid draft 2020-12, which the schema of a case requires.
@@ -87,11 +114,11 @@ So a checker that treats `format` as an annotation can be measured on the cases 
 
 ## Scoring
 
-Ask every question whose label is not `null`: `a_subsumes_b`, and `b_subsumes_a` likewise.
+Ask every question whose label is not `null`, `a_subsumes_b` and `b_subsumes_a` likewise, and hold the answer against the label's `answer`.
 
 - **Wrong** is a yes where the label is `false`, or a no where the label is `true`.
 - **Declining to answer is never wrong.** How often a checker declines, and how long it takes, can be measured on every case, including those labelled `null`.
-- **A derived label is weaker than upstream's where it is `true`.** A derived `false` is proven by its counterexample. A derived `true` rests on checkers that agree, so a result on upstream's labels alone leaves out the labels that a case names under `derived`.
+- **An `agreement` is weaker than every other label.** It rests on checkers that agree, where every other kind is a proof or what the source or the construction says, so a result on proven labels alone leaves out the labels of the kind `agreement`.
 
 ## Collections
 
@@ -112,6 +139,19 @@ The collection `wolflein2026/json-schema-test-suite` is built from the [official
 | `universal` | `true` | `anyOf: [S, not S]` |
 | `unsatisfiable` | `false` | `allOf: [S, not S]` |
 
+The collection `wolflein2026/scaling-families` is generated, from no source. It holds families of cases that grow with a size, so that a checker can be measured on where it stops, or answers wrongly, as the cases grow. Every member of a family has a twin: a near-copy whose answer is `false` in at least one direction. Every label is known by construction, in both directions. The name of a case joins with dots the family, each size after its name, and `twin` for a twin: `pigeonhole.holes5.twin`.
+
+| Family | `b` | `a` | The twin | Sizes |
+| --- | --- | --- | --- | --- |
+| `split-order` | A `oneOf` of closed object shapes, each with a required string named for it and an optional boolean `extra` | The same shapes with their keywords spread over `depth` levels of `allOf` | `a`'s last shape does not allow `extra` | `shapes` 2 to 16, `depth` 1 to 4 |
+| `product-of-choices` | Requires `x_i` or `y_i`, for each of the `choices` | The same through De Morgan's laws, in the reverse order | `a` requires `x0` | `choices` 4 to 64 |
+| `nth-from-end` | Strings of `a` and `b` whose (n+1)-th character from the end is `a`, as `^[ab]*a[ab]{n}$` | The same as `^(a\|b)*a(a\|b){n-1}(a\|b)$` | `a` has `{n}` for `{n-1}` | `n` 2 to 20 |
+| `coprime-counters` | Strings of `a` whose length is a multiple of `p` and of `q`, as two patterns | Strings of `a` whose length is a multiple of pq | `a` takes multiples of 2pq | `p` and `q` from 2 and 3 to 13 and 17 |
+| `tagged-unions` | A `oneOf` of `kinds` objects told apart by the `const` of `kind`, each with `fields` string fields | The `anyOf` of the same kinds | The first field of `a`'s last kind is an integer | `kinds` 5 to 80, `fields` 5 to 30 |
+| `pigeonhole` | `holes` + 1 pigeons, each in one of `holes` holes and no two in one, as boolean properties | `false` | `b` has as many pigeons as holes | `holes` 2 to 8 |
+
+Each member says yes in both directions. Its twin says no to `a_subsumes_b`, and for `nth-from-end` and `tagged-unions`, where neither schema of the twin subsumes the other, to `b_subsumes_a` too. The pigeons of a `pigeonhole` member do not fit, so its `b` accepts nothing and `false` subsumes it; those of the twin fit, so `false` does not. [How the corpus is built](https://github.com/georg-wolflein/subsumes-benchmark/blob/main/docs/construction.md#generated-families) says what each family stresses and why the sizes are these. A result on this collection says most by family and size.
+
 The other collections keep the file names of their source. [How the corpus is built](https://github.com/georg-wolflein/subsumes-benchmark/blob/main/docs/construction.md) says which upstream cases are left out, which labels are corrected and how a label is derived.
 
 ## Versions
@@ -129,6 +169,6 @@ Results measured on two versions are comparable exactly when their major and min
 - **`habib2021`**: Andrew Habib, Avraham Shinnar, Martin Hirzel and Michael Pradel. *Finding Data Compatibility Bugs with JSON Subschema Checking*. ISSTA 2021. [doi:10.1145/3460319.3464796](https://doi.org/10.1145/3460319.3464796). `rb-testset` is the pairs of its [replication package](https://zenodo.org/records/4729863); the tool is [IBM/jsonsubschema](https://github.com/IBM/jsonsubschema) (Apache-2.0).
 - **`attouche2026`**: Lyes Attouche, Mohamed-Amine Baazizi, Dario Colazzo, Giorgio Ghelli, Carlo Sartiani and Stefanie Scherzinger. *Witness Generation for Classical JSON Schema*. ACM Transactions on Database Systems 51(4), 2026. [doi:10.1145/3799416](https://doi.org/10.1145/3799416). It builds `handwritten-sc` by hand, `mergeallof` from the unit tests of [json-schema-merge-allof](https://github.com/mokkabonna/json-schema-merge-allof) (Martin Hansen), and `schemastore-versions` from the history of [SchemaStore](https://github.com/SchemaStore/schemastore) (Apache-2.0).
 - **`baazizi2026`**: Mohamed-Amine Baazizi, Nour El Houda Ben Ali, Dario Colazzo, Giorgio Ghelli, Stefan Klessinger, Carlo Sartiani and Stefanie Scherzinger. *JSON Schema Inclusion through Refutational Normalization: Reconciling Efficiency and Completeness*. [arXiv:2603.25306](https://arxiv.org/abs/2603.25306), 2026. It introduces `oneof-as-anyof`, `additional-as-uneval` and `uneval-as-additional`, built from schemas found on GitHub.
-- **`wolflein2026`**: [subsumes-benchmark](https://github.com/georg-wolflein/subsumes-benchmark) builds `json-schema-test-suite` from [json-schema-org/JSON-Schema-Test-Suite](https://github.com/json-schema-org/JSON-Schema-Test-Suite) (MIT, Julian Berman). The six kinds of pairs are those of [sdbs-uni-p/json-schema-containment-testsuite](https://github.com/sdbs-uni-p/json-schema-containment-testsuite), described in Lyes Attouche, Mohamed-Amine Baazizi, Dario Colazzo, Yunchen Ding, Michael Fruth, Giorgio Ghelli, Carlo Sartiani and Stefanie Scherzinger. *A Test Suite for JSON Schema Containment*. ER 2021 Demos and Posters, CEUR Workshop Proceedings 2958.
+- **`wolflein2026`**: [subsumes-benchmark](https://github.com/georg-wolflein/subsumes-benchmark) generates `scaling-families`, and builds `json-schema-test-suite` from [json-schema-org/JSON-Schema-Test-Suite](https://github.com/json-schema-org/JSON-Schema-Test-Suite) (MIT, Julian Berman). The six kinds of pairs are those of [sdbs-uni-p/json-schema-containment-testsuite](https://github.com/sdbs-uni-p/json-schema-containment-testsuite), described in Lyes Attouche, Mohamed-Amine Baazizi, Dario Colazzo, Yunchen Ding, Michael Fruth, Giorgio Ghelli, Carlo Sartiani and Stefanie Scherzinger. *A Test Suite for JSON Schema Containment*. ER 2021 Demos and Posters, CEUR Workshop Proceedings 2958.
 
-The collections of the first three origins are read from the [artifact of Baazizi et al.](https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema), which is GPL-3.0, and are converted to draft 2020-12. The collection built from the test suite is MIT.
+The collections of the first three origins are read from the [artifact of Baazizi et al.](https://gitlab.lip6.fr/benali1/refutationalnormalizationforjsonschema), which is GPL-3.0, and are converted to draft 2020-12. The collection built from the test suite is MIT, and so is the generated one, under the licence of this repository.

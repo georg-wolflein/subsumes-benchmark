@@ -1,5 +1,6 @@
 """The two transformations of the build: splitting a fused test and converting to 2020-12."""
 
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
@@ -11,19 +12,61 @@ from subsumes_benchmark.build import (
     Overrides,
     Source,
     SourceSpec,
+    build,
     bundled,
+    overridden,
+    source_label,
     without_duplicates,
     without_excluded,
     write_json,
 )
 from subsumes_benchmark.convert import DRAFT_2020_12, ConversionError, Converter
+from subsumes_benchmark.families import pigeonhole
+from subsumes_benchmark.generated.case import CounterexampleLabel, OverrideLabel, SourceLabel
 from subsumes_benchmark.generated.collections import Forge
+from subsumes_benchmark.generated.overrides import Override
 from subsumes_benchmark.unfuse import unfuse
 
 
 def convert(schema: Json) -> Json:
     converter = Converter()
     return converter.rewrite_refs(converter.convert(schema), {})
+
+
+def test_building_a_generated_collection_needs_no_source(tmp_path: Path) -> None:
+    collections = tmp_path / "collections.json"
+    overrides = tmp_path / "overrides.json"
+    derived = tmp_path / "derived.json"
+    write_json(
+        collections,
+        {
+            "$schema": "./schemas/collections.schema.json",
+            "sources": {},
+            "origins": {
+                "example": {"short": "Example", "citation": "Example", "url": "https://example.org"}
+            },
+            "collections": {
+                "scaling-families": {
+                    "origin": "example",
+                    "generator": "families",
+                    "labels": "by-construction",
+                    "use_case": "tool-checking",
+                    "description": "Generated scaling cases.",
+                }
+            },
+        },
+    )
+    write_json(
+        overrides, {"$schema": "./schemas/overrides.schema.json", "exclude": [], "override": []}
+    )
+    write_json(derived, {"$schema": "./schemas/derived.schema.json", "cases": {}})
+
+    corpus = tmp_path / "corpus"
+    build(corpus, collections, overrides, derived)
+
+    generated = corpus / "example" / "scaling-families"
+    assert (generated / "pigeonhole.holes2.json").is_file()
+    assert (generated / "pigeonhole.holes2.twin.json").is_file()
 
 
 def test_array_items_become_prefix_items_and_references_follow() -> None:
@@ -138,7 +181,7 @@ def test_a_case_names_its_schema_and_says_what_is_known_before_the_schemas() -> 
         id="one/two/three",
         a=True,
         b={"type": "string"},
-        a_subsumes_b=True,
+        a_subsumes_b=source_label(True),
         b_subsumes_a=None,
         upstream="x.json",
     )
@@ -146,20 +189,24 @@ def test_a_case_names_its_schema_and_says_what_is_known_before_the_schemas() -> 
     assert isinstance(document, dict)
     assert list(document) == [
         "$schema",
-        "a_subsumes_b",
-        "b_subsumes_a",
+        "labels",
+        "built_from",
         "features",
-        "upstream",
         "a",
         "b",
     ]
+    assert document["labels"] == {
+        "a_subsumes_b": {"kind": "source", "answer": True},
+        "b_subsumes_a": None,
+    }
+    assert document["built_from"] == {"kind": "source", "link": "x.json"}
     assert document["$schema"] == "../../case.schema.json"
     assert (document["a"], document["b"], document["features"]) == (True, case.b, ["type"])
 
 
 def test_excluded_cases_are_left_out_and_must_exist() -> None:
     cases = [
-        Case(id=case_id, a=True, b=True, a_subsumes_b=True, b_subsumes_a=None, upstream="x.json")
+        Case(case_id, True, True, source_label(True), None, upstream="x.json")
         for case_id in ("o/one/a", "o/one/b")
     ]
     assert [case.id for case in without_excluded(cases, {"o/one/a": "broken"})] == ["o/one/b"]
@@ -177,8 +224,7 @@ def test_the_beginning_of_a_name_excludes_every_case_whose_name_begins_so() -> N
         "o/two/a.3.reflexive",
     )
     cases = [
-        Case(id=case_id, a=True, b=True, a_subsumes_b=True, b_subsumes_a=None, upstream="x.json")
-        for case_id in ids
+        Case(case_id, True, True, source_label(True), None, upstream="x.json") for case_id in ids
     ]
     assert [case.id for case in without_excluded(cases, {"o/one/a.3.*": "broken"})] == list(ids[2:])
     assert [case.id for case in without_excluded(cases, {"o/one/a.*": "broken"})] == list(ids[3:])
@@ -201,7 +247,8 @@ def a_case(
     b_subsumes_a: bool | None = None,
     note: str | None = None,
 ) -> Case:
-    return Case(case_id, a, b, a_subsumes_b, b_subsumes_a, f"{case_id}.json", note)
+    labels = source_label(a_subsumes_b), source_label(b_subsumes_a)
+    return Case(case_id, a, b, *labels, f"{case_id}.json", note)
 
 
 TEXT: Json = {"type": "string"}
@@ -222,14 +269,23 @@ def test_cases_with_the_same_two_schemas_are_one_case_that_says_what_each_says()
     kept = without_duplicates(cases)
     assert [case.id for case in kept] == ["o/one/x_v1_not_v2", "o/one/b", "o/one/alone"]
     both, twice, alone = kept
-    assert (both.a_subsumes_b, both.b_subsumes_a) == (False, True)
+    assert both.answers == (False, True)
+    # An answer that another upstream file gives links to it.
+    assert both.a_subsumes_b == SourceLabel(kind="source", answer=False)
+    assert both.b_subsumes_a == SourceLabel(
+        kind="source", answer=True, link="o/one/x_v2_not_v1.json"
+    )
     assert both.duplicates == ("o/one/x_v2_not_v1.json",)
-    assert (twice.a_subsumes_b, twice.b_subsumes_a, twice.note) == (False, False, "Corrected.")
+    assert (*twice.answers, twice.note) == (False, False, "Corrected.")
     assert twice.duplicates == ("o/two/b.json",)
     assert alone is cases[4]
     written = both.document
     assert isinstance(written, dict)
-    assert list(written)[4:6] == ["upstream", "duplicates"]
+    assert written["built_from"] == {
+        "kind": "source",
+        "link": both.upstream,
+        "duplicates": ["o/one/x_v2_not_v1.json"],
+    }
     # The order the cases come in decides nothing.
     assert without_duplicates(cases[::-1]) == kept[::-1]
 
@@ -248,12 +304,14 @@ def test_the_case_whose_id_sorts_first_is_kept() -> None:
 def test_a_case_whose_two_schemas_are_the_same_keeps_the_label_of_each_direction() -> None:
     cases = [a_case("o/one/a", TEXT, TEXT, True), a_case("o/one/b", TEXT, TEXT, None, True)]
     (kept,) = without_duplicates(cases)
-    assert (kept.a_subsumes_b, kept.b_subsumes_a) == (True, True)
+    assert kept.answers == (True, True)
     # Its own label for one direction is not taken for the other, though they are one question.
     (alone,) = without_duplicates([cases[0]])
-    assert (alone.a_subsumes_b, alone.b_subsumes_a) == (True, None)
+    assert alone.answers == (True, None)
     (still,) = without_duplicates([cases[0], a_case("o/one/c", TEXT, TEXT, True)])
-    assert (still.a_subsumes_b, still.b_subsumes_a) == (True, None)
+    assert still.answers == (True, None)
+    # Its own answer is the one it keeps, with no link to the other file that gives it too.
+    assert still.a_subsumes_b == SourceLabel(kind="source", answer=True)
 
 
 def test_duplicates_that_come_from_one_upstream_file_list_it_once_and_not_their_own() -> None:
@@ -284,6 +342,65 @@ def test_duplicates_must_not_contradict_each_other() -> None:
         ]
     )
     assert kept.note == "First. Second."
+
+
+def test_a_generated_case_says_what_it_was_generated_from_in_place_of_a_link() -> None:
+    (member, twin) = pigeonhole(2)
+    labels = member.label("a_subsumes_b"), member.label("b_subsumes_a")
+    case = Case("o/families/x", member.a, member.b, *labels, None, generated=member.generated)
+    document = case.document
+    assert isinstance(document, dict)
+    assert document["built_from"] == {
+        "kind": "generator",
+        "family": "pigeonhole",
+        "sizes": {"holes": 2},
+        "twin": False,
+    }
+    # A case comes from upstream or is generated, and not both or neither.
+    with pytest.raises(ValueError, match="upstream or is generated"):
+        Case("o/one/x", TEXT, NUMBER, None, None, None)
+    with pytest.raises(ValueError, match="upstream or is generated"):
+        replace(case, upstream="x.json")
+    assert document["labels"] == {
+        "a_subsumes_b": {"kind": "construction", "answer": True},
+        "b_subsumes_a": {"kind": "construction", "answer": True},
+    }
+    # A twin's false label holds the counterexample that the generator gave.
+    shown = twin.label("a_subsumes_b")
+    assert shown == CounterexampleLabel(
+        kind="counterexample", answer=False, instance=twin.counterexamples["a_subsumes_b"]
+    )
+    # What the schema of a case does not say of a generated case, the build holds to.
+    for departure in (
+        {"b_subsumes_a": None},
+        {"b_subsumes_a": source_label(True)},
+        {"note": "Corrected."},
+        {"duplicates": ("y",)},
+    ):
+        with pytest.raises(ValueError, match="both labels as it built them"):
+            replace(case, **departure)
+
+
+def test_an_override_is_a_label_of_its_own_where_it_departs_from_the_source() -> None:
+    case = a_case("o/one/a", TEXT, NUMBER, True, None)
+    entry = Override(note="Corrected.", a_subsumes_b=False, b_subsumes_a=False, cases=["o/one/a"])
+    (changed,) = overridden([case], {"o/one/a": entry})
+    assert changed.a_subsumes_b == OverrideLabel(kind="override", answer=False)
+    assert changed.b_subsumes_a == OverrideLabel(kind="override", answer=False)
+    assert changed.note == "Corrected."
+    # Where it states what the source says, the label is still the source's, and where it
+    # claims nothing, there is none.
+    agreeing = Override(note="Withdrawn.", a_subsumes_b=True, b_subsumes_a=None, cases=["o/one/a"])
+    (kept,) = overridden([case], {"o/one/a": agreeing})
+    assert (kept.a_subsumes_b, kept.b_subsumes_a) == (case.a_subsumes_b, None)
+
+
+def test_a_generated_case_has_no_duplicate() -> None:
+    (member, _) = pigeonhole(2)
+    labels = member.label("a_subsumes_b"), member.label("b_subsumes_a")
+    generated = Case("o/families/x", TEXT, NUMBER, *labels, None, generated=member.generated)
+    with pytest.raises(ConversionError, match="generated cases have the schemas of others"):
+        without_duplicates([generated, a_case("o/one/a", NUMBER, TEXT)])
 
 
 def overrides_file(folder: Path, exclude: Json, override: Json) -> Path:

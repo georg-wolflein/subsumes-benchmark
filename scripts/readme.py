@@ -67,7 +67,8 @@ def read_collections(corpus: Path) -> list[Collection]:
         labelled = 0
         for file in files:
             case = json.loads(file.read_text(encoding="utf-8"))
-            labelled += (case["a_subsumes_b"] is not None) + (case["b_subsumes_a"] is not None)
+            labels = case["labels"]
+            labelled += (labels["a_subsumes_b"] is not None) + (labels["b_subsumes_a"] is not None)
         collections.append(
             Collection(
                 folder=folder,

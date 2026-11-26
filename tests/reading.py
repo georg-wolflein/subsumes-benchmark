@@ -1,7 +1,7 @@
 """Reading the committed corpus, for the tests."""
 
 import json
-from collections.abc import Iterator, Sequence
+from collections.abc import Iterator, Mapping, Sequence
 from dataclasses import dataclass
 from functools import cache
 from pathlib import Path
@@ -58,11 +58,31 @@ class Case:
     file: Path
     a_subsumes_b: bool | None
     b_subsumes_a: bool | None
-    upstream: str
+    # The link to the upstream file of a case read from a source; a generated case has none.
+    upstream: str | None
+    generated: Json
     note: str | None
     duplicates: Sequence[str]
-    derived: Json
+    # Each label as the case holds it, with what shows it, by direction.
+    labels: Mapping[str, Json]
     features: Sequence[str]
+
+    @property
+    def derived(self) -> dict[str, Json] | None:
+        """The labels that ``derived.json`` gives the case, as that file writes them.
+
+        Such a label is an agreement of checkers, or a counterexample of a case read from a
+        source: a generated case has a counterexample from its generator.
+        """
+        found: dict[str, Json] = {}
+        for direction, label in self.labels.items():
+            if not isinstance(label, dict):
+                continue
+            if label["kind"] == "agreement":
+                found[direction] = {"checkers": label["checkers"]}
+            elif label["kind"] == "counterexample" and self.upstream is not None:
+                found[direction] = {"counterexample": label["instance"]}
+        return found or None
 
     @property
     def a(self) -> Json:
@@ -89,8 +109,13 @@ class Case:
 
 
 def _label(value: Json) -> bool | None:
-    assert value is None or isinstance(value, bool)
-    return value
+    """The answer of a label as a case holds it, or ``None`` where the case has none."""
+    if value is None:
+        return None
+    assert isinstance(value, dict)
+    answer = value["answer"]
+    assert isinstance(answer, bool)
+    return answer
 
 
 def _document(path: Path) -> dict[str, Json]:
@@ -112,23 +137,28 @@ def cases() -> Sequence[Case]:
     found = []
     for path in sorted(CORPUS.glob("*/*/*.json"), key=lambda path: _case_id(path).split("/")):
         metadata = _document(path)
-        upstream, note = metadata["upstream"], metadata.get("note")
-        used = metadata["features"]
-        assert isinstance(upstream, str)
+        built_from, note = metadata["built_from"], metadata.get("note")
+        used, labels = metadata["features"], metadata["labels"]
+        assert isinstance(built_from, dict)
+        assert isinstance(labels, dict)
         assert note is None or isinstance(note, str)
         assert isinstance(used, list)
-        also = metadata.get("duplicates", [])
+        sourced = built_from["kind"] == "source"
+        upstream = built_from["link"] if sourced else None
+        assert upstream is None or isinstance(upstream, str)
+        also = built_from.get("duplicates", [])
         assert isinstance(also, list)
         found.append(
             Case(
                 id=_case_id(path),
                 file=path,
-                a_subsumes_b=_label(metadata["a_subsumes_b"]),
-                b_subsumes_a=_label(metadata["b_subsumes_a"]),
+                a_subsumes_b=_label(labels["a_subsumes_b"]),
+                b_subsumes_a=_label(labels["b_subsumes_a"]),
                 upstream=upstream,
+                generated=None if sourced else built_from,
                 note=note,
                 duplicates=[str(link) for link in also],
-                derived=metadata.get("derived"),
+                labels=labels,
                 features=[str(feature) for feature in used],
             )
         )

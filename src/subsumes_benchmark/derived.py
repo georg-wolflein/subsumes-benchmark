@@ -2,7 +2,8 @@
 
 ``python -m subsumes_benchmark.compare derive`` writes the file from the answers of checkers,
 and the build reads it. An entry holds what shows the label, and the label follows from it:
-a counterexample shows false, and an agreement of checkers true.
+a counterexample shows false, and an agreement of checkers true. A case holds such a label as
+one of the kind ``counterexample`` or ``agreement``.
 """
 
 import json
@@ -15,6 +16,7 @@ from pydantic import model_validator
 
 from subsumes_benchmark import Json
 from subsumes_benchmark.compare.tasks import Direction
+from subsumes_benchmark.generated.case import AgreementLabel, CounterexampleLabel
 from subsumes_benchmark.generated.derived import (
     Agreement,
     Counterexample,
@@ -31,6 +33,17 @@ def label(evidence: Evidence) -> bool:
             return False
         case Agreement():
             return True
+        case _:
+            assert_never(evidence)
+
+
+def as_label(evidence: Evidence) -> CounterexampleLabel | AgreementLabel:
+    """The label of a case that the evidence shows, as the case holds it."""
+    match evidence:
+        case Counterexample(counterexample=instance):
+            return CounterexampleLabel(kind="counterexample", answer=False, instance=instance)
+        case Agreement(checkers=checkers):
+            return AgreementLabel(kind="agreement", answer=True, checkers=list(checkers))
         case _:
             assert_never(evidence)
 

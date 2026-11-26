@@ -1,7 +1,23 @@
 {
   "$schema": "../../case.schema.json",
-  "a_subsumes_b": true,
-  "b_subsumes_a": true,
+  "labels": {
+    "a_subsumes_b": {
+      "kind": "source",
+      "answer": true
+    },
+    "b_subsumes_a": {
+      "kind": "agreement",
+      "answer": true,
+      "checkers": [
+        "jsoncompat 0.6.0",
+        "subsumes 0.2.0"
+      ]
+    }
+  },
+  "built_from": {
+    "kind": "source",
+    "link": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/dynamicRef.json#/tests/9/tests/2"
+  },
   "features": [
     "$dynamicRef",
     "$ref",
@@ -10,15 +26,6 @@
     "then",
     "type"
   ],
-  "upstream": "https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/e2a68a15cd490750fd6b95e604e4054d7d978d1f/validation/tests/dynamicRef.json#/tests/9/tests/2",
-  "derived": {
-    "b_subsumes_a": {
-      "checkers": [
-        "jsoncompat 0.6.0",
-        "subsumes 0.2.0"
-      ]
-    }
-  },
   "a": {
     "$id": "https://test.json-schema.org/dynamic-ref-leaving-dynamic-scope/main",
     "if": {

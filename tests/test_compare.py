@@ -41,10 +41,14 @@ def a_case(a: Json, b: Json, a_subsumes_b: bool | None = None) -> dict[str, Json
     """A case as its file has it, with nothing known about the other direction."""
     return {
         "$schema": "../../case.schema.json",
-        "a_subsumes_b": a_subsumes_b,
-        "b_subsumes_a": None,
+        "labels": {
+            "a_subsumes_b": None
+            if a_subsumes_b is None
+            else {"kind": "source", "answer": a_subsumes_b},
+            "b_subsumes_a": None,
+        },
+        "built_from": {"kind": "source", "link": "https://example.com"},
         "features": [],
-        "upstream": "https://example.com",
         "a": a,
         "b": b,
     }

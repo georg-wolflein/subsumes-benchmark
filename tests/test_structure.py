@@ -73,6 +73,8 @@ def test_every_upstream_is_a_permalink_into_the_dataset_of_its_collection() -> N
     assert isinstance(manifest, dict)
     datasets = {}
     for folder, spec in COLLECTIONS.items():
+        if "generator" in spec:
+            continue
         collection = manifest[folder]
         assert isinstance(collection, dict)
         source = collection["source"]
@@ -81,8 +83,13 @@ def test_every_upstream_is_a_permalink_into_the_dataset_of_its_collection() -> N
         assert isinstance(repository, str)
         forge = CONFIG["sources"][spec["source"]]["forge"]
         datasets[folder] = f"{repository.removesuffix('.git')}/{blob[forge]}/{commit}/{path}/"
+    # A case of a generated collection says what it was generated from in place of a link.
     elsewhere = [
-        case.id for case in cases() if not case.upstream.startswith(datasets[case.collection])
+        case.id
+        for case in cases()
+        if (case.upstream is None) != (case.collection not in datasets)
+        or (case.upstream is not None and not case.upstream.startswith(datasets[case.collection]))
+        or (case.generated is None) != (case.upstream is not None)
     ]
     assert elsewhere == []
 
@@ -94,27 +101,40 @@ def test_the_manifest_says_of_every_collection_what_the_configuration_says() -> 
     for folder, spec in COLLECTIONS.items():
         collection = manifest[folder]
         assert isinstance(collection, dict)
-        source = collection.pop("source")
-        assert isinstance(source, dict)
+        if "generator" in spec:
+            # What a generator builds is under the licence of this repository, and the
+            # manifest names the file of the generator in it.
+            generator = collection.pop("generator")
+            assert isinstance(generator, dict)
+            assert generator.keys() == {"repository", "path"}
+            assert (ROOT / str(generator["path"])).is_file()
+            licence = "MIT"
+        else:
+            source = collection.pop("source")
+            assert isinstance(source, dict)
+            assert source["path"] == spec["path"]
+            assert source.keys() == {"repository", "commit", "path"}
+            licence = CONFIG["sources"][spec["source"]]["license"]
         assert collection == {
             "description": spec["description"],
             "use_case": spec["use_case"],
             "labels": spec["labels"],
             "origin": ORIGINS[spec["origin"]],
-            "license": CONFIG["sources"][spec["source"]]["license"],
+            "license": licence,
             "license_file": f"{folder}/LICENSE",
         }
-        assert source["path"] == spec["path"]
-        assert source.keys() == {"repository", "commit", "path"}
 
 
 def test_every_collection_has_the_license_of_its_source() -> None:
     # A collection folder holds its cases and the licence they are under, and nothing else.
-    # Two collections have the same text exactly where their sources have the same licence.
+    # Two collections have the same text exactly where they come from the same source, and a
+    # generated collection has the text of this repository's licence.
     texts: dict[str, set[bytes]] = {}
     for folder, spec in COLLECTIONS.items():
-        name = CONFIG["sources"][spec["source"]]["license"]
-        texts.setdefault(name, set()).add((CORPUS / folder / "LICENSE").read_bytes())
+        text = (CORPUS / folder / "LICENSE").read_bytes()
+        if "generator" in spec:
+            assert text == (ROOT / "LICENSE").read_bytes(), folder
+        texts.setdefault(spec.get("source", "this repository"), set()).add(text)
     assert all(len(found) == 1 for found in texts.values())
     assert len({text for found in texts.values() for text in found}) == len(texts)
 
